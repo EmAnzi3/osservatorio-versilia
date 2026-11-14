@@ -1,0 +1,365 @@
+{
+  "schemaVersion": 1,
+  "lot": "demanio-marittimo-v127",
+  "snapshotDate": "2026-08",
+  "acquiredAt": "2026-09-01",
+  "coverage": {
+    "coastalMunicipalities": [
+      "Camaiore",
+      "Forte dei Marmi",
+      "Pietrasanta",
+      "Viareggio"
+    ],
+    "notApplicable": [
+      "Massarosa",
+      "Seravezza",
+      "Stazzema"
+    ],
+    "rule": "4/4 Comuni costieri + 3 n.a.; n.a. non è zero né dato mancante."
+  },
+  "source": {
+    "publisher": "Ministero delle Infrastrutture e dei Trasporti / SID — Il Portale del Mare",
+    "dataset": "Concessioni Demaniali Marittime a Agosto 2026",
+    "url": "https://dati.mit.gov.it/catalog/dataset/concessioni-demaniali-marittime-a-agosto-2026",
+    "resourceCsv4326": "41663e2c-a1a3-4685-953e-9025084363f5",
+    "license": "CC BY",
+    "frequency": "Irregolare",
+    "files": {
+      "concessioni-epsg4326.csv": {
+        "sha256": "66b492555b29147421693080555f7d29eb5f7469f2c3aa5bffe00aa5d27ad28d",
+        "rows": 29248
+      },
+      "concessioni-epsg6875.csv": {
+        "sha256": "4938d73f8f4a90200a230ab418024e11c49c30bc121edb7c192036a0a4178911",
+        "rows": 29248
+      },
+      "open_data_shp_oggetti.zip": {
+        "sha256": "2bea45a5a3b2e54770459083885427bfbab38dff81c8fdaf7e1b9774ab424973",
+        "features": 124120
+      },
+      "open_data_shp_concessioni.zip": {
+        "sha256": "76926502b721e3ae2a717b9d8f5b7563cb58011b8ca879bfffc442ce929f9d7c"
+      }
+    }
+  },
+  "quality": {
+    "nationalCsvRows": 29248,
+    "nationalDistinctIdconc": 29242,
+    "perfectDuplicateRows": 6,
+    "allRowsStatus": "Vigente",
+    "polygonCoverage": {
+      "nationalDistinctWithPolygon": 21673,
+      "nationalDistinctTotal": 29242,
+      "sharePercent": 74.1,
+      "localSharePercent": {
+        "Camaiore": 85.4,
+        "Forte dei Marmi": 59.9,
+        "Pietrasanta": 100.0,
+        "Viareggio": 80.2
+      }
+    },
+    "territorialAssignment": {
+      "rule": "Titoli dei quattro Comuni assegnati dall'amministrazione comunale SID; i titoli non comunali sono attribuiti dal punto SID congelato nello snapshot. Le 165 concessioni dell'Autorità Portuale Regione Toscana ricadenti nel porto di Viareggio sono assegnate a Viareggio; i 17 titoli della Capitaneria di Porto di Viareggio sono assegnati per posizione lungo i quattro tratti costieri.",
+      "frozen": true,
+      "warning": "Non usare il campo amministrazione come unico identificatore territoriale: a Viareggio sono presenti titoli dell'Autorità Portuale e della Capitaneria.",
+      "municipalAuthorityCounts": {
+        "Camaiore": 129,
+        "Forte dei Marmi": 185,
+        "Pietrasanta": 122,
+        "Viareggio": 181
+      },
+      "nonMunicipalAssignments": {
+        "Autorità Portuale Regione Toscana": {
+          "to": "Viareggio",
+          "count": 165,
+          "rule": "Punti SID ricadenti nel porto di Viareggio nello snapshot approvato."
+        },
+        "Capitaneria di Porto Viareggio": {
+          "total": 17,
+          "Viareggio": [
+            "1959T000009",
+            "1958Q000007",
+            "1958P000006",
+            "1963G000010",
+            "1991A000749",
+            "1953K000015",
+            "1953L000016",
+            "1960E000011",
+            "2017O005580",
+            "2017A050898",
+            "1971F000010",
+            "1976O000032",
+            "2024Y002752"
+          ],
+          "Camaiore": [
+            "2016Q003837"
+          ],
+          "Pietrasanta": [
+            "2016L009133"
+          ],
+          "Forte dei Marmi": [
+            "2011T000201",
+            "1963O000009"
+          ]
+        }
+      },
+      "publishedDistinctIdconc": 799
+    }
+  },
+  "towns": {
+    "Camaiore": {
+      "code": "046005",
+      "totalConcessions": 130,
+      "touristRecreationalConcessions": 124,
+      "touristRecreationalShare": 95.384615,
+      "canoneDovutoEur": 852515.21,
+      "touristRecreationalCanoneDovutoEur": 850257.45,
+      "meanCanoneEur": 6557.81,
+      "medianCanoneEur": 6404.7,
+      "minimumCanoneCount": 28,
+      "minimumCanoneShare": 21.538462,
+      "expiryMissing": 1,
+      "usageBreakdown": [
+        {"label": "Turistico Ricreativo", "count": 124},
+        {"label": "Vario", "count": 5},
+        {"label": "Altri Usi Pubblici Ex Art 34 Del Cod Nav. Ex Art. 36 Reg. Cod. Nav.", "count": 1}
+      ],
+      "categoryBreakdown": [
+        {"label": "Stabilimento Balneare Pubblico", "count": 85},
+        {"label": "Vario", "count": 23},
+        {"label": "Stabilimento Balneare Privato", "count": 13},
+        {"label": "Altro", "count": 5},
+        {"label": "Colonia Marina/Istituto Di Cura E Soggiorno", "count": 2},
+        {"label": "Circolo/Associazione/Societa' Affiliato A Federazioni Sportive Nazionali", "count": 1},
+        {"label": "n.d.", "count": 1}
+      ],
+      "titleTypeBreakdown": [
+        {"label": "Atto Formale", "count": 85},
+        {"label": "Licenza", "count": 44},
+        {"label": "Consegna", "count": 1}
+      ],
+      "grantingAuthorityBreakdown": [
+        {"label": "Comune Camaiore", "count": 129},
+        {"label": "Capitaneria di Porto Viareggio", "count": 1}
+      ],
+      "expiryYearBreakdown": [
+        {"label": "2037", "count": 64},
+        {"label": "2027", "count": 40},
+        {"label": "2038", "count": 11},
+        {"label": "2040", "count": 4},
+        {"label": "2042", "count": 2},
+        {"label": "2039", "count": 2},
+        {"label": "2033", "count": 1},
+        {"label": "2029", "count": 1},
+        {"label": "2026", "count": 1},
+        {"label": "2044", "count": 1},
+        {"label": "2034", "count": 1},
+        {"label": "2031", "count": 1},
+        {"label": "n.d.", "count": 1}
+      ]
+    },
+    "Forte dei Marmi": {
+      "code": "046013",
+      "totalConcessions": 187,
+      "touristRecreationalConcessions": 161,
+      "touristRecreationalShare": 86.096257,
+      "canoneDovutoEur": 1449307.39,
+      "touristRecreationalCanoneDovutoEur": 1373433.51,
+      "meanCanoneEur": 7750.31,
+      "medianCanoneEur": 5668.66,
+      "minimumCanoneCount": 76,
+      "minimumCanoneShare": 40.641711,
+      "expiryMissing": 2,
+      "usageBreakdown": [
+        {"label": "Turistico Ricreativo", "count": 161},
+        {"label": "Vario", "count": 23},
+        {"label": "Altri Usi Pubblici Ex Art 34 Del Cod Nav. Ex Art. 36 Reg. Cod. Nav.", "count": 2},
+        {"label": "Tutela Ambientale", "count": 1}
+      ],
+      "categoryBreakdown": [
+        {"label": "Stabilimento Balneare Pubblico", "count": 116},
+        {"label": "Vario", "count": 32},
+        {"label": "Altro", "count": 24},
+        {"label": "Circolo/Associazione/Societa' Affiliato A Federazioni Sportive Nazionali", "count": 4},
+        {"label": "Stabilimento Balneare Privato", "count": 3},
+        {"label": "Colonia Marina/Istituto Di Cura E Soggiorno", "count": 3},
+        {"label": "Punto Di Ormeggio", "count": 3},
+        {"label": "n.d.", "count": 2}
+      ],
+      "titleTypeBreakdown": [
+        {"label": "Licenza", "count": 177},
+        {"label": "Atto Formale", "count": 8},
+        {"label": "Consegna", "count": 2}
+      ],
+      "grantingAuthorityBreakdown": [
+        {"label": "Comune Forte Dei Marmi", "count": 185},
+        {"label": "Capitaneria di Porto Viareggio", "count": 2}
+      ],
+      "expiryYearBreakdown": [
+        {"label": "2027", "count": 172},
+        {"label": "2041", "count": 3},
+        {"label": "n.d.", "count": 2},
+        {"label": "2028", "count": 2},
+        {"label": "2033", "count": 2},
+        {"label": "2032", "count": 2},
+        {"label": "2030", "count": 1},
+        {"label": "2026", "count": 1},
+        {"label": "2035", "count": 1},
+        {"label": "2034", "count": 1}
+      ]
+    },
+    "Pietrasanta": {
+      "code": "046024",
+      "totalConcessions": 123,
+      "touristRecreationalConcessions": 116,
+      "touristRecreationalShare": 94.308943,
+      "canoneDovutoEur": 1552876.15,
+      "touristRecreationalCanoneDovutoEur": 1540796.44,
+      "meanCanoneEur": 12625.01,
+      "medianCanoneEur": 12268.38,
+      "minimumCanoneCount": 8,
+      "minimumCanoneShare": 6.504065,
+      "expiryMissing": 1,
+      "usageBreakdown": [
+        {"label": "Turistico Ricreativo", "count": 116},
+        {"label": "Vario", "count": 5},
+        {"label": "Diporto Nautico", "count": 1},
+        {"label": "Altri Usi Pubblici Ex Art 34 Del Cod Nav. Ex Art. 36 Reg. Cod. Nav.", "count": 1}
+      ],
+      "categoryBreakdown": [
+        {"label": "Stabilimento Balneare Privato", "count": 67},
+        {"label": "Stabilimento Balneare Pubblico", "count": 42},
+        {"label": "Altro", "count": 6},
+        {"label": "Vario", "count": 4},
+        {"label": "Colonia Marina/Istituto Di Cura E Soggiorno", "count": 1},
+        {"label": "Circolo/Associazione/Societa' Affiliato A Federazioni Sportive Nazionali", "count": 1},
+        {"label": "Complesso Turistico", "count": 1},
+        {"label": "n.d.", "count": 1}
+      ],
+      "titleTypeBreakdown": [
+        {"label": "Licenza", "count": 115},
+        {"label": "Atto Formale", "count": 7},
+        {"label": "Consegna", "count": 1}
+      ],
+      "grantingAuthorityBreakdown": [
+        {"label": "Comune Pietrasanta", "count": 122},
+        {"label": "Capitaneria di Porto Viareggio", "count": 1}
+      ],
+      "expiryYearBreakdown": [
+        {"label": "2033", "count": 70},
+        {"label": "2027", "count": 29},
+        {"label": "2034", "count": 13},
+        {"label": "2038", "count": 3},
+        {"label": "2039", "count": 2},
+        {"label": "2042", "count": 1},
+        {"label": "2029", "count": 1},
+        {"label": "2028", "count": 1},
+        {"label": "2032", "count": 1},
+        {"label": "2044", "count": 1},
+        {"label": "n.d.", "count": 1}
+      ]
+    },
+    "Viareggio": {
+      "code": "046033",
+      "totalConcessions": 359,
+      "touristRecreationalConcessions": 174,
+      "touristRecreationalShare": 48.467967,
+      "canoneDovutoEur": 2669422.99,
+      "touristRecreationalCanoneDovutoEur": 1704536.28,
+      "meanCanoneEur": 7435.72,
+      "medianCanoneEur": 3796.44,
+      "minimumCanoneCount": 156,
+      "minimumCanoneShare": 43.454039,
+      "expiryMissing": 12,
+      "usageBreakdown": [
+        {"label": "Turistico Ricreativo", "count": 174},
+        {"label": "Cantieristica Navale", "count": 99},
+        {"label": "Vario", "count": 56},
+        {"label": "Altri Usi Pubblici Ex Art 34 Del Cod Nav. Ex Art. 36 Reg. Cod. Nav.", "count": 12},
+        {"label": "Diporto Nautico", "count": 10},
+        {"label": "Produttivo Ed Industriale", "count": 7},
+        {"label": "Pesca Ed Acquacoltura", "count": 1}
+      ],
+      "categoryBreakdown": [
+        {"label": "Stabilimento Balneare Pubblico", "count": 100},
+        {"label": "Altro", "count": 95},
+        {"label": "n.d.", "count": 92},
+        {"label": "Stabilimento Balneare Privato", "count": 38},
+        {"label": "Vario", "count": 27},
+        {"label": "Punto Di Ormeggio", "count": 3},
+        {"label": "Complesso Turistico", "count": 1},
+        {"label": "Porto Turistico", "count": 1},
+        {"label": "Circolo/Associazione/Societa' Affiliato A Federazioni Sportive Nazionali", "count": 1},
+        {"label": "Approdo Turistico", "count": 1}
+      ],
+      "titleTypeBreakdown": [
+        {"label": "Licenza", "count": 244},
+        {"label": "Atto Formale", "count": 103},
+        {"label": "Consegna", "count": 12}
+      ],
+      "grantingAuthorityBreakdown": [
+        {"label": "Comune Viareggio", "count": 181},
+        {"label": "Autorità Portuale Regione Toscana", "count": 165},
+        {"label": "Capitaneria di Porto Viareggio", "count": 13}
+      ],
+      "expiryYearBreakdown": [
+        {"label": "2027", "count": 201},
+        {"label": "2044", "count": 17},
+        {"label": "2037", "count": 16},
+        {"label": "2026", "count": 15},
+        {"label": "2028", "count": 13},
+        {"label": "2029", "count": 12},
+        {"label": "n.d.", "count": 12},
+        {"label": "2038", "count": 11},
+        {"label": "2030", "count": 9},
+        {"label": "2039", "count": 9},
+        {"label": "2036", "count": 7},
+        {"label": "2032", "count": 5},
+        {"label": "2035", "count": 4},
+        {"label": "2053", "count": 3},
+        {"label": "2031", "count": 3},
+        {"label": "2042", "count": 3},
+        {"label": "2048", "count": 3},
+        {"label": "2040", "count": 3},
+        {"label": "2033", "count": 2},
+        {"label": "2034", "count": 2},
+        {"label": "2050", "count": 2},
+        {"label": "2043", "count": 2},
+        {"label": "2049", "count": 2},
+        {"label": "2051", "count": 1},
+        {"label": "2046", "count": 1},
+        {"label": "2055", "count": 1}
+      ]
+    }
+  },
+  "versiliaCoast": {
+    "totalConcessions": 799,
+    "touristRecreationalConcessions": 575,
+    "touristRecreationalShare": 71.964956,
+    "canoneDovutoEur": 6524121.74,
+    "touristRecreationalCanoneDovutoEur": 5469023.68,
+    "meanCanoneEur": 8165.36,
+    "medianCanoneEur": 6330.15,
+    "minimumCanoneCount": 268,
+    "minimumCanoneShare": 33.541927
+  },
+  "published": {
+    "maritimeConcessions": {"unit": "concessioni", "selector": ["Totale", "Turistico-ricreative"]},
+    "maritimeConcessionFeesDue": {"unit": "€/anno", "selector": ["Totale", "Turistico-ricreative"]}
+  },
+  "deferred": {
+    "concessionedArea": "Geometrie poligonali incomplete, soprattutto Forte dei Marmi (59,9%).",
+    "concessionedCoastMetres": "Non campo nativo SID e geometrie insufficienti.",
+    "concessionedCoastShare": "Numeratore non validabile in modo omogeneo.",
+    "bathingEstablishments": "Esiste un elenco regionale ufficiale distinto dalle concessioni, ma non un export pubblico completo validato.",
+    "freeBeaches": "PUA/PAA comunali non omogenei 4/4.",
+    "accessibility": "Piattaforma regionale prevista, export completo non validato.",
+    "applications": "Visibili nel SID interno ma manca export deduplicabile.",
+    "history": "Snapshot SID precedenti disponibili ma schema da armonizzare."
+  },
+  "discarded": {
+    "expiredRevokedArchived": "Lo snapshot open data agosto 2026 contiene solo stato Vigente.",
+    "concessionaireConcentration": "Il concessionario non è presente nell'open data SID.",
+    "coastalTourismPressure2019": "Duplicato più vecchio di un indicatore turistico già presente."
+  }
+}

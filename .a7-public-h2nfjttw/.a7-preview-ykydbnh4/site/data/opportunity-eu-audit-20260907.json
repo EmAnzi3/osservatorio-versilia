@@ -1,0 +1,251 @@
+{
+  "schemaVersion": "1.0",
+  "auditDate": "2026-09-07",
+  "window": {
+    "from": "2026-05-10",
+    "to": "2026-09-07",
+    "days": 120,
+    "radarPublicOperationalSince": "2026-08-24"
+  },
+  "purpose": "Verificare se il Radar Opportunità intercetta tempestivamente opportunità UE realmente azionabili da Comuni o autorità locali, separando discovery, promotion e copertura storica.",
+  "scope": {
+    "channels": [
+      "EU Covenant of Mayors - Calls",
+      "European Commission - CINEA / ManagEnergy",
+      "European Commission - DG Environment",
+      "European Commission - DG Energy",
+      "European Urban Initiative",
+      "URBACT",
+      "Interreg Euro-MED",
+      "European Investment Bank - ELENA"
+    ],
+    "include": [
+      "finanziamenti e contributi con Comune/autorita locale come candidato o partner ammissibile",
+      "assistenza tecnica e capacity building direttamente richiedibile da citta o autorita locali",
+      "premi/competition con enti pubblici locali ammissibili",
+      "opportunita a sportello senza scadenza unica"
+    ],
+    "exclude": [
+      "survey e consultazioni senza beneficio operativo assimilabile a opportunita",
+      "procurement lato fornitore",
+      "eventi e webinar",
+      "call riservate a soggetti non comunali senza ruolo diretto o partner del Comune"
+    ]
+  },
+  "auditRules": {
+    "targetDetectionLagDays": 3,
+    "sourceConfiguredDoesNotEqualCoverage": true,
+    "familyGreenDoesNotEqualChannelCoverage": true,
+    "historicalPreLaunchGapIsNotRuntimeMiss": true
+  },
+  "summary": {
+    "confirmedCurrentOrRecentRuntimeGaps": 5,
+    "confirmedHistoricalPreLaunchGaps": 4,
+    "promotionOrScopeReview": 2,
+    "controlsCaptured": 6,
+    "criticalConclusion": "C4T non e un caso isolato: la discovery UE presenta gap di canale e di promozione. Il controllo per famiglia puo risultare verde mentre opportunita pubblicate su canali ufficiali dedicati alle citta restano invisibili."
+  },
+  "findings": [
+    {
+      "id": "eu-c4t-groundwork-2026",
+      "title": "C4T GROUNDWORK - Technical Assistance for Cohesion Policy investments",
+      "officialUrl": "https://managenergy.ec.europa.eu/managenergy-discover/managenergy-news/c4t-groundwork-call-open-technical-assistance-2026-07-03_en",
+      "secondaryOfficialUrl": "https://eu-mayors.ec.europa.eu/en/calls/c4t-groundwork-technical-assistance-cohesion-policy-investments",
+      "publishedOrOpenedAt": "2026-07-03",
+      "deadlineAt": "2026-09-11",
+      "municipalityRole": "conditional_direct_applicant",
+      "radarStatus": "recovered_late",
+      "firstSeenAt": "2026-09-07",
+      "publicationLagDays": 66,
+      "minimumOperationalLagDays": 14,
+      "severity": "critical",
+      "evidence": [
+        "assenza nello snapshot 2026-08-25",
+        "assenza nello snapshot 2026-09-04",
+        "recuperata il 2026-09-07 dopo audit indipendente"
+      ]
+    },
+    {
+      "id": "eu-natura2000-award-2027-edition",
+      "title": "European Natura 2000 Award - Towns & cities",
+      "officialUrl": "https://environment.ec.europa.eu/topics/nature-and-biodiversity/natura-2000-award_en",
+      "secondaryOfficialUrl": "https://eu-mayors.ec.europa.eu/en/calls/european-natura-2000-award-apply-now-new-towns-cities-category",
+      "publishedOrOpenedAt": "2026-05-21",
+      "deadlineAt": "2026-09-30",
+      "municipalityRole": "conditional_direct_applicant",
+      "radarStatus": "current_false_negative",
+      "firstSeenAt": null,
+      "minimumOperationalLagDays": 14,
+      "severity": "critical",
+      "reason": "Enti pubblici sono ammissibili; la nuova categoria Towns & cities riguarda iniziative in siti Natura 2000 urbani/periurbani. Serve verifica puntuale di attivita e sito per ciascun Comune.",
+      "evidence": [
+        "assenza nello snapshot 2026-08-25",
+        "assenza nello snapshot 2026-09-04",
+        "assenza nello snapshot 2026-09-07"
+      ]
+    },
+    {
+      "id": "interreg-euro-med-call-7-mmm-2026",
+      "title": "Interreg Euro-MED Call 7 - Mediterranean Multiprogramme Mechanism",
+      "officialUrl": "https://interreg-euro-med.eu/en/call-7-mediterranean-multiprogramme-mechanism-coordinated-call/",
+      "publishedOrOpenedAt": "2026-09-01",
+      "deadlineAt": "2026-09-30T13:00:00+02:00",
+      "municipalityRole": "conditional_partner_or_lead",
+      "radarStatus": "current_false_negative",
+      "firstSeenAt": null,
+      "minimumOperationalLagDays": 6,
+      "severity": "critical",
+      "reason": "Toscana rientra nell'area di cooperazione e le autorita pubbliche locali possono partecipare; la call richiede trasferimento/valorizzazione di output gia sviluppati in un altro programma MMM.",
+      "evidence": [
+        "assenza nello snapshot 2026-09-04",
+        "assenza nello snapshot 2026-09-07"
+      ]
+    },
+    {
+      "id": "eib-elena-rolling",
+      "title": "ELENA - European Local ENergy Assistance",
+      "officialUrl": "https://www.eib.org/en/products/advisory-services/elena/index.htm",
+      "publishedOrOpenedAt": null,
+      "deadlineAt": null,
+      "municipalityRole": "conditional_direct_applicant",
+      "radarStatus": "current_structural_false_negative",
+      "firstSeenAt": null,
+      "severity": "critical",
+      "reason": "Strumento a sportello EIB/Commissione: autorita regionali, locali e municipali ammissibili; contributo TA fino al 90% dei costi di preparazione. Per energia/residenziale/trasporto il programma di investimento e tipicamente sopra 30 milioni di euro.",
+      "evidence": [
+        "assenza nello snapshot 2026-09-07"
+      ]
+    },
+    {
+      "id": "netzerocities-mission-minded-helpdesk-2026",
+      "title": "Ongoing Technical Helpdesk for all Mission-minded cities",
+      "officialUrl": "https://eu-mayors.ec.europa.eu/en/calls/ongoing-technical-helpdesk-all-mission-minded-cities",
+      "publishedOrOpenedAt": null,
+      "deadlineAt": "2026-09-04T09:00:00+02:00",
+      "municipalityRole": "direct_city_beneficiary",
+      "radarStatus": "runtime_false_negative_recently_closed",
+      "firstSeenAt": null,
+      "severity": "critical",
+      "reason": "Assistenza tecnica gratuita per citta Mission-minded su energia, mobilita, ambiente costruito, circolarita e adattamento.",
+      "evidence": [
+        "assenza nello snapshot 2026-08-25",
+        "assenza nello snapshot del giorno di scadenza 2026-09-04"
+      ]
+    },
+    {
+      "id": "better-homes-partnerships-eoi-2026",
+      "title": "Better Homes Partnerships - Call for expressions of interest",
+      "officialUrl": "https://energy.ec.europa.eu/topics/energy-efficiency/energy-performance-buildings/better-homes-partnerships_en",
+      "publishedOrOpenedAt": "2026-06-19",
+      "deadlineAt": "2026-08-21T23:59:00+02:00",
+      "municipalityRole": "direct_public_authority_stakeholder",
+      "radarStatus": "historical_prelaunch_gap",
+      "severity": "high",
+      "reason": "La call includeva esplicitamente autorita pubbliche nazionali, regionali e locali. E scaduta tre giorni prima della pubblicazione del Radar: non e un miss runtime, ma dimostra che il replay storico non ha ricostruito tutte le opportunita comunali rilevanti."
+    },
+    {
+      "id": "citizen-energy-panel-host-2026",
+      "title": "Apply to host a Citizen Energy Panel",
+      "officialUrl": "https://eu-mayors.ec.europa.eu/en/calls",
+      "publishedOrOpenedAt": null,
+      "deadlineAt": "2026-08-14T09:00:00+02:00",
+      "municipalityRole": "direct_municipal_applicant",
+      "radarStatus": "historical_prelaunch_gap",
+      "severity": "high",
+      "reason": "La call invitava esplicitamente i Comuni UE a richiedere supporto per ospitare un workshop locale sulla transizione energetica; era gia chiusa quando il Radar pubblico e andato online."
+    },
+    {
+      "id": "eui-innovative-actions-call4-2026",
+      "title": "European Urban Initiative - Innovative Actions Call 4",
+      "officialUrl": "https://www.urban-initiative.eu/calls-proposals/fourth-call-proposals-innovative-actions",
+      "publishedOrOpenedAt": "2026-02-25",
+      "deadlineAt": "2026-06-15T14:00:00+02:00",
+      "municipalityRole": "conditional_urban_authority",
+      "radarStatus": "historical_prelaunch_gap_coverage_evidence_only",
+      "severity": "high",
+      "reason": "Call da 60 milioni ERDF, fino a 2 milioni per progetto. Nel Radar compare come evidenza storica di copertura EUI, non come opportunita storica ricostruita."
+    },
+    {
+      "id": "urbact-action-networks-2026",
+      "title": "URBACT IV - Call for Action Networks",
+      "officialUrl": "https://urbact.eu/news/apply-urbact-call-action-networks",
+      "publishedOrOpenedAt": "2026-03-17",
+      "deadlineAt": "2026-06-17T15:00:00+02:00",
+      "municipalityRole": "direct_city_partner_or_lead",
+      "radarStatus": "historical_prelaunch_gap_coverage_evidence_only",
+      "severity": "high",
+      "reason": "Call per amministrazioni cittadine UE, reti di 6-8 citta. Nel Radar e presente soltanto come evidenza storica della famiglia eu-urban, non come opportunita storica ricostruita."
+    },
+    {
+      "id": "eui-peer-reviews-autumn-2026",
+      "title": "EUI Peer Reviews - autumn 2026 call",
+      "officialUrl": "https://www.urban-initiative.eu/events/applicants-webinar-autumn-2026-call-peer-reviews",
+      "publishedOrOpenedAt": "2026-10-01",
+      "deadlineAt": "2026-11-12",
+      "municipalityRole": "conditional_article11_urban_authority",
+      "radarStatus": "detected_internal_only_scope_review",
+      "severity": "medium",
+      "reason": "Il Radar vede gia la call nel discovery interno, ma non la pubblica. Prima della promozione va risolta la matrice di ammissibilita Article 11 per i sette Comuni."
+    },
+    {
+      "id": "cef-cb-res-status-call6-2026",
+      "title": "6th Call for Cross-Border Renewable Energy projects",
+      "officialUrl": "https://eu-mayors.ec.europa.eu/en/calls",
+      "publishedOrOpenedAt": "2026-06-29",
+      "deadlineAt": "2026-10-06",
+      "municipalityRole": "project_promoter_only_if_cross_border_res_project",
+      "radarStatus": "scope_review_not_counted_as_false_negative",
+      "severity": "medium",
+      "reason": "Opportunita reale ma non automaticamente azionabile dai Comuni: richiede un progetto RES transfrontaliero e ruolo di promotore. Non va promossa indiscriminatamente."
+    }
+  ],
+  "controls": [
+    {
+      "id": "eu-eucf-call-8-2026",
+      "title": "European City Facility - 8a call",
+      "radarStatus": "captured_upcoming",
+      "publishedAt": "2026-08-17",
+      "firstSeenAt": "2026-08-25",
+      "publicationLagDays": 8,
+      "minimumOperationalLagDays": 1
+    },
+    {
+      "id": "eu-eui-city-to-city-exchanges-2026",
+      "title": "EUI City-to-City Exchanges",
+      "radarStatus": "captured_rolling",
+      "firstSeenAt": "2026-08-25"
+    },
+    {"id": "life-2026-cet-pda", "radarStatus": "captured_open"},
+    {"id": "life-2026-cet-enercom", "radarStatus": "captured_open"},
+    {"id": "life-2026-cet-heatcoolplan", "radarStatus": "captured_open"},
+    {"id": "life-2026-cet-empower", "radarStatus": "captured_open"}
+  ],
+  "excludedExamples": [
+    {
+      "title": "Survey: EU Covenant of Mayors Strategic Review 2026",
+      "reason": "input/survey, non opportunita operativa secondo il contratto Radar"
+    },
+    {
+      "title": "Survey: European cities invited to benchmark capabilities for democratic green transitions",
+      "reason": "input/survey"
+    },
+    {
+      "title": "Peer Review Programme 2026 for Covenant Coordinators and Supporters",
+      "reason": "riservato a coordinatori/supporter regionali, provinciali o non profit, non ai sette Comuni come candidati diretti"
+    },
+    {
+      "title": "Governance Innovations in Energy Communities",
+      "reason": "candidato e una comunita energetica legalmente costituita; il Comune non e automaticamente applicant"
+    }
+  ],
+  "requiredCorrections": [
+    "presidiare EU Covenant of Mayors Calls come canale generico, non soltanto tramite source specifiche per singola call",
+    "aggiungere Interreg Euro-MED come fonte esplicita",
+    "aggiungere EIB ELENA come opportunita rolling monitorata",
+    "aggiungere DG Environment/Natura 2000 e NetZeroCities/Cities Mission tra i canali di discovery",
+    "introdurre replay storico 120 giorni per ogni nuovo canale",
+    "misurare detection lag reale e rendere >3 giorni un finding bloccante dell'audit prospettico",
+    "separare source-family coverage da editorial-channel coverage",
+    "conservare sentinel storiche delle call scadute per misurare falsi negativi e lag senza dipendere dallo snapshot corrente"
+  ]
+}

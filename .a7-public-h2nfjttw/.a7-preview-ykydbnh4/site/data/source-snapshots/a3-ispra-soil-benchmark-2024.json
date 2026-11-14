@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 2,
+  "version": "a3-ispra-soil-benchmark-2024-v1",
+  "retrieved": "2026-10-02",
+  "publisher": "ISPRA — Consumo di suolo",
+  "sourceProfileId": "ispra-consumo-suolo-2024",
+  "candidateState": "ACQUIRED_CANDIDATE",
+  "sourceUrl": "https://www.isprambiente.gov.it/it/attivita/suolo-e-territorio/suolo/il-consumo-di-suolo/i-dati-sul-consumo-di-suolo",
+  "dataUrl": "https://www.isprambiente.gov.it/it/attivita/suolo-e-territorio/suolo/il-consumo-di-suolo/consumo_di_suolo_estratto_dati_2025_anni_2006_2024.xlsx",
+  "qualityGate": {
+    "status": "PASS",
+    "publicReconciliation": "2 metrics × 7/7 PASS",
+    "municipalSheet": "Comuni_2006_2024",
+    "regionalSheet": "Regioni_2006_2024",
+    "italyAggregation": "official-row",
+    "errors": []
+  },
+  "benchmarks": {
+    "landUse": {
+      "year": "2024",
+      "unit": "percent",
+      "formula": "suolo consumato / superficie territoriale × 100",
+      "tuscany": 6.198240669,
+      "italy": 7.169666808314301
+    },
+    "landUseChange": {
+      "year": "2024",
+      "unit": "hectares",
+      "formula": "incremento netto 2023-2024 [ettari]",
+      "tuscany": 264.72,
+      "italy": 7850.369999999999
+    }
+  },
+  "acquisitionEvidence": {
+    "runId": 36976143179,
+    "artifactId": 11213597839,
+    "head": "66ad65ef4c519effd1f21a41c43c73587965b47a"
+  }
+}

@@ -1,0 +1,204 @@
+{
+  "schemaVersion": 1,
+  "version": "a3-regione-toscana-tourism-benchmark-2025-v1",
+  "retrieved": "2026-10-02",
+  "publisher": "Regione Toscana — Ufficio regionale di Statistica / Istat",
+  "sourceProfileId": "regione-toscana-tourism-annual",
+  "candidateState": "ACQUIRED_CANDIDATE",
+  "sourceUrl": "https://www.regione.toscana.it/documents/d/guest/2-movimento-per-comune-2025-agg-maggio-2026-",
+  "sources": {
+    "movement": "https://www.regione.toscana.it/documents/d/guest/2-movimento-per-comune-2025-agg-maggio-2026-",
+    "monthly": "https://www.regione.toscana.it/documents/d/guest/5-movimento-comune_mese-2025-agg-maggio-2026-"
+  },
+  "qualityGate": {
+    "status": "PASS",
+    "publicReconciliation": "6 metrics × 7/7 towns PASS",
+    "regionalRows": "movement + monthly Toscana PASS",
+    "errors": []
+  },
+  "benchmarks": {
+    "tourismArrivals": {
+      "year": "2025",
+      "unit": "number",
+      "tuscany": 15141534,
+      "italy": null
+    },
+    "tourismPresences": {
+      "year": "2025",
+      "unit": "number",
+      "tuscany": 45769090,
+      "italy": null
+    },
+    "tourismAverageStay": {
+      "year": "2025",
+      "unit": "nights",
+      "formula": "presenze / arrivi",
+      "tuscany": 3.022751195486534,
+      "italy": null
+    },
+    "foreignTourismShare": {
+      "year": "2025",
+      "unit": "percent",
+      "formula": "presenze straniere / presenze totali × 100",
+      "tuscany": 57.948436379224496,
+      "italy": null
+    },
+    "tourismSeasonality": {
+      "year": "2025",
+      "unit": "percent",
+      "formula": "tre mesi con più presenze / presenze annue × 100",
+      "tuscany": 48.24943209489199,
+      "italy": null
+    },
+    "tourismIntensity": {
+      "year": "2025",
+      "unit": "decimal",
+      "formula": "presenze 2025 / popolazione benchmark 2026",
+      "tuscany": 12.507874624715308,
+      "italy": null
+    }
+  },
+  "acquisitionEvidence": {
+    "runId": 36935227152,
+    "artifactId": 11197591337,
+    "head": "dde26ea2e0ae1599a818ca72b712d6d2a7e6bc35"
+  },
+  "municipalMovementHistory": {
+    "years": [
+      2023,
+      2024,
+      2025
+    ],
+    "scope": "al netto delle locazioni",
+    "sources": {
+      "2023": {
+        "url": "https://www.regione.toscana.it/documents/10180/11976751/Movimento%2Bper%2Bcomune%2B2023.xlsx/68162001-ccd5-6879-81c9-99639ee947bb?t=1709731593776",
+        "sha256": "dd65a692239df3f9a23ad7d52afa11dec6bf30a5c96a8ebdf69bc42b7344ace8",
+        "bytes": 29387
+      },
+      "2024": {
+        "url": "https://www.regione.toscana.it/documents/d/guest/2-movimento-per-comune-2024-ods",
+        "sha256": "b77ae70fa93a1020d28f5500e2176b9f601a3aa5296aede6df1526ccce8384c1",
+        "bytes": 51236
+      },
+      "2025": {
+        "url": "https://www.regione.toscana.it/documents/d/guest/2-movimento-per-comune-2025-agg-maggio-2026-",
+        "sha256": "7d64fe1ff766d4138c0099c869177919eb5d85735e2567d33da8af57b7110acf",
+        "bytes": 47582
+      }
+    },
+    "countsByYear": {
+      "2023": {
+        "046018": {
+          "arrivals": 10589,
+          "presences": 35107,
+          "foreignPresences": 17961
+        },
+        "046033": {
+          "arrivals": 229078,
+          "presences": 1111026,
+          "foreignPresences": 312859
+        },
+        "046005": {
+          "arrivals": 141445,
+          "presences": 507072,
+          "foreignPresences": 231179
+        },
+        "046024": {
+          "arrivals": 121248,
+          "presences": 428020,
+          "foreignPresences": 183358
+        },
+        "046028": {
+          "arrivals": 2501,
+          "presences": 8539,
+          "foreignPresences": 909
+        },
+        "046013": {
+          "arrivals": 106912,
+          "presences": 350637,
+          "foreignPresences": 193985
+        },
+        "046030": {
+          "arrivals": 2461,
+          "presences": 4881,
+          "foreignPresences": 575
+        }
+      },
+      "2024": {
+        "046018": {
+          "arrivals": 10710,
+          "presences": 36983,
+          "foreignPresences": 16972
+        },
+        "046033": {
+          "arrivals": 238697,
+          "presences": 970952,
+          "foreignPresences": 367446
+        },
+        "046005": {
+          "arrivals": 154578,
+          "presences": 530713,
+          "foreignPresences": 251301
+        },
+        "046024": {
+          "arrivals": 131283,
+          "presences": 449866,
+          "foreignPresences": 197543
+        },
+        "046028": {
+          "arrivals": 2590,
+          "presences": 8160,
+          "foreignPresences": 589
+        },
+        "046013": {
+          "arrivals": 108159,
+          "presences": 345342,
+          "foreignPresences": 206143
+        },
+        "046030": {
+          "arrivals": 2549,
+          "presences": 4690,
+          "foreignPresences": 712
+        }
+      },
+      "2025": {
+        "046018": {
+          "arrivals": 9936,
+          "presences": 37898,
+          "foreignPresences": 18130
+        },
+        "046033": {
+          "arrivals": 224210,
+          "presences": 858865,
+          "foreignPresences": 346270
+        },
+        "046005": {
+          "arrivals": 154693,
+          "presences": 528521,
+          "foreignPresences": 244191
+        },
+        "046024": {
+          "arrivals": 128700,
+          "presences": 435828,
+          "foreignPresences": 190648
+        },
+        "046028": {
+          "arrivals": 3249,
+          "presences": 9591,
+          "foreignPresences": 1683
+        },
+        "046013": {
+          "arrivals": 108324,
+          "presences": 350540,
+          "foreignPresences": 216264
+        },
+        "046030": {
+          "arrivals": 2247,
+          "presences": 4689,
+          "foreignPresences": 1336
+        }
+      }
+    }
+  }
+}

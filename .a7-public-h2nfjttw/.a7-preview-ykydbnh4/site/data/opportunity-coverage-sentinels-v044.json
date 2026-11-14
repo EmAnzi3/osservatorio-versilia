@@ -1,0 +1,40 @@
+{
+  "schemaVersion": "0.4.4",
+  "cases": [
+    {
+      "id": "sport-eventi-2026-current",
+      "title": "Eventi sportivi di rilevanza nazionale e internazionale 2026",
+      "source_id": "pcm-sport",
+      "coverage_id": "pcm-sport-eventi-2026",
+      "expected": "current"
+    },
+    {
+      "id": "life-heatcoolplan-2026-current",
+      "title": "LIFE 2026 · Piani locali di riscaldamento e raffrescamento",
+      "source_id": "cinea-life",
+      "coverage_id": "life-2026-cet-heatcoolplan",
+      "expected": "current"
+    },
+    {
+      "id": "life-pda-2026-current",
+      "title": "LIFE 2026 · Assistenza allo sviluppo di investimenti energetici sostenibili",
+      "source_id": "cinea-life",
+      "coverage_id": "life-2026-cet-pda",
+      "expected": "current"
+    },
+    {
+      "id": "life-enercom-2026-current",
+      "title": "LIFE 2026 · Cooperazione tra comunità energetiche",
+      "source_id": "cinea-life",
+      "coverage_id": "life-2026-cet-enercom",
+      "expected": "current"
+    },
+    {
+      "id": "life-empower-2026-current",
+      "title": "LIFE 2026 · Soluzioni smart e clean energy per città accessibili",
+      "source_id": "cinea-life",
+      "coverage_id": "life-2026-cet-empower",
+      "expected": "current"
+    }
+  ]
+}

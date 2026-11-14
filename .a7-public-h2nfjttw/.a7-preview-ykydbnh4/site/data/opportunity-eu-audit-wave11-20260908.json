@@ -1,0 +1,219 @@
+{
+  "schemaVersion": "1.0",
+  "auditDate": "2026-09-08",
+  "wave": 11,
+  "status": "open_not_saturated",
+  "implementationFrozen": true,
+  "referenceSnapshot": {
+    "path": "data/opportunity-daily-public.json",
+    "generatedAt": "2026-09-07T09:35:26+00:00",
+    "publicCount": 29,
+    "reviewInternalCount": 40
+  },
+  "saturation": {
+    "requiredConsecutiveCleanSweeps": 2,
+    "currentConsecutiveCleanSweeps": 0,
+    "thisBlockNewCurrentActionableGaps": 0,
+    "thisBlockCountsAsGlobalCleanSweep": false,
+    "reason": "Wave 11 closes the residual LIFE CET, Horizon Cluster 6, Horizon Cluster 5, I3 and cascade/FSTP block without discovering a new current actionable gap beyond cases already in Waves 2-10. It is deliberately not counted as the first global clean saturation sweep because it is a residual-family block rather than an independent full-corpus sweep."
+  },
+  "lifeCetResidual2026": [
+    {
+      "id": "LIFE-2026-CET-POLICY",
+      "deadlineAt": "2026-09-16T17:00:00+02:00",
+      "auditClass": "scope_review",
+      "municipalityRole": "possible_public_authority_partner_without_local_mandatory_role",
+      "result": "wave6_classification_confirmed"
+    },
+    {
+      "id": "LIFE-2026-CET-ENERPOV",
+      "deadlineAt": "2026-09-16T17:00:00+02:00",
+      "auditClass": "conditional_partner",
+      "municipalityRole": "local_public_authority_policy_governance_or_delivery_partner",
+      "result": "wave6_classification_confirmed"
+    },
+    {
+      "id": "LIFE-2026-CET-OSS",
+      "deadlineAt": "2026-09-16T17:00:00+02:00",
+      "auditClass": "conditional_partner",
+      "municipalityRole": "territorial_one_stop_shop_partner_or_applicant_where_project_structure_supports_it",
+      "result": "wave6_classification_confirmed"
+    },
+    {
+      "id": "LIFE-2026-CET-RENEWHC",
+      "deadlineAt": "2026-09-16T17:00:00+02:00",
+      "auditClass": "scope_review",
+      "municipalityRole": "national_or_regional_framework_focus_with_possible_local_stakeholder_role",
+      "result": "wave6_classification_confirmed"
+    },
+    {
+      "id": "LIFE-2026-CET-BETTERRENO",
+      "deadlineAt": "2026-09-16T17:00:00+02:00",
+      "auditClass": "conditional_partner",
+      "municipalityRole": "renovation_market_policy_or_demo_partner",
+      "result": "wave6_classification_confirmed"
+    }
+  ],
+  "cluster6": [
+    {
+      "id": "HORIZON-CL6-2026-01-CIRCBIO-04",
+      "deadlineAt": "2026-09-17",
+      "auditClass": "current_required_local_authority_false_negative",
+      "result": "existing_wave6_critical_finding_confirmed",
+      "note": "At least nine distinct regional/local authorities are required as beneficiaries: three demonstration and six replication cities/regions."
+    },
+    {
+      "id": "HORIZON-CL6-2026-01-ZEROPOLLUTION-03",
+      "deadlineAt": "2026-09-17",
+      "auditClass": "conditional_partner",
+      "result": "wave6_classification_confirmed",
+      "note": "Multi-actor approach requires adequate involvement of relevant stakeholders including local authorities, but not a municipality as mandatory beneficiary."
+    },
+    {
+      "id": "HORIZON-CL6-2026-01-CIRCBIO-02",
+      "deadlineAt": "2026-09-17",
+      "auditClass": "end_user_or_conditional_partner_no_auto_promotion",
+      "note": "Local authorities are relevant to uptake, but no mandatory local-authority beneficiary condition was established."
+    },
+    {
+      "id": "cluster6_two_stage_second_stage_controls",
+      "auditClass": "historical_invite_only_control",
+      "note": "Relevant two-stage topics currently at second stage do not constitute new entrant opportunities on 8 September 2026; only first-stage invitees can submit."
+    }
+  ],
+  "cluster5": [
+    {
+      "id": "HORIZON-CL5-2026-10-D6-01",
+      "deadlineAt": "2026-10-08",
+      "previousAuditClass": "scope_review",
+      "auditClass": "conditional_partner",
+      "municipalityRole": "municipality_city_region_public_player_in_ccam_deployment_and_engagement",
+      "note": "The scope explicitly calls for broad engagement of public players including municipalities, cities and regions, but does not make a municipality a mandatory beneficiary."
+    },
+    {
+      "id": "HORIZON-CL5-2026-10-D6-07",
+      "deadlineAt": "2026-10-08",
+      "auditClass": "conditional_partner",
+      "result": "wave6_classification_confirmed",
+      "municipalityRole": "city_or_local_regional_authority_capacity_replication_partner"
+    },
+    {
+      "id": "HORIZON-CL5-2026-10-D6-09",
+      "deadlineAt": "2026-10-08",
+      "auditClass": "conditional_partner",
+      "result": "wave6_classification_confirmed",
+      "municipalityRole": "local_or_regional_road_authority_partner"
+    },
+    {
+      "id": "HORIZON-CL5-2026-09-D4-04",
+      "deadlineAt": "2026-09-15",
+      "previousAuditClass": "scope_review",
+      "auditClass": "conditional_partner",
+      "municipalityRole": "housing_policy_public_asset_or_demo_partner",
+      "note": "The topic has strong local policy and affordable-housing relevance, but no mandatory municipality-beneficiary condition was established."
+    },
+    {
+      "id": "HORIZON-CL5-2026-09-D4-01",
+      "deadlineAt": "2026-09-15",
+      "auditClass": "end_user_or_demo_asset_partner_no_auto_promotion",
+      "note": "Public buildings can be relevant demonstration assets, but municipal participation is not a documented requirement."
+    },
+    {
+      "id": "HORIZON-CL5-2027-06-D6-08",
+      "auditClass": "announced_upcoming",
+      "municipalityRole": "required_local_or_regional_public_authority_beneficiary_at_pilot_sites",
+      "note": "Strong future sentinel: 2027 topic requires pilot local/regional public authorities/administrations and local transport authorities as beneficiaries. It is not a current 2026 gap."
+    }
+  ],
+  "i3": [
+    {
+      "id": "I3-2026-INV1",
+      "opensAt": "2026-05-13",
+      "deadlineAt": "2026-11-12T17:00:00+01:00",
+      "auditClass": "conditional_partner",
+      "municipalityRole": "public_authority_partner_in_interregional_s3_investment_ecosystem",
+      "result": "wave6_classification_confirmed",
+      "note": "Public authorities are target organisations, but fit requires an interregional consortium and shared/complementary smart-specialisation priorities; deployment is strongly business/market-oriented."
+    },
+    {
+      "id": "I3-2026-INV2a",
+      "opensAt": "2026-05-13",
+      "deadlineAt": "2026-11-12T17:00:00+01:00",
+      "auditClass": "conditional_partner",
+      "municipalityRole": "public_authority_partner_in_interregional_s3_investment_ecosystem",
+      "result": "wave6_classification_confirmed"
+    }
+  ],
+  "cascadeAndThirdParty": [
+    {
+      "id": "TRUNSPORT-OPEN-CALL-1-2026",
+      "opensAt": "2026-07-30",
+      "deadlineAt": "2026-10-30T17:00:00+01:00",
+      "funding": "up to EUR 60,000 per project; grant covers up to 50% of total project cost",
+      "radarStatus": "absent_from_reference_snapshot",
+      "previousAuditClass": "current_scope_review_high",
+      "auditClass": "current_scope_review_high",
+      "municipalityRole": "conditional_public_sector_applicant_only_if_transport_sector_operational_role_is_documented",
+      "note": "Primary source confirms related public-sector organisations are eligible and road/rail/air/water transport cybersecurity is in scope, but the target remains transport-sector entities and operational transport environments. Do not auto-promote the seven municipalities solely because they are public authorities or road owners."
+    },
+    {
+      "id": "eu-sundanse-open-call-2-2026",
+      "deadlineAt": "2026-09-30T17:00:00+02:00",
+      "auditClass": "current_false_negative",
+      "result": "existing_wave2_finding_confirmed",
+      "municipalityRole": "direct_local_or_regional_authority_applicant"
+    },
+    {
+      "id": "space4cities-replicator-cities-2026",
+      "deadlineAt": "2026-09-15T17:00:00+02:00",
+      "auditClass": "current_false_negative",
+      "result": "existing_prior_wave_finding_confirmed",
+      "municipalityRole": "direct_replicator_city_or_public_agency_applicant"
+    },
+    {
+      "id": "eu-ias-rapid-response-fund",
+      "deadlineAt": "2027-02-10T14:00:00+01:00",
+      "auditClass": "current_false_negative",
+      "result": "existing_wave3_finding_confirmed",
+      "municipalityRole": "conditional_direct_public_authority_applicant"
+    },
+    {
+      "id": "smart-era-open-call-2-2026",
+      "deadlineAt": "2026-09-15",
+      "auditClass": "correctly_excluded_geography",
+      "note": "A local public administration can act as Community Activator, but the follower geography is restricted to the four covered EU macro-regional strategies; Tuscany/Versilia is outside the eligible macro-regions."
+    },
+    {
+      "id": "rivcircular-open-call-2026",
+      "deadlineAt": "2026-09-17T14:00:00+02:00",
+      "auditClass": "correctly_excluded_geography",
+      "note": "The cascade call is limited to actors from seven participating regions: Innlandet, Madrid, Kyiv Oblast, Hauts-de-France, Extremadura, Vienna and Greece. Tuscany is not eligible."
+    },
+    {
+      "id": "netzerocities-ect2-2026",
+      "opensAt": "2026-08-31T12:00:00+02:00",
+      "deadlineAt": "2026-12-03T12:00:00+01:00",
+      "auditClass": "correctly_excluded_eligibility",
+      "note": "Enabling City Transformation 2 is current but reserved to EU Cities Mission cities. None of Camaiore, Forte dei Marmi, Massarosa, Pietrasanta, Seravezza, Stazzema or Viareggio is among the 112 Mission Cities."
+    },
+    {
+      "id": "mission-ocean-associated-regions-current-check",
+      "auditClass": "no_new_current_open_call_found",
+      "note": "The Commission Associated Regions directory was rechecked. Recent SWIM and similar calls are closed; the already documented future downstream city EOI under CINEA community-support procurement remains a lifecycle watch rather than a currently open municipal EOI."
+    }
+  ],
+  "officialSources": [
+    "https://cinea.ec.europa.eu/life-calls-proposals-2026_en",
+    "https://ec.europa.eu/info/funding-tenders/opportunities/docs/2021-2027/horizon/wp-call/2026-2027/wp-9-food-bioeconomy-natural-resources-agriculture-and-environment_horizon-2026-2027_en.pdf",
+    "https://ec.europa.eu/info/funding-tenders/opportunities/docs/2021-2027/horizon/wp-call/2026-2027/wp-8-climate-energy-and-mobility_horizon-2026-2027_en.pdf",
+    "https://eismea.ec.europa.eu/funding-opportunities/calls-proposals_en",
+    "https://trunsport.eu/open-calls/",
+    "https://sundanseproject.eu/sundanse-open-call-2/",
+    "https://www.iucnsos.org/initiative/european-invasive-alien-species-rapid-response-fund/",
+    "https://netzerocities.eu/enabling-city-transformation/",
+    "https://netzerocities.eu/mission-cities/",
+    "https://circular-cities-and-regions.ec.europa.eu/support-materials/funding-and-financing/rivcircular-open-call-interregional-circular-economy",
+    "https://projects.research-and-innovation.ec.europa.eu/en/funding/funding-opportunities/funding-programmes-and-open-calls/horizon-europe/eu-missions-horizon-europe/restore-our-ocean-and-waters/calls-proposals-associated-regions"
+  ],
+  "nextStep": "Run a new independent full-corpus saturation sweep from external institutional and cascade oracles, without using the previous wave topic lists as the discovery seed. Only that kind of sweep can start the 0/2 -> 1/2 clean-sweep counter."
+}

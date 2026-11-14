@@ -1,0 +1,302 @@
+<!doctype html>
+<html lang="it"><head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dispersione scolastica implicita in Versilia · Osservatorio Versilia</title>
+  <meta name="description" content="Dispersione scolastica implicita nei sette comuni della Versilia: valori 2024-25, serie storiche disponibili, metodo e fonte ufficiale.">
+  <meta property="og:title" content="Dispersione scolastica implicita in Versilia · Osservatorio Versilia">
+  <meta property="og:description" content="Dispersione scolastica implicita nei sette comuni della Versilia: valori 2024-25, serie storiche disponibili, metodo e fonte ufficiale.">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="it_IT">
+  <link rel="icon" href="../../favicon.svg?v=20260824-ov4" sizes="any">
+  <link rel="icon" href="../../favicon.svg?v=20260824-ov4" type="image/svg+xml">
+  <link rel="manifest" href="../../site.webmanifest?v=20260824-pwa9">
+  <link rel="stylesheet" href="../../assets/original.css">
+  <link rel="stylesheet" href="../../assets/static.css">
+  <link rel="stylesheet" href="../../assets/fidelity.css?v=20261025-ui-shell-consistency">
+  <link rel="stylesheet" href="../../assets/fonts.css">
+  <link rel="stylesheet" href="../../assets/ux-experiment.css?v=20261025-ui-shell-consistency">
+  <link rel="stylesheet" href="../../assets/ux-background-match.css?v=20261025-ui-shell-consistency">
+  <link rel="stylesheet" href="../../assets/export-v161.css?v=20261025-ui-shell-consistency">
+  <link rel="stylesheet" href="../../assets/visual-grammar.css?v=20261025-ui-shell-consistency">
+  <link rel="stylesheet" href="../../assets/indicator-pages.css?v=20261025-ui-shell-consistency">
+  <link rel="stylesheet" href="../../assets/social-presence.css?v=20261025-ui-shell-consistency">
+<style id="ov-invalsi-benchmark-history-style">
+.ux-history-chart .ux-series-group[data-history-town="toscana"] .ux-series-line{stroke-dasharray:10 5;stroke-width:3;opacity:.9}
+.ux-history-chart .ux-series-group[data-history-town="italia"] .ux-series-line{stroke-dasharray:2 5;stroke-width:3;opacity:.9}
+.ux-history-legend button[data-history-select="toscana"]::before,.ux-history-legend button[data-history-select="italia"]::before{width:20px;height:2px;border-radius:0}
+.ux-history-legend button[data-history-select="toscana"]::before{background:repeating-linear-gradient(90deg,var(--series-color) 0 8px,transparent 8px 12px)}
+.ux-history-legend button[data-history-select="italia"]::before{background:repeating-linear-gradient(90deg,var(--series-color) 0 2px,transparent 2px 6px)}
+</style><style id="ov-climate-current-grammar-style">
+      .ov-climate-current-legend{
+        display:flex;align-items:center;gap:18px;margin:0 0 14px;padding:0 2px;
+        color:var(--muted);font-size:9px;font-weight:700
+      }
+      .ov-climate-current-legend span{display:inline-flex;align-items:center;gap:7px}
+      .ov-climate-current-legend .ov-legend-dot{
+        width:9px;height:9px;border-radius:50%;background:var(--surface,#fffaf1);
+        border:2px solid var(--theme-color,#52785c)
+      }
+      .ov-climate-current-legend .ov-legend-mean{width:2px;height:16px;background:#607b88}
+      .ov-climate-current-list{
+        display:grid;gap:11px
+      }
+      .ov-climate-current-list .ov-climate-current-row{
+        border-radius:8px;grid-template-columns:24px minmax(110px,1.1fr) minmax(150px,3fr) minmax(70px,auto);
+        align-items:center;gap:12px;min-height:54px;padding:0;display:grid;position:relative;
+        color:inherit;text-decoration:none;transition:background .15s
+      }
+      .ov-climate-current-list .ov-climate-current-row:hover,
+      .ov-climate-current-list .ov-climate-current-row.selected{background:var(--blue-soft)}
+      .ov-climate-current-list .ov-climate-current-row .town{
+        grid-column:2;font-size:13px;font-weight:690
+      }
+      .ov-climate-current-list .ov-climate-current-row strong{
+        grid-column:4;font-family:var(--font-geist-mono),monospace;text-align:right;
+        white-space:nowrap;font-size:12px
+      }
+      .ov-climate-current-list .ov-climate-current-track{
+        grid-column:3;position:relative;height:9px;border-radius:999px;background:#e4e9e7;
+        overflow:visible
+      }
+      .ov-climate-current-list.uses-versilia-marker .ov-climate-current-track::after{
+        content:'';position:absolute;z-index:1;left:var(--ov-mean-position);top:-5px;width:2px;height:19px;
+        background:#607b88;transform:translateX(-1px)
+      }
+      .ov-climate-current-list.uses-versilia-marker .ov-climate-current-track>i{
+        position:absolute;z-index:2;top:50%;left:var(--ov-value-position)!important;
+        width:11px;height:11px;margin:-5.5px 0 0 -5.5px;border-radius:50%;
+        background:var(--surface,#fffaf1);border:3px solid var(--theme-color,#52785c);
+        box-shadow:0 1px 4px color-mix(in srgb,var(--ink) 18%,transparent)
+      }
+      .ov-climate-current-list .bar-hover-label{display:none}
+      @media(max-width:700px){
+        .ov-climate-current-list .ov-climate-current-row{
+          grid-template-columns:18px minmax(82px,1fr) minmax(70px,1.4fr) auto;gap:7px
+        }
+        .ov-climate-current-list .ov-climate-current-row .town{font-size:11px}
+        .ov-climate-current-list .ov-climate-current-row strong{font-size:10px}
+      }
+    </style>
+  <link rel="canonical" href="https://osservatorioversilia.it/indicatori/dispersione-scolastica-implicita/">
+  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"url":"https://osservatorioversilia.it/indicatori/dispersione-scolastica-implicita/","name":"Dispersione scolastica implicita in Versilia · Osservatorio Versilia","description":"Dispersione scolastica implicita nei sette comuni della Versilia: valori 2024-25, serie storiche disponibili, metodo e fonte ufficiale.","inLanguage":"it-IT","isAccessibleForFree":true,"creator":{"@type":"Person","name":"Emanuele Anzilotti"},"publisher":{"@type":"Person","name":"Emanuele Anzilotti"},"@type":"Dataset","identifier":"invalsiImplicitDispersion","dateModified":"2026-09-14","spatialCoverage":{"@type":"Place","name":"Versilia, Toscana, Italia"},"temporalCoverage":"2018/2025","variableMeasured":{"@type":"PropertyValue","name":"Dispersione scolastica implicita","unitText":"percent"},"isBasedOn":"https://serviziostatistico.invalsi.it/invalsi_ss_data/eccellenza-accademica-e-dispersione-scolastica-implicita-valori-percentuali/","measurementTechnique":"Valore comunale letto direttamente da 'Comune plesso' con aggregazione Totale. Toscana e Italia lette direttamente dallo stesso dataset; nessuna media tra scuole o Comuni."},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Osservatorio Versilia","item":"https://osservatorioversilia.it/"},{"@type":"ListItem","position":2,"name":"Istruzione","item":"https://osservatorioversilia.it/confronta/istruzione/"},{"@type":"ListItem","position":3,"name":"Dispersione scolastica implicita in Versilia · Osservatorio Versilia","item":"https://osservatorioversilia.it/indicatori/dispersione-scolastica-implicita/"}]}]}</script>
+
+  <meta property="og:url" content="https://osservatorioversilia.it/indicatori/dispersione-scolastica-implicita/">
+  <meta property="og:site_name" content="Osservatorio Versilia">
+  <meta property="og:image" content="https://osservatorioversilia.it/images/versilia-viareggio-apuane.jpg">
+  <meta property="og:image:alt" content="Viareggio e le Alpi Apuane, immagine di Osservatorio Versilia">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Dispersione scolastica implicita in Versilia · Osservatorio Versilia">
+  <meta name="twitter:description" content="Dispersione scolastica implicita nei sette comuni della Versilia: valori 2024-25, serie storiche disponibili, metodo e fonte ufficiale.">
+  <meta name="twitter:site" content="@OssVersilia">
+  <meta name="twitter:image" content="https://osservatorioversilia.it/images/versilia-viareggio-apuane.jpg">
+  <meta name="twitter:image:alt" content="Viareggio e le Alpi Apuane, immagine di Osservatorio Versilia">
+  <link rel="stylesheet" href="../../assets/brand.css?v=20260824-ov4">
+  <link rel="stylesheet" href="../../assets/mobile-accordion-fix.css?v=20260809-3">
+  <link rel="stylesheet" href="../../assets/chart-surfaces.css?v=20260826-v120">
+  <meta name="theme-color" content="#0F3654">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Osservatorio Versilia">
+  <link rel="apple-touch-icon" sizes="180x180" href="../../pwa/icon-180.png?v=20260824-pwa9">
+  <link rel="stylesheet" href="../../assets/pwa.css?v=20260824-pwa9">
+</head>
+<body class="antialiased" data-page="indicator" data-theme="istruzione" data-town="" data-metric="invalsiImplicitDispersion" data-prerendered="true">
+  <div id="site-header-mount">
+      <a class="skip-link" href="#app">Vai al contenuto</a>
+      <header class="site-header">
+        <div class="site-header-inner">
+          <a href="../../" class="site-brand" aria-label="Osservatorio Versilia, torna alla home">
+            <span class="site-brand-mark" aria-hidden="true"><svg class="ov-mark-svg" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 76 64"><g fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="27" cy="32" r="22" stroke="#0F3654" stroke-width="6"/>
+    <path d="M43 28 53 48 71 15" stroke="#0F3654" stroke-width="6"/>
+    <path d="M57 27 70 9" stroke="#58A28F" stroke-width="3.2"/>
+  </g>
+  <g fill="#6F8FA3">
+    <rect x="16" y="34" width="5.5" height="9" rx="1"/>
+    <rect x="24" y="28" width="5.5" height="15" rx="1"/>
+    <rect x="32" y="20" width="5.5" height="23" rx="1"/>
+  </g>
+  <path d="M10 43c7-5.5 14-7.2 20-5.3 4.4 1.4 8 4.1 12 4.7v5.1c-4.6-.5-8.7-3-13.1-4.1-5.7-1.5-11.7-.1-18.9 4.1Z" fill="#58A28F"/>
+  <path d="M11.5 45.2c6.2-3.2 11.9-4.2 17.1-3 4.3 1 8.1 3.2 12.2 3.8" fill="none" stroke="#F7FAF8" stroke-width="1.8" stroke-linecap="round"/>
+</svg></span>
+            <span class="site-brand-copy"><strong>Osservatorio Versilia</strong><small>Versilia in numeri</small></span>
+          </a>
+          <div class="site-header-actions">
+            <nav aria-label="Navigazione principale">
+              <a href="../../#temi">Temi</a>
+              <a href="../../#comuni">Comuni</a>
+              <a href="../../dossier/">Dossier</a>
+              <a href="../../chiedi/">Chiedi</a>
+              <a href="../../opportunita/">Opportunità</a>
+              <a href="../../progetto/">Il progetto</a>
+              <a href="../../stato-dati/" data-data-status-nav="header">Stato dati</a>
+              <a href="../../segnala/">Segnala</a>
+            </nav>
+            <button class="global-search-trigger" type="button" aria-haspopup="dialog" aria-expanded="false">
+              <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg><span>Cerca</span><kbd>/</kbd>
+            </button>
+          </div>
+        </div>
+      </header></div>
+  <div id="app"><main class="inner-page indicator-page" data-theme="istruzione">
+      <nav class="breadcrumbs page-width" aria-label="Percorso"><a href="/">Home</a><span>›</span><a href="/confronta/istruzione/">Istruzione</a><span>›</span><strong data-financial-indicator-breadcrumb="">Dispersione scolastica implicita</strong></nav>
+      <section class="indicator-hero page-width"><div><span class="overline">Indicatore · Istruzione</span><h1 data-financial-indicator-hero-title="">Dispersione scolastica implicita</h1><p data-financial-indicator-hero-description="">Percentuale INVALSI di dispersione scolastica implicita alla fine del primo e del secondo ciclo, secondo la definizione ufficiale della fonte.</p></div>
+        <dl><div><dt>Anno</dt><dd>2024-25</dd></div><div><dt>Copertura</dt><dd>4/7 secondo grado/prova; n.d. mantenuti senza stime.</dd></div><div><dt>Serie storica</dt><dd>7/7 comuni</dd></div></dl>
+        <div class="indicator-hero-actions"><a class="button-link" href="/confronta/istruzione/?indicatore=invalsiImplicitDispersion">Confronta i 7 comuni <span>→</span></a><a class="source-pill" href="https://serviziostatistico.invalsi.it/invalsi_ss_data/eccellenza-accademica-e-dispersione-scolastica-implicita-valori-percentuali/" target="_blank" rel="noreferrer">Fonte originale ↗</a></div></section>
+      <section class="indicator-current page-width" aria-labelledby="indicator-current-title"><div class="section-heading"><div><span class="overline">Valori comunali</span><h2 id="indicator-current-title" data-financial-indicator-title="">Il dato nei sette comuni</h2></div><p data-financial-indicator-description="">Ordine alfabetico: nessuna graduatoria e nessun giudizio di merito.</p></div>
+        
+        <div class="indicator-current-layout"><div data-financial-indicator-comparison=""><div class="indicator-composite-table territory-indicator-comparison"><div class="compare-chart-toolbar"><div class="compare-view-controls territory-profile-controls"><label class="compare-choice-select"><span>Classe e prova</span><select data-composite-component=""><option value="g8" selected="">Secondaria di I grado · classe III</option><option value="g13">Secondaria di II grado · classe V</option></select></label></div></div><div class="comparison-bars" data-metric-key="invalsiImplicitDispersion" data-composite-choice="g8" data-composite-scale="value" data-visual-contract="canonical" data-visual-unit="percent" data-visual-grammar-signature="invalsiImplicitDispersion|r|g8|value|10.3103|percent|14.4444|12.9167|11.2766|8.3969|||" data-viz="percent-dotplot"><div class="comparison-legend"><span><i class="comparison-legend-dot" aria-hidden="true"></i>Comune</span><span><i class="comparison-legend-reference" aria-hidden="true"></i>Toscana · Secondaria di I grado · classe III</span></div><a href="/comuni/massarosa/?tema=istruzione&amp;indicatore=invalsiImplicitDispersion" class="bar-row comparison-row" aria-label="Massarosa: 14,4%; Toscana · Secondaria di I grado · classe III: 10,3%"><span class="bar-town">Massarosa</span><span class="bar-track">
+        <span class="comparison-axis-line" aria-hidden="true"></span>
+        
+        <span class="comparison-reference" style="left:51.5515%" aria-hidden="true"></span>
+        <span class="comparison-stem" style="left:0%;width:72.222%" aria-hidden="true"></span>
+        <span class="comparison-dot" style="left:72.222%" aria-hidden="true"></span><span class="bar-hover-label">Massarosa · 14,4%</span></span><strong>14,4%</strong></a><a href="/comuni/camaiore/?tema=istruzione&amp;indicatore=invalsiImplicitDispersion" class="bar-row comparison-row" aria-label="Camaiore: 12,9%; Toscana · Secondaria di I grado · classe III: 10,3%"><span class="bar-town">Camaiore</span><span class="bar-track">
+        <span class="comparison-axis-line" aria-hidden="true"></span>
+        
+        <span class="comparison-reference" style="left:51.5515%" aria-hidden="true"></span>
+        <span class="comparison-stem" style="left:0%;width:64.5835%" aria-hidden="true"></span>
+        <span class="comparison-dot" style="left:64.5835%" aria-hidden="true"></span><span class="bar-hover-label">Camaiore · 12,9%</span></span><strong>12,9%</strong></a><a href="/comuni/viareggio/?tema=istruzione&amp;indicatore=invalsiImplicitDispersion" class="bar-row comparison-row" aria-label="Viareggio: 11,3%; Toscana · Secondaria di I grado · classe III: 10,3%"><span class="bar-town">Viareggio</span><span class="bar-track">
+        <span class="comparison-axis-line" aria-hidden="true"></span>
+        
+        <span class="comparison-reference" style="left:51.5515%" aria-hidden="true"></span>
+        <span class="comparison-stem" style="left:0%;width:56.383%" aria-hidden="true"></span>
+        <span class="comparison-dot" style="left:56.383%" aria-hidden="true"></span><span class="bar-hover-label">Viareggio · 11,3%</span></span><strong>11,3%</strong></a><a href="/comuni/pietrasanta/?tema=istruzione&amp;indicatore=invalsiImplicitDispersion" class="bar-row comparison-row" aria-label="Pietrasanta: 8,4%; Toscana · Secondaria di I grado · classe III: 10,3%"><span class="bar-town">Pietrasanta</span><span class="bar-track">
+        <span class="comparison-axis-line" aria-hidden="true"></span>
+        
+        <span class="comparison-reference" style="left:51.5515%" aria-hidden="true"></span>
+        <span class="comparison-stem" style="left:0%;width:41.984500000000004%" aria-hidden="true"></span>
+        <span class="comparison-dot" style="left:41.984500000000004%" aria-hidden="true"></span><span class="bar-hover-label">Pietrasanta · 8,4%</span></span><strong>8,4%</strong></a><a href="/comuni/forte-dei-marmi/?tema=istruzione&amp;indicatore=invalsiImplicitDispersion" class="bar-row comparison-row missing" aria-label="Forte dei Marmi: n.d."><span class="bar-town">Forte dei Marmi</span><span class="bar-track"><span class="comparison-missing">Dato non disponibile</span></span><strong>n.d.</strong></a><a href="/comuni/seravezza/?tema=istruzione&amp;indicatore=invalsiImplicitDispersion" class="bar-row comparison-row missing" aria-label="Seravezza: n.d."><span class="bar-town">Seravezza</span><span class="bar-track"><span class="comparison-missing">Dato non disponibile</span></span><strong>n.d.</strong></a><a href="/comuni/stazzema/?tema=istruzione&amp;indicatore=invalsiImplicitDispersion" class="bar-row comparison-row missing" aria-label="Stazzema: n.d."><span class="bar-town">Stazzema</span><span class="bar-track"><span class="comparison-missing">Dato non disponibile</span></span><strong>n.d.</strong></a><div class="comparison-axis"><span>0,0%</span><span>scala 0–20,0%</span><span>20,0%</span></div><p class="comparison-note">I comuni sono ordinati per valore per facilitare il confronto. L’ordine non esprime merito o qualità.</p></div><details class="detail-disclosure invalsi-benchmark-disclosure"><summary><span>Benchmark ufficiali</span><small>Toscana e Italia · stessa prova</small></summary><div class="composite-town-detail invalsi-benchmark-detail"><div><span>Toscana</span><b>10,3%</b><small>benchmark regionale · 2024-25</small></div><div><span>Italia</span><b>12,3%</b><small>benchmark nazionale · 2024-25</small></div></div><p class="aggregate-note">Benchmark letti direttamente dallo stesso open data INVALSI; nessuna media Versilia viene ricostruita.</p></details></div></div><aside data-financial-indicator-aggregate=""><span>Toscana · Secondaria di I grado · classe III</span><strong>10,3%</strong><p>Italia: 12,3%. Stessa prova e annualità.</p></aside></div></section>
+      <section class="indicator-benchmark page-width"></section>
+      <section class="indicator-history page-width" aria-labelledby="indicator-history-title"><div class="section-heading"><div><span class="overline">Andamento</span><h2 id="indicator-history-title">Serie storica comunale</h2></div><p>I valori compaiono soltanto quando la definizione resta omogenea nel tempo.</p></div><div data-financial-indicator-history=""><div class="territory-history-chart-shell"><div class="land-cover-controls territory-history-controls"><label><span>Territorio</span><select data-territory-history-town=""><option value="__toscana" selected="">Toscana</option><option value="__italia">Italia</option><option value="046005">Camaiore</option><option value="046013">Forte dei Marmi</option><option value="046018">Massarosa</option><option value="046024">Pietrasanta</option><option value="046028">Seravezza</option><option value="046030">Stazzema</option><option value="046033">Viareggio</option></select></label></div><div class="chart-shell"><div class="trend-chart"><svg viewBox="0 0 760 260" role="img" aria-label="Dispersione scolastica implicita · Secondaria di I grado · classe III · Toscana">
+      <line class="chart-grid" x1="52" y1="24" x2="732" y2="24"></line><text class="chart-label chart-y-label" x="44" y="28" text-anchor="end">13,6%</text><line class="chart-grid" x1="52" y1="123" x2="732" y2="123"></line><text class="chart-label chart-y-label" x="44" y="127" text-anchor="end">11,8%</text><line class="chart-grid" x1="52" y1="222" x2="732" y2="222"></line><text class="chart-label chart-y-label" x="44" y="226" text-anchor="end">10,1%</text><polygon class="chart-area" points="52,222 52,98.71597711312343 165.33333333333331,131.42073437198286 278.66666666666663,37.65517241379311 392,84.043273677043 505.3333333333333,142.82911064361718 618.6666666666666,163.63919631696092 732,208.3448275862069 732,222"></polygon><polyline class="chart-line" points="52,98.71597711312343 165.33333333333331,131.42073437198286 278.66666666666663,37.65517241379311 392,84.043273677043 505.3333333333333,142.82911064361718 618.6666666666666,163.63919631696092 732,208.3448275862069"></polyline><g class="chart-point" tabindex="0" role="button" aria-label="2018: 12,3%">
+        <circle class="chart-hit" cx="52" cy="98.71597711312343" r="17"></circle>
+        <circle class="chart-dot" cx="52" cy="98.71597711312343" r="5"></circle>
+        <g class="chart-tooltip" hidden="">
+          <line class="chart-guide" x1="52" y1="98.71597711312343" x2="52" y2="82.71597711312343"></line>
+          <rect x="44" y="44.71597711312343" width="198" height="38" rx="8"></rect>
+          <text class="chart-tooltip-year" x="56" y="58.71597711312343">2018</text>
+          <text class="chart-tooltip-value" x="56" y="73.71597711312343">12,3%</text>
+        </g>
+      </g><g class="chart-point" tabindex="0" role="button" aria-label="2019: 11,7%">
+        <circle class="chart-hit" cx="165.33333333333331" cy="131.42073437198286" r="17"></circle>
+        <circle class="chart-dot" cx="165.33333333333331" cy="131.42073437198286" r="5"></circle>
+        <g class="chart-tooltip" hidden="">
+          <line class="chart-guide" x1="165.33333333333331" y1="131.42073437198286" x2="165.33333333333331" y2="115.42073437198286"></line>
+          <rect x="66.33333333333331" y="77.42073437198286" width="198" height="38" rx="8"></rect>
+          <text class="chart-tooltip-year" x="78.33333333333331" y="91.42073437198286">2019</text>
+          <text class="chart-tooltip-value" x="78.33333333333331" y="106.42073437198286">11,7%</text>
+        </g>
+      </g><g class="chart-point" tabindex="0" role="button" aria-label="2021: 13,4%">
+        <circle class="chart-hit" cx="278.66666666666663" cy="37.65517241379311" r="17"></circle>
+        <circle class="chart-dot" cx="278.66666666666663" cy="37.65517241379311" r="5"></circle>
+        <g class="chart-tooltip" hidden="">
+          <line class="chart-guide" x1="278.66666666666663" y1="37.65517241379311" x2="278.66666666666663" y2="55.65517241379311"></line>
+          <rect x="179.66666666666663" y="55.65517241379311" width="198" height="38" rx="8"></rect>
+          <text class="chart-tooltip-year" x="191.66666666666663" y="69.65517241379311">2021</text>
+          <text class="chart-tooltip-value" x="191.66666666666663" y="84.65517241379311">13,4%</text>
+        </g>
+      </g><g class="chart-point" tabindex="0" role="button" aria-label="2022: 12,5%">
+        <circle class="chart-hit" cx="392" cy="84.043273677043" r="17"></circle>
+        <circle class="chart-dot" cx="392" cy="84.043273677043" r="5"></circle>
+        <g class="chart-tooltip" hidden="">
+          <line class="chart-guide" x1="392" y1="84.043273677043" x2="392" y2="68.043273677043"></line>
+          <rect x="293" y="30.043273677043004" width="198" height="38" rx="8"></rect>
+          <text class="chart-tooltip-year" x="305" y="44.043273677043004">2022</text>
+          <text class="chart-tooltip-value" x="305" y="59.043273677043004">12,5%</text>
+        </g>
+      </g><g class="chart-point" tabindex="0" role="button" aria-label="2023: 11,5%">
+        <circle class="chart-hit" cx="505.3333333333333" cy="142.82911064361718" r="17"></circle>
+        <circle class="chart-dot" cx="505.3333333333333" cy="142.82911064361718" r="5"></circle>
+        <g class="chart-tooltip" hidden="">
+          <line class="chart-guide" x1="505.3333333333333" y1="142.82911064361718" x2="505.3333333333333" y2="126.82911064361718"></line>
+          <rect x="406.3333333333333" y="88.82911064361718" width="198" height="38" rx="8"></rect>
+          <text class="chart-tooltip-year" x="418.3333333333333" y="102.82911064361718">2023</text>
+          <text class="chart-tooltip-value" x="418.3333333333333" y="117.82911064361718">11,5%</text>
+        </g>
+      </g><g class="chart-point" tabindex="0" role="button" aria-label="2024: 11,1%">
+        <circle class="chart-hit" cx="618.6666666666666" cy="163.63919631696092" r="17"></circle>
+        <circle class="chart-dot" cx="618.6666666666666" cy="163.63919631696092" r="5"></circle>
+        <g class="chart-tooltip" hidden="">
+          <line class="chart-guide" x1="618.6666666666666" y1="163.63919631696092" x2="618.6666666666666" y2="147.63919631696092"></line>
+          <rect x="519.6666666666666" y="109.63919631696092" width="198" height="38" rx="8"></rect>
+          <text class="chart-tooltip-year" x="531.6666666666666" y="123.63919631696092">2024</text>
+          <text class="chart-tooltip-value" x="531.6666666666666" y="138.63919631696092">11,1%</text>
+        </g>
+      </g><g class="chart-point" tabindex="0" role="button" aria-label="2025: 10,3%">
+        <circle class="chart-hit" cx="732" cy="208.3448275862069" r="17"></circle>
+        <circle class="chart-dot" cx="732" cy="208.3448275862069" r="5"></circle>
+        <g class="chart-tooltip" hidden="">
+          <line class="chart-guide" x1="732" y1="208.3448275862069" x2="732" y2="192.3448275862069"></line>
+          <rect x="534" y="154.3448275862069" width="198" height="38" rx="8"></rect>
+          <text class="chart-tooltip-year" x="546" y="168.3448275862069">2025</text>
+          <text class="chart-tooltip-value" x="546" y="183.3448275862069">10,3%</text>
+        </g>
+      </g>
+      <text class="chart-label" x="52" y="250" text-anchor="middle">2018</text><text class="chart-label" x="165.33333333333331" y="250" text-anchor="middle">2019</text><text class="chart-label" x="278.66666666666663" y="250" text-anchor="middle">2021</text><text class="chart-label" x="392" y="250" text-anchor="middle">2022</text><text class="chart-label" x="505.3333333333333" y="250" text-anchor="middle">2023</text><text class="chart-label" x="618.6666666666666" y="250" text-anchor="middle">2024</text><text class="chart-label" x="732" y="250" text-anchor="middle">2025</text>
+      </svg></div></div>
+      <div class="chart-a11y-table"><strong>Dispersione scolastica implicita · Secondaria di I grado · classe III · Toscana</strong><span>2018: 12,3%</span><span>2019: 11,7%</span><span>2021: 13,4%</span><span>2022: 12,5%</span><span>2023: 11,5%</span><span>2024: 11,1%</span><span>2025: 10,3%</span></div></div></div></section>
+      <section class="indicator-method page-width" aria-labelledby="indicator-method-title"><div class="section-heading"><div><span class="overline">Trasparenza</span><h2 id="indicator-method-title">Fonte, aggiornamento e metodo</h2></div><p>Le informazioni necessarie per ricostruire e valutare il dato.</p></div>
+        <div class="indicator-governance-grid"><dl><div><dt>Produttore</dt><dd>INVALSI</dd></div><div><dt>Fonte utilizzata</dt><dd><a href="https://serviziostatistico.invalsi.it/invalsi_ss_data/eccellenza-accademica-e-dispersione-scolastica-implicita-valori-percentuali/" target="_blank" rel="noreferrer">INVALSI — Servizio Statistico ↗</a></dd></div><div><dt>Frequenza</dt><dd>Annuale</dd></div><div><dt>Prossimo aggiornamento atteso</dt><dd>Dopo la pubblicazione annuale degli open data territoriali INVALSI</dd></div><div><dt>Ultimo controllo della fonte</dt><dd>5 novembre 2026</dd></div><div><dt>Licenza o condizioni di riuso</dt><dd><a href="https://serviziostatistico.invalsi.it/invalsi_ss_data/eccellenza-accademica-e-dispersione-scolastica-implicita-valori-percentuali/" target="_blank" rel="noreferrer">Licenza indicata dal Servizio Statistico INVALSI ↗</a></dd></div></dl>
+          <div><h3>Acquisizione</h3><p>CSV open di popolazione su dispersione implicita ed eccellenza; snapshot versionato e build offline.</p><div data-financial-indicator-method=""><details class="method-disclosure"><summary><span>Metodo e comparabilità</span><small>Formula, natura del dato e criticità</small></summary><div class="method-disclosure-body"><dl><div><dt>Natura</dt><dd>Open data di popolazione INVALSI, aggregazione territoriale ufficiale</dd></div><div><dt>Formula</dt><dd>Valore comunale letto direttamente da 'Comune plesso' con aggregazione Totale. Toscana e Italia lette direttamente dallo stesso dataset; nessuna media tra scuole o Comuni.</dd></div><div><dt>Copertura</dt><dd>4/7 secondo grado/prova; n.d. mantenuti senza stime.</dd></div></dl><p><strong>Nota:</strong> Il Comune identifica la localizzazione del plesso scolastico, non la residenza dello studente. Le assenze ufficiali restano n.d.; la media Versilia non è calcolata perché manca il denominatore di prove valide/studenti per una ponderazione corretta.</p></div></details></div></div></div>
+        <div class="data-actions indicator-data-actions"><button type="button" data-share="">Condividi</button><button type="button" data-download="">Scarica CSV</button><button type="button" data-print="">Stampa / PDF</button></div></section>
+      <section class="topic-town-links page-width"><div><span class="overline">Schede comunali</span><h2>Apri il territorio</h2></div><div><a href="/comuni/camaiore/?tema=istruzione&amp;indicatore=invalsiImplicitDispersion"><span>Camaiore</span><b>→</b></a><a href="/comuni/forte-dei-marmi/?tema=istruzione&amp;indicatore=invalsiImplicitDispersion"><span>Forte dei Marmi</span><b>→</b></a><a href="/comuni/massarosa/?tema=istruzione&amp;indicatore=invalsiImplicitDispersion"><span>Massarosa</span><b>→</b></a><a href="/comuni/pietrasanta/?tema=istruzione&amp;indicatore=invalsiImplicitDispersion"><span>Pietrasanta</span><b>→</b></a><a href="/comuni/seravezza/?tema=istruzione&amp;indicatore=invalsiImplicitDispersion"><span>Seravezza</span><b>→</b></a><a href="/comuni/stazzema/?tema=istruzione&amp;indicatore=invalsiImplicitDispersion"><span>Stazzema</span><b>→</b></a><a href="/comuni/viareggio/?tema=istruzione&amp;indicatore=invalsiImplicitDispersion"><span>Viareggio</span><b>→</b></a></div></section>
+    </main></div>
+  <div id="site-footer-mount">
+      <footer class="site-footer">
+        <div class="footer-about"><strong>Osservatorio Versilia</strong>
+          <p>Un punto di accesso indipendente ai dati pubblici dei sette comuni della Versilia.</p>
+          <p class="footer-disclaimer">Non è un sito istituzionale e non rappresenta gli enti citati.</p>
+        </div>
+        <nav class="footer-links" aria-label="Informazioni sul progetto">
+          <a href="../../progetto/">Il progetto</a>
+          <a href="../../stato-dati/" data-data-status-nav="footer">Stato dei dati</a>
+          <a href="../../opportunita/">Opportunità</a>
+          <a href="../../progetto/#metodo">Metodo</a>
+          <a href="../../progetto/#licenza">Licenza</a>
+          <a href="../../progetto/#versioni">Versioni dei dati</a>
+          <a href="../../segnala/">Segnala un dato</a>
+          <a href="mailto:info@osservatorioversilia.it">Contatti</a>
+        </nav>
+        
+      <div class="footer-social" data-social-placement="footer" aria-label="Segui Osservatorio Versilia">
+        <strong>Segui Osservatorio Versilia</strong><div class="social-links">
+    <a class="social-profile-link" href="https://www.facebook.com/osservatorioversilia" target="_blank" rel="me noreferrer" aria-label="Segui Osservatorio Versilia su Facebook">
+      <span class="social-profile-mark" aria-hidden="true">f</span>
+      <span class="social-profile-copy"><strong>Facebook</strong><small>@osservatorioversilia</small></span>
+      <b aria-hidden="true">↗</b>
+    </a>
+    <a class="social-profile-link" href="https://www.instagram.com/osservatorioversilia/" target="_blank" rel="me noreferrer" aria-label="Segui Osservatorio Versilia su Instagram">
+      <span class="social-profile-mark" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="5" ry="5"></rect><circle cx="12" cy="12" r="4"></circle><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"></circle></svg></span>
+      <span class="social-profile-copy"><strong>Instagram</strong><small>@osservatorioversilia</small></span>
+      <b aria-hidden="true">↗</b>
+    </a>
+    <a class="social-profile-link" href="https://www.linkedin.com/company/osservatorioversilia" target="_blank" rel="me noreferrer" aria-label="Segui Osservatorio Versilia su LinkedIn">
+      <span class="social-profile-mark" aria-hidden="true">in</span>
+      <span class="social-profile-copy"><strong>LinkedIn</strong><small>Osservatorio Versilia</small></span>
+      <b aria-hidden="true">↗</b>
+    </a>
+    <a class="social-profile-link" href="https://x.com/OssVersilia" target="_blank" rel="me noreferrer" aria-label="Segui Osservatorio Versilia su X">
+      <span class="social-profile-mark" aria-hidden="true">X</span>
+      <span class="social-profile-copy"><strong>X</strong><small>@OssVersilia</small></span>
+      <b aria-hidden="true">↗</b>
+    </a></div>
+      </div><div class="footer-note">
+          <span>7 comuni · 11 temi</span><span>v. dati v1.40.0</span><span>catalogo dati aggiornato al 14 settembre 2026</span>
+        </div>
+      </footer></div>
+  <noscript><div class="app-error">Il sito richiede JavaScript per mostrare confronti, ricerca e schede comunali.</div></noscript>
+  <script src="../../assets/fidelity.js" defer=""></script>
+  <script src="../../assets/app-bundle.js?v=20261025-ui-shell-consistency" defer=""></script>
+  <script src="../../assets/economy-atlas.js" defer=""></script>
+  <script src="../../assets/ux-accordion.js?v=20261025-ui-shell-consistency" defer=""></script>
+  <script src="../../assets/ux-history-core.js?v=20261025-ui-shell-consistency" defer=""></script>
+  <script src="../../assets/ux-history.js?v=20261025-ui-shell-consistency" defer=""></script>
+  <script src="../../assets/export-v161.js?v=20261025-ui-shell-consistency" defer=""></script>
+  <script src="../../assets/visual-grammar.js?v=20261025-ui-shell-consistency" defer=""></script>
+  <script src="../../assets/social-presence.js?v=20261025-ui-shell-consistency" defer=""></script>
+
+
+  <script src="../../assets/pwa.js?v=20260824-pwa9&rev=catalog-v129" defer></script>
+</body></html>

@@ -1,0 +1,10 @@
+{
+  "schemaVersion": "0.4.1",
+  "referenceDate": "2026-08-22",
+  "cases": [
+    {"id":"c06","coverage_id":"pcm-famiglia-crescere-piccoli-comuni-2026","title":"Crescere nei piccoli comuni 2026","source_id":"pcm-famiglia","expected":"current","lifecycle_stage":"application_open"},
+    {"id":"c07","coverage_id":"pcm-pari-tratta-bando-8-2026","title":"Bando n. 8/2026 — progetti territoriali contro tratta e grave sfruttamento","source_id":"pcm-pari-opportunita","expected":"current","lifecycle_stage":"application_open"},
+    {"id":"h03","title":"Avviso Aree interne in zone sismiche 1 e 2","source_id":"pcm-casa-italia","expected":"historical_monitored","closed_at":"2026-06-04","reason":"Sentinella recente per prevenzione sismica e resilienza degli enti territoriali: la famiglia non deve restare fuori dal radar."},
+    {"id":"x02","title":"Avviso di gara per acquisto di servizi del Ministero della Cultura","source_id":"mic-generale","expected":"excluded_kind","opportunity_kind":"supplier_tender","reason":"La rete MiC generale può contenere procurement: il collector deve usarla per discovery senza trasformare gare di acquisto in opportunità finanziarie per i Comuni."}
+  ]
+}

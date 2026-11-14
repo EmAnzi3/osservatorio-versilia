@@ -1,0 +1,354 @@
+{
+  "version": "lia-v1.4.0",
+  "created": "2026-08-05",
+  "scope": {
+    "towns": [
+      {
+        "name": "Massarosa",
+        "code": "046018",
+        "slug": "massarosa"
+      },
+      {
+        "name": "Viareggio",
+        "code": "046033",
+        "slug": "viareggio"
+      },
+      {
+        "name": "Camaiore",
+        "code": "046005",
+        "slug": "camaiore"
+      },
+      {
+        "name": "Pietrasanta",
+        "code": "046024",
+        "slug": "pietrasanta"
+      },
+      {
+        "name": "Seravezza",
+        "code": "046028",
+        "slug": "seravezza"
+      },
+      {
+        "name": "Forte dei Marmi",
+        "code": "046013",
+        "slug": "forte-dei-marmi"
+      },
+      {
+        "name": "Stazzema",
+        "code": "046030",
+        "slug": "stazzema"
+      }
+    ],
+    "coverage": "7/7"
+  },
+  "sources": {
+    "istatSections2023": {
+      "landing": "https://www.istat.it/notizia/dati-per-sezioni-di-censimento/",
+      "download": "https://esploradati.istat.it/databrowser/DWL/PERMPOP/SUBCOM/Dati_regionali_2023.zip",
+      "files": {
+        "data": {
+          "name": "R09_Toscana_2023_sezioni.xlsx",
+          "sha256": "ac4a4068e5ed2fb93ecbed96bc882914e7feef3d4d0db17013dceb4dcac95fdf",
+          "bytes": 18784761
+        },
+        "layout": {
+          "name": "TRACCIATO_FILE_REGIONALI.xlsx",
+          "sha256": "98071eb0f9e71a1bc59f5eb49503b8d31e7adc010aaa6c30d96ff3d9d1bfe3be",
+          "bytes": 13786
+        }
+      },
+      "variables": {
+        "P1": "Popolazione residente totale",
+        "P33-P42": "Popolazione maschile 15–64 anni",
+        "P70-P79": "Popolazione femminile 15–64 anni",
+        "P102": "Uomini occupati 15–64 anni",
+        "P103": "Donne occupate 15–64 anni",
+        "PF1": "Famiglie residenti totali",
+        "PF9": "Famiglie residenti coabitanti",
+        "A3": "Abitazioni vuote e abitazioni occupate solo da persone non residenti",
+        "A8": "Abitazioni totali"
+      }
+    },
+    "mimSchool2024_25": {
+      "landing": "https://dati.istruzione.it/opendata/",
+      "files": [
+        {
+          "role": "registry_state",
+          "url": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/SCUANAGRAFESTAT20242520250831.csv",
+          "file": "SCUANAGRAFESTAT20242520250831.csv",
+          "sha256": "91fac2ac891aa111ad448123e33a0118a854ce58237f985d21b1d7424f0be6fa",
+          "bytes": 13178615
+        },
+        {
+          "role": "registry_private",
+          "url": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/SCUANAGRAFEPAR20242520250831.csv",
+          "file": "SCUANAGRAFEPAR20242520250831.csv",
+          "sha256": "fd8ec418966aea01537f0816f3e8fc911391eae2c34063e9ca411f14e7ec0c9b",
+          "bytes": 2493951
+        },
+        {
+          "role": "classes_state",
+          "url": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/ALUCORSOINDCLASTA20242520250831.csv",
+          "file": "ALUCORSOINDCLASTA20242520250831.csv",
+          "sha256": "9cfa5e077abcd7af99bfb833924c22efbadb51fb8ed6c7205f12dbd2bd222b26",
+          "bytes": 5708520
+        },
+        {
+          "role": "classes_private",
+          "url": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/ALUCORSOINDCLAPAR20242520250831.csv",
+          "file": "ALUCORSOINDCLAPAR20242520250831.csv",
+          "sha256": "f4390e21ce5ed2267115e89e28230ba2a7d38b85d63006ea9f5dd7e2bd3b92dc",
+          "bytes": 751103
+        },
+        {
+          "role": "time_state",
+          "url": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/ALUTEMPOSCUOLASTA20242520250831.csv",
+          "file": "ALUTEMPOSCUOLASTA20242520250831.csv",
+          "sha256": "5cca549e0591d39ee1635be7ae859aaa50630e8c9336c500ba79202a5628fbf9",
+          "bytes": 6453321
+        },
+        {
+          "role": "time_private",
+          "url": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/ALUTEMPOSCUOLAPAR20242520250831.csv",
+          "file": "ALUTEMPOSCUOLAPAR20242520250831.csv",
+          "sha256": "f2f3ab1279bd18100d6022823ef2d7fda03f9828d77f3fbf4515e55cd0ba2fbd",
+          "bytes": 483554
+        }
+      ],
+      "universe": "Scuole primarie e secondarie statali e paritarie localizzate nel Comune; la scuola dell’infanzia non è inclusa nei dataset di alunni e classi utilizzati."
+    },
+    "tuscanyTourism2025": {
+      "landing": "https://www.regione.toscana.it/-/arrivi-e-presenze-nelle-strutture-ricettive-e-struttura-dell-offerta-dati-2025%C2%A0",
+      "file": {
+        "name": "locazioni_turistiche_2025.ods",
+        "url": "https://www.regione.toscana.it/documents/d/guest/6-locazioni-agg-maggio-2026-",
+        "sha256": "011b99ba71120cfef3ee94db0846d60d0da84c0bab879ebbd9619ff19ec77ec8",
+        "bytes": 36400
+      },
+      "finding": "La tavola sulle locazioni turistiche contiene esclusivamente valori provinciali e regionali; non permette indicatori 7/7 per i singoli Comuni."
+    }
+  },
+  "raw": {
+    "istat2023": [
+      {
+        "town": "Massarosa",
+        "code": "046018",
+        "P1": 21865,
+        "male1564": 7095,
+        "female1564": 6976,
+        "P102": 5197,
+        "P103": 3937,
+        "PF1": 9108,
+        "PF9": 134,
+        "A3": 1975,
+        "A8": 11003
+      },
+      {
+        "town": "Viareggio",
+        "code": "046033",
+        "P1": 60755,
+        "male1564": 18755,
+        "female1564": 19038,
+        "P102": 13174,
+        "P103": 10726,
+        "PF1": 29043,
+        "PF9": 801,
+        "A3": 10491,
+        "A8": 38890
+      },
+      {
+        "town": "Camaiore",
+        "code": "046005",
+        "P1": 31864,
+        "male1564": 9957,
+        "female1564": 10179,
+        "P102": 7165,
+        "P103": 5684,
+        "PF1": 14316,
+        "PF9": 308,
+        "A3": 8287,
+        "A8": 22384
+      },
+      {
+        "town": "Pietrasanta",
+        "code": "046024",
+        "P1": 22788,
+        "male1564": 6752,
+        "female1564": 7152,
+        "P102": 4707,
+        "P103": 3858,
+        "PF1": 10544,
+        "PF9": 281,
+        "A3": 7950,
+        "A8": 18328
+      },
+      {
+        "town": "Seravezza",
+        "code": "046028",
+        "P1": 12435,
+        "male1564": 3748,
+        "female1564": 3917,
+        "P102": 2672,
+        "P103": 2080,
+        "PF1": 5571,
+        "PF9": 116,
+        "A3": 2037,
+        "A8": 7528
+      },
+      {
+        "town": "Forte dei Marmi",
+        "code": "046013",
+        "P1": 6777,
+        "male1564": 1878,
+        "female1564": 2034,
+        "P102": 1209,
+        "P103": 1004,
+        "PF1": 3378,
+        "PF9": 60,
+        "A3": 5140,
+        "A8": 8477
+      },
+      {
+        "town": "Stazzema",
+        "code": "046030",
+        "P1": 2903,
+        "male1564": 944,
+        "female1564": 857,
+        "P102": 654,
+        "P103": 428,
+        "PF1": 1371,
+        "PF9": 12,
+        "A3": 2154,
+        "A8": 3518
+      }
+    ],
+    "mim2024_25": [
+      {
+        "town": "Massarosa",
+        "code": "046018",
+        "students": 1282,
+        "classes": 72,
+        "primary_students": 747,
+        "full_time_students": 413
+      },
+      {
+        "town": "Viareggio",
+        "code": "046033",
+        "students": 7508,
+        "classes": 387,
+        "primary_students": 2188,
+        "full_time_students": 1024
+      },
+      {
+        "town": "Camaiore",
+        "code": "046005",
+        "students": 2739,
+        "classes": 147,
+        "primary_students": 1046,
+        "full_time_students": 402
+      },
+      {
+        "town": "Pietrasanta",
+        "code": "046024",
+        "students": 1490,
+        "classes": 82,
+        "primary_students": 596,
+        "full_time_students": 373
+      },
+      {
+        "town": "Seravezza",
+        "code": "046028",
+        "students": 978,
+        "classes": 57,
+        "primary_students": 318,
+        "full_time_students": 66
+      },
+      {
+        "town": "Forte dei Marmi",
+        "code": "046013",
+        "students": 1065,
+        "classes": 54,
+        "primary_students": 463,
+        "full_time_students": 86
+      },
+      {
+        "town": "Stazzema",
+        "code": "046030",
+        "students": 106,
+        "classes": 8,
+        "primary_students": 64,
+        "full_time_students": 64
+      }
+    ]
+  },
+  "acceptedIndicators": [
+    {
+      "key": "femaleEmploymentRate",
+      "formula": "P103 / somma(P70:P79) × 100"
+    },
+    {
+      "key": "maleEmploymentRate",
+      "formula": "P102 / somma(P33:P42) × 100"
+    },
+    {
+      "key": "employmentGenderGap",
+      "formula": "maleEmploymentRate − femaleEmploymentRate"
+    },
+    {
+      "key": "schoolStudents",
+      "formula": "somma alunni maschi + femmine, statali e paritarie"
+    },
+    {
+      "key": "studentsPerClass",
+      "formula": "schoolStudents / classi"
+    },
+    {
+      "key": "primaryFullTimeShare",
+      "formula": "alunni primaria TEMPO PIENO / alunni primaria × 100"
+    },
+    {
+      "key": "housingStockPer1000",
+      "formula": "A8 / P1 × 1.000"
+    },
+    {
+      "key": "nonOccupiedHomesPer1000",
+      "formula": "A3 / P1 × 1.000"
+    },
+    {
+      "key": "cohabitingHouseholds",
+      "formula": "PF9 / PF1 × 100"
+    }
+  ],
+  "correctedIndicators": [
+    {
+      "key": "vacantHomes",
+      "correction": "Anno corretto da 2021 a 2023 e definizione allineata alla variabile A3."
+    }
+  ],
+  "rejectedCandidates": [
+    {
+      "candidate": "NEET 15–29 anni",
+      "reason": "La tavola comunale Istat esclude i Comuni fino a 5.000 abitanti; Stazzema non ha valore e la copertura sarebbe 6/7."
+    },
+    {
+      "candidate": "Occupazione non stabile",
+      "reason": "La tavola comunale Istat esclude i Comuni fino a 5.000 abitanti; Stazzema non ha valore e la copertura sarebbe 6/7."
+    },
+    {
+      "candidate": "Avviamenti e ingressi in disoccupazione SIL",
+      "reason": "Le dashboard regionali sono consultabili, ma non è stato individuato un file comunale statico e riproducibile da versionare; candidato rinviato."
+    },
+    {
+      "candidate": "Locazioni turistiche comunali",
+      "reason": "La tavola regionale 2025 disponibile contiene soltanto valori provinciali e regionali."
+    },
+    {
+      "candidate": "Indicatore sintetico di sicurezza scolastica",
+      "reason": "Non viene costruito: certificazioni, accessibilità e dati mancanti devono restare indicatori distinti e richiedono un audit dedicato degli edifici."
+    },
+    {
+      "candidate": "Servizi educativi per l’infanzia",
+      "reason": "La gestione associata e le modalità di stima richiedono una verifica separata prima di attribuire valori comparabili ai singoli Comuni."
+    }
+  ]
+}

@@ -1,6 +1,6 @@
 # Programma dei dossier territoriali — evidenze verificate
 
-Esito **PASS**; catalogo `3d5cb03a50efc97c6ef4815bc67e646468e3d4c805aee2eb0e3de11182d0bc02`; motore `93c83970aaac371cda2d595eb2f73cc03a4848f12c1c98d54bdf1c7785240afe`.
+Esito **PASS**; catalogo `2de77875e64f3698e2a37867c68650e599de73c46772c4232887ce8f7222beec`; motore `93c83970aaac371cda2d595eb2f73cc03a4848f12c1c98d54bdf1c7785240afe`.
 
 Le 20 domande A6 originarie sono riusate per riferimento, senza riscriverle. Le domande centrali orientano un programma amministrativo: i risultati di contesto non risolvono automaticamente bisogni, efficacia o causalità.
 
@@ -714,9 +714,9 @@ Che cosa sappiamo della transizione energetica e dei suoi costi per le famiglie?
 |---|---|---|---|---|
 | energy_ev_046018 | compare / evPoints / total | 2026 / per1000 | 046018: 0.46; 046033: 0.79 | PASS |
 | energy_ev_series_refused | series / evPoints / total |  /  | energy_ev_history_not_frozen | PASS |
-| energy_fuel_total_046018 | compare / fuelPrices / total | 2026-10-10 / eurliter | 046018: 2.077; 046033: 1.994 | PASS |
-| energy_fuel_fuel:benzina_series | series / fuelPrices / fuel:benzina | 2026-08-14, 2026-08-27, 2026-08-28, 2026-10-03, 2026-10-10 / eurliter | 046018: 1.987; 046018: 2.018; 046018: 2.018; 046018: 2.097; 046018: 2.077 | PASS |
-| fuel_adapter_missing | compare / fuelPrices / total | 2026-10-10 / eurliter | partial_coverage_requires_opt_in | PASS |
+| energy_fuel_total_046018 | compare / fuelPrices / total | 2026-11-12 / eurliter | 046018: 1.949; 046033: 1.96 | PASS |
+| energy_fuel_fuel:benzina_series | series / fuelPrices / fuel:benzina | 2026-08-14, 2026-08-27, 2026-08-28, 2026-10-03, 2026-10-10, 2026-11-12 / eurliter | 046018: 1.987; 046018: 2.018; 046018: 2.018; 046018: 2.097; 046018: 2.077; 046018: 1.949 | PASS |
+| fuel_adapter_missing | compare / fuelPrices / total | 2026-11-12 / eurliter | partial_coverage_requires_opt_in | PASS |
 | mef_incomeDistribution_total | compare / incomeDistribution / total | 2024 / percent | 046005: 37.207501720578115; 046013: 33.40779853777417; 046018: 34.4734529935986; 046024: 37.160751565762006; 046028: 36.95273360923546; 046030: 40.49665711556829; 046033: 34.64680229340536 | PASS |
 | mef_incomeDistribution_macro_0_pooled | weighted_ratio / incomeDistribution / macro:0 | 2024 / percent | 046005: 37.207501720578115; 046013: 33.40779853777417; 046018: 34.4734529935986; 046024: 37.160751565762006; 046028: 36.95273360923546; 046030: 40.49665711556829; 046033: 34.64680229340536 | PASS |
 | mef_incomeDistribution_absolute_change_refused | absolute_change / incomeDistribution / total |  /  | mef_temporal_change_not_reviewed | PASS |

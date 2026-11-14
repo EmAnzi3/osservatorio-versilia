@@ -1,0 +1,183 @@
+{
+  "schemaVersion": "1.0",
+  "auditDate": "2026-09-08",
+  "wave": 17,
+  "sweepType": "independent_full_corpus",
+  "fullCorpusIndependentSweep": true,
+  "status": "open_not_saturated",
+  "implementationFrozen": true,
+  "referenceSnapshot": {
+    "path": "data/opportunity-daily-public.json",
+    "generatedAt": "2026-09-07T09:35:26+00:00",
+    "publicCount": 29,
+    "reviewInternalCount": 40
+  },
+  "prBaselineBeforeWave17Write": {
+    "pr": 161,
+    "state": "open",
+    "draft": true,
+    "merged": false,
+    "headBranch": "audit/opportunity-eu-120d-20260907",
+    "headSha": "a4c7f99e722340d12f8a4df08ca1215c04c66de6",
+    "base": "main",
+    "commitCount": 34,
+    "changedFileCount": 32
+  },
+  "saturation": {
+    "requiredConsecutiveCleanSweeps": 2,
+    "currentConsecutiveCleanSweeps": 0,
+    "thisSweepClean": false,
+    "countsForCleanSweepGate": true,
+    "reason": "Wave 17 is an independent full-corpus sweep and found four new current structural or routed opportunities absent from the reference snapshot and Waves 1-16: Technical Support Instrument 2027 for local authorities through the national Coordinating Authority, eeef direct financing, the eeef Technical Assistance Facility, and the InvestEU Portal project-promotion and investor-matchmaking route. Any one is sufficient to keep the gate at 0/2."
+  },
+  "method": {
+    "seedPolicy": "Wave 17 started from horizontal EU reform-support, energy-finance, investment-matchmaking and project-development instruments rather than the grant/topic families used as primary seeds in earlier sweeps. It then rechecked Italian specialised administrators and Tuscany open-call directories. Prior waves and the full Radar snapshot were used only after candidates surfaced.",
+    "canonicalCrossCheck": "Candidates were checked against the complete reference snapshot, canonical records, coverage rules, auditReview/internal_review evidence and Waves 1-16. Generic programme coverage was not treated as proof that a named operational route was already captured.",
+    "municipalities": [
+      "Camaiore",
+      "Forte dei Marmi",
+      "Massarosa",
+      "Pietrasanta",
+      "Seravezza",
+      "Stazzema",
+      "Viareggio"
+    ]
+  },
+  "newCurrentActionableFindings": [
+    {
+      "id": "tsi-2027-local-authorities",
+      "title": "European Commission · Technical Support Instrument 2027",
+      "publishedAt": "2026-06-12",
+      "deadlineAt": "2026-10-31",
+      "radarStatus": "absent_from_reference_snapshot_and_prior_audit_corpus",
+      "auditClass": "current_national_route_technical_support_false_negative",
+      "severity": "critical",
+      "detectionLagDaysAtReferenceSnapshot": 87,
+      "municipalityRole": "beneficiary_local_authority_preparing_a_support_request_routed_via_the_Italian_National_Coordinating_Authority",
+      "formalApplicabilityToSevenMunicipalities": "all_seven_are_local_authorities_formally_within_the_TSI_requesting_authority_class; concrete actionability requires a qualifying reform/support need and national coordination/prioritisation",
+      "funding": "No cash grant to the municipality. Commission-funded tailor-made technical expertise for reform design and implementation; Member States do not provide co-financing for the technical support itself.",
+      "eligibilityEvidence": "The Commission's TSI 2027 call explicitly states that national, regional and local authorities can submit requests by 31 October 2026. Beneficiary authorities can access and prepare requests in the Commission portal, but only the Member State's national Coordinating Authority formally submits requests to the Commission. The Commission's current contact list identifies Italy's TSI National Coordinating Authority under the Ministry for the South.",
+      "rootCauseFamily": "EU_routed_reform_technical_support_family_gap",
+      "officialSources": [
+        "https://reforms-investments.ec.europa.eu/technical-support-instrument-2027-call_en",
+        "https://reforms-investments.ec.europa.eu/technical-support-instrument-0/tsi-how-it-works_en",
+        "https://commission.europa.eu/funding-and-tenders/find-funding/eu-funding-programmes/technical-support-instrument/tsi-national-coordinating-authorities-contacts_en",
+        "https://www.politicheeuropee.gov.it/it/attivita/strumento-di-supporto-tecnico-alle-riforme/"
+      ]
+    },
+    {
+      "id": "eeef-direct-financing-rolling",
+      "title": "European Energy Efficiency Fund · direct financing",
+      "publishedAt": null,
+      "deadlineAt": null,
+      "radarStatus": "absent_from_reference_snapshot_and_prior_audit_corpus",
+      "auditClass": "rolling_financing_structural_gap",
+      "severity": "high",
+      "municipalityRole": "direct_municipal_local_or_regional_final_beneficiary_and_project_promoter",
+      "formalApplicabilityToSevenMunicipalities": "all_seven_are_within_the_municipal_final_beneficiary_class; concrete actionability requires an economically viable eligible sustainable-energy or clean-urban-transport investment",
+      "funding": "Rolling investment financing rather than a grant. eeef direct investments generally target EUR 5 million to EUR 25 million and may use senior debt, mezzanine instruments, leasing structures and forfeiting loans, subject to due diligence and project conditions.",
+      "eligibilityEvidence": "The eeef official eligibility page identifies municipal, local and regional authorities as final beneficiaries and covers energy efficiency, small-scale renewable energy and clean urban transport investments in EU Member States.",
+      "distinctionFromKnownRoutes": "This is a financing product route, distinct from EIB ELENA and from the generic InvestEU Advisory Hub already documented in earlier waves.",
+      "rootCauseFamily": "rolling_public_energy_finance_product_gap",
+      "officialSource": "https://www.eeef.lu/eligible-investments.html"
+    },
+    {
+      "id": "eeef-ta-facility-rolling",
+      "title": "European Energy Efficiency Fund · Technical Assistance Facility",
+      "publishedAt": null,
+      "deadlineAt": null,
+      "radarStatus": "absent_from_reference_snapshot_and_prior_audit_corpus",
+      "auditClass": "rolling_structural_gap",
+      "severity": "critical",
+      "municipalityRole": "direct_city_council_or_other_public_entity_applicant_for_project_development_services",
+      "formalApplicabilityToSevenMunicipalities": "all_seven_as_City_Councils_or_public_entities; concrete actionability requires an eligible investment programme above EUR 5 million, leverage above 20 and at least 30 percent primary-energy_or_CO2 savings",
+      "funding": "No cash grant. eeef allocates consultant/project-development services and can cover eligible beneficiary staff and external legal costs for preparing bankable investment programmes.",
+      "eligibilityEvidence": "The current eeef TA Facility page expressly lists Regions, City Councils, Universities, public hospitals and other EU public entities as eligible. It covers energy efficiency, small-scale renewable energy and public urban transport. The call has no deadline and remains open first-come-first-served subject to available funds and portfolio fit.",
+      "distinctionFromKnownRoutes": "Although the current eeef TA programme is co-supported by an EIB ELENA contract, it is a distinct named operational application route with its own beneficiary criteria, application format, evaluation and award process; therefore generic ELENA coverage does not by itself capture it.",
+      "rootCauseFamily": "named_project_development_service_gap",
+      "officialSource": "https://www.eeef.lu/eeef-ta-facility.html"
+    },
+    {
+      "id": "investeu-portal-project-promotion",
+      "title": "InvestEU Portal · project promotion and investor matchmaking",
+      "publishedAt": null,
+      "deadlineAt": null,
+      "radarStatus": "absent_from_reference_snapshot_and_prior_audit_corpus",
+      "auditClass": "rolling_structural_gap",
+      "severity": "medium",
+      "municipalityRole": "public_legal_entity_project_promoter_seeking_investor_visibility_and_financing_matchmaking",
+      "formalApplicabilityToSevenMunicipalities": "all_seven_can_formally_act_as_public_legal_entity_project_promoters; concrete usefulness requires an eligible investment project seeking financing",
+      "funding": "No direct grant or guaranteed financing. Publication is free and provides EU-wide investor visibility; the Commission may transmit suitable projects to InvestEU implementing partners and, where relevant, the InvestEU Advisory Hub.",
+      "eligibilityEvidence": "The official InvestEU Portal is a separate component of InvestEU, alongside the Fund and Advisory Hub. Projects must be promoted by a private or public legal entity in good standing and satisfy Portal admission criteria. The service is a continuing EU project-to-investor matchmaking route.",
+      "distinctionFromKnownRoutes": "This is not the InvestEU Advisory Hub already documented in the audit. The Portal is the programme's project-promotion and investor-matchmaking component with its own submission workflow.",
+      "rootCauseFamily": "investment_matchmaking_named_service_gap",
+      "officialSources": [
+        "https://investeu.europa.eu/investeu-programme/investeu-portal_en",
+        "https://investeu.europa.eu/investeu-programme/investeu-portal/frequently-asked-questions-about-investeu-portal_en"
+      ]
+    }
+  ],
+  "scopeAndNegativeControls": [
+    {
+      "id": "investeu-fund-generic-public-financing",
+      "auditClass": "scope_review_generic_financing_framework",
+      "countsAsCurrentActionableGap": false,
+      "note": "The InvestEU Fund can finance economically viable public-sector final recipients through implementing partners, but no single municipality-facing product was promoted from the generic Fund framework in this sweep. Named implementing-partner products should be audited separately."
+    },
+    {
+      "id": "it-lsu-small-municipalities-2026-payments",
+      "auditClass": "predetermined_or_payment_lifecycle_control",
+      "countsAsCurrentActionableGap": false,
+      "note": "Current Ministry of Labour notices concern payment of the 2026 LSU-stabilisation contribution to listed municipalities below 5,000 inhabitants, not a new open application window."
+    },
+    {
+      "id": "it-rottamazione-enti-territoriali-2026",
+      "auditClass": "correctly_excluded_non_municipal_applicant_opportunity",
+      "countsAsCurrentActionableGap": false,
+      "note": "The 2026 territorial-entity debt settlement route concerns debtor declarations of adhesion to collection relief, rather than a municipality applying for funding/support as Radar beneficiary."
+    },
+    {
+      "id": "rt-open-calls-wave17-recheck",
+      "auditClass": "no_new_current_municipal_gap_beyond_known_corpus",
+      "countsAsCurrentActionableGap": false,
+      "note": "The Regione Toscana and PR FSE+ open-call directories were rechecked. Municipality-facing current items surfaced in this pass were already captured or already classified in prior waves, including Nidi gratis, Toscana Diffusa, Mercati rionali, Buoni scuola, Amianto and Parcheggi."
+    },
+    {
+      "id": "rt-suvignano-consulta-2026",
+      "auditClass": "correctly_excluded_eligibility",
+      "countsAsCurrentActionableGap": false,
+      "note": "The current Suvignano consultation route is aimed at qualifying Third Sector representative bodies rather than municipalities."
+    },
+    {
+      "id": "rt-apprendistato-duale-2026",
+      "auditClass": "correctly_not_auto_promoted_municipality",
+      "countsAsCurrentActionableGap": false,
+      "note": "The applicant structure requires an education/training partnership with specified lead and accredited actors; no direct municipal applicant role was established."
+    }
+  ],
+  "knownRediscoveries": [
+    {
+      "id": "c4t-groundwork",
+      "auditClass": "known_prior_gap_not_new"
+    },
+    {
+      "id": "ceah-ta-call2",
+      "auditClass": "known_prior_gap_not_new"
+    },
+    {
+      "id": "space4cities-replicator-cities-2026",
+      "auditClass": "known_prior_gap_not_new"
+    },
+    {
+      "id": "european-heritage-label-2027",
+      "auditClass": "known_promotion_gap_not_new"
+    },
+    {
+      "id": "mission-ocean-associated-regions",
+      "auditClass": "known_or_closed_family_control"
+    }
+  ],
+  "waveConclusion": "Wave 17 is a valid independent full-corpus sweep but is not clean. Four new current structural or routed opportunities were established: TSI 2027, eeef direct financing, eeef Technical Assistance Facility and InvestEU Portal. National and Tuscany residual scans produced controls rather than additional current municipal gaps. The saturation counter remains 0/2 and implementation remains frozen.",
+  "nextStep": "Run Wave 18 as another independent full-corpus sweep using a materially different ordering and seed, especially non-obvious project-level and territorial support channels. Because Wave 17 is dirty, a clean Wave 18 would move the counter only to 1/2; a second consecutive clean sweep would still be required before hardening.",
+  "implementationChanges": []
+}

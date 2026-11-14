@@ -102808,8 +102808,8 @@
           {
             "path": "/observations/0/value",
             "fraction": [
-              203,
-              100
+              1949,
+              1000
             ],
             "tolerance": 1e-10
           }
@@ -102839,8 +102839,8 @@
           {
             "path": "/observations/0/value",
             "fraction": [
-              2011,
-              1000
+              49,
+              25
             ],
             "tolerance": 1e-10
           }
@@ -102870,7 +102870,7 @@
           {
             "path": "/observations/0/value",
             "fraction": [
-              2077,
+              1949,
               1000
             ],
             "tolerance": 1e-10
@@ -102901,8 +102901,8 @@
           {
             "path": "/observations/0/value",
             "fraction": [
-              201,
-              100
+              1949,
+              1000
             ],
             "tolerance": 1e-10
           }
@@ -102932,8 +102932,8 @@
           {
             "path": "/observations/0/value",
             "fraction": [
-              203,
-              100
+              1999,
+              1000
             ],
             "tolerance": 1e-10
           }
@@ -102987,8 +102987,8 @@
           {
             "path": "/observations/1/value",
             "fraction": [
-              997,
-              500
+              49,
+              25
             ],
             "tolerance": 1e-10
           }
@@ -103014,27 +103014,27 @@
         "checks": [
           {
             "path": "/result/ranking/0/geography",
-            "value": "046018"
-          },
-          {
-            "path": "/result/ranking/1/geography",
-            "value": "046005"
-          },
-          {
-            "path": "/result/ranking/2/geography",
             "value": "046028"
           },
           {
-            "path": "/result/ranking/3/geography",
+            "path": "/result/ranking/1/geography",
             "value": "046013"
           },
           {
+            "path": "/result/ranking/2/geography",
+            "value": "046033"
+          },
+          {
+            "path": "/result/ranking/3/geography",
+            "value": "046005"
+          },
+          {
             "path": "/result/ranking/4/geography",
-            "value": "046024"
+            "value": "046018"
           },
           {
             "path": "/result/ranking/5/geography",
-            "value": "046033"
+            "value": "046024"
           }
         ]
       },
@@ -103082,8 +103082,8 @@
           {
             "path": "/observations/0/value",
             "fraction": [
-              203,
-              100
+              1949,
+              1000
             ],
             "tolerance": 1e-10
           }
@@ -103113,8 +103113,8 @@
           {
             "path": "/observations/0/value",
             "fraction": [
-              2011,
-              1000
+              49,
+              25
             ],
             "tolerance": 1e-10
           }
@@ -103144,7 +103144,7 @@
           {
             "path": "/observations/0/value",
             "fraction": [
-              2077,
+              1949,
               1000
             ],
             "tolerance": 1e-10
@@ -103175,8 +103175,8 @@
           {
             "path": "/observations/0/value",
             "fraction": [
-              201,
-              100
+              1949,
+              1000
             ],
             "tolerance": 1e-10
           }
@@ -103206,8 +103206,8 @@
           {
             "path": "/observations/0/value",
             "fraction": [
-              203,
-              100
+              1999,
+              1000
             ],
             "tolerance": 1e-10
           }
@@ -103261,8 +103261,8 @@
           {
             "path": "/observations/1/value",
             "fraction": [
-              997,
-              500
+              49,
+              25
             ],
             "tolerance": 1e-10
           }
@@ -103288,27 +103288,27 @@
         "checks": [
           {
             "path": "/result/ranking/0/geography",
-            "value": "046018"
-          },
-          {
-            "path": "/result/ranking/1/geography",
-            "value": "046005"
-          },
-          {
-            "path": "/result/ranking/2/geography",
             "value": "046028"
           },
           {
-            "path": "/result/ranking/3/geography",
+            "path": "/result/ranking/1/geography",
             "value": "046013"
           },
           {
+            "path": "/result/ranking/2/geography",
+            "value": "046033"
+          },
+          {
+            "path": "/result/ranking/3/geography",
+            "value": "046005"
+          },
+          {
             "path": "/result/ranking/4/geography",
-            "value": "046024"
+            "value": "046018"
           },
           {
             "path": "/result/ranking/5/geography",
-            "value": "046033"
+            "value": "046024"
           }
         ]
       },
@@ -103356,7 +103356,7 @@
           {
             "path": "/observations/0/value",
             "fraction": [
-              2289,
+              2199,
               1000
             ],
             "tolerance": 1e-10
@@ -103387,7 +103387,7 @@
           {
             "path": "/observations/0/value",
             "fraction": [
-              1121,
+              1097,
               500
             ],
             "tolerance": 1e-10
@@ -103418,7 +103418,7 @@
           {
             "path": "/observations/0/value",
             "fraction": [
-              2277,
+              2199,
               1000
             ],
             "tolerance": 1e-10
@@ -103449,8 +103449,8 @@
           {
             "path": "/observations/0/value",
             "fraction": [
-              223,
-              100
+              2199,
+              1000
             ],
             "tolerance": 1e-10
           }
@@ -103480,8 +103480,8 @@
           {
             "path": "/observations/0/value",
             "fraction": [
-              2291,
-              1000
+              553,
+              250
             ],
             "tolerance": 1e-10
           }
@@ -103535,8 +103535,8 @@
           {
             "path": "/observations/1/value",
             "fraction": [
-              1127,
-              500
+              2199,
+              1000
             ],
             "tolerance": 1e-10
           }
@@ -103574,15 +103574,15 @@
           },
           {
             "path": "/result/ranking/3/geography",
-            "value": "046033"
+            "value": "046024"
           },
           {
             "path": "/result/ranking/4/geography",
-            "value": "046013"
+            "value": "046033"
           },
           {
             "path": "/result/ranking/5/geography",
-            "value": "046024"
+            "value": "046013"
           }
         ]
       },

@@ -1,0 +1,147 @@
+{
+  "ministero-interno-prefetture": {
+    "page": "https://prefettura.interno.gov.it/it/prefetture/vibo-valentia/patti-attuazione-sicurezza-urbana-sistemi-videosorveglianza-dm-2026",
+    "icon": "https://prefettura.interno.gov.it/themes/custom/interno_theme/favicon.ico",
+    "local": "../assets/source-favicons/ministero-interno-prefetture.ico",
+    "method": "official-page-html-or-manifest",
+    "contentType": "image/vnd.microsoft.icon",
+    "bytes": "894"
+  },
+  "pcm-disabilita": {
+    "page": "https://www.disabilita.governo.it/it/avvisi-e-bandi/avviso-vita-opportunita/",
+    "icon": "https://www.disabilita.governo.it/media/1190/favicon-96x96.png",
+    "local": "../assets/source-favicons/pcm-disabilita.png",
+    "method": "official-page-html-or-manifest",
+    "contentType": "image/png",
+    "bytes": "17359"
+  },
+  "regione-toscana": {
+    "page": "https://www.regione.toscana.it/it/-/bando-amianto-2026",
+    "icon": "https://www.regione.toscana.it/o/regione-toscana-theme/images/favicon.ico",
+    "local": "../assets/source-favicons/regione-toscana.ico",
+    "method": "official-page-html-or-manifest",
+    "contentType": "image/vnd.microsoft.icon",
+    "bytes": "1150"
+  },
+  "mic-dgcc": {
+    "page": "https://creativitacontemporanea.cultura.gov.it/cultura-piccolicomuni-edizione1/",
+    "icon": "https://creativitacontemporanea.cultura.gov.it/wp-content/uploads/2021/06/cropped-MiC_logo_tondo_BLU-192x192.png",
+    "local": "../assets/source-favicons/mic-dgcc.png",
+    "method": "official-page-html-or-manifest",
+    "contentType": "image/png",
+    "bytes": "19912"
+  },
+  "regione-toscana-fse": {
+    "page": "https://www.regione.toscana.it/it/-/contributi-ai-comuni-per-i-servizi-educativi-della-prima-infanzia-bando-nidi-di-qualit%C3%A0-2026-2027",
+    "icon": "https://www.regione.toscana.it/o/regione-toscana-theme/images/favicon.ico",
+    "local": "../assets/source-favicons/regione-toscana-fse.ico",
+    "method": "official-page-html-or-manifest",
+    "contentType": "image/vnd.microsoft.icon",
+    "bytes": "1150"
+  },
+  "mic-spettacolo": {
+    "page": "https://cultura.gov.it/comunicato/bando-per-la-promozione-della-musica-jazz-anno-2027-avviso-pubblico-e-apertura-dei-termini-di-presentazione-delle-domande",
+    "icon": "https://cultura.gov.it/fe/mibact/image/favicon_MiC.png",
+    "local": "../assets/source-favicons/mic-spettacolo.png",
+    "method": "official-page-html-or-manifest",
+    "contentType": "image/png",
+    "bytes": "97560"
+  },
+  "fondazione-cr-lucca": {
+    "page": "https://www.fondazionecarilucca.it/bandi/bando-2026-progett-azioni",
+    "icon": "https://www.fondazionecarilucca.it/wp-content/uploads/2025/06/faviconfcrl.png",
+    "local": "../assets/source-favicons/fondazione-cr-lucca.png",
+    "method": "official-page-html-or-manifest",
+    "contentType": "image/png",
+    "bytes": "635"
+  },
+  "mlps-social-services": {
+    "page": "https://lavoro.gov.it/notizie/pagine/pubblicato-avviso-per-la-manifestazione-di-interesse-per-assunzione-di-assistenti-sociali-nei-comuni-e-negli-ATS",
+    "icon": "https://lavoro.gov.it/sites/default/files/favicon.ico",
+    "local": "../assets/source-favicons/mlps-social-services.ico",
+    "method": "official-page-html-or-manifest",
+    "contentType": "image/vnd.microsoft.icon",
+    "bytes": "1150"
+  },
+  "sviluppo-toscana": {
+    "page": "https://www.sviluppo.toscana.it/bando/avviso-mercati-rionali/",
+    "icon": "https://www.sviluppo.toscana.it/app/uploads/2026/01/st.svg",
+    "local": "../assets/source-favicons/sviluppo-toscana.svg",
+    "method": "official-page-html-or-manifest",
+    "contentType": "image/svg+xml",
+    "bytes": "5233"
+  },
+  "eu-cerv": {
+    "page": "https://commission.europa.eu/funding-and-tenders/find-funding/eu-funding-programmes/citizens-equality-rights-and-values-programme/citizens-equality-rights-and-values-programme-overview_en",
+    "icon": "https://commission.europa.eu/themes/contrib/oe_theme/images/favicons/ec/favicon.svg",
+    "local": "../assets/source-favicons/eu-cerv.svg",
+    "method": "official-page-html-or-manifest",
+    "contentType": "image/svg+xml",
+    "bytes": "8859"
+  },
+  "pcm-famiglia": {
+    "page": "https://www.famiglia.governo.it/it/politiche-e-attivita/finanziamenti-avvisi-e-bandi/avvisi-e-bandi/avviso-crescere-nei-piccoli-comuni-2026-stanziati-50-milioni-di-euro-per-le-famiglie/",
+    "icon": "https://www.famiglia.governo.it/media/2974/dipofam-logo-social.jpg",
+    "local": "../assets/source-favicons/pcm-famiglia.jpg",
+    "method": "official-page-html-or-manifest",
+    "contentType": "image/jpeg",
+    "bytes": "19523"
+  },
+  "pcm-pari-opportunita": {
+    "page": "https://www.pariopportunita.gov.it/it/news-e-media/news/2026/pubblicato-il-bando-n-82026-per-il-finanziamento-dei-progetti-territoriali-del-programma-unico-di-emersione-assistenza-e-integrazione-sociale-delle-vittime-di-tratta-e-grave-sfruttamento/",
+    "icon": "https://www.pariopportunita.gov.it/media/1190/favicon-96x96.png",
+    "local": "../assets/source-favicons/pcm-pari-opportunita.png",
+    "method": "official-page-html-or-manifest",
+    "contentType": "image/png",
+    "bytes": "17359"
+  },
+  "pcm-politiche-mare": {
+    "page": "https://www.dipartimentopolitichemare.gov.it/it/bandi-e-avvisi/capitale-italiana-del-mare/procedura-di-selezione-anno-2027/",
+    "icon": "https://www.dipartimentopolitichemare.gov.it/media/1190/favicon-96x96.png",
+    "local": "../assets/source-favicons/pcm-politiche-mare.png",
+    "method": "official-page-html-or-manifest",
+    "contentType": "image/png",
+    "bytes": "17359"
+  },
+  "eu-neb": {
+    "page": "https://new-european-bauhaus.europa.eu/calls-proposals/co-create-neb_en",
+    "icon": "https://new-european-bauhaus.europa.eu/themes/contrib/oe_theme/images/favicons/eu/favicon.svg",
+    "local": "../assets/source-favicons/eu-neb.svg",
+    "method": "official-page-html-or-manifest",
+    "contentType": "image/svg+xml",
+    "bytes": "1789"
+  },
+  "gse": {
+    "page": "https://assistenza.clienti.gse.it/csm/it/conto-termico-3-0-incentivo-100-nei-comuni-sotto-15-000-abitanti?id=faq&sys_id=1fac4456fb5a325083f3f12c6eefdc52",
+    "icon": "https://assistenza.clienti.gse.it/favicon.ico",
+    "local": "../assets/source-favicons/gse.ico",
+    "method": "official-page-html-or-manifest",
+    "contentType": "image/vnd.microsoft.icon",
+    "bytes": "30924"
+  },
+  "eu-eui": {
+    "page": "https://www.urban-initiative.eu/capacity-building/city-to-city-exchanges/call",
+    "icon": "https://www.urban-initiative.eu/sites/default/files/city%20%281%29.png",
+    "local": "../assets/source-favicons/eu-eui.png",
+    "method": "official-page-html-or-manifest",
+    "contentType": "image/png",
+    "bytes": "1458"
+  },
+  "eu-eucf": {
+    "page": "https://managenergy.ec.europa.eu/managenergy-discover/managenergy-news/get-ready-eucfs-8th-call-opens-october-2026-08-17_en",
+    "icon": "https://managenergy.ec.europa.eu/themes/contrib/oe_theme/images/favicons/ec/favicon.svg",
+    "local": "../assets/source-favicons/eu-eucf.svg",
+    "method": "official-page-html-or-manifest",
+    "contentType": "image/svg+xml",
+    "bytes": "8859"
+  },
+  "mit-enti-locali": {
+    "page": "https://www.mit.gov.it/comunicazione/news/fondo-piccoli-comuni-il-mit-finanzia-altri-292-interventi-per-40-milioni",
+    "icon": "https://www.mit.gov.it/nfsmitgov/files/MIT_logo%20bianco_bandiera%20colori_0.png",
+    "local": "../assets/source-favicons/mit-enti-locali-brand.png",
+    "method": "official-page-brandmark-screenshot",
+    "selector": "img, header svg, [class*='logo' i] svg, [class*='brand' i] svg",
+    "alt": "Home",
+    "bytes": "2592"
+  }
+}

@@ -1,0 +1,93 @@
+{
+  "schemaVersion": 1,
+  "version": "a3-istat-business-benchmark-2023-v1",
+  "retrieved": "2026-10-02",
+  "publisher": "Istat — ASIA Unità Locali",
+  "sourceProfileId": "istat-business-annual",
+  "candidateState": "ACQUIRED_CANDIDATE",
+  "sourceUrl": "https://esploradati.istat.it/databrowser/#/it/dw/categories/IT1,Z0900ENT,1.0/DICA_ASIA/DICA_ASIAULP/183_1163_DF_DICA_ASIAULP_TERRIFDATA_7",
+  "retrieval": "Istat SEP SDMX ufficiale",
+  "qualityGate": {
+    "status": "PASS",
+    "publicSnapshotReconciliation": "metric-level 7/7 × 2018/2023; Toscana e Italia aggregati dalle stesse osservazioni comunali ufficiali",
+    "candidateMetrics": [
+      "employeesPerLocalUnit",
+      "localEmployees",
+      "localEmployeesChange",
+      "localUnits",
+      "localUnitsChange"
+    ],
+    "errors": []
+  },
+  "benchmarks": {
+    "localUnits": {
+      "year": "2023",
+      "unit": "number",
+      "formula": "unità locali attive",
+      "tuscany": 366636,
+      "italy": 5144482
+    },
+    "localUnitsChange": {
+      "year": "2018–2023",
+      "unit": "percent",
+      "formula": "((UL 2023 / UL 2018)-1)×100",
+      "tuscany": 5.22243491687211,
+      "italy": 8.082484588553985
+    },
+    "localEmployees": {
+      "year": "2023",
+      "unit": "number",
+      "formula": "addetti medi annui",
+      "tuscany": 1283739.83,
+      "italy": 18644421.78
+    },
+    "localEmployeesChange": {
+      "year": "2018–2023",
+      "unit": "percent",
+      "formula": "((addetti 2023 / addetti 2018)-1)×100",
+      "tuscany": 5.794256622268157,
+      "italy": 7.846713682131012
+    },
+    "employeesPerLocalUnit": {
+      "year": "2023",
+      "unit": "decimal",
+      "formula": "addetti medi annui / unità locali",
+      "tuscany": 3.5014014717594564,
+      "italy": 3.624159202034335
+    }
+  },
+  "evidence": {
+    "LU": {
+      "tuscany": {
+        "2018": 348439,
+        "2023": 366636
+      },
+      "italy": {
+        "2018": 4759774,
+        "2023": 5144482
+      }
+    },
+    "LUEMPDAA": {
+      "tuscany": {
+        "2018": 1213430.55,
+        "2023": 1283739.83
+      },
+      "italy": {
+        "2018": 17287890.51,
+        "2023": 18644421.78
+      }
+    },
+    "historicalTuscanyMunicipalityCount": {
+      "2018": 274,
+      "2023": 273
+    }
+  },
+  "blocked": {
+    "microUnits": "richiede distribuzione per classe dimensionale ASIA-UL; non inferita dal totale"
+  },
+  "acquisitionEvidence": {
+    "runId": 36976636663,
+    "artifactId": 11213771826,
+    "head": "850b56d765348e25f3f45921f56cdda1e98f654d"
+  }
+}

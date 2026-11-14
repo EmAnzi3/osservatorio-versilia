@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "status": "CANDIDATE_EVIDENCE",
+  "profileId": "mef-irpef-annual",
+  "publisher": "MEF — Dipartimento Finanze",
+  "declarationYear": 2025,
+  "taxYear": 2024,
+  "sources": {
+    "calc": "https://www1.finanze.gov.it/finanze/analisi_stat/public/v_4_0_0/contenuti/REG_calcolo_irpef_2025.csv?d=1615465800",
+    "type": "https://www1.finanze.gov.it/finanze/analisi_stat/public/v_4_0_0/contenuti/REG_tipo_reddito_2025.csv?d=1615465800"
+  },
+  "parserContract": {
+    "script": "scripts/acquire_a3_benchmark_mef_candidates.py",
+    "method": "sum_disjoint_income_classes",
+    "requiredClassChecks": ["zero", "lower_open_class", "upper_open_class"],
+    "note": "Snapshot governato della candidate evidence prodotta dal parser. Non autorizza materializzazione automatica: ogni metrica deve ancora combaciare per anno, unità, definizione e fonte con il catalogo pubblico."
+  },
+  "candidates": {
+    "income": {
+      "mapping": "averageTaxableIncome",
+      "unit": "euro",
+      "tuscany": 25165.940514961083,
+      "italy": 24893.038478016195
+    },
+    "pensionIncomeShare": {
+      "mapping": "pensionIncomeAmountEuro / totalIncomeAmountEuro × 100",
+      "unit": "percent",
+      "tuscany": 30.97777568992456,
+      "italy": 30.224327018823598
+    },
+    "taxpayersAdultPopulationRate": {
+      "status": "PARTIAL_NUMERATOR_ONLY",
+      "tuscanyTaxpayers": 2825605,
+      "italyTaxpayers": 42837946,
+      "note": "Non materializzabile finché il denominatore POSAS 18+ non è riconciliato sullo stesso perimetro/anno."
+    },
+    "incomeDistribution": {
+      "status": "NOT_READY",
+      "note": "Richiede mapping delle frequenze delle classi alle quattro fasce pubbliche."
+    },
+    "incomeSourceProfile": {
+      "status": "CANDIDATE_ONLY",
+      "note": "Le medie per fonte sono disponibili dal parser, ma richiedono verifica del contratto pubblico prima della materializzazione."
+    }
+  },
+  "sanityGate": {
+    "status": "PASS",
+    "checks": {
+      "tuscanyTaxpayers": true,
+      "italyTaxpayers": true,
+      "tuscanyAverageTaxableIncome": true,
+      "italyAverageTaxableIncome": true
+    }
+  },
+  "provenance": {
+    "workflowRun": 36886859013,
+    "artifactId": 11175412104,
+    "artifact": "a3-benchmark-bulk-mef-irpef-annual",
+    "headSha": "cbe96ad44c828f7fe57449cbbc9ab838f407caf2"
+  }
+}

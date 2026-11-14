@@ -1,0 +1,18 @@
+{
+  "schemaVersion": "1.0",
+  "purpose": "Override documentali puntuali sulla ammissibilità per Comune; nessuna inferenza generica da tutti i Comuni della Versilia.",
+  "verifiedOn": "2026-10-28",
+  "overrides": [
+    {
+      "coverage_id": "sinfi-supporto-comuni-2026",
+      "municipality": "Viareggio",
+      "status": "not_eligible",
+      "reason": "Il servizio SINFI 2026 è riservato ai Comuni fino a 50.000 abitanti; Viareggio conta 60.680 residenti al 1° gennaio 2026 (dato Istat).",
+      "source_url": "https://www.infratelitalia.it/archivio-news/notizie/progetto-sinfi-2026-i-comuni-fino-50000-abitanti-infratel-italia-apre",
+      "population_evidence_url": "https://osservatorioversilia.it/indicatori/popolazione-residente/",
+      "population_reference_date": "2026-01-01",
+      "population": 60680,
+      "upper_population_limit": 50000
+    }
+  ]
+}

@@ -1,0 +1,303 @@
+{
+  "schemaVersion": 1,
+  "relationships": [
+    {
+      "metricId": "population",
+      "dimension": "eta",
+      "companionMetricId": "ageDistribution",
+      "relationship": "age_breakdown"
+    },
+    {
+      "metricId": "populationChange",
+      "dimension": "eta",
+      "companionMetricId": "ageDistribution",
+      "relationship": "age_breakdown"
+    },
+    {
+      "metricId": "naturalDemographicDynamics",
+      "dimension": "eta",
+      "companionMetricId": "ageDistribution",
+      "relationship": "age_breakdown"
+    },
+    {
+      "metricId": "internalResidentialMobility",
+      "dimension": "eta",
+      "companionMetricId": "ageDistribution",
+      "relationship": "age_breakdown"
+    },
+    {
+      "metricId": "foreignResidentialMobility",
+      "dimension": "eta",
+      "companionMetricId": "ageDistribution",
+      "relationship": "age_breakdown"
+    },
+    {
+      "metricId": "totalResidentialMobility",
+      "dimension": "eta",
+      "companionMetricId": "ageDistribution",
+      "relationship": "age_breakdown"
+    },
+    {
+      "metricId": "foreignResidents",
+      "dimension": "eta",
+      "companionMetricId": "ageDistribution",
+      "relationship": "age_breakdown"
+    },
+    {
+      "metricId": "tourismIntensity",
+      "dimensions": [
+        "assoluto_normalizzato",
+        "numeratore_denominatore"
+      ],
+      "relationship": "ratio_formula",
+      "numeratorMetricId": "tourismPresences",
+      "denominatorMetricId": "population",
+      "denominatorYearMode": "metric_current"
+    },
+    {
+      "metricId": "commuterBalanceRate",
+      "dimensions": [
+        "assoluto_normalizzato",
+        "numeratore_denominatore"
+      ],
+      "relationship": "ratio_formula",
+      "numeratorMetricId": "commuterBalance",
+      "denominatorMetricId": "population"
+    },
+    {
+      "metricId": "populationChange",
+      "dimensions": [
+        "assoluto_normalizzato",
+        "numeratore_denominatore"
+      ],
+      "relationship": "series_change_formula",
+      "companionMetricId": "population",
+      "startYear": "2019",
+      "endYear": "2026"
+    },
+    {
+      "metricId": "dependencyIndices",
+      "dimensions": [
+        "eta",
+        "assoluto_normalizzato",
+        "numeratore_denominatore"
+      ],
+      "relationship": "parts_ratio_formula",
+      "companionMetricId": "ageDistribution",
+      "numeratorParts": [
+        "0–14",
+        "65–79",
+        "80–84",
+        "85+"
+      ],
+      "denominatorParts": [
+        "15–19",
+        "20–34",
+        "35–49",
+        "50–64"
+      ],
+      "partSelectorField": "selectorLabel",
+      "partValueField": "count"
+    },
+    {
+      "metricId": "inboundCommutersRate",
+      "dimensions": [
+        "assoluto_normalizzato",
+        "numeratore_denominatore"
+      ],
+      "relationship": "ratio_formula",
+      "numeratorMetricId": "inboundCommuters",
+      "denominatorMetricId": "population",
+      "denominatorYearMode": "metric_current"
+    },
+    {
+      "metricId": "outboundCommutersRate",
+      "dimensions": [
+        "assoluto_normalizzato",
+        "numeratore_denominatore"
+      ],
+      "relationship": "ratio_formula",
+      "numeratorMetricId": "outboundCommuters",
+      "denominatorMetricId": "population",
+      "denominatorYearMode": "metric_current"
+    },
+    {
+      "metricId": "tourismBedsPer1000",
+      "dimensions": [
+        "assoluto_normalizzato",
+        "numeratore_denominatore"
+      ],
+      "relationship": "ratio_formula",
+      "numeratorMetricId": "tourismBeds",
+      "denominatorMetricId": "population",
+      "numeratorYearMode": "metric_current",
+      "denominatorYearMode": "metric_current"
+    },
+    {
+      "metricId": "municipalStaffTurnover",
+      "dimension": "eta",
+      "companionMetricId": "municipalStaffAgeStructure",
+      "relationship": "age_breakdown"
+    },
+    {
+      "metricId": "municipalStaffTurnover",
+      "dimension": "numeratore_denominatore",
+      "relationship": "target_fields_ratio_formula",
+      "targetNumeratorFields": [
+        "netHires",
+        "netCessations"
+      ],
+      "targetNumeratorOperation": "difference",
+      "targetNumeratorCheckField": "netTurnoverHeadcount",
+      "companionMetricId": "municipalStaffAgeStructure",
+      "companionDenominatorField": "staffAt31Dec"
+    },
+    {
+      "metricId": "municipalEmployeesPer1000",
+      "dimension": "eta",
+      "companionMetricId": "municipalStaffAgeStructure",
+      "relationship": "age_breakdown"
+    },
+    {
+      "metricId": "commuterBalance",
+      "dimension": "assoluto_normalizzato",
+      "relationship": "normalized_companion_formula",
+      "normalizedMetricId": "commuterBalanceRate",
+      "denominatorMetricId": "population",
+      "denominatorYearMode": "target_year"
+    },
+    {
+      "metricId": "inboundCommuters",
+      "dimension": "assoluto_normalizzato",
+      "relationship": "normalized_companion_formula",
+      "normalizedMetricId": "inboundCommutersRate",
+      "denominatorMetricId": "population",
+      "denominatorYearMode": "metric_current"
+    },
+    {
+      "metricId": "outboundCommuters",
+      "dimension": "assoluto_normalizzato",
+      "relationship": "normalized_companion_formula",
+      "normalizedMetricId": "outboundCommutersRate",
+      "denominatorMetricId": "population",
+      "denominatorYearMode": "metric_current"
+    },
+    {
+      "metricId": "internalResidentialMobility",
+      "dimension": "numeratore_denominatore",
+      "relationship": "part_count_average_population_formula",
+      "companionMetricId": "population",
+      "numeratorPartLabel": "Saldo migratorio interno",
+      "partSelectorField": "label",
+      "partCountField": "count",
+      "populationYearMode": "target_and_next_average"
+    },
+    {
+      "metricId": "foreignResidentialMobility",
+      "dimension": "numeratore_denominatore",
+      "relationship": "part_count_average_population_formula",
+      "companionMetricId": "population",
+      "numeratorPartLabel": "Saldo migratorio con l’estero",
+      "partSelectorField": "label",
+      "partCountField": "count",
+      "populationYearMode": "target_and_next_average"
+    },
+    {
+      "metricId": "totalResidentialMobility",
+      "dimension": "numeratore_denominatore",
+      "relationship": "part_count_average_population_formula",
+      "companionMetricId": "population",
+      "numeratorPartLabel": "Saldo complessivo dei trasferimenti",
+      "partSelectorField": "label",
+      "partCountField": "count",
+      "populationYearMode": "target_and_next_average"
+    },
+    {
+      "metricId": "naturalDemographicDynamics",
+      "dimension": "numeratore_denominatore",
+      "relationship": "part_count_average_population_formula",
+      "companionMetricId": "population",
+      "numeratorPartLabel": "Saldo naturale",
+      "partSelectorField": "label",
+      "partCountField": "count",
+      "populationYearMode": "target_and_next_average"
+    },
+    {
+      "metricId": "currentPayments",
+      "dimension": "numeratore_denominatore",
+      "relationship": "canonical_field_ratio_formula",
+      "canonicalNumerator": {
+        "collectionPath": [
+          "towns"
+        ],
+        "identityField": "code",
+        "valuePath": [
+          "governance",
+          "currentPayments2025"
+        ]
+      },
+      "denominatorMetricId": "population",
+      "denominatorYearMode": "target_next_year"
+    },
+    {
+      "metricId": "capitalPayments",
+      "dimension": "numeratore_denominatore",
+      "relationship": "canonical_field_ratio_formula",
+      "canonicalNumerator": {
+        "collectionPath": [
+          "towns"
+        ],
+        "identityField": "code",
+        "valuePath": [
+          "governance",
+          "capitalPayments2025"
+        ]
+      },
+      "denominatorMetricId": "population",
+      "denominatorYearMode": "target_next_year"
+    },
+    {
+      "metricId": "siopePayments",
+      "dimension": "numeratore_denominatore",
+      "relationship": "canonical_field_ratio_formula",
+      "canonicalNumerator": {
+        "collectionPath": [
+          "details"
+        ],
+        "recordsByIdentity": true,
+        "valuePath": [
+          "government",
+          "payments"
+        ]
+      },
+      "denominatorMetricId": "population",
+      "denominatorYearMode": "target_next_year"
+    },
+    {
+      "metricId": "publicWorks",
+      "dimension": "numeratore_denominatore",
+      "relationship": "canonical_field_ratio_formula",
+      "canonicalNumerator": {
+        "collectionPath": [
+          "towns"
+        ],
+        "identityField": "code",
+        "valuePath": [
+          "governance",
+          "works",
+          "value"
+        ]
+      },
+      "denominatorMetricId": "population",
+      "denominatorYearMode": "target_year"
+    },
+    {
+      "metricId": "population",
+      "dimension": "assoluto_normalizzato",
+      "relationship": "normalized_companion_formula",
+      "normalizedMetricId": "populationDensity",
+      "denominatorMetricId": "municipalSurface",
+      "denominatorYearMode": "metric_current"
+    }
+  ]
+}

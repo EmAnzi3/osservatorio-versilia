@@ -10,9 +10,9 @@ from test_semantic_query_engine import rejected
 import semantic_query_energy_adapters as a
 
 # Independently reviewed published thousandths / hundredths, not engine answers.
-CURRENT={'046005':(2030,2289),'046013':(2011,2242),'046018':(2077,2277),'046024':(2010,2230),'046028':(2030,2291),'046030':(None,None),'046033':(1994,2254)}
+CURRENT={'046005':(1949,2199),'046013':(1960,2194),'046018':(1949,2199),'046024':(1949,2199),'046028':(1999,2212),'046030':(None,None),'046033':(1960,2199)}
 EV={'046005':54,'046013':595,'046018':46,'046024':132,'046028':24,'046030':72,'046033':79}
-MASS_DAILY=[('2026-08-14',1987,2088),('2026-08-27',2018,2147),('2026-08-28',2018,2147),('2026-10-03',2097,2299),('2026-10-10',2077,2277)]
+MASS_DAILY=[('2026-08-14',1987,2088),('2026-08-27',2018,2147),('2026-08-28',2018,2147),('2026-10-03',2097,2299),('2026-10-10',2077,2277),('2026-11-12',1949,2199)]
 MASS_MONTHLY=[('2022-01',1764,1637,31),('2022-03',1994,1964,29),('2026-09',2112,2266,29)]
 
 
@@ -26,20 +26,20 @@ def regressions(path):
         for o in r['observations']:
             wanted=CURRENT[o['geography']][1 if dim=='fuel:gasolio' else 0]
             assert o['value']==(None if wanted is None else wanted/1000)
-            assert o['period']=='2026-10-10' and not o['nativeRecordReplayAvailable']
+            assert o['period']=='2026-11-12' and not o['nativeRecordReplayAvailable']
             snap,ref=e.file(o['evidence'][0]['path']);assert pointer(snap,o['evidence'][0]['valuePointer'])==o['value']
         assert len(r['excluded'])==1 and r['excluded'][0]['observation']['geography']=='046030'
         r=e.query(dict(query(dim=dim,op='rank'),allowPartial=True));assert r['status']=='computed',r
         assert [o['geography'] for o in r['result']['ranking']]==sorted((c for c in CURRENT if c!='046030'),key=lambda c:(-CURRENT[c][1 if dim=='fuel:gasolio' else 0],c))
     for dim in ['fuel:benzina','fuel:gasolio','monthly:benzina','monthly:gasolio']:
         series=e.query(query(dim=dim,op='series',towns=['046018']));assert series['status']=='computed',series
-        assert len(series['observations'])==(57 if dim.startswith('monthly') else 5)
+        assert len(series['observations'])==(57 if dim.startswith('monthly') else 6)
         anchors=MASS_MONTHLY if dim.startswith('monthly') else MASS_DAILY
         for anchor in anchors:
             p=anchor[0];r=e.query(query(dim=dim,periods=[p],towns=['046018','046033']));assert r['status']=='computed',r
             o=r['observations'][0];assert o['value']==anchor[2 if dim.endswith('gasolio') else 1]/1000
             if dim.startswith('monthly'):assert o['observationDays']==o['fuelObservationDays']==anchor[3]
-    # Separate exhaustive replay into the normalized snapshots, including 124 nulls.
+    # Separate exhaustive replay into the normalized snapshots, including 126 nulls.
     cells=0;nulls=0
     for mode,(source,sha,obj) in a.FILES.items():
         snap,ref=e.file(source)
@@ -51,7 +51,7 @@ def regressions(path):
                     wanted=point['towns'][a.TOWNS[o['geography']]][fuel];assert o['value']==wanted
                     assert pointer(snap,o['evidence'][0]['valuePointer'])==wanted
                     cells+=1;nulls+=wanted is None
-    assert (cells,nulls)==(868,124)
+    assert (cells,nulls)==(882,126)
     r=e.query(query('evPoints'));assert r['status']=='computed',r
     for o in r['observations']:
         assert o['value']==EV[o['geography']]/100 and o['period']=='2026'
@@ -84,7 +84,7 @@ def regressions(path):
     rejected(e,query(dim='fuel:benzina',periods=['2026-09']),'energy_period_not_frozen_for_selected_statistic')
     rejected(e,query(periods=['2026']),'energy_period_not_frozen')
     assert statistics.mean([statistics.median([1,1,4]),statistics.median([3,3,3])])!=statistics.median([1,1,4,3,3,3])
-    print('Energy PASS: 21 current fuel anchors incl nulls, 7 EV densities, five daily and three monthly Massarosa pairs; separate 868-cell normalized replay incl 124 nulls, observed days, provenance, nonpooling and hostile cache/bytes; native archives and EV records not replayed')
+    print('Energy PASS: 21 current fuel anchors incl nulls, 7 EV densities, six daily and three monthly Massarosa pairs; separate 882-cell normalized replay incl 126 nulls, observed days, provenance, nonpooling and hostile cache/bytes; native archives and EV records not replayed')
 
 
 if __name__=='__main__':regressions(ROOT/'dist/data/site-data.json')

@@ -1,0 +1,13 @@
+{
+  "checkedAt": "2026-10-11",
+  "catalogueUrl": "https://geo.agcom.it/reportistica/report.js",
+  "catalogueSha256": "0b4a47c34f3bb49bc681e053139a285c27844820c4a3825fc6d2bc8eb7596f42",
+  "officialHeading": "Consistenze rilevate al 06/07/2026 (rev. del 14/07/2026)",
+  "officialCsvUrl": "https://geo.agcom.it/arcgis/sharing/rest/content/items/25830559c5784c1eb5eb1cf748889f4c/data",
+  "dataPeriod": "06/07/2026",
+  "revisionDate": "14/07/2026",
+  "previousDiscovery": "arcgis_portal_search:reportistica comuni:Reportistica 260630 Comuni",
+  "previousAcquisitionDate": "2026-09-16T08:57:25+00:00",
+  "action": "Reference metadata correction for already frozen primary CSV records; no new acquisition of CSV or values.",
+  "currentTransport": "ArcGIS returned HTML: Could not access any Portal machines."
+}

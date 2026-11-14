@@ -1,0 +1,1311 @@
+<!doctype html>
+<html lang="it"><head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Economia · Confronto dei comuni della Versilia</title>
+  <meta name="description" content="Redditi, risultati delle imprese, struttura produttiva e capacità turistica.">
+  <meta property="og:title" content="Economia · Confronto dei comuni della Versilia">
+  <meta property="og:description" content="Redditi, risultati delle imprese, struttura produttiva e capacità turistica.">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="it_IT">
+  <link rel="icon" href="../../favicon.svg?v=20260824-ov4" sizes="any">
+  <link rel="icon" href="../../favicon.svg?v=20260824-ov4" type="image/svg+xml">
+  <link rel="manifest" href="../../site.webmanifest?v=20260824-pwa9">
+  <link rel="stylesheet" href="../../assets/original.css">
+  <link rel="stylesheet" href="../../assets/static.css">
+  <link rel="stylesheet" href="../../assets/fidelity.css?v=20261025-ui-shell-consistency">
+  <link rel="stylesheet" href="../../assets/fonts.css">
+  <link rel="stylesheet" href="../../assets/ux-experiment.css?v=20261025-ui-shell-consistency">
+  <link rel="stylesheet" href="../../assets/ux-background-match.css?v=20261025-ui-shell-consistency">
+  <link rel="stylesheet" href="../../assets/export-v161.css?v=20261025-ui-shell-consistency">
+  <link rel="stylesheet" href="../../assets/visual-grammar.css?v=20261025-ui-shell-consistency">
+  <link rel="stylesheet" href="../../assets/indicator-pages.css?v=20261025-ui-shell-consistency">
+  <link rel="stylesheet" href="../../assets/social-presence.css?v=20261025-ui-shell-consistency">
+<style id="ov-invalsi-benchmark-history-style">
+.ux-history-chart .ux-series-group[data-history-town="toscana"] .ux-series-line{stroke-dasharray:10 5;stroke-width:3;opacity:.9}
+.ux-history-chart .ux-series-group[data-history-town="italia"] .ux-series-line{stroke-dasharray:2 5;stroke-width:3;opacity:.9}
+.ux-history-legend button[data-history-select="toscana"]::before,.ux-history-legend button[data-history-select="italia"]::before{width:20px;height:2px;border-radius:0}
+.ux-history-legend button[data-history-select="toscana"]::before{background:repeating-linear-gradient(90deg,var(--series-color) 0 8px,transparent 8px 12px)}
+.ux-history-legend button[data-history-select="italia"]::before{background:repeating-linear-gradient(90deg,var(--series-color) 0 2px,transparent 2px 6px)}
+</style><style id="ov-climate-current-grammar-style">
+      .ov-climate-current-legend{
+        display:flex;align-items:center;gap:18px;margin:0 0 14px;padding:0 2px;
+        color:var(--muted);font-size:9px;font-weight:700
+      }
+      .ov-climate-current-legend span{display:inline-flex;align-items:center;gap:7px}
+      .ov-climate-current-legend .ov-legend-dot{
+        width:9px;height:9px;border-radius:50%;background:var(--surface,#fffaf1);
+        border:2px solid var(--theme-color,#52785c)
+      }
+      .ov-climate-current-legend .ov-legend-mean{width:2px;height:16px;background:#607b88}
+      .ov-climate-current-list{
+        display:grid;gap:11px
+      }
+      .ov-climate-current-list .ov-climate-current-row{
+        border-radius:8px;grid-template-columns:24px minmax(110px,1.1fr) minmax(150px,3fr) minmax(70px,auto);
+        align-items:center;gap:12px;min-height:54px;padding:0;display:grid;position:relative;
+        color:inherit;text-decoration:none;transition:background .15s
+      }
+      .ov-climate-current-list .ov-climate-current-row:hover,
+      .ov-climate-current-list .ov-climate-current-row.selected{background:var(--blue-soft)}
+      .ov-climate-current-list .ov-climate-current-row .town{
+        grid-column:2;font-size:13px;font-weight:690
+      }
+      .ov-climate-current-list .ov-climate-current-row strong{
+        grid-column:4;font-family:var(--font-geist-mono),monospace;text-align:right;
+        white-space:nowrap;font-size:12px
+      }
+      .ov-climate-current-list .ov-climate-current-track{
+        grid-column:3;position:relative;height:9px;border-radius:999px;background:#e4e9e7;
+        overflow:visible
+      }
+      .ov-climate-current-list.uses-versilia-marker .ov-climate-current-track::after{
+        content:'';position:absolute;z-index:1;left:var(--ov-mean-position);top:-5px;width:2px;height:19px;
+        background:#607b88;transform:translateX(-1px)
+      }
+      .ov-climate-current-list.uses-versilia-marker .ov-climate-current-track>i{
+        position:absolute;z-index:2;top:50%;left:var(--ov-value-position)!important;
+        width:11px;height:11px;margin:-5.5px 0 0 -5.5px;border-radius:50%;
+        background:var(--surface,#fffaf1);border:3px solid var(--theme-color,#52785c);
+        box-shadow:0 1px 4px color-mix(in srgb,var(--ink) 18%,transparent)
+      }
+      .ov-climate-current-list .bar-hover-label{display:none}
+      @media(max-width:700px){
+        .ov-climate-current-list .ov-climate-current-row{
+          grid-template-columns:18px minmax(82px,1fr) minmax(70px,1.4fr) auto;gap:7px
+        }
+        .ov-climate-current-list .ov-climate-current-row .town{font-size:11px}
+        .ov-climate-current-list .ov-climate-current-row strong{font-size:10px}
+      }
+    </style>
+  <link rel="canonical" href="https://osservatorioversilia.it/confronta/economia/">
+  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"url":"https://osservatorioversilia.it/confronta/economia/","name":"Economia · Confronto dei comuni della Versilia","description":"Redditi, risultati delle imprese, struttura produttiva e capacità turistica.","inLanguage":"it-IT","isAccessibleForFree":true,"creator":{"@type":"Person","name":"Emanuele Anzilotti"},"publisher":{"@type":"Person","name":"Emanuele Anzilotti"},"@type":"Dataset","spatialCoverage":{"@type":"Place","name":"Versilia, Toscana, Italia"},"variableMeasured":["Reddito imponibile medio per dichiarante","Distribuzione dei dichiaranti per fascia di reddito","Reddito medio dichiarato per fonte","Peso dei redditi da pensione","Contribuenti ogni 100 maggiorenni","Redditi vs inflazione","Addizionale comunale IRPEF effettiva","TARI standardizzata · 3 persone, 100 m²","IMU seconda abitazione standardizzata","Recupero tributario e accertamento","Addetti in unità locali a bassa produttività","Quota industriale del valore aggiunto","Quota degli addetti nell’industria","Unità locali attive","Addetti nelle unità locali","Addetti per unità locale","Variazione delle unità locali 2018–2024","Variazione degli addetti 2018–2024","Unità locali con meno di 10 addetti","Fatturato delle unità locali","Valore aggiunto delle unità locali","Valore aggiunto per addetto","Fatturato per addetto","Valore aggiunto sul fatturato","Retribuzione media lorda per dipendente","Costo del lavoro","Margine operativo lordo","Ditte individuali con titolare nato all’estero","Imprese attive nei settori dell’innovazione","Presenze turistiche","Arrivi turistici","Permanenza media","Posti letto nelle strutture ricettive","Concentrazione turistica nei tre mesi principali","Presenze turistiche straniere","Presenze turistiche per residente","Posti letto turistici ogni 1.000 residenti","Strutture ricettive ogni 1.000 residenti","Atlante delle attività economiche"]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Osservatorio Versilia","item":"https://osservatorioversilia.it/"},{"@type":"ListItem","position":2,"name":"Temi","item":"https://osservatorioversilia.it/#temi"},{"@type":"ListItem","position":3,"name":"Economia · Confronto dei comuni della Versilia","item":"https://osservatorioversilia.it/confronta/economia/"}]}]}</script>
+
+  <meta property="og:url" content="https://osservatorioversilia.it/confronta/economia/">
+  <meta property="og:site_name" content="Osservatorio Versilia">
+  <meta property="og:image" content="https://osservatorioversilia.it/images/versilia-viareggio-apuane.jpg">
+  <meta property="og:image:alt" content="Viareggio e le Alpi Apuane, immagine di Osservatorio Versilia">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Economia · Confronto dei comuni della Versilia">
+  <meta name="twitter:description" content="Redditi, risultati delle imprese, struttura produttiva e capacità turistica.">
+  <meta name="twitter:site" content="@OssVersilia">
+  <meta name="twitter:image" content="https://osservatorioversilia.it/images/versilia-viareggio-apuane.jpg">
+  <meta name="twitter:image:alt" content="Viareggio e le Alpi Apuane, immagine di Osservatorio Versilia">
+  <link rel="stylesheet" href="../../assets/brand.css?v=20260824-ov4">
+  <link rel="stylesheet" href="../../assets/mobile-accordion-fix.css?v=20260809-3">
+  <link rel="stylesheet" href="../../assets/chart-surfaces.css?v=20260826-v120">
+  <meta name="theme-color" content="#0F3654">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Osservatorio Versilia">
+  <link rel="apple-touch-icon" sizes="180x180" href="../../pwa/icon-180.png?v=20260824-pwa9">
+  <link rel="stylesheet" href="../../assets/pwa.css?v=20260824-pwa9">
+</head>
+<body class="antialiased" data-page="compare" data-theme="economia" data-town="" data-prerendered="true">
+  <div id="site-header-mount">
+      <a class="skip-link" href="#app">Vai al contenuto</a>
+      <header class="site-header">
+        <div class="site-header-inner">
+          <a href="../../" class="site-brand" aria-label="Osservatorio Versilia, torna alla home">
+            <span class="site-brand-mark" aria-hidden="true"><svg class="ov-mark-svg" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 76 64"><g fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="27" cy="32" r="22" stroke="#0F3654" stroke-width="6"/>
+    <path d="M43 28 53 48 71 15" stroke="#0F3654" stroke-width="6"/>
+    <path d="M57 27 70 9" stroke="#58A28F" stroke-width="3.2"/>
+  </g>
+  <g fill="#6F8FA3">
+    <rect x="16" y="34" width="5.5" height="9" rx="1"/>
+    <rect x="24" y="28" width="5.5" height="15" rx="1"/>
+    <rect x="32" y="20" width="5.5" height="23" rx="1"/>
+  </g>
+  <path d="M10 43c7-5.5 14-7.2 20-5.3 4.4 1.4 8 4.1 12 4.7v5.1c-4.6-.5-8.7-3-13.1-4.1-5.7-1.5-11.7-.1-18.9 4.1Z" fill="#58A28F"/>
+  <path d="M11.5 45.2c6.2-3.2 11.9-4.2 17.1-3 4.3 1 8.1 3.2 12.2 3.8" fill="none" stroke="#F7FAF8" stroke-width="1.8" stroke-linecap="round"/>
+</svg></span>
+            <span class="site-brand-copy"><strong>Osservatorio Versilia</strong><small>Versilia in numeri</small></span>
+          </a>
+          <div class="site-header-actions">
+            <nav aria-label="Navigazione principale">
+              <a href="../../#temi" aria-current="page">Temi</a>
+              <a href="../../#comuni">Comuni</a>
+              <a href="../../dossier/">Dossier</a>
+              <a href="../../chiedi/">Chiedi</a>
+              <a href="../../opportunita/">Opportunità</a>
+              <a href="../../progetto/">Il progetto</a>
+              <a href="../../stato-dati/" data-data-status-nav="header">Stato dati</a>
+              <a href="../../segnala/">Segnala</a>
+            </nav>
+            <button class="global-search-trigger" type="button" aria-haspopup="dialog" aria-expanded="false">
+              <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg><span>Cerca</span><kbd>/</kbd>
+            </button>
+          </div>
+        </div>
+      </header></div>
+  <div id="app"><main class="inner-page a5-editorial-pilot" data-theme="economia">
+          <section class="compare-showcase-hero" aria-labelledby="compare-page-title">
+            <div class="compare-showcase-hero-media" style="background-image:linear-gradient(90deg,rgba(10,45,67,.86) 0%,rgba(10,45,67,.62) 43%,rgba(10,45,67,.16) 78%),url('../../images/versilia-viareggio-apuane.jpg')"></div>
+            <div class="compare-showcase-hero-copy page-width">
+              <span class="overline">Confronto territoriale · 02</span>
+              <h1 id="compare-page-title">Economia</h1>
+              <p>Redditi, costo della vita, fiscalità locale, unità locali, addetti, struttura produttiva, imprenditorialità e capacità turistica.</p>
+              <div class="compare-showcase-actions">
+                <a class="compare-showcase-primary" href="#compare-workspace">Esplora i dati <span aria-hidden="true">→</span></a>
+                <a class="compare-showcase-secondary" href="#compare-territori">Scopri i comuni</a>
+              </div>
+              <div class="compare-showcase-facts"><span>7 Comuni</span><span>39 indicatori Economia</span><span>Catalogo al 14 settembre 2026</span></div>
+            </div>
+          </section>
+          <div class="breadcrumbs page-width"><a href="/">Home</a><span>›</span><strong>Economia</strong></div>
+          <nav class="compare-context-nav page-width" aria-label="Passa a un altro tema">
+      <div class="context-nav-title"><small>Esplora</small><strong>Temi</strong></div>
+      <div class="context-nav-links"><a href="/confronta/demografia/?indicatore=population" data-context-theme="demografia" class=""><small>01</small><span>Demografia</span></a><a href="/confronta/economia/?indicatore=income" data-context-theme="economia" class="active" aria-current="page"><small>02</small><span>Economia</span></a><a href="/confronta/lavoro/?indicatore=employmentRate" data-context-theme="lavoro" class=""><small>03</small><span>Lavoro</span></a><a href="/confronta/istruzione/?indicatore=diplomaPlus" data-context-theme="istruzione" class=""><small>04</small><span>Istruzione</span></a><a href="/confronta/salute/?indicatore=lifeExpectancy" data-context-theme="salute" class=""><small>05</small><span>Salute</span></a><a href="/confronta/mobilita/?indicatore=outsideMunicipality" data-context-theme="mobilita" class=""><small>06</small><span>Mobilità e infrastrutture</span></a><a href="/confronta/sicurezza/?indicatore=roadSafety" data-context-theme="sicurezza" class=""><small>07</small><span>Sicurezza e territorio</span></a><a href="/confronta/abitare/?indicatore=omiResidential" data-context-theme="abitare" class=""><small>08</small><span>Abitare</span></a><a href="/confronta/ambiente/?indicatore=municipalSurface" data-context-theme="ambiente" class=""><small>09</small><span>Ambiente</span></a><a href="/confronta/bilanci/?indicatore=currentRevenueAccruedPerResident" data-context-theme="bilanci" class=""><small>10</small><span>Bilanci e amministrazione</span></a><a href="/confronta/comunita/?indicatore=publicWorks" data-context-theme="comunita" class=""><small>11</small><span>Comunità e welfare</span></a></div>
+    </nav>
+          <section class="topic-hero page-width" data-theme="economia">
+            <div class="topic-symbol"><svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z"></path><path d="M7 12h5"></path><path d="M15 9.4a4 4 0 1 0 0 5.2"></path></svg><small>02</small></div>
+            <div class="topic-hero-copy"><span class="overline">Per leggere il territorio</span><h2>Come è fatta l’economia del territorio?</h2></div>
+            <div class="topic-hero-context"><span class="overline">Come si legge</span><p>Scegli un indicatore: valore attuale dei sette Comuni, serie storica e, dove disponibile, confronto con Toscana e Italia. Fonte e metodo sono indicati sotto ogni grafico.</p></div>
+          </section>
+          <section id="compare-workspace" class="topic-dashboard page-width" data-theme="economia">
+            <aside class="topic-controls">
+      <div class="topic-controls-heading"><div><span class="overline">Gruppi di indicatori</span><strong>39 indicatori</strong></div><small>Scegli il dato da confrontare</small></div>
+      <div class="metric-switch metric-catalog compact-list" role="tablist" aria-label="Indicatori di Economia" data-ux-accordion-delegated="true" data-ux-visible-tabs="true" data-ux-accordion-ready="true"><section class="metric-group is-open" data-section="redditi" data-ux-accordion="true">
+      <div class="metric-group-heading ux-section-toggle" role="button" tabindex="0" aria-controls="ux-section-1" data-ux-accordion-heading="true" aria-expanded="true"><strong>Redditi</strong><span>Reddito imponibile, distribuzione per fascia, fonti di reddito, peso delle pensioni, rapporto tra contribuenti e residenti maggiorenni e confronto con l’inflazione.</span><span class="ux-section-tools"><span>6 indicatori</span><span class="ux-section-chevron" aria-hidden="true">⌄</span></span></div>
+      <div class="metric-group-buttons" id="ux-section-1"><button type="button" role="tab" data-metric="income" class="active" aria-selected="true" tabindex="0">Reddito imponibile medio</button><button type="button" role="tab" data-metric="incomeDistribution" class="" aria-selected="false" tabindex="-1">Distribuzione per fascia di reddito</button><button type="button" role="tab" data-metric="incomeSourceProfile" class="" aria-selected="false" tabindex="-1">Reddito per fonte</button><button type="button" role="tab" data-metric="pensionIncomeShare" class="" aria-selected="false" tabindex="-1">Redditi da pensione</button><button type="button" role="tab" data-metric="taxpayersAdultPopulationRate" class="" aria-selected="false" tabindex="-1">Contribuenti / maggiorenni</button><button type="button" role="tab" data-metric="incomeVsInflation" class="" aria-selected="false" tabindex="-1">Redditi vs inflazione</button></div>
+    </section><section class="metric-group" data-section="costi-fiscalita" data-ux-accordion="true">
+      <div class="metric-group-heading ux-section-toggle" role="button" tabindex="0" aria-controls="ux-section-2" data-ux-accordion-heading="true" aria-expanded="false"><strong>Costi e fiscalità locale</strong><span>Confronti standardizzati su tributi comunali, costi osservabili sul territorio e attività di recupero/accertamento fiscale.</span><span class="ux-section-tools"><span>4 indicatori</span><span class="ux-section-chevron" aria-hidden="true">⌄</span></span></div>
+      <div class="metric-group-buttons" id="ux-section-2" hidden=""><button type="button" role="tab" data-metric="municipalIrpef" class="" aria-selected="false" tabindex="-1">Addizionale comunale IRPEF</button><button type="button" role="tab" data-metric="tariStandardHousehold" class="" aria-selected="false" tabindex="-1">TARI · 3 persone / 100 m²</button><button type="button" role="tab" data-metric="municipalImuStandard" class="" aria-selected="false" tabindex="-1">IMU seconda abitazione</button><button type="button" role="tab" data-metric="fiscalRecoveryActivity" class="" aria-selected="false" tabindex="-1">Recupero e accertamento</button></div>
+    </section><section class="metric-group" data-section="produzione" data-ux-accordion="true">
+      <div class="metric-group-heading ux-section-toggle" role="button" tabindex="0" aria-controls="ux-section-3" data-ux-accordion-heading="true" aria-expanded="false"><strong>Sistema produttivo</strong><span>Consistenza, dimensione e dinamica delle unità locali e degli addetti, produttività e specializzazione.</span><span class="ux-section-tools"><span>9 indicatori</span><span class="ux-section-chevron" aria-hidden="true">⌄</span></span></div>
+      <div class="metric-group-buttons" id="ux-section-3" hidden=""><button type="button" role="tab" data-metric="lowProductivityEmployment" class="" aria-selected="false" tabindex="-1">Addetti a bassa produttività</button><button type="button" role="tab" data-metric="industryValueAddedShare" class="" aria-selected="false" tabindex="-1">Industria sul valore aggiunto</button><button type="button" role="tab" data-metric="industryWorkerShare" class="" aria-selected="false" tabindex="-1">Addetti nell’industria</button><button type="button" role="tab" data-metric="localUnits" class="" aria-selected="false" tabindex="-1">Unità locali</button><button type="button" role="tab" data-metric="localEmployees" class="" aria-selected="false" tabindex="-1">Addetti nelle unità locali</button><button type="button" role="tab" data-metric="employeesPerLocalUnit" class="" aria-selected="false" tabindex="-1">Dimensione media delle unità locali</button><button type="button" role="tab" data-metric="localUnitsChange" class="" aria-selected="false" tabindex="-1">Variazione unità locali</button><button type="button" role="tab" data-metric="localEmployeesChange" class="" aria-selected="false" tabindex="-1">Variazione addetti</button><button type="button" role="tab" data-metric="microUnits" class="" aria-selected="false" tabindex="-1">Micro unità locali</button></div>
+    </section><section class="metric-group" data-section="economia-prodotta" data-ux-accordion="true">
+      <div class="metric-group-heading ux-section-toggle" role="button" tabindex="0" aria-controls="ux-section-4" data-ux-accordion-heading="true" aria-expanded="false"><strong>Economia prodotta</strong><span>Fatturato, valore aggiunto, produttività, retribuzioni e margini delle unità locali secondo Frame SBS Territoriale Istat.</span><span class="ux-section-tools"><span>8 indicatori</span><span class="ux-section-chevron" aria-hidden="true">⌄</span></span></div>
+      <div class="metric-group-buttons" id="ux-section-4" hidden=""><button type="button" role="tab" data-metric="businessTurnover" class="" aria-selected="false" tabindex="-1">Fatturato</button><button type="button" role="tab" data-metric="businessValueAdded" class="" aria-selected="false" tabindex="-1">Valore aggiunto</button><button type="button" role="tab" data-metric="labourProductivity" class="" aria-selected="false" tabindex="-1">VA per addetto</button><button type="button" role="tab" data-metric="turnoverPerPersonEmployed" class="" aria-selected="false" tabindex="-1">Fatturato per addetto</button><button type="button" role="tab" data-metric="valueAddedTurnoverShare" class="" aria-selected="false" tabindex="-1">VA sul fatturato</button><button type="button" role="tab" data-metric="averageGrossRemunerationPerEmployee" class="" aria-selected="false" tabindex="-1">Retribuzione per dipendente</button><button type="button" role="tab" data-metric="labourCost" class="" aria-selected="false" tabindex="-1">Costo del lavoro</button><button type="button" role="tab" data-metric="grossOperatingMargin" class="" aria-selected="false" tabindex="-1">MOL</button></div>
+    </section><section class="metric-group" data-section="imprenditorialita" data-ux-accordion="true">
+      <div class="metric-group-heading ux-section-toggle" role="button" tabindex="0" aria-controls="ux-section-5" data-ux-accordion-heading="true" aria-expanded="false"><strong>Imprenditorialità e innovazione</strong><span>Caratteristiche delle ditte individuali e presenza dei settori individuati come innovativi.</span><span class="ux-section-tools"><span>2 indicatori</span><span class="ux-section-chevron" aria-hidden="true">⌄</span></span></div>
+      <div class="metric-group-buttons" id="ux-section-5" hidden=""><button type="button" role="tab" data-metric="foreignBornSoleProprietorShare" class="" aria-selected="false" tabindex="-1">Titolari nati all’estero</button><button type="button" role="tab" data-metric="innovationBusinessShare" class="" aria-selected="false" tabindex="-1">Imprese dell’innovazione</button></div>
+    </section><section class="metric-group" data-section="turismo" data-ux-accordion="true">
+      <div class="metric-group-heading ux-section-toggle" role="button" tabindex="0" aria-controls="ux-section-6" data-ux-accordion-heading="true" aria-expanded="false"><strong>Turismo</strong><span>Flussi, capacità ricettiva e pressione stagionale.</span><span class="ux-section-tools"><span>9 indicatori</span><span class="ux-section-chevron" aria-hidden="true">⌄</span></span></div>
+      <div class="metric-group-buttons" id="ux-section-6" hidden=""><button type="button" role="tab" data-metric="tourismPresences" class="" aria-selected="false" tabindex="-1">Presenze turistiche</button><button type="button" role="tab" data-metric="tourismArrivals" class="" aria-selected="false" tabindex="-1">Arrivi turistici</button><button type="button" role="tab" data-metric="tourismAverageStay" class="" aria-selected="false" tabindex="-1">Permanenza media</button><button type="button" role="tab" data-metric="tourismBeds" class="" aria-selected="false" tabindex="-1">Posti letto turistici</button><button type="button" role="tab" data-metric="tourismSeasonality" class="" aria-selected="false" tabindex="-1">Stagionalità</button><button type="button" role="tab" data-metric="foreignTourismShare" class="" aria-selected="false" tabindex="-1">Turismo straniero</button><button type="button" role="tab" data-metric="tourismIntensity" class="" aria-selected="false" tabindex="-1">Pressione turistica</button><button type="button" role="tab" data-metric="tourismBedsPer1000" class="" aria-selected="false" tabindex="-1">Posti letto / residenti</button><button type="button" role="tab" data-metric="tourismStructuresPer1000" class="" aria-selected="false" tabindex="-1">Strutture ricettive</button></div>
+    </section><section class="metric-group" data-section="atlante" data-ux-accordion="true">
+      <div class="metric-group-heading ux-section-toggle" role="button" tabindex="0" aria-controls="ux-section-7" data-ux-accordion-heading="true" aria-expanded="false"><strong>Atlante delle attività economiche</strong><span>Esplora la classificazione ATECO per la Versilia o per un singolo Comune, con storico 2014–2025.</span><span class="ux-section-tools"><span>1 indicatore</span><span class="ux-section-chevron" aria-hidden="true">⌄</span></span></div>
+      <div class="metric-group-buttons" id="ux-section-7" hidden=""><a class="metric-route-link" href="/confronta/economia/atlante-attivita-economiche/"><span>Atlante interattivo</span><small>Apri approfondimento <b>→</b></small></a></div>
+    </section></div>
+      <div id="compare-definition" class="topic-side-definition"><div class="indicator-definition"><h2>Reddito imponibile medio per dichiarante</h2><p>Reddito imponibile dichiarato diviso per la relativa frequenza dei dichiaranti. È una variabile MEF diversa dal «Reddito complessivo medio dichiarato» mostrato nella distribuzione per fasce: i due valori non devono coincidere. Qui si usa l’imponibile perché consente una serie comunale omogenea 2011–2024.</p><dl><div><dt>Anno</dt><dd>2024</dd></div><div><dt>Fonte</dt><dd><a href="https://www1.finanze.gov.it/finanze/analisi_stat/public/index.php" target="_blank" rel="noreferrer">Dipartimento delle Finanze — MEF ↗</a></dd></div><div><dt>Media ponderata Versilia</dt><dd>24.920&nbsp;€</dd></div></dl><small class="aggregate-note">Ammontare complessivo / frequenza complessiva dei sette comuni.</small></div></div>
+    </aside>
+            <div class="compare-main-column">
+              <header class="compare-panel-heading"><span class="overline">Confronto tra Comuni della Versilia</span></header>
+              <div id="compare-bars" class="a5-shared-chart" data-age-pyramid-delegated="1"><div class="ux-view-shell" data-view-shell="ux-view-1"><div class="ux-view-toolbar"><div class="ux-view-toolbar-copy"><small class="a5-toolbar-overline">Confronto tra Comuni della Versilia</small><strong>Come vuoi leggere l’indicatore?</strong><span>Fotografia dell’ultimo anno oppure confronto dell’andamento tra i sette comuni.</span></div><div class="data-actions"><a href="../../indicatori/reddito-imponibile-medio-per-dichiarante/">Scheda indicatore</a><button type="button" data-download="">Scarica CSV</button><button type="button" data-print="">Stampa / PDF</button></div><div class="ux-view-toggle" role="tablist" aria-label="Vista dell’indicatore"><button id="ux-view-1-tab-current" type="button" role="tab" aria-controls="ux-view-1-current" data-view-mode="current" class="active" aria-selected="true" tabindex="0">Valore attuale</button><button id="ux-view-1-tab-history" type="button" role="tab" aria-controls="ux-view-1-history" data-view-mode="history" aria-selected="false" tabindex="-1">Storico</button></div></div><p class="ux-view-note">Valore corrente e storico usano la stessa definizione MEF: «Reddito imponibile — Ammontare / Frequenza». Il «Reddito complessivo medio dichiarato» della distribuzione per fasce è una misura diversa e non viene mescolata a questa serie.</p><div id="ux-view-1-current" class="ux-view-pane" role="tabpanel" aria-labelledby="ux-view-1-tab-current" data-view-pane="current"><div class="topic-bars"><div class="comparison-bars" data-visual-contract="canonical" data-visual-unit="currency" data-visual-grammar-signature="income|r|||25534.952857142856|currency|40248.59|25539.17|25239.48|23744.66|22350.6|21933.08|19689.09" data-viz="lollipop"><div class="comparison-legend"><span><i class="comparison-legend-dot" aria-hidden="true"></i>Comune</span><span><i class="comparison-legend-reference" aria-hidden="true"></i>Media semplice dei 7 comuni</span></div><a href="/comuni/forte-dei-marmi/?tema=economia&amp;indicatore=income" class="bar-row comparison-row" aria-label="Forte dei Marmi: 40.249 €; Media semplice dei 7 comuni: 25.535 €">
+        <span class="bar-town">Forte dei Marmi</span>
+        <span class="bar-track">
+        <span class="comparison-axis-line" aria-hidden="true"></span>
+        
+        <span class="comparison-reference" style="left:51.06990571428571%" aria-hidden="true"></span>
+        <span class="comparison-stem" style="left:0%;width:80.49717999999999%" aria-hidden="true"></span>
+        <span class="comparison-dot" style="left:80.49717999999999%" aria-hidden="true"></span><span class="bar-hover-label">Forte dei Marmi: 40.249 € · Media semplice dei 7 comuni: 25.535 €</span></span>
+        <strong>40.249&nbsp;€</strong>
+      </a><a href="/comuni/viareggio/?tema=economia&amp;indicatore=income" class="bar-row comparison-row" aria-label="Viareggio: 25.539 €; Media semplice dei 7 comuni: 25.535 €">
+        <span class="bar-town">Viareggio</span>
+        <span class="bar-track">
+        <span class="comparison-axis-line" aria-hidden="true"></span>
+        
+        <span class="comparison-reference" style="left:51.06990571428571%" aria-hidden="true"></span>
+        <span class="comparison-stem" style="left:0%;width:51.07834%" aria-hidden="true"></span>
+        <span class="comparison-dot" style="left:51.07834%" aria-hidden="true"></span><span class="bar-hover-label">Viareggio: 25.539 € · Media semplice dei 7 comuni: 25.535 €</span></span>
+        <strong>25.539&nbsp;€</strong>
+      </a><a href="/comuni/pietrasanta/?tema=economia&amp;indicatore=income" class="bar-row comparison-row" aria-label="Pietrasanta: 25.239 €; Media semplice dei 7 comuni: 25.535 €">
+        <span class="bar-town">Pietrasanta</span>
+        <span class="bar-track">
+        <span class="comparison-axis-line" aria-hidden="true"></span>
+        
+        <span class="comparison-reference" style="left:51.06990571428571%" aria-hidden="true"></span>
+        <span class="comparison-stem" style="left:0%;width:50.478959999999994%" aria-hidden="true"></span>
+        <span class="comparison-dot" style="left:50.478959999999994%" aria-hidden="true"></span><span class="bar-hover-label">Pietrasanta: 25.239 € · Media semplice dei 7 comuni: 25.535 €</span></span>
+        <strong>25.239&nbsp;€</strong>
+      </a><a href="/comuni/camaiore/?tema=economia&amp;indicatore=income" class="bar-row comparison-row" aria-label="Camaiore: 23.745 €; Media semplice dei 7 comuni: 25.535 €">
+        <span class="bar-town">Camaiore</span>
+        <span class="bar-track">
+        <span class="comparison-axis-line" aria-hidden="true"></span>
+        
+        <span class="comparison-reference" style="left:51.06990571428571%" aria-hidden="true"></span>
+        <span class="comparison-stem" style="left:0%;width:47.48932%" aria-hidden="true"></span>
+        <span class="comparison-dot" style="left:47.48932%" aria-hidden="true"></span><span class="bar-hover-label">Camaiore: 23.745 € · Media semplice dei 7 comuni: 25.535 €</span></span>
+        <strong>23.745&nbsp;€</strong>
+      </a><a href="/comuni/massarosa/?tema=economia&amp;indicatore=income" class="bar-row comparison-row" aria-label="Massarosa: 22.351 €; Media semplice dei 7 comuni: 25.535 €">
+        <span class="bar-town">Massarosa</span>
+        <span class="bar-track">
+        <span class="comparison-axis-line" aria-hidden="true"></span>
+        
+        <span class="comparison-reference" style="left:51.06990571428571%" aria-hidden="true"></span>
+        <span class="comparison-stem" style="left:0%;width:44.7012%" aria-hidden="true"></span>
+        <span class="comparison-dot" style="left:44.7012%" aria-hidden="true"></span><span class="bar-hover-label">Massarosa: 22.351 € · Media semplice dei 7 comuni: 25.535 €</span></span>
+        <strong>22.351&nbsp;€</strong>
+      </a><a href="/comuni/seravezza/?tema=economia&amp;indicatore=income" class="bar-row comparison-row" aria-label="Seravezza: 21.933 €; Media semplice dei 7 comuni: 25.535 €">
+        <span class="bar-town">Seravezza</span>
+        <span class="bar-track">
+        <span class="comparison-axis-line" aria-hidden="true"></span>
+        
+        <span class="comparison-reference" style="left:51.06990571428571%" aria-hidden="true"></span>
+        <span class="comparison-stem" style="left:0%;width:43.86616%" aria-hidden="true"></span>
+        <span class="comparison-dot" style="left:43.86616%" aria-hidden="true"></span><span class="bar-hover-label">Seravezza: 21.933 € · Media semplice dei 7 comuni: 25.535 €</span></span>
+        <strong>21.933&nbsp;€</strong>
+      </a><a href="/comuni/stazzema/?tema=economia&amp;indicatore=income" class="bar-row comparison-row" aria-label="Stazzema: 19.689 €; Media semplice dei 7 comuni: 25.535 €">
+        <span class="bar-town">Stazzema</span>
+        <span class="bar-track">
+        <span class="comparison-axis-line" aria-hidden="true"></span>
+        
+        <span class="comparison-reference" style="left:51.06990571428571%" aria-hidden="true"></span>
+        <span class="comparison-stem" style="left:0%;width:39.37818%" aria-hidden="true"></span>
+        <span class="comparison-dot" style="left:39.37818%" aria-hidden="true"></span><span class="bar-hover-label">Stazzema: 19.689 € · Media semplice dei 7 comuni: 25.535 €</span></span>
+        <strong>19.689&nbsp;€</strong>
+      </a><div class="comparison-axis"><span>0,0 €</span><span>scala con origine a zero</span><span>50.000 €</span></div><p class="comparison-note">I comuni sono ordinati per valore per facilitare il confronto. L’ordine non esprime merito o qualità.</p></div></div></div><div id="ux-view-1-history" class="ux-view-pane" role="tabpanel" aria-labelledby="ux-view-1-tab-history" data-view-pane="history" hidden=""><div class="ux-history-card"><div class="ux-history-head"><div><strong>Andamento 2011–2024</strong><span>Una linea per territorio; sono mostrati solo gli anni disponibili in modo omogeneo.</span></div><span>Dipartimento delle Finanze — MEF</span></div><div class="ux-history-scroll"><div class="ux-history-chart has-selection" data-unit="currency" data-ov-tooltip-wired="1"><svg viewBox="0 0 920 390" role="img" aria-label="Reddito imponibile medio · serie storica: confronto storico dei sette comuni"><line class="ux-history-grid" x1="78" y1="26" x2="890" y2="26"></line><text class="ux-history-axis-label" x="68" y="30" text-anchor="end">42.323 €</text><line class="ux-history-grid" x1="78" y1="104" x2="890" y2="104"></line><text class="ux-history-axis-label" x="68" y="108" text-anchor="end">34.804 €</text><line class="ux-history-grid" x1="78" y1="182" x2="890" y2="182"></line><text class="ux-history-axis-label" x="68" y="186" text-anchor="end">27.286 €</text><line class="ux-history-grid" x1="78" y1="260" x2="890" y2="260"></line><text class="ux-history-axis-label" x="68" y="264" text-anchor="end">19.768 €</text><line class="ux-history-grid" x1="78" y1="338" x2="890" y2="338"></line><text class="ux-history-axis-label" x="68" y="342" text-anchor="end">12.250 €</text><g class="ux-series-group " data-history-town="massarosa" style="--series-color:#0f5c6e"><polyline class="ux-series-line" points="78,286.8990137075737 140.46153846153845,285.91961532436585 202.9230769230769,284.2683330503047 265.38461538461536,283.217866034417 327.8461538461538,281.5363925601955 390.3076923076923,279.63465819958105 452.7692307692308,279.11310781055715 515.2307692307693,274.9495234338076 577.6923076923076,271.9143221943217 640.1538461538462,273.59621066785803 702.6153846153846,264.0813138750618 765.0769230769231,252.9551822420942 827.5384615384615,244.48338622734593 890,233.20858108980872"></polyline><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Massarosa · 2011: 17.176 €" style="pointer-events: none;">
+      <circle class="chart-hit" cx="78" cy="286.8990137075737" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="78" cy="286.8990137075737" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="78" y1="286.8990137075737" x2="78" y2="270.8990137075737"></line>
+        <rect x="70" y="220.89901370757372" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="82" y="234.89901370757372">Massarosa · 2011</text>
+        <text class="chart-tooltip-value" x="82" y="254.89901370757372">17.176 €</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Massarosa · 2012: 17.270 €" style="pointer-events: none;">
+      <circle class="chart-hit" cx="140.46153846153845" cy="285.91961532436585" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="140.46153846153845" cy="285.91961532436585" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="140.46153846153845" y1="285.91961532436585" x2="140.46153846153845" y2="269.91961532436585"></line>
+        <rect x="70" y="219.91961532436585" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="82" y="233.91961532436585">Massarosa · 2012</text>
+        <text class="chart-tooltip-value" x="82" y="253.91961532436585">17.270 €</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Massarosa · 2013: 17.429 €" style="pointer-events: none;">
+      <circle class="chart-hit" cx="202.9230769230769" cy="284.2683330503047" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="202.9230769230769" cy="284.2683330503047" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="202.9230769230769" y1="284.2683330503047" x2="202.9230769230769" y2="268.2683330503047"></line>
+        <rect x="97.9230769230769" y="218.2683330503047" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="109.9230769230769" y="232.2683330503047">Massarosa · 2013</text>
+        <text class="chart-tooltip-value" x="109.9230769230769" y="252.2683330503047">17.429 €</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Massarosa · 2014: 17.530 €" style="pointer-events: none;">
+      <circle class="chart-hit" cx="265.38461538461536" cy="283.217866034417" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="265.38461538461536" cy="283.217866034417" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="265.38461538461536" y1="283.217866034417" x2="265.38461538461536" y2="267.217866034417"></line>
+        <rect x="160.38461538461536" y="217.217866034417" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="172.38461538461536" y="231.217866034417">Massarosa · 2014</text>
+        <text class="chart-tooltip-value" x="172.38461538461536" y="251.217866034417">17.530 €</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Massarosa · 2015: 17.692 €" style="pointer-events: none;">
+      <circle class="chart-hit" cx="327.8461538461538" cy="281.5363925601955" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="327.8461538461538" cy="281.5363925601955" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="327.8461538461538" y1="281.5363925601955" x2="327.8461538461538" y2="265.5363925601955"></line>
+        <rect x="222.8461538461538" y="215.5363925601955" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="234.8461538461538" y="229.5363925601955">Massarosa · 2015</text>
+        <text class="chart-tooltip-value" x="234.8461538461538" y="249.5363925601955">17.692 €</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Massarosa · 2016: 17.876 €" style="pointer-events: none;">
+      <circle class="chart-hit" cx="390.3076923076923" cy="279.63465819958105" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="390.3076923076923" cy="279.63465819958105" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="390.3076923076923" y1="279.63465819958105" x2="390.3076923076923" y2="263.63465819958105"></line>
+        <rect x="285.3076923076923" y="213.63465819958105" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="297.3076923076923" y="227.63465819958105">Massarosa · 2016</text>
+        <text class="chart-tooltip-value" x="297.3076923076923" y="247.63465819958105">17.876 €</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Massarosa · 2017: 17.926 €" style="pointer-events: none;">
+      <circle class="chart-hit" cx="452.7692307692308" cy="279.11310781055715" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="452.7692307692308" cy="279.11310781055715" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="452.7692307692308" y1="279.11310781055715" x2="452.7692307692308" y2="263.11310781055715"></line>
+        <rect x="347.7692307692308" y="213.11310781055715" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="359.7692307692308" y="227.11310781055715">Massarosa · 2017</text>
+        <text class="chart-tooltip-value" x="359.7692307692308" y="247.11310781055715">17.926 €</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Massarosa · 2018: 18.327 €" style="pointer-events: none;">
+      <circle class="chart-hit" cx="515.2307692307693" cy="274.9495234338076" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="515.2307692307693" cy="274.9495234338076" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="515.2307692307693" y1="274.9495234338076" x2="515.2307692307693" y2="258.9495234338076"></line>
+        <rect x="410.2307692307693" y="208.9495234338076" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="422.2307692307693" y="222.9495234338076">Massarosa · 2018</text>
+        <text class="chart-tooltip-value" x="422.2307692307693" y="242.9495234338076">18.327 €</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Massarosa · 2019: 18.620 €" style="pointer-events: none;">
+      <circle class="chart-hit" cx="577.6923076923076" cy="271.9143221943217" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="577.6923076923076" cy="271.9143221943217" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="577.6923076923076" y1="271.9143221943217" x2="577.6923076923076" y2="255.9143221943217"></line>
+        <rect x="472.6923076923076" y="205.9143221943217" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="484.6923076923076" y="219.9143221943217">Massarosa · 2019</text>
+        <text class="chart-tooltip-value" x="484.6923076923076" y="239.9143221943217">18.620 €</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Massarosa · 2020: 18.458 €" style="pointer-events: none;">
+      <circle class="chart-hit" cx="640.1538461538462" cy="273.59621066785803" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="640.1538461538462" cy="273.59621066785803" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="640.1538461538462" y1="273.59621066785803" x2="640.1538461538462" y2="257.59621066785803"></line>
+        <rect x="535.1538461538462" y="207.59621066785803" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="547.1538461538462" y="221.59621066785803">Massarosa · 2020</text>
+        <text class="chart-tooltip-value" x="547.1538461538462" y="241.59621066785803">18.458 €</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Massarosa · 2021: 19.375 €" style="pointer-events: none;">
+      <circle class="chart-hit" cx="702.6153846153846" cy="264.0813138750618" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="702.6153846153846" cy="264.0813138750618" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="702.6153846153846" y1="264.0813138750618" x2="702.6153846153846" y2="248.08131387506182"></line>
+        <rect x="597.6153846153846" y="198.08131387506182" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="609.6153846153846" y="212.08131387506182">Massarosa · 2021</text>
+        <text class="chart-tooltip-value" x="609.6153846153846" y="232.08131387506182">19.375 €</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Massarosa · 2022: 20.447 €" style="pointer-events: none;">
+      <circle class="chart-hit" cx="765.0769230769231" cy="252.9551822420942" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="765.0769230769231" cy="252.9551822420942" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="765.0769230769231" y1="252.9551822420942" x2="765.0769230769231" y2="236.9551822420942"></line>
+        <rect x="660.0769230769231" y="186.9551822420942" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="672.0769230769231" y="200.9551822420942">Massarosa · 2022</text>
+        <text class="chart-tooltip-value" x="672.0769230769231" y="220.9551822420942">20.447 €</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Massarosa · 2023: 21.264 €" style="pointer-events: none;">
+      <circle class="chart-hit" cx="827.5384615384615" cy="244.48338622734593" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="827.5384615384615" cy="244.48338622734593" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="827.5384615384615" y1="244.48338622734593" x2="827.5384615384615" y2="228.48338622734593"></line>
+        <rect x="680" y="178.48338622734593" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="692" y="192.48338622734593">Massarosa · 2023</text>
+        <text class="chart-tooltip-value" x="692" y="212.48338622734593">21.264 €</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Massarosa · 2024: 22.351 €" style="pointer-events: none;">
+      <circle class="chart-hit" cx="890" cy="233.20858108980872" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="890" cy="233.20858108980872" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="890" y1="233.20858108980872" x2="890" y2="217.20858108980872"></line>
+        <rect x="680" y="167.20858108980872" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="692" y="181.20858108980872">Massarosa · 2024</text>
+        <text class="chart-tooltip-value" x="692" y="201.20858108980872">22.351 €</text>
+        
+      </g>
+    </g></g><g class="ux-series-group is-selected" data-history-town="viareggio" style="--series-color:#b56843"><polyline class="ux-series-line" points="78,258.4886793573901 140.46153846153845,259.90268577314646 202.9230769230769,258.73062395798763 265.38461538461536,258.86715873259584 327.8461538461538,255.43999064016927 390.3076923076923,252.97603595766887 452.7692307692308,243.3614355794635 515.2307692307693,240.74797739376362 577.6923076923076,239.7028016191411 640.1538461538462,248.3764948005973 702.6153846153846,236.37585586126744 765.0769230769231,218.9284546634597 827.5384615384615,210.84489050781778 890,200.12722195055878"></polyline><g class="chart-point" tabindex="0" role="button" aria-label="Viareggio · 2011: 19.914 €">
+      <circle class="chart-hit" cx="78" cy="258.4886793573901" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="78" cy="258.4886793573901" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="78" y1="258.4886793573901" x2="78" y2="242.48867935739008"></line>
+        <rect x="70" y="192.48867935739008" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="82" y="206.48867935739008">Viareggio · 2011</text>
+        <text class="chart-tooltip-value" x="82" y="226.48867935739008">19.914 €</text>
+        
+      </g>
+    </g><g class="chart-point" tabindex="0" role="button" aria-label="Viareggio · 2012: 19.778 €">
+      <circle class="chart-hit" cx="140.46153846153845" cy="259.90268577314646" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="140.46153846153845" cy="259.90268577314646" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="140.46153846153845" y1="259.90268577314646" x2="140.46153846153845" y2="243.90268577314646"></line>
+        <rect x="70" y="193.90268577314646" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="82" y="207.90268577314646">Viareggio · 2012</text>
+        <text class="chart-tooltip-value" x="82" y="227.90268577314646">19.778 €</text>
+        
+      </g>
+    </g><g class="chart-point" tabindex="0" role="button" aria-label="Viareggio · 2013: 19.891 €">
+      <circle class="chart-hit" cx="202.9230769230769" cy="258.73062395798763" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="202.9230769230769" cy="258.73062395798763" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="202.9230769230769" y1="258.73062395798763" x2="202.9230769230769" y2="242.73062395798763"></line>
+        <rect x="97.9230769230769" y="192.73062395798763" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="109.9230769230769" y="206.73062395798763">Viareggio · 2013</text>
+        <text class="chart-tooltip-value" x="109.9230769230769" y="226.73062395798763">19.891 €</text>
+        
+      </g>
+    </g><g class="chart-point" tabindex="0" role="button" aria-label="Viareggio · 2014: 19.877 €">
+      <circle class="chart-hit" cx="265.38461538461536" cy="258.86715873259584" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="265.38461538461536" cy="258.86715873259584" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="265.38461538461536" y1="258.86715873259584" x2="265.38461538461536" y2="242.86715873259584"></line>
+        <rect x="160.38461538461536" y="192.86715873259584" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="172.38461538461536" y="206.86715873259584">Viareggio · 2014</text>
+        <text class="chart-tooltip-value" x="172.38461538461536" y="226.86715873259584">19.877 €</text>
+        
+      </g>
+    </g><g class="chart-point" tabindex="0" role="button" aria-label="Viareggio · 2015: 20.208 €">
+      <circle class="chart-hit" cx="327.8461538461538" cy="255.43999064016927" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="327.8461538461538" cy="255.43999064016927" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="327.8461538461538" y1="255.43999064016927" x2="327.8461538461538" y2="239.43999064016927"></line>
+        <rect x="222.8461538461538" y="189.43999064016927" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="234.8461538461538" y="203.43999064016927">Viareggio · 2015</text>
+        <text class="chart-tooltip-value" x="234.8461538461538" y="223.43999064016927">20.208 €</text>
+        
+      </g>
+    </g><g class="chart-point" tabindex="0" role="button" aria-label="Viareggio · 2016: 20.445 €">
+      <circle class="chart-hit" cx="390.3076923076923" cy="252.97603595766887" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="390.3076923076923" cy="252.97603595766887" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="390.3076923076923" y1="252.97603595766887" x2="390.3076923076923" y2="236.97603595766887"></line>
+        <rect x="285.3076923076923" y="186.97603595766887" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="297.3076923076923" y="200.97603595766887">Viareggio · 2016</text>
+        <text class="chart-tooltip-value" x="297.3076923076923" y="220.97603595766887">20.445 €</text>
+        
+      </g>
+    </g><g class="chart-point" tabindex="0" role="button" aria-label="Viareggio · 2017: 21.372 €">
+      <circle class="chart-hit" cx="452.7692307692308" cy="243.3614355794635" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="452.7692307692308" cy="243.3614355794635" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="452.7692307692308" y1="243.3614355794635" x2="452.7692307692308" y2="227.3614355794635"></line>
+        <rect x="347.7692307692308" y="177.3614355794635" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="359.7692307692308" y="191.3614355794635">Viareggio · 2017</text>
+        <text class="chart-tooltip-value" x="359.7692307692308" y="211.3614355794635">21.372 €</text>
+        
+      </g>
+    </g><g class="chart-point" tabindex="0" role="button" aria-label="Viareggio · 2018: 21.624 €">
+      <circle class="chart-hit" cx="515.2307692307693" cy="240.74797739376362" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="515.2307692307693" cy="240.74797739376362" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="515.2307692307693" y1="240.74797739376362" x2="515.2307692307693" y2="224.74797739376362"></line>
+        <rect x="410.2307692307693" y="174.74797739376362" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="422.2307692307693" y="188.74797739376362">Viareggio · 2018</text>
+        <text class="chart-tooltip-value" x="422.2307692307693" y="208.74797739376362">21.624 €</text>
+        
+      </g>
+    </g><g class="chart-point" tabindex="0" role="button" aria-label="Viareggio · 2019: 21.725 €">
+      <circle class="chart-hit" cx="577.6923076923076" cy="239.7028016191411" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="577.6923076923076" cy="239.7028016191411" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="577.6923076923076" y1="239.7028016191411" x2="577.6923076923076" y2="223.7028016191411"></line>
+        <rect x="472.6923076923076" y="173.7028016191411" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="484.6923076923076" y="187.7028016191411">Viareggio · 2019</text>
+        <text class="chart-tooltip-value" x="484.6923076923076" y="207.7028016191411">21.725 €</text>
+        
+      </g>
+    </g><g class="chart-point" tabindex="0" role="button" aria-label="Viareggio · 2020: 20.889 €">
+      <circle class="chart-hit" cx="640.1538461538462" cy="248.3764948005973" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="640.1538461538462" cy="248.3764948005973" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="640.1538461538462" y1="248.3764948005973" x2="640.1538461538462" y2="232.3764948005973"></line>
+        <rect x="535.1538461538462" y="182.3764948005973" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="547.1538461538462" y="196.3764948005973">Viareggio · 2020</text>
+        <text class="chart-tooltip-value" x="547.1538461538462" y="216.3764948005973">20.889 €</text>
+        
+      </g>
+    </g><g class="chart-point" tabindex="0" role="button" aria-label="Viareggio · 2021: 22.045 €">
+      <circle class="chart-hit" cx="702.6153846153846" cy="236.37585586126744" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="702.6153846153846" cy="236.37585586126744" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="702.6153846153846" y1="236.37585586126744" x2="702.6153846153846" y2="220.37585586126744"></line>
+        <rect x="597.6153846153846" y="170.37585586126744" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="609.6153846153846" y="184.37585586126744">Viareggio · 2021</text>
+        <text class="chart-tooltip-value" x="609.6153846153846" y="204.37585586126744">22.045 €</text>
+        
+      </g>
+    </g><g class="chart-point" tabindex="0" role="button" aria-label="Viareggio · 2022: 23.727 €">
+      <circle class="chart-hit" cx="765.0769230769231" cy="218.9284546634597" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="765.0769230769231" cy="218.9284546634597" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="765.0769230769231" y1="218.9284546634597" x2="765.0769230769231" y2="202.9284546634597"></line>
+        <rect x="660.0769230769231" y="152.9284546634597" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="672.0769230769231" y="166.9284546634597">Viareggio · 2022</text>
+        <text class="chart-tooltip-value" x="672.0769230769231" y="186.9284546634597">23.727 €</text>
+        
+      </g>
+    </g><g class="chart-point" tabindex="0" role="button" aria-label="Viareggio · 2023: 24.506 €">
+      <circle class="chart-hit" cx="827.5384615384615" cy="210.84489050781778" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="827.5384615384615" cy="210.84489050781778" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="827.5384615384615" y1="210.84489050781778" x2="827.5384615384615" y2="194.84489050781778"></line>
+        <rect x="680" y="144.84489050781778" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="692" y="158.84489050781778">Viareggio · 2023</text>
+        <text class="chart-tooltip-value" x="692" y="178.84489050781778">24.506 €</text>
+        
+      </g>
+    </g><g class="chart-point" tabindex="0" role="button" aria-label="Viareggio · 2024: 25.539 €">
+      <circle class="chart-hit" cx="890" cy="200.12722195055878" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="890" cy="200.12722195055878" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="890" y1="200.12722195055878" x2="890" y2="184.12722195055878"></line>
+        <rect x="680" y="134.12722195055878" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="692" y="148.12722195055878">Viareggio · 2024</text>
+        <text class="chart-tooltip-value" x="692" y="168.12722195055878">25.539 €</text>
+        
+      </g>
+    </g></g><g class="ux-series-group " data-history-town="camaiore" style="--series-color:#64743d"><polyline class="ux-series-line" points="78,279.3958260938454 140.46153846153845,278.80061332642344 202.9230769230769,278.12437194276356 265.38461538461536,277.8557636361825 327.8461538461538,276.9276176683671 390.3076923076923,272.9582529709994 452.7692307692308,273.58230819080825 515.2307692307693,267.7532278134616 577.6923076923076,265.45880035110537 640.1538461538462,266.3510488781804 702.6153846153846,251.99975006932283 765.0769230769231,241.96205788955797 827.5384615384615,230.33429583468248 890,218.74523246592315"></polyline><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Camaiore · 2011: 17.899 €" style="pointer-events: none;">
+      <circle class="chart-hit" cx="78" cy="279.3958260938454" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="78" cy="279.3958260938454" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="78" y1="279.3958260938454" x2="78" y2="263.3958260938454"></line>
+        <rect x="70" y="213.39582609384541" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="82" y="227.39582609384541">Camaiore · 2011</text>
+        <text class="chart-tooltip-value" x="82" y="247.39582609384541">17.899 €</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Camaiore · 2012: 17.956 €" style="pointer-events: none;">
+      <circle class="chart-hit" cx="140.46153846153845" cy="278.80061332642344" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="140.46153846153845" cy="278.80061332642344" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="140.46153846153845" y1="278.80061332642344" x2="140.46153846153845" y2="262.80061332642344"></line>
+        <rect x="70" y="212.80061332642344" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="82" y="226.80061332642344">Camaiore · 2012</text>
+        <text class="chart-tooltip-value" x="82" y="246.80061332642344">17.956 €</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Camaiore · 2013: 18.021 €" style="pointer-events: none;">
+      <circle class="chart-hit" cx="202.9230769230769" cy="278.12437194276356" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="202.9230769230769" cy="278.12437194276356" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="202.9230769230769" y1="278.12437194276356" x2="202.9230769230769" y2="262.12437194276356"></line>
+        <rect x="97.9230769230769" y="212.12437194276356" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="109.9230769230769" y="226.12437194276356">Camaiore · 2013</text>
+        <text class="chart-tooltip-value" x="109.9230769230769" y="246.12437194276356">18.021 €</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Camaiore · 2014: 18.047 €" style="pointer-events: none;">
+      <circle class="chart-hit" cx="265.38461538461536" cy="277.8557636361825" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="265.38461538461536" cy="277.8557636361825" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="265.38461538461536" y1="277.8557636361825" x2="265.38461538461536" y2="261.8557636361825"></line>
+        <rect x="160.38461538461536" y="211.85576363618247" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="172.38461538461536" y="225.85576363618247">Camaiore · 2014</text>
+        <text class="chart-tooltip-value" x="172.38461538461536" y="245.85576363618247">18.047 €</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Camaiore · 2015: 18.137 €" style="pointer-events: none;">
+      <circle class="chart-hit" cx="327.8461538461538" cy="276.9276176683671" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="327.8461538461538" cy="276.9276176683671" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="327.8461538461538" y1="276.9276176683671" x2="327.8461538461538" y2="260.9276176683671"></line>
+        <rect x="222.8461538461538" y="210.92761766836708" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="234.8461538461538" y="224.92761766836708">Camaiore · 2015</text>
+        <text class="chart-tooltip-value" x="234.8461538461538" y="244.92761766836708">18.137 €</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Camaiore · 2016: 18.519 €" style="pointer-events: none;">
+      <circle class="chart-hit" cx="390.3076923076923" cy="272.9582529709994" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="390.3076923076923" cy="272.9582529709994" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="390.3076923076923" y1="272.9582529709994" x2="390.3076923076923" y2="256.9582529709994"></line>
+        <rect x="285.3076923076923" y="206.9582529709994" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="297.3076923076923" y="220.9582529709994">Camaiore · 2016</text>
+        <text class="chart-tooltip-value" x="297.3076923076923" y="240.9582529709994">18.519 €</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Camaiore · 2017: 18.459 €" style="pointer-events: none;">
+      <circle class="chart-hit" cx="452.7692307692308" cy="273.58230819080825" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="452.7692307692308" cy="273.58230819080825" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="452.7692307692308" y1="273.58230819080825" x2="452.7692307692308" y2="257.58230819080825"></line>
+        <rect x="347.7692307692308" y="207.58230819080825" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="359.7692307692308" y="221.58230819080825">Camaiore · 2017</text>
+        <text class="chart-tooltip-value" x="359.7692307692308" y="241.58230819080825">18.459 €</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Camaiore · 2018: 19.021 €" style="pointer-events: none;">
+      <circle class="chart-hit" cx="515.2307692307693" cy="267.7532278134616" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="515.2307692307693" cy="267.7532278134616" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="515.2307692307693" y1="267.7532278134616" x2="515.2307692307693" y2="251.7532278134616"></line>
+        <rect x="410.2307692307693" y="201.7532278134616" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="422.2307692307693" y="215.7532278134616">Camaiore · 2018</text>
+        <text class="chart-tooltip-value" x="422.2307692307693" y="235.7532278134616">19.021 €</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Camaiore · 2019: 19.242 €" style="pointer-events: none;">
+      <circle class="chart-hit" cx="577.6923076923076" cy="265.45880035110537" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="577.6923076923076" cy="265.45880035110537" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="577.6923076923076" y1="265.45880035110537" x2="577.6923076923076" y2="249.45880035110537"></line>
+        <rect x="472.6923076923076" y="199.45880035110537" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="484.6923076923076" y="213.45880035110537">Camaiore · 2019</text>
+        <text class="chart-tooltip-value" x="484.6923076923076" y="233.45880035110537">19.242 €</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Camaiore · 2020: 19.156 €" style="pointer-events: none;">
+      <circle class="chart-hit" cx="640.1538461538462" cy="266.3510488781804" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="640.1538461538462" cy="266.3510488781804" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="640.1538461538462" y1="266.3510488781804" x2="640.1538461538462" y2="250.3510488781804"></line>
+        <rect x="535.1538461538462" y="200.3510488781804" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="547.1538461538462" y="214.3510488781804">Camaiore · 2020</text>
+        <text class="chart-tooltip-value" x="547.1538461538462" y="234.3510488781804">19.156 €</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Camaiore · 2021: 20.539 €" style="pointer-events: none;">
+      <circle class="chart-hit" cx="702.6153846153846" cy="251.99975006932283" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="702.6153846153846" cy="251.99975006932283" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="702.6153846153846" y1="251.99975006932283" x2="702.6153846153846" y2="235.99975006932283"></line>
+        <rect x="597.6153846153846" y="185.99975006932283" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="609.6153846153846" y="199.99975006932283">Camaiore · 2021</text>
+        <text class="chart-tooltip-value" x="609.6153846153846" y="219.99975006932283">20.539 €</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Camaiore · 2022: 21.507 €" style="pointer-events: none;">
+      <circle class="chart-hit" cx="765.0769230769231" cy="241.96205788955797" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="765.0769230769231" cy="241.96205788955797" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="765.0769230769231" y1="241.96205788955797" x2="765.0769230769231" y2="225.96205788955797"></line>
+        <rect x="660.0769230769231" y="175.96205788955797" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="672.0769230769231" y="189.96205788955797">Camaiore · 2022</text>
+        <text class="chart-tooltip-value" x="672.0769230769231" y="209.96205788955797">21.507 €</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Camaiore · 2023: 22.628 €" style="pointer-events: none;">
+      <circle class="chart-hit" cx="827.5384615384615" cy="230.33429583468248" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="827.5384615384615" cy="230.33429583468248" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="827.5384615384615" y1="230.33429583468248" x2="827.5384615384615" y2="214.33429583468248"></line>
+        <rect x="680" y="164.33429583468248" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="692" y="178.33429583468248">Camaiore · 2023</text>
+        <text class="chart-tooltip-value" x="692" y="198.33429583468248">22.628 €</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Camaiore · 2024: 23.745 €" style="pointer-events: none;">
+      <circle class="chart-hit" cx="890" cy="218.74523246592315" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="890" cy="218.74523246592315" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="890" y1="218.74523246592315" x2="890" y2="202.74523246592315"></line>
+        <rect x="680" y="152.74523246592315" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="692" y="166.74523246592315">Camaiore · 2024</text>
+        <text class="chart-tooltip-value" x="692" y="186.74523246592315">23.745 €</text>
+        
+      </g>
+    </g></g><g class="ux-series-group " data-history-town="pietrasanta" style="--series-color:#855b7b"><polyline class="ux-series-line" points="78,267.6332930114501 140.46153846153845,269.2164116480359 202.9230769230769,265.5980326212606 265.38461538461536,267.6181455364556 327.8461538461538,265.17711956610435 390.3076923076923,261.708451542186 452.7692307692308,257.85248540761984 515.2307692307693,254.34055370512124 577.6923076923076,252.42470936779952 640.1538461538462,256.7002398097484 702.6153846153846,240.98577200121196 765.0769230769231,225.25439297059262 827.5384615384615,214.59243807136144 890,203.23650056775762"></polyline><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Pietrasanta · 2011: 19.033 €" style="pointer-events: none;">
+      <circle class="chart-hit" cx="78" cy="267.6332930114501" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="78" cy="267.6332930114501" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="78" y1="267.6332930114501" x2="78" y2="251.63329301145012"></line>
+        <rect x="70" y="201.63329301145012" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="82" y="215.63329301145012">Pietrasanta · 2011</text>
+        <text class="chart-tooltip-value" x="82" y="235.63329301145012">19.033 €</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Pietrasanta · 2012: 18.880 €" style="pointer-events: none;">
+      <circle class="chart-hit" cx="140.46153846153845" cy="269.2164116480359" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="140.46153846153845" cy="269.2164116480359" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="140.46153846153845" y1="269.2164116480359" x2="140.46153846153845" y2="253.2164116480359"></line>
+        <rect x="70" y="203.2164116480359" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="82" y="217.2164116480359">Pietrasanta · 2012</text>
+        <text class="chart-tooltip-value" x="82" y="237.2164116480359">18.880 €</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Pietrasanta · 2013: 19.229 €" style="pointer-events: none;">
+      <circle class="chart-hit" cx="202.9230769230769" cy="265.5980326212606" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="202.9230769230769" cy="265.5980326212606" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="202.9230769230769" y1="265.5980326212606" x2="202.9230769230769" y2="249.5980326212606"></line>
+        <rect x="97.9230769230769" y="199.5980326212606" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="109.9230769230769" y="213.5980326212606">Pietrasanta · 2013</text>
+        <text class="chart-tooltip-value" x="109.9230769230769" y="233.5980326212606">19.229 €</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Pietrasanta · 2014: 19.034 €" style="pointer-events: none;">
+      <circle class="chart-hit" cx="265.38461538461536" cy="267.6181455364556" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="265.38461538461536" cy="267.6181455364556" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="265.38461538461536" y1="267.6181455364556" x2="265.38461538461536" y2="251.6181455364556"></line>
+        <rect x="160.38461538461536" y="201.6181455364556" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="172.38461538461536" y="215.6181455364556">Pietrasanta · 2014</text>
+        <text class="chart-tooltip-value" x="172.38461538461536" y="235.6181455364556">19.034 €</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Pietrasanta · 2015: 19.269 €" style="pointer-events: none;">
+      <circle class="chart-hit" cx="327.8461538461538" cy="265.17711956610435" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="327.8461538461538" cy="265.17711956610435" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="327.8461538461538" y1="265.17711956610435" x2="327.8461538461538" y2="249.17711956610435"></line>
+        <rect x="222.8461538461538" y="199.17711956610435" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="234.8461538461538" y="213.17711956610435">Pietrasanta · 2015</text>
+        <text class="chart-tooltip-value" x="234.8461538461538" y="233.17711956610435">19.269 €</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Pietrasanta · 2016: 19.604 €" style="pointer-events: none;">
+      <circle class="chart-hit" cx="390.3076923076923" cy="261.708451542186" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="390.3076923076923" cy="261.708451542186" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="390.3076923076923" y1="261.708451542186" x2="390.3076923076923" y2="245.70845154218603"></line>
+        <rect x="285.3076923076923" y="195.70845154218603" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="297.3076923076923" y="209.70845154218603">Pietrasanta · 2016</text>
+        <text class="chart-tooltip-value" x="297.3076923076923" y="229.70845154218603">19.604 €</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Pietrasanta · 2017: 19.975 €" style="pointer-events: none;">
+      <circle class="chart-hit" cx="452.7692307692308" cy="257.85248540761984" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="452.7692307692308" cy="257.85248540761984" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="452.7692307692308" y1="257.85248540761984" x2="452.7692307692308" y2="241.85248540761984"></line>
+        <rect x="347.7692307692308" y="191.85248540761984" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="359.7692307692308" y="205.85248540761984">Pietrasanta · 2017</text>
+        <text class="chart-tooltip-value" x="359.7692307692308" y="225.85248540761984">19.975 €</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Pietrasanta · 2018: 20.314 €" style="pointer-events: none;">
+      <circle class="chart-hit" cx="515.2307692307693" cy="254.34055370512124" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="515.2307692307693" cy="254.34055370512124" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="515.2307692307693" y1="254.34055370512124" x2="515.2307692307693" y2="238.34055370512124"></line>
+        <rect x="410.2307692307693" y="188.34055370512124" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="422.2307692307693" y="202.34055370512124">Pietrasanta · 2018</text>
+        <text class="chart-tooltip-value" x="422.2307692307693" y="222.34055370512124">20.314 €</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Pietrasanta · 2019: 20.498 €" style="pointer-events: none;">
+      <circle class="chart-hit" cx="577.6923076923076" cy="252.42470936779952" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="577.6923076923076" cy="252.42470936779952" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="577.6923076923076" y1="252.42470936779952" x2="577.6923076923076" y2="236.42470936779952"></line>
+        <rect x="472.6923076923076" y="186.42470936779952" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="484.6923076923076" y="200.42470936779952">Pietrasanta · 2019</text>
+        <text class="chart-tooltip-value" x="484.6923076923076" y="220.42470936779952">20.498 €</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Pietrasanta · 2020: 20.086 €" style="pointer-events: none;">
+      <circle class="chart-hit" cx="640.1538461538462" cy="256.7002398097484" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="640.1538461538462" cy="256.7002398097484" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="640.1538461538462" y1="256.7002398097484" x2="640.1538461538462" y2="240.70023980974838"></line>
+        <rect x="535.1538461538462" y="190.70023980974838" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="547.1538461538462" y="204.70023980974838">Pietrasanta · 2020</text>
+        <text class="chart-tooltip-value" x="547.1538461538462" y="224.70023980974838">20.086 €</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Pietrasanta · 2021: 21.601 €" style="pointer-events: none;">
+      <circle class="chart-hit" cx="702.6153846153846" cy="240.98577200121196" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="702.6153846153846" cy="240.98577200121196" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="702.6153846153846" y1="240.98577200121196" x2="702.6153846153846" y2="224.98577200121196"></line>
+        <rect x="597.6153846153846" y="174.98577200121196" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="609.6153846153846" y="188.98577200121196">Pietrasanta · 2021</text>
+        <text class="chart-tooltip-value" x="609.6153846153846" y="208.98577200121196">21.601 €</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Pietrasanta · 2022: 23.117 €" style="pointer-events: none;">
+      <circle class="chart-hit" cx="765.0769230769231" cy="225.25439297059262" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="765.0769230769231" cy="225.25439297059262" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="765.0769230769231" y1="225.25439297059262" x2="765.0769230769231" y2="209.25439297059262"></line>
+        <rect x="660.0769230769231" y="159.25439297059262" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="672.0769230769231" y="173.25439297059262">Pietrasanta · 2022</text>
+        <text class="chart-tooltip-value" x="672.0769230769231" y="193.25439297059262">23.117 €</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Pietrasanta · 2023: 24.145 €" style="pointer-events: none;">
+      <circle class="chart-hit" cx="827.5384615384615" cy="214.59243807136144" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="827.5384615384615" cy="214.59243807136144" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="827.5384615384615" y1="214.59243807136144" x2="827.5384615384615" y2="198.59243807136144"></line>
+        <rect x="680" y="148.59243807136144" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="692" y="162.59243807136144">Pietrasanta · 2023</text>
+        <text class="chart-tooltip-value" x="692" y="182.59243807136144">24.145 €</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Pietrasanta · 2024: 25.239 €" style="pointer-events: none;">
+      <circle class="chart-hit" cx="890" cy="203.23650056775762" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="890" cy="203.23650056775762" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="890" y1="203.23650056775762" x2="890" y2="187.23650056775762"></line>
+        <rect x="680" y="137.23650056775762" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="692" y="151.23650056775762">Pietrasanta · 2024</text>
+        <text class="chart-tooltip-value" x="692" y="171.23650056775762">25.239 €</text>
+        
+      </g>
+    </g></g><g class="ux-series-group " data-history-town="seravezza" style="--series-color:#b88a1c"><polyline class="ux-series-line" points="78,287.7427073148032 140.46153846153845,287.4548015400784 202.9230769230769,284.5534375796538 265.38461538461536,283.30211089534544 327.8461538461538,281.26062551543214 390.3076923076923,281.31457542637156 452.7692307692308,282.5511696350003 515.2307692307693,279.5519695860836 577.6923076923076,274.77252622599474 640.1538461538462,277.80336997267403 702.6153846153846,267.5622243787703 765.0769230769231,260.5908583871102 827.5384615384615,250.44879387964335 890,237.540343938929"></polyline><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Seravezza · 2011: 17.094 €" style="pointer-events: none;">
+      <circle class="chart-hit" cx="78" cy="287.7427073148032" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="78" cy="287.7427073148032" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="78" y1="287.7427073148032" x2="78" y2="271.7427073148032"></line>
+        <rect x="70" y="221.74270731480323" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="82" y="235.74270731480323">Seravezza · 2011</text>
+        <text class="chart-tooltip-value" x="82" y="255.74270731480323">17.094 €</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Seravezza · 2012: 17.122 €" style="pointer-events: none;">
+      <circle class="chart-hit" cx="140.46153846153845" cy="287.4548015400784" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="140.46153846153845" cy="287.4548015400784" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="140.46153846153845" y1="287.4548015400784" x2="140.46153846153845" y2="271.4548015400784"></line>
+        <rect x="70" y="221.4548015400784" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="82" y="235.4548015400784">Seravezza · 2012</text>
+        <text class="chart-tooltip-value" x="82" y="255.4548015400784">17.122 €</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Seravezza · 2013: 17.402 €" style="pointer-events: none;">
+      <circle class="chart-hit" cx="202.9230769230769" cy="284.5534375796538" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="202.9230769230769" cy="284.5534375796538" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="202.9230769230769" y1="284.5534375796538" x2="202.9230769230769" y2="268.5534375796538"></line>
+        <rect x="97.9230769230769" y="218.5534375796538" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="109.9230769230769" y="232.5534375796538">Seravezza · 2013</text>
+        <text class="chart-tooltip-value" x="109.9230769230769" y="252.5534375796538">17.402 €</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Seravezza · 2014: 17.522 €" style="pointer-events: none;">
+      <circle class="chart-hit" cx="265.38461538461536" cy="283.30211089534544" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="265.38461538461536" cy="283.30211089534544" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="265.38461538461536" y1="283.30211089534544" x2="265.38461538461536" y2="267.30211089534544"></line>
+        <rect x="160.38461538461536" y="217.30211089534544" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="172.38461538461536" y="231.30211089534544">Seravezza · 2014</text>
+        <text class="chart-tooltip-value" x="172.38461538461536" y="251.30211089534544">17.522 €</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Seravezza · 2015: 17.719 €" style="pointer-events: none;">
+      <circle class="chart-hit" cx="327.8461538461538" cy="281.26062551543214" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="327.8461538461538" cy="281.26062551543214" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="327.8461538461538" y1="281.26062551543214" x2="327.8461538461538" y2="265.26062551543214"></line>
+        <rect x="222.8461538461538" y="215.26062551543214" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="234.8461538461538" y="229.26062551543214">Seravezza · 2015</text>
+        <text class="chart-tooltip-value" x="234.8461538461538" y="249.26062551543214">17.719 €</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Seravezza · 2016: 17.714 €" style="pointer-events: none;">
+      <circle class="chart-hit" cx="390.3076923076923" cy="281.31457542637156" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="390.3076923076923" cy="281.31457542637156" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="390.3076923076923" y1="281.31457542637156" x2="390.3076923076923" y2="265.31457542637156"></line>
+        <rect x="285.3076923076923" y="215.31457542637156" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="297.3076923076923" y="229.31457542637156">Seravezza · 2016</text>
+        <text class="chart-tooltip-value" x="297.3076923076923" y="249.31457542637156">17.714 €</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Seravezza · 2017: 17.595 €" style="pointer-events: none;">
+      <circle class="chart-hit" cx="452.7692307692308" cy="282.5511696350003" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="452.7692307692308" cy="282.5511696350003" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="452.7692307692308" y1="282.5511696350003" x2="452.7692307692308" y2="266.5511696350003"></line>
+        <rect x="347.7692307692308" y="216.5511696350003" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="359.7692307692308" y="230.5511696350003">Seravezza · 2017</text>
+        <text class="chart-tooltip-value" x="359.7692307692308" y="250.5511696350003">17.595 €</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Seravezza · 2018: 17.884 €" style="pointer-events: none;">
+      <circle class="chart-hit" cx="515.2307692307693" cy="279.5519695860836" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="515.2307692307693" cy="279.5519695860836" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="515.2307692307693" y1="279.5519695860836" x2="515.2307692307693" y2="263.5519695860836"></line>
+        <rect x="410.2307692307693" y="213.5519695860836" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="422.2307692307693" y="227.5519695860836">Seravezza · 2018</text>
+        <text class="chart-tooltip-value" x="422.2307692307693" y="247.5519695860836">17.884 €</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Seravezza · 2019: 18.344 €" style="pointer-events: none;">
+      <circle class="chart-hit" cx="577.6923076923076" cy="274.77252622599474" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="577.6923076923076" cy="274.77252622599474" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="577.6923076923076" y1="274.77252622599474" x2="577.6923076923076" y2="258.77252622599474"></line>
+        <rect x="472.6923076923076" y="208.77252622599474" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="484.6923076923076" y="222.77252622599474">Seravezza · 2019</text>
+        <text class="chart-tooltip-value" x="484.6923076923076" y="242.77252622599474">18.344 €</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Seravezza · 2020: 18.052 €" style="pointer-events: none;">
+      <circle class="chart-hit" cx="640.1538461538462" cy="277.80336997267403" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="640.1538461538462" cy="277.80336997267403" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="640.1538461538462" y1="277.80336997267403" x2="640.1538461538462" y2="261.80336997267403"></line>
+        <rect x="535.1538461538462" y="211.80336997267403" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="547.1538461538462" y="225.80336997267403">Seravezza · 2020</text>
+        <text class="chart-tooltip-value" x="547.1538461538462" y="245.80336997267403">18.052 €</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Seravezza · 2021: 19.039 €" style="pointer-events: none;">
+      <circle class="chart-hit" cx="702.6153846153846" cy="267.5622243787703" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="702.6153846153846" cy="267.5622243787703" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="702.6153846153846" y1="267.5622243787703" x2="702.6153846153846" y2="251.56222437877028"></line>
+        <rect x="597.6153846153846" y="201.56222437877028" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="609.6153846153846" y="215.56222437877028">Seravezza · 2021</text>
+        <text class="chart-tooltip-value" x="609.6153846153846" y="235.56222437877028">19.039 €</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Seravezza · 2022: 19.711 €" style="pointer-events: none;">
+      <circle class="chart-hit" cx="765.0769230769231" cy="260.5908583871102" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="765.0769230769231" cy="260.5908583871102" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="765.0769230769231" y1="260.5908583871102" x2="765.0769230769231" y2="244.5908583871102"></line>
+        <rect x="660.0769230769231" y="194.5908583871102" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="672.0769230769231" y="208.5908583871102">Seravezza · 2022</text>
+        <text class="chart-tooltip-value" x="672.0769230769231" y="228.5908583871102">19.711 €</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Seravezza · 2023: 20.689 €" style="pointer-events: none;">
+      <circle class="chart-hit" cx="827.5384615384615" cy="250.44879387964335" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="827.5384615384615" cy="250.44879387964335" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="827.5384615384615" y1="250.44879387964335" x2="827.5384615384615" y2="234.44879387964335"></line>
+        <rect x="680" y="184.44879387964335" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="692" y="198.44879387964335">Seravezza · 2023</text>
+        <text class="chart-tooltip-value" x="692" y="218.44879387964335">20.689 €</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Seravezza · 2024: 21.933 €" style="pointer-events: none;">
+      <circle class="chart-hit" cx="890" cy="237.540343938929" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="890" cy="237.540343938929" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="890" y1="237.540343938929" x2="890" y2="221.540343938929"></line>
+        <rect x="680" y="171.540343938929" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="692" y="185.540343938929">Seravezza · 2024</text>
+        <text class="chart-tooltip-value" x="692" y="205.540343938929">21.933 €</text>
+        
+      </g>
+    </g></g><g class="ux-series-group " data-history-town="forte-dei-marmi" style="--series-color:#4e7096"><polyline class="ux-series-line" points="78,212.67451873746515 140.46153846153845,196.06707615305268 202.9230769230769,194.53728492843396 265.38461538461536,182.96170903740946 327.8461538461538,179.83645294658626 390.3076923076923,186.21966115917797 452.7692307692308,174.89526360350797 515.2307692307693,156.74661731331653 577.6923076923076,157.1815365953512 640.1538461538462,164.99420994818 702.6153846153846,128.30474301519905 765.0769230769231,72.46471769598443 827.5384615384615,79.15938289442258 890,47.51724137931037"></polyline><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Forte dei Marmi · 2011: 24.330 €" style="pointer-events: none;">
+      <circle class="chart-hit" cx="78" cy="212.67451873746515" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="78" cy="212.67451873746515" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="78" y1="212.67451873746515" x2="78" y2="196.67451873746515"></line>
+        <rect x="70" y="146.67451873746515" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="82" y="160.67451873746515">Forte dei Marmi · 2011</text>
+        <text class="chart-tooltip-value" x="82" y="180.67451873746515">24.330 €</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Forte dei Marmi · 2012: 25.931 €" style="pointer-events: none;">
+      <circle class="chart-hit" cx="140.46153846153845" cy="196.06707615305268" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="140.46153846153845" cy="196.06707615305268" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="140.46153846153845" y1="196.06707615305268" x2="140.46153846153845" y2="180.06707615305268"></line>
+        <rect x="70" y="130.06707615305268" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="82" y="144.06707615305268">Forte dei Marmi · 2012</text>
+        <text class="chart-tooltip-value" x="82" y="164.06707615305268">25.931 €</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Forte dei Marmi · 2013: 26.078 €" style="pointer-events: none;">
+      <circle class="chart-hit" cx="202.9230769230769" cy="194.53728492843396" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="202.9230769230769" cy="194.53728492843396" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="202.9230769230769" y1="194.53728492843396" x2="202.9230769230769" y2="178.53728492843396"></line>
+        <rect x="97.9230769230769" y="128.53728492843396" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="109.9230769230769" y="142.53728492843396">Forte dei Marmi · 2013</text>
+        <text class="chart-tooltip-value" x="109.9230769230769" y="162.53728492843396">26.078 €</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Forte dei Marmi · 2014: 27.194 €" style="pointer-events: none;">
+      <circle class="chart-hit" cx="265.38461538461536" cy="182.96170903740946" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="265.38461538461536" cy="182.96170903740946" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="265.38461538461536" y1="182.96170903740946" x2="265.38461538461536" y2="166.96170903740946"></line>
+        <rect x="160.38461538461536" y="116.96170903740946" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="172.38461538461536" y="130.96170903740946">Forte dei Marmi · 2014</text>
+        <text class="chart-tooltip-value" x="172.38461538461536" y="150.96170903740946">27.194 €</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Forte dei Marmi · 2015: 27.495 €" style="pointer-events: none;">
+      <circle class="chart-hit" cx="327.8461538461538" cy="179.83645294658626" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="327.8461538461538" cy="179.83645294658626" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="327.8461538461538" y1="179.83645294658626" x2="327.8461538461538" y2="163.83645294658626"></line>
+        <rect x="222.8461538461538" y="113.83645294658626" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="234.8461538461538" y="127.83645294658626">Forte dei Marmi · 2015</text>
+        <text class="chart-tooltip-value" x="234.8461538461538" y="147.83645294658626">27.495 €</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Forte dei Marmi · 2016: 26.880 €" style="pointer-events: none;">
+      <circle class="chart-hit" cx="390.3076923076923" cy="186.21966115917797" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="390.3076923076923" cy="186.21966115917797" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="390.3076923076923" y1="186.21966115917797" x2="390.3076923076923" y2="170.21966115917797"></line>
+        <rect x="285.3076923076923" y="120.21966115917797" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="297.3076923076923" y="134.21966115917797">Forte dei Marmi · 2016</text>
+        <text class="chart-tooltip-value" x="297.3076923076923" y="154.21966115917797">26.880 €</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Forte dei Marmi · 2017: 27.971 €" style="pointer-events: none;">
+      <circle class="chart-hit" cx="452.7692307692308" cy="174.89526360350797" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="452.7692307692308" cy="174.89526360350797" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="452.7692307692308" y1="174.89526360350797" x2="452.7692307692308" y2="158.89526360350797"></line>
+        <rect x="347.7692307692308" y="108.89526360350797" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="359.7692307692308" y="122.89526360350797">Forte dei Marmi · 2017</text>
+        <text class="chart-tooltip-value" x="359.7692307692308" y="142.89526360350797">27.971 €</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Forte dei Marmi · 2018: 29.720 €" style="pointer-events: none;">
+      <circle class="chart-hit" cx="515.2307692307693" cy="156.74661731331653" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="515.2307692307693" cy="156.74661731331653" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="515.2307692307693" y1="156.74661731331653" x2="515.2307692307693" y2="140.74661731331653"></line>
+        <rect x="410.2307692307693" y="90.74661731331653" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="422.2307692307693" y="104.74661731331653">Forte dei Marmi · 2018</text>
+        <text class="chart-tooltip-value" x="422.2307692307693" y="124.74661731331653">29.720 €</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Forte dei Marmi · 2019: 29.679 €" style="pointer-events: none;">
+      <circle class="chart-hit" cx="577.6923076923076" cy="157.1815365953512" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="577.6923076923076" cy="157.1815365953512" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="577.6923076923076" y1="157.1815365953512" x2="577.6923076923076" y2="141.1815365953512"></line>
+        <rect x="472.6923076923076" y="91.18153659535119" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="484.6923076923076" y="105.18153659535119">Forte dei Marmi · 2019</text>
+        <text class="chart-tooltip-value" x="484.6923076923076" y="125.18153659535119">29.679 €</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Forte dei Marmi · 2020: 28.925 €" style="pointer-events: none;">
+      <circle class="chart-hit" cx="640.1538461538462" cy="164.99420994818" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="640.1538461538462" cy="164.99420994818" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="640.1538461538462" y1="164.99420994818" x2="640.1538461538462" y2="148.99420994818"></line>
+        <rect x="535.1538461538462" y="98.99420994818001" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="547.1538461538462" y="112.99420994818001">Forte dei Marmi · 2020</text>
+        <text class="chart-tooltip-value" x="547.1538461538462" y="132.99420994818">28.925 €</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Forte dei Marmi · 2021: 32.462 €" style="pointer-events: none;">
+      <circle class="chart-hit" cx="702.6153846153846" cy="128.30474301519905" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="702.6153846153846" cy="128.30474301519905" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="702.6153846153846" y1="128.30474301519905" x2="702.6153846153846" y2="112.30474301519905"></line>
+        <rect x="597.6153846153846" y="62.30474301519905" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="609.6153846153846" y="76.30474301519905">Forte dei Marmi · 2021</text>
+        <text class="chart-tooltip-value" x="609.6153846153846" y="96.30474301519905">32.462 €</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Forte dei Marmi · 2022: 37.844 €" style="pointer-events: none;">
+      <circle class="chart-hit" cx="765.0769230769231" cy="72.46471769598443" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="765.0769230769231" cy="72.46471769598443" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="765.0769230769231" y1="72.46471769598443" x2="765.0769230769231" y2="90.46471769598443"></line>
+        <rect x="660.0769230769231" y="90.46471769598443" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="672.0769230769231" y="104.46471769598443">Forte dei Marmi · 2022</text>
+        <text class="chart-tooltip-value" x="672.0769230769231" y="124.46471769598443">37.844 €</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Forte dei Marmi · 2023: 37.199 €" style="pointer-events: none;">
+      <circle class="chart-hit" cx="827.5384615384615" cy="79.15938289442258" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="827.5384615384615" cy="79.15938289442258" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="827.5384615384615" y1="79.15938289442258" x2="827.5384615384615" y2="63.15938289442258"></line>
+        <rect x="680" y="13.159382894422578" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="692" y="27.159382894422578">Forte dei Marmi · 2023</text>
+        <text class="chart-tooltip-value" x="692" y="47.15938289442258">37.199 €</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Forte dei Marmi · 2024: 40.249 €" style="pointer-events: none;">
+      <circle class="chart-hit" cx="890" cy="47.51724137931037" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="890" cy="47.51724137931037" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="890" y1="47.51724137931037" x2="890" y2="65.51724137931038"></line>
+        <rect x="680" y="65.51724137931038" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="692" y="79.51724137931038">Forte dei Marmi · 2024</text>
+        <text class="chart-tooltip-value" x="692" y="99.51724137931038">40.249 €</text>
+        
+      </g>
+    </g></g><g class="ux-series-group " data-history-town="stazzema" style="--series-color:#914d47"><polyline class="ux-series-line" points="78,316.4827586206897 140.46153846153845,312.39470411925527 202.9230769230769,306.19056811105094 265.38461538461536,304.43626225706134 327.8461538461538,301.03876661565147 390.3076923076923,302.375998158148 452.7692307692308,300.8038770034076 515.2307692307693,300.3020390818422 577.6923076923076,296.55480276778474 640.1538461538462,304.40544855792865 702.6153846153846,294.3997113254124 765.0769230769231,285.6222683152266 827.5384615384615,274.4723779714799 890,260.8217017560337"></polyline><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Stazzema · 2011: 14.324 €" style="pointer-events: none;">
+      <circle class="chart-hit" cx="78" cy="316.4827586206897" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="78" cy="316.4827586206897" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="78" y1="316.4827586206897" x2="78" y2="300.4827586206897"></line>
+        <rect x="70" y="250.4827586206897" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="82" y="264.4827586206897">Stazzema · 2011</text>
+        <text class="chart-tooltip-value" x="82" y="284.4827586206897">14.324 €</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Stazzema · 2012: 14.718 €" style="pointer-events: none;">
+      <circle class="chart-hit" cx="140.46153846153845" cy="312.39470411925527" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="140.46153846153845" cy="312.39470411925527" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="140.46153846153845" y1="312.39470411925527" x2="140.46153846153845" y2="296.39470411925527"></line>
+        <rect x="70" y="246.39470411925527" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="82" y="260.39470411925527">Stazzema · 2012</text>
+        <text class="chart-tooltip-value" x="82" y="280.39470411925527">14.718 €</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Stazzema · 2013: 15.316 €" style="pointer-events: none;">
+      <circle class="chart-hit" cx="202.9230769230769" cy="306.19056811105094" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="202.9230769230769" cy="306.19056811105094" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="202.9230769230769" y1="306.19056811105094" x2="202.9230769230769" y2="290.19056811105094"></line>
+        <rect x="97.9230769230769" y="240.19056811105094" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="109.9230769230769" y="254.19056811105094">Stazzema · 2013</text>
+        <text class="chart-tooltip-value" x="109.9230769230769" y="274.19056811105094">15.316 €</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Stazzema · 2014: 15.485 €" style="pointer-events: none;">
+      <circle class="chart-hit" cx="265.38461538461536" cy="304.43626225706134" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="265.38461538461536" cy="304.43626225706134" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="265.38461538461536" y1="304.43626225706134" x2="265.38461538461536" y2="288.43626225706134"></line>
+        <rect x="160.38461538461536" y="238.43626225706134" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="172.38461538461536" y="252.43626225706134">Stazzema · 2014</text>
+        <text class="chart-tooltip-value" x="172.38461538461536" y="272.43626225706134">15.485 €</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Stazzema · 2015: 15.813 €" style="pointer-events: none;">
+      <circle class="chart-hit" cx="327.8461538461538" cy="301.03876661565147" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="327.8461538461538" cy="301.03876661565147" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="327.8461538461538" y1="301.03876661565147" x2="327.8461538461538" y2="285.03876661565147"></line>
+        <rect x="222.8461538461538" y="235.03876661565147" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="234.8461538461538" y="249.03876661565147">Stazzema · 2015</text>
+        <text class="chart-tooltip-value" x="234.8461538461538" y="269.03876661565147">15.813 €</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Stazzema · 2016: 15.684 €" style="pointer-events: none;">
+      <circle class="chart-hit" cx="390.3076923076923" cy="302.375998158148" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="390.3076923076923" cy="302.375998158148" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="390.3076923076923" y1="302.375998158148" x2="390.3076923076923" y2="286.375998158148"></line>
+        <rect x="285.3076923076923" y="236.37599815814798" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="297.3076923076923" y="250.37599815814798">Stazzema · 2016</text>
+        <text class="chart-tooltip-value" x="297.3076923076923" y="270.375998158148">15.684 €</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Stazzema · 2017: 15.835 €" style="pointer-events: none;">
+      <circle class="chart-hit" cx="452.7692307692308" cy="300.8038770034076" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="452.7692307692308" cy="300.8038770034076" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="452.7692307692308" y1="300.8038770034076" x2="452.7692307692308" y2="284.8038770034076"></line>
+        <rect x="347.7692307692308" y="234.8038770034076" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="359.7692307692308" y="248.8038770034076">Stazzema · 2017</text>
+        <text class="chart-tooltip-value" x="359.7692307692308" y="268.8038770034076">15.835 €</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Stazzema · 2018: 15.884 €" style="pointer-events: none;">
+      <circle class="chart-hit" cx="515.2307692307693" cy="300.3020390818422" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="515.2307692307693" cy="300.3020390818422" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="515.2307692307693" y1="300.3020390818422" x2="515.2307692307693" y2="284.3020390818422"></line>
+        <rect x="410.2307692307693" y="234.30203908184222" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="422.2307692307693" y="248.30203908184222">Stazzema · 2018</text>
+        <text class="chart-tooltip-value" x="422.2307692307693" y="268.3020390818422">15.884 €</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Stazzema · 2019: 16.245 €" style="pointer-events: none;">
+      <circle class="chart-hit" cx="577.6923076923076" cy="296.55480276778474" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="577.6923076923076" cy="296.55480276778474" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="577.6923076923076" y1="296.55480276778474" x2="577.6923076923076" y2="280.55480276778474"></line>
+        <rect x="472.6923076923076" y="230.55480276778474" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="484.6923076923076" y="244.55480276778474">Stazzema · 2019</text>
+        <text class="chart-tooltip-value" x="484.6923076923076" y="264.55480276778474">16.245 €</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Stazzema · 2020: 15.488 €" style="pointer-events: none;">
+      <circle class="chart-hit" cx="640.1538461538462" cy="304.40544855792865" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="640.1538461538462" cy="304.40544855792865" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="640.1538461538462" y1="304.40544855792865" x2="640.1538461538462" y2="288.40544855792865"></line>
+        <rect x="535.1538461538462" y="238.40544855792865" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="547.1538461538462" y="252.40544855792865">Stazzema · 2020</text>
+        <text class="chart-tooltip-value" x="547.1538461538462" y="272.40544855792865">15.488 €</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Stazzema · 2021: 16.453 €" style="pointer-events: none;">
+      <circle class="chart-hit" cx="702.6153846153846" cy="294.3997113254124" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="702.6153846153846" cy="294.3997113254124" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="702.6153846153846" y1="294.3997113254124" x2="702.6153846153846" y2="278.3997113254124"></line>
+        <rect x="597.6153846153846" y="228.3997113254124" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="609.6153846153846" y="242.3997113254124">Stazzema · 2021</text>
+        <text class="chart-tooltip-value" x="609.6153846153846" y="262.3997113254124">16.453 €</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Stazzema · 2022: 17.299 €" style="pointer-events: none;">
+      <circle class="chart-hit" cx="765.0769230769231" cy="285.6222683152266" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="765.0769230769231" cy="285.6222683152266" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="765.0769230769231" y1="285.6222683152266" x2="765.0769230769231" y2="269.6222683152266"></line>
+        <rect x="660.0769230769231" y="219.62226831522662" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="672.0769230769231" y="233.62226831522662">Stazzema · 2022</text>
+        <text class="chart-tooltip-value" x="672.0769230769231" y="253.62226831522662">17.299 €</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Stazzema · 2023: 18.373 €" style="pointer-events: none;">
+      <circle class="chart-hit" cx="827.5384615384615" cy="274.4723779714799" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="827.5384615384615" cy="274.4723779714799" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="827.5384615384615" y1="274.4723779714799" x2="827.5384615384615" y2="258.4723779714799"></line>
+        <rect x="680" y="208.4723779714799" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="692" y="222.4723779714799">Stazzema · 2023</text>
+        <text class="chart-tooltip-value" x="692" y="242.4723779714799">18.373 €</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Stazzema · 2024: 19.689 €" style="pointer-events: none;">
+      <circle class="chart-hit" cx="890" cy="260.8217017560337" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="890" cy="260.8217017560337" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="890" y1="260.8217017560337" x2="890" y2="244.8217017560337"></line>
+        <rect x="680" y="194.8217017560337" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="692" y="208.8217017560337">Stazzema · 2024</text>
+        <text class="chart-tooltip-value" x="692" y="228.8217017560337">19.689 €</text>
+        
+      </g>
+    </g></g><text class="ux-history-axis-label" x="78" y="374" text-anchor="middle">2011</text><text class="ux-history-axis-label" x="202.9230769230769" y="374" text-anchor="middle">2013</text><text class="ux-history-axis-label" x="327.8461538461538" y="374" text-anchor="middle">2015</text><text class="ux-history-axis-label" x="452.7692307692308" y="374" text-anchor="middle">2017</text><text class="ux-history-axis-label" x="577.6923076923076" y="374" text-anchor="middle">2019</text><text class="ux-history-axis-label" x="702.6153846153846" y="374" text-anchor="middle">2021</text><text class="ux-history-axis-label" x="827.5384615384615" y="374" text-anchor="middle">2023</text><text class="ux-history-axis-label" x="890" y="374" text-anchor="middle">2024</text></svg></div></div><p class="ux-history-scroll-hint">Scorri il grafico orizzontalmente per leggere l’intera serie.</p><div class="ux-history-legend" aria-label="Comuni"><button type="button" data-history-select="massarosa" data-town="Massarosa" data-start="17175.61" data-end="22350.6" data-start-year="2011" data-end-year="2024" aria-pressed="false" style="--series-color:#0f5c6e">Massarosa</button><button type="button" data-history-select="viareggio" data-town="Viareggio" data-start="19913.96" data-end="25539.17" data-start-year="2011" data-end-year="2024" aria-pressed="true" style="--series-color:#b56843">Viareggio</button><button type="button" data-history-select="camaiore" data-town="Camaiore" data-start="17898.81" data-end="23744.66" data-start-year="2011" data-end-year="2024" aria-pressed="false" style="--series-color:#64743d">Camaiore</button><button type="button" data-history-select="pietrasanta" data-town="Pietrasanta" data-start="19032.55" data-end="25239.48" data-start-year="2011" data-end-year="2024" aria-pressed="false" style="--series-color:#855b7b">Pietrasanta</button><button type="button" data-history-select="seravezza" data-town="Seravezza" data-start="17094.29" data-end="21933.08" data-start-year="2011" data-end-year="2024" aria-pressed="false" style="--series-color:#b88a1c">Seravezza</button><button type="button" data-history-select="forte-dei-marmi" data-town="Forte dei Marmi" data-start="24329.79" data-end="40248.59" data-start-year="2011" data-end-year="2024" aria-pressed="false" style="--series-color:#4e7096">Forte dei Marmi</button><button type="button" data-history-select="stazzema" data-town="Stazzema" data-start="14324.16" data-end="19689.09" data-start-year="2011" data-end-year="2024" aria-pressed="false" style="--series-color:#914d47">Stazzema</button></div><div class="ux-history-summary" aria-live="polite"><strong>Viareggio</strong>: 2011 19.914 € → 2024 25.539 €. Variazione: <strong>+5.625 € · +28,2%</strong>.</div></div></div></div></div>
+            </div>
+          </section>
+          <section id="compare-demographic-pyramid" class="compare-demographic-pyramid page-width"></section>
+          <section id="compare-benchmark" class="page-width a5-benchmark-host"><section class="benchmark-section"><div class="section-heading compact"><div><span class="overline">Confronto omogeneo · 2024</span><h2>Territorio, Toscana e Italia</h2></div></div>
+      <div class="benchmark-grid"><article class="benchmark-card benchmark-local"><span>ponderata Versilia</span><strong>24.920&nbsp;€</strong><small>Ammontare complessivo / frequenza complessiva dei sette comuni.</small></article>
+      <article class="benchmark-card"><span>Toscana</span><strong>25.166&nbsp;€</strong><small>MEF — Dipartimento delle Finanze</small></article>
+      <article class="benchmark-card"><span>Italia</span><strong>24.893&nbsp;€</strong><small>MEF — Dipartimento delle Finanze</small></article></div>
+      <p class="benchmark-note">Benchmark A3 materializzato da artifact di acquisizione con quality gate metric-level PASS. <a href="https://www1.finanze.gov.it/finanze/analisi_stat/public/v_4_0_0/contenuti/Redditi_e_principali_variabili_IRPEF_su_base_comunale_CSV_2024.zip" target="_blank" rel="noreferrer">Apri la fonte ↗</a></p></section></section>
+          
+          <section id="compare-tools" class="compare-post-benchmark-tools page-width"><details class="method-disclosure"><summary><span>Metodo e comparabilità</span><small>Formula, natura del dato e criticità</small></summary><div class="method-disclosure-body"><dl><div><dt>Natura</dt><dd>Dato ufficiale</dd></div><div><dt>Formula</dt><dd>Valore pubblicato dalla fonte, senza trasformazione ulteriore.</dd></div><div><dt>Copertura</dt><dd>7/7</dd></div></dl><p><strong>Nota:</strong> Non trasformare dati di stock o struttura in giudizi di performance; mantenere la denominazione della fonte.</p></div></details><aside class="reading-scale" data-reading-scale="territorial" data-reading-metric="income">
+      <div><span class="overline">Scala di lettura</span><strong>Territoriale</strong></div>
+      <p>Il dato descrive residenti, stock o fenomeni localizzati nel Comune. Il confine è utile per leggere il territorio, ma non implica che il Comune sia un sistema autonomo.</p>
+    </aside></section>
+          <section id="compare-territori" class="topic-town-links page-width"><div class="topic-town-links-heading"><span class="overline">Schede comunali</span><h2>Apri il territorio</h2><p>Accedi alla scheda comunale e agli indicatori di dettaglio del tema Economia.</p></div><div class="topic-town-card-grid"><a class="topic-town-card" href="../../comuni/camaiore/?tema=economia&amp;indicatore=income"><span class="topic-town-card-media"><img src="../../crests/camaiore.svg" alt="" loading="lazy" referrerpolicy="no-referrer"></span><span class="topic-town-card-copy"><strong>Camaiore</strong><span class="town-current-value"><b>23.745&nbsp;€</b><small>Reddito imponibile medio</small></span><small>Apri la scheda →</small></span></a><a class="topic-town-card" href="../../comuni/forte-dei-marmi/?tema=economia&amp;indicatore=income"><span class="topic-town-card-media"><img src="../../crests/forte-dei-marmi.svg" alt="" loading="lazy" referrerpolicy="no-referrer"></span><span class="topic-town-card-copy"><strong>Forte dei Marmi</strong><span class="town-current-value"><b>40.249&nbsp;€</b><small>Reddito imponibile medio</small></span><small>Apri la scheda →</small></span></a><a class="topic-town-card" href="../../comuni/massarosa/?tema=economia&amp;indicatore=income"><span class="topic-town-card-media"><img src="../../crests/massarosa.png" alt="" loading="lazy" referrerpolicy="no-referrer"></span><span class="topic-town-card-copy"><strong>Massarosa</strong><span class="town-current-value"><b>22.351&nbsp;€</b><small>Reddito imponibile medio</small></span><small>Apri la scheda →</small></span></a><a class="topic-town-card" href="../../comuni/pietrasanta/?tema=economia&amp;indicatore=income"><span class="topic-town-card-media"><img src="../../crests/pietrasanta.svg" alt="" loading="lazy" referrerpolicy="no-referrer"></span><span class="topic-town-card-copy"><strong>Pietrasanta</strong><span class="town-current-value"><b>25.239&nbsp;€</b><small>Reddito imponibile medio</small></span><small>Apri la scheda →</small></span></a><a class="topic-town-card" href="../../comuni/seravezza/?tema=economia&amp;indicatore=income"><span class="topic-town-card-media"><img src="../../crests/seravezza.png" alt="" loading="lazy" referrerpolicy="no-referrer"></span><span class="topic-town-card-copy"><strong>Seravezza</strong><span class="town-current-value"><b>21.933&nbsp;€</b><small>Reddito imponibile medio</small></span><small>Apri la scheda →</small></span></a><a class="topic-town-card" href="../../comuni/stazzema/?tema=economia&amp;indicatore=income"><span class="topic-town-card-media"><img src="../../crests/stazzema.webp" alt="" loading="lazy" referrerpolicy="no-referrer"></span><span class="topic-town-card-copy"><strong>Stazzema</strong><span class="town-current-value"><b>19.689&nbsp;€</b><small>Reddito imponibile medio</small></span><small>Apri la scheda →</small></span></a><a class="topic-town-card" href="../../comuni/viareggio/?tema=economia&amp;indicatore=income"><span class="topic-town-card-media"><img src="../../crests/viareggio.svg" alt="" loading="lazy" referrerpolicy="no-referrer"></span><span class="topic-town-card-copy"><strong>Viareggio</strong><span class="town-current-value"><b>25.539&nbsp;€</b><small>Reddito imponibile medio</small></span><small>Apri la scheda →</small></span></a></div></section>
+        </main></div>
+  <div id="site-footer-mount">
+      <footer class="site-footer">
+        <div class="footer-about"><strong>Osservatorio Versilia</strong>
+          <p>Un punto di accesso indipendente ai dati pubblici dei sette comuni della Versilia.</p>
+          <p class="footer-disclaimer">Non è un sito istituzionale e non rappresenta gli enti citati.</p>
+        </div>
+        <nav class="footer-links" aria-label="Informazioni sul progetto">
+          <a href="../../progetto/">Il progetto</a>
+          <a href="../../stato-dati/" data-data-status-nav="footer">Stato dei dati</a>
+          <a href="../../opportunita/">Opportunità</a>
+          <a href="../../progetto/#metodo">Metodo</a>
+          <a href="../../progetto/#licenza">Licenza</a>
+          <a href="../../progetto/#versioni">Versioni dei dati</a>
+          <a href="../../segnala/">Segnala un dato</a>
+          <a href="mailto:info@osservatorioversilia.it">Contatti</a>
+        </nav>
+        
+      <div class="footer-social" data-social-placement="footer" aria-label="Segui Osservatorio Versilia">
+        <strong>Segui Osservatorio Versilia</strong><div class="social-links">
+    <a class="social-profile-link" href="https://www.facebook.com/osservatorioversilia" target="_blank" rel="me noreferrer" aria-label="Segui Osservatorio Versilia su Facebook">
+      <span class="social-profile-mark" aria-hidden="true">f</span>
+      <span class="social-profile-copy"><strong>Facebook</strong><small>@osservatorioversilia</small></span>
+      <b aria-hidden="true">↗</b>
+    </a>
+    <a class="social-profile-link" href="https://www.instagram.com/osservatorioversilia/" target="_blank" rel="me noreferrer" aria-label="Segui Osservatorio Versilia su Instagram">
+      <span class="social-profile-mark" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="5" ry="5"></rect><circle cx="12" cy="12" r="4"></circle><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"></circle></svg></span>
+      <span class="social-profile-copy"><strong>Instagram</strong><small>@osservatorioversilia</small></span>
+      <b aria-hidden="true">↗</b>
+    </a>
+    <a class="social-profile-link" href="https://www.linkedin.com/company/osservatorioversilia" target="_blank" rel="me noreferrer" aria-label="Segui Osservatorio Versilia su LinkedIn">
+      <span class="social-profile-mark" aria-hidden="true">in</span>
+      <span class="social-profile-copy"><strong>LinkedIn</strong><small>Osservatorio Versilia</small></span>
+      <b aria-hidden="true">↗</b>
+    </a>
+    <a class="social-profile-link" href="https://x.com/OssVersilia" target="_blank" rel="me noreferrer" aria-label="Segui Osservatorio Versilia su X">
+      <span class="social-profile-mark" aria-hidden="true">X</span>
+      <span class="social-profile-copy"><strong>X</strong><small>@OssVersilia</small></span>
+      <b aria-hidden="true">↗</b>
+    </a></div>
+      </div><div class="footer-note">
+          <span>7 comuni · 11 temi</span><span>v. dati v1.40.0</span><span>catalogo dati aggiornato al 14 settembre 2026</span>
+        </div>
+      </footer></div>
+  <noscript><div class="app-error">Il sito richiede JavaScript per mostrare confronti, ricerca e schede comunali.</div></noscript>
+  <script src="../../assets/app-bundle.js?v=20261025-ui-shell-consistency" defer=""></script>
+  <script src="../../assets/fidelity.js" defer=""></script>
+  <script src="../../assets/economy-atlas.js" defer=""></script>
+  <script src="../../assets/ux-accordion.js?v=20261025-ui-shell-consistency" defer=""></script>
+  <script src="../../assets/ux-history-core.js?v=20261025-ui-shell-consistency" defer=""></script>
+  <script src="../../assets/ux-history.js?v=20261025-ui-shell-consistency" defer=""></script>
+  <script src="../../assets/export-v161.js?v=20261025-ui-shell-consistency" defer=""></script>
+  <script src="../../assets/visual-grammar.js?v=20261025-ui-shell-consistency" defer=""></script>
+  <script src="../../assets/social-presence.js?v=20261025-ui-shell-consistency" defer=""></script>
+
+
+  <script src="../../assets/pwa.js?v=20260824-pwa9&rev=catalog-v129" defer></script>
+</body></html>

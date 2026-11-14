@@ -1,0 +1,86 @@
+{
+  "schemaVersion": 1,
+  "purpose": "Testo pubblico italiano delle schede del Radar generate dai rapporti di audit UE. I rapporti restano evidenze congelate nella lingua delle fonti; ogni traduzione è valida solo finché l'impronta del testo originale (summary + motivazione) coincide.",
+  "reviewedAt": "2026-10-26",
+  "omittedInternalNotes": "Le note interne di audit (es. 'This upgrades the Wave 7 scope review', 'Demonstrates a structural blind spot…') non sono riportate nel testo pubblico.",
+  "entries": {
+    "ceb-local-authority-financing": {
+      "sourceSha256": "a0e9397f83ce63f7663d2c604f06def632dc7b6006698a19be3bd20a99a6c722",
+      "summary": "Finanziamenti a medio-lungo termine della Banca di sviluppo del Consiglio d'Europa (CEB), tramite prestiti per progetti o programmi e strumenti dedicati al settore pubblico; le condizioni dipendono dal progetto e dal mutuatario. La pagina ufficiale indica gli enti locali e regionali fra i possibili mutuatari. La domanda di prestito si prepara insieme alla CEB, passa una valutazione finanziaria, tecnica e sociale e, se approvata, si attua con un accordo quadro di prestito. Comuni italiani hanno già usato questo canale: Genova (50 milioni di euro per resilienza e investimenti comunali) e Reggio Emilia (25 milioni per edilizia sociale e rigenerazione urbana).",
+      "reason": "La pagina ufficiale della CEB indica gli enti locali e regionali fra i possibili mutuatari. La domanda di prestito si prepara insieme alla CEB, passa una valutazione finanziaria, tecnica e sociale e, se approvata, si attua con un accordo quadro di prestito.",
+      "description": "Prestiti a medio-lungo termine della Banca di sviluppo del Consiglio d'Europa per investimenti comunali, soggetti a valutazione del progetto e del credito."
+    },
+    "cinea-green-assist-project-advisory": {
+      "sourceSha256": "cb2203ae52dd1adcece79a23e42aa728812c7a80bc4c916c25e6805790c0ba55",
+      "summary": "Nessun contributo in denaro: consulenza gratuita sui progetti, finanziata nel quadro dei servizi di consulenza UE; la richiesta si presenta di norma tramite il punto di accesso unico InvestEU. Secondo CINEA possono beneficiarne enti pubblici e privati. Green Assist si concentra di norma su programmi di investimento credibili di almeno 2,5 milioni di euro; investimenti minori sono valutati se replicabili.",
+      "reason": "Secondo CINEA possono beneficiarne enti pubblici e privati. Green Assist si concentra di norma su programmi di investimento credibili di almeno 2,5 milioni di euro; investimenti minori sono valutati se replicabili.",
+      "description": "Consulenza gratuita per progetti di investimento verde, di norma da almeno 2,5 milioni di euro; richiesta tramite il punto di accesso InvestEU."
+    },
+    "co-waters-coalition-2026": {
+      "sourceSha256": "484dced69dc94ab6799de2ea686eddb56947474af731301eacaac49ce3e5802e",
+      "summary": "Nessun contributo in denaro: supporto strutturato con rete e scambio fra pari, formazione e rafforzamento delle competenze, coinvolgimento di cittadini e portatori di interesse, consulenza sui finanziamenti e accompagnamento all'attuazione della Missione Oceano. La Commissione europea e CO-WATERS descrivono la coalizione come aperta ad autorità e partner locali delle città e regioni costiere o affacciate sull'acqua.",
+      "reason": "La coalizione è aperta ad autorità e partner locali di città e regioni costiere o affacciate sull'acqua, con servizi dedicati a collaborazione, competenze, coinvolgimento e attuazione.",
+      "description": "Rete europea per città e regioni costiere della Missione Oceano: formazione, scambio fra pari e consulenza sui finanziamenti, senza contributo in denaro."
+    },
+    "eu-ias-rapid-response-fund": {
+      "sourceSha256": "3e0a3f6d168af359743aefc40ecfffa9375eccabe8d513b5b3ae47b3b581837f",
+      "summary": "Da 10.000 a 50.000 euro per progetto. Fondo finanziato dall'UE e gestito da IUCN Save Our Species per interventi rapidi contro specie aliene invasive. Condizioni: incursione di una specie aliena invasiva nuova o emergente; rilevamento precoce ed eradicazione rapida; progetto della durata massima di 12 mesi.",
+      "reason": "Fondo finanziato dall'UE e gestito da IUCN Save Our Species; il Comune può presentare un intervento rapido contro una specie aliena invasiva nuova o emergente.",
+      "description": "Contributi da 10.000 a 50.000 euro per eradicare rapidamente specie aliene invasive nuove o emergenti."
+    },
+    "eui-permanent-peer-reviewers": {
+      "sourceSha256": "4af0089c1aaa1a98165fc92ddd51c25d029e3a2ab219bed8ceb4c04f6b6bbc89",
+      "summary": "Partecipazione gratuita ad attività di formazione e apprendimento fra pari dell'Iniziativa urbana europea (EUI); le revisioni fra pari sono finanziate dall'EUI secondo le linee guida del bando. Le candidature sono individuali: il revisore può rappresentare qualsiasi autorità urbana dell'UE, deve avere esperienza in strategie territoriali integrate e serve l'approvazione dell'ente rappresentato. Il bando è sempre aperto.",
+      "reason": "Le candidature sono individuali: il revisore può rappresentare qualsiasi autorità urbana dell'UE, deve avere esperienza in strategie territoriali integrate e serve l'approvazione dell'ente rappresentato.",
+      "description": "Bando sempre aperto per funzionari che vogliono fare da revisori fra pari nell'Iniziativa urbana europea, con l'approvazione del proprio ente."
+    },
+    "horizon-cl3-2026-01-infra-01": {
+      "sourceSha256": "d3b725d9f0e6cb3b9681cb68ca3584f9b7279edaef94d69345833462ef159193",
+      "summary": "Horizon Europe, azione di innovazione: 9,67 milioni di euro sul tema, circa 4,835 milioni per progetto. Il consorzio deve includere come beneficiari almeno tre operatori del settore, fra cui sono espressamente ammesse le autorità di protezione civile. Secondo il Codice italiano della protezione civile il sindaco è autorità territoriale di protezione civile e il Comune ne esercita le funzioni.",
+      "reason": "Il consorzio deve includere come beneficiari almeno tre operatori del settore, fra cui sono espressamente ammesse le autorità di protezione civile. Secondo il Codice italiano della protezione civile il sindaco è autorità territoriale di protezione civile e il Comune ne esercita le funzioni.",
+      "description": "Horizon Europe: strumenti per la resilienza delle infrastrutture critiche; il Comune può partecipare come autorità di protezione civile in un consorzio europeo."
+    },
+    "horizon-cl3-2026-01-infra-02": {
+      "sourceSha256": "7bda5cbd7be5e89276ba049e5fae9cc406c8e9f240a6f177071471fc48355847",
+      "summary": "Horizon Europe, azione di ricerca e innovazione: 4 milioni di euro sul tema, circa 4 milioni per progetto. Il consorzio deve includere come beneficiari almeno tre operatori del settore, fra cui sono espressamente ammesse le autorità di protezione civile e i servizi di primo intervento.",
+      "reason": "Il consorzio deve includere come beneficiari almeno tre operatori del settore, fra cui sono espressamente ammesse le autorità di protezione civile e i servizi di primo intervento.",
+      "description": "Horizon Europe: sicurezza delle infrastrutture; il Comune può partecipare come autorità di protezione civile in un consorzio europeo."
+    },
+    "horizon-cl3-2026-01-infra-03": {
+      "sourceSha256": "1606fcc14829ac894954de91d2e5b714875457a6dc359d8c99108c5080d915b1",
+      "summary": "Horizon Europe, azione di innovazione: 9 milioni di euro sul tema, circa 4,5 milioni per progetto. Il consorzio deve includere come beneficiari almeno tre operatori del settore, fra cui sono espressamente ammesse le autorità di protezione civile, le organizzazioni di primo intervento e le autorità che gestiscono eventi NaTech (incidenti tecnologici causati da eventi naturali).",
+      "reason": "Il consorzio deve includere come beneficiari almeno tre operatori del settore, fra cui sono espressamente ammesse le autorità di protezione civile, le organizzazioni di primo intervento e le autorità che gestiscono eventi NaTech.",
+      "description": "Horizon Europe: capacità innovative per le infrastrutture critiche; il Comune può partecipare come autorità di protezione civile in un consorzio europeo."
+    },
+    "investeu-portal-project-promotion": {
+      "sourceSha256": "bbfdf9a278de02ac1fde62962e6133918191d78b9ad39aae90bd7120ab665dc7",
+      "summary": "Nessun contributo o finanziamento garantito. La pubblicazione è gratuita e dà visibilità al progetto presso investitori di tutta l'UE; la Commissione può segnalarlo ai partner attuatori di InvestEU e, se utile, all'Advisory Hub. Il Portale InvestEU è una componente distinta da Fondo e Advisory Hub. I progetti devono essere promossi da un soggetto giuridico pubblico o privato in regola e rispettare i criteri di ammissione del Portale.",
+      "reason": "I progetti devono essere promossi da un soggetto giuridico pubblico o privato in regola e rispettare i criteri di ammissione del Portale InvestEU.",
+      "description": "Vetrina gratuita per presentare progetti comunali a investitori di tutta l'UE; nessun finanziamento garantito."
+    },
+    "mic-european-heritage-label-2027": {
+      "sourceSha256": "b3a36cdb76b035bf3919385b1f0d3647c9337ae238872bda66827083ba3a3067",
+      "summary": "Riconoscimento (Marchio del patrimonio europeo), senza contributo economico diretto confermato nell'avviso ufficiale. La preselezione italiana è aperta e il modulo distingue l'organizzazione proponente dall'ente gestore del sito: il Comune è interessato se propone o gestisce un sito ammissibile. Sant'Anna di Stazzema ha già il Marchio, quindi quel sito non è una nuova candidatura.",
+      "reason": "La preselezione italiana è aperta e il modulo distingue l'organizzazione proponente dall'ente gestore del sito: il Comune è interessato se propone o gestisce un sito ammissibile. Sant'Anna di Stazzema ha già il Marchio, quindi quel sito non è una nuova candidatura.",
+      "description": "Riconoscimento europeo per siti di valore storico-culturale; il Comune può candidarsi come proponente o ente gestore di un sito ammissibile."
+    },
+    "mip4adapt-citizen-engagement-hotline": {
+      "sourceSha256": "e2e9e70fd7ed2f2c81d5ac6d04462ca9ae1311be91fbfa9f603e70ff7f80861e",
+      "summary": "Supporto tecnico gratuito e rafforzamento delle competenze con affiancamento personalizzato e un gruppo multilingue di specialisti del coinvolgimento dei cittadini. Il portale della Missione Adattamento indica che il servizio è disponibile per tutte le autorità regionali e locali europee. La richiesta si presenta all'Helpdesk MIP4Adapt ed è distinta dal programma di assistenza tecnica, il cui bando attuale è chiuso e ha requisiti più ristretti.",
+      "reason": "Il servizio è disponibile per tutte le autorità regionali e locali europee; la richiesta si presenta all'Helpdesk MIP4Adapt.",
+      "description": "Affiancamento gratuito per coinvolgere i cittadini nelle politiche di adattamento climatico; richiesta all'Helpdesk MIP4Adapt."
+    },
+    "mip4adapt-mission-community-roster-experts": {
+      "sourceSha256": "97d29233ab3b7354b1c26bb23f285203982c879d914b635e4371bfd42d1c812a",
+      "summary": "Nessun contributo in denaro: contatto con esperti, rafforzamento delle competenze, gruppi di lavoro, rete e supporto alla costruzione di partenariati. La comunità online della Missione Adattamento è aperta a ogni organizzazione impegnata nella resilienza climatica. I membri, comprese le autorità regionali e locali, possono chiedere di essere messi in contatto con un esperto del registro (Roster of Experts) tramite una breve richiesta, e partecipare a gruppi di lavoro e attività formative.",
+      "reason": "La comunità è aperta a ogni organizzazione impegnata nella resilienza climatica; il Comune aderente può chiedere il contatto con un esperto del registro con una breve richiesta.",
+      "description": "Comunità europea per l'adattamento climatico: contatto con esperti, gruppi di lavoro e formazione per i membri, senza contributo in denaro."
+    },
+    "tsi-2027-local-authorities": {
+      "sourceSha256": "b99ec6a81b6be71275194a67d215f7edf611032e77e9474c2fef54b0e46b0e96",
+      "summary": "Nessun contributo in denaro al Comune: la Commissione finanzia assistenza tecnica su misura per progettare e attuare riforme, senza cofinanziamento a carico dello Stato membro. Il bando TSI 2027 prevede che autorità nazionali, regionali e locali possano presentare richieste entro il 31 ottobre 2026. Gli enti beneficiari preparano la richiesta sul portale della Commissione, ma la trasmissione formale spetta all'Autorità di coordinamento nazionale; per l'Italia l'elenco della Commissione la colloca presso il Ministero per il Sud.",
+      "reason": "Il bando TSI 2027 prevede che autorità nazionali, regionali e locali possano presentare richieste entro il 31 ottobre 2026. Il Comune prepara la richiesta sul portale della Commissione, ma la trasmissione formale spetta all'Autorità di coordinamento nazionale (per l'Italia presso il Ministero per il Sud).",
+      "description": "Assistenza tecnica gratuita della Commissione per progettare e attuare riforme; richiesta del Comune trasmessa tramite l'Autorità di coordinamento nazionale entro il 31 ottobre 2026."
+    }
+  }
+}

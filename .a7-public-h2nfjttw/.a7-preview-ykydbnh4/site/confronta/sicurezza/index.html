@@ -1,0 +1,985 @@
+<!doctype html>
+<html lang="it"><head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sicurezza e territorio · Confronto dei comuni della Versilia</title>
+  <meta name="description" content="Sicurezza stradale e criminalità in Versilia, distinguendo i dati comunali da quelli disponibili solo a scala sovracomunale.">
+  <meta property="og:title" content="Sicurezza e territorio · Confronto dei comuni della Versilia">
+  <meta property="og:description" content="Sicurezza stradale e criminalità in Versilia, distinguendo i dati comunali da quelli disponibili solo a scala sovracomunale.">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="it_IT">
+  <link rel="icon" href="../../favicon.svg?v=20260824-ov4" sizes="any">
+  <link rel="icon" href="../../favicon.svg?v=20260824-ov4" type="image/svg+xml">
+  <link rel="manifest" href="../../site.webmanifest?v=20260824-pwa9">
+  <link rel="stylesheet" href="../../assets/original.css">
+  <link rel="stylesheet" href="../../assets/static.css">
+  <link rel="stylesheet" href="../../assets/fidelity.css?v=20261025-ui-shell-consistency">
+  <link rel="stylesheet" href="../../assets/fonts.css">
+  <link rel="stylesheet" href="../../assets/ux-experiment.css?v=20261025-ui-shell-consistency">
+  <link rel="stylesheet" href="../../assets/ux-background-match.css?v=20261025-ui-shell-consistency">
+  <link rel="stylesheet" href="../../assets/export-v161.css?v=20261025-ui-shell-consistency">
+  <link rel="stylesheet" href="../../assets/visual-grammar.css?v=20261025-ui-shell-consistency">
+  <link rel="stylesheet" href="../../assets/indicator-pages.css?v=20261025-ui-shell-consistency">
+  <link rel="stylesheet" href="../../assets/social-presence.css?v=20261025-ui-shell-consistency">
+<style id="ov-invalsi-benchmark-history-style">
+.ux-history-chart .ux-series-group[data-history-town="toscana"] .ux-series-line{stroke-dasharray:10 5;stroke-width:3;opacity:.9}
+.ux-history-chart .ux-series-group[data-history-town="italia"] .ux-series-line{stroke-dasharray:2 5;stroke-width:3;opacity:.9}
+.ux-history-legend button[data-history-select="toscana"]::before,.ux-history-legend button[data-history-select="italia"]::before{width:20px;height:2px;border-radius:0}
+.ux-history-legend button[data-history-select="toscana"]::before{background:repeating-linear-gradient(90deg,var(--series-color) 0 8px,transparent 8px 12px)}
+.ux-history-legend button[data-history-select="italia"]::before{background:repeating-linear-gradient(90deg,var(--series-color) 0 2px,transparent 2px 6px)}
+</style><style id="ov-climate-current-grammar-style">
+      .ov-climate-current-legend{
+        display:flex;align-items:center;gap:18px;margin:0 0 14px;padding:0 2px;
+        color:var(--muted);font-size:9px;font-weight:700
+      }
+      .ov-climate-current-legend span{display:inline-flex;align-items:center;gap:7px}
+      .ov-climate-current-legend .ov-legend-dot{
+        width:9px;height:9px;border-radius:50%;background:var(--surface,#fffaf1);
+        border:2px solid var(--theme-color,#52785c)
+      }
+      .ov-climate-current-legend .ov-legend-mean{width:2px;height:16px;background:#607b88}
+      .ov-climate-current-list{
+        display:grid;gap:11px
+      }
+      .ov-climate-current-list .ov-climate-current-row{
+        border-radius:8px;grid-template-columns:24px minmax(110px,1.1fr) minmax(150px,3fr) minmax(70px,auto);
+        align-items:center;gap:12px;min-height:54px;padding:0;display:grid;position:relative;
+        color:inherit;text-decoration:none;transition:background .15s
+      }
+      .ov-climate-current-list .ov-climate-current-row:hover,
+      .ov-climate-current-list .ov-climate-current-row.selected{background:var(--blue-soft)}
+      .ov-climate-current-list .ov-climate-current-row .town{
+        grid-column:2;font-size:13px;font-weight:690
+      }
+      .ov-climate-current-list .ov-climate-current-row strong{
+        grid-column:4;font-family:var(--font-geist-mono),monospace;text-align:right;
+        white-space:nowrap;font-size:12px
+      }
+      .ov-climate-current-list .ov-climate-current-track{
+        grid-column:3;position:relative;height:9px;border-radius:999px;background:#e4e9e7;
+        overflow:visible
+      }
+      .ov-climate-current-list.uses-versilia-marker .ov-climate-current-track::after{
+        content:'';position:absolute;z-index:1;left:var(--ov-mean-position);top:-5px;width:2px;height:19px;
+        background:#607b88;transform:translateX(-1px)
+      }
+      .ov-climate-current-list.uses-versilia-marker .ov-climate-current-track>i{
+        position:absolute;z-index:2;top:50%;left:var(--ov-value-position)!important;
+        width:11px;height:11px;margin:-5.5px 0 0 -5.5px;border-radius:50%;
+        background:var(--surface,#fffaf1);border:3px solid var(--theme-color,#52785c);
+        box-shadow:0 1px 4px color-mix(in srgb,var(--ink) 18%,transparent)
+      }
+      .ov-climate-current-list .bar-hover-label{display:none}
+      @media(max-width:700px){
+        .ov-climate-current-list .ov-climate-current-row{
+          grid-template-columns:18px minmax(82px,1fr) minmax(70px,1.4fr) auto;gap:7px
+        }
+        .ov-climate-current-list .ov-climate-current-row .town{font-size:11px}
+        .ov-climate-current-list .ov-climate-current-row strong{font-size:10px}
+      }
+    </style>
+  <link rel="canonical" href="https://osservatorioversilia.it/confronta/sicurezza/">
+  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"url":"https://osservatorioversilia.it/confronta/sicurezza/","name":"Sicurezza e territorio · Confronto dei comuni della Versilia","description":"Sicurezza stradale e criminalità in Versilia, distinguendo i dati comunali da quelli disponibili solo a scala sovracomunale.","inLanguage":"it-IT","isAccessibleForFree":true,"creator":{"@type":"Person","name":"Emanuele Anzilotti"},"publisher":{"@type":"Person","name":"Emanuele Anzilotti"},"@type":"Dataset","spatialCoverage":{"@type":"Place","name":"Versilia, Toscana, Italia"},"variableMeasured":["Sicurezza stradale","Spesa impegnata per ordine pubblico e sicurezza per residente","Proventi rendicontati da sanzioni al Codice della strada per abitante"]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Osservatorio Versilia","item":"https://osservatorioversilia.it/"},{"@type":"ListItem","position":2,"name":"Temi","item":"https://osservatorioversilia.it/#temi"},{"@type":"ListItem","position":3,"name":"Sicurezza e territorio · Confronto dei comuni della Versilia","item":"https://osservatorioversilia.it/confronta/sicurezza/"}]}]}</script>
+
+  <meta property="og:url" content="https://osservatorioversilia.it/confronta/sicurezza/">
+  <meta property="og:site_name" content="Osservatorio Versilia">
+  <meta property="og:image" content="https://osservatorioversilia.it/images/versilia-viareggio-apuane.jpg">
+  <meta property="og:image:alt" content="Viareggio e le Alpi Apuane, immagine di Osservatorio Versilia">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Sicurezza e territorio · Confronto dei comuni della Versilia">
+  <meta name="twitter:description" content="Sicurezza stradale e criminalità in Versilia, distinguendo i dati comunali da quelli disponibili solo a scala sovracomunale.">
+  <meta name="twitter:site" content="@OssVersilia">
+  <meta name="twitter:image" content="https://osservatorioversilia.it/images/versilia-viareggio-apuane.jpg">
+  <meta name="twitter:image:alt" content="Viareggio e le Alpi Apuane, immagine di Osservatorio Versilia">
+  <link rel="stylesheet" href="../../assets/brand.css?v=20260824-ov4">
+  <link rel="stylesheet" href="../../assets/mobile-accordion-fix.css?v=20260809-3">
+  <link rel="stylesheet" href="../../assets/chart-surfaces.css?v=20260826-v120">
+  <meta name="theme-color" content="#0F3654">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Osservatorio Versilia">
+  <link rel="apple-touch-icon" sizes="180x180" href="../../pwa/icon-180.png?v=20260824-pwa9">
+  <link rel="stylesheet" href="../../assets/pwa.css?v=20260824-pwa9">
+</head>
+<body class="antialiased" data-page="compare" data-theme="sicurezza" data-town="" data-prerendered="true">
+  <div id="site-header-mount">
+      <a class="skip-link" href="#app">Vai al contenuto</a>
+      <header class="site-header">
+        <div class="site-header-inner">
+          <a href="../../" class="site-brand" aria-label="Osservatorio Versilia, torna alla home">
+            <span class="site-brand-mark" aria-hidden="true"><svg class="ov-mark-svg" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 76 64"><g fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="27" cy="32" r="22" stroke="#0F3654" stroke-width="6"/>
+    <path d="M43 28 53 48 71 15" stroke="#0F3654" stroke-width="6"/>
+    <path d="M57 27 70 9" stroke="#58A28F" stroke-width="3.2"/>
+  </g>
+  <g fill="#6F8FA3">
+    <rect x="16" y="34" width="5.5" height="9" rx="1"/>
+    <rect x="24" y="28" width="5.5" height="15" rx="1"/>
+    <rect x="32" y="20" width="5.5" height="23" rx="1"/>
+  </g>
+  <path d="M10 43c7-5.5 14-7.2 20-5.3 4.4 1.4 8 4.1 12 4.7v5.1c-4.6-.5-8.7-3-13.1-4.1-5.7-1.5-11.7-.1-18.9 4.1Z" fill="#58A28F"/>
+  <path d="M11.5 45.2c6.2-3.2 11.9-4.2 17.1-3 4.3 1 8.1 3.2 12.2 3.8" fill="none" stroke="#F7FAF8" stroke-width="1.8" stroke-linecap="round"/>
+</svg></span>
+            <span class="site-brand-copy"><strong>Osservatorio Versilia</strong><small>Versilia in numeri</small></span>
+          </a>
+          <div class="site-header-actions">
+            <nav aria-label="Navigazione principale">
+              <a href="../../#temi" aria-current="page">Temi</a>
+              <a href="../../#comuni">Comuni</a>
+              <a href="../../dossier/">Dossier</a>
+              <a href="../../chiedi/">Chiedi</a>
+              <a href="../../opportunita/">Opportunità</a>
+              <a href="../../progetto/">Il progetto</a>
+              <a href="../../stato-dati/" data-data-status-nav="header">Stato dati</a>
+              <a href="../../segnala/">Segnala</a>
+            </nav>
+            <button class="global-search-trigger" type="button" aria-haspopup="dialog" aria-expanded="false">
+              <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg><span>Cerca</span><kbd>/</kbd>
+            </button>
+          </div>
+        </div>
+      </header></div>
+  <div id="app"><main class="inner-page a5-editorial-pilot" data-theme="sicurezza">
+          <section class="compare-showcase-hero" aria-labelledby="compare-page-title">
+            <div class="compare-showcase-hero-media" style="background-image:linear-gradient(90deg,rgba(10,45,67,.86) 0%,rgba(10,45,67,.62) 43%,rgba(10,45,67,.16) 78%),url('../../images/versilia-viareggio-apuane.jpg')"></div>
+            <div class="compare-showcase-hero-copy page-width">
+              <span class="overline">Confronto territoriale · 07</span>
+              <h1 id="compare-page-title">Sicurezza e territorio</h1>
+              <p>Sicurezza stradale e risorse comunali dedicate alla sicurezza e al controllo della circolazione, mantenendo la criminalità come contesto sovracomunale.</p>
+              <div class="compare-showcase-actions">
+                <a class="compare-showcase-primary" href="#compare-workspace">Esplora i dati <span aria-hidden="true">→</span></a>
+                <a class="compare-showcase-secondary" href="#compare-territori">Scopri i comuni</a>
+              </div>
+              <div class="compare-showcase-facts"><span>7 Comuni</span><span>3 indicatori Sicurezza e territorio</span><span>Catalogo al 14 settembre 2026</span></div>
+            </div>
+          </section>
+          <div class="breadcrumbs page-width"><a href="/">Home</a><span>›</span><strong>Sicurezza e territorio</strong></div>
+          <nav class="compare-context-nav page-width" aria-label="Passa a un altro tema">
+      <div class="context-nav-title"><small>Esplora</small><strong>Temi</strong></div>
+      <div class="context-nav-links"><a href="/confronta/demografia/?indicatore=population" data-context-theme="demografia" class=""><small>01</small><span>Demografia</span></a><a href="/confronta/economia/?indicatore=income" data-context-theme="economia" class=""><small>02</small><span>Economia</span></a><a href="/confronta/lavoro/?indicatore=employmentRate" data-context-theme="lavoro" class=""><small>03</small><span>Lavoro</span></a><a href="/confronta/istruzione/?indicatore=diplomaPlus" data-context-theme="istruzione" class=""><small>04</small><span>Istruzione</span></a><a href="/confronta/salute/?indicatore=lifeExpectancy" data-context-theme="salute" class=""><small>05</small><span>Salute</span></a><a href="/confronta/mobilita/?indicatore=outsideMunicipality" data-context-theme="mobilita" class=""><small>06</small><span>Mobilità e infrastrutture</span></a><a href="/confronta/sicurezza/?indicatore=roadSafety" data-context-theme="sicurezza" class="active" aria-current="page"><small>07</small><span>Sicurezza e territorio</span></a><a href="/confronta/abitare/?indicatore=omiResidential" data-context-theme="abitare" class=""><small>08</small><span>Abitare</span></a><a href="/confronta/ambiente/?indicatore=municipalSurface" data-context-theme="ambiente" class=""><small>09</small><span>Ambiente</span></a><a href="/confronta/bilanci/?indicatore=currentRevenueAccruedPerResident" data-context-theme="bilanci" class=""><small>10</small><span>Bilanci e amministrazione</span></a><a href="/confronta/comunita/?indicatore=publicWorks" data-context-theme="comunita" class=""><small>11</small><span>Comunità e welfare</span></a></div>
+    </nav>
+          <section class="topic-hero page-width" data-theme="sicurezza">
+            <div class="topic-symbol"><svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-8 9-4.5-1.5-8-4-8-9V5l8-3 8 3z"></path><path d="m9 12 2 2 4-4"></path></svg><small>07</small></div>
+            <div class="topic-hero-copy"><span class="overline">Per leggere il territorio</span><h2>Quanto è sicuro il territorio e quali risorse vengono dedicate alla sicurezza?</h2></div>
+            <div class="topic-hero-context"><span class="overline">Come si legge</span><p>Scegli un indicatore: valore attuale dei sette Comuni, serie storica e, dove disponibile, confronto con Toscana e Italia. Fonte e metodo sono indicati sotto ogni grafico.</p></div>
+          </section>
+          <section id="compare-workspace" class="topic-dashboard page-width" data-theme="sicurezza">
+            <aside class="topic-controls">
+      <div class="topic-controls-heading"><div><span class="overline">Gruppi di indicatori</span><strong>3 indicatori</strong></div><small>Scegli il dato da confrontare</small></div>
+      <div class="metric-switch metric-catalog compact-list" role="tablist" aria-label="Indicatori di Sicurezza e territorio" data-ux-accordion-delegated="true" data-ux-visible-tabs="true" data-ux-accordion-ready="true"><section class="metric-group is-open" data-section="sicurezza-stradale" data-ux-accordion="true">
+      <div class="metric-group-heading ux-section-toggle" role="button" tabindex="0" aria-controls="ux-section-1" data-ux-accordion-heading="true" aria-expanded="true"><strong>Sicurezza stradale</strong><span>Frequenza degli incidenti e gravità delle conseguenze, con serie comunali omogenee.</span><span class="ux-section-tools"><span>1 indicatore</span><span class="ux-section-chevron" aria-hidden="true">⌄</span></span></div>
+      <div class="metric-group-buttons" id="ux-section-1"><button type="button" role="tab" data-metric="roadSafety" class="active" aria-selected="true" tabindex="0">Sicurezza stradale</button></div>
+    </section><section class="metric-group is-open" data-section="risorse-controllo" data-ux-accordion="true">
+      <div class="metric-group-heading ux-section-toggle" role="button" tabindex="0" aria-controls="ux-section-2" data-ux-accordion-heading="true" aria-expanded="true"><strong>Risorse e controllo</strong><span>Spesa comunale per ordine pubblico e sicurezza e proventi delle sanzioni al Codice della strada.</span><span class="ux-section-tools"><span>2 indicatori</span><span class="ux-section-chevron" aria-hidden="true">⌄</span></span></div>
+      <div class="metric-group-buttons" id="ux-section-2"><button type="button" role="tab" data-metric="securityMissionExpenditurePerResident" class="" aria-selected="false" tabindex="-1">Spesa per sicurezza</button><button type="button" role="tab" data-metric="roadFinesPerResident" class="" aria-selected="false" tabindex="-1">Proventi da sanzioni</button></div>
+    </section></div>
+      <div id="compare-definition" class="topic-side-definition"><div class="indicator-definition"><h2>Sicurezza stradale</h2><p>Incidenti stradali con lesioni e gravità delle conseguenze. Il selettore distingue incidentalità, mortalità, lesività e feriti.</p><dl><div><dt>Anno</dt><dd>2024</dd></div><div><dt>Fonte</dt><dd><a href="https://www.istat.it/storage/misura-comune/15a-Infrastrutture-e-mobilita-incidenti-stradali.xlsx" target="_blank" rel="noreferrer">Istat — A misura di Comune, incidenti stradali ↗</a></dd></div><div><dt>Versilia · Incidenti con lesioni</dt><dd>6,28 ogni 1.000</dd></div></dl><small class="aggregate-note">Ogni Comune pesa allo stesso modo; non è un dato ufficiale di area.</small></div></div>
+    </aside>
+            <div class="compare-main-column">
+              <header class="compare-panel-heading"><span class="overline">Confronto tra Comuni della Versilia</span></header>
+              <div id="compare-bars" class="a5-shared-chart" data-age-pyramid-delegated="1"><div class="ux-view-shell" data-view-shell="ux-view-1"><div class="ux-view-toolbar"><div class="ux-view-toolbar-copy"><small class="a5-toolbar-overline">Confronto tra Comuni della Versilia</small><strong>Come vuoi leggere l’indicatore?</strong><span>Fotografia dell’ultimo anno oppure confronto dell’andamento tra i sette comuni.</span></div><div class="data-actions"><a href="../../indicatori/sicurezza-stradale/">Scheda indicatore</a><button type="button" data-download="">Scarica CSV</button><button type="button" data-print="">Stampa / PDF</button></div><div class="ux-view-toggle" role="tablist" aria-label="Vista dell’indicatore"><button id="ux-view-1-tab-current" type="button" role="tab" aria-controls="ux-view-1-current" data-view-mode="current" class="active" aria-selected="true" tabindex="0">Valore attuale</button><button id="ux-view-1-tab-history" type="button" role="tab" aria-controls="ux-view-1-history" data-view-mode="history" aria-selected="false" tabindex="-1">Storico</button></div></div><p class="ux-view-note">Lo storico utilizza esclusivamente gli anni omogenei presenti per tutti e sette i comuni.</p><div id="ux-view-1-current" class="ux-view-pane" role="tabpanel" aria-labelledby="ux-view-1-tab-current" data-view-pane="current"><div class="topic-bars selectable-topic-bars"><div class="compare-chart-toolbar"><div class="compare-chart-legend-host" aria-live="polite"><div class="comparison-legend"><span><i class="comparison-legend-dot" aria-hidden="true"></i>Comune</span><span><i class="comparison-legend-reference" aria-hidden="true"></i>Versilia · Incidenti con lesioni</span></div></div><div class="compare-view-controls"><label class="compare-choice-select"><span>Lettura</span><select data-composite-component=""><option value="part-0" selected="">Incidenti</option><option value="part-1">Mortalità</option><option value="part-2">Lesività</option><option value="part-3">Feriti</option></select></label></div></div><div class="comparison-bars" data-composite-choice="part-0" data-composite-scale="value" data-visual-contract="canonical" data-visual-unit="per1000" data-visual-grammar-signature="roadSafety|r|part-0|value|6.282399335063711|per1000|15.0264077958789|6.62420801990558|6.43682491836222|6.10573016186774|4.35071328799432|3.70728562217924|1.72562553925798" data-viz="lollipop"><a href="/comuni/forte-dei-marmi/?tema=sicurezza&amp;indicatore=roadSafety" class="bar-row comparison-row" aria-label="Forte dei Marmi: 15,0 ogni 1.000; Versilia · Incidenti con lesioni: 6,3 ogni 1.000"><span class="bar-town">Forte dei Marmi</span><span class="bar-track">
+        <span class="comparison-axis-line" aria-hidden="true"></span>
+        
+        <span class="comparison-reference" style="left:31.411996675318555%" aria-hidden="true"></span>
+        <span class="comparison-stem" style="left:0%;width:75.1320389793945%" aria-hidden="true"></span>
+        <span class="comparison-dot" style="left:75.1320389793945%" aria-hidden="true"></span><span class="bar-hover-label">Forte dei Marmi: 15,0 ogni 1.000 · Versilia · Incidenti con lesioni: 6,3 ogni 1.000</span></span><strong>15,03 ogni 1.000</strong></a><a href="/comuni/viareggio/?tema=sicurezza&amp;indicatore=roadSafety" class="bar-row comparison-row" aria-label="Viareggio: 6,6 ogni 1.000; Versilia · Incidenti con lesioni: 6,3 ogni 1.000"><span class="bar-town">Viareggio</span><span class="bar-track">
+        <span class="comparison-axis-line" aria-hidden="true"></span>
+        
+        <span class="comparison-reference" style="left:31.411996675318555%" aria-hidden="true"></span>
+        <span class="comparison-stem" style="left:0%;width:33.121040099527896%" aria-hidden="true"></span>
+        <span class="comparison-dot" style="left:33.121040099527896%" aria-hidden="true"></span><span class="bar-hover-label">Viareggio: 6,6 ogni 1.000 · Versilia · Incidenti con lesioni: 6,3 ogni 1.000</span></span><strong>6,62 ogni 1.000</strong></a><a href="/comuni/camaiore/?tema=sicurezza&amp;indicatore=roadSafety" class="bar-row comparison-row" aria-label="Camaiore: 6,4 ogni 1.000; Versilia · Incidenti con lesioni: 6,3 ogni 1.000"><span class="bar-town">Camaiore</span><span class="bar-track">
+        <span class="comparison-axis-line" aria-hidden="true"></span>
+        
+        <span class="comparison-reference" style="left:31.411996675318555%" aria-hidden="true"></span>
+        <span class="comparison-stem" style="left:0%;width:32.1841245918111%" aria-hidden="true"></span>
+        <span class="comparison-dot" style="left:32.1841245918111%" aria-hidden="true"></span><span class="bar-hover-label">Camaiore: 6,4 ogni 1.000 · Versilia · Incidenti con lesioni: 6,3 ogni 1.000</span></span><strong>6,44 ogni 1.000</strong></a><a href="/comuni/pietrasanta/?tema=sicurezza&amp;indicatore=roadSafety" class="bar-row comparison-row" aria-label="Pietrasanta: 6,1 ogni 1.000; Versilia · Incidenti con lesioni: 6,3 ogni 1.000"><span class="bar-town">Pietrasanta</span><span class="bar-track">
+        <span class="comparison-axis-line" aria-hidden="true"></span>
+        
+        <span class="comparison-reference" style="left:31.411996675318555%" aria-hidden="true"></span>
+        <span class="comparison-stem" style="left:0%;width:30.528650809338696%" aria-hidden="true"></span>
+        <span class="comparison-dot" style="left:30.528650809338696%" aria-hidden="true"></span><span class="bar-hover-label">Pietrasanta: 6,1 ogni 1.000 · Versilia · Incidenti con lesioni: 6,3 ogni 1.000</span></span><strong>6,11 ogni 1.000</strong></a><a href="/comuni/massarosa/?tema=sicurezza&amp;indicatore=roadSafety" class="bar-row comparison-row" aria-label="Massarosa: 4,4 ogni 1.000; Versilia · Incidenti con lesioni: 6,3 ogni 1.000"><span class="bar-town">Massarosa</span><span class="bar-track">
+        <span class="comparison-axis-line" aria-hidden="true"></span>
+        
+        <span class="comparison-reference" style="left:31.411996675318555%" aria-hidden="true"></span>
+        <span class="comparison-stem" style="left:0%;width:21.7535664399716%" aria-hidden="true"></span>
+        <span class="comparison-dot" style="left:21.7535664399716%" aria-hidden="true"></span><span class="bar-hover-label">Massarosa: 4,4 ogni 1.000 · Versilia · Incidenti con lesioni: 6,3 ogni 1.000</span></span><strong>4,35 ogni 1.000</strong></a><a href="/comuni/seravezza/?tema=sicurezza&amp;indicatore=roadSafety" class="bar-row comparison-row" aria-label="Seravezza: 3,7 ogni 1.000; Versilia · Incidenti con lesioni: 6,3 ogni 1.000"><span class="bar-town">Seravezza</span><span class="bar-track">
+        <span class="comparison-axis-line" aria-hidden="true"></span>
+        
+        <span class="comparison-reference" style="left:31.411996675318555%" aria-hidden="true"></span>
+        <span class="comparison-stem" style="left:0%;width:18.5364281108962%" aria-hidden="true"></span>
+        <span class="comparison-dot" style="left:18.5364281108962%" aria-hidden="true"></span><span class="bar-hover-label">Seravezza: 3,7 ogni 1.000 · Versilia · Incidenti con lesioni: 6,3 ogni 1.000</span></span><strong>3,71 ogni 1.000</strong></a><a href="/comuni/stazzema/?tema=sicurezza&amp;indicatore=roadSafety" class="bar-row comparison-row" aria-label="Stazzema: 1,7 ogni 1.000; Versilia · Incidenti con lesioni: 6,3 ogni 1.000"><span class="bar-town">Stazzema</span><span class="bar-track">
+        <span class="comparison-axis-line" aria-hidden="true"></span>
+        
+        <span class="comparison-reference" style="left:31.411996675318555%" aria-hidden="true"></span>
+        <span class="comparison-stem" style="left:0%;width:8.6281276962899%" aria-hidden="true"></span>
+        <span class="comparison-dot" style="left:8.6281276962899%" aria-hidden="true"></span><span class="bar-hover-label">Stazzema: 1,7 ogni 1.000 · Versilia · Incidenti con lesioni: 6,3 ogni 1.000</span></span><strong>1,73 ogni 1.000</strong></a><div class="comparison-axis"><span>0,0 ogni 1.000</span><span>scala con origine a zero</span><span>20,0 ogni 1.000</span></div><p class="comparison-note">I comuni sono ordinati per valore per facilitare il confronto. L’ordine non esprime merito o qualità.</p></div></div></div><div id="ux-view-1-history" class="ux-view-pane" role="tabpanel" aria-labelledby="ux-view-1-tab-history" data-view-pane="history" hidden=""><div class="ux-history-card"><div class="ux-history-head"><div><strong>Andamento 2014–2024</strong><span>Una linea per territorio; sono mostrati solo gli anni disponibili in modo omogeneo.</span></div><span>Istat — A misura di Comune, incidenti stradali</span></div><div class="ux-history-scroll"><div class="ux-history-chart has-selection" data-unit="per1000" data-ov-tooltip-wired="1"><svg viewBox="0 0 920 390" role="img" aria-label="Incidenti con lesioni: confronto storico dei sette comuni"><line class="ux-history-grid" x1="132" y1="26" x2="890" y2="26"></line><text class="ux-history-axis-label" x="122" y="30" text-anchor="end">16,6 ogni 1.000</text><line class="ux-history-grid" x1="132" y1="104" x2="890" y2="104"></line><text class="ux-history-axis-label" x="122" y="108" text-anchor="end">12,5 ogni 1.000</text><line class="ux-history-grid" x1="132" y1="182" x2="890" y2="182"></line><text class="ux-history-axis-label" x="122" y="186" text-anchor="end">8,3 ogni 1.000</text><line class="ux-history-grid" x1="132" y1="260" x2="890" y2="260"></line><text class="ux-history-axis-label" x="122" y="264" text-anchor="end">4,2 ogni 1.000</text><line class="ux-history-grid" x1="132" y1="338" x2="890" y2="338"></line><text class="ux-history-axis-label" x="122" y="342" text-anchor="end">0,0 ogni 1.000</text><g class="ux-series-group " data-history-town="massarosa" style="--series-color:#0f5c6e"><polyline class="ux-series-line" points="132,272.7690917637068 216.22222222222223,272.3268284611146 300.44444444444446,262.48884513951805 384.66666666666663,269.1986960788994 468.8888888888889,253.1404517280966 553.1111111111111,280.3233580908218 637.3333333333333,276.313644280801 721.5555555555555,270.1163095286065 805.7777777777778,259.02157734337317 890,256.41631465040336"></polyline><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Massarosa · 2014: 3,5 ogni 1.000" style="pointer-events: none;">
+      <circle class="chart-hit" cx="132" cy="272.7690917637068" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="132" cy="272.7690917637068" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="132" y1="272.7690917637068" x2="132" y2="256.7690917637068"></line>
+        <rect x="124" y="206.7690917637068" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="136" y="220.7690917637068">Massarosa · 2014</text>
+        <text class="chart-tooltip-value" x="136" y="240.7690917637068">3,5 ogni 1.000</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Massarosa · 2015: 3,5 ogni 1.000" style="pointer-events: none;">
+      <circle class="chart-hit" cx="216.22222222222223" cy="272.3268284611146" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="216.22222222222223" cy="272.3268284611146" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="216.22222222222223" y1="272.3268284611146" x2="216.22222222222223" y2="256.3268284611146"></line>
+        <rect x="124" y="206.3268284611146" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="136" y="220.3268284611146">Massarosa · 2015</text>
+        <text class="chart-tooltip-value" x="136" y="240.3268284611146">3,5 ogni 1.000</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Massarosa · 2016: 4,0 ogni 1.000" style="pointer-events: none;">
+      <circle class="chart-hit" cx="300.44444444444446" cy="262.48884513951805" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="300.44444444444446" cy="262.48884513951805" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="300.44444444444446" y1="262.48884513951805" x2="300.44444444444446" y2="246.48884513951805"></line>
+        <rect x="195.44444444444446" y="196.48884513951805" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="207.44444444444446" y="210.48884513951805">Massarosa · 2016</text>
+        <text class="chart-tooltip-value" x="207.44444444444446" y="230.48884513951805">4,0 ogni 1.000</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Massarosa · 2018: 3,7 ogni 1.000" style="pointer-events: none;">
+      <circle class="chart-hit" cx="384.66666666666663" cy="269.1986960788994" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="384.66666666666663" cy="269.1986960788994" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="384.66666666666663" y1="269.1986960788994" x2="384.66666666666663" y2="253.1986960788994"></line>
+        <rect x="279.66666666666663" y="203.1986960788994" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="291.66666666666663" y="217.1986960788994">Massarosa · 2018</text>
+        <text class="chart-tooltip-value" x="291.66666666666663" y="237.1986960788994">3,7 ogni 1.000</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Massarosa · 2019: 4,5 ogni 1.000" style="pointer-events: none;">
+      <circle class="chart-hit" cx="468.8888888888889" cy="253.1404517280966" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="468.8888888888889" cy="253.1404517280966" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="468.8888888888889" y1="253.1404517280966" x2="468.8888888888889" y2="237.1404517280966"></line>
+        <rect x="363.8888888888889" y="187.1404517280966" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="375.8888888888889" y="201.1404517280966">Massarosa · 2019</text>
+        <text class="chart-tooltip-value" x="375.8888888888889" y="221.1404517280966">4,5 ogni 1.000</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Massarosa · 2020: 3,1 ogni 1.000" style="pointer-events: none;">
+      <circle class="chart-hit" cx="553.1111111111111" cy="280.3233580908218" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="553.1111111111111" cy="280.3233580908218" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="553.1111111111111" y1="280.3233580908218" x2="553.1111111111111" y2="264.3233580908218"></line>
+        <rect x="448.1111111111111" y="214.32335809082178" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="460.1111111111111" y="228.32335809082178">Massarosa · 2020</text>
+        <text class="chart-tooltip-value" x="460.1111111111111" y="248.32335809082178">3,1 ogni 1.000</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Massarosa · 2021: 3,3 ogni 1.000" style="pointer-events: none;">
+      <circle class="chart-hit" cx="637.3333333333333" cy="276.313644280801" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="637.3333333333333" cy="276.313644280801" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="637.3333333333333" y1="276.313644280801" x2="637.3333333333333" y2="260.313644280801"></line>
+        <rect x="532.3333333333333" y="210.313644280801" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="544.3333333333333" y="224.313644280801">Massarosa · 2021</text>
+        <text class="chart-tooltip-value" x="544.3333333333333" y="244.313644280801">3,3 ogni 1.000</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Massarosa · 2022: 3,6 ogni 1.000" style="pointer-events: none;">
+      <circle class="chart-hit" cx="721.5555555555555" cy="270.1163095286065" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="721.5555555555555" cy="270.1163095286065" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="721.5555555555555" y1="270.1163095286065" x2="721.5555555555555" y2="254.1163095286065"></line>
+        <rect x="616.5555555555555" y="204.1163095286065" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="628.5555555555555" y="218.1163095286065">Massarosa · 2022</text>
+        <text class="chart-tooltip-value" x="628.5555555555555" y="238.1163095286065">3,6 ogni 1.000</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Massarosa · 2023: 4,2 ogni 1.000" style="pointer-events: none;">
+      <circle class="chart-hit" cx="805.7777777777778" cy="259.02157734337317" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="805.7777777777778" cy="259.02157734337317" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="805.7777777777778" y1="259.02157734337317" x2="805.7777777777778" y2="243.02157734337317"></line>
+        <rect x="680" y="193.02157734337317" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="692" y="207.02157734337317">Massarosa · 2023</text>
+        <text class="chart-tooltip-value" x="692" y="227.02157734337317">4,2 ogni 1.000</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Massarosa · 2024: 4,4 ogni 1.000" style="pointer-events: none;">
+      <circle class="chart-hit" cx="890" cy="256.41631465040336" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="890" cy="256.41631465040336" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="890" y1="256.41631465040336" x2="890" y2="240.41631465040336"></line>
+        <rect x="680" y="190.41631465040336" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="692" y="204.41631465040336">Massarosa · 2024</text>
+        <text class="chart-tooltip-value" x="692" y="224.41631465040336">4,4 ogni 1.000</text>
+        
+      </g>
+    </g></g><g class="ux-series-group is-selected" data-history-town="viareggio" style="--series-color:#b56843"><polyline class="ux-series-line" points="132,210.31369545056594 216.22222222222223,234.61686984687017 300.44444444444446,238.79787901224583 384.66666666666663,210.12052400691627 468.8888888888889,217.85374756223004 553.1111111111111,267.46689646499556 637.3333333333333,249.3745524647064 721.5555555555555,248.80459816669804 805.7777777777778,215.29516934175678 890,213.78420663169268"></polyline><g class="chart-point" tabindex="0" role="button" aria-label="Viareggio · 2014: 6,8 ogni 1.000">
+      <circle class="chart-hit" cx="132" cy="210.31369545056594" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="132" cy="210.31369545056594" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="132" y1="210.31369545056594" x2="132" y2="194.31369545056594"></line>
+        <rect x="124" y="144.31369545056594" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="136" y="158.31369545056594">Viareggio · 2014</text>
+        <text class="chart-tooltip-value" x="136" y="178.31369545056594">6,8 ogni 1.000</text>
+        
+      </g>
+    </g><g class="chart-point" tabindex="0" role="button" aria-label="Viareggio · 2015: 5,5 ogni 1.000">
+      <circle class="chart-hit" cx="216.22222222222223" cy="234.61686984687017" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="216.22222222222223" cy="234.61686984687017" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="216.22222222222223" y1="234.61686984687017" x2="216.22222222222223" y2="218.61686984687017"></line>
+        <rect x="124" y="168.61686984687017" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="136" y="182.61686984687017">Viareggio · 2015</text>
+        <text class="chart-tooltip-value" x="136" y="202.61686984687017">5,5 ogni 1.000</text>
+        
+      </g>
+    </g><g class="chart-point" tabindex="0" role="button" aria-label="Viareggio · 2016: 5,3 ogni 1.000">
+      <circle class="chart-hit" cx="300.44444444444446" cy="238.79787901224583" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="300.44444444444446" cy="238.79787901224583" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="300.44444444444446" y1="238.79787901224583" x2="300.44444444444446" y2="222.79787901224583"></line>
+        <rect x="195.44444444444446" y="172.79787901224583" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="207.44444444444446" y="186.79787901224583">Viareggio · 2016</text>
+        <text class="chart-tooltip-value" x="207.44444444444446" y="206.79787901224583">5,3 ogni 1.000</text>
+        
+      </g>
+    </g><g class="chart-point" tabindex="0" role="button" aria-label="Viareggio · 2018: 6,8 ogni 1.000">
+      <circle class="chart-hit" cx="384.66666666666663" cy="210.12052400691627" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="384.66666666666663" cy="210.12052400691627" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="384.66666666666663" y1="210.12052400691627" x2="384.66666666666663" y2="194.12052400691627"></line>
+        <rect x="279.66666666666663" y="144.12052400691627" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="291.66666666666663" y="158.12052400691627">Viareggio · 2018</text>
+        <text class="chart-tooltip-value" x="291.66666666666663" y="178.12052400691627">6,8 ogni 1.000</text>
+        
+      </g>
+    </g><g class="chart-point" tabindex="0" role="button" aria-label="Viareggio · 2019: 6,4 ogni 1.000">
+      <circle class="chart-hit" cx="468.8888888888889" cy="217.85374756223004" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="468.8888888888889" cy="217.85374756223004" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="468.8888888888889" y1="217.85374756223004" x2="468.8888888888889" y2="201.85374756223004"></line>
+        <rect x="363.8888888888889" y="151.85374756223004" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="375.8888888888889" y="165.85374756223004">Viareggio · 2019</text>
+        <text class="chart-tooltip-value" x="375.8888888888889" y="185.85374756223004">6,4 ogni 1.000</text>
+        
+      </g>
+    </g><g class="chart-point" tabindex="0" role="button" aria-label="Viareggio · 2020: 3,8 ogni 1.000">
+      <circle class="chart-hit" cx="553.1111111111111" cy="267.46689646499556" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="553.1111111111111" cy="267.46689646499556" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="553.1111111111111" y1="267.46689646499556" x2="553.1111111111111" y2="251.46689646499556"></line>
+        <rect x="448.1111111111111" y="201.46689646499556" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="460.1111111111111" y="215.46689646499556">Viareggio · 2020</text>
+        <text class="chart-tooltip-value" x="460.1111111111111" y="235.46689646499556">3,8 ogni 1.000</text>
+        
+      </g>
+    </g><g class="chart-point" tabindex="0" role="button" aria-label="Viareggio · 2021: 4,7 ogni 1.000">
+      <circle class="chart-hit" cx="637.3333333333333" cy="249.3745524647064" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="637.3333333333333" cy="249.3745524647064" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="637.3333333333333" y1="249.3745524647064" x2="637.3333333333333" y2="233.3745524647064"></line>
+        <rect x="532.3333333333333" y="183.3745524647064" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="544.3333333333333" y="197.3745524647064">Viareggio · 2021</text>
+        <text class="chart-tooltip-value" x="544.3333333333333" y="217.3745524647064">4,7 ogni 1.000</text>
+        
+      </g>
+    </g><g class="chart-point" tabindex="0" role="button" aria-label="Viareggio · 2022: 4,8 ogni 1.000">
+      <circle class="chart-hit" cx="721.5555555555555" cy="248.80459816669804" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="721.5555555555555" cy="248.80459816669804" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="721.5555555555555" y1="248.80459816669804" x2="721.5555555555555" y2="232.80459816669804"></line>
+        <rect x="616.5555555555555" y="182.80459816669804" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="628.5555555555555" y="196.80459816669804">Viareggio · 2022</text>
+        <text class="chart-tooltip-value" x="628.5555555555555" y="216.80459816669804">4,8 ogni 1.000</text>
+        
+      </g>
+    </g><g class="chart-point" tabindex="0" role="button" aria-label="Viareggio · 2023: 6,5 ogni 1.000">
+      <circle class="chart-hit" cx="805.7777777777778" cy="215.29516934175678" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="805.7777777777778" cy="215.29516934175678" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="805.7777777777778" y1="215.29516934175678" x2="805.7777777777778" y2="199.29516934175678"></line>
+        <rect x="680" y="149.29516934175678" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="692" y="163.29516934175678">Viareggio · 2023</text>
+        <text class="chart-tooltip-value" x="692" y="183.29516934175678">6,5 ogni 1.000</text>
+        
+      </g>
+    </g><g class="chart-point" tabindex="0" role="button" aria-label="Viareggio · 2024: 6,6 ogni 1.000">
+      <circle class="chart-hit" cx="890" cy="213.78420663169268" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="890" cy="213.78420663169268" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="890" y1="213.78420663169268" x2="890" y2="197.78420663169268"></line>
+        <rect x="680" y="147.78420663169268" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="692" y="161.78420663169268">Viareggio · 2024</text>
+        <text class="chart-tooltip-value" x="692" y="181.78420663169268">6,6 ogni 1.000</text>
+        
+      </g>
+    </g></g><g class="ux-series-group " data-history-town="camaiore" style="--series-color:#64743d"><polyline class="ux-series-line" points="132,200.0512467156077 216.22222222222223,195.37875141017784 300.44444444444446,207.85822726719263 384.66666666666663,214.57270340311908 468.8888888888889,209.84953085984432 553.1111111111111,247.35723828808648 637.3333333333333,231.2378671809956 721.5555555555555,216.19497467874578 805.7777777777778,241.56253118861872 890,217.2979762101961"></polyline><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Camaiore · 2014: 7,4 ogni 1.000" style="pointer-events: none;">
+      <circle class="chart-hit" cx="132" cy="200.0512467156077" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="132" cy="200.0512467156077" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="132" y1="200.0512467156077" x2="132" y2="184.0512467156077"></line>
+        <rect x="124" y="134.0512467156077" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="136" y="148.0512467156077">Camaiore · 2014</text>
+        <text class="chart-tooltip-value" x="136" y="168.0512467156077">7,4 ogni 1.000</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Camaiore · 2015: 7,6 ogni 1.000" style="pointer-events: none;">
+      <circle class="chart-hit" cx="216.22222222222223" cy="195.37875141017784" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="216.22222222222223" cy="195.37875141017784" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="216.22222222222223" y1="195.37875141017784" x2="216.22222222222223" y2="179.37875141017784"></line>
+        <rect x="124" y="129.37875141017784" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="136" y="143.37875141017784">Camaiore · 2015</text>
+        <text class="chart-tooltip-value" x="136" y="163.37875141017784">7,6 ogni 1.000</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Camaiore · 2016: 6,9 ogni 1.000" style="pointer-events: none;">
+      <circle class="chart-hit" cx="300.44444444444446" cy="207.85822726719263" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="300.44444444444446" cy="207.85822726719263" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="300.44444444444446" y1="207.85822726719263" x2="300.44444444444446" y2="191.85822726719263"></line>
+        <rect x="195.44444444444446" y="141.85822726719263" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="207.44444444444446" y="155.85822726719263">Camaiore · 2016</text>
+        <text class="chart-tooltip-value" x="207.44444444444446" y="175.85822726719263">6,9 ogni 1.000</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Camaiore · 2018: 6,6 ogni 1.000" style="pointer-events: none;">
+      <circle class="chart-hit" cx="384.66666666666663" cy="214.57270340311908" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="384.66666666666663" cy="214.57270340311908" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="384.66666666666663" y1="214.57270340311908" x2="384.66666666666663" y2="198.57270340311908"></line>
+        <rect x="279.66666666666663" y="148.57270340311908" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="291.66666666666663" y="162.57270340311908">Camaiore · 2018</text>
+        <text class="chart-tooltip-value" x="291.66666666666663" y="182.57270340311908">6,6 ogni 1.000</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Camaiore · 2019: 6,8 ogni 1.000" style="pointer-events: none;">
+      <circle class="chart-hit" cx="468.8888888888889" cy="209.84953085984432" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="468.8888888888889" cy="209.84953085984432" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="468.8888888888889" y1="209.84953085984432" x2="468.8888888888889" y2="193.84953085984432"></line>
+        <rect x="363.8888888888889" y="143.84953085984432" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="375.8888888888889" y="157.84953085984432">Camaiore · 2019</text>
+        <text class="chart-tooltip-value" x="375.8888888888889" y="177.84953085984432">6,8 ogni 1.000</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Camaiore · 2020: 4,8 ogni 1.000" style="pointer-events: none;">
+      <circle class="chart-hit" cx="553.1111111111111" cy="247.35723828808648" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="553.1111111111111" cy="247.35723828808648" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="553.1111111111111" y1="247.35723828808648" x2="553.1111111111111" y2="231.35723828808648"></line>
+        <rect x="448.1111111111111" y="181.35723828808648" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="460.1111111111111" y="195.35723828808648">Camaiore · 2020</text>
+        <text class="chart-tooltip-value" x="460.1111111111111" y="215.35723828808648">4,8 ogni 1.000</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Camaiore · 2021: 5,7 ogni 1.000" style="pointer-events: none;">
+      <circle class="chart-hit" cx="637.3333333333333" cy="231.2378671809956" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="637.3333333333333" cy="231.2378671809956" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="637.3333333333333" y1="231.2378671809956" x2="637.3333333333333" y2="215.2378671809956"></line>
+        <rect x="532.3333333333333" y="165.2378671809956" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="544.3333333333333" y="179.2378671809956">Camaiore · 2021</text>
+        <text class="chart-tooltip-value" x="544.3333333333333" y="199.2378671809956">5,7 ogni 1.000</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Camaiore · 2022: 6,5 ogni 1.000" style="pointer-events: none;">
+      <circle class="chart-hit" cx="721.5555555555555" cy="216.19497467874578" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="721.5555555555555" cy="216.19497467874578" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="721.5555555555555" y1="216.19497467874578" x2="721.5555555555555" y2="200.19497467874578"></line>
+        <rect x="616.5555555555555" y="150.19497467874578" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="628.5555555555555" y="164.19497467874578">Camaiore · 2022</text>
+        <text class="chart-tooltip-value" x="628.5555555555555" y="184.19497467874578">6,5 ogni 1.000</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Camaiore · 2023: 5,1 ogni 1.000" style="pointer-events: none;">
+      <circle class="chart-hit" cx="805.7777777777778" cy="241.56253118861872" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="805.7777777777778" cy="241.56253118861872" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="805.7777777777778" y1="241.56253118861872" x2="805.7777777777778" y2="225.56253118861872"></line>
+        <rect x="680" y="175.56253118861872" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="692" y="189.56253118861872">Camaiore · 2023</text>
+        <text class="chart-tooltip-value" x="692" y="209.56253118861872">5,1 ogni 1.000</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Camaiore · 2024: 6,4 ogni 1.000" style="pointer-events: none;">
+      <circle class="chart-hit" cx="890" cy="217.2979762101961" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="890" cy="217.2979762101961" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="890" y1="217.2979762101961" x2="890" y2="201.2979762101961"></line>
+        <rect x="680" y="151.2979762101961" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="692" y="165.2979762101961">Camaiore · 2024</text>
+        <text class="chart-tooltip-value" x="692" y="185.2979762101961">6,4 ogni 1.000</text>
+        
+      </g>
+    </g></g><g class="ux-series-group " data-history-town="pietrasanta" style="--series-color:#855b7b"><polyline class="ux-series-line" points="132,195.04038323596183 216.22222222222223,204.64413749593936 300.44444444444446,189.83336206236044 384.66666666666663,199.53267793967336 468.8888888888889,202.052536180715 553.1111111111111,253.42622317080614 637.3333333333333,224.32076758752743 721.5555555555555,211.62645777200046 805.7777777777778,220.70130837608428 890,223.50659733659523"></polyline><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Pietrasanta · 2014: 7,6 ogni 1.000" style="pointer-events: none;">
+      <circle class="chart-hit" cx="132" cy="195.04038323596183" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="132" cy="195.04038323596183" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="132" y1="195.04038323596183" x2="132" y2="179.04038323596183"></line>
+        <rect x="124" y="129.04038323596183" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="136" y="143.04038323596183">Pietrasanta · 2014</text>
+        <text class="chart-tooltip-value" x="136" y="163.04038323596183">7,6 ogni 1.000</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Pietrasanta · 2015: 7,1 ogni 1.000" style="pointer-events: none;">
+      <circle class="chart-hit" cx="216.22222222222223" cy="204.64413749593936" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="216.22222222222223" cy="204.64413749593936" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="216.22222222222223" y1="204.64413749593936" x2="216.22222222222223" y2="188.64413749593936"></line>
+        <rect x="124" y="138.64413749593936" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="136" y="152.64413749593936">Pietrasanta · 2015</text>
+        <text class="chart-tooltip-value" x="136" y="172.64413749593936">7,1 ogni 1.000</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Pietrasanta · 2016: 7,9 ogni 1.000" style="pointer-events: none;">
+      <circle class="chart-hit" cx="300.44444444444446" cy="189.83336206236044" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="300.44444444444446" cy="189.83336206236044" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="300.44444444444446" y1="189.83336206236044" x2="300.44444444444446" y2="173.83336206236044"></line>
+        <rect x="195.44444444444446" y="123.83336206236044" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="207.44444444444446" y="137.83336206236044">Pietrasanta · 2016</text>
+        <text class="chart-tooltip-value" x="207.44444444444446" y="157.83336206236044">7,9 ogni 1.000</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Pietrasanta · 2018: 7,4 ogni 1.000" style="pointer-events: none;">
+      <circle class="chart-hit" cx="384.66666666666663" cy="199.53267793967336" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="384.66666666666663" cy="199.53267793967336" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="384.66666666666663" y1="199.53267793967336" x2="384.66666666666663" y2="183.53267793967336"></line>
+        <rect x="279.66666666666663" y="133.53267793967336" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="291.66666666666663" y="147.53267793967336">Pietrasanta · 2018</text>
+        <text class="chart-tooltip-value" x="291.66666666666663" y="167.53267793967336">7,4 ogni 1.000</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Pietrasanta · 2019: 7,2 ogni 1.000" style="pointer-events: none;">
+      <circle class="chart-hit" cx="468.8888888888889" cy="202.052536180715" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="468.8888888888889" cy="202.052536180715" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="468.8888888888889" y1="202.052536180715" x2="468.8888888888889" y2="186.052536180715"></line>
+        <rect x="363.8888888888889" y="136.052536180715" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="375.8888888888889" y="150.052536180715">Pietrasanta · 2019</text>
+        <text class="chart-tooltip-value" x="375.8888888888889" y="170.052536180715">7,2 ogni 1.000</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Pietrasanta · 2020: 4,5 ogni 1.000" style="pointer-events: none;">
+      <circle class="chart-hit" cx="553.1111111111111" cy="253.42622317080614" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="553.1111111111111" cy="253.42622317080614" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="553.1111111111111" y1="253.42622317080614" x2="553.1111111111111" y2="237.42622317080614"></line>
+        <rect x="448.1111111111111" y="187.42622317080614" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="460.1111111111111" y="201.42622317080614">Pietrasanta · 2020</text>
+        <text class="chart-tooltip-value" x="460.1111111111111" y="221.42622317080614">4,5 ogni 1.000</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Pietrasanta · 2021: 6,1 ogni 1.000" style="pointer-events: none;">
+      <circle class="chart-hit" cx="637.3333333333333" cy="224.32076758752743" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="637.3333333333333" cy="224.32076758752743" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="637.3333333333333" y1="224.32076758752743" x2="637.3333333333333" y2="208.32076758752743"></line>
+        <rect x="532.3333333333333" y="158.32076758752743" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="544.3333333333333" y="172.32076758752743">Pietrasanta · 2021</text>
+        <text class="chart-tooltip-value" x="544.3333333333333" y="192.32076758752743">6,1 ogni 1.000</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Pietrasanta · 2022: 6,7 ogni 1.000" style="pointer-events: none;">
+      <circle class="chart-hit" cx="721.5555555555555" cy="211.62645777200046" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="721.5555555555555" cy="211.62645777200046" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="721.5555555555555" y1="211.62645777200046" x2="721.5555555555555" y2="195.62645777200046"></line>
+        <rect x="616.5555555555555" y="145.62645777200046" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="628.5555555555555" y="159.62645777200046">Pietrasanta · 2022</text>
+        <text class="chart-tooltip-value" x="628.5555555555555" y="179.62645777200046">6,7 ogni 1.000</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Pietrasanta · 2023: 6,3 ogni 1.000" style="pointer-events: none;">
+      <circle class="chart-hit" cx="805.7777777777778" cy="220.70130837608428" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="805.7777777777778" cy="220.70130837608428" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="805.7777777777778" y1="220.70130837608428" x2="805.7777777777778" y2="204.70130837608428"></line>
+        <rect x="680" y="154.70130837608428" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="692" y="168.70130837608428">Pietrasanta · 2023</text>
+        <text class="chart-tooltip-value" x="692" y="188.70130837608428">6,3 ogni 1.000</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Pietrasanta · 2024: 6,1 ogni 1.000" style="pointer-events: none;">
+      <circle class="chart-hit" cx="890" cy="223.50659733659523" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="890" cy="223.50659733659523" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="890" y1="223.50659733659523" x2="890" y2="207.50659733659523"></line>
+        <rect x="680" y="157.50659733659523" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="692" y="171.50659733659523">Pietrasanta · 2024</text>
+        <text class="chart-tooltip-value" x="692" y="191.50659733659523">6,1 ogni 1.000</text>
+        
+      </g>
+    </g></g><g class="ux-series-group " data-history-town="seravezza" style="--series-color:#b88a1c"><polyline class="ux-series-line" points="132,257.12742882982104 216.22222222222223,270.8967273462988 300.44444444444446,282.0052050102108 384.66666666666663,271.1564502576608 468.8888888888889,277.980201355905 553.1111111111111,283.2178105648046 637.3333333333333,274.98640587948705 721.5555555555555,271.55781954560945 805.7777777777778,276.0730075931103 890,268.48173858397683"></polyline><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Seravezza · 2014: 4,3 ogni 1.000" style="pointer-events: none;">
+      <circle class="chart-hit" cx="132" cy="257.12742882982104" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="132" cy="257.12742882982104" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="132" y1="257.12742882982104" x2="132" y2="241.12742882982104"></line>
+        <rect x="124" y="191.12742882982104" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="136" y="205.12742882982104">Seravezza · 2014</text>
+        <text class="chart-tooltip-value" x="136" y="225.12742882982104">4,3 ogni 1.000</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Seravezza · 2015: 3,6 ogni 1.000" style="pointer-events: none;">
+      <circle class="chart-hit" cx="216.22222222222223" cy="270.8967273462988" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="216.22222222222223" cy="270.8967273462988" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="216.22222222222223" y1="270.8967273462988" x2="216.22222222222223" y2="254.8967273462988"></line>
+        <rect x="124" y="204.8967273462988" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="136" y="218.8967273462988">Seravezza · 2015</text>
+        <text class="chart-tooltip-value" x="136" y="238.8967273462988">3,6 ogni 1.000</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Seravezza · 2016: 3,0 ogni 1.000" style="pointer-events: none;">
+      <circle class="chart-hit" cx="300.44444444444446" cy="282.0052050102108" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="300.44444444444446" cy="282.0052050102108" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="300.44444444444446" y1="282.0052050102108" x2="300.44444444444446" y2="266.0052050102108"></line>
+        <rect x="195.44444444444446" y="216.00520501021077" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="207.44444444444446" y="230.00520501021077">Seravezza · 2016</text>
+        <text class="chart-tooltip-value" x="207.44444444444446" y="250.00520501021077">3,0 ogni 1.000</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Seravezza · 2018: 3,6 ogni 1.000" style="pointer-events: none;">
+      <circle class="chart-hit" cx="384.66666666666663" cy="271.1564502576608" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="384.66666666666663" cy="271.1564502576608" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="384.66666666666663" y1="271.1564502576608" x2="384.66666666666663" y2="255.15645025766082"></line>
+        <rect x="279.66666666666663" y="205.15645025766082" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="291.66666666666663" y="219.15645025766082">Seravezza · 2018</text>
+        <text class="chart-tooltip-value" x="291.66666666666663" y="239.15645025766082">3,6 ogni 1.000</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Seravezza · 2019: 3,2 ogni 1.000" style="pointer-events: none;">
+      <circle class="chart-hit" cx="468.8888888888889" cy="277.980201355905" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="468.8888888888889" cy="277.980201355905" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="468.8888888888889" y1="277.980201355905" x2="468.8888888888889" y2="261.980201355905"></line>
+        <rect x="363.8888888888889" y="211.98020135590502" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="375.8888888888889" y="225.98020135590502">Seravezza · 2019</text>
+        <text class="chart-tooltip-value" x="375.8888888888889" y="245.98020135590502">3,2 ogni 1.000</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Seravezza · 2020: 2,9 ogni 1.000" style="pointer-events: none;">
+      <circle class="chart-hit" cx="553.1111111111111" cy="283.2178105648046" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="553.1111111111111" cy="283.2178105648046" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="553.1111111111111" y1="283.2178105648046" x2="553.1111111111111" y2="267.2178105648046"></line>
+        <rect x="448.1111111111111" y="217.2178105648046" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="460.1111111111111" y="231.2178105648046">Seravezza · 2020</text>
+        <text class="chart-tooltip-value" x="460.1111111111111" y="251.2178105648046">2,9 ogni 1.000</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Seravezza · 2021: 3,4 ogni 1.000" style="pointer-events: none;">
+      <circle class="chart-hit" cx="637.3333333333333" cy="274.98640587948705" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="637.3333333333333" cy="274.98640587948705" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="637.3333333333333" y1="274.98640587948705" x2="637.3333333333333" y2="258.98640587948705"></line>
+        <rect x="532.3333333333333" y="208.98640587948705" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="544.3333333333333" y="222.98640587948705">Seravezza · 2021</text>
+        <text class="chart-tooltip-value" x="544.3333333333333" y="242.98640587948705">3,4 ogni 1.000</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Seravezza · 2022: 3,5 ogni 1.000" style="pointer-events: none;">
+      <circle class="chart-hit" cx="721.5555555555555" cy="271.55781954560945" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="721.5555555555555" cy="271.55781954560945" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="721.5555555555555" y1="271.55781954560945" x2="721.5555555555555" y2="255.55781954560945"></line>
+        <rect x="616.5555555555555" y="205.55781954560945" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="628.5555555555555" y="219.55781954560945">Seravezza · 2022</text>
+        <text class="chart-tooltip-value" x="628.5555555555555" y="239.55781954560945">3,5 ogni 1.000</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Seravezza · 2023: 3,3 ogni 1.000" style="pointer-events: none;">
+      <circle class="chart-hit" cx="805.7777777777778" cy="276.0730075931103" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="805.7777777777778" cy="276.0730075931103" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="805.7777777777778" y1="276.0730075931103" x2="805.7777777777778" y2="260.0730075931103"></line>
+        <rect x="680" y="210.07300759311028" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="692" y="224.07300759311028">Seravezza · 2023</text>
+        <text class="chart-tooltip-value" x="692" y="244.07300759311028">3,3 ogni 1.000</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Seravezza · 2024: 3,7 ogni 1.000" style="pointer-events: none;">
+      <circle class="chart-hit" cx="890" cy="268.48173858397683" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="890" cy="268.48173858397683" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="890" y1="268.48173858397683" x2="890" y2="252.48173858397683"></line>
+        <rect x="680" y="202.48173858397683" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="692" y="216.48173858397683">Seravezza · 2024</text>
+        <text class="chart-tooltip-value" x="692" y="236.48173858397683">3,7 ogni 1.000</text>
+        
+      </g>
+    </g></g><g class="ux-series-group " data-history-town="forte-dei-marmi" style="--series-color:#4e7096"><polyline class="ux-series-line" points="132,48.25355785889699 216.22222222222223,59.004049649452874 300.44444444444446,75.45192353419608 384.66666666666663,64.1750204731139 468.8888888888889,54.10094603782686 553.1111111111111,165.24476614685446 637.3333333333333,73.1441329986451 721.5555555555555,82.94736419224137 805.7777777777778,96.32483981176806 890,56.22787565970488"></polyline><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Forte dei Marmi · 2014: 15,5 ogni 1.000" style="pointer-events: none;">
+      <circle class="chart-hit" cx="132" cy="48.25355785889699" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="132" cy="48.25355785889699" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="132" y1="48.25355785889699" x2="132" y2="66.25355785889698"></line>
+        <rect x="124" y="66.25355785889698" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="136" y="80.25355785889698">Forte dei Marmi · 2014</text>
+        <text class="chart-tooltip-value" x="136" y="100.25355785889698">15,5 ogni 1.000</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Forte dei Marmi · 2015: 14,9 ogni 1.000" style="pointer-events: none;">
+      <circle class="chart-hit" cx="216.22222222222223" cy="59.004049649452874" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="216.22222222222223" cy="59.004049649452874" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="216.22222222222223" y1="59.004049649452874" x2="216.22222222222223" y2="77.00404964945287"></line>
+        <rect x="124" y="77.00404964945287" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="136" y="91.00404964945287">Forte dei Marmi · 2015</text>
+        <text class="chart-tooltip-value" x="136" y="111.00404964945287">14,9 ogni 1.000</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Forte dei Marmi · 2016: 14,0 ogni 1.000" style="pointer-events: none;">
+      <circle class="chart-hit" cx="300.44444444444446" cy="75.45192353419608" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="300.44444444444446" cy="75.45192353419608" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="300.44444444444446" y1="75.45192353419608" x2="300.44444444444446" y2="93.45192353419608"></line>
+        <rect x="195.44444444444446" y="93.45192353419608" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="207.44444444444446" y="107.45192353419608">Forte dei Marmi · 2016</text>
+        <text class="chart-tooltip-value" x="207.44444444444446" y="127.45192353419608">14,0 ogni 1.000</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Forte dei Marmi · 2018: 14,6 ogni 1.000" style="pointer-events: none;">
+      <circle class="chart-hit" cx="384.66666666666663" cy="64.1750204731139" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="384.66666666666663" cy="64.1750204731139" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="384.66666666666663" y1="64.1750204731139" x2="384.66666666666663" y2="82.1750204731139"></line>
+        <rect x="279.66666666666663" y="82.1750204731139" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="291.66666666666663" y="96.1750204731139">Forte dei Marmi · 2018</text>
+        <text class="chart-tooltip-value" x="291.66666666666663" y="116.1750204731139">14,6 ogni 1.000</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Forte dei Marmi · 2019: 15,1 ogni 1.000" style="pointer-events: none;">
+      <circle class="chart-hit" cx="468.8888888888889" cy="54.10094603782686" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="468.8888888888889" cy="54.10094603782686" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="468.8888888888889" y1="54.10094603782686" x2="468.8888888888889" y2="72.10094603782686"></line>
+        <rect x="363.8888888888889" y="72.10094603782686" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="375.8888888888889" y="86.10094603782686">Forte dei Marmi · 2019</text>
+        <text class="chart-tooltip-value" x="375.8888888888889" y="106.10094603782686">15,1 ogni 1.000</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Forte dei Marmi · 2020: 9,2 ogni 1.000" style="pointer-events: none;">
+      <circle class="chart-hit" cx="553.1111111111111" cy="165.24476614685446" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="553.1111111111111" cy="165.24476614685446" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="553.1111111111111" y1="165.24476614685446" x2="553.1111111111111" y2="149.24476614685446"></line>
+        <rect x="448.1111111111111" y="99.24476614685446" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="460.1111111111111" y="113.24476614685446">Forte dei Marmi · 2020</text>
+        <text class="chart-tooltip-value" x="460.1111111111111" y="133.24476614685446">9,2 ogni 1.000</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Forte dei Marmi · 2021: 14,1 ogni 1.000" style="pointer-events: none;">
+      <circle class="chart-hit" cx="637.3333333333333" cy="73.1441329986451" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="637.3333333333333" cy="73.1441329986451" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="637.3333333333333" y1="73.1441329986451" x2="637.3333333333333" y2="91.1441329986451"></line>
+        <rect x="532.3333333333333" y="91.1441329986451" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="544.3333333333333" y="105.1441329986451">Forte dei Marmi · 2021</text>
+        <text class="chart-tooltip-value" x="544.3333333333333" y="125.1441329986451">14,1 ogni 1.000</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Forte dei Marmi · 2022: 13,6 ogni 1.000" style="pointer-events: none;">
+      <circle class="chart-hit" cx="721.5555555555555" cy="82.94736419224137" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="721.5555555555555" cy="82.94736419224137" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="721.5555555555555" y1="82.94736419224137" x2="721.5555555555555" y2="66.94736419224137"></line>
+        <rect x="616.5555555555555" y="16.947364192241366" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="628.5555555555555" y="30.947364192241366">Forte dei Marmi · 2022</text>
+        <text class="chart-tooltip-value" x="628.5555555555555" y="50.947364192241366">13,6 ogni 1.000</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Forte dei Marmi · 2023: 12,9 ogni 1.000" style="pointer-events: none;">
+      <circle class="chart-hit" cx="805.7777777777778" cy="96.32483981176806" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="805.7777777777778" cy="96.32483981176806" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="805.7777777777778" y1="96.32483981176806" x2="805.7777777777778" y2="80.32483981176806"></line>
+        <rect x="680" y="30.324839811768058" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="692" y="44.32483981176806">Forte dei Marmi · 2023</text>
+        <text class="chart-tooltip-value" x="692" y="64.32483981176806">12,9 ogni 1.000</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Forte dei Marmi · 2024: 15,0 ogni 1.000" style="pointer-events: none;">
+      <circle class="chart-hit" cx="890" cy="56.22787565970488" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="890" cy="56.22787565970488" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="890" y1="56.22787565970488" x2="890" y2="74.22787565970488"></line>
+        <rect x="680" y="74.22787565970488" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="692" y="88.22787565970488">Forte dei Marmi · 2024</text>
+        <text class="chart-tooltip-value" x="692" y="108.22787565970488">15,0 ogni 1.000</text>
+        
+      </g>
+    </g></g><g class="ux-series-group " data-history-town="stazzema" style="--series-color:#914d47"><polyline class="ux-series-line" points="132,326.42303109510976 216.22222222222223,314.53091941965465 300.44444444444446,314.1009458229142 384.66666666666663,300.5463474360267 468.8888888888889,300.0473023099423 553.1111111111111,318.78709489375404 637.3333333333333,305.60228855615765 721.5555555555555,324.9937261080659 805.7777777777778,325.0229789732208 890,305.6414229789544"></polyline><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Stazzema · 2014: 0,6 ogni 1.000" style="pointer-events: none;">
+      <circle class="chart-hit" cx="132" cy="326.42303109510976" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="132" cy="326.42303109510976" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="132" y1="326.42303109510976" x2="132" y2="310.42303109510976"></line>
+        <rect x="124" y="260.42303109510976" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="136" y="274.42303109510976">Stazzema · 2014</text>
+        <text class="chart-tooltip-value" x="136" y="294.42303109510976">0,6 ogni 1.000</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Stazzema · 2015: 1,3 ogni 1.000" style="pointer-events: none;">
+      <circle class="chart-hit" cx="216.22222222222223" cy="314.53091941965465" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="216.22222222222223" cy="314.53091941965465" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="216.22222222222223" y1="314.53091941965465" x2="216.22222222222223" y2="298.53091941965465"></line>
+        <rect x="124" y="248.53091941965465" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="136" y="262.53091941965465">Stazzema · 2015</text>
+        <text class="chart-tooltip-value" x="136" y="282.53091941965465">1,3 ogni 1.000</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Stazzema · 2016: 1,3 ogni 1.000" style="pointer-events: none;">
+      <circle class="chart-hit" cx="300.44444444444446" cy="314.1009458229142" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="300.44444444444446" cy="314.1009458229142" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="300.44444444444446" y1="314.1009458229142" x2="300.44444444444446" y2="298.1009458229142"></line>
+        <rect x="195.44444444444446" y="248.10094582291418" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="207.44444444444446" y="262.1009458229142">Stazzema · 2016</text>
+        <text class="chart-tooltip-value" x="207.44444444444446" y="282.1009458229142">1,3 ogni 1.000</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Stazzema · 2018: 2,0 ogni 1.000" style="pointer-events: none;">
+      <circle class="chart-hit" cx="384.66666666666663" cy="300.5463474360267" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="384.66666666666663" cy="300.5463474360267" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="384.66666666666663" y1="300.5463474360267" x2="384.66666666666663" y2="284.5463474360267"></line>
+        <rect x="279.66666666666663" y="234.54634743602668" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="291.66666666666663" y="248.54634743602668">Stazzema · 2018</text>
+        <text class="chart-tooltip-value" x="291.66666666666663" y="268.5463474360267">2,0 ogni 1.000</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Stazzema · 2019: 2,0 ogni 1.000" style="pointer-events: none;">
+      <circle class="chart-hit" cx="468.8888888888889" cy="300.0473023099423" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="468.8888888888889" cy="300.0473023099423" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="468.8888888888889" y1="300.0473023099423" x2="468.8888888888889" y2="284.0473023099423"></line>
+        <rect x="363.8888888888889" y="234.04730230994232" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="375.8888888888889" y="248.04730230994232">Stazzema · 2019</text>
+        <text class="chart-tooltip-value" x="375.8888888888889" y="268.0473023099423">2,0 ogni 1.000</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Stazzema · 2020: 1,0 ogni 1.000" style="pointer-events: none;">
+      <circle class="chart-hit" cx="553.1111111111111" cy="318.78709489375404" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="553.1111111111111" cy="318.78709489375404" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="553.1111111111111" y1="318.78709489375404" x2="553.1111111111111" y2="302.78709489375404"></line>
+        <rect x="448.1111111111111" y="252.78709489375404" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="460.1111111111111" y="266.78709489375404">Stazzema · 2020</text>
+        <text class="chart-tooltip-value" x="460.1111111111111" y="286.78709489375404">1,0 ogni 1.000</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Stazzema · 2021: 1,7 ogni 1.000" style="pointer-events: none;">
+      <circle class="chart-hit" cx="637.3333333333333" cy="305.60228855615765" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="637.3333333333333" cy="305.60228855615765" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="637.3333333333333" y1="305.60228855615765" x2="637.3333333333333" y2="289.60228855615765"></line>
+        <rect x="532.3333333333333" y="239.60228855615765" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="544.3333333333333" y="253.60228855615765">Stazzema · 2021</text>
+        <text class="chart-tooltip-value" x="544.3333333333333" y="273.60228855615765">1,7 ogni 1.000</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Stazzema · 2022: 0,7 ogni 1.000" style="pointer-events: none;">
+      <circle class="chart-hit" cx="721.5555555555555" cy="324.9937261080659" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="721.5555555555555" cy="324.9937261080659" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="721.5555555555555" y1="324.9937261080659" x2="721.5555555555555" y2="308.9937261080659"></line>
+        <rect x="616.5555555555555" y="258.9937261080659" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="628.5555555555555" y="272.9937261080659">Stazzema · 2022</text>
+        <text class="chart-tooltip-value" x="628.5555555555555" y="292.9937261080659">0,7 ogni 1.000</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Stazzema · 2023: 0,7 ogni 1.000" style="pointer-events: none;">
+      <circle class="chart-hit" cx="805.7777777777778" cy="325.0229789732208" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="805.7777777777778" cy="325.0229789732208" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="805.7777777777778" y1="325.0229789732208" x2="805.7777777777778" y2="309.0229789732208"></line>
+        <rect x="680" y="259.0229789732208" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="692" y="273.0229789732208">Stazzema · 2023</text>
+        <text class="chart-tooltip-value" x="692" y="293.0229789732208">0,7 ogni 1.000</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Stazzema · 2024: 1,7 ogni 1.000" style="pointer-events: none;">
+      <circle class="chart-hit" cx="890" cy="305.6414229789544" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="890" cy="305.6414229789544" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="890" y1="305.6414229789544" x2="890" y2="289.6414229789544"></line>
+        <rect x="680" y="239.64142297895438" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="692" y="253.64142297895438">Stazzema · 2024</text>
+        <text class="chart-tooltip-value" x="692" y="273.6414229789544">1,7 ogni 1.000</text>
+        
+      </g>
+    </g></g><text class="ux-history-axis-label" x="132" y="374" text-anchor="middle">2014</text><text class="ux-history-axis-label" x="300.44444444444446" y="374" text-anchor="middle">2016</text><text class="ux-history-axis-label" x="468.8888888888889" y="374" text-anchor="middle">2019</text><text class="ux-history-axis-label" x="637.3333333333333" y="374" text-anchor="middle">2021</text><text class="ux-history-axis-label" x="805.7777777777778" y="374" text-anchor="middle">2023</text><text class="ux-history-axis-label" x="890" y="374" text-anchor="middle">2024</text></svg></div></div><p class="ux-history-scroll-hint">Scorri il grafico orizzontalmente per leggere l’intera serie.</p><div class="ux-history-legend" aria-label="Comuni"><button type="button" data-history-select="massarosa" data-town="Massarosa" data-start="3.47864867878247" data-end="4.35071328799432" data-start-year="2014" data-end-year="2024" aria-pressed="false" style="--series-color:#0f5c6e">Massarosa</button><button type="button" data-history-select="viareggio" data-town="Viareggio" data-start="6.80928422781601" data-end="6.62420801990558" data-start-year="2014" data-end-year="2024" aria-pressed="true" style="--series-color:#b56843">Viareggio</button><button type="button" data-history-select="camaiore" data-town="Camaiore" data-start="7.35656242304851" data-end="6.43682491836222" data-start-year="2014" data-end-year="2024" aria-pressed="false" style="--series-color:#64743d">Camaiore</button><button type="button" data-history-select="pietrasanta" data-town="Pietrasanta" data-start="7.62378288792211" data-end="6.10573016186774" data-start-year="2014" data-end-year="2024" aria-pressed="false" style="--series-color:#855b7b">Pietrasanta</button><button type="button" data-history-select="seravezza" data-town="Seravezza" data-start="4.31279082964476" data-end="3.70728562217924" data-start-year="2014" data-end-year="2024" aria-pressed="false" style="--series-color:#b88a1c">Seravezza</button><button type="button" data-history-select="forte-dei-marmi" data-town="Forte dei Marmi" data-start="15.4516640253566" data-end="15.0264077958789" data-start-year="2014" data-end-year="2024" aria-pressed="false" style="--series-color:#4e7096">Forte dei Marmi</button><button type="button" data-history-select="stazzema" data-town="Stazzema" data-start="0.617379225189072" data-end="1.72562553925798" data-start-year="2014" data-end-year="2024" aria-pressed="false" style="--series-color:#914d47">Stazzema</button></div><div class="ux-history-summary" aria-live="polite"><strong>Viareggio</strong>: 2014 6,8 ogni 1.000 → 2024 6,6 ogni 1.000. Variazione: <strong>-0,2 ogni 1.000 · -2,7%</strong>.</div></div></div></div></div>
+            </div>
+          </section>
+          <section id="compare-demographic-pyramid" class="compare-demographic-pyramid page-width"></section>
+          <section id="compare-benchmark" class="page-width a5-benchmark-host"></section>
+          <section class="crime-context page-width" id="criminalita"><div class="crime-context-copy"><span class="overline">Contesto sovracomunale</span><h2>Criminalità e delitti denunciati</h2><p>Il dato non è disponibile in forma omogenea per comune. Viene quindi mostrato per Provincia di Lucca, Toscana e Italia, senza attribuirlo ai singoli territori.</p><a class="source-pill" href="https://www.istat.it/" target="_blank" rel="noreferrer">Fonte Istat ↗</a></div>
+      <div class="crime-context-data"><div class="crime-tabs"><button type="button" class="active" data-crime="total">Totale</button><button type="button" class="" data-crime="theft">Furti</button><button type="button" class="" data-crime="burglary">In abitazione</button><button type="button" class="" data-crime="fraud">Truffe e frodi</button></div><div id="crime-data"><h3>Delitti denunciati · 2024</h3><div class="crime-stats"><article><span>Provincia di Lucca</span><strong>3.752,0</strong><small>ogni 100.000 abitanti</small></article><article><span>Toscana</span><strong>4.674,3</strong><small>ogni 100.000 abitanti</small></article><article><span>Italia</span><strong>4.069,6</strong><small>ogni 100.000 abitanti</small></article></div></div></div></section>
+          <section id="compare-tools" class="compare-post-benchmark-tools page-width"><details class="method-disclosure"><summary><span>Metodo e comparabilità</span><small>Formula, natura del dato e criticità</small></summary><div class="method-disclosure-body"><dl><div><dt>Natura</dt><dd>Dati ufficiali ed elaborazione Osservatorio</dd></div><div><dt>Formula</dt><dd>Incidentalità: incidenti con lesioni / popolazione residente media × 1.000; mortalità: morti / incidenti × 100; lesività: feriti / incidenti × 100; feriti: feriti / residenti × 10.000.</dd></div><div><dt>Copertura</dt><dd>7/7</dd></div></dl><p><strong>Nota:</strong> L’intensità del traffico e la funzione delle strade incidono sul confronto. Mortalità e lesività sono instabili nei Comuni con pochi incidenti.</p></div></details><aside class="reading-scale" data-reading-scale="territorial" data-reading-metric="roadSafety">
+      <div><span class="overline">Scala di lettura</span><strong>Territoriale</strong></div>
+      <p>Il dato descrive residenti, stock o fenomeni localizzati nel Comune. Il confine è utile per leggere il territorio, ma non implica che il Comune sia un sistema autonomo.</p>
+    </aside></section>
+          <section id="compare-territori" class="topic-town-links page-width"><div class="topic-town-links-heading"><span class="overline">Schede comunali</span><h2>Apri il territorio</h2><p>Accedi alla scheda comunale e agli indicatori di dettaglio del tema Sicurezza e territorio.</p></div><div class="topic-town-card-grid"><a class="topic-town-card" href="../../comuni/camaiore/?tema=sicurezza&amp;indicatore=roadSafety"><span class="topic-town-card-media"><img src="../../crests/camaiore.svg" alt="" loading="lazy" referrerpolicy="no-referrer"></span><span class="topic-town-card-copy"><strong>Camaiore</strong><span class="town-current-value"><b>6,44 ogni 1.000</b><small>Sicurezza stradale</small></span><small>Apri la scheda →</small></span></a><a class="topic-town-card" href="../../comuni/forte-dei-marmi/?tema=sicurezza&amp;indicatore=roadSafety"><span class="topic-town-card-media"><img src="../../crests/forte-dei-marmi.svg" alt="" loading="lazy" referrerpolicy="no-referrer"></span><span class="topic-town-card-copy"><strong>Forte dei Marmi</strong><span class="town-current-value"><b>15,03 ogni 1.000</b><small>Sicurezza stradale</small></span><small>Apri la scheda →</small></span></a><a class="topic-town-card" href="../../comuni/massarosa/?tema=sicurezza&amp;indicatore=roadSafety"><span class="topic-town-card-media"><img src="../../crests/massarosa.png" alt="" loading="lazy" referrerpolicy="no-referrer"></span><span class="topic-town-card-copy"><strong>Massarosa</strong><span class="town-current-value"><b>4,35 ogni 1.000</b><small>Sicurezza stradale</small></span><small>Apri la scheda →</small></span></a><a class="topic-town-card" href="../../comuni/pietrasanta/?tema=sicurezza&amp;indicatore=roadSafety"><span class="topic-town-card-media"><img src="../../crests/pietrasanta.svg" alt="" loading="lazy" referrerpolicy="no-referrer"></span><span class="topic-town-card-copy"><strong>Pietrasanta</strong><span class="town-current-value"><b>6,11 ogni 1.000</b><small>Sicurezza stradale</small></span><small>Apri la scheda →</small></span></a><a class="topic-town-card" href="../../comuni/seravezza/?tema=sicurezza&amp;indicatore=roadSafety"><span class="topic-town-card-media"><img src="../../crests/seravezza.png" alt="" loading="lazy" referrerpolicy="no-referrer"></span><span class="topic-town-card-copy"><strong>Seravezza</strong><span class="town-current-value"><b>3,71 ogni 1.000</b><small>Sicurezza stradale</small></span><small>Apri la scheda →</small></span></a><a class="topic-town-card" href="../../comuni/stazzema/?tema=sicurezza&amp;indicatore=roadSafety"><span class="topic-town-card-media"><img src="../../crests/stazzema.webp" alt="" loading="lazy" referrerpolicy="no-referrer"></span><span class="topic-town-card-copy"><strong>Stazzema</strong><span class="town-current-value"><b>1,73 ogni 1.000</b><small>Sicurezza stradale</small></span><small>Apri la scheda →</small></span></a><a class="topic-town-card" href="../../comuni/viareggio/?tema=sicurezza&amp;indicatore=roadSafety"><span class="topic-town-card-media"><img src="../../crests/viareggio.svg" alt="" loading="lazy" referrerpolicy="no-referrer"></span><span class="topic-town-card-copy"><strong>Viareggio</strong><span class="town-current-value"><b>6,62 ogni 1.000</b><small>Sicurezza stradale</small></span><small>Apri la scheda →</small></span></a></div></section>
+        </main></div>
+  <div id="site-footer-mount">
+      <footer class="site-footer">
+        <div class="footer-about"><strong>Osservatorio Versilia</strong>
+          <p>Un punto di accesso indipendente ai dati pubblici dei sette comuni della Versilia.</p>
+          <p class="footer-disclaimer">Non è un sito istituzionale e non rappresenta gli enti citati.</p>
+        </div>
+        <nav class="footer-links" aria-label="Informazioni sul progetto">
+          <a href="../../progetto/">Il progetto</a>
+          <a href="../../stato-dati/" data-data-status-nav="footer">Stato dei dati</a>
+          <a href="../../opportunita/">Opportunità</a>
+          <a href="../../progetto/#metodo">Metodo</a>
+          <a href="../../progetto/#licenza">Licenza</a>
+          <a href="../../progetto/#versioni">Versioni dei dati</a>
+          <a href="../../segnala/">Segnala un dato</a>
+          <a href="mailto:info@osservatorioversilia.it">Contatti</a>
+        </nav>
+        
+      <div class="footer-social" data-social-placement="footer" aria-label="Segui Osservatorio Versilia">
+        <strong>Segui Osservatorio Versilia</strong><div class="social-links">
+    <a class="social-profile-link" href="https://www.facebook.com/osservatorioversilia" target="_blank" rel="me noreferrer" aria-label="Segui Osservatorio Versilia su Facebook">
+      <span class="social-profile-mark" aria-hidden="true">f</span>
+      <span class="social-profile-copy"><strong>Facebook</strong><small>@osservatorioversilia</small></span>
+      <b aria-hidden="true">↗</b>
+    </a>
+    <a class="social-profile-link" href="https://www.instagram.com/osservatorioversilia/" target="_blank" rel="me noreferrer" aria-label="Segui Osservatorio Versilia su Instagram">
+      <span class="social-profile-mark" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="5" ry="5"></rect><circle cx="12" cy="12" r="4"></circle><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"></circle></svg></span>
+      <span class="social-profile-copy"><strong>Instagram</strong><small>@osservatorioversilia</small></span>
+      <b aria-hidden="true">↗</b>
+    </a>
+    <a class="social-profile-link" href="https://www.linkedin.com/company/osservatorioversilia" target="_blank" rel="me noreferrer" aria-label="Segui Osservatorio Versilia su LinkedIn">
+      <span class="social-profile-mark" aria-hidden="true">in</span>
+      <span class="social-profile-copy"><strong>LinkedIn</strong><small>Osservatorio Versilia</small></span>
+      <b aria-hidden="true">↗</b>
+    </a>
+    <a class="social-profile-link" href="https://x.com/OssVersilia" target="_blank" rel="me noreferrer" aria-label="Segui Osservatorio Versilia su X">
+      <span class="social-profile-mark" aria-hidden="true">X</span>
+      <span class="social-profile-copy"><strong>X</strong><small>@OssVersilia</small></span>
+      <b aria-hidden="true">↗</b>
+    </a></div>
+      </div><div class="footer-note">
+          <span>7 comuni · 11 temi</span><span>v. dati v1.40.0</span><span>catalogo dati aggiornato al 14 settembre 2026</span>
+        </div>
+      </footer></div>
+  <noscript><div class="app-error">Il sito richiede JavaScript per mostrare confronti, ricerca e schede comunali.</div></noscript>
+  <script src="../../assets/app-bundle.js?v=20261025-ui-shell-consistency" defer=""></script>
+  <script src="../../assets/fidelity.js" defer=""></script>
+  <script src="../../assets/economy-atlas.js" defer=""></script>
+  <script src="../../assets/ux-accordion.js?v=20261025-ui-shell-consistency" defer=""></script>
+  <script src="../../assets/ux-history-core.js?v=20261025-ui-shell-consistency" defer=""></script>
+  <script src="../../assets/ux-history.js?v=20261025-ui-shell-consistency" defer=""></script>
+  <script src="../../assets/export-v161.js?v=20261025-ui-shell-consistency" defer=""></script>
+  <script src="../../assets/visual-grammar.js?v=20261025-ui-shell-consistency" defer=""></script>
+  <script src="../../assets/social-presence.js?v=20261025-ui-shell-consistency" defer=""></script>
+
+
+  <script src="../../assets/pwa.js?v=20260824-pwa9&rev=catalog-v129" defer></script>
+</body></html>

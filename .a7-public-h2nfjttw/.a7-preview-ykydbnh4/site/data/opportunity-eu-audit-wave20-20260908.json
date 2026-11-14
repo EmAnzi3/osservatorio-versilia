@@ -1,0 +1,144 @@
+{
+  "schemaVersion": "1.0",
+  "auditDate": "2026-09-08",
+  "wave": 20,
+  "sweepType": "frozen_corpus_v1_role_and_benefit_first",
+  "fullCorpusIndependentSweep": true,
+  "corpus": "data/opportunity-saturation-corpus-v1-20260908.json",
+  "status": "clean_sweep_2_of_2_gate_met",
+  "referenceSnapshot": {
+    "path": "data/opportunity-daily-public.json",
+    "generatedAt": "2026-09-07T09:35:26+00:00",
+    "publicCount": 29,
+    "reviewInternalCount": 40
+  },
+  "prBaselineBeforeWrite": {
+    "pr": 161,
+    "state": "open",
+    "draft": true,
+    "merged": false,
+    "headBranch": "audit/opportunity-eu-120d-20260907",
+    "headSha": "04d52601b6f3539b838fa78807d6a549a838200d",
+    "base": "main",
+    "commitCount": 42,
+    "changedFileCount": 40
+  },
+  "saturation": {
+    "requiredConsecutiveIndependentCleanSweeps": 2,
+    "currentConsecutiveCleanSweeps": 2,
+    "thisSweepClean": true,
+    "countsForFrozenV1Gate": true,
+    "counterAfterWave": "2/2",
+    "gateMet": true,
+    "reason": "Wave 20 used the same frozen corpus v1 but a materially different class/lifecycle/municipal-role-first strategy. It produced zero new current actionable gaps within the frozen perimeter after mapping candidates back to the allowed oracle scopes and canonical evidence. Wave 19 and Wave 20 are therefore two consecutive independent clean sweeps on an unchanged corpus."
+  },
+  "method": {
+    "independenceFromWave19": "Wave 19 started from source/programme directories. Wave 20 instead searched by benefit class, lifecycle and municipal role (grant, technical assistance, finance, asset transfer, award, cascade/FSTP, PCP/PPI, borrower/requester/required-beneficiary/partner), and only afterwards mapped surfaced candidates to the frozen oracle scopes and canonical corpus.",
+    "sameFrozenCorpusAsWave19": true,
+    "scopeExpansionProhibited": true,
+    "canonicalComparisonOrder": [
+      "map candidate to a frozen oracle scope",
+      "verify official open/rolling lifecycle",
+      "verify concrete municipal role and operational benefit",
+      "reference snapshot / municipality_eligibility",
+      "coverage rules / rule_id / coverage_id",
+      "internal_review / auditReview",
+      "known Waves 1-18 plus clean Wave 19 controls"
+    ]
+  },
+  "newCurrentActionableFindings": [],
+  "importantControls": [
+    {
+      "id": "access-city-award-2027",
+      "auditClass": "closed_control",
+      "deadlineAt": "2026-09-04T12:00:00+02:00",
+      "countsAsCurrentActionableGap": false,
+      "note": "A class-first award search rediscovered the city-facing prize, but the application deadline passed four days before Wave 20."
+    },
+    {
+      "id": "space4cities-replicator-cities-2026",
+      "auditClass": "known_current_gap_not_new",
+      "deadlineAt": "2026-09-15T17:00:00+02:00",
+      "note": "Direct municipal replicator route remains open and actionable but is already documented in the audit corpus."
+    },
+    {
+      "id": "sundanse-open-call-2-2026",
+      "auditClass": "known_current_gap_not_new",
+      "deadlineAt": "2026-09-30T17:00:00+02:00",
+      "note": "Municipal/local-authority route remains open and was already captured by prior audit waves."
+    },
+    {
+      "id": "eeef-direct-financing-and-ta",
+      "auditClass": "known_current_structural_gap_not_new",
+      "note": "Class-first financing/TA search rediscovered direct municipal project submission and eeef TA; both are already Wave 17 findings."
+    },
+    {
+      "id": "rt-sistemi-museali-2026",
+      "auditClass": "captured",
+      "canonicalId": "opp-04739a44581e08",
+      "ruleId": "rt-sistemi-museali-2026",
+      "deadlineAt": "2026-09-25",
+      "note": "Current municipal-facing regional call confirmed canonical in the reference snapshot."
+    },
+    {
+      "id": "rt-mercati-rionali-2026",
+      "auditClass": "captured",
+      "deadlineAt": "2026-09-15T12:00:00+02:00",
+      "note": "Current direct municipal grant already canonical/known."
+    },
+    {
+      "id": "rt-nidi-gratis-comuni-reopening-2026-2027",
+      "auditClass": "known_lifecycle_control",
+      "deadlineAt": "2026-09-25",
+      "note": "Current reopening remains a known Wave 13 lifecycle control rather than a new Wave 20 finding."
+    },
+    {
+      "id": "icsc-sport-cultura-2026",
+      "auditClass": "known_current_gap_family",
+      "deadlineAt": "2026-09-30",
+      "note": "Both municipal finance initiatives remain current; their gaps were already established before the frozen sweeps."
+    },
+    {
+      "id": "agenzia-demanio-free-transfer-15bis-2026",
+      "auditClass": "known_current_structural_gap_not_new",
+      "deadlineAt": "2026-12-31",
+      "note": "Class-first asset-transfer search rediscovered the direct municipal request route already documented in Wave 15."
+    },
+    {
+      "id": "cerv-current-family-control",
+      "auditClass": "no_new_current_v1_gap",
+      "note": "Current CERV items with municipal relevance surfaced through role-based searches were already known (Town Twinning, Charter, Daphne) or not currently open under the verified lifecycle."
+    },
+    {
+      "id": "pcp-ppi-current-family-control",
+      "auditClass": "no_new_current_v1_gap",
+      "note": "Class-first public-procurer searches returned known Horizon/SPACE4Cities procurement families or closed historical calls; no new current municipal PCP/PPI route within the frozen corpus remained."
+    }
+  ],
+  "outOfCorpusCandidatesForV2": [
+    {
+      "id": "eib-general-public-sector-financing",
+      "auditClass": "out_of_corpus_candidate_for_v2",
+      "gateEffect": "none",
+      "note": "The EIB has general public-sector/local-authority loan products with a documented project cycle, but frozen v1 includes the EIB only through the specifically enumerated eib-advisory scope (ELENA, ADAPT, C3, JASPERS, InvestEU Advisory Hub). Expanding that oracle scope to general EIB lending would require corpus v2 and is not allowed mid-gate."
+    },
+    {
+      "id": "agenzia-demanio-piano-citta",
+      "auditClass": "out_of_actionability_contract_or_v2_review",
+      "gateEffect": "none",
+      "note": "Strategic collaboration tool without a standard open request/application route established in this audit; retain for later product-design review but do not alter the v1 gate."
+    }
+  ],
+  "gateConclusion": {
+    "wave19": "clean",
+    "wave20": "clean",
+    "consecutiveCleanSweeps": 2,
+    "required": 2,
+    "gateMet": true,
+    "hardeningMayBegin": true,
+    "hardeningPerformedInThisWave": false,
+    "note": "The audit freeze condition is satisfied. No engine/config/discovery implementation change is included in Wave 20; hardening should begin as a subsequent, explicitly tracked phase while PR #161 remains draft and unmerged until authorised."
+  },
+  "waveConclusion": "Wave 20 is the second consecutive independent clean sweep over the unchanged frozen corpus v1. The saturation gate is met at 2/2. The audit demonstrates a sufficiently saturated v1 corpus for discovery hardening to begin, without claiming that every conceivable future municipal opportunity family in Europe has been exhausted.",
+  "implementationChanges": []
+}

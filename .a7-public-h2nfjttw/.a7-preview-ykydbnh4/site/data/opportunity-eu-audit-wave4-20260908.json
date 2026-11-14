@@ -1,0 +1,282 @@
+{
+  "schemaVersion": "1.0",
+  "auditDate": "2026-09-08",
+  "wave": 4,
+  "status": "open_not_saturated",
+  "implementationFrozen": true,
+  "referenceSnapshot": {
+    "path": "data/opportunity-daily-public.json",
+    "generatedAt": "2026-09-07T09:35:26+00:00",
+    "publicCount": 29,
+    "reviewInternalCount": 40
+  },
+  "saturationRule": {
+    "requiredConsecutiveIndependentSweepsWithZeroNewCurrentActionable": 2,
+    "currentConsecutiveCleanSweeps": 0,
+    "reason": "Il primo sweep di saturazione successivo alla Wave 3 ha trovato ulteriori casi correnti azionabili e nuovi lifecycle strutturali: action-level Erasmus+, replicator city, Horizon topic-level, innovation procurement e downstream EOI."
+  },
+  "currentFindings": [
+    {
+      "id": "erasmus-2026-ka210-vet-round2",
+      "title": "Erasmus+ KA210 VET - Small-scale partnerships - second round 2026",
+      "deadlineAt": "2026-10-01T12:00:00+02:00",
+      "municipalityRole": "conditional_direct_applicant_or_partner",
+      "radarStatus": "absent_from_reference_snapshot",
+      "auditClass": "current_action_level_false_negative",
+      "severity": "critical",
+      "note": "Public bodies including local/regional/national authorities can participate; minimum two organisations from two countries; lump sums EUR 30k or 60k. Generic eu-erasmus coverage is insufficient at action level."
+    },
+    {
+      "id": "space4cities-replicator-cities-2026",
+      "title": "SPACE4Cities - Call for Replicator Cities",
+      "officialUrl": "https://space4cities.eu/how-to-become-a-space4cities-partner/",
+      "deadlineAt": "2026-09-15T17:00:00+02:00",
+      "municipalityRole": "direct_replicator_city_applicant",
+      "radarStatus": "absent_from_reference_snapshot",
+      "auditClass": "current_false_negative_technical_capacity_support",
+      "severity": "critical",
+      "conditions": [
+        "municipality/city/region/public agency eligible",
+        "concrete local challenge matched to selected solution",
+        "local staff/end-users and relevant non-sensitive data available"
+      ],
+      "benefits": [
+        "free three-month solution pilot",
+        "EUR 2500 pilot-related travel/engagement support",
+        "peer-to-peer exchange"
+      ]
+    },
+    {
+      "id": "life-2026-cet-enerpov",
+      "title": "LIFE 2026 CET - Energy Poverty (ENERPOV)",
+      "deadlineAt": "2026-09-16T17:00:00+02:00",
+      "municipalityRole": "conditional_beneficiary_or_partner_public_authority",
+      "radarStatus": "absent_from_reference_snapshot",
+      "auditClass": "current_promotion_gap",
+      "severity": "high"
+    },
+    {
+      "id": "life-2026-cet-oss",
+      "title": "LIFE 2026 CET - Integrated home renovation services / One-Stop-Shops",
+      "deadlineAt": "2026-09-16T17:00:00+02:00",
+      "municipalityRole": "conditional_direct_applicant_or_partner",
+      "radarStatus": "absent_from_reference_snapshot",
+      "auditClass": "current_promotion_gap",
+      "severity": "high",
+      "note": "Single-applicant route is possible under the topic; municipal relevance depends on credible integrated renovation service model."
+    },
+    {
+      "id": "horizon-cl6-2026-01-circbio-04",
+      "title": "Horizon Cluster 6 - textile collection, reuse and repair systems at city/region level",
+      "officialUrl": "https://cordis.europa.eu/programme/id/HORIZON_HORIZON-CL6-2026-01-CIRCBIO-04",
+      "deadlineAt": "2026-09-17T17:00:00+02:00",
+      "municipalityRole": "required_regional_or_local_authority_beneficiary",
+      "radarStatus": "absent_from_reference_snapshot",
+      "auditClass": "current_conditional_beneficiary_false_negative",
+      "severity": "critical",
+      "note": "At least nine distinct regional/local authorities must participate as beneficiaries: at least three demonstration and six replication cities/regions."
+    },
+    {
+      "id": "horizon-cl6-2026-01-zeropollution-03",
+      "title": "Horizon Cluster 6 - managed aquifer recharge / water resilience",
+      "officialUrl": "https://cordis.europa.eu/programme/id/HORIZON_HORIZON-CL6-2026-01-ZEROPOLLUTION-03",
+      "deadlineAt": "2026-09-17T17:00:00+02:00",
+      "municipalityRole": "local_authority_partner_or_stakeholder",
+      "radarStatus": "absent_from_reference_snapshot",
+      "auditClass": "current_partner_scope_promotion_gap",
+      "severity": "high"
+    },
+    {
+      "id": "horizon-cl5-2026-10-d6-09",
+      "title": "Horizon Cluster 5 - Road Safety and resilience of rural areas",
+      "officialUrl": "https://cordis.europa.eu/programme/id/HORIZON_HORIZON-CL5-2026-10-D6-09",
+      "deadlineAt": "2026-10-08T17:00:00+02:00",
+      "municipalityRole": "conditional_local_or_regional_authority_partner_demo",
+      "radarStatus": "absent_from_reference_snapshot",
+      "auditClass": "current_conditional_partner_false_negative",
+      "severity": "high",
+      "note": "Local/regional authorities have an explicit role; road-authority involvement is strongly recommended and demonstrations span at least three regions."
+    },
+    {
+      "id": "horizon-cl5-2026-10-d6-01",
+      "title": "Horizon Cluster 5 - CCAM Flagship",
+      "officialUrl": "https://cordis.europa.eu/programme/id/HORIZON_HORIZON-CL5-2026-10-D6-01",
+      "deadlineAt": "2026-10-08T17:00:00+02:00",
+      "municipalityRole": "conditional_public_player_partner_or_demo_site",
+      "radarStatus": "absent_from_reference_snapshot",
+      "auditClass": "current_conditional_partner_false_negative",
+      "severity": "high",
+      "note": "Broad public-player representation includes municipalities/cities/regions; not a standalone municipal grant."
+    },
+    {
+      "id": "horizon-cl5-2026-10-d6-07",
+      "title": "Horizon Cluster 5 - CIVITAS ecosystem",
+      "deadlineAt": "2026-10-08T17:00:00+02:00",
+      "municipalityRole": "city_local_authority_consortium_or_ecosystem_role",
+      "radarStatus": "absent_from_reference_snapshot",
+      "auditClass": "current_consortium_scope_promotion_gap",
+      "severity": "medium"
+    },
+    {
+      "id": "horizon-cl5-2026-09-d4-04",
+      "title": "Horizon Built4People - policies and business models for affordable and sustainable housing",
+      "officialUrl": "https://cordis.europa.eu/programme/id/HORIZON_HORIZON-CL5-2026-09-D4-04",
+      "deadlineAt": "2026-09-15T17:00:00+02:00",
+      "municipalityRole": "conditional_policy_authority_or_partner",
+      "radarStatus": "absent_from_reference_snapshot",
+      "auditClass": "current_scope_promotion_gap",
+      "severity": "high"
+    },
+    {
+      "id": "horizon-miss-2026-04-pcp-cit-01",
+      "title": "Cities Mission - Pre-Commercial Procurement for climate-neutral cities",
+      "officialUrl": "https://cordis.europa.eu/programme/id/HORIZON_HORIZON-MISS-2026-04-PCP-CIT-01",
+      "municipalityRole": "public_procurer_or_follower_city",
+      "radarStatus": "absent_from_reference_snapshot",
+      "auditClass": "current_innovation_procurement_scope_gap",
+      "severity": "high",
+      "conditions": [
+        "buyer-group/procurement need",
+        "lead procurer must be one of the 112 Mission Cities",
+        "at least three Mission Cities required",
+        "additional follower cities can participate"
+      ]
+    },
+    {
+      "id": "horizon-cl3-2026-01-drs-04",
+      "title": "Horizon Cluster 3 - Driving innovation uptake of disaster risk solutions",
+      "officialUrl": "https://cordis.europa.eu/programme/id/HORIZON_HORIZON-CL3-2026-01-DRS-04",
+      "publishedOrOpenedAt": "2026-05-06",
+      "deadlineAt": "2026-11-05T17:00:00+01:00",
+      "municipalityRole": "local_authority_end_user_demo_or_partner_scope",
+      "radarStatus": "absent_from_reference_snapshot",
+      "auditClass": "current_scope_promotion_gap",
+      "severity": "medium",
+      "note": "Local authorities are explicit users/stakeholders of deployment and large-scale demonstrations; concrete consortium role must be verified before public promotion."
+    },
+    {
+      "id": "horizon-cl3-2026-01-ssri-03",
+      "title": "Horizon Cluster 3 - Public procurement of innovation for security",
+      "officialUrl": "https://cordis.europa.eu/programme/id/HORIZON_HORIZON-CL3-2026-01-SSRI-03",
+      "publishedOrOpenedAt": "2026-05-06",
+      "deadlineAt": "2026-11-05T17:00:00+01:00",
+      "municipalityRole": "conditional_public_procurer_buyers_group",
+      "radarStatus": "absent_from_reference_snapshot",
+      "auditClass": "current_innovation_procurement_scope_promotion_gap",
+      "severity": "medium"
+    },
+    {
+      "id": "dut-call-2026",
+      "title": "Driving Urban Transitions Partnership Call 2026",
+      "officialUrl": "https://dutpartnership.eu/dut-call-2026/",
+      "publishedOrOpenedAt": "2026-09-01",
+      "deadlineAt": "2026-11-17",
+      "municipalityRole": "required_urban_authority_but_unfunded_cooperation_partner_in_Italy",
+      "radarStatus": "absent_from_reference_snapshot",
+      "auditClass": "current_partner_only_unfunded_in_italy",
+      "severity": "medium",
+      "note": "At least one urban government authority is required, but Italy is not among current national funders; an Italian municipality may participate as an unfunded Cooperation Partner."
+    }
+  ],
+  "topicMatrices": [
+    {
+      "id": "horizon-neb-facility-2026-resolved",
+      "title": "New European Bauhaus Facility 2026 - municipal role matrix",
+      "deadlineAt": "2026-12-01T17:00:00+01:00",
+      "radarStatus": "generic_horizon_source_present_topics_absent",
+      "highPriority": [
+        {"topic":"HORIZON-NEB-2026-01-BUSINESS-03","role":"conditional_partner_or_beneficiary","reason":"expected outcomes explicitly concern local authorities identifying/reusing vacant, obsolete and underused spaces"},
+        {"topic":"HORIZON-NEB-2026-01-PARTICIPATION-02","role":"conditional_demo_site_or_partner","reason":"neighbourhood/public-space demonstrations and participatory transformation"}
+      ],
+      "mediumPriority": [
+        {"topic":"HORIZON-NEB-2026-01-PARTICIPATION-01","role":"conditional_housing_or_social_service_partner"},
+        {"topic":"HORIZON-NEB-2026-01-BUSINESS-01","role":"conditional_social_infrastructure_partner"},
+        {"topic":"HORIZON-NEB-2026-01-REGEN-01","role":"conditional_demo_site_asset_or_public_space_partner"},
+        {"topic":"HORIZON-NEB-2026-01-REGEN-02","role":"conditional_demo_site_asset_or_public_space_partner"},
+        {"topic":"HORIZON-NEB-2026-01-REGEN-03","role":"conditional_demo_site_asset_or_public_space_partner"}
+      ],
+      "noAutomaticPromotion": [
+        {"topic":"HORIZON-NEB-2026-01-PARTICIPATION-03","role":"primarily_end_user_of_recommendations"},
+        {"topic":"HORIZON-NEB-2026-01-BUSINESS-02","role":"investment_stakeholder_scope_without_documented_municipal_project_role"}
+      ]
+    }
+  ],
+  "prospectiveAndCascadeSentinels": [
+    {
+      "id": "mission-ocean-community-eoi-after-cinea-2026-op-0018",
+      "title": "Mission Ocean - future community technical-assistance EOI",
+      "officialUrl": "https://projects.research-and-innovation.ec.europa.eu/en/funding/funding-opportunities/funding-programmes-and-open-calls/horizon-europe/eu-missions-horizon-europe/restore-our-ocean-and-waters/services-communities-support-achievement-objectives-mission-ocean-and-waters-cinea2026op0018",
+      "auditClass": "downstream_city_eoi_expected",
+      "municipalityRole": "future_direct_technical_assistance_recipient",
+      "note": "The contractor is required to run a selection process for at least 50 communities among regions, cities, river/water authorities and port authorities and provide technical assistance for transition agendas/roadmaps."
+    },
+    {
+      "id": "horizon-miss-2026-01-clima-07-cascade",
+      "title": "Mission Adaptation - future subgrants for local adaptation financing",
+      "officialUrl": "https://cordis.europa.eu/programme/id/HORIZON_HORIZON-MISS-2026-01-CLIMA-07",
+      "auditClass": "cascade_prospective_gap",
+      "municipalityRole": "future_local_or_regional_administration_subgrantee",
+      "note": "Regional/local administrations may receive future FSTP grants if they meet the financing conditions, including a qualifying bank-loan offer."
+    }
+  ],
+  "historicalSentinels": [
+    {
+      "id": "ucpm-2026-kapp-pvpp",
+      "title": "UCPM 2026 - Knowledge for Action in Prevention and Preparedness",
+      "officialUrl": "https://ec.europa.eu/info/funding-tenders/opportunities/docs/2021-2027/ucpm/wp-call/2026/call-fiche_ucpm-2026-kapp-pvpp_en.pdf",
+      "publishedOrOpenedAt": "2026-02-18",
+      "deadlineAt": "2026-05-21T17:00:00+02:00",
+      "municipalityRole": "conditional_public_body_and_local_drm_authority_partner",
+      "auditClass": "historical_prelaunch_sentinel",
+      "note": "Consortium required at least one civil-protection/DRM public administration at national, regional or local level; up to 90% co-financing and EUR 1m/project."
+    }
+  ],
+  "indirectRouteWatch": [
+    {
+      "id": "amif-integration-local-level-italy-route",
+      "title": "AMIF Specific Action - Integration at Local Level - Italian national route",
+      "auditClass": "indirect_route_gap_national_watch",
+      "municipalityRole": "eligible_beneficiary_selected_via_national_managing_authority",
+      "note": "Cities/municipalities are eligible beneficiaries, but the national Managing Authority submits to the Commission. No specific official Italian public selection notice was located in the systematic search as of 2026-09-08; this is not a claim that no procedure exists."
+    }
+  ],
+  "correctlyExcludedOrNegativeControls": [
+    {
+      "id": "smart-era-open-call-2-2026",
+      "classification": "correctly_excluded_geography",
+      "reason": "Requires a rural region belonging to EUSALP/EUSBSR/EUSAIR/EUSDR. Tuscany is not in the Italian territories of those macroregional strategies relevant here."
+    },
+    {
+      "id": "jtm-2026-pslf-versilia",
+      "classification": "correctly_excluded_geography",
+      "reason": "PSLF projects must benefit territories covered by Territorial Just Transition Plans. Italian JTF territories are Taranto and Sulcis Iglesiente; Tuscany/Versilia is not covered."
+    },
+    {
+      "id": "digital-cyber11-coordprep-versilia",
+      "classification": "scope_excluded_general_municipality",
+      "reason": "Italian NIS2 local-public-administration scope includes metropolitan cities, municipalities over 100,000 inhabitants and regional capitals; Versilia municipalities do not qualify merely by being municipalities."
+    },
+    {
+      "id": "horizon-cl5-2026-09-d4-01",
+      "classification": "no_automatic_promotion",
+      "reason": "Smart-building topic does not document a municipality-specific role; municipal asset/demo involvement would need separate evidence."
+    }
+  ],
+  "structuralLessons": [
+    "Programme-level source coverage does not imply topic/action-level coverage.",
+    "Innovation procurement (PCP/PPI) needs a dedicated lifecycle and buyer-group role model.",
+    "EU-funded third-party implementers and replicator-city calls need dedicated discovery beyond Commission domains.",
+    "A commissioned upstream service may imply a future downstream municipal EOI and should create a prospective sentinel.",
+    "Partner-only/unfunded participation must be distinguished from grant eligibility.",
+    "Geographic and regulatory negative controls are necessary to prevent false positives.",
+    "Detection-lag KPI must remain separate from eventual capture status."
+  ],
+  "nextIndependentSweeps": [
+    "Horizon Cluster 6 remaining single-stage topics with required local/regional authorities",
+    "Horizon Cluster 3 civil-security topics and UCPM channel",
+    "current EU-funded cascade/replicator/associated-region calls",
+    "EU4Health and public-health routes relevant to local authorities",
+    "innovation procurement PCP/PPI across Missions, Cluster 3, transport, energy and health",
+    "municipality-level applicability matrix for seven Versilia municipalities"
+  ]
+}

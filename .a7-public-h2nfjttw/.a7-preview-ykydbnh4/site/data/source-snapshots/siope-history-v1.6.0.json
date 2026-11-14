@@ -1,0 +1,2009 @@
+{
+  "version": "siope-history-v1.6.0",
+  "generated_at": "2026-08-06T05:32:22.988575+00:00",
+  "scope": "Movimenti cumulati SIOPE di dicembre 2019–2025 per i sette Comuni della Versilia.",
+  "source": {
+    "publisher": "Ragioneria generale dello Stato — BDAP Open Data / SIOPE",
+    "catalogue_api": "https://bdap-opendata.rgs.mef.gov.it/SpodCkanApi/api/3",
+    "metadata": "SIOPE Movimenti cumulati mensili di Entrata e di Spesa",
+    "population_source": "Istat — popolazione residente del sito",
+    "resources": {
+      "entrata-2019-toscana": {
+        "package_id": "7deb457c-3207-481f-bed0-ffd45be4ff59",
+        "package_title": "2019 - Toscana - SIOPE Movimenti cumulati mensili di Entrata",
+        "url": "https://bdap-opendata.rgs.mef.gov.it/SpodCkanApi/api/3/datastore/dump/7deb457c-3207-481f-bed0-ffd45be4ff59.csv",
+        "sha256": "fb268c2e4571a7087fd6c645218da23d53609a164703aee413d4ea1fa1fad265",
+        "bytes": 51953390,
+        "audit": {
+          "encoding": "raw+cp1252",
+          "delimiter": ";",
+          "headers": [
+            "Codice istat provincia",
+            "Sigla Provincia BDAP",
+            "Provincia BDAP",
+            "Codice istat comune",
+            "Codice Tipologia Ente BDAP",
+            "Descrizione Tipo Ente BDAP",
+            "Descrizione Ente BDAP",
+            "Codice Tipologia Ente BKI",
+            "Descrizione Tipo Ente BKI",
+            "Anno/Mese calendario",
+            "Tipologia del Movimento",
+            "Codice Titolo CG",
+            "Descrizione Titolo CG",
+            "Codice Gestionale Enti Locali",
+            "Descrizione CG",
+            "Popolazione ISTAT",
+            "Importo cumulato",
+            ""
+          ],
+          "mapped_fields": {
+            "province": "Codice istat provincia",
+            "commune": "Codice istat comune",
+            "entity_type": "Codice Tipologia Ente BDAP",
+            "entity_name": "Descrizione Ente BDAP",
+            "month": "Anno/Mese calendario",
+            "movement": "Tipologia del Movimento",
+            "title": "Codice Titolo CG",
+            "detail": "Codice Gestionale Enti Locali",
+            "population": "Popolazione ISTAT",
+            "amount": "Importo cumulato"
+          },
+          "selected_rows": 494
+        }
+      },
+      "spesa-2019-toscana": {
+        "package_id": "3a937353-ee1f-43a7-86be-1c753adec130",
+        "package_title": "2019 - Toscana - SIOPE Movimenti cumulati mensili di Spesa",
+        "url": "https://bdap-opendata.rgs.mef.gov.it/SpodCkanApi/api/3/datastore/dump/3a937353-ee1f-43a7-86be-1c753adec130.csv",
+        "sha256": "587f1fd0c1513fe6fdee1004b86bd6809571c3eafa2b3cfdd39f2938e53e42ac",
+        "bytes": 89489819,
+        "audit": {
+          "encoding": "raw+cp1252",
+          "delimiter": ";",
+          "headers": [
+            "Codice istat provincia",
+            "Sigla Provincia BDAP",
+            "Provincia BDAP",
+            "Codice istat comune",
+            "Codice Tipologia Ente BDAP",
+            "Descrizione Tipo Ente BDAP",
+            "Descrizione Ente BDAP",
+            "Codice Tipologia Ente BKI",
+            "Descrizione Tipo Ente BKI",
+            "Anno/Mese calendario",
+            "Tipologia del Movimento",
+            "Codice Titolo CG",
+            "Descrizione Titolo CG",
+            "Codice Gestionale Enti Locali",
+            "Descrizione CG",
+            "Popolazione ISTAT",
+            "Importo cumulato",
+            ""
+          ],
+          "mapped_fields": {
+            "province": "Codice istat provincia",
+            "commune": "Codice istat comune",
+            "entity_type": "Codice Tipologia Ente BDAP",
+            "entity_name": "Descrizione Ente BDAP",
+            "month": "Anno/Mese calendario",
+            "movement": "Tipologia del Movimento",
+            "title": "Codice Titolo CG",
+            "detail": "Codice Gestionale Enti Locali",
+            "population": "Popolazione ISTAT",
+            "amount": "Importo cumulato"
+          },
+          "selected_rows": 918
+        }
+      },
+      "entrata-2020-toscana": {
+        "package_id": "5cb68fcb-af2b-41f6-8fbc-f7da82a4581c",
+        "package_title": "2020 - Toscana - SIOPE Movimenti cumulati mensili di Entrata",
+        "url": "https://bdap-opendata.rgs.mef.gov.it/SpodCkanApi/api/3/datastore/dump/5cb68fcb-af2b-41f6-8fbc-f7da82a4581c.csv",
+        "sha256": "2e8b9bac9b1142994272c8bbca2e3562325e8c7c5c2d3e2228b8374c73b4802c",
+        "bytes": 51927395,
+        "audit": {
+          "encoding": "raw+cp1252",
+          "delimiter": ";",
+          "headers": [
+            "Codice istat provincia",
+            "Sigla Provincia BDAP",
+            "Provincia BDAP",
+            "Codice istat comune",
+            "Codice Tipologia Ente BDAP",
+            "Descrizione Tipo Ente BDAP",
+            "Descrizione Ente BDAP",
+            "Codice Tipologia Ente BKI",
+            "Descrizione Tipo Ente BKI",
+            "Anno/Mese calendario",
+            "Tipologia del Movimento",
+            "Codice Titolo CG",
+            "Descrizione Titolo CG",
+            "Codice Gestionale Enti Locali",
+            "Descrizione CG",
+            "Popolazione ISTAT",
+            "Importo cumulato",
+            ""
+          ],
+          "mapped_fields": {
+            "province": "Codice istat provincia",
+            "commune": "Codice istat comune",
+            "entity_type": "Codice Tipologia Ente BDAP",
+            "entity_name": "Descrizione Ente BDAP",
+            "month": "Anno/Mese calendario",
+            "movement": "Tipologia del Movimento",
+            "title": "Codice Titolo CG",
+            "detail": "Codice Gestionale Enti Locali",
+            "population": "Popolazione ISTAT",
+            "amount": "Importo cumulato"
+          },
+          "selected_rows": 475
+        }
+      },
+      "spesa-2020-toscana": {
+        "package_id": "805c62a2-8aad-47e9-a830-188aca557f96",
+        "package_title": "2020 - Toscana - SIOPE Movimenti cumulati mensili di Spesa",
+        "url": "https://bdap-opendata.rgs.mef.gov.it/SpodCkanApi/api/3/datastore/dump/805c62a2-8aad-47e9-a830-188aca557f96.csv",
+        "sha256": "02269fd02577897d76dca7e96caae6923e6b97efda6606e1d1841a2fc36f4f6f",
+        "bytes": 87513457,
+        "audit": {
+          "encoding": "raw+cp1252",
+          "delimiter": ";",
+          "headers": [
+            "Codice istat provincia",
+            "Sigla Provincia BDAP",
+            "Provincia BDAP",
+            "Codice istat comune",
+            "Codice Tipologia Ente BDAP",
+            "Descrizione Tipo Ente BDAP",
+            "Descrizione Ente BDAP",
+            "Codice Tipologia Ente BKI",
+            "Descrizione Tipo Ente BKI",
+            "Anno/Mese calendario",
+            "Tipologia del Movimento",
+            "Codice Titolo CG",
+            "Descrizione Titolo CG",
+            "Codice Gestionale Enti Locali",
+            "Descrizione CG",
+            "Popolazione ISTAT",
+            "Importo cumulato",
+            ""
+          ],
+          "mapped_fields": {
+            "province": "Codice istat provincia",
+            "commune": "Codice istat comune",
+            "entity_type": "Codice Tipologia Ente BDAP",
+            "entity_name": "Descrizione Ente BDAP",
+            "month": "Anno/Mese calendario",
+            "movement": "Tipologia del Movimento",
+            "title": "Codice Titolo CG",
+            "detail": "Codice Gestionale Enti Locali",
+            "population": "Popolazione ISTAT",
+            "amount": "Importo cumulato"
+          },
+          "selected_rows": 878
+        }
+      },
+      "entrata-2021-toscana": {
+        "package_id": "74f98a70-7d92-434b-843d-1cf4844447ae",
+        "package_title": "2021 - Toscana - SIOPE Movimenti cumulati mensili di Entrata",
+        "url": "https://bdap-opendata.rgs.mef.gov.it/SpodCkanApi/api/3/datastore/dump/74f98a70-7d92-434b-843d-1cf4844447ae.csv",
+        "sha256": "ad067293e9c1526884b5e755d07bad8860f568738769ae8f0ee44a269f4eec4a",
+        "bytes": 51161112,
+        "audit": {
+          "encoding": "raw+cp1252",
+          "delimiter": ";",
+          "headers": [
+            "Codice istat provincia",
+            "Sigla Provincia BDAP",
+            "Provincia BDAP",
+            "Codice istat comune",
+            "Codice Tipologia Ente BDAP",
+            "Descrizione Tipo Ente BDAP",
+            "Descrizione Ente BDAP",
+            "Codice Tipologia Ente BKI",
+            "Descrizione Tipo Ente BKI",
+            "Anno/Mese calendario",
+            "Tipologia del Movimento",
+            "Codice Titolo CG",
+            "Descrizione Titolo CG",
+            "Codice Gestionale Enti Locali",
+            "Descrizione CG",
+            "Popolazione ISTAT",
+            "Importo cumulato",
+            ""
+          ],
+          "mapped_fields": {
+            "province": "Codice istat provincia",
+            "commune": "Codice istat comune",
+            "entity_type": "Codice Tipologia Ente BDAP",
+            "entity_name": "Descrizione Ente BDAP",
+            "month": "Anno/Mese calendario",
+            "movement": "Tipologia del Movimento",
+            "title": "Codice Titolo CG",
+            "detail": "Codice Gestionale Enti Locali",
+            "population": "Popolazione ISTAT",
+            "amount": "Importo cumulato"
+          },
+          "selected_rows": 470
+        }
+      },
+      "spesa-2021-toscana": {
+        "package_id": "1a083d8b-39e5-41be-b1d1-32808f3c6ace",
+        "package_title": "2021 - Toscana - SIOPE Movimenti cumulati mensili di Spesa",
+        "url": "https://bdap-opendata.rgs.mef.gov.it/SpodCkanApi/api/3/datastore/dump/1a083d8b-39e5-41be-b1d1-32808f3c6ace.csv",
+        "sha256": "15e326c3953ce4f91b5ec5d98652ee4e021d2540aace9846d9dc2a02e8004ff8",
+        "bytes": 90163559,
+        "audit": {
+          "encoding": "raw+cp1252",
+          "delimiter": ";",
+          "headers": [
+            "Codice istat provincia",
+            "Sigla Provincia BDAP",
+            "Provincia BDAP",
+            "Codice istat comune",
+            "Codice Tipologia Ente BDAP",
+            "Descrizione Tipo Ente BDAP",
+            "Descrizione Ente BDAP",
+            "Codice Tipologia Ente BKI",
+            "Descrizione Tipo Ente BKI",
+            "Anno/Mese calendario",
+            "Tipologia del Movimento",
+            "Codice Titolo CG",
+            "Descrizione Titolo CG",
+            "Codice Gestionale Enti Locali",
+            "Descrizione CG",
+            "Popolazione ISTAT",
+            "Importo cumulato",
+            ""
+          ],
+          "mapped_fields": {
+            "province": "Codice istat provincia",
+            "commune": "Codice istat comune",
+            "entity_type": "Codice Tipologia Ente BDAP",
+            "entity_name": "Descrizione Ente BDAP",
+            "month": "Anno/Mese calendario",
+            "movement": "Tipologia del Movimento",
+            "title": "Codice Titolo CG",
+            "detail": "Codice Gestionale Enti Locali",
+            "population": "Popolazione ISTAT",
+            "amount": "Importo cumulato"
+          },
+          "selected_rows": 901
+        }
+      },
+      "entrata-2022-toscana": {
+        "package_id": "0a571dea-2e80-4200-9939-d193d167e4a5",
+        "package_title": "2022 - Toscana - SIOPE Movimenti cumulati mensili di Entrata",
+        "url": "https://bdap-opendata.rgs.mef.gov.it/SpodCkanApi/api/3/datastore/dump/0a571dea-2e80-4200-9939-d193d167e4a5.csv",
+        "sha256": "3bf0f28256231c7476f068270e337f5780ae0f422f60543733519d525bdfe90f",
+        "bytes": 50727167,
+        "audit": {
+          "encoding": "raw+cp1252",
+          "delimiter": ";",
+          "headers": [
+            "Codice istat provincia",
+            "Sigla Provincia BDAP",
+            "Provincia BDAP",
+            "Codice istat comune",
+            "Codice Tipologia Ente BDAP",
+            "Descrizione Tipo Ente BDAP",
+            "Descrizione Ente BDAP",
+            "Codice Tipologia Ente BKI",
+            "Descrizione Tipo Ente BKI",
+            "Anno/Mese calendario",
+            "Tipologia del Movimento",
+            "Codice Titolo CG",
+            "Descrizione Titolo CG",
+            "Codice Gestionale Enti Locali",
+            "Descrizione CG",
+            "Popolazione ISTAT",
+            "Importo cumulato",
+            ""
+          ],
+          "mapped_fields": {
+            "province": "Codice istat provincia",
+            "commune": "Codice istat comune",
+            "entity_type": "Codice Tipologia Ente BDAP",
+            "entity_name": "Descrizione Ente BDAP",
+            "month": "Anno/Mese calendario",
+            "movement": "Tipologia del Movimento",
+            "title": "Codice Titolo CG",
+            "detail": "Codice Gestionale Enti Locali",
+            "population": "Popolazione ISTAT",
+            "amount": "Importo cumulato"
+          },
+          "selected_rows": 486
+        }
+      },
+      "spesa-2022-toscana": {
+        "package_id": "c50b15ff-996b-4410-ba43-19f374c515ce",
+        "package_title": "2022 - Toscana - SIOPE Movimenti cumulati mensili di Spesa",
+        "url": "https://bdap-opendata.rgs.mef.gov.it/SpodCkanApi/api/3/datastore/dump/c50b15ff-996b-4410-ba43-19f374c515ce.csv",
+        "sha256": "d22c574b2d48556b716bb377878fbde7a7619e2e16a97edceb7a8bd0f3ae66b6",
+        "bytes": 91033698,
+        "audit": {
+          "encoding": "raw+cp1252",
+          "delimiter": ";",
+          "headers": [
+            "Codice istat provincia",
+            "Sigla Provincia BDAP",
+            "Provincia BDAP",
+            "Codice istat comune",
+            "Codice Tipologia Ente BDAP",
+            "Descrizione Tipo Ente BDAP",
+            "Descrizione Ente BDAP",
+            "Codice Tipologia Ente BKI",
+            "Descrizione Tipo Ente BKI",
+            "Anno/Mese calendario",
+            "Tipologia del Movimento",
+            "Codice Titolo CG",
+            "Descrizione Titolo CG",
+            "Codice Gestionale Enti Locali",
+            "Descrizione CG",
+            "Popolazione ISTAT",
+            "Importo cumulato",
+            ""
+          ],
+          "mapped_fields": {
+            "province": "Codice istat provincia",
+            "commune": "Codice istat comune",
+            "entity_type": "Codice Tipologia Ente BDAP",
+            "entity_name": "Descrizione Ente BDAP",
+            "month": "Anno/Mese calendario",
+            "movement": "Tipologia del Movimento",
+            "title": "Codice Titolo CG",
+            "detail": "Codice Gestionale Enti Locali",
+            "population": "Popolazione ISTAT",
+            "amount": "Importo cumulato"
+          },
+          "selected_rows": 929
+        }
+      },
+      "entrata-2023-toscana": {
+        "package_id": "413d73f7-a7e6-4ee1-a94b-dbe1a1d612a6",
+        "package_title": "2023 - Toscana - SIOPE Movimenti cumulati mensili di Entrata",
+        "url": "https://bdap-opendata.rgs.mef.gov.it/SpodCkanApi/api/3/datastore/dump/413d73f7-a7e6-4ee1-a94b-dbe1a1d612a6.csv",
+        "sha256": "e5d0a6e6ab99a19f6807404dc67fcf96e81d75d2cda2ac98f97b7c626bd28623",
+        "bytes": 51360185,
+        "audit": {
+          "encoding": "raw+cp1252",
+          "delimiter": ";",
+          "headers": [
+            "Codice istat provincia",
+            "Sigla Provincia BDAP",
+            "Provincia BDAP",
+            "Codice istat comune",
+            "Codice Tipologia Ente BDAP",
+            "Descrizione Tipo Ente BDAP",
+            "Descrizione Ente BDAP",
+            "Codice Tipologia Ente BKI",
+            "Descrizione Tipo Ente BKI",
+            "Anno/Mese calendario",
+            "Tipologia del Movimento",
+            "Codice Titolo CG",
+            "Descrizione Titolo CG",
+            "Codice Gestionale Enti Locali",
+            "Descrizione CG",
+            "Popolazione ISTAT",
+            "Importo cumulato",
+            ""
+          ],
+          "mapped_fields": {
+            "province": "Codice istat provincia",
+            "commune": "Codice istat comune",
+            "entity_type": "Codice Tipologia Ente BDAP",
+            "entity_name": "Descrizione Ente BDAP",
+            "month": "Anno/Mese calendario",
+            "movement": "Tipologia del Movimento",
+            "title": "Codice Titolo CG",
+            "detail": "Codice Gestionale Enti Locali",
+            "population": "Popolazione ISTAT",
+            "amount": "Importo cumulato"
+          },
+          "selected_rows": 486
+        }
+      },
+      "spesa-2023-toscana": {
+        "package_id": "21c5bf70-8495-47e8-8419-310f7b776f0e",
+        "package_title": "2023 - Toscana - SIOPE Movimenti cumulati mensili di Spesa",
+        "url": "https://bdap-opendata.rgs.mef.gov.it/SpodCkanApi/api/3/datastore/dump/21c5bf70-8495-47e8-8419-310f7b776f0e.csv",
+        "sha256": "f146c763ea6905616376fff6a2638731703171b26a0b42ffd64ece6c197e1800",
+        "bytes": 92149495,
+        "audit": {
+          "encoding": "raw+cp1252",
+          "delimiter": ";",
+          "headers": [
+            "Codice istat provincia",
+            "Sigla Provincia BDAP",
+            "Provincia BDAP",
+            "Codice istat comune",
+            "Codice Tipologia Ente BDAP",
+            "Descrizione Tipo Ente BDAP",
+            "Descrizione Ente BDAP",
+            "Codice Tipologia Ente BKI",
+            "Descrizione Tipo Ente BKI",
+            "Anno/Mese calendario",
+            "Tipologia del Movimento",
+            "Codice Titolo CG",
+            "Descrizione Titolo CG",
+            "Codice Gestionale Enti Locali",
+            "Descrizione CG",
+            "Popolazione ISTAT",
+            "Importo cumulato",
+            ""
+          ],
+          "mapped_fields": {
+            "province": "Codice istat provincia",
+            "commune": "Codice istat comune",
+            "entity_type": "Codice Tipologia Ente BDAP",
+            "entity_name": "Descrizione Ente BDAP",
+            "month": "Anno/Mese calendario",
+            "movement": "Tipologia del Movimento",
+            "title": "Codice Titolo CG",
+            "detail": "Codice Gestionale Enti Locali",
+            "population": "Popolazione ISTAT",
+            "amount": "Importo cumulato"
+          },
+          "selected_rows": 938
+        }
+      },
+      "entrata-2024-toscana": {
+        "package_id": "c5788656-d6a4-4e50-bf2b-1e4f7887d4aa",
+        "package_title": "2024 - Toscana - SIOPE Movimenti cumulati mensili di Entrata",
+        "url": "https://bdap-opendata.rgs.mef.gov.it/SpodCkanApi/api/3/datastore/dump/c5788656-d6a4-4e50-bf2b-1e4f7887d4aa.csv",
+        "sha256": "20bf1ff2e8830b3118b306af53351d061ecbfce4c21d7b36aa45e6569d530014",
+        "bytes": 52211904,
+        "audit": {
+          "encoding": "raw+cp1252",
+          "delimiter": ";",
+          "headers": [
+            "Codice istat provincia",
+            "Sigla Provincia BDAP",
+            "Provincia BDAP",
+            "Codice istat comune",
+            "Codice Tipologia Ente BDAP",
+            "Descrizione Tipo Ente BDAP",
+            "Descrizione Ente BDAP",
+            "Codice Tipologia Ente BKI",
+            "Descrizione Tipo Ente BKI",
+            "Anno/Mese calendario",
+            "Tipologia del Movimento",
+            "Codice Titolo CG",
+            "Descrizione Titolo CG",
+            "Codice Gestionale Enti Locali",
+            "Descrizione CG",
+            "Popolazione ISTAT",
+            "Importo cumulato",
+            ""
+          ],
+          "mapped_fields": {
+            "province": "Codice istat provincia",
+            "commune": "Codice istat comune",
+            "entity_type": "Codice Tipologia Ente BDAP",
+            "entity_name": "Descrizione Ente BDAP",
+            "month": "Anno/Mese calendario",
+            "movement": "Tipologia del Movimento",
+            "title": "Codice Titolo CG",
+            "detail": "Codice Gestionale Enti Locali",
+            "population": "Popolazione ISTAT",
+            "amount": "Importo cumulato"
+          },
+          "selected_rows": 493
+        }
+      },
+      "spesa-2024-toscana": {
+        "package_id": "5604bf94-08db-40ec-a5f9-403687f4576a",
+        "package_title": "2024 - Toscana - SIOPE Movimenti cumulati mensili di Spesa",
+        "url": "https://bdap-opendata.rgs.mef.gov.it/SpodCkanApi/api/3/datastore/dump/5604bf94-08db-40ec-a5f9-403687f4576a.csv",
+        "sha256": "09b7ba535d379b0b5c3728f44ef0cb15dc23bb0f5aa4aa78b1fb338426cb2a61",
+        "bytes": 95161039,
+        "audit": {
+          "encoding": "raw+cp1252",
+          "delimiter": ";",
+          "headers": [
+            "Codice istat provincia",
+            "Sigla Provincia BDAP",
+            "Provincia BDAP",
+            "Codice istat comune",
+            "Codice Tipologia Ente BDAP",
+            "Descrizione Tipo Ente BDAP",
+            "Descrizione Ente BDAP",
+            "Codice Tipologia Ente BKI",
+            "Descrizione Tipo Ente BKI",
+            "Anno/Mese calendario",
+            "Tipologia del Movimento",
+            "Codice Titolo CG",
+            "Descrizione Titolo CG",
+            "Codice Gestionale Enti Locali",
+            "Descrizione CG",
+            "Popolazione ISTAT",
+            "Importo cumulato",
+            ""
+          ],
+          "mapped_fields": {
+            "province": "Codice istat provincia",
+            "commune": "Codice istat comune",
+            "entity_type": "Codice Tipologia Ente BDAP",
+            "entity_name": "Descrizione Ente BDAP",
+            "month": "Anno/Mese calendario",
+            "movement": "Tipologia del Movimento",
+            "title": "Codice Titolo CG",
+            "detail": "Codice Gestionale Enti Locali",
+            "population": "Popolazione ISTAT",
+            "amount": "Importo cumulato"
+          },
+          "selected_rows": 951
+        }
+      },
+      "entrata-2025-toscana": {
+        "package_id": "4dbef43d-72fa-4fe2-a716-45986be658f2",
+        "package_title": "2025 - Toscana - SIOPE Movimenti cumulati mensili di Entrata",
+        "url": "https://bdap-opendata.rgs.mef.gov.it/SpodCkanApi/api/3/datastore/dump/4dbef43d-72fa-4fe2-a716-45986be658f2.csv",
+        "sha256": "d3d86e80dc5f9efac0d9070bc423784ad4fc3c821007accc362101effcc99e01",
+        "bytes": 53007584,
+        "audit": {
+          "encoding": "raw+cp1252",
+          "delimiter": ";",
+          "headers": [
+            "Codice istat provincia",
+            "Sigla Provincia BDAP",
+            "Provincia BDAP",
+            "Codice istat comune",
+            "Codice Tipologia Ente BDAP",
+            "Descrizione Tipo Ente BDAP",
+            "Descrizione Ente BDAP",
+            "Codice Tipologia Ente BKI",
+            "Descrizione Tipo Ente BKI",
+            "Anno/Mese calendario",
+            "Tipologia del Movimento",
+            "Codice Titolo CG",
+            "Descrizione Titolo CG",
+            "Codice Gestionale Enti Locali",
+            "Descrizione CG",
+            "Popolazione ISTAT",
+            "Importo cumulato",
+            ""
+          ],
+          "mapped_fields": {
+            "province": "Codice istat provincia",
+            "commune": "Codice istat comune",
+            "entity_type": "Codice Tipologia Ente BDAP",
+            "entity_name": "Descrizione Ente BDAP",
+            "month": "Anno/Mese calendario",
+            "movement": "Tipologia del Movimento",
+            "title": "Codice Titolo CG",
+            "detail": "Codice Gestionale Enti Locali",
+            "population": "Popolazione ISTAT",
+            "amount": "Importo cumulato"
+          },
+          "selected_rows": 486
+        }
+      },
+      "spesa-2025-toscana": {
+        "package_id": "74533d22-b1c2-4d89-b1b9-b98e6c9713ff",
+        "package_title": "2025 - Toscana - SIOPE Movimenti cumulati mensili di Spesa",
+        "url": "https://bdap-opendata.rgs.mef.gov.it/SpodCkanApi/api/3/datastore/dump/74533d22-b1c2-4d89-b1b9-b98e6c9713ff.csv",
+        "sha256": "2208960f5ad5f970fee82443e81cd463063f959c0f2532b37ea0ad8df23fb346",
+        "bytes": 98028860,
+        "audit": {
+          "encoding": "raw+cp1252",
+          "delimiter": ";",
+          "headers": [
+            "Codice istat provincia",
+            "Sigla Provincia BDAP",
+            "Provincia BDAP",
+            "Codice istat comune",
+            "Codice Tipologia Ente BDAP",
+            "Descrizione Tipo Ente BDAP",
+            "Descrizione Ente BDAP",
+            "Codice Tipologia Ente BKI",
+            "Descrizione Tipo Ente BKI",
+            "Anno/Mese calendario",
+            "Tipologia del Movimento",
+            "Codice Titolo CG",
+            "Descrizione Titolo CG",
+            "Codice Gestionale Enti Locali",
+            "Descrizione CG",
+            "Popolazione ISTAT",
+            "Importo cumulato"
+          ],
+          "mapped_fields": {
+            "province": "Codice istat provincia",
+            "commune": "Codice istat comune",
+            "entity_type": "Codice Tipologia Ente BDAP",
+            "entity_name": "Descrizione Ente BDAP",
+            "month": "Anno/Mese calendario",
+            "movement": "Tipologia del Movimento",
+            "title": "Codice Titolo CG",
+            "detail": "Codice Gestionale Enti Locali",
+            "population": "Popolazione ISTAT",
+            "amount": "Importo cumulato"
+          },
+          "selected_rows": 970
+        }
+      }
+    }
+  },
+  "selection_rules": {
+    "region": "Toscana",
+    "province_istat": "046",
+    "entity_type_bdap": "CO",
+    "municipalities": {
+      "Camaiore": "046005",
+      "Forte dei Marmi": "046013",
+      "Massarosa": "046018",
+      "Pietrasanta": "046024",
+      "Seravezza": "046028",
+      "Stazzema": "046030",
+      "Viareggio": "046033"
+    },
+    "month": "dicembre (dato cumulato dal 1° gennaio)",
+    "years": [
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024,
+      2025
+    ],
+    "classification": "codice gestionale Enti Locali di quinto livello; Titolo 1 per pagamenti correnti, Titolo 2 per conto capitale",
+    "denominator": "popolazione residente Istat al 1° gennaio dell’anno successivo al flusso contabile",
+    "no_estimates": true
+  },
+  "formulas": {
+    "siopePayments": "pagamenti complessivi cumulati a dicembre / popolazione residente Istat al 1° gennaio dell’anno successivo",
+    "currentPayments": "pagamenti cumulati a dicembre con Titolo CG 1 / popolazione residente Istat al 1° gennaio dell’anno successivo",
+    "capitalPayments": "pagamenti cumulati a dicembre con Titolo CG 2 / popolazione residente Istat al 1° gennaio dell’anno successivo",
+    "cashReceiptsPerResident": "incassi complessivi cumulati a dicembre / popolazione residente Istat al 1° gennaio dell’anno successivo",
+    "cashBalancePerResident": "(incassi complessivi - pagamenti complessivi) / popolazione residente Istat al 1° gennaio dell’anno successivo"
+  },
+  "coverage": "7/7 per ogni annualità 2019–2025",
+  "validation_2025": {
+    "siopePayments": {
+      "Camaiore": {
+        "existing_2025": 3335.614821647829,
+        "calculated_2025": 3335.61482164783,
+        "delta": 9.094947017729282e-13,
+        "previous_method_calculated_2025": 3328.3844426991714,
+        "status": "matched_existing"
+      },
+      "Forte dei Marmi": {
+        "existing_2025": 7097.490633587786,
+        "calculated_2025": 7097.4906335877895,
+        "delta": 3.637978807091713e-12,
+        "previous_method_calculated_2025": 6973.9819456945725,
+        "status": "matched_existing"
+      },
+      "Massarosa": {
+        "existing_2025": 1774.3670833715914,
+        "calculated_2025": 1774.367083371591,
+        "delta": -4.547473508864641e-13,
+        "previous_method_calculated_2025": 1772.4141892139776,
+        "status": "matched_existing"
+      },
+      "Pietrasanta": {
+        "existing_2025": 2517.726732957051,
+        "calculated_2025": 2517.726732957052,
+        "delta": 9.094947017729282e-13,
+        "previous_method_calculated_2025": 2510.5310139383555,
+        "status": "matched_existing"
+      },
+      "Seravezza": {
+        "existing_2025": 1904.8667942038423,
+        "calculated_2025": 1904.8667942038423,
+        "delta": 0.0,
+        "previous_method_calculated_2025": 1889.9429529117194,
+        "status": "matched_existing"
+      },
+      "Stazzema": {
+        "existing_2025": 2450.1243801652895,
+        "calculated_2025": 2450.1243801652895,
+        "delta": 0.0,
+        "previous_method_calculated_2025": 2357.7787517289075,
+        "status": "matched_existing"
+      },
+      "Viareggio": {
+        "existing_2025": 2260.15683750824,
+        "calculated_2025": 2260.15683750824,
+        "delta": 0.0,
+        "previous_method_calculated_2025": 2262.4685225510575,
+        "status": "matched_existing"
+      }
+    },
+    "currentPayments": {
+      "Camaiore": {
+        "existing_2025": 1232.887587333501,
+        "calculated_2025": 1235.5658369801342,
+        "delta": 2.678249646633276,
+        "previous_method_calculated_2025": 1232.8875873335012,
+        "status": "rebased_to_uniform_resident_population"
+      },
+      "Forte dei Marmi": {
+        "existing_2025": 4144.557293729373,
+        "calculated_2025": 4217.957087022904,
+        "delta": 73.39979329353082,
+        "previous_method_calculated_2025": 4144.5572937293755,
+        "status": "rebased_to_uniform_resident_population"
+      },
+      "Massarosa": {
+        "existing_2025": 1176.7111157479592,
+        "calculated_2025": 1178.0076480580294,
+        "delta": 1.2965323100702335,
+        "previous_method_calculated_2025": 1176.7111157479592,
+        "status": "rebased_to_uniform_resident_population"
+      },
+      "Pietrasanta": {
+        "existing_2025": 1576.5148282988173,
+        "calculated_2025": 1581.033457094982,
+        "delta": 4.5186287961646485,
+        "previous_method_calculated_2025": 1576.5148282988173,
+        "status": "rebased_to_uniform_resident_population"
+      },
+      "Seravezza": {
+        "existing_2025": 1047.9034310637267,
+        "calculated_2025": 1056.1781488114616,
+        "delta": 8.27471774773494,
+        "previous_method_calculated_2025": 1047.9034310637262,
+        "status": "rebased_to_uniform_resident_population"
+      },
+      "Stazzema": {
+        "existing_2025": 1182.4965594744122,
+        "calculated_2025": 1228.8106539705357,
+        "delta": 46.314094496123516,
+        "previous_method_calculated_2025": 1182.4965594744124,
+        "status": "rebased_to_uniform_resident_population"
+      },
+      "Viareggio": {
+        "existing_2025": 1351.4119883532944,
+        "calculated_2025": 1350.0311784772575,
+        "delta": -1.380809876036892,
+        "previous_method_calculated_2025": 1351.4119883532942,
+        "status": "rebased_to_uniform_resident_population"
+      }
+    },
+    "capitalPayments": {
+      "Camaiore": {
+        "existing_2025": 328.2265735737622,
+        "calculated_2025": 328.93959292258285,
+        "delta": 0.7130193488206373,
+        "previous_method_calculated_2025": 328.2265735737622,
+        "status": "rebased_to_uniform_resident_population"
+      },
+      "Forte dei Marmi": {
+        "existing_2025": 2024.7042589258926,
+        "calculated_2025": 2060.561616793893,
+        "delta": 35.857357868000236,
+        "previous_method_calculated_2025": 2024.7042589258926,
+        "status": "rebased_to_uniform_resident_population"
+      },
+      "Massarosa": {
+        "existing_2025": 264.54125699348805,
+        "calculated_2025": 264.83273574511065,
+        "delta": 0.2914787516226056,
+        "previous_method_calculated_2025": 264.54125699348805,
+        "status": "rebased_to_uniform_resident_population"
+      },
+      "Pietrasanta": {
+        "existing_2025": 665.9789843028624,
+        "calculated_2025": 667.8878225593086,
+        "delta": 1.908838256446188,
+        "previous_method_calculated_2025": 665.9789843028624,
+        "status": "rebased_to_uniform_resident_population"
+      },
+      "Seravezza": {
+        "existing_2025": 527.9647257895161,
+        "calculated_2025": 532.1337732009118,
+        "delta": 4.169047411395695,
+        "previous_method_calculated_2025": 527.9647257895164,
+        "status": "rebased_to_uniform_resident_population"
+      },
+      "Stazzema": {
+        "existing_2025": 392.0897648686031,
+        "calculated_2025": 407.4464965864176,
+        "delta": 15.356731717814512,
+        "previous_method_calculated_2025": 392.0897648686031,
+        "status": "rebased_to_uniform_resident_population"
+      },
+      "Viareggio": {
+        "existing_2025": 397.6800737404731,
+        "calculated_2025": 397.2737427488464,
+        "delta": -0.40633099162670305,
+        "previous_method_calculated_2025": 397.6800737404731,
+        "status": "rebased_to_uniform_resident_population"
+      }
+    },
+    "cashReceiptsPerResident": {
+      "Camaiore": {
+        "existing_2025": 3307.5875842961937,
+        "calculated_2025": 3307.587584296193,
+        "delta": -4.547473508864641e-13,
+        "previous_method_calculated_2025": 3300.417958029655,
+        "status": "matched_existing"
+      },
+      "Forte dei Marmi": {
+        "existing_2025": 6747.857815267175,
+        "calculated_2025": 6747.857815267177,
+        "delta": 1.8189894035458565e-12,
+        "previous_method_calculated_2025": 6630.433346834685,
+        "status": "matched_existing"
+      },
+      "Massarosa": {
+        "existing_2025": 1665.2993774676338,
+        "calculated_2025": 1665.2993774676327,
+        "delta": -1.1368683772161603e-12,
+        "previous_method_calculated_2025": 1663.4665248096844,
+        "status": "matched_existing"
+      },
+      "Pietrasanta": {
+        "existing_2025": 2671.6869944439545,
+        "calculated_2025": 2671.686994443954,
+        "delta": -4.547473508864641e-13,
+        "previous_method_calculated_2025": 2664.0512535725275,
+        "status": "matched_existing"
+      },
+      "Seravezza": {
+        "existing_2025": 1669.03301286226,
+        "calculated_2025": 1669.0330128622602,
+        "delta": 2.2737367544323206e-13,
+        "previous_method_calculated_2025": 1655.9568314352641,
+        "status": "matched_existing"
+      },
+      "Stazzema": {
+        "existing_2025": 2433.867808120733,
+        "calculated_2025": 2433.8678081207336,
+        "delta": 4.547473508864641e-13,
+        "previous_method_calculated_2025": 2342.134892807746,
+        "status": "matched_existing"
+      },
+      "Viareggio": {
+        "existing_2025": 1998.6164596242584,
+        "calculated_2025": 1998.6164596242593,
+        "delta": 9.094947017729282e-13,
+        "previous_method_calculated_2025": 2000.6606415586139,
+        "status": "matched_existing"
+      }
+    },
+    "cashBalancePerResident": {
+      "Camaiore": {
+        "existing_2025": -28.027237351635552,
+        "calculated_2025": -28.027237351636977,
+        "delta": -1.4246381851990009e-12,
+        "previous_method_calculated_2025": -27.966484669516376,
+        "status": "matched_existing"
+      },
+      "Forte dei Marmi": {
+        "existing_2025": -349.6328183206107,
+        "calculated_2025": -349.632818320612,
+        "delta": -1.3073986337985843e-12,
+        "previous_method_calculated_2025": -343.54859885988725,
+        "status": "matched_existing"
+      },
+      "Massarosa": {
+        "existing_2025": -109.0677059039574,
+        "calculated_2025": -109.06770590395823,
+        "delta": -8.242295734817162e-13,
+        "previous_method_calculated_2025": -108.94766440429323,
+        "status": "matched_existing"
+      },
+      "Pietrasanta": {
+        "existing_2025": 153.96026148690362,
+        "calculated_2025": 153.96026148690206,
+        "delta": -1.5631940186722204e-12,
+        "previous_method_calculated_2025": 153.52023963417162,
+        "status": "matched_existing"
+      },
+      "Seravezza": {
+        "existing_2025": -235.83378134158255,
+        "calculated_2025": -235.8337813415821,
+        "delta": 4.547473508864641e-13,
+        "previous_method_calculated_2025": -233.9861214764554,
+        "status": "matched_existing"
+      },
+      "Stazzema": {
+        "existing_2025": -16.256572044556236,
+        "calculated_2025": -16.256572044555913,
+        "delta": 3.232969447708456e-13,
+        "previous_method_calculated_2025": -15.643858921161517,
+        "status": "matched_existing"
+      },
+      "Viareggio": {
+        "existing_2025": -261.54037788398153,
+        "calculated_2025": -261.54037788398074,
+        "delta": 7.958078640513122e-13,
+        "previous_method_calculated_2025": -261.8078809924437,
+        "status": "matched_existing"
+      }
+    }
+  },
+  "raw": {
+    "Camaiore": {
+      "2019": {
+        "population_istat_siope": 31761,
+        "population_resident": 31543.0,
+        "population_reference_date": "1 gennaio 2020",
+        "cash_receipts": 92841188.8,
+        "cash_payments": 93731670.80999999,
+        "current_payments": 38263227.57999999,
+        "capital_payments": 3596804.77,
+        "cash_balance": -890482.0099999905,
+        "selected_rows": {
+          "entrata": 67,
+          "spesa": 129
+        }
+      },
+      "2020": {
+        "population_istat_siope": 31761,
+        "population_resident": 31761.0,
+        "population_reference_date": "1 gennaio 2021",
+        "cash_receipts": 86468380.3,
+        "cash_payments": 80023410.07,
+        "current_payments": 34372454.2,
+        "capital_payments": 2857669.04,
+        "cash_balance": 6444970.230000004,
+        "selected_rows": {
+          "entrata": 68,
+          "spesa": 119
+        }
+      },
+      "2021": {
+        "population_istat_siope": 31761,
+        "population_resident": 31821.0,
+        "population_reference_date": "1 gennaio 2022",
+        "cash_receipts": 60027527.900000006,
+        "cash_payments": 58733272.47999999,
+        "current_payments": 37768343.45999999,
+        "capital_payments": 6822376.67,
+        "cash_balance": 1294255.4200000167,
+        "selected_rows": {
+          "entrata": 68,
+          "spesa": 120
+        }
+      },
+      "2022": {
+        "population_istat_siope": 31821,
+        "population_resident": 31914.0,
+        "population_reference_date": "1 gennaio 2023",
+        "cash_receipts": 71208135.63,
+        "cash_payments": 74045216.64000002,
+        "current_payments": 38704804.410000004,
+        "capital_payments": 6420821.15,
+        "cash_balance": -2837081.0100000203,
+        "selected_rows": {
+          "entrata": 71,
+          "spesa": 122
+        }
+      },
+      "2023": {
+        "population_istat_siope": 31914,
+        "population_resident": 31864.0,
+        "population_reference_date": "1 gennaio 2024",
+        "cash_receipts": 88580369.72999999,
+        "cash_payments": 89700745.89999998,
+        "current_payments": 39831998.83999999,
+        "capital_payments": 5235902.34,
+        "cash_balance": -1120376.169999987,
+        "selected_rows": {
+          "entrata": 70,
+          "spesa": 132
+        }
+      },
+      "2024": {
+        "population_istat_siope": 31864,
+        "population_resident": 31832.0,
+        "population_reference_date": "1 gennaio 2025",
+        "cash_receipts": 88032749.74000002,
+        "cash_payments": 84003114.78,
+        "current_payments": 40299170.61,
+        "capital_payments": 6127353.76,
+        "cash_balance": 4029634.9600000232,
+        "selected_rows": {
+          "entrata": 73,
+          "spesa": 124
+        }
+      },
+      "2025": {
+        "population_istat_siope": 31832,
+        "population_resident": 31763.0,
+        "population_reference_date": "1 gennaio 2026",
+        "cash_receipts": 105058904.43999998,
+        "cash_payments": 105949133.58000003,
+        "current_payments": 39245277.68000001,
+        "capital_payments": 10448108.29,
+        "cash_balance": -890229.1400000453,
+        "selected_rows": {
+          "entrata": 65,
+          "spesa": 125
+        }
+      }
+    },
+    "Forte dei Marmi": {
+      "2019": {
+        "population_istat_siope": 7217,
+        "population_resident": 7111.0,
+        "population_reference_date": "1 gennaio 2020",
+        "cash_receipts": 35251439.02000001,
+        "cash_payments": 30746080.339999985,
+        "current_payments": 23856458.119999994,
+        "capital_payments": 3360881.8099999996,
+        "cash_balance": 4505358.680000026,
+        "selected_rows": {
+          "entrata": 55,
+          "spesa": 118
+        }
+      },
+      "2020": {
+        "population_istat_siope": 7217,
+        "population_resident": 7217.0,
+        "population_reference_date": "1 gennaio 2021",
+        "cash_receipts": 36289120.12999999,
+        "cash_payments": 35198466.74000001,
+        "current_payments": 23166595.23000001,
+        "capital_payments": 6902738.91,
+        "cash_balance": 1090653.3899999782,
+        "selected_rows": {
+          "entrata": 59,
+          "spesa": 120
+        }
+      },
+      "2021": {
+        "population_istat_siope": 7217,
+        "population_resident": 6943.0,
+        "population_reference_date": "1 gennaio 2022",
+        "cash_receipts": 38778924.82000001,
+        "cash_payments": 35937263.790000014,
+        "current_payments": 26820240.570000004,
+        "capital_payments": 5254167.590000001,
+        "cash_balance": 2841661.0299999937,
+        "selected_rows": {
+          "entrata": 60,
+          "spesa": 127
+        }
+      },
+      "2022": {
+        "population_istat_siope": 6943,
+        "population_resident": 6879.0,
+        "population_reference_date": "1 gennaio 2023",
+        "cash_receipts": 42227304.890000015,
+        "cash_payments": 39459177.1,
+        "current_payments": 27427350.450000003,
+        "capital_payments": 7297333.95,
+        "cash_balance": 2768127.790000014,
+        "selected_rows": {
+          "entrata": 62,
+          "spesa": 133
+        }
+      },
+      "2023": {
+        "population_istat_siope": 6879,
+        "population_resident": 6777.0,
+        "population_reference_date": "1 gennaio 2024",
+        "cash_receipts": 43438052.08,
+        "cash_payments": 38838586.529999994,
+        "current_payments": 26955411.95,
+        "capital_payments": 7100036.5200000005,
+        "cash_balance": 4599465.5500000045,
+        "selected_rows": {
+          "entrata": 64,
+          "spesa": 135
+        }
+      },
+      "2024": {
+        "population_istat_siope": 6777,
+        "population_resident": 6666.0,
+        "population_reference_date": "1 gennaio 2025",
+        "cash_receipts": 46279084.14999999,
+        "cash_payments": 45276153.179999985,
+        "current_payments": 27647533.890000004,
+        "capital_payments": 9336114.600000001,
+        "cash_balance": 1002930.9700000063,
+        "selected_rows": {
+          "entrata": 65,
+          "spesa": 133
+        }
+      },
+      "2025": {
+        "population_istat_siope": 6666,
+        "population_resident": 6550.0,
+        "population_reference_date": "1 gennaio 2026",
+        "cash_receipts": 44198468.69000001,
+        "cash_payments": 46488563.65000002,
+        "current_payments": 27627618.920000017,
+        "capital_payments": 13496678.59,
+        "cash_balance": -2290094.9600000083,
+        "selected_rows": {
+          "entrata": 62,
+          "spesa": 133
+        }
+      }
+    },
+    "Massarosa": {
+      "2019": {
+        "population_istat_siope": 21951,
+        "population_resident": 21615.0,
+        "population_reference_date": "1 gennaio 2020",
+        "cash_receipts": 37412984.92999999,
+        "cash_payments": 37411776.24000001,
+        "current_payments": 17997975.410000004,
+        "capital_payments": 1635211.7799999998,
+        "cash_balance": 1208.6899999827147,
+        "selected_rows": {
+          "entrata": 69,
+          "spesa": 123
+        }
+      },
+      "2020": {
+        "population_istat_siope": 21951,
+        "population_resident": 21951.0,
+        "population_reference_date": "1 gennaio 2021",
+        "cash_receipts": 22832866.849999987,
+        "cash_payments": 21734296.720000003,
+        "current_payments": 11721116.950000005,
+        "capital_payments": 853754.33,
+        "cash_balance": 1098570.129999984,
+        "selected_rows": {
+          "entrata": 63,
+          "spesa": 102
+        }
+      },
+      "2021": {
+        "population_istat_siope": 21951,
+        "population_resident": 21823.0,
+        "population_reference_date": "1 gennaio 2022",
+        "cash_receipts": 23974956.02,
+        "cash_payments": 16730527.630000003,
+        "current_payments": 9089265.170000002,
+        "capital_payments": 428796.34,
+        "cash_balance": 7244428.389999997,
+        "selected_rows": {
+          "entrata": 60,
+          "spesa": 110
+        }
+      },
+      "2022": {
+        "population_istat_siope": 21823,
+        "population_resident": 21822.0,
+        "population_reference_date": "1 gennaio 2023",
+        "cash_receipts": 24598614.69,
+        "cash_payments": 27068903.829999994,
+        "current_payments": 20607343.58,
+        "capital_payments": 1498341.91,
+        "cash_balance": -2470289.139999993,
+        "selected_rows": {
+          "entrata": 58,
+          "spesa": 111
+        }
+      },
+      "2023": {
+        "population_istat_siope": 21822,
+        "population_resident": 21865.0,
+        "population_reference_date": "1 gennaio 2024",
+        "cash_receipts": 23870896.059999987,
+        "cash_payments": 23238470.52,
+        "current_payments": 15732439.969999999,
+        "capital_payments": 2972063.4400000004,
+        "cash_balance": 632425.5399999879,
+        "selected_rows": {
+          "entrata": 64,
+          "spesa": 107
+        }
+      },
+      "2024": {
+        "population_istat_siope": 21865,
+        "population_resident": 21806.0,
+        "population_reference_date": "1 gennaio 2025",
+        "cash_receipts": 29467586.510000005,
+        "cash_payments": 26568047.76,
+        "current_payments": 18872087.63000001,
+        "capital_payments": 3685607.17,
+        "cash_balance": 2899538.7500000037,
+        "selected_rows": {
+          "entrata": 65,
+          "spesa": 112
+        }
+      },
+      "2025": {
+        "population_istat_siope": 21806,
+        "population_resident": 21782.0,
+        "population_reference_date": "1 gennaio 2026",
+        "cash_receipts": 36273551.03999998,
+        "cash_payments": 38649263.809999995,
+        "current_payments": 25659362.589999996,
+        "capital_payments": 5768586.65,
+        "cash_balance": -2375712.770000018,
+        "selected_rows": {
+          "entrata": 64,
+          "spesa": 119
+        }
+      }
+    },
+    "Pietrasanta": {
+      "2019": {
+        "population_istat_siope": 23121,
+        "population_resident": 22997.0,
+        "population_reference_date": "1 gennaio 2020",
+        "cash_receipts": 47007913.72000002,
+        "cash_payments": 39385413.76000003,
+        "current_payments": 30248733.84000002,
+        "capital_payments": 2696313.6499999994,
+        "cash_balance": 7622499.959999993,
+        "selected_rows": {
+          "entrata": 84,
+          "spesa": 156
+        }
+      },
+      "2020": {
+        "population_istat_siope": 23121,
+        "population_resident": 23121.0,
+        "population_reference_date": "1 gennaio 2021",
+        "cash_receipts": 48151504.08999999,
+        "cash_payments": 38603761.309999995,
+        "current_payments": 29703033.659999996,
+        "capital_payments": 4662316.85,
+        "cash_balance": 9547742.779999994,
+        "selected_rows": {
+          "entrata": 77,
+          "spesa": 156
+        }
+      },
+      "2021": {
+        "population_istat_siope": 23121,
+        "population_resident": 23066.0,
+        "population_reference_date": "1 gennaio 2022",
+        "cash_receipts": 52071510.00000001,
+        "cash_payments": 52205420.95999996,
+        "current_payments": 33367123.439999994,
+        "capital_payments": 7644492.070000001,
+        "cash_balance": -133910.9599999562,
+        "selected_rows": {
+          "entrata": 76,
+          "spesa": 160
+        }
+      },
+      "2022": {
+        "population_istat_siope": 23066,
+        "population_resident": 22933.0,
+        "population_reference_date": "1 gennaio 2023",
+        "cash_receipts": 55628406.84,
+        "cash_payments": 55675658.01000001,
+        "current_payments": 32909660.83,
+        "capital_payments": 12437596.370000001,
+        "cash_balance": -47251.17000000924,
+        "selected_rows": {
+          "entrata": 81,
+          "spesa": 159
+        }
+      },
+      "2023": {
+        "population_istat_siope": 22933,
+        "population_resident": 22788.0,
+        "population_reference_date": "1 gennaio 2024",
+        "cash_receipts": 53602904.879999995,
+        "cash_payments": 56160006.38999998,
+        "current_payments": 36486214.77999997,
+        "capital_payments": 13147565.829999998,
+        "cash_balance": -2557101.509999983,
+        "selected_rows": {
+          "entrata": 89,
+          "spesa": 170
+        }
+      },
+      "2024": {
+        "population_istat_siope": 22788,
+        "population_resident": 22743.0,
+        "population_reference_date": "1 gennaio 2025",
+        "cash_receipts": 56106819.88,
+        "cash_payments": 54703237.60999999,
+        "current_payments": 34920702.43,
+        "capital_payments": 14062340.719999999,
+        "cash_balance": 1403582.2700000107,
+        "selected_rows": {
+          "entrata": 90,
+          "spesa": 173
+        }
+      },
+      "2025": {
+        "population_istat_siope": 22743,
+        "population_resident": 22678.0,
+        "population_reference_date": "1 gennaio 2026",
+        "cash_receipts": 60588517.65999999,
+        "cash_payments": 57097006.850000024,
+        "current_payments": 35854676.74,
+        "capital_payments": 15146360.04,
+        "cash_balance": 3491510.809999965,
+        "selected_rows": {
+          "entrata": 87,
+          "spesa": 169
+        }
+      }
+    },
+    "Seravezza": {
+      "2019": {
+        "population_istat_siope": 12556,
+        "population_resident": 12774.0,
+        "population_reference_date": "1 gennaio 2020",
+        "cash_receipts": 18418786.390000004,
+        "cash_payments": 17857573.28,
+        "current_payments": 11066060.120000001,
+        "capital_payments": 2173254.42,
+        "cash_balance": 561213.1100000031,
+        "selected_rows": {
+          "entrata": 67,
+          "spesa": 125
+        }
+      },
+      "2020": {
+        "population_istat_siope": 12556,
+        "population_resident": 12556.0,
+        "population_reference_date": "1 gennaio 2021",
+        "cash_receipts": 15946702.439999996,
+        "cash_payments": 14430330.689999998,
+        "current_payments": 11460258.079999998,
+        "capital_payments": 1208861.34,
+        "cash_balance": 1516371.7499999981,
+        "selected_rows": {
+          "entrata": 61,
+          "spesa": 125
+        }
+      },
+      "2021": {
+        "population_istat_siope": 12556,
+        "population_resident": 12441.0,
+        "population_reference_date": "1 gennaio 2022",
+        "cash_receipts": 20640008.490000006,
+        "cash_payments": 17321529.680000003,
+        "current_payments": 11468583.010000002,
+        "capital_payments": 3253156.1100000003,
+        "cash_balance": 3318478.8100000024,
+        "selected_rows": {
+          "entrata": 62,
+          "spesa": 127
+        }
+      },
+      "2022": {
+        "population_istat_siope": 12441,
+        "population_resident": 12395.0,
+        "population_reference_date": "1 gennaio 2023",
+        "cash_receipts": 16721486.200000001,
+        "cash_payments": 16677907.66,
+        "current_payments": 12062355.059999995,
+        "capital_payments": 2363184.16,
+        "cash_balance": 43578.54000000097,
+        "selected_rows": {
+          "entrata": 67,
+          "spesa": 136
+        }
+      },
+      "2023": {
+        "population_istat_siope": 12395,
+        "population_resident": 12435.0,
+        "population_reference_date": "1 gennaio 2024",
+        "cash_receipts": 18729004.84,
+        "cash_payments": 20459352.900000006,
+        "current_payments": 13307432.640000002,
+        "capital_payments": 4420160.0,
+        "cash_balance": -1730348.060000006,
+        "selected_rows": {
+          "entrata": 63,
+          "spesa": 129
+        }
+      },
+      "2024": {
+        "population_istat_siope": 12435,
+        "population_resident": 12381.0,
+        "population_reference_date": "1 gennaio 2025",
+        "cash_receipts": 18375779.85,
+        "cash_payments": 17087026.070000004,
+        "current_payments": 12711644.780000001,
+        "capital_payments": 2354766.2399999998,
+        "cash_balance": 1288753.7799999975,
+        "selected_rows": {
+          "entrata": 66,
+          "spesa": 134
+        }
+      },
+      "2025": {
+        "population_istat_siope": 12381,
+        "population_resident": 12284.0,
+        "population_reference_date": "1 gennaio 2026",
+        "cash_receipts": 20502401.530000005,
+        "cash_payments": 23399383.7,
+        "current_payments": 12974092.379999995,
+        "capital_payments": 6536731.270000001,
+        "cash_balance": -2896982.1699999943,
+        "selected_rows": {
+          "entrata": 69,
+          "spesa": 141
+        }
+      }
+    },
+    "Stazzema": {
+      "2019": {
+        "population_istat_siope": 2898,
+        "population_resident": 2958.0,
+        "population_reference_date": "1 gennaio 2020",
+        "cash_receipts": 8153508.679999997,
+        "cash_payments": 8513070.710000005,
+        "current_payments": 3309498.3600000017,
+        "capital_payments": 1290962.79,
+        "cash_balance": -359562.0300000077,
+        "selected_rows": {
+          "entrata": 65,
+          "spesa": 101
+        }
+      },
+      "2020": {
+        "population_istat_siope": 2898,
+        "population_resident": 2898.0,
+        "population_reference_date": "1 gennaio 2021",
+        "cash_receipts": 6982638.010000001,
+        "cash_payments": 6306651.680000002,
+        "current_payments": 3374598.3700000006,
+        "capital_payments": 928278.16,
+        "cash_balance": 675986.3299999991,
+        "selected_rows": {
+          "entrata": 62,
+          "spesa": 94
+        }
+      },
+      "2021": {
+        "population_istat_siope": 2898,
+        "population_resident": 2890.0,
+        "population_reference_date": "1 gennaio 2022",
+        "cash_receipts": 5590090.110000001,
+        "cash_payments": 6054305.709999999,
+        "current_payments": 3934384.439999999,
+        "capital_payments": 1027632.0800000001,
+        "cash_balance": -464215.59999999776,
+        "selected_rows": {
+          "entrata": 58,
+          "spesa": 86
+        }
+      },
+      "2022": {
+        "population_istat_siope": 2890,
+        "population_resident": 2877.0,
+        "population_reference_date": "1 gennaio 2023",
+        "cash_receipts": 6183123.24,
+        "cash_payments": 6221682.599999999,
+        "current_payments": 3596592.1399999997,
+        "capital_payments": 810436.24,
+        "cash_balance": -38559.35999999847,
+        "selected_rows": {
+          "entrata": 56,
+          "spesa": 87
+        }
+      },
+      "2023": {
+        "population_istat_siope": 2877,
+        "population_resident": 2903.0,
+        "population_reference_date": "1 gennaio 2024",
+        "cash_receipts": 5384714.299999999,
+        "cash_payments": 5286893.82,
+        "current_payments": 3346074.08,
+        "capital_payments": 1013939.4299999999,
+        "cash_balance": 97820.47999999858,
+        "selected_rows": {
+          "entrata": 56,
+          "spesa": 86
+        }
+      },
+      "2024": {
+        "population_istat_siope": 2903,
+        "population_resident": 2892.0,
+        "population_reference_date": "1 gennaio 2025",
+        "cash_receipts": 5701873.8599999985,
+        "cash_payments": 5516562.119999998,
+        "current_payments": 3514693.9799999995,
+        "capital_payments": 899493.73,
+        "cash_balance": 185311.74000000022,
+        "selected_rows": {
+          "entrata": 51,
+          "spesa": 84
+        }
+      },
+      "2025": {
+        "population_istat_siope": 2892,
+        "population_resident": 2783.0,
+        "population_reference_date": "1 gennaio 2026",
+        "cash_receipts": 6773454.110000001,
+        "cash_payments": 6818696.15,
+        "current_payments": 3419780.0500000007,
+        "capital_payments": 1133923.6,
+        "cash_balance": -45242.039999999106,
+        "selected_rows": {
+          "entrata": 53,
+          "spesa": 90
+        }
+      }
+    },
+    "Viareggio": {
+      "2019": {
+        "population_istat_siope": 61251,
+        "population_resident": 60512.0,
+        "population_reference_date": "1 gennaio 2020",
+        "cash_receipts": 97446727.98,
+        "cash_payments": 87524751.29999997,
+        "current_payments": 64757459.979999974,
+        "capital_payments": 3368717.7300000004,
+        "cash_balance": 9921976.680000037,
+        "selected_rows": {
+          "entrata": 87,
+          "spesa": 166
+        }
+      },
+      "2020": {
+        "population_istat_siope": 61251,
+        "population_resident": 61251.0,
+        "population_reference_date": "1 gennaio 2021",
+        "cash_receipts": 93747042.39999996,
+        "cash_payments": 81208805.79000002,
+        "current_payments": 62895392.76999998,
+        "capital_payments": 4861778.250000002,
+        "cash_balance": 12538236.60999994,
+        "selected_rows": {
+          "entrata": 85,
+          "spesa": 162
+        }
+      },
+      "2021": {
+        "population_istat_siope": 61251,
+        "population_resident": 61045.0,
+        "population_reference_date": "1 gennaio 2022",
+        "cash_receipts": 98632367.02000006,
+        "cash_payments": 93145867.22999996,
+        "current_payments": 72668075.98000002,
+        "capital_payments": 5134424.490000001,
+        "cash_balance": 5486499.790000096,
+        "selected_rows": {
+          "entrata": 86,
+          "spesa": 171
+        }
+      },
+      "2022": {
+        "population_istat_siope": 61045,
+        "population_resident": 60890.0,
+        "population_reference_date": "1 gennaio 2023",
+        "cash_receipts": 138485727.84,
+        "cash_payments": 101365134.62999995,
+        "current_payments": 79135042.03,
+        "capital_payments": 6385857.630000001,
+        "cash_balance": 37120593.21000005,
+        "selected_rows": {
+          "entrata": 91,
+          "spesa": 181
+        }
+      },
+      "2023": {
+        "population_istat_siope": 60890,
+        "population_resident": 60755.0,
+        "population_reference_date": "1 gennaio 2024",
+        "cash_receipts": 108555729.81999993,
+        "cash_payments": 136149862.55999997,
+        "current_payments": 78873072.08000003,
+        "capital_payments": 13530992.81,
+        "cash_balance": -27594132.74000004,
+        "selected_rows": {
+          "entrata": 80,
+          "spesa": 179
+        }
+      },
+      "2024": {
+        "population_istat_siope": 60755,
+        "population_resident": 60618.0,
+        "population_reference_date": "1 gennaio 2025",
+        "cash_receipts": 123616128.54999997,
+        "cash_payments": 129943670.36999997,
+        "current_payments": 80480416.81999996,
+        "capital_payments": 18618617.169999998,
+        "cash_balance": -6327541.820000008,
+        "selected_rows": {
+          "entrata": 83,
+          "spesa": 191
+        }
+      },
+      "2025": {
+        "population_istat_siope": 60618,
+        "population_resident": 60680.0,
+        "population_reference_date": "1 gennaio 2026",
+        "cash_receipts": 121276046.77000006,
+        "cash_payments": 137146316.9,
+        "current_payments": 81919891.90999998,
+        "capital_payments": 24106570.71,
+        "cash_balance": -15870270.12999995,
+        "selected_rows": {
+          "entrata": 86,
+          "spesa": 193
+        }
+      }
+    }
+  },
+  "metrics": {
+    "siopePayments": {
+      "coverage": "7/7",
+      "years": [
+        2019,
+        2020,
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "values": {
+        "Camaiore": {
+          "2019": 2971.5521925625335,
+          "2020": 2519.549449639495,
+          "2021": 1845.7393695986923,
+          "2022": 2320.148418875729,
+          "2023": 2815.1125376600544,
+          "2024": 2638.9518340035183,
+          "2025": 3335.61482164783
+        },
+        "Forte dei Marmi": {
+          "2019": 4323.735106173532,
+          "2020": 4877.160418456424,
+          "2021": 5176.042602621347,
+          "2022": 5736.1792557057715,
+          "2023": 5730.940907481186,
+          "2024": 6792.102187218719,
+          "2025": 7097.4906335877895
+        },
+        "Massarosa": {
+          "2019": 1730.8247161693273,
+          "2020": 990.1278629675187,
+          "2021": 766.6465485955187,
+          "2022": 1240.4410150307026,
+          "2023": 1062.815939629545,
+          "2024": 1218.3824525359994,
+          "2025": 1774.367083371591
+        },
+        "Pietrasanta": {
+          "2019": 1712.6326807844514,
+          "2020": 1669.6406431382723,
+          "2021": 2263.3062065377594,
+          "2022": 2427.752932891467,
+          "2023": 2464.455256714059,
+          "2024": 2405.2780024622957,
+          "2025": 2517.726732957052
+        },
+        "Seravezza": {
+          "2019": 1397.9625238766246,
+          "2020": 1149.277691143676,
+          "2021": 1392.2940020898645,
+          "2022": 1345.5351077047196,
+          "2023": 1645.3038118214722,
+          "2024": 1380.1006437282938,
+          "2025": 1904.8667942038423
+        },
+        "Stazzema": {
+          "2019": 2877.9819844489534,
+          "2020": 2176.2083091787445,
+          "2021": 2094.915470588235,
+          "2022": 2162.5591240875906,
+          "2023": 1821.1828522218395,
+          "2024": 1907.5249377593354,
+          "2025": 2450.1243801652895
+        },
+        "Viareggio": {
+          "2019": 1446.4032142384976,
+          "2020": 1325.8364074055937,
+          "2021": 1525.8557986731093,
+          "2022": 1664.7254825094424,
+          "2023": 2240.9655593778284,
+          "2024": 2143.6482623973075,
+          "2025": 2260.15683750824
+        }
+      }
+    },
+    "currentPayments": {
+      "coverage": "7/7",
+      "years": [
+        2019,
+        2020,
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "values": {
+        "Camaiore": {
+          "2019": 1213.0497283073896,
+          "2020": 1082.2220396083248,
+          "2021": 1186.899954746865,
+          "2022": 1212.7844961458923,
+          "2023": 1250.062730354004,
+          "2024": 1265.9955582432772,
+          "2025": 1235.5658369801342
+        },
+        "Forte dei Marmi": {
+          "2019": 3354.86684291942,
+          "2020": 3210.0034959124305,
+          "2021": 3862.918129050843,
+          "2022": 3987.1130178805065,
+          "2023": 3977.484425261915,
+          "2024": 4147.544837983799,
+          "2025": 4217.957087022904
+        },
+        "Massarosa": {
+          "2019": 832.6613652556097,
+          "2020": 533.9673340622297,
+          "2021": 416.4993433533429,
+          "2022": 944.3379882687195,
+          "2023": 719.526182026069,
+          "2024": 865.4538947995969,
+          "2025": 1178.0076480580294
+        },
+        "Pietrasanta": {
+          "2019": 1315.3339061616741,
+          "2020": 1284.6777241468792,
+          "2021": 1446.593403277551,
+          "2022": 1435.0351384467797,
+          "2023": 1601.11527031771,
+          "2024": 1535.4483766433627,
+          "2025": 1581.033457094982
+        },
+        "Seravezza": {
+          "2019": 866.2956098324723,
+          "2020": 912.731608792609,
+          "2021": 921.8377148139218,
+          "2022": 973.1629737797494,
+          "2023": 1070.1594402895057,
+          "2024": 1026.7058218237623,
+          "2025": 1056.1781488114616
+        },
+        "Stazzema": {
+          "2019": 1118.829736308317,
+          "2020": 1164.457684610076,
+          "2021": 1361.3786989619373,
+          "2022": 1250.1189224887034,
+          "2023": 1152.626276265932,
+          "2024": 1215.3160373443982,
+          "2025": 1228.8106539705357
+        },
+        "Viareggio": {
+          "2019": 1070.1589764013745,
+          "2020": 1026.8467905830105,
+          "2021": 1190.4017688590388,
+          "2022": 1299.639382985712,
+          "2023": 1298.2153251584236,
+          "2024": 1327.6653274604896,
+          "2025": 1350.0311784772575
+        }
+      }
+    },
+    "capitalPayments": {
+      "coverage": "7/7",
+      "years": [
+        2019,
+        2020,
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "values": {
+        "Camaiore": {
+          "2019": 114.02862029610374,
+          "2020": 89.97415194735682,
+          "2021": 214.3985628987147,
+          "2022": 201.19136272482297,
+          "2023": 164.3203094401205,
+          "2024": 192.49037949233474,
+          "2025": 328.93959292258285
+        },
+        "Forte dei Marmi": {
+          "2019": 472.63138939670927,
+          "2020": 956.4554399334904,
+          "2021": 756.7575385280139,
+          "2022": 1060.8131923244657,
+          "2023": 1047.666595838867,
+          "2024": 1400.5572457245726,
+          "2025": 2060.561616793893
+        },
+        "Massarosa": {
+          "2019": 75.6517131621559,
+          "2020": 38.893641747528584,
+          "2021": 19.64882646748843,
+          "2022": 68.66198836037026,
+          "2023": 135.92789572375946,
+          "2024": 169.0180303586169,
+          "2025": 264.83273574511065
+        },
+        "Pietrasanta": {
+          "2019": 117.24632125929466,
+          "2020": 201.64858137623804,
+          "2021": 331.4181943119744,
+          "2022": 542.3449339379933,
+          "2023": 576.9512826926451,
+          "2024": 618.3151176186078,
+          "2025": 667.8878225593086
+        },
+        "Seravezza": {
+          "2019": 170.13108031939876,
+          "2020": 96.2775836253584,
+          "2021": 261.48670605256814,
+          "2022": 190.65624526018556,
+          "2023": 355.46119823080016,
+          "2024": 190.19192633874482,
+          "2025": 532.1337732009118
+        },
+        "Stazzema": {
+          "2019": 436.4309634888438,
+          "2020": 320.31682539682544,
+          "2021": 355.58203460207613,
+          "2022": 281.6949044143205,
+          "2023": 349.2729693420599,
+          "2024": 311.02826071922544,
+          "2025": 407.4464965864176
+        },
+        "Viareggio": {
+          "2019": 55.67024276176627,
+          "2020": 79.37467551550182,
+          "2021": 84.10884576951432,
+          "2022": 104.87531006733455,
+          "2023": 222.71406155871946,
+          "2024": 307.14667540994424,
+          "2025": 397.2737427488464
+        }
+      }
+    },
+    "cashReceiptsPerResident": {
+      "coverage": "7/7",
+      "years": [
+        2019,
+        2020,
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "values": {
+        "Camaiore": {
+          "2019": 2943.321459594839,
+          "2020": 2722.4703346871947,
+          "2021": 1886.4123660475789,
+          "2022": 2231.250724760293,
+          "2023": 2779.9513472884755,
+          "2024": 2765.542527645138,
+          "2025": 3307.587584296193
+        },
+        "Forte dei Marmi": {
+          "2019": 4957.311070172973,
+          "2020": 5028.283238187611,
+          "2021": 5585.326922079794,
+          "2022": 6138.5818999854655,
+          "2023": 6409.628460970931,
+          "2024": 6942.556878187817,
+          "2025": 6747.857815267177
+        },
+        "Massarosa": {
+          "2019": 1730.880635207032,
+          "2020": 1040.1743360211374,
+          "2021": 1098.6095413096275,
+          "2022": 1127.2392397580425,
+          "2023": 1091.740043905785,
+          "2024": 1351.3522200311843,
+          "2025": 1665.2993774676327
+        },
+        "Pietrasanta": {
+          "2019": 2044.088955950777,
+          "2020": 2082.5874352320398,
+          "2021": 2257.5006503078125,
+          "2022": 2425.692532158898,
+          "2023": 2352.242622432859,
+          "2024": 2466.9929156223893,
+          "2025": 2671.686994443954
+        },
+        "Seravezza": {
+          "2019": 1441.8965390637236,
+          "2020": 1270.046387384517,
+          "2021": 1659.0313069688937,
+          "2022": 1349.0509237595807,
+          "2023": 1506.1523795737837,
+          "2024": 1484.1918948388661,
+          "2025": 1669.0330128622602
+        },
+        "Stazzema": {
+          "2019": 2756.4261933739003,
+          "2020": 2409.4679123533474,
+          "2021": 1934.287235294118,
+          "2022": 2149.156496350365,
+          "2023": 1854.879193937306,
+          "2024": 1971.6023029045639,
+          "2025": 2433.8678081207336
+        },
+        "Viareggio": {
+          "2019": 1610.3703063855103,
+          "2020": 1530.5389691596865,
+          "2021": 1615.7321159800156,
+          "2022": 2274.359136804073,
+          "2023": 1786.7785337832265,
+          "2024": 2039.2643859909592,
+          "2025": 1998.6164596242593
+        }
+      }
+    },
+    "cashBalancePerResident": {
+      "coverage": "7/7",
+      "years": [
+        2019,
+        2020,
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "values": {
+        "Camaiore": {
+          "2019": -28.23073296769459,
+          "2020": 202.92088504770015,
+          "2021": 40.67299644888648,
+          "2022": -88.89769411543587,
+          "2023": -35.1611903715788,
+          "2024": 126.59069364161923,
+          "2025": -28.027237351636977
+        },
+        "Forte dei Marmi": {
+          "2019": 633.5759639994411,
+          "2020": 151.12281973118723,
+          "2021": 409.2843194584465,
+          "2022": 402.40264427969385,
+          "2023": 678.6875534897454,
+          "2024": 150.45469096909784,
+          "2025": -349.632818320612
+        },
+        "Massarosa": {
+          "2019": 0.055919037704497555,
+          "2020": 50.0464730536187,
+          "2021": 331.96299271410885,
+          "2022": -113.2017752726603,
+          "2023": 28.924104276240016,
+          "2024": 132.96976749518498,
+          "2025": -109.06770590395823
+        },
+        "Pietrasanta": {
+          "2019": 331.4562751663258,
+          "2020": 412.9467920937673,
+          "2021": -5.805556229946943,
+          "2022": -2.06040073256919,
+          "2023": -112.21263428119988,
+          "2024": 61.71491316009369,
+          "2025": 153.96026148690206
+        },
+        "Seravezza": {
+          "2019": 43.93401518709904,
+          "2020": 120.76869624084088,
+          "2021": 266.7373048790292,
+          "2022": 3.515816054860909,
+          "2023": -139.15143224768846,
+          "2024": 104.09125111057244,
+          "2025": -235.8337813415821
+        },
+        "Stazzema": {
+          "2019": -121.55579107505332,
+          "2020": 233.2596031746029,
+          "2021": -160.62823529411688,
+          "2022": -13.402627737225746,
+          "2023": 33.69634171546627,
+          "2024": 64.0773651452283,
+          "2025": -16.256572044555913
+        },
+        "Viareggio": {
+          "2019": 163.96709214701278,
+          "2020": 204.70256175409284,
+          "2021": 89.87631730690632,
+          "2022": 609.6336542946306,
+          "2023": -454.1870255946019,
+          "2024": -104.38387640634808,
+          "2025": -261.54037788398074
+        }
+      }
+    }
+  }
+}

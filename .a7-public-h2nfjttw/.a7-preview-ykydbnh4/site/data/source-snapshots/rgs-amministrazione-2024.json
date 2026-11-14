@@ -1,0 +1,83 @@
+{
+  "schemaVersion": 1,
+  "referenceYear": 2024,
+  "verifiedAt": "2026-08-22",
+  "source": "Ragioneria Generale dello Stato — Conto Annuale / OpenBDAP",
+  "sources": {
+    "occupationTurnover": "https://bdap-opendata.rgs.mef.gov.it/export/csv/2024---Dipendenti-Pubblici---Occupazione-e-Turnover---Dati-analitici-per-Ente.csv",
+    "age": "https://bdap-opendata.rgs.mef.gov.it/export/csv/2024---Dipendenti-Pubblici---Anzianita---Dati-analitici-per-Ente.csv",
+    "hires": "https://bdap-opendata.rgs.mef.gov.it/export/csv/2024---Dipendenti-Pubblici---Assunzioni---Dati-Analitici-per-Causale-Assunzione.csv",
+    "cessations": "https://bdap-opendata.rgs.mef.gov.it/export/csv/2024---Dipendenti-Pubblici---Cessazioni---Dati-analitici-per-Causale-Cessazione.csv",
+    "employeesResidentsIndicator": "https://contoannuale.rgs.mef.gov.it/it/web/sicosito/dipendenti/abitanti-comune-acc"
+  },
+  "definitions": {
+    "turnover": "(assunti al netto dei passaggi da altre amministrazioni - cessati al netto dei passaggi ad altre amministrazioni) / dipendenti al 31 dicembre × 100",
+    "age": "Distribuzione del personale per fasce anagrafiche RGS; le macrofasce pubblicate dall'Osservatorio sono somme delle classi ufficiali.",
+    "employeesPer1000": "Dipendenti comunali per 1.000 residenti. Nel primo draft il numeratore RGS è rapportato alla popolazione comunale 2024 già presente nel dataset canonico; il confronto con la tabella RGS dedicata resta un controllo di parità, non una fonte alternativa."
+  },
+  "towns": {
+    "Camaiore": {
+      "institutionCode": "1348",
+      "staffAt31Dec": 188,
+      "netHires": 9,
+      "netCessations": 11,
+      "netTurnoverHeadcount": -2,
+      "netTurnoverRatePct": -1.0638,
+      "age": {"under40": 25, "age40to54": 87, "age55plus": 76}
+    },
+    "Forte dei Marmi": {
+      "institutionCode": "3135",
+      "staffAt31Dec": 138,
+      "netHires": 5,
+      "netCessations": 9,
+      "netTurnoverHeadcount": -4,
+      "netTurnoverRatePct": -2.8986,
+      "age": {"under40": 23, "age40to54": 49, "age55plus": 66}
+    },
+    "Massarosa": {
+      "institutionCode": "4177",
+      "staffAt31Dec": 87,
+      "netHires": 2,
+      "netCessations": 3,
+      "netTurnoverHeadcount": -1,
+      "netTurnoverRatePct": -1.1494,
+      "age": {"under40": 10, "age40to54": 38, "age55plus": 39}
+    },
+    "Pietrasanta": {
+      "institutionCode": "5461",
+      "staffAt31Dec": 168,
+      "netHires": 13,
+      "netCessations": 12,
+      "netTurnoverHeadcount": 1,
+      "netTurnoverRatePct": 0.5952,
+      "age": {"under40": 26, "age40to54": 77, "age55plus": 65}
+    },
+    "Seravezza": {
+      "institutionCode": "7010",
+      "staffAt31Dec": 63,
+      "netHires": 4,
+      "netCessations": 4,
+      "netTurnoverHeadcount": 0,
+      "netTurnoverRatePct": 0.0,
+      "age": {"under40": 10, "age40to54": 30, "age55plus": 23}
+    },
+    "Stazzema": {
+      "institutionCode": "7266",
+      "staffAt31Dec": 13,
+      "netHires": 1,
+      "netCessations": 2,
+      "netTurnoverHeadcount": -1,
+      "netTurnoverRatePct": -7.6923,
+      "age": {"under40": 2, "age40to54": 7, "age55plus": 4}
+    },
+    "Viareggio": {
+      "institutionCode": "7967",
+      "staffAt31Dec": 412,
+      "netHires": 41,
+      "netCessations": 22,
+      "netTurnoverHeadcount": 19,
+      "netTurnoverRatePct": 4.6117,
+      "age": {"under40": 65, "age40to54": 197, "age55plus": 150}
+    }
+  }
+}

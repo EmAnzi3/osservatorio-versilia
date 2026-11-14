@@ -1,5 +1,22 @@
 # Consolidamento Osservatorio Versilia — handoff operativo
 
+## Carburanti al 12 novembre 2026 (14 novembre 2026)
+
+`fuelPrices` era fermo al 10 ottobre: il sito MIMIT non risponde ai runner GitHub né dal container.
+Ema ha scaricato dal browser `prezzo_alle_8.csv` e `anagrafica_impianti_attivi.csv` (estrazione del
+12/11/2026); `scripts/update_fuel_prices_mimit.py` è stato eseguito su quei file (fetch sostituito dalla
+lettura locale), senza modifiche allo script.
+
+- Mediane self (benzina/gasolio): Camaiore 1,949/2,199 · Forte dei Marmi 1,960/2,194 · Massarosa
+  1,949/2,199 · Pietrasanta 1,949/2,199 · Seravezza 1,999/2,212 · Viareggio 1,960/2,199; Stazzema n.d.
+  Ricontrollate con un calcolo indipendente dai CSV.
+- Aggiornati snapshot validato, storia giornaliera (6 punti), stato del monitor, ancore indipendenti di
+  `test_semantic_energy_adapters.py` (882 celle, 126 nulle) e le 21 domande `energy_fuel_*` di
+  `ci/semantic-verified-questions.json` (valori e graduatorie dai CSV, non dal motore).
+- Pin A6: energy#1, #3, #4; municipal_tax#1, #2 (stesso file snapshot, TARI e IMU invariati); road#3.
+  Dossier rigenerati.
+- Le serie mensili per Comune restano a settembre 2026: servono gli archivi trimestrali MIMIT.
+
 ## Controllo mensile: falsi «periodo nuovo» su IMU 2027 e farmacie 2026 (14 novembre 2026)
 
 Il giro di verifica sul ramo #594 segnalava ancora due periodi nuovi che alla fonte non ci sono.

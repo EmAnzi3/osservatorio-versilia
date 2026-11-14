@@ -1,0 +1,21 @@
+{
+  "schemaVersion": "1.0",
+  "auditDate": "2026-09-17",
+  "scope": "Riconferma primaria MiC di una opportunità già presente nel Radar e ancora aperta alla data del controllo.",
+  "cases": [
+    {
+      "id": "mic-carnevali-storici-2026",
+      "title": "MiC · Fondo Carnevali Storici 2026",
+      "auditClass": "current_actionable_gap",
+      "officialUrl": "https://spettacolo.cultura.gov.it/bando-fondo-carnevali-storici-anno-2026-d-m-4-aprile-2025-n-111-recante-criteri-e-modalita-di-accesso-al-fondo-di-cui-allarticolo-1-comma-604-della-legge-30-dicembr/",
+      "publishedAt": "2026-08-31",
+      "opensAt": "2026-09-15",
+      "deadlineAt": "2026-10-15",
+      "municipalityRole": "direct_local_authority_applicant_if_historical_carnival_organizer",
+      "geographicScope": "Italia",
+      "eligibilityEvidence": "La fonte ufficiale MiC ammette i Comuni, oltre a Fondazioni e Associazioni con i requisiti previsti; per l'accesso occorrono tra l'altro almeno venticinque edizioni documentabili e il ruolo di ente organizzatore del carnevale storico per cui si richiede il contributo.",
+      "funding": "Fondo Carnevali Storici 2026; domanda telematica su DOS-Cultura dalle ore 10:00 del 15 settembre alle ore 16:00 del 15 ottobre 2026.",
+      "note": "Riconferma del 17 settembre 2026 sulla pagina primaria della Direzione generale Spettacolo; opportunità non revocata e ancora nel periodo di presentazione delle domande."
+    }
+  ]
+}

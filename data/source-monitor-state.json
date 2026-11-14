@@ -8556,41 +8556,41 @@
       "periodVerifiedAt": ""
     },
     "fuelPrices": {
-      "publishedPeriod": "2026-10-10",
+      "publishedPeriod": "2026-11-12",
       "checkedAt": "2026-11-05T13:17:29+00:00",
-      "observedLatestPeriod": "2026-10-03",
-      "status": "verification_required",
-      "periodVerifiedAt": "2026-10-04T16:07:24+00:00",
+      "observedLatestPeriod": "2026-11-12",
+      "status": "current",
+      "periodVerifiedAt": "2026-11-13T23:00:00+00:00",
       "verificationEvidence": {
         "provider": "Ministero delle Imprese e del Made in Italy",
         "url": "https://www.mimit.gov.it/images/exportCSV/prezzo_alle_8.csv",
-        "referenceDate": "2026-10-03",
+        "referenceDate": "2026-11-12",
         "coverage": "6/7",
         "valuesMatchPublished": true,
         "towns": {
           "Camaiore": {
-            "benzina": 2.079,
-            "gasolio": 2.299,
+            "benzina": 1.949,
+            "gasolio": 2.199,
             "stations": 11
           },
           "Forte dei Marmi": {
-            "benzina": 2.03,
-            "gasolio": 2.215,
+            "benzina": 1.96,
+            "gasolio": 2.194,
             "stations": 4
           },
           "Massarosa": {
-            "benzina": 2.097,
-            "gasolio": 2.299,
+            "benzina": 1.949,
+            "gasolio": 2.199,
             "stations": 7
           },
           "Pietrasanta": {
-            "benzina": 1.999,
+            "benzina": 1.949,
             "gasolio": 2.199,
             "stations": 15
           },
           "Seravezza": {
-            "benzina": 2.03,
-            "gasolio": 2.23,
+            "benzina": 1.999,
+            "gasolio": 2.212,
             "stations": 6
           },
           "Stazzema": {
@@ -8599,8 +8599,8 @@
             "stations": 0
           },
           "Viareggio": {
-            "benzina": 1.994,
-            "gasolio": 2.194,
+            "benzina": 1.96,
+            "gasolio": 2.199,
             "stations": 20
           }
         },

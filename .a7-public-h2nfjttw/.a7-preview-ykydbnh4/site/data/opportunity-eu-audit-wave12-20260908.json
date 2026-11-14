@@ -1,0 +1,284 @@
+{
+  "schemaVersion": "1.1",
+  "auditDate": "2026-09-08",
+  "wave": 12,
+  "sweepType": "independent_full_corpus",
+  "fullCorpusIndependentSweep": true,
+  "status": "open_not_saturated",
+  "implementationFrozen": true,
+  "referenceSnapshot": {
+    "path": "data/opportunity-daily-public.json",
+    "generatedAt": "2026-09-07T09:35:26+00:00",
+    "publicCount": 29,
+    "reviewInternalCount": 40
+  },
+  "saturation": {
+    "requiredConsecutiveCleanSweeps": 2,
+    "currentConsecutiveCleanSweeps": 0,
+    "thisSweepClean": false,
+    "reason": "The independent full-corpus sweep found four new definitive current actionable opportunities absent from both the previous audit corpus and the reference Radar snapshot: EIT Urban Mobility RIS Education Open Call 2027, EUI Permanent Call for peer reviewers, EIT Culture & Creativity NEB Academy Skills Infrastructure, and EIT Culture & Creativity Delegate Cities & Regions Network. A same-day Toscana reopening for Nidi gratis adds a current lifecycle gap, but is not counted retroactively as a reference-snapshot detection failure because its publication time relative to the 7 September snapshot is unresolved."
+  },
+  "method": {
+    "seedPolicy": "Previous audit waves were not used as the discovery seed. External institutional oracles were searched first; prior waves and the Radar snapshot were consulted only after candidates surfaced, for deduplication and classification.",
+    "oracleFamilies": [
+      "European Commission Funding & Tenders / programme and mission directories",
+      "CINEA / EISMEA / EACEA and Commission DG programme pages",
+      "EIT opportunity directories including Urban Mobility and Culture & Creativity",
+      "European Urban Initiative capacity-building calls",
+      "Covenant of Mayors and city-facing EU support directories",
+      "Interreg programme directories and geographic controls",
+      "EU-funded project cascade / FSTP / associated-region calls",
+      "Italian national ministry and agency opportunity directories",
+      "Ministero della Cultura / Direzione generale Spettacolo",
+      "Dipartimento per lo Sport",
+      "Regione Toscana / PR FSE+ / regional calls",
+      "municipality-scope controls against the seven Versilia municipalities"
+    ]
+  },
+  "newCurrentFindings": [
+    {
+      "id": "eit-urban-mobility-ris-education-2027",
+      "title": "EIT Urban Mobility · RIS Education Open Call 2027",
+      "opensAt": "2026-06-01T09:00:00+02:00",
+      "deadlineAt": "2026-09-08T17:00:00+02:00",
+      "radarStatus": "absent_from_reference_snapshot_and_repo_search",
+      "auditClass": "current_conditional_beneficiary_false_negative",
+      "severity": "critical",
+      "municipalityRole": "direct_city_applicant_or_partner_conditional_on_relevant_capacity_building_expertise",
+      "funding": "Approx. EUR 2.6 million total indicative EIT funding; up to EUR 300,000 per project for RISE1 and RISE2, EUR 180,000 for RISE3, EUR 140,000 for RISE4 and EUR 70,000 for RISE5.",
+      "eligibilityEvidence": "The call explicitly lists cities among legal entities that may apply. Mono- and multi-beneficiary proposals are permitted from RIS countries. Italy is an EIT RIS eligible country in 2026. Applicants must demonstrate expertise and previous experience in urban-mobility and/or innovation/entrepreneurship capacity building.",
+      "rootCauseFamily": "EIT_action_level_source_gap",
+      "officialSources": [
+        "https://www.eit.europa.eu/our-activities/opportunities/ris-education-open-call-2027",
+        "https://www.eiturbanmobility.eu/call-for-proposals/ris-education-open-call-2027/",
+        "https://www.eiturbanmobility.eu/our-community/our-ris-hubs/"
+      ]
+    },
+    {
+      "id": "eui-permanent-peer-reviewers",
+      "title": "European Urban Initiative · Permanent Call for peer reviewers",
+      "opensAt": "2025-11-19",
+      "deadlineAt": null,
+      "radarStatus": "absent_from_reference_snapshot_and_repo_search",
+      "auditClass": "rolling_structural_gap",
+      "severity": "high",
+      "municipalityRole": "individual_municipal_representative_endorsed_by_any_EU_urban_authority",
+      "funding": "Non-cash EUI capacity-building and peer-learning participation; the Peer Review activity is financed by EUI according to the call guidance.",
+      "eligibilityEvidence": "Peer reviewers apply as individuals, can represent any EU urban authority, must have relevant experience in integrated place-based strategies, and require endorsement by the represented urban authority. The call is continuously open.",
+      "rootCauseFamily": "rolling_capacity_building_opportunity_gap",
+      "officialSources": [
+        "https://www.urban-initiative.eu/capacity-building/peer-reviews/ongoing-call-peer-reviews",
+        "https://www.urban-initiative.eu/sites/default/files/2026-04/EUI%20Peer%20Review%20-%20April%202026%20-%20Permanent%20call%20for%20peer%20reviewers%20-%20Guidance.pdf"
+      ]
+    },
+    {
+      "id": "eit-cc-neb-academy-skills-infrastructure-2026",
+      "title": "EIT Culture & Creativity · NEB Academy | Skills Infrastructure",
+      "opensAt": "2026-06-09",
+      "deadlineAt": "2026-09-11T17:00:00+02:00",
+      "radarStatus": "absent_from_reference_snapshot_and_repo_search",
+      "auditClass": "current_required_public_authority_false_negative",
+      "severity": "critical",
+      "municipalityRole": "required_public_authority_or_municipality_beneficiary_in_multi_country_consortium",
+      "funding": "EUR 3.5 million total estimated EIT funding; up to EUR 600,000 per project; indicatively 5-6 grants; reimbursement can reach 100% of eligible project costs within the call ceiling.",
+      "eligibilityEvidence": "Consortia must contain 3-8 independent participants from at least two eligible countries and must include at least one education provider, at least one public authority/public body/municipality/regional or local authority, and at least one private lived-environment organisation. Municipalities are explicitly listed among eligible applicants.",
+      "rootCauseFamily": "EIT_Culture_Creativity_source_family_gap",
+      "officialSource": "https://eit-culture-creativity.eu/your-opportunities/calls-funding/neb-academy-skills-infrastructure"
+    },
+    {
+      "id": "eit-cc-delegate-cities-regions-network",
+      "title": "EIT Culture & Creativity · Delegate Cities & Regions Network",
+      "opensAt": "2025-05-21",
+      "deadlineAt": "2026-12-31",
+      "radarStatus": "absent_from_reference_snapshot_and_repo_search",
+      "auditClass": "current_participation_opportunity",
+      "severity": "medium",
+      "municipalityRole": "local_authority_delegate_in_long_term_cities_regions_network",
+      "funding": "Non-grant participation / peer-learning and policy-innovation network.",
+      "eligibilityEvidence": "The Cities & Regions Network is explicitly open to representatives of local and regional governance levels and is described as a long-term actionable platform for peer learning and implementation of innovation and policy frameworks for cultural and creative sectors and industries.",
+      "rootCauseFamily": "non_grant_network_participation_gap",
+      "officialSources": [
+        "https://eit-culture-creativity.eu/your-opportunities/expression-interest/delegate-cities-regions-network",
+        "https://eit-culture-creativity.eu/your-opportunities/expression-interest?page=1"
+      ]
+    },
+    {
+      "id": "rt-nidi-gratis-comuni-reopening-2026-2027",
+      "title": "Regione Toscana · Nidi gratis 2026-2027 · riapertura candidature dei Comuni",
+      "publishedAt": "2026-09-07",
+      "deadlineAt": "2026-09-25",
+      "secondaryDeadlineAt": "2026-10-06",
+      "radarStatus": "municipal_reopening_absent_from_reference_snapshot",
+      "auditClass": "current_reopened_window_gap_timing_unresolved",
+      "severity": "high",
+      "municipalityRole": "direct_municipality_participant",
+      "eligibilityEvidence": "New municipalities not yet participating can request access credentials by 25 September 2026; municipalities already admitted must transmit the required documentation by 6 October 2026.",
+      "countsAsReferenceSnapshotDetectionFailure": false,
+      "timingCaveat": "The official page is dated 7 September 2026, the same date as the reference snapshot. No publication time was established, so the audit does not claim that the reopening was necessarily discoverable before the snapshot was generated at 09:35 UTC.",
+      "rootCauseFamily": "lifecycle_reopening_watch",
+      "officialSource": "https://www.regione.toscana.it/-/bando-nidi-gratis-2026-2027-per-i-servizi-educativi-rivolto-ai-comuni"
+    }
+  ],
+  "announcedUpcoming": [
+    {
+      "id": "mic-fondo-carnevali-storici-2026",
+      "title": "MiC · Fondo Carnevali Storici 2026",
+      "publishedAt": "2026-08-31",
+      "opensAt": "2026-09-15T10:00:00+02:00",
+      "deadlineAt": "2026-10-15T16:00:00+02:00",
+      "radarStatus": "absent_from_repo_search",
+      "auditClass": "announced_upcoming",
+      "severity": "high",
+      "municipalityRole": "direct_municipality_applicant_when_it_is_the_qualifying_carnival_organiser",
+      "versiliaApplicability": {
+        "Pietrasanta": "strong_positive_control: Comune di Pietrasanta was admitted and funded in the 2025 cycle",
+        "Viareggio": "do_not_assign_directly_to_comune_without_evidence: the 2025 applicant/beneficiary was Fondazione Carnevale di Viareggio"
+      },
+      "eligibilityEvidence": "The underlying rules allow Comuni, foundations and associations with legal personality, non-profit status, at least five years of operation, a statutory purpose of organising/promoting historic carnivals, at least 25 documented editions and actual organiser status.",
+      "officialSources": [
+        "https://spettacolo.cultura.gov.it/carnevali-storici/",
+        "https://spettacolo.cultura.gov.it/wp-content/uploads/2025/11/Verbale-Commissione-di-valutazione-Carnevali-Storici_n.-1-del-18-e-19-novembre-2025.pdf",
+        "https://spettacolo.cultura.gov.it/wp-content/uploads/2026/04/Carnevali-Storici-Elenco-liquidazioni-2025_signed-1.pdf"
+      ]
+    },
+    {
+      "id": "mic-festival-cori-bande-2026",
+      "title": "MiC · Festival, Cori e Bande 2026",
+      "publishedAt": "2026-08-31",
+      "opensAt": "2026-09-15T10:00:00+02:00",
+      "deadlineAt": "2026-10-15T16:00:00+02:00",
+      "radarStatus": "absent_from_repo_search",
+      "auditClass": "announced_upcoming",
+      "severity": "high",
+      "municipalityRole": "conditional_lead_or_partner_in_temporary_grouping_of_at_least_four_local_public_authorities",
+      "eligibilityEvidence": "The applicable rules admit temporary groupings of at least four territorial public authorities; single municipalities are not admitted under this route. The grouping must already be constituted when the application is filed.",
+      "officialSource": "https://spettacolo.cultura.gov.it/bando-festival-cori-e-bande-anno-2026-d-m-4-aprile-2025-n-110-recante-criteri-e-modalita-di-accesso-al-fondo-di-cui-allarticolo-1-comma-605-della-legge-30-dicembre-2024/"
+    },
+    {
+      "id": "eit-cc-cities-regions-call-2026-planned",
+      "title": "EIT Culture & Creativity · Cities & Regions call 2026",
+      "opensAt": null,
+      "deadlineAt": null,
+      "radarStatus": "planned_not_yet_published_as_active_call",
+      "auditClass": "announced_upcoming_calendar_sentinel",
+      "severity": "medium",
+      "municipalityRole": "to_be_resolved_at_call_publication",
+      "funding": "2026 call plan: EUR 1.7 million total estimated budget, up to EUR 180,000, up to about 10 projects; expected launch Q3 2026.",
+      "officialSource": "https://eit-culture-creativity.eu/sites/default/files/2026-06/EIT-Culture-Creativity_Calls-2026.pdf"
+    },
+    {
+      "id": "cerv-remembrance-2026-cycle",
+      "auditClass": "announced_upcoming_calendar_sentinel",
+      "note": "The 2026 cycle has been rescheduled later than earlier indicative calendars and is not treated as a current runtime miss on 8 September."
+    }
+  ],
+  "historicalReplayFindings": [
+    {
+      "id": "sport-periferie-2026",
+      "title": "Dipartimento per lo Sport · Sport e Periferie 2026",
+      "publishedAt": "2026-05-14",
+      "opensAt": "2026-06-04T12:00:00+02:00",
+      "deadlineAt": "2026-06-25T12:00:00+02:00",
+      "radarStatus": "no_exact_repo_match_found",
+      "auditClass": "historical_pre_launch_gap",
+      "severity": "critical",
+      "municipalityRole": "direct_municipality_applicant",
+      "funding": "EUR 100 million total; max EUR 1.5m for municipalities >50k, EUR 1m for >15k-50k, EUR 800k for <=15k, with municipal co-financing rules.",
+      "eligibilityEvidence": "Only municipalities were eligible: those above 5,000 inhabitants directly, and those at or below 5,000 if reaching the threshold through an agreement with neighbouring local authorities.",
+      "officialSources": [
+        "https://www.sport.governo.it/it/bandi-e-avvisi/sport-e-periferie/2026/pubblicato-il-nuovo-avviso-sport-e-periferie-anno-2026/",
+        "https://www.sport.governo.it/it/bandi-e-avvisi/sport-e-periferie/2026/faq-avviso-sport-e-periferie-2026/"
+      ]
+    },
+    {
+      "id": "eit-urban-mobility-citizens-on-the-move-2026",
+      "auditClass": "historical_current_year_sentinel",
+      "note": "Municipal/city civil servants were relevant and RIS scholarships existed, but the two 2026 application rounds closed on 13 May and 8 July."
+    },
+    {
+      "id": "i3-2026-cap2b",
+      "title": "I3 Capacity Building 2026",
+      "auditClass": "historical_prelaunch_sentinel",
+      "note": "Public authorities and capacity-building ecosystems are relevant, but the 2026 call closed on 19 March 2026 and therefore is not a current gap on 8 September."
+    },
+    {
+      "id": "covenant-peer-review-programme-2026",
+      "auditClass": "historical_closed_and_scope_limited",
+      "note": "The programme targeted Covenant Coordinators/Supporters rather than generic municipalities and closed in May 2026."
+    }
+  ],
+  "missionAdaptationControls": [
+    {
+      "id": "HORIZON-MISS-2026-01-CLIMA-01",
+      "auditClass": "cascade_prospective_gap_national_hub_watch",
+      "municipalityRole": "regional_local_actor_or_future_downstream_recipient_not_generic_main_call_applicant"
+    },
+    {
+      "id": "HORIZON-MISS-2026-01-CLIMA-02",
+      "auditClass": "end_user_no_auto_promotion",
+      "municipalityRole": "regional_local_authority_target_customer_not_expected_in_main_consortium"
+    },
+    {
+      "id": "HORIZON-MISS-2026-01-CLIMA-03",
+      "auditClass": "end_user_scope_no_auto_promotion"
+    },
+    {
+      "id": "HORIZON-MISS-2026-01-CLIMA-04",
+      "auditClass": "end_user_policy_target_no_auto_promotion"
+    },
+    {
+      "id": "HORIZON-MISS-2026-01-CLIMA-05",
+      "auditClass": "already_known_current_topic_level_promotion_gap"
+    },
+    {
+      "id": "HORIZON-MISS-2026-01-CLIMA-06",
+      "auditClass": "correctly_not_auto_promoted_for_versilia"
+    },
+    {
+      "id": "HORIZON-MISS-2026-01-CLIMA-07",
+      "auditClass": "already_known_cascade_prospective_gap"
+    }
+  ],
+  "currentScopeControls": [
+    {
+      "id": "cef-energy-cb-res-status-2026",
+      "title": "CEF Energy · 6th call for Cross-Border Renewable Energy Projects to obtain CB RES status",
+      "opensAt": "2026-06-29",
+      "deadlineAt": "2026-10-06",
+      "auditClass": "scope_review_conditional_project_promoter",
+      "municipalityRole": "possible_project_promoter_only_if_part_of_eligible_cross_border_renewable_energy_project",
+      "officialSource": "https://cinea.ec.europa.eu/news-events/news/cef-energy-6th-call-cross-border-renewable-energy-projects-obtain-status-launched-2026-06-29_en"
+    }
+  ],
+  "negativeControls": [
+    {
+      "id": "sport-oratori-aree-urbane-fragili-2026",
+      "auditClass": "correctly_excluded_eligibility",
+      "note": "Current infrastructure call, but the eligible applicants are ecclesiastical/religious entities under the call rules rather than municipalities."
+    },
+    {
+      "id": "interreg-italy-croatia-call4-2026",
+      "auditClass": "correctly_excluded_geography",
+      "note": "The current fourth call does not include Lucca/Tuscany in the eligible Italian programme area."
+    }
+  ],
+  "alreadyKnownRediscoveredControls": [
+    {"id": "trunsport-open-call-1-2026", "auditClass": "already_known_current_scope_review_high"},
+    {"id": "eu-sundanse-open-call-2-2026", "auditClass": "already_known_current_false_negative"},
+    {"id": "space4cities-replicator-cities-2026", "auditClass": "already_known_current_false_negative_technical_capacity_support"},
+    {"id": "i3-2026-inv1", "auditClass": "already_known_conditional_partner"},
+    {"id": "i3-2026-inv2a", "auditClass": "already_known_conditional_partner"},
+    {"id": "eu-ias-rapid-response-fund", "auditClass": "already_known_current_false_negative"},
+    {"id": "mission-ocean-downstream-community-support", "auditClass": "already_known_downstream_EOI_expected"}
+  ],
+  "conclusion": {
+    "cleanSweep": false,
+    "gateAfterSweep": "0/2",
+    "newDefinitiveCurrentActionableGapCount": 4,
+    "newLifecycleReopeningWatchCount": 1,
+    "newAnnouncedUpcomingMunicipalOpportunityCount": 2,
+    "newHistoricalReplayGapCount": 1,
+    "engineOrConfigTouched": false,
+    "nextAction": "Do not harden the engine yet. Wave 12 proves that source families outside the earlier corpus still yield current municipal opportunities. Run the next independent full-corpus sweep from different oracle paths after absorbing this expanded corpus; only a zero-new-current-actionable sweep can move the gate to 1/2."
+  }
+}

@@ -1,0 +1,704 @@
+(() => {
+  'use strict';
+
+  const SCRIPT_URL = document.currentScript?.src || location.href;
+  const ROOT = new URL('../', SCRIPT_URL);
+  const HOTFIX_VERSION = '20261025-ui-shell-consistency';
+  const toolkit = window.OVUXHistory;
+  if (!toolkit) return;
+  if (!document.getElementById('ov-invalsi-benchmark-history-style')) {
+    const style=document.createElement('style');
+    style.id='ov-invalsi-benchmark-history-style';
+    style.textContent=`
+.ux-history-chart .ux-series-group[data-history-town="toscana"] .ux-series-line{stroke-dasharray:10 5;stroke-width:3;opacity:.9}
+.ux-history-chart .ux-series-group[data-history-town="italia"] .ux-series-line{stroke-dasharray:2 5;stroke-width:3;opacity:.9}
+.ux-history-legend button[data-history-select="toscana"]::before,.ux-history-legend button[data-history-select="italia"]::before{width:20px;height:2px;border-radius:0}
+.ux-history-legend button[data-history-select="toscana"]::before{background:repeating-linear-gradient(90deg,var(--series-color) 0 8px,transparent 8px 12px)}
+.ux-history-legend button[data-history-select="italia"]::before{background:repeating-linear-gradient(90deg,var(--series-color) 0 2px,transparent 2px 6px)}
+`;
+    document.head.appendChild(style);
+  }
+  const LIBRARY_HISTORY_KEYS = new Set(['libraryLoansPerResident','libraryActiveBorrowersPer100','libraryWeeklyOpeningHours']);
+
+  const TERRITORY_PROFILE_HISTORY_TYPES = new Set(['soilStockProfile','soilChangeProfile','protectedAreasProfile','hydroNetworkProfile','roadNetworkProfile','invalsiProfile']);
+  function isTerritoryProfileHistoryMetric(metric) {
+    return TERRITORY_PROFILE_HISTORY_TYPES.has(metric?.meta?.compositeType);
+  }
+
+
+  let scheduled = false;
+  const wiredShells = new WeakSet();
+  function applyFuelHistory(data, history) {
+    const metric=data?.metrics?.fuelPrices;
+    const points=Array.isArray(history?.points) ? history.points : [];
+    if (!metric || points.length < 2) return data;
+    const ordered=[...points].sort((a,b)=>String(a.referenceDate).localeCompare(String(b.referenceDate)));
+    const years=ordered.map(point=>String(point.referenceDate));
+    metric.rows?.forEach(row=>{
+      const readings=ordered.map(point=>point.towns?.[row.town] || {});
+      const benzina=readings.map(item=>item.benzina ?? null);
+      const gasolio=readings.map(item=>item.gasolio ?? null);
+      row.series={years,values:benzina};
+      row.componentSeries={
+        ...(row.componentSeries || {}),
+        'Benzina self':{years,values:benzina},
+        'Gasolio self':{years,values:gasolio},
+      };
+      row.fuelHistoryAvailable=benzina.filter(value=>value !== null && value !== undefined && Number.isFinite(Number(value))).length >= 2
+        || gasolio.filter(value=>value !== null && value !== undefined && Number.isFinite(Number(value))).length >= 2;
+    });
+    return data;
+  }
+
+  const dataPromise = Promise.all([
+    fetch(new URL(`data/site-data.json?v=${HOTFIX_VERSION}`, ROOT)).then(response => {
+      if (!response.ok) throw new Error(`Errore dati ${response.status}`);
+      return response.json();
+    }),
+    fetch(new URL(`data/source-snapshots/fuel-history-mimit-monthly.json?v=${HOTFIX_VERSION}`, ROOT))
+      .then(response => response.ok ? response.json() : null)
+      .catch(() => null),
+  ])
+    .then(([data,fuelHistory]) => applyFuelHistory(data,fuelHistory))
+    .catch(error => {
+      console.warn('Vista storica non disponibile', error);
+      return null;
+    });
+
+  function safeStorageGet(key) {
+    try {
+      return sessionStorage.getItem(key);
+    } catch {
+      return null;
+    }
+  }
+
+  function selectedMetric(data) {
+    const url = new URL(location.href);
+    const urlKey = url.searchParams.get('indicatore');
+    const activeKey = document.querySelector('[data-metric].active')?.dataset.metric || '';
+    const key = urlKey && data.metrics[urlKey] ? urlKey : activeKey;
+    if (!key || !data.metrics[key]) return null;
+    const original = data.metrics[key];
+    let metric = { ...original, key };
+    if (original.meta?.economicScopeSelector && original.rows?.some(row => row.economicScopes)) {
+      const requested = url.searchParams.get('perimetro') || 'total';
+      const scope = ['total','industry','services'].includes(requested) ? requested : 'total';
+      metric = {
+        ...metric,
+        meta: { ...original.meta, activeEconomicScope: scope },
+        rows: original.rows.map(row => {
+          const variant = row.economicScopes?.[scope] || row.economicScopes?.total;
+          return variant ? { ...row, value: variant.value, formatted: variant.formatted || row.formatted, series: variant.series || null, benchmarkValue: variant.value } : { ...row };
+        }),
+        aggregate: original.aggregate ? { ...original.aggregate } : original.aggregate,
+      };
+      const aggregateVariant = original.aggregate?.economicScopes?.[scope] || original.aggregate?.economicScopes?.total;
+      if (aggregateVariant && metric.aggregate) {
+        metric.aggregate.value = aggregateVariant.value;
+        metric.aggregate.formatted = aggregateVariant.formatted;
+        metric.aggregate.label = `Versilia · ${aggregateVariant.label || scope}`;
+        metric.aggregate.series = aggregateVariant.series || null;
+      }
+    }
+    return { key, metric };
+  }
+
+  function wireShell(shell, storageKey, selectedTown, allowClear) {
+    if (!shell || wiredShells.has(shell)) return;
+    wiredShells.add(shell);
+    const historyButton = shell.querySelector('[data-view-mode="history"]');
+    const historyAvailable = Boolean(historyButton && !historyButton.disabled);
+    toolkit.wireViewShell(shell, storageKey, historyAvailable);
+    toolkit.wireHistorySelection(shell, selectedTown, allowClear);
+  }
+
+  function wireLibraryTownTooltips(shell) {
+  if (!shell || shell.dataset.libraryTownTooltipsWired === '1') return;
+  shell.dataset.libraryTownTooltipsWired = '1';
+  shell.querySelectorAll('[data-view-pane="history"] .trend-chart').forEach(chart => {
+    const points = [...chart.querySelectorAll('.chart-point')];
+    if (!points.length) return;
+    const hideAll = () => points.forEach(point => {
+      point.classList.remove('active');
+      point.querySelector('.chart-tooltip')?.setAttribute('hidden', '');
+    });
+    const show = point => {
+      hideAll();
+      point.classList.add('active');
+      point.querySelector('.chart-tooltip')?.removeAttribute('hidden');
+    };
+    points.forEach((point, index) => {
+      point.addEventListener('mouseenter', () => show(point));
+      point.addEventListener('mouseleave', hideAll);
+      point.addEventListener('focus', () => show(point));
+      point.addEventListener('blur', hideAll);
+      point.addEventListener('click', () => show(point));
+      point.addEventListener('keydown', event => {
+        if (event.key === 'Escape') { hideAll(); point.blur(); return; }
+        if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
+        event.preventDefault();
+        let next = index;
+        if (event.key === 'ArrowLeft') next = (index - 1 + points.length) % points.length;
+        if (event.key === 'ArrowRight') next = (index + 1) % points.length;
+        if (event.key === 'Home') next = 0;
+        if (event.key === 'End') next = points.length - 1;
+        points[next]?.focus();
+      });
+    });
+    chart.addEventListener('mouseleave', hideAll);
+  });
+}
+
+  function historyMetric(metric) {
+    if (metric?.meta?.key === 'fuelPrices') {
+      return {
+        ...metric,
+        rows:(metric.rows || []).map(row=>({
+          ...row,
+          notApplicable:row.fuelHistoryAvailable ? row.notApplicable : true,
+        })),
+      };
+    }
+    if (metric?.meta?.key === 'income' && metric.rows?.some(row => row.longSeries?.years?.length)) {
+      return { ...metric, meta:{...metric.meta,label:metric.meta.longHistoryLabel || 'Reddito imponibile medio · serie lunga',unit:'currency'}, rows:metric.rows.map(row=>({...row,series:row.longSeries || row.series})) };
+    }
+    if (metric?.meta?.key === 'incomeVsInflation' && metric.inflationSeries?.years?.length) {
+      const reference = metric.inflationSeries;
+      return {
+        ...metric,
+        meta: { ...metric.meta, label: 'Redditi nominali vs inflazione', unit: 'percent' },
+        rows: [
+          ...metric.rows.map(row => ({ ...row, realSeries: row.realSeries || row.series, series: row.nominalSeries || row.series })),
+          {
+            town: reference.label || 'Inflazione · NIC Italia',
+            slug: 'inflazione-nic-italia',
+            value: Number(reference.values?.at(-1)),
+            formatted: '',
+            series: reference,
+            normalized: null,
+            benchmarkValue: Number(reference.values?.at(-1)),
+          },
+        ],
+      };
+    }
+    return metric;
+  }
+
+  function renderHistoryMarkup(metric, series, selectedTown) {
+    const markup = toolkit.historicalChartMarkup(metric, series, selectedTown);
+    if(metric?.meta?.compositeType==='invalsiProfile') return markup.replace('Una linea per territorio; sono mostrati solo gli anni disponibili in modo omogeneo.','Comuni con dato corrente più Toscana e Italia; nessun valore mancante viene interpolato.').replace('confronto storico dei sette comuni','confronto storico INVALSI con Toscana e Italia').replace('aria-label="Comuni"','aria-label="Comuni e benchmark INVALSI"');
+    if (metric?.meta?.compositeType === 'demographicBreakdown') {
+      const observation = metric.rows?.find(row => row.series?.years?.length)?.series;
+      return observation?.note
+        ? `${markup}<p class="ux-view-note">${toolkit.escapeHtml(observation.note)} <a href="${toolkit.escapeHtml(observation.sourceUrl)}" target="_blank" rel="noreferrer">Fonte storica Istat ↗</a></p>`
+        : markup;
+    }
+    if (metric?.meta?.detailGroup === 'coast' && metric.aggregate?.series?.years?.length) {
+      return markup
+        .replace('Una linea per territorio; sono mostrati solo gli anni disponibili in modo omogeneo.', 'Quattro Comuni costieri più l’aggregato ufficiale Versilia; i Comuni non costieri restano n.a. e non entrano nello storico.')
+        .replace('confronto storico dei sette comuni', 'confronto storico dei quattro Comuni costieri e della Versilia')
+        .replace('aria-label="Comuni"', 'aria-label="Territori costieri e Versilia"');
+    }
+    if (metric?.meta?.compositeType === 'sexBreakdown') {
+      return markup
+        .replace('Una linea per territorio; sono mostrati solo gli anni disponibili in modo omogeneo.', 'Sette Comuni più l’aggregato ufficiale Versilia; sono mostrati solo gli anni omogenei della fonte ARS.')
+        .replace('confronto storico dei sette comuni', 'confronto storico dei sette Comuni e della Versilia')
+        .replace('aria-label="Comuni"', 'aria-label="Territori"');
+    }
+    if (metric?.meta?.key === 'fuelPrices') {
+      return markup
+        .replace('Una linea per territorio; sono mostrati solo gli anni disponibili in modo omogeneo.', 'Medie mensili MIMIT: per ogni giorno si calcola la mediana comunale dei prezzi self-service, poi la media delle mediane giornaliere del mese.')
+        .replace('confronto storico dei sette comuni', 'confronto storico mensile dei sei Comuni con impianti attivi');
+    }
+    if (metric?.meta?.key !== 'incomeVsInflation' || !metric.inflationSeries?.years?.length) return markup;
+    const referenceLabel = toolkit.escapeHtml(metric.inflationSeries.label || 'Inflazione · NIC Italia');
+    return markup
+      .replace(
+        'Una linea per territorio; sono mostrati solo gli anni disponibili in modo omogeneo.',
+        'Redditi nominali e inflazione sono riportati alla stessa base 2016 = 0%. I tooltip mostrano anche la variazione reale, calcolata come rapporto tra indice del reddito e indice dei prezzi.'
+      )
+      .replace(
+        /<g class="ux-series-group [^"]*" data-history-town="inflazione-nic-italia" style="--series-color:[^"]+">/,
+        '<g class="ux-inflation-reference" style="--series-color:var(--ink)">'
+      )
+      .replace(
+        /<button type="button" data-history-select="inflazione-nic-italia"[^>]*>[^<]*<\/button>/,
+        `<span class="ux-history-reference"><i aria-hidden="true"></i>${referenceLabel}</span>`
+      );
+  }
+
+  function libraryHistoryChartMarkup(metric, selectedTown = '') {
+    const colors = ['#0f5c6e', '#b56843', '#64743d', '#855b7b', '#b88a1c', '#4e7096', '#914d47'];
+    const rows = (metric?.rows || []).map((row, index) => {
+      const years = row.series?.years || [];
+      const values = row.series?.values || [];
+      const points = years.map((year, pointIndex) => ({
+        year: Number(year),
+        value: values[pointIndex] === null || values[pointIndex] === undefined || values[pointIndex] === '' ? null : Number(values[pointIndex])
+      })).filter(point => Number.isFinite(point.year) && Number.isFinite(point.value));
+      return { town: row.town, slug: row.slug || '', color: colors[index % colors.length], points };
+    });
+    const plotted = rows.filter(row => row.points.length);
+    const years = [...new Set(plotted.flatMap(row => row.points.map(point => point.year)))].sort((a, b) => a - b);
+    if (!plotted.length || years.length < 2) {
+      return '<div class="ux-history-unavailable"><strong>Serie storica non disponibile</strong><p>Non risultano almeno due annualità osservate.</p></div>';
+    }
+
+    const values = plotted.flatMap(row => row.points.map(point => point.value));
+    const rawMin = Math.min(...values), rawMax = Math.max(...values);
+    const padding = (rawMax - rawMin || Math.max(Math.abs(rawMax) * .1, 1)) * .08;
+    let min = rawMin - padding, max = rawMax + padding;
+    if (rawMin >= 0 && min < 0) min = 0;
+    const range = max - min || 1;
+    const width = 920, height = 390;
+    const left = metric.meta.unit === 'per100' ? 132 : 78, right = 30, top = 26, bottom = 52;
+    const chartWidth = width - left - right, chartHeight = height - top - bottom;
+    const firstYear = years[0], lastYear = years.at(-1), yearRange = Math.max(1, lastYear - firstYear);
+    const x = year => left + (year - firstYear) / yearRange * chartWidth;
+    const y = value => top + (max - value) / range * chartHeight;
+    const numeric = new Intl.NumberFormat('it-IT', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    const valueText = value => {
+      const formatted = numeric.format(value);
+      if (metric.meta.unit === 'hours') return `${formatted} ore`;
+      if (metric.meta.unit === 'per100') return `${formatted} ogni 100`;
+      return formatted;
+    };
+
+    const ticks = [0, .25, .5, .75, 1].map(fraction => {
+      const value = max - fraction * range;
+      const py = top + fraction * chartHeight;
+      return `<line class="ux-history-grid" x1="${left}" y1="${py}" x2="${width-right}" y2="${py}"></line><text class="ux-history-axis-label" x="${left-10}" y="${py+4}" text-anchor="end">${toolkit.escapeHtml(valueText(value))}</text>`;
+    }).join('');
+    const yearStep = Math.max(1, Math.ceil(years.length / 9));
+    const yearLabels = years.map((year, index) => {
+      if (!(index % yearStep === 0 || index === years.length - 1 || year === 2020)) return '';
+      const label = year === 2020 ? '2020*' : String(year);
+      return `<text class="ux-history-axis-label${year === 2020 ? ' library-pandemic-axis' : ''}" x="${x(year)}" y="${height-16}" text-anchor="middle">${toolkit.escapeHtml(label)}</text>`;
+    }).join('');
+
+    const groups = plotted.map(row => {
+      const byYear = new Map(row.points.map(point => [point.year, point.value]));
+      const segments = [];
+      let current = [];
+      years.forEach(year => {
+        if (byYear.has(year)) current.push({ year, value: byYear.get(year) });
+        else if (current.length) {
+          segments.push(current);
+          current = [];
+        }
+      });
+      if (current.length) segments.push(current);
+      const lines = segments.map(segment => segment.length >= 2
+        ? `<polyline class="ux-series-line" points="${segment.map(point => `${x(point.year)},${y(point.value)}`).join(' ')}"></polyline>`
+        : '').join('');
+      const points = row.points.map(point => {
+        const px = x(point.year), py = y(point.value), boxWidth = 230, boxHeight = 50;
+        const boxX = Math.max(left - 8, Math.min(width - right - boxWidth, px - boxWidth / 2));
+        const boxY = py < boxHeight + 28 ? py + 18 : py - boxHeight - 16;
+        const formatted = valueText(point.value);
+        const aria = `${row.town} · ${point.year}: ${formatted}`;
+        return `<g class="chart-point" tabindex="0" role="button" aria-label="${toolkit.escapeHtml(aria)}"><circle class="chart-hit" cx="${px}" cy="${py}" r="13"></circle><circle class="chart-dot ux-series-point" cx="${px}" cy="${py}" r="4"></circle><g class="chart-tooltip" hidden><line class="chart-guide" x1="${px}" y1="${py}" x2="${px}" y2="${boxY < py ? boxY + boxHeight : boxY}"></line><rect x="${boxX}" y="${boxY}" width="${boxWidth}" height="${boxHeight}" rx="8"></rect><text class="chart-tooltip-year" x="${boxX+12}" y="${boxY+16}">${toolkit.escapeHtml(`${row.town} · ${point.year}`)}</text><text class="chart-tooltip-value" x="${boxX+12}" y="${boxY+36}">${toolkit.escapeHtml(formatted)}</text></g></g>`;
+      }).join('');
+      return `<g class="ux-series-group ${row.slug === selectedTown ? 'is-selected' : ''}" data-history-town="${toolkit.escapeHtml(row.slug)}" style="--series-color:${row.color}">${lines}${points}</g>`;
+    }).join('');
+
+    const legend = rows.map(row => {
+      if (!row.points.length) return `<span class="ux-history-reference is-unavailable">${toolkit.escapeHtml(row.town)} · n.d.</span>`;
+      const start = row.points[0], end = row.points.at(-1);
+      return `<button type="button" data-history-select="${toolkit.escapeHtml(row.slug)}" data-town="${toolkit.escapeHtml(row.town)}" data-start="${start.value}" data-end="${end.value}" data-start-year="${start.year}" data-end-year="${end.year}" aria-pressed="${row.slug === selectedTown}" style="--series-color:${row.color}">${toolkit.escapeHtml(row.town)}</button>`;
+    }).join('');
+    const note = years.includes(2020)
+      ? 'Gli anni senza dato restano vuoti e non vengono interpolati. * 2020: anno pandemico anomalo.'
+      : 'Gli anni senza dato restano vuoti e non vengono interpolati.';
+    return `<div class="ux-history-card library-history-chart"><div class="ux-history-head"><div><strong>Andamento ${firstYear}–${lastYear}</strong><span>Una linea per Comune; tooltip sui valori osservati e vuoti dove il dato manca.</span></div><span>${toolkit.escapeHtml(metric.meta.source)}</span></div><div class="ux-history-scroll"><div class="ux-history-chart ${selectedTown ? 'has-selection' : ''}" data-unit="${toolkit.escapeHtml(metric.meta.unit)}"><svg viewBox="0 0 ${width} ${height}" role="img" aria-label="${toolkit.escapeHtml(`${metric.meta.label}: confronto storico`)}">${ticks}${groups}${yearLabels}</svg></div></div><p class="ux-history-scroll-hint">Scorri il grafico orizzontalmente per leggere l’intera serie.</p><div class="ux-history-legend" aria-label="Comuni">${legend}</div><p class="aggregate-note">${toolkit.escapeHtml(note)}</p></div>`;
+  }
+
+  function enhanceCompare(data) {
+    if (document.body.dataset.page !== 'compare') return;
+    const target = document.getElementById('compare-bars');
+    if (!target || !target.innerHTML.trim()) return;
+
+    const selectedTown = safeStorageGet('ov-history-town') || '';
+    const selected = selectedMetric(data);
+    if (!selected) return;
+    /* OV TERRITORIO UCS UX-HISTORY BYPASS v1.36.0 */
+    if (['drinkingWaterQuality','remediationProceedings','financialProfile','hydroRisk','landCoverProfile'].includes(selected.metric?.meta?.compositeType)) return;
+    const existingShell = target.querySelector(':scope > .ux-view-shell');
+    if (selected.key === 'extractiveProduction') {
+      if (existingShell) {
+        wireShell(existingShell, 'ov-compare-view', selectedTown, true);
+        return;
+      }
+      const rowsWithHistory=(selected.metric.rows || []).filter(row=>row.series?.years?.length >= 2);
+      const historyView={...selected.metric, rows:rowsWithHistory};
+      const series=toolkit.comparableSeries(historyView);
+      const currentMarkup=target.innerHTML;
+      const historyMarkup=renderHistoryMarkup(historyView,series,selectedTown);
+      const note='Serie 2019–2025 per i due Comuni con raccordo PRC→Comune certo. Gli altri cinque Comuni restano n.d. e non vengono trasformati in zero.';
+      target.innerHTML=toolkit.viewShellMarkup(currentMarkup,historyMarkup,Boolean(series),note);
+      wireShell(target.querySelector('.ux-view-shell'),'ov-compare-view',selectedTown,true);
+      return;
+    }
+    if (LIBRARY_HISTORY_KEYS.has(selected.key)) {
+      if (existingShell) {
+        wireShell(existingShell, 'ov-compare-view', selectedTown, true);
+        return;
+      }
+      document.querySelector('#compare-tools .library-history-detail')?.remove();
+      const currentMarkup = target.innerHTML;
+      const historyMarkup = libraryHistoryChartMarkup(selected.metric, selectedTown);
+      const note = 'Lo storico usa lo stesso linguaggio grafico degli altri indicatori: una linea per Comune, tooltip sui valori osservati e vuoti espliciti dove il dato manca.';
+      target.innerHTML = toolkit.viewShellMarkup(currentMarkup, historyMarkup, true, note);
+      wireShell(target.querySelector('.ux-view-shell'), 'ov-compare-view', selectedTown, true);
+      return;
+    }
+
+    if (existingShell) {
+      wireShell(existingShell, 'ov-compare-view', selectedTown, true);
+      return;
+    }
+
+    const normalized = Boolean(document.querySelector('[data-scale="normalized"].active'));
+    const selectedChoice = (hasComponentHistory(selected.metric) || isTerritoryProfileHistoryMetric(selected.metric)) ? currentCompositeChoice() : null;
+    const historyChoice = selected.key === 'fuelPrices' ? currentCompositeChoice() : selectedChoice;
+    const historyView = historyMetric(historyChoice ? compositeChoiceMetric(selected.metric, historyChoice) : selected.metric);
+    const series = normalized ? null : withOfficialVersiliaSeries(historyView, toolkit.comparableSeries(historyView));
+    const historyAvailable = Boolean(series);
+    const currentMarkup = target.innerHTML;
+    const historyMarkup = renderHistoryMarkup(historyView, series, selectedTown);
+    const note = normalized
+      ? 'La vista storica è disponibile sulla scala assoluta, perché le serie normalizzate non sono presenti per tutti gli anni.'
+      : historyAvailable && selected.metric?.meta?.key === 'incomeVsInflation'
+        ? selected.metric.historyPresentation?.note
+        : historyAvailable && selected.metric?.meta?.key === 'income'
+          ? selected.metric.meta.longHistoryNote
+          : historyAvailable && selected.metric?.meta?.key === 'fuelPrices'
+            ? 'Serie mensile MIMIT gennaio 2022–giugno 2026: media delle mediane comunali giornaliere self-service; Stazzema resta n.d. perché non risultano impianti attivi.'
+            : historyAvailable
+              ? 'Lo storico utilizza esclusivamente gli anni omogenei presenti per tutti e sette i comuni.'
+              : selected.metric?.meta?.compositeType === 'demographicBreakdown' ? demographicHistoryAvailabilityNote(selected.metric) : 'Per questo indicatore non esistono almeno due anni omogenei per tutti e sette i comuni.';
+
+    target.innerHTML = toolkit.viewShellMarkup(currentMarkup, historyMarkup, historyAvailable, note);
+    wireShell(target.querySelector('.ux-view-shell'), 'ov-compare-view', selectedTown, true);
+  }
+
+  function forceItalianGrouping(formatted, value) {
+    const numeric = Number(value);
+    if (!Number.isFinite(numeric) || Math.abs(numeric) < 1000) return formatted;
+    const text = String(formatted);
+    const match = text.match(/^([−-]?)(\d+)(.*)$/);
+    if (!match) return formatted;
+    const [, sign, integer, suffix] = match;
+    if (integer.length <= 3) return formatted;
+    return `${sign}${integer.replace(/\B(?=(\d{3})+(?!\d))/g, '.')}${suffix}`;
+  }
+  const formatterWithGrouping = options => {
+    const formatter = new Intl.NumberFormat('it-IT', { ...options, useGrouping: 'always' });
+    return { format: value => forceItalianGrouping(formatter.format(value), value) };
+  };
+  const percent1 = formatterWithGrouping({ minimumFractionDigits: 1, maximumFractionDigits: 1 });
+  const number1 = formatterWithGrouping({ minimumFractionDigits: 1, maximumFractionDigits: 1 });
+  const number3 = formatterWithGrouping({ minimumFractionDigits: 3, maximumFractionDigits: 3 });
+  const euro0 = formatterWithGrouping({ style: 'currency', currency: 'EUR', maximumFractionDigits: 0 });
+  const whole0 = formatterWithGrouping({ maximumFractionDigits: 0 });
+
+  function compositeChoiceMetric(metric, choice) {
+    if (metric?.meta?.compositeType !== 'demographicBreakdown' && !['distribution','omi','stock','securityMeasures','ratioProfile','sexBreakdown','soilStockProfile','soilChangeProfile','protectedAreasProfile','hydroNetworkProfile','roadNetworkProfile','invalsiProfile'].includes(metric?.meta?.compositeType)) return metric;
+    const clone = { ...metric, meta: { ...metric.meta }, rows: metric.rows.map(row => ({ ...row })), aggregate:metric.aggregate ? { ...metric.aggregate } : metric.aggregate };
+    if (isTerritoryProfileHistoryMetric(metric)) {
+    const selected=(choice && choice !== 'summary') ? choice : (metric.meta.defaultView || metric.rows?.[0]?.parts?.[0]?.key);
+    const template=(metric.aggregate?.parts || metric.rows?.[0]?.parts || []).find(part=>part.key===selected) || metric.aggregate?.parts?.[0] || metric.rows?.[0]?.parts?.[0] || {};
+    const unit=template.unit || metric.meta.unit;
+    clone.meta.unit=unit;
+    clone.meta.label=template.label ? `${metric.meta.label} · ${template.label}` : metric.meta.label;
+    clone.rows=metric.rows.map(row=>{
+      const part=(row.parts || []).find(item=>item.key===selected) || row.parts?.[0] || {};
+      const value=part.value === null || part.value === undefined || part.value === '' ? undefined : Number(part.value);
+      return { ...row, value, formatted:Number.isFinite(value)?toolkit.formatValue(value,unit):'n.d.', series:row.seriesByView?.[selected] || null };
+    });
+    const aggregatePart=(metric.aggregate?.parts || []).find(item=>item.key===selected) || metric.aggregate?.parts?.[0] || {};
+    clone.aggregate={...metric.aggregate,value:aggregatePart.value,label:metric.meta.compositeType==='invalsiProfile'?`${metric.aggregate?.label||'Toscana'} · ${aggregatePart.label||metric.meta.label}`:`Versilia · ${aggregatePart.label||metric.meta.label}`,series:metric.aggregate?.seriesByView?.[selected]||null};
+    if(metric.meta.compositeType==='invalsiProfile'){const n=(metric.nationalBenchmark?.parts||[]).find(p=>p.key===selected)||metric.nationalBenchmark?.parts?.[0]||{};clone.nationalBenchmark={...metric.nationalBenchmark,value:n.value,label:`${metric.nationalBenchmark?.label||'Italia'} · ${n.label||metric.meta.label}`,series:metric.nationalBenchmark?.seriesByView?.[selected]||null};}
+    return clone;
+  }
+    if (['sexBreakdown','demographicBreakdown'].includes(metric.meta.compositeType)) {
+      const demographic = metric.meta.compositeType === 'demographicBreakdown';
+      const selected = choice || (demographic ? `${metric.meta.defaultAge}|${metric.meta.defaultGender}` : metric.meta.defaultSex || 'totale');
+      const option = (demographic ? metric.rows?.[0]?.parts || [] : metric.meta.sexOptions || []).find(item=>item.key===selected);
+      clone.meta.label = option ? `${metric.meta.label} · ${option.label}` : metric.meta.label;
+      clone.meta.benchmark = demographic
+        ? (selected === `${metric.meta.defaultAge}|${metric.meta.defaultGender}` ? metric.meta.benchmark : null)
+        : metric.meta.benchmarksBySex?.[selected] || metric.meta.benchmark;
+      clone.rows = metric.rows.map(row => {
+        const part=(row.parts || []).find(item=>item.key===selected) || row.parts?.[0] || {};
+        const formatted = demographic
+          ? (Number.isFinite(part.value) ? `${percent1.format(part.value)}%` : 'n.d.')
+          : part.formatted || row.formatted;
+        return { ...row, value:part.value, formatted, series:part.series || (demographic ? null : row.series) };
+      });
+      const aggregatePart=(metric.aggregate?.parts || []).find(item=>item.key===selected) || metric.aggregate?.parts?.[0] || {};
+      clone.aggregate = { ...metric.aggregate, value:aggregatePart.value, formatted:demographic ? (Number.isFinite(aggregatePart.value) ? `${percent1.format(aggregatePart.value)}%` : 'n.d.') : aggregatePart.formatted, series:aggregatePart.series, label:`Versilia · ${aggregatePart.label || option?.label || ''}` };
+      return clone;
+    }
+    if (metric.meta.compositeType === 'securityMeasures') {
+      const index = Math.max(0, Number(String(choice || 'part-0').replace('part-','')) || 0);
+      const template = metric.rows?.[0]?.parts?.[index] || metric.aggregate?.parts?.[index] || {};
+      const unit = template.unit || metric.meta.unit;
+      clone.meta.unit = unit;
+      clone.meta.label = template.label || metric.meta.label;
+      clone.rows = metric.rows.map(row => {
+        const part = row.parts?.[index] || {};
+        const rawValue = part.value;
+        const value = rawValue === null || rawValue === undefined || rawValue === '' ? undefined : Number(rawValue);
+        let formatted = 'n.d.';
+        if (Number.isFinite(value)) {
+          if (unit === 'currency') formatted = `${number1.format(value)} €`;
+          else if (unit === 'currency2') formatted = `${number1.format(value)} €`;
+          else if (unit === 'eurliter') formatted = `${number3.format(value)} €/l`;
+          else if (unit === 'eurPerResident') formatted = `${number1.format(value)} €/ab.`;
+          else if (unit === 'percent') formatted = `${percent1.format(value)}%`;
+          else if (unit === 'per1000') formatted = `${number1.format(value)} ogni 1.000`;
+          else if (unit === 'per100') formatted = `${number1.format(value)} ogni 100`;
+          else if (unit === 'per10k') formatted = `${number1.format(value)} ogni 10.000`;
+          else formatted = number1.format(value);
+        }
+        const series = row.componentSeries?.[part.selectorLabel || template.selectorLabel] || row.componentSeries?.[template.selectorLabel] || row.series;
+        return { ...row, value, formatted, series };
+      });
+      return clone;
+    }
+    if (metric.meta.compositeType === 'stock') {
+      const count = choice === 'count';
+      clone.meta.unit = count ? 'number' : 'percent';
+      clone.meta.label = count ? 'Residenti di cittadinanza straniera' : 'Quota di residenti stranieri';
+      clone.rows = metric.rows.map(row => {
+        const value = Number(count ? row.count : row.value);
+        const formatted = !Number.isFinite(value) ? 'n.d.' : count ? whole0.format(value) : `${percent1.format(value)}%`;
+        const series = row.componentSeries?.[count ? 'count' : 'share'] || (count ? null : row.series);
+        return { ...row, value, formatted, series };
+      });
+      clone.aggregate = { ...metric.aggregate, value:count ? metric.aggregate?.count : metric.aggregate?.value, series:metric.aggregate?.componentSeries?.[count ? 'count' : 'share'] || (count ? null : metric.aggregate?.series) };
+      return clone;
+    }
+    if (metric.meta.compositeType === 'omi') {
+      const rent = choice === 'rent';
+      clone.meta.unit = rent ? 'rentm2' : 'eurm2';
+      clone.meta.label = rent ? 'Affitto medio comunale OMI' : 'Vendita media comunale OMI';
+      clone.rows = metric.rows.map(row => {
+        const value = Number(rent ? row.rentMean : row.saleMean);
+        const formatted = !Number.isFinite(value) ? 'n.d.' : rent ? `${number1.format(value)} €/m²/mese` : `${whole0.format(value)} €/m²`;
+        return { ...row, value, formatted };
+      });
+      return clone;
+    }
+    if (choice === 'summary') {
+      const unit = metric.meta.summaryUnit || metric.meta.unit;
+      clone.meta.unit = unit;
+      clone.meta.label = metric.meta.summaryLabel || metric.aggregate?.summaryLabel || metric.meta.label;
+      clone.rows = metric.rows.map(row => {
+        const value = Number(row.summaryValue);
+        const formatted = !Number.isFinite(value) ? 'n.d.'
+          : unit === 'currency' ? euro0.format(value)
+            : unit === 'years' ? `${number1.format(value)} anni`
+              : String(value);
+        return { ...row, value, formatted };
+      });
+      return clone;
+    }
+    const index = Number(String(choice || '').replace('part-', ''));
+    if (!Number.isInteger(index) || index < 0) return clone;
+    clone.meta.unit = 'percent';
+    clone.meta.label = metric.aggregate?.parts?.[index]?.label || metric.rows?.[0]?.parts?.[index]?.label || metric.meta.label;
+    clone.rows = metric.rows.map(row => {
+      const value = Number(row.parts?.[index]?.value);
+      return { ...row, value, formatted: Number.isFinite(value) ? `${percent1.format(value)}%` : 'n.d.' };
+    });
+    return clone;
+  }
+
+  function refreshTownCompositeCurrent(data, metric, shell, selectedTown, choice) {
+    if (!shell || !['distribution','omi','stock','securityMeasures','ratioProfile','sexBreakdown','soilStockProfile','soilChangeProfile','protectedAreasProfile','hydroNetworkProfile','roadNetworkProfile','invalsiProfile'].includes(metric?.meta?.compositeType)) return;
+    const currentPane = shell.querySelector('[data-view-pane="current"]');
+    if (!currentPane) return;
+    const resolvedChoice = choice || (metric?.meta?.compositeType === 'omi' ? 'sale' : metric?.meta?.compositeType === 'stock' ? 'share' : metric?.meta?.compositeType === 'securityMeasures' ? 'part-0' : 'summary');
+    if (currentPane.dataset.compositeChoice === resolvedChoice) return;
+    const viewMetric = compositeChoiceMetric(metric, resolvedChoice);
+    currentPane.innerHTML = townCurrentComparisonMarkup(data, { key:metric.meta.key }, selectedTown, viewMetric);
+    currentPane.dataset.compositeChoice = resolvedChoice;
+  }
+
+  function hasComponentHistory(metric) {
+    return metric?.meta?.compositeType === 'sexBreakdown' || Boolean(metric?.rows?.some(row => row.componentSeries || (metric.meta?.compositeType === 'demographicBreakdown' && row.parts?.some(part => part.series))));
+  }
+
+  function demographicHistoryAvailabilityNote(metric) {
+    const available = (metric.rows?.[0]?.parts || [])
+      .filter(part => part.series?.years?.length > 1)
+      .map(part => part.label);
+    return available.length
+      ? `Storico non acquisito per questa fascia e questo genere. Puoi consultarlo selezionando ${available.join(' oppure ')}.`
+      : 'Storico non acquisito per questa fascia e questo genere.';
+  }
+
+  function currentCompositeChoice() {
+    const age = document.querySelector('select[data-demographic-age], select[data-demographic-town-age]')?.value;
+    const gender = document.querySelector('select[data-demographic-gender], select[data-demographic-town-gender]')?.value;
+    if (age && gender) return `${age}|${gender}`;
+    return document.querySelector('select[data-composite-choice]')?.value || document.querySelector('select[data-composite-component]')?.value || document.querySelector('button[data-composite-choice].active')?.dataset.compositeChoice || 'summary';
+  }
+
+  function withOfficialVersiliaSeries(metric, series) {
+    if(series&&metric?.meta?.compositeType==='invalsiProfile'){
+      const ref=(src,label,slug,color)=>{if(!src?.series?.years?.length)return null;const m=new Map(src.series.years.map((y,i)=>[String(y),src.series.values?.[i]]));if(!series.years.every(y=>{const v=m.get(String(y));return v!==null&&v!==undefined&&v!==''&&Number.isFinite(Number(v));}))return null;return {town:label,slug,color,map:new Map(),realMap:new Map(),values:series.years.map(y=>Number(m.get(String(y)))),realSeries:null};};
+      const refs=[ref(metric.aggregate,metric.aggregate?.label||'Toscana','toscana','var(--ink)'),ref(metric.nationalBenchmark,metric.nationalBenchmark?.label||'Italia','italia','var(--muted)')].filter(Boolean);return {...series,rows:[...series.rows,...refs]};
+    }
+    const includesOfficialAggregate = metric?.meta?.compositeType === 'sexBreakdown'
+      || metric?.meta?.detailGroup === 'coast';
+    if (!series || !includesOfficialAggregate || !metric.aggregate?.series?.years?.length) return series;
+    const map = new Map(metric.aggregate.series.years.map((year,index)=>[String(year),Number(metric.aggregate.series.values?.[index])]));
+    if (!series.years.every(year=>Number.isFinite(map.get(String(year))))) return series;
+    return { ...series, rows:[...series.rows,{ town:'Versilia', slug:'versilia', color:'var(--ink)', map:new Map(), realMap:new Map(), values:series.years.map(year=>map.get(String(year))), realSeries:null }] };
+  }
+
+  function townCurrentComparisonMarkup(data, selected, selectedTown, metric) {
+    const shared = window.OVSharedRenderers?.comparisonTopicMarkup;
+    const a5TownPilot = Boolean(document.querySelector('main.a5-town-pilot'));
+    if (a5TownPilot && typeof shared === 'function') {
+      const sharedMetric = {
+        ...metric,
+        meta:{ ...metric.meta, compositeType:null }
+      };
+      return shared(data, selected.key, { selectedTown, metric:sharedMetric });
+    }
+    return toolkit.comparisonBarsMarkup(metric, selectedTown);
+  }
+
+  function enhanceTown(data) {
+    if (document.body.dataset.page !== 'town') return;
+    const panel = document.querySelector('.history-panel');
+    if (!panel) return;
+
+    const selectedTown = document.body.dataset.town || '';
+    const selected = selectedMetric(data);
+    if (!selected) return;
+    if (selected.key === 'extractiveProduction') return;
+    /* OV TERRITORIO UCS UX-HISTORY BYPASS v1.36.0 */
+    if (['drinkingWaterQuality','remediationProceedings','financialProfile','hydroRisk','territorialClassification','landCoverProfile'].includes(selected.metric?.meta?.compositeType)) return;
+    const existingShell = panel.querySelector('.ux-view-shell');
+    const economicScopeControl = panel.querySelector(':scope > .economic-scope-control');
+    if (LIBRARY_HISTORY_KEYS.has(selected.key)) {
+      if (existingShell) {
+        wireShell(existingShell, 'ov-town-view', selectedTown, false);
+        wireLibraryTownTooltips(existingShell);
+        return;
+      }
+      const row = selected.metric.rows?.find(item => (item.slug || '') === selectedTown);
+      const historyAvailable = Boolean(row?.series?.years?.length);
+      const title = panel.querySelector(':scope > .panel-title');
+      const historyMarkup = historyAvailable
+        ? [...panel.children].filter(child => child !== title).map(child => child.outerHTML).join('')
+        : '<div class="ux-history-unavailable"><strong>Serie storica non disponibile</strong><p>Per questo Comune non risultano osservazioni storiche nel monitoraggio regionale.</p></div>';
+      const currentMarkup = toolkit.comparisonBarsMarkup(selected.metric, selectedTown);
+      const note = historyAvailable
+        ? 'Lo storico del Comune termina all’ultima osservazione ufficiale disponibile; nessun valore mancante viene stimato o trascinato.'
+        : 'Per questo Comune il monitoraggio regionale non rende disponibile una serie storica.';
+      panel.innerHTML = `<div class="panel-title"><div><span class="overline">Confronto dell’indicatore</span><h3>Valore attuale e andamento</h3></div><a class="source-pill" href="${toolkit.escapeHtml(selected.metric.sourceUrl)}" target="_blank" rel="noreferrer">Fonte ${toolkit.escapeHtml(selected.metric.meta.source)} ↗</a></div>${toolkit.viewShellMarkup(currentMarkup, historyMarkup, historyAvailable, note)}`;
+      const shell = panel.querySelector('.ux-view-shell');
+      wireShell(shell, 'ov-town-view', selectedTown, false);
+      wireLibraryTownTooltips(shell);
+      return;
+    }
+    if (existingShell) {
+      wireShell(existingShell, 'ov-town-view', selectedTown, false);
+      refreshTownCompositeCurrent(data, selected.metric, existingShell, selectedTown, currentCompositeChoice());
+      return;
+    }
+
+    const fixedDetail = panel.querySelector('.composite-fixed-detail')?.outerHTML || '';
+    const selectedChoice = (hasComponentHistory(selected.metric) || isTerritoryProfileHistoryMetric(selected.metric)) ? currentCompositeChoice() : null;
+    const historyView = historyMetric(selectedChoice ? compositeChoiceMetric(selected.metric, selectedChoice) : selected.metric);
+    const selectedRow = historyView.rows?.find(row => (row.slug || '') === selectedTown);
+    const series = selectedRow?.notApplicable
+      ? null
+      : withOfficialVersiliaSeries(historyView, toolkit.comparableSeries(historyView));
+    const historyAvailable = Boolean(series);
+    const viewMetric = compositeChoiceMetric(selected.metric, currentCompositeChoice());
+    const currentMarkup = townCurrentComparisonMarkup(data, selected, selectedTown, viewMetric);
+    const historyMarkup = renderHistoryMarkup(historyView, series, selectedTown);
+    const note = historyAvailable && selected.metric?.meta?.key === 'incomeVsInflation'
+      ? selected.metric.historyPresentation?.note
+      : historyAvailable && selected.metric?.meta?.key === 'income'
+        ? selected.metric.meta.longHistoryNote
+        : selectedRow?.notApplicable
+          ? 'Questo Comune non ha costa marina: lo storico non è applicabile e resta n.a.'
+          : historyAvailable
+            ? 'Nello storico il comune aperto è evidenziato; dalla legenda puoi mettere in primo piano un altro territorio.'
+            : selected.metric?.meta?.compositeType === 'demographicBreakdown' ? demographicHistoryAvailabilityNote(selected.metric) : 'Per questo indicatore non esistono almeno due anni omogenei per tutti e sette i comuni.';
+
+    panel.innerHTML = `<div class="panel-title"><div><span class="overline">Confronto dell’indicatore</span><h3>Valore attuale e andamento</h3></div><a class="source-pill" href="${toolkit.escapeHtml(selected.metric.sourceUrl)}" target="_blank" rel="noreferrer">Fonte ${toolkit.escapeHtml(selected.metric.meta.source)} ↗</a></div>${toolkit.viewShellMarkup(currentMarkup, historyMarkup, historyAvailable, note)}${fixedDetail}`;
+    if (economicScopeControl) panel.querySelector(':scope > .panel-title')?.insertAdjacentElement('afterend', economicScopeControl);
+    wireShell(panel.querySelector('.ux-view-shell'), 'ov-town-view', selectedTown, false);
+    panel.querySelectorAll('.composite-fixed-detail .trend-chart').forEach(chart=>toolkit.wireHistoryTooltips?.(chart));
+  }
+
+  function enhance(data) {
+    if (!data) return;
+    enhanceCompare(data);
+    enhanceTown(data);
+    window.dispatchEvent(new CustomEvent('ov:ux-history-enhanced'));
+  }
+
+  function schedule() {
+    if (scheduled) return;
+    scheduled = true;
+    requestAnimationFrame(() => {
+      scheduled = false;
+      dataPromise.then(enhance);
+    });
+  }
+
+  window.addEventListener('ov:composite-choice', event => {
+    if (document.body.dataset.page !== 'town') return;
+    dataPromise.then(data => {
+      if (!data) return;
+      const metricKey = event.detail?.metricKey;
+      const metric = metricKey && data.metrics[metricKey] ? { ...data.metrics[metricKey], key: metricKey } : null;
+      const shell = document.querySelector('.history-panel .ux-view-shell');
+      if (!metric || !shell) return;
+      const choice = event.detail?.choice || 'summary';
+      if (metric.meta?.compositeType === 'demographicBreakdown') {
+        const selectedTown = document.body.dataset.town || '';
+        const viewMetric = compositeChoiceMetric(metric, choice);
+        const historyView = historyMetric(viewMetric);
+        const series = withOfficialVersiliaSeries(historyView, toolkit.comparableSeries(historyView));
+        const note = series
+          ? 'Storico della fascia e del genere selezionati; osservazioni nei soli anni indicati.'
+          : demographicHistoryAvailabilityNote(metric);
+        const wrapper = document.createElement('div');
+        wrapper.innerHTML = toolkit.viewShellMarkup(
+          townCurrentComparisonMarkup(data, { key:metricKey }, selectedTown, viewMetric),
+          renderHistoryMarkup(historyView, series, selectedTown), Boolean(series), note);
+        const replacementShell = wrapper.firstElementChild;
+        shell.replaceWith(replacementShell);
+        wireShell(replacementShell, 'ov-town-view', selectedTown, false);
+        return;
+      }
+      refreshTownCompositeCurrent(data, metric, shell, document.body.dataset.town || '', choice);
+      if (hasComponentHistory(metric) || isTerritoryProfileHistoryMetric(metric)) {
+        const selectedTown = document.body.dataset.town || '';
+        const historyView = historyMetric(compositeChoiceMetric(metric, choice));
+        const series = withOfficialVersiliaSeries(historyView, toolkit.comparableSeries(historyView));
+        const pane = shell.querySelector('[data-view-pane="history"]');
+        if (pane) {
+          pane.innerHTML = renderHistoryMarkup(historyView, series, selectedTown);
+          toolkit.wireHistorySelection(shell, selectedTown, false);
+        }
+      }
+    });
+  });
+
+  new MutationObserver(schedule).observe(document.documentElement, { childList: true, subtree: true });
+  window.addEventListener('ov:compare-rendered', schedule);
+  schedule();
+})();

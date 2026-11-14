@@ -1,0 +1,30 @@
+{
+  "schoolYear": "2024/25",
+  "dataAsOf": "2025-08-06",
+  "publisher": "Ministero dell'Istruzione e del Merito — Open Data, Anagrafe dell'Edilizia Scolastica",
+  "license": "IODL 2.0",
+  "territory": "Versilia — 7 Comuni",
+  "uniqueBuildingsVersilia": 109,
+  "sourcePages": {
+    "sicurezza": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/leaf/?datasetId=DS0171EDICONSICUREZZASTA2021",
+    "accessibilita": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/leaf/?datasetId=DS0156EDISUPBARARCSTA2021",
+    "spazi": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/leaf/?area=Edilizia+Scolastica&datasetId=DS0151EDIAMBFUNZSTA2021",
+    "eta": "https://dati.istruzione.it/opendata/opendata/catalog/EDIETAORIGINESTA2021",
+    "collegamenti": "https://dati.istruzione.it/opendata/opendata/catalog/EDICOLLEGAMENTISTA2021"
+  },
+  "notes": [
+    "I conteggi sono ricostruiti per edificio univoco sui codici dell'Anagrafe dell'Edilizia Scolastica.",
+    "NON DEFINITO e valori mancanti restano distinti da NO.",
+    "Per le percentuali di presenza il denominatore è costituito dalle sole risposte definite del singolo campo; la quota non definita è esposta separatamente quando presente.",
+    "La sicurezza antincendio è mostrata per documento (CPI, SCIA, rinnovo periodico) e non viene sintetizzata con un OR tra campi, perché i conteggi aggregati non consentono di deduplicare con certezza gli edifici."
+  ],
+  "towns": {
+    "Camaiore": {"buildings":17,"agibilita":{"NO":16,"SI":1},"cpi":{"NO":10,"SI":7},"sciaAntincendio":{"NO":9,"SI":8},"rinnovoAntincendio":{"NO":14,"SI":3},"accessibilita":{"SI":17},"mensa":{"NO":2,"SI":15},"palestra":{"NO":11,"SI":6},"periodoCostruzione":{"tra il 1950 e il 1970":12,"tra il 1971 e il 1975":1,"tra il 1976 e il 1992":2,"tra il 1997 e il 2008":1,"tra il 2009 e il 2017":1},"scuolabus":{"NO":1,"SI":16},"tplUrbano":{"NO":4,"SI":13},"tplInterurbano":{"NO":10,"SI":7}},
+    "Forte dei Marmi": {"buildings":7,"agibilita":{"NO":1,"SI":6},"cpi":{"NO":2,"SI":5},"sciaAntincendio":{"NO":1,"SI":6},"rinnovoAntincendio":{"NO":1,"SI":6},"accessibilita":{"SI":7},"mensa":{"NO":2,"SI":5},"palestra":{"NO":2,"SI":5},"periodoCostruzione":{"tra il 1934 e il 1949":1,"tra il 1950 e il 1970":2,"tra il 1971 e il 1975":1,"tra il 1976 e il 1992":2,"tra il 1997 e il 2008":1},"scuolabus":{"NO":1,"SI":6},"tplUrbano":{"NO":3,"SI":4},"tplInterurbano":{"NO":7}},
+    "Massarosa": {"buildings":15,"agibilita":{"NO":9,"SI":6},"cpi":{"NO":5,"NON DEFINITO":9,"SI":1},"sciaAntincendio":{"NON DEFINITO":15},"rinnovoAntincendio":{"NON DEFINITO":15},"accessibilita":{"NON DEFINITO":3,"SI":12},"mensa":{"SI":15},"palestra":{"NO":8,"SI":7},"periodoCostruzione":{"NON DEFINITO":7,"tra il 1950 e il 1970":6,"tra il 1976 e il 1992":1,"tra il 1997 e il 2008":1},"scuolabus":{"NO":1,"SI":14},"tplUrbano":{"NO":13,"SI":2},"tplInterurbano":{"NO":8,"SI":7}},
+    "Pietrasanta": {"buildings":19,"agibilita":{"NO":19},"cpi":{"NO":19},"sciaAntincendio":{"NO":17,"NON DEFINITO":1,"SI":1},"rinnovoAntincendio":{"NO":17,"NON DEFINITO":1,"SI":1},"accessibilita":{"SI":19},"mensa":{"NO":5,"SI":14},"palestra":{"NO":9,"SI":10},"periodoCostruzione":{"NON DEFINITO":1,"prima del 1800":1,"tra il 1934 e il 1949":2,"tra il 1950 e il 1970":10,"tra il 1976 e il 1992":5},"scuolabus":{"NO":3,"SI":16},"tplUrbano":{"NO":4,"SI":15},"tplInterurbano":{"NO":9,"SI":10}},
+    "Seravezza": {"buildings":10,"agibilita":{"NO":9,"SI":1},"cpi":{"NO":10},"sciaAntincendio":{"NO":2,"NON DEFINITO":8},"rinnovoAntincendio":{"NO":2,"NON DEFINITO":8},"accessibilita":{"NON DEFINITO":1,"SI":9},"mensa":{"NO":2,"SI":8},"palestra":{"NO":5,"SI":5},"periodoCostruzione":{"NON DEFINITO":1,"tra il 1800 e il 1899":1,"tra il 1900 e il 1933":2,"tra il 1934 e il 1949":1,"tra il 1950 e il 1970":4,"tra il 1976 e il 1992":1},"scuolabus":{"NO":2,"SI":8},"tplUrbano":{"NO":2,"SI":8},"tplInterurbano":{"NO":4,"SI":6}},
+    "Stazzema": {"buildings":3,"agibilita":{"NO":2,"SI":1},"cpi":{"NO":3},"sciaAntincendio":{"NO":3},"rinnovoAntincendio":{"NO":3},"accessibilita":{"NO":1,"SI":2},"mensa":{"SI":3},"palestra":{"NO":2,"SI":1},"periodoCostruzione":{"tra il 1950 e il 1970":3},"scuolabus":{"SI":3},"tplUrbano":{"SI":3},"tplInterurbano":{"NO":2,"SI":1}},
+    "Viareggio": {"buildings":38,"agibilita":{"IN PARTE":2,"NO":25,"SI":11},"cpi":{"NO":17,"SI":21},"sciaAntincendio":{"NO":37,"SI":1},"rinnovoAntincendio":{"NO":38},"accessibilita":{"NO":3,"SI":35},"mensa":{"NO":17,"SI":21},"palestra":{"NO":16,"SI":22},"periodoCostruzione":{"tra il 1900 e il 1933":3,"tra il 1934 e il 1949":1,"tra il 1950 e il 1970":11,"tra il 1971 e il 1975":7,"tra il 1976 e il 1992":12,"tra il 1997 e il 2008":3,"tra il 2009 e il 2017":1},"scuolabus":{"NO":21,"SI":17},"tplUrbano":{"NO":10,"SI":28},"tplInterurbano":{"NO":32,"SI":6}}
+  }
+}

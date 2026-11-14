@@ -1,0 +1,111 @@
+{
+  "schemaVersion": 1,
+  "source": "Ragioneria Generale dello Stato - OpenBDAP / Ministero dell'Interno - DAIT",
+  "referenceYear": 2025,
+  "siopeDataset": "spd_rnd_ent_sio_reg09_01_2025",
+  "siopeDataObservedAt": "2026-03-10",
+  "siopeMetadataUrl": "https://bdap-opendata.rgs.mef.gov.it/opendata/spd_rnd_ent_sio_reg09_01_2025?metadati=showall",
+  "siopeCsvUrl": "https://bdap-opendata.rgs.mef.gov.it/SpodCkanApi/api/1/rest/dataset/spd_rnd_ent_sio_reg09_01_2025.csv",
+  "daitUrl": "https://dait.interno.gov.it/documenti/com-fl-03-12-2025-all.pdf",
+  "daitReference": "Contributo 2025 per riscossioni 2024 a seguito di segnalazioni dei Comuni",
+  "towns": {
+    "Massarosa": {
+      "siopeMonth": "2025/12",
+      "populationIstat": 21806,
+      "verificationControlReceiptsEuro": 687088.75,
+      "verificationControlReceiptsPerResidentEuro": 31.51,
+      "breakdownEuro": {"immobili": 435805.78, "rifiuti": 228690.78, "tasi": 258.0, "altri": 22334.19},
+      "codes": {
+        "imu": {"code": "E1010106002", "label": "Imposte municipale propria riscosse a seguito di attività di verifica e controllo", "amountEuro": 435805.78},
+        "tarsu": {"code": "E1010151002", "label": "Tassa smaltimento rifiuti solidi urbani riscossa a seguito di attività di verifica e controllo", "amountEuro": 228690.78},
+        "tasi": {"code": "E1010176002", "label": "Tributo per i servizi indivisibili (TASI) riscosso a seguito di attività di verifica e controllo", "amountEuro": 258.0},
+        "other": {"code": "E1010199002", "label": "Altre imposte, tasse e proventi assimilati n.a.c. riscosse a seguito di attività di verifica e controllo", "amountEuro": 22334.19}
+      },
+      "daitContribution2025Euro": 0.0
+    },
+    "Viareggio": {
+      "siopeMonth": "2025/12",
+      "populationIstat": 60618,
+      "verificationControlReceiptsEuro": 3125634.7,
+      "verificationControlReceiptsPerResidentEuro": 51.56,
+      "breakdownEuro": {"immobili": 2658282.39, "rifiuti": 276142.28, "tasi": 148225.66, "altri": 42984.37},
+      "codes": {
+        "imu": {"code": "E1010106002", "label": "Imposte municipale propria riscosse a seguito di attività di verifica e controllo", "amountEuro": 2320087.69},
+        "ici": {"code": "E1010108002", "label": "Imposta comunale sugli immobili (ICI) riscossa a seguito di attività di verifica e controllo", "amountEuro": 338194.7},
+        "tarsu": {"code": "E1010151002", "label": "Tassa smaltimento rifiuti solidi urbani riscossa a seguito di attività di verifica e controllo", "amountEuro": 276142.28},
+        "pubblicita": {"code": "E1010153002", "label": "Imposta comunale sulla pubblicità e diritto sulle pubbliche affissioni riscossa a seguito di attività di verifica e controllo", "amountEuro": 42984.37},
+        "tasi": {"code": "E1010176002", "label": "Tributo per i servizi indivisibili (TASI) riscosso a seguito di attività di verifica e controllo", "amountEuro": 148225.66}
+      },
+      "daitContribution2025Euro": 82.5
+    },
+    "Camaiore": {
+      "siopeMonth": "2025/12",
+      "populationIstat": 31832,
+      "verificationControlReceiptsEuro": 4929520.42,
+      "verificationControlReceiptsPerResidentEuro": 154.86,
+      "breakdownEuro": {"immobili": 4254460.71, "rifiuti": 544030.11, "tasi": 131029.6, "altri": 0.0},
+      "codes": {
+        "imu": {"code": "E1010106002", "label": "Imposte municipale propria riscosse a seguito di attività di verifica e controllo", "amountEuro": 3954131.3},
+        "ici": {"code": "E1010108002", "label": "Imposta comunale sugli immobili (ICI) riscossa a seguito di attività di verifica e controllo", "amountEuro": 300329.41},
+        "tarsu": {"code": "E1010151002", "label": "Tassa smaltimento rifiuti solidi urbani riscossa a seguito di attività di verifica e controllo", "amountEuro": 544030.11},
+        "tasi": {"code": "E1010176002", "label": "Tributo per i servizi indivisibili (TASI) riscosso a seguito di attività di verifica e controllo", "amountEuro": 131029.6}
+      },
+      "daitContribution2025Euro": 0.0
+    },
+    "Pietrasanta": {
+      "siopeMonth": "2025/12",
+      "populationIstat": 22743,
+      "verificationControlReceiptsEuro": 3032379.43,
+      "verificationControlReceiptsPerResidentEuro": 133.33,
+      "breakdownEuro": {"immobili": 2177454.02, "rifiuti": 370825.0, "tasi": 9522.76, "altri": 474577.65},
+      "codes": {
+        "imu": {"code": "E1010106002", "label": "Imposte municipale propria riscosse a seguito di attività di verifica e controllo", "amountEuro": 2177454.02},
+        "irpef": {"code": "E1010116002", "label": "Addizionale comunale IRPEF riscossa a seguito di attività di verifica e controllo", "amountEuro": 35552.93},
+        "tares": {"code": "E1010161002", "label": "Tributo comunale sui rifiuti e sui servizi riscosso a seguito di attività di verifica e controllo", "amountEuro": 370825.0},
+        "tasi": {"code": "E1010176002", "label": "Tributo per i servizi indivisibili (TASI) riscosso a seguito di attività di verifica e controllo", "amountEuro": 9522.76},
+        "other": {"code": "E1010199002", "label": "Altre imposte, tasse e proventi assimilati n.a.c. riscosse a seguito di attività di verifica e controllo", "amountEuro": 439024.72}
+      },
+      "daitContribution2025Euro": 165.0
+    },
+    "Seravezza": {
+      "siopeMonth": "2025/12",
+      "populationIstat": 12381,
+      "verificationControlReceiptsEuro": 1084109.15,
+      "verificationControlReceiptsPerResidentEuro": 87.56,
+      "breakdownEuro": {"immobili": 636228.01, "rifiuti": 447881.14, "tasi": 0.0, "altri": 0.0},
+      "codes": {
+        "ici": {"code": "E1010108002", "label": "Imposta comunale sugli immobili (ICI) riscossa a seguito di attività di verifica e controllo", "amountEuro": 636228.01},
+        "tarsu": {"code": "E1010151002", "label": "Tassa smaltimento rifiuti solidi urbani riscossa a seguito di attività di verifica e controllo", "amountEuro": 447881.14}
+      },
+      "daitContribution2025Euro": 0.0
+    },
+    "Forte dei Marmi": {
+      "siopeMonth": "2025/12",
+      "populationIstat": 6666,
+      "verificationControlReceiptsEuro": 1814328.18,
+      "verificationControlReceiptsPerResidentEuro": 272.18,
+      "breakdownEuro": {"immobili": 1263692.63, "rifiuti": 548049.74, "tasi": 2585.81, "altri": 0.0},
+      "codes": {
+        "imu": {"code": "E1010106002", "label": "Imposte municipale propria riscosse a seguito di attività di verifica e controllo", "amountEuro": 1184834.22},
+        "ici": {"code": "E1010108002", "label": "Imposta comunale sugli immobili (ICI) riscossa a seguito di attività di verifica e controllo", "amountEuro": 78858.41},
+        "tarsu": {"code": "E1010151002", "label": "Tassa smaltimento rifiuti solidi urbani riscossa a seguito di attività di verifica e controllo", "amountEuro": 533771.34},
+        "tares": {"code": "E1010161002", "label": "Tributo comunale sui rifiuti e sui servizi riscosso a seguito di attività di verifica e controllo", "amountEuro": 14278.4},
+        "tasi": {"code": "E1010176002", "label": "Tributo per i servizi indivisibili (TASI) riscosso a seguito di attività di verifica e controllo", "amountEuro": 2585.81}
+      },
+      "daitContribution2025Euro": 0.0
+    },
+    "Stazzema": {
+      "siopeMonth": "2025/12",
+      "populationIstat": 2892,
+      "verificationControlReceiptsEuro": 184724.85,
+      "verificationControlReceiptsPerResidentEuro": 63.87,
+      "breakdownEuro": {"immobili": 77375.94, "rifiuti": 105714.86, "tasi": 1634.05, "altri": 0.0},
+      "codes": {
+        "imu": {"code": "E1010106002", "label": "Imposte municipale propria riscosse a seguito di attività di verifica e controllo", "amountEuro": 77375.94},
+        "tares": {"code": "E1010161002", "label": "Tributo comunale sui rifiuti e sui servizi riscosso a seguito di attività di verifica e controllo", "amountEuro": 105714.86},
+        "tasi": {"code": "E1010176002", "label": "Tributo per i servizi indivisibili (TASI) riscosso a seguito di attività di verifica e controllo", "amountEuro": 1634.05}
+      },
+      "daitContribution2025Euro": 0.0
+    }
+  }
+}

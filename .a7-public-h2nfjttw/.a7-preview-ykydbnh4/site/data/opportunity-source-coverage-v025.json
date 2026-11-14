@@ -1,0 +1,51 @@
+{
+  "schemaVersion": "0.2.5",
+  "backtestWindowDays": 90,
+  "sources": {
+    "regione-toscana": {
+      "label": "Regione Toscana",
+      "monitoringStatus": "active",
+      "role": "primary",
+      "priority": 100,
+      "listingDiscovery": true,
+      "detailEnrichment": true,
+      "pdfFallback": true,
+      "archiveContinuity": true,
+      "historicalReplay": true,
+      "note": "Fonte primaria regionale. Il radar usa pagina elenco, scheda di dettaglio e PDF allegati nei casi ambigui."
+    },
+    "fondazione-cr-lucca": {
+      "label": "Fondazione Cassa di Risparmio di Lucca",
+      "monitoringStatus": "active",
+      "role": "primary",
+      "priority": 100,
+      "listingDiscovery": true,
+      "detailEnrichment": true,
+      "pdfFallback": false,
+      "archiveContinuity": true,
+      "historicalReplay": true,
+      "note": "Fonte primaria provinciale; raccolta JSON-LD con verifica della scheda ufficiale."
+    },
+    "pa-digitale-2026": {
+      "label": "PA Digitale 2026",
+      "monitoringStatus": "degraded",
+      "role": "supplementary",
+      "priority": 60,
+      "listingDiscovery": true,
+      "detailEnrichment": false,
+      "pdfFallback": false,
+      "archiveContinuity": true,
+      "historicalReplay": false,
+      "replacementNeeded": true,
+      "note": "Il dataset selezionato è stale e non costituisce copertura corrente sufficiente; resta solo fonte accessoria."
+    }
+  },
+  "plannedSources": [
+    {"id": "toscana-fesr-fse", "label": "PR Toscana FESR / FSE+", "phase": "v0.3"},
+    {"id": "gse", "label": "GSE", "phase": "v0.3"},
+    {"id": "anci", "label": "ANCI / ANCI Toscana", "phase": "v0.3"},
+    {"id": "ministeri", "label": "Ministeri e Dipartimenti nazionali", "phase": "v0.3"},
+    {"id": "interreg", "label": "Interreg", "phase": "v0.4"},
+    {"id": "eu-direct", "label": "Programmi UE diretti", "phase": "v0.4"}
+  ]
+}

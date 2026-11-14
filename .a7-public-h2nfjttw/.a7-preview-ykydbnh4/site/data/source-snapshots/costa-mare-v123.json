@@ -1,0 +1,460 @@
+{
+  "schemaVersion": 1,
+  "lot": "Costa e mare",
+  "release": "v1.23.0",
+  "verifiedAt": "2026-08-28",
+  "scope": {
+    "coastalTownCodes": [
+      "046005",
+      "046013",
+      "046024",
+      "046033"
+    ],
+    "notApplicableTownCodes": [
+      "046018",
+      "046028",
+      "046030"
+    ],
+    "coverage": "4/4 Comuni costieri + 3 n.a."
+  },
+  "sources": {
+    "arpatSamples2025": {
+      "publisher": "ARPAT",
+      "file": "dati-balneazione-2025-lu.csv",
+      "sha256": "90d25c2b47ceae7d2222c718948a46fac6d11985eb0df464a30cc6236be4f1bf",
+      "url": "https://www.arpat.toscana.it/pubblicazione/il-controllo-delle-acque-di-balneazione-stagione-2025/"
+    },
+    "arpatQualityHistory": {
+      "publisher": "ARPAT",
+      "file": "balneazione-qualita-aree-2010-2024.csv",
+      "sha256": "cfcd5b2b5d48084468b43d0bf9f03fb63fb70239a07cca8b8afae56343633752",
+      "url": "https://www.arpat.toscana.it/datiemappe/balneazione-in-toscana-dati-relativi-alle-stagioni-precedenti/"
+    },
+    "arpatControlsHistory": {
+      "publisher": "ARPAT",
+      "file": "controlli-aree-balneazione-2018-2024.csv",
+      "sha256": "79fbbc55472fd9cc7a69d631c0826378fa8cb1661fd4b29e622ec9eefe903b90",
+      "url": "https://www.arpat.toscana.it/datiemappe/balneazione-in-toscana-dati-relativi-alle-stagioni-precedenti/"
+    },
+    "arpatReport2025": {
+      "publisher": "ARPAT",
+      "file": "controllo-acque-balneazione-2025.pdf",
+      "sha256": "c190a78c0cf0d8a3e728d84aaa5fd50c7aefc6c0918cb8efa06305d0b965e76a",
+      "url": "https://www.arpat.toscana.it/pubblicazione/il-controllo-delle-acque-di-balneazione-stagione-2025/",
+      "pagesUsed": [
+        28,
+        29,
+        30,
+        31,
+        59,
+        63,
+        64
+      ]
+    },
+    "blueFlag2026": {
+      "publisher": "FEE Italia",
+      "file": "Elenco-Spiagge-Bandiera-Blu-2026.pdf",
+      "sha256": "dbfbb3f4f7ea1397015f69b93b91f0acaa2ec71f7cd2e7a2fcad8f76bbd048fc",
+      "url": "https://www.bandierablu.org/common/blueflag.asp?anno=2026&tipo=bb"
+    },
+    "blueFlagArchive": {
+      "publisher": "FEE Italia",
+      "years": [
+        2019,
+        2020,
+        2021,
+        2022,
+        2023,
+        2024,
+        2025,
+        2026
+      ],
+      "urlTemplate": "https://www.bandierablu.org/common/blueflag.asp?anno={year}&tipo=bb",
+      "countingRule": "Si contano le localita elencate separatamente; le denominazioni unite da una barra restano una sola localita."
+    },
+    "ispraShorelineDynamics": {
+      "publisher": "ISPRA",
+      "file": "02_Dinamica Litoranea_Eros-Avan_2020 Aggiornamento.xlsx",
+      "sha256": "a00fb97649e293c73c923e43fd0ee53ecfa42df9568ec162a9668c2adb4c9b11",
+      "sheet": "Ind. Comunale_DL_var",
+      "rows": [
+        703,
+        704,
+        705,
+        706
+      ],
+      "url": "https://indicatoriambientali.isprambiente.it/it/coste/dinamica-litoranea"
+    },
+    "ispraProtectedCoast": {
+      "publisher": "ISPRA",
+      "file": "Costa_Protetta_2020.xlsx",
+      "sha256": "9ca2b81cff7375f4af9f86af50543637d23329828d3556ccbe174a16e27d956e",
+      "sheet": "Ind. Comuni_CP_2020",
+      "rows": [
+        703,
+        704,
+        705,
+        706
+      ],
+      "url": "https://indicatoriambientali.isprambiente.it/it/coste/costa-protetta"
+    }
+  },
+  "bathingWaterQuality2025": {
+    "period": "Classificazione 2025 sui dati 2022-2025",
+    "towns": {
+      "046005": {
+        "name": "Camaiore",
+        "areas": {
+          "excellent": 2,
+          "good": 0,
+          "sufficient": 0,
+          "poor": 1,
+          "total": 3
+        },
+        "kilometres": {
+          "excellent": 2.92,
+          "good": 0.0,
+          "sufficient": 0.0,
+          "poor": 0.32,
+          "total": 3.24
+        }
+      },
+      "046013": {
+        "name": "Forte dei Marmi",
+        "areas": {
+          "excellent": 3,
+          "good": 0,
+          "sufficient": 0,
+          "poor": 0,
+          "total": 3
+        },
+        "kilometres": {
+          "excellent": 5.2,
+          "good": 0.0,
+          "sufficient": 0.0,
+          "poor": 0.0,
+          "total": 5.2
+        }
+      },
+      "046024": {
+        "name": "Pietrasanta",
+        "areas": {
+          "excellent": 4,
+          "good": 5,
+          "sufficient": 0,
+          "poor": 0,
+          "total": 9
+        },
+        "kilometres": {
+          "excellent": 3.56,
+          "good": 1.19,
+          "sufficient": 0.0,
+          "poor": 0.0,
+          "total": 4.75
+        }
+      },
+      "046033": {
+        "name": "Viareggio",
+        "areas": {
+          "excellent": 5,
+          "good": 1,
+          "sufficient": 0,
+          "poor": 0,
+          "total": 6
+        },
+        "kilometres": {
+          "excellent": 7.16,
+          "good": 0.27,
+          "sufficient": 0.0,
+          "poor": 0.0,
+          "total": 7.43
+        }
+      }
+    },
+    "versilia": {
+      "areas": {
+        "excellent": 14,
+        "good": 6,
+        "sufficient": 0,
+        "poor": 1,
+        "total": 21
+      },
+      "kilometres": {
+        "excellent": 18.84,
+        "good": 1.46,
+        "sufficient": 0.0,
+        "poor": 0.32,
+        "total": 20.62
+      }
+    }
+  },
+  "bathingNonCompliantSamples2025": {
+    "definition": "Campione non conforme se Enterococchi intestinali > 200 MPN/100 ml oppure Escherichia coli > 500 MPN/100 ml.",
+    "deduplicationKey": [
+      "Codice area",
+      "Data",
+      "Rout. Suppl."
+    ],
+    "uniqueSamples": 167,
+    "towns": {
+      "046005": {
+        "name": "Camaiore",
+        "all": {
+          "nonCompliant": 8,
+          "total": 28
+        },
+        "routine": {
+          "nonCompliant": 7,
+          "total": 18,
+          "affectedAreas": 3,
+          "areas": 3
+        },
+        "supplementary": {
+          "nonCompliant": 1,
+          "total": 10
+        }
+      },
+      "046013": {
+        "name": "Forte dei Marmi",
+        "all": {
+          "nonCompliant": 4,
+          "total": 22
+        },
+        "routine": {
+          "nonCompliant": 4,
+          "total": 18,
+          "affectedAreas": 3,
+          "areas": 3
+        },
+        "supplementary": {
+          "nonCompliant": 0,
+          "total": 4
+        }
+      },
+      "046024": {
+        "name": "Pietrasanta",
+        "all": {
+          "nonCompliant": 17,
+          "total": 73
+        },
+        "routine": {
+          "nonCompliant": 12,
+          "total": 54,
+          "affectedAreas": 9,
+          "areas": 9
+        },
+        "supplementary": {
+          "nonCompliant": 5,
+          "total": 19
+        }
+      },
+      "046033": {
+        "name": "Viareggio",
+        "all": {
+          "nonCompliant": 6,
+          "total": 44
+        },
+        "routine": {
+          "nonCompliant": 6,
+          "total": 36,
+          "affectedAreas": 4,
+          "areas": 6
+        },
+        "supplementary": {
+          "nonCompliant": 0,
+          "total": 8
+        }
+      }
+    },
+    "versilia": {
+      "all": {
+        "nonCompliant": 35,
+        "total": 167
+      },
+      "routine": {
+        "nonCompliant": 29,
+        "total": 126,
+        "affectedAreas": 19,
+        "areas": 21
+      },
+      "supplementary": {
+        "nonCompliant": 6,
+        "total": 41
+      }
+    }
+  },
+  "blueFlagBeaches": {
+    "years": [
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024,
+      2025,
+      2026
+    ],
+    "towns": {
+      "046005": {
+        "name": "Camaiore",
+        "values": [
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        "localities2026": [
+          "Lido di Camaiore"
+        ]
+      },
+      "046013": {
+        "name": "Forte dei Marmi",
+        "values": [
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        "localities2026": [
+          "Litorale"
+        ]
+      },
+      "046024": {
+        "name": "Pietrasanta",
+        "values": [
+          1,
+          1,
+          0,
+          2,
+          2,
+          2,
+          2,
+          2
+        ],
+        "localities2026": [
+          "La Versiliana",
+          "Tonfano"
+        ]
+      },
+      "046033": {
+        "name": "Viareggio",
+        "values": [
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ],
+        "localities2026": [
+          "Marina di Viareggio (Ponente/Levante)",
+          "Torre del Lago Puccini"
+        ]
+      }
+    },
+    "versiliaValues": [
+      5,
+      5,
+      4,
+      6,
+      6,
+      6,
+      6,
+      6
+    ]
+  },
+  "shorelineDynamics2006_2020": {
+    "definition": {
+      "erosion": "Arretramento superiore a 5 m",
+      "stable": "Variazione entro +/-5 m",
+      "advance": "Avanzamento superiore a 5 m"
+    },
+    "towns": {
+      "046005": {
+        "name": "Camaiore",
+        "analysedKm": 2.91846344786501,
+        "erosionKm": 0.0100189572193096,
+        "stableKm": 0.0795608627726403,
+        "advanceKm": 2.82888362787306
+      },
+      "046013": {
+        "name": "Forte dei Marmi",
+        "analysedKm": 4.7692408179442705,
+        "erosionKm": 0.378408351146785,
+        "stableKm": 1.1059056060405954,
+        "advanceKm": 3.28492686075689
+      },
+      "046024": {
+        "name": "Pietrasanta",
+        "analysedKm": 4.3036029253380805,
+        "erosionKm": 0.0202974114120675,
+        "stableKm": 0.033068293355833056,
+        "advanceKm": 4.25023722057018
+      },
+      "046033": {
+        "name": "Viareggio",
+        "analysedKm": 7.99007096439557,
+        "erosionKm": 0.117421940399078,
+        "stableKm": 0.6979617723803617,
+        "advanceKm": 7.17468725161613
+      }
+    },
+    "versilia": {
+      "analysedKm": 19.98137815554293,
+      "erosionKm": 0.5261466601772401,
+      "stableKm": 1.916496534549431,
+      "advanceKm": 17.53873496081626
+    }
+  },
+  "rigidDefenceProtectedCoast2020": {
+    "towns": {
+      "046005": {
+        "name": "Camaiore",
+        "coastKm": 2.9440775904766894,
+        "protectedKm": 0.2117937358575105
+      },
+      "046013": {
+        "name": "Forte dei Marmi",
+        "coastKm": 4.776514706292495,
+        "protectedKm": 0.20801519928834244
+      },
+      "046024": {
+        "name": "Pietrasanta",
+        "coastKm": 4.3444820108490285,
+        "protectedKm": 0.2137802007528477
+      },
+      "046033": {
+        "name": "Viareggio",
+        "coastKm": 8.689269742678789,
+        "protectedKm": 0.0
+      }
+    },
+    "versilia": {
+      "coastKm": 20.754344050297004,
+      "protectedKm": 0.6335891358987007
+    },
+    "excludes": "Ripascimenti artificiali"
+  },
+  "deferredCandidates": {
+    "beachNourishment": {
+      "status": "deferred",
+      "reason": "Nessun dataset ufficiale strutturato reperito con codice intervento, Comune o tratto, anno, volume in metri cubi, stato di realizzazione e chiave di deduplicazione.",
+      "sourcesChecked": [
+        "Sistema informativo regionale della costa",
+        "Regione Toscana / GEOscopio",
+        "DORT",
+        "LaMMA"
+      ]
+    }
+  }
+}

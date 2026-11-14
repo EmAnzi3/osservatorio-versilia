@@ -1,0 +1,15 @@
+{
+  "schemaVersion": "0.4",
+  "referenceDate": "2026-08-22",
+  "note": "Questi casi misurano la copertura del radar. Non entrano nel calcolo precision/recall del classificatore v0.3.",
+  "cases": [
+    {"id":"c01","coverage_id":"mic-cultura-piccoli-comuni-2026","title":"Cultura nei piccoli comuni — Edizione 1","source_id":"mic-dgcc","expected":"current","lifecycle_stage":"application_open"},
+    {"id":"c02","coverage_id":"pcm-capitale-mare-2027","title":"Capitale italiana del mare 2027","source_id":"pcm-politiche-mare","expected":"current","lifecycle_stage":"application_open"},
+    {"id":"c03","coverage_id":"gse-conto-termico-3-2026","title":"Conto Termico 3.0 — incentivi per edifici comunali","source_id":"gse","expected":"current","lifecycle_stage":"rolling_open"},
+    {"id":"c04","coverage_id":"mit-fondo-piccoli-comuni-2026","title":"Fondo investimenti stradali piccoli Comuni — bando 2026","source_id":"mit-enti-locali","expected":"current","lifecycle_stage":"announced_upcoming"},
+    {"id":"c05","coverage_id":"eu-co-create-neb-2026","title":"Co-create New European Bauhaus 2026","source_id":"eu-neb","expected":"current","lifecycle_stage":"application_open"},
+    {"id":"h01","title":"Sport e Periferie 2026","source_id":"pcm-sport","expected":"historical_monitored","closed_at":"2026-06-25","reason":"Caso comunale noto che il radar deve usare come sentinella storica per la famiglia sport/infrastrutture sociali."},
+    {"id":"h02","title":"Interreg Italia-Francia Marittimo — V Avviso","source_id":"interreg-marittimo","expected":"historical_monitored","closed_at":"2026-07-23","reason":"Caso storico recente per verificare che la cooperazione territoriale non sia fuori dal perimetro di discovery."},
+    {"id":"x01","title":"Gara di fornitura pubblicata da un Comune","expected":"excluded_kind","opportunity_kind":"procurement_where_municipality_is_contracting_authority","reason":"Una gara in cui il Comune compra beni o servizi non è un'opportunità finanziaria per il Comune e non deve riempire il radar di rumore."}
+  ]
+}

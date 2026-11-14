@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "version": "rsa-accreditate-2025-v140",
+  "retrieved": "2026-09-14",
+  "publisher": "Regione Toscana",
+  "indicator": {
+    "key": "accreditedRsaCount",
+    "label": "RSA accreditate presenti nel Comune",
+    "year": "2025",
+    "unit": "strutture",
+    "sourceUrl": "https://servizi.toscana.it/RT/RSA/",
+    "note": "Presenza territoriale di strutture accreditate; non misura posti letto, capacità o convenzionamento SSR."
+  },
+  "series": {
+    "Camaiore": 5,
+    "Forte dei Marmi": 0,
+    "Massarosa": 0,
+    "Pietrasanta": 2,
+    "Seravezza": 2,
+    "Stazzema": 0,
+    "Viareggio": 4
+  },
+  "versilia": {
+    "value": 13,
+    "method": "Somma delle strutture presenti nei sette Comuni."
+  }
+}

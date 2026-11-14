@@ -1,0 +1,321 @@
+<!doctype html>
+<html lang="it"><head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mobilità e infrastrutture · Confronto dei comuni della Versilia</title>
+  <meta name="description" content="Pendolarismo, trasporto pubblico, parco veicolare, ricarica elettrica, connettività digitale e mobilità lenta.">
+  <meta property="og:title" content="Mobilità e infrastrutture · Confronto dei comuni della Versilia">
+  <meta property="og:description" content="Pendolarismo, trasporto pubblico, parco veicolare, ricarica elettrica, connettività digitale e mobilità lenta.">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="it_IT">
+  <link rel="icon" href="../../favicon.svg?v=20260824-ov4" sizes="any">
+  <link rel="icon" href="../../favicon.svg?v=20260824-ov4" type="image/svg+xml">
+  <link rel="manifest" href="../../site.webmanifest?v=20260824-pwa9">
+  <link rel="stylesheet" href="../../assets/original.css">
+  <link rel="stylesheet" href="../../assets/static.css">
+  <link rel="stylesheet" href="../../assets/fidelity.css?v=20261025-ui-shell-consistency">
+  <link rel="stylesheet" href="../../assets/fonts.css">
+  <link rel="stylesheet" href="../../assets/ux-experiment.css?v=20261025-ui-shell-consistency">
+  <link rel="stylesheet" href="../../assets/ux-background-match.css?v=20261025-ui-shell-consistency">
+  <link rel="stylesheet" href="../../assets/export-v161.css?v=20261025-ui-shell-consistency">
+  <link rel="stylesheet" href="../../assets/visual-grammar.css?v=20261025-ui-shell-consistency">
+  <link rel="stylesheet" href="../../assets/indicator-pages.css?v=20261025-ui-shell-consistency">
+  <link rel="stylesheet" href="../../assets/social-presence.css?v=20261025-ui-shell-consistency">
+<style id="ov-invalsi-benchmark-history-style">
+.ux-history-chart .ux-series-group[data-history-town="toscana"] .ux-series-line{stroke-dasharray:10 5;stroke-width:3;opacity:.9}
+.ux-history-chart .ux-series-group[data-history-town="italia"] .ux-series-line{stroke-dasharray:2 5;stroke-width:3;opacity:.9}
+.ux-history-legend button[data-history-select="toscana"]::before,.ux-history-legend button[data-history-select="italia"]::before{width:20px;height:2px;border-radius:0}
+.ux-history-legend button[data-history-select="toscana"]::before{background:repeating-linear-gradient(90deg,var(--series-color) 0 8px,transparent 8px 12px)}
+.ux-history-legend button[data-history-select="italia"]::before{background:repeating-linear-gradient(90deg,var(--series-color) 0 2px,transparent 2px 6px)}
+</style><style id="ov-climate-current-grammar-style">
+      .ov-climate-current-legend{
+        display:flex;align-items:center;gap:18px;margin:0 0 14px;padding:0 2px;
+        color:var(--muted);font-size:9px;font-weight:700
+      }
+      .ov-climate-current-legend span{display:inline-flex;align-items:center;gap:7px}
+      .ov-climate-current-legend .ov-legend-dot{
+        width:9px;height:9px;border-radius:50%;background:var(--surface,#fffaf1);
+        border:2px solid var(--theme-color,#52785c)
+      }
+      .ov-climate-current-legend .ov-legend-mean{width:2px;height:16px;background:#607b88}
+      .ov-climate-current-list{
+        display:grid;gap:11px
+      }
+      .ov-climate-current-list .ov-climate-current-row{
+        border-radius:8px;grid-template-columns:24px minmax(110px,1.1fr) minmax(150px,3fr) minmax(70px,auto);
+        align-items:center;gap:12px;min-height:54px;padding:0;display:grid;position:relative;
+        color:inherit;text-decoration:none;transition:background .15s
+      }
+      .ov-climate-current-list .ov-climate-current-row:hover,
+      .ov-climate-current-list .ov-climate-current-row.selected{background:var(--blue-soft)}
+      .ov-climate-current-list .ov-climate-current-row .town{
+        grid-column:2;font-size:13px;font-weight:690
+      }
+      .ov-climate-current-list .ov-climate-current-row strong{
+        grid-column:4;font-family:var(--font-geist-mono),monospace;text-align:right;
+        white-space:nowrap;font-size:12px
+      }
+      .ov-climate-current-list .ov-climate-current-track{
+        grid-column:3;position:relative;height:9px;border-radius:999px;background:#e4e9e7;
+        overflow:visible
+      }
+      .ov-climate-current-list.uses-versilia-marker .ov-climate-current-track::after{
+        content:'';position:absolute;z-index:1;left:var(--ov-mean-position);top:-5px;width:2px;height:19px;
+        background:#607b88;transform:translateX(-1px)
+      }
+      .ov-climate-current-list.uses-versilia-marker .ov-climate-current-track>i{
+        position:absolute;z-index:2;top:50%;left:var(--ov-value-position)!important;
+        width:11px;height:11px;margin:-5.5px 0 0 -5.5px;border-radius:50%;
+        background:var(--surface,#fffaf1);border:3px solid var(--theme-color,#52785c);
+        box-shadow:0 1px 4px color-mix(in srgb,var(--ink) 18%,transparent)
+      }
+      .ov-climate-current-list .bar-hover-label{display:none}
+      @media(max-width:700px){
+        .ov-climate-current-list .ov-climate-current-row{
+          grid-template-columns:18px minmax(82px,1fr) minmax(70px,1.4fr) auto;gap:7px
+        }
+        .ov-climate-current-list .ov-climate-current-row .town{font-size:11px}
+        .ov-climate-current-list .ov-climate-current-row strong{font-size:10px}
+      }
+    </style>
+  <link rel="canonical" href="https://osservatorioversilia.it/confronta/mobilita/">
+  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"url":"https://osservatorioversilia.it/confronta/mobilita/","name":"Mobilità e infrastrutture · Confronto dei comuni della Versilia","description":"Pendolarismo, trasporto pubblico, parco veicolare, ricarica elettrica, connettività digitale e mobilità lenta.","inLanguage":"it-IT","isAccessibleForFree":true,"creator":{"@type":"Person","name":"Emanuele Anzilotti"},"publisher":{"@type":"Person","name":"Emanuele Anzilotti"},"@type":"Dataset","spatialCoverage":{"@type":"Place","name":"Versilia, Toscana, Italia"},"variableMeasured":["Lavoratori fuori comune","Pendolari in uscita per lavoro","Pendolari in entrata per lavoro","Saldo pendolare assoluto","Autocontenimento del lavoro","Saldo dei pendolari per lavoro","Pendolari in uscita ogni 1.000 residenti","Pendolari in entrata ogni 1.000 residenti","Corse TPL programmate","Punti di accesso GTFS attivi","Ampiezza oraria programmata del servizio TPL","Autovetture ogni 1.000 residenti","Autovetture Euro 0–3","Prezzi carburanti self-service","Punti di ricarica attivi ogni 1.000 residenti","Grafo viario Iter.Net","Copertura FTTH DESI","Famiglie raggiunte da FTTH","Famiglie non raggiunte da FTTH","Copertura FTTH entro 20 metri","Percorsi pubblici che attraversano il Comune","Percorsi trekking che attraversano il Comune","Cammini che attraversano il Comune","Percorsi ciclabili che attraversano il Comune","Percorsi MTB che attraversano il Comune"]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Osservatorio Versilia","item":"https://osservatorioversilia.it/"},{"@type":"ListItem","position":2,"name":"Temi","item":"https://osservatorioversilia.it/#temi"},{"@type":"ListItem","position":3,"name":"Mobilità e infrastrutture · Confronto dei comuni della Versilia","item":"https://osservatorioversilia.it/confronta/mobilita/"}]}]}</script>
+
+  <meta property="og:url" content="https://osservatorioversilia.it/confronta/mobilita/">
+  <meta property="og:site_name" content="Osservatorio Versilia">
+  <meta property="og:image" content="https://osservatorioversilia.it/images/versilia-viareggio-apuane.jpg">
+  <meta property="og:image:alt" content="Viareggio e le Alpi Apuane, immagine di Osservatorio Versilia">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Mobilità e infrastrutture · Confronto dei comuni della Versilia">
+  <meta name="twitter:description" content="Pendolarismo, trasporto pubblico, parco veicolare, ricarica elettrica, connettività digitale e mobilità lenta.">
+  <meta name="twitter:site" content="@OssVersilia">
+  <meta name="twitter:image" content="https://osservatorioversilia.it/images/versilia-viareggio-apuane.jpg">
+  <meta name="twitter:image:alt" content="Viareggio e le Alpi Apuane, immagine di Osservatorio Versilia">
+  <link rel="stylesheet" href="../../assets/brand.css?v=20260824-ov4">
+  <link rel="stylesheet" href="../../assets/mobile-accordion-fix.css?v=20260809-3">
+  <link rel="stylesheet" href="../../assets/chart-surfaces.css?v=20260826-v120">
+  <meta name="theme-color" content="#0F3654">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Osservatorio Versilia">
+  <link rel="apple-touch-icon" sizes="180x180" href="../../pwa/icon-180.png?v=20260824-pwa9">
+  <link rel="stylesheet" href="../../assets/pwa.css?v=20260824-pwa9">
+</head>
+<body class="antialiased" data-page="compare" data-theme="mobilita" data-town="" data-prerendered="true">
+  <div id="site-header-mount">
+      <a class="skip-link" href="#app">Vai al contenuto</a>
+      <header class="site-header">
+        <div class="site-header-inner">
+          <a href="../../" class="site-brand" aria-label="Osservatorio Versilia, torna alla home">
+            <span class="site-brand-mark" aria-hidden="true"><svg class="ov-mark-svg" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 76 64"><g fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="27" cy="32" r="22" stroke="#0F3654" stroke-width="6"/>
+    <path d="M43 28 53 48 71 15" stroke="#0F3654" stroke-width="6"/>
+    <path d="M57 27 70 9" stroke="#58A28F" stroke-width="3.2"/>
+  </g>
+  <g fill="#6F8FA3">
+    <rect x="16" y="34" width="5.5" height="9" rx="1"/>
+    <rect x="24" y="28" width="5.5" height="15" rx="1"/>
+    <rect x="32" y="20" width="5.5" height="23" rx="1"/>
+  </g>
+  <path d="M10 43c7-5.5 14-7.2 20-5.3 4.4 1.4 8 4.1 12 4.7v5.1c-4.6-.5-8.7-3-13.1-4.1-5.7-1.5-11.7-.1-18.9 4.1Z" fill="#58A28F"/>
+  <path d="M11.5 45.2c6.2-3.2 11.9-4.2 17.1-3 4.3 1 8.1 3.2 12.2 3.8" fill="none" stroke="#F7FAF8" stroke-width="1.8" stroke-linecap="round"/>
+</svg></span>
+            <span class="site-brand-copy"><strong>Osservatorio Versilia</strong><small>Versilia in numeri</small></span>
+          </a>
+          <div class="site-header-actions">
+            <nav aria-label="Navigazione principale">
+              <a href="../../#temi" aria-current="page">Temi</a>
+              <a href="../../#comuni">Comuni</a>
+              <a href="../../dossier/">Dossier</a>
+              <a href="../../chiedi/">Chiedi</a>
+              <a href="../../opportunita/">Opportunità</a>
+              <a href="../../progetto/">Il progetto</a>
+              <a href="../../stato-dati/" data-data-status-nav="header">Stato dati</a>
+              <a href="../../segnala/">Segnala</a>
+            </nav>
+            <button class="global-search-trigger" type="button" aria-haspopup="dialog" aria-expanded="false">
+              <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg><span>Cerca</span><kbd>/</kbd>
+            </button>
+          </div>
+        </div>
+      </header></div>
+  <div id="app"><main class="inner-page a5-editorial-pilot" data-theme="mobilita">
+          <section class="compare-showcase-hero" aria-labelledby="compare-page-title">
+            <div class="compare-showcase-hero-media" style="background-image:linear-gradient(90deg,rgba(10,45,67,.86) 0%,rgba(10,45,67,.62) 43%,rgba(10,45,67,.16) 78%),url('../../images/versilia-viareggio-apuane.jpg')"></div>
+            <div class="compare-showcase-hero-copy page-width">
+              <span class="overline">Confronto territoriale · 06</span>
+              <h1 id="compare-page-title">Mobilità e infrastrutture</h1>
+              <p>Pendolarismo, trasporto pubblico, parco veicolare, ricarica elettrica, connettività digitale e mobilità lenta.</p>
+              <div class="compare-showcase-actions">
+                <a class="compare-showcase-primary" href="#compare-workspace">Esplora i dati <span aria-hidden="true">→</span></a>
+                <a class="compare-showcase-secondary" href="#compare-territori">Scopri i comuni</a>
+              </div>
+              <div class="compare-showcase-facts"><span>7 Comuni</span><span>25 indicatori Mobilità e infrastrutture</span><span>Catalogo al 14 settembre 2026</span></div>
+            </div>
+          </section>
+          <div class="breadcrumbs page-width"><a href="/">Home</a><span>›</span><strong>Mobilità e infrastrutture</strong></div>
+          <nav class="compare-context-nav page-width" aria-label="Passa a un altro tema">
+      <div class="context-nav-title"><small>Esplora</small><strong>Temi</strong></div>
+      <div class="context-nav-links"><a href="/confronta/demografia/?indicatore=population" data-context-theme="demografia" class=""><small>01</small><span>Demografia</span></a><a href="/confronta/economia/?indicatore=income" data-context-theme="economia" class=""><small>02</small><span>Economia</span></a><a href="/confronta/lavoro/?indicatore=employmentRate" data-context-theme="lavoro" class=""><small>03</small><span>Lavoro</span></a><a href="/confronta/istruzione/?indicatore=diplomaPlus" data-context-theme="istruzione" class=""><small>04</small><span>Istruzione</span></a><a href="/confronta/salute/?indicatore=lifeExpectancy" data-context-theme="salute" class=""><small>05</small><span>Salute</span></a><a href="/confronta/mobilita/?indicatore=outsideMunicipality" data-context-theme="mobilita" class="active" aria-current="page"><small>06</small><span>Mobilità e infrastrutture</span></a><a href="/confronta/sicurezza/?indicatore=roadSafety" data-context-theme="sicurezza" class=""><small>07</small><span>Sicurezza e territorio</span></a><a href="/confronta/abitare/?indicatore=omiResidential" data-context-theme="abitare" class=""><small>08</small><span>Abitare</span></a><a href="/confronta/ambiente/?indicatore=municipalSurface" data-context-theme="ambiente" class=""><small>09</small><span>Ambiente</span></a><a href="/confronta/bilanci/?indicatore=currentRevenueAccruedPerResident" data-context-theme="bilanci" class=""><small>10</small><span>Bilanci e amministrazione</span></a><a href="/confronta/comunita/?indicatore=publicWorks" data-context-theme="comunita" class=""><small>11</small><span>Comunità e welfare</span></a></div>
+    </nav>
+          <section class="topic-hero page-width" data-theme="mobilita">
+            <div class="topic-symbol"><svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 8-2 2-1.5-3.7A2 2 0 0 0 15.646 5H8.4a2 2 0 0 0-1.903 1.257L5 10 3 8"></path><path d="M7 14h.01"></path><path d="M17 14h.01"></path><rect width="18" height="8" x="3" y="10" rx="2"></rect><path d="M5 18v2"></path><path d="M19 18v2"></path></svg><small>06</small></div>
+            <div class="topic-hero-copy"><span class="overline">Per leggere il territorio</span><h2>Come si muove e quanto è connessa la Versilia?</h2></div>
+            <div class="topic-hero-context"><span class="overline">Come si legge</span><p>Scegli un indicatore: valore attuale dei sette Comuni, serie storica e, dove disponibile, confronto con Toscana e Italia. Fonte e metodo sono indicati sotto ogni grafico.</p></div>
+          </section>
+          <section id="compare-workspace" class="topic-dashboard page-width" data-theme="mobilita">
+            <aside class="topic-controls">
+      <div class="topic-controls-heading"><div><span class="overline">Gruppi di indicatori</span><strong>25 indicatori</strong></div><small>Scegli il dato da confrontare</small></div>
+      <div class="metric-switch metric-catalog compact-list" role="tablist" aria-label="Indicatori di Mobilità e infrastrutture" data-ux-accordion-delegated="true" data-ux-visible-tabs="true" data-ux-accordion-ready="true"><section class="metric-group is-open" data-section="pendolarismo" data-ux-accordion="true">
+      <div class="metric-group-heading ux-section-toggle" role="button" tabindex="0" aria-controls="ux-section-1" data-ux-accordion-heading="true" aria-expanded="true"><strong>Flussi reali</strong><span>Entrate, uscite, saldo e capacità del Comune di trattenere lavoro.</span><span class="ux-section-tools"><span>8 indicatori</span><span class="ux-section-chevron" aria-hidden="true">⌄</span></span></div>
+      <div class="metric-group-buttons" id="ux-section-1"><button type="button" role="tab" data-metric="outsideMunicipality" class="active" aria-selected="true" tabindex="0">Lavoratori fuori comune</button><button type="button" role="tab" data-metric="outboundCommuters" class="" aria-selected="false" tabindex="-1">Uscite per lavoro</button><button type="button" role="tab" data-metric="inboundCommuters" class="" aria-selected="false" tabindex="-1">Entrate per lavoro</button><button type="button" role="tab" data-metric="commuterBalance" class="" aria-selected="false" tabindex="-1">Saldo assoluto</button><button type="button" role="tab" data-metric="selfContainment" class="" aria-selected="false" tabindex="-1">Lavoro nel comune</button><button type="button" role="tab" data-metric="commuterBalanceRate" class="" aria-selected="false" tabindex="-1">Saldo pendolare</button><button type="button" role="tab" data-metric="outboundCommutersRate" class="" aria-selected="false" tabindex="-1">Pendolari in uscita ogni 1.000 residenti</button><button type="button" role="tab" data-metric="inboundCommutersRate" class="" aria-selected="false" tabindex="-1">Pendolari in entrata / residenti</button></div>
+    </section><section class="metric-group" data-section="trasporto-pubblico" data-ux-accordion="true">
+      <div class="metric-group-heading ux-section-toggle" role="button" tabindex="0" aria-controls="ux-section-2" data-ux-accordion-heading="true" aria-expanded="false"><strong>Trasporto pubblico</strong><span>Offerta programmata di autobus e ferrovia: corse, punti di accesso e ampiezza della giornata di servizio sui GTFS ufficiali regionali.</span><span class="ux-section-tools"><span>3 indicatori</span><span class="ux-section-chevron" aria-hidden="true">⌄</span></span></div>
+      <div class="metric-group-buttons" id="ux-section-2" hidden=""><button type="button" role="tab" data-metric="scheduledTplTripsPer1000" class="" aria-selected="false" tabindex="-1">Corse TPL programmate</button><button type="button" role="tab" data-metric="activeTplAccessPoints" class="" aria-selected="false" tabindex="-1">Punti di accesso TPL</button><button type="button" role="tab" data-metric="tplServiceSpan" class="" aria-selected="false" tabindex="-1">Ampiezza oraria TPL</button></div>
+    </section><section class="metric-group" data-section="veicoli" data-ux-accordion="true">
+      <div class="metric-group-heading ux-section-toggle" role="button" tabindex="0" aria-controls="ux-section-3" data-ux-accordion-heading="true" aria-expanded="false"><strong>Mezzi, carburanti e infrastrutture</strong><span>Motorizzazione, veicoli più inquinanti, prezzi dei carburanti self-service e ricarica elettrica.</span><span class="ux-section-tools"><span>5 indicatori</span><span class="ux-section-chevron" aria-hidden="true">⌄</span></span></div>
+      <div class="metric-group-buttons" id="ux-section-3" hidden=""><button type="button" role="tab" data-metric="motorization" class="" aria-selected="false" tabindex="-1">Motorizzazione</button><button type="button" role="tab" data-metric="pollutingCars" class="" aria-selected="false" tabindex="-1">Auto Euro 0–3</button><button type="button" role="tab" data-metric="fuelPrices" class="" aria-selected="false" tabindex="-1">Prezzi carburanti</button><button type="button" role="tab" data-metric="evPoints" class="" aria-selected="false" tabindex="-1">Ricarica elettrica</button><button type="button" role="tab" data-metric="roadNetworkProfile" class="" aria-selected="false" tabindex="-1">Grafo viario</button></div>
+    </section><section class="metric-group" data-section="connettivita" data-ux-accordion="true">
+      <div class="metric-group-heading ux-section-toggle" role="button" tabindex="0" aria-controls="ux-section-4" data-ux-accordion-heading="true" aria-expanded="false"><strong>Connettività digitale</strong><span>Copertura della rete fissa FTTH: percentuali comunali 7/7 e conteggi assoluti con copertura dichiarata, senza stime dei valori mancanti.</span><span class="ux-section-tools"><span>4 indicatori</span><span class="ux-section-chevron" aria-hidden="true">⌄</span></span></div>
+      <div class="metric-group-buttons" id="ux-section-4" hidden=""><button type="button" role="tab" data-metric="ftthCoverageDesi" class="" aria-selected="false" tabindex="-1">Copertura FTTH</button><button type="button" role="tab" data-metric="ftthReachedHouseholds" class="" aria-selected="false" tabindex="-1">Famiglie raggiunte da FTTH</button><button type="button" role="tab" data-metric="ftthUnreachedHouseholds" class="" aria-selected="false" tabindex="-1">Famiglie non raggiunte</button><button type="button" role="tab" data-metric="ftthCoverage20m" class="" aria-selected="false" tabindex="-1">FTTH entro 20 metri</button></div>
+    </section><section class="metric-group" data-section="mobilita-lenta" data-ux-accordion="true">
+      <div class="metric-group-heading ux-section-toggle" role="button" tabindex="0" aria-controls="ux-section-5" data-ux-accordion-heading="true" aria-expanded="false"><strong>Mobilità lenta</strong><span>Sentieri, cammini e percorsi ciclabili pubblici verificati nel territorio.</span><span class="ux-section-tools"><span>5 indicatori</span><span class="ux-section-chevron" aria-hidden="true">⌄</span></span></div>
+      <div class="metric-group-buttons" id="ux-section-5" hidden=""><button type="button" role="tab" data-metric="slowMobilityRoutes" class="" aria-selected="false" tabindex="-1">Percorsi disponibili</button><button type="button" role="tab" data-metric="slowMobilityTrekking" class="" aria-selected="false" tabindex="-1">Trekking</button><button type="button" role="tab" data-metric="slowMobilityCammini" class="" aria-selected="false" tabindex="-1">Cammini</button><button type="button" role="tab" data-metric="slowMobilityBici" class="" aria-selected="false" tabindex="-1">Bici</button><button type="button" role="tab" data-metric="slowMobilityMtb" class="" aria-selected="false" tabindex="-1">MTB</button></div>
+    </section></div>
+      <div id="compare-definition" class="topic-side-definition"><div class="indicator-definition"><h2>Lavoratori fuori comune</h2><p>Occupati residenti che lavorano in un comune diverso da quello di residenza.</p><dl><div><dt>Anno</dt><dd>2021</dd></div><div><dt>Fonte</dt><dd><a href="https://www.istat.it/statistiche-per-temi/censimenti/popolazione-e-abitazioni/risultati/" target="_blank" rel="noreferrer">Istat — Censimento permanente, mobilità ↗</a></dd></div><div><dt>Media semplice dei 7 comuni</dt><dd>52,7%</dd></div></dl><small class="aggregate-note">Ogni comune pesa allo stesso modo.</small></div></div>
+    </aside>
+            <div class="compare-main-column">
+              <header class="compare-panel-heading"><span class="overline">Confronto tra Comuni della Versilia</span></header>
+              <div id="compare-bars" class="a5-shared-chart" data-age-pyramid-delegated="1"><div class="ux-view-shell" data-view-shell="ux-view-1"><div class="ux-view-toolbar"><div class="ux-view-toolbar-copy"><small class="a5-toolbar-overline">Confronto tra Comuni della Versilia</small><strong>Come vuoi leggere l’indicatore?</strong><span>Fotografia dell’ultimo anno oppure confronto dell’andamento tra i sette comuni.</span></div><div class="data-actions"><a href="../../indicatori/lavoratori-fuori-comune/">Scheda indicatore</a><button type="button" data-download="">Scarica CSV</button><button type="button" data-print="">Stampa / PDF</button></div><div class="ux-view-toggle" role="tablist" aria-label="Vista dell’indicatore"><button id="ux-view-1-tab-current" type="button" role="tab" aria-controls="ux-view-1-current" data-view-mode="current" class="active" aria-selected="true" tabindex="0">Valore attuale</button><button id="ux-view-1-tab-history" type="button" role="tab" aria-controls="ux-view-1-history" data-view-mode="history" disabled="" aria-selected="false" tabindex="-1">Storico</button></div></div><p class="ux-view-note">Per questo indicatore non esistono almeno due anni omogenei per tutti e sette i comuni.</p><div id="ux-view-1-current" class="ux-view-pane" role="tabpanel" aria-labelledby="ux-view-1-tab-current" data-view-pane="current"><div class="topic-bars"><div class="comparison-bars" data-visual-contract="canonical" data-visual-unit="percent" data-visual-grammar-signature="outsideMunicipality|r|||52.699999999999996|percent|64.2|63.2|62.9|49.3|49.1|48.4|31.8" data-viz="percent-dotplot"><div class="comparison-legend"><span><i class="comparison-legend-dot" aria-hidden="true"></i>Comune</span><span><i class="comparison-legend-reference" aria-hidden="true"></i>Media semplice dei 7 comuni</span></div><a href="/comuni/seravezza/?tema=mobilita&amp;indicatore=outsideMunicipality" class="bar-row comparison-row" aria-label="Seravezza: 64,2%; Media semplice dei 7 comuni: 52,7%">
+        <span class="bar-town">Seravezza</span>
+        <span class="bar-track">
+        <span class="comparison-axis-line" aria-hidden="true"></span>
+        
+        <span class="comparison-reference" style="left:52.69999999999999%" aria-hidden="true"></span>
+        <span class="comparison-stem" style="left:0%;width:64.2%" aria-hidden="true"></span>
+        <span class="comparison-dot" style="left:64.2%" aria-hidden="true"></span><span class="bar-hover-label">Seravezza: 64,2% · Media semplice dei 7 comuni: 52,7%</span></span>
+        <strong>64,2%</strong>
+      </a><a href="/comuni/stazzema/?tema=mobilita&amp;indicatore=outsideMunicipality" class="bar-row comparison-row" aria-label="Stazzema: 63,2%; Media semplice dei 7 comuni: 52,7%">
+        <span class="bar-town">Stazzema</span>
+        <span class="bar-track">
+        <span class="comparison-axis-line" aria-hidden="true"></span>
+        
+        <span class="comparison-reference" style="left:52.69999999999999%" aria-hidden="true"></span>
+        <span class="comparison-stem" style="left:0%;width:63.2%" aria-hidden="true"></span>
+        <span class="comparison-dot" style="left:63.2%" aria-hidden="true"></span><span class="bar-hover-label">Stazzema: 63,2% · Media semplice dei 7 comuni: 52,7%</span></span>
+        <strong>63,2%</strong>
+      </a><a href="/comuni/massarosa/?tema=mobilita&amp;indicatore=outsideMunicipality" class="bar-row comparison-row" aria-label="Massarosa: 62,9%; Media semplice dei 7 comuni: 52,7%">
+        <span class="bar-town">Massarosa</span>
+        <span class="bar-track">
+        <span class="comparison-axis-line" aria-hidden="true"></span>
+        
+        <span class="comparison-reference" style="left:52.69999999999999%" aria-hidden="true"></span>
+        <span class="comparison-stem" style="left:0%;width:62.9%" aria-hidden="true"></span>
+        <span class="comparison-dot" style="left:62.9%" aria-hidden="true"></span><span class="bar-hover-label">Massarosa: 62,9% · Media semplice dei 7 comuni: 52,7%</span></span>
+        <strong>62,9%</strong>
+      </a><a href="/comuni/forte-dei-marmi/?tema=mobilita&amp;indicatore=outsideMunicipality" class="bar-row comparison-row" aria-label="Forte dei Marmi: 49,3%; Media semplice dei 7 comuni: 52,7%">
+        <span class="bar-town">Forte dei Marmi</span>
+        <span class="bar-track">
+        <span class="comparison-axis-line" aria-hidden="true"></span>
+        
+        <span class="comparison-reference" style="left:52.69999999999999%" aria-hidden="true"></span>
+        <span class="comparison-stem" style="left:0%;width:49.3%" aria-hidden="true"></span>
+        <span class="comparison-dot" style="left:49.3%" aria-hidden="true"></span><span class="bar-hover-label">Forte dei Marmi: 49,3% · Media semplice dei 7 comuni: 52,7%</span></span>
+        <strong>49,3%</strong>
+      </a><a href="/comuni/pietrasanta/?tema=mobilita&amp;indicatore=outsideMunicipality" class="bar-row comparison-row" aria-label="Pietrasanta: 49,1%; Media semplice dei 7 comuni: 52,7%">
+        <span class="bar-town">Pietrasanta</span>
+        <span class="bar-track">
+        <span class="comparison-axis-line" aria-hidden="true"></span>
+        
+        <span class="comparison-reference" style="left:52.69999999999999%" aria-hidden="true"></span>
+        <span class="comparison-stem" style="left:0%;width:49.1%" aria-hidden="true"></span>
+        <span class="comparison-dot" style="left:49.1%" aria-hidden="true"></span><span class="bar-hover-label">Pietrasanta: 49,1% · Media semplice dei 7 comuni: 52,7%</span></span>
+        <strong>49,1%</strong>
+      </a><a href="/comuni/camaiore/?tema=mobilita&amp;indicatore=outsideMunicipality" class="bar-row comparison-row" aria-label="Camaiore: 48,4%; Media semplice dei 7 comuni: 52,7%">
+        <span class="bar-town">Camaiore</span>
+        <span class="bar-track">
+        <span class="comparison-axis-line" aria-hidden="true"></span>
+        
+        <span class="comparison-reference" style="left:52.69999999999999%" aria-hidden="true"></span>
+        <span class="comparison-stem" style="left:0%;width:48.4%" aria-hidden="true"></span>
+        <span class="comparison-dot" style="left:48.4%" aria-hidden="true"></span><span class="bar-hover-label">Camaiore: 48,4% · Media semplice dei 7 comuni: 52,7%</span></span>
+        <strong>48,4%</strong>
+      </a><a href="/comuni/viareggio/?tema=mobilita&amp;indicatore=outsideMunicipality" class="bar-row comparison-row" aria-label="Viareggio: 31,8%; Media semplice dei 7 comuni: 52,7%">
+        <span class="bar-town">Viareggio</span>
+        <span class="bar-track">
+        <span class="comparison-axis-line" aria-hidden="true"></span>
+        
+        <span class="comparison-reference" style="left:52.69999999999999%" aria-hidden="true"></span>
+        <span class="comparison-stem" style="left:0%;width:31.8%" aria-hidden="true"></span>
+        <span class="comparison-dot" style="left:31.8%" aria-hidden="true"></span><span class="bar-hover-label">Viareggio: 31,8% · Media semplice dei 7 comuni: 52,7%</span></span>
+        <strong>31,8%</strong>
+      </a><div class="comparison-axis"><span>0,0%</span><span>scala 0–100%</span><span>100%</span></div><p class="comparison-note">I comuni sono ordinati per valore per facilitare il confronto. L’ordine non esprime merito o qualità.</p></div></div></div><div id="ux-view-1-history" class="ux-view-pane" role="tabpanel" aria-labelledby="ux-view-1-tab-history" data-view-pane="history" hidden=""><div class="ux-history-unavailable"><strong>Serie storica non disponibile</strong><p>Servono almeno due anni omogenei e comuni a tutti e sette i territori.</p></div></div></div></div>
+            </div>
+          </section>
+          <section id="compare-demographic-pyramid" class="compare-demographic-pyramid page-width"></section>
+          <section id="compare-benchmark" class="page-width a5-benchmark-host"><section class="benchmark-unavailable"><span class="overline">Confronto esterno</span><h2>Dato non perfettamente comparabile</h2><p>Per questo indicatore non è disponibile un confronto omogeneo con Toscana e Italia. Il sito evita di affiancare valori con perimetri o anni incompatibili.</p></section></section>
+          
+          <section id="compare-tools" class="compare-post-benchmark-tools page-width"><details class="method-disclosure"><summary><span>Metodo e comparabilità</span><small>Formula, natura del dato e criticità</small></summary><div class="method-disclosure-body"><dl><div><dt>Natura</dt><dd>Dato ufficiale</dd></div><div><dt>Formula</dt><dd>Valore pubblicato dalla fonte, senza trasformazione ulteriore.</dd></div><div><dt>Copertura</dt><dd>7/7</dd></div></dl><p><strong>Nota:</strong> I dati di pendolarismo si riferiscono al Censimento 2021 e non descrivono tutti gli spostamenti quotidiani.</p></div></details><aside class="reading-scale" data-reading-scale="functional" data-reading-metric="outsideMunicipality">
+      <div><span class="overline">Scala di lettura</span><strong>Funzionale</strong></div>
+      <p>Il fenomeno supera strutturalmente i confini comunali. Il valore indica dove persone, imprese o servizi sono localizzati o censiti, non delimita un sistema economico-sociale autonomo.</p>
+    </aside></section>
+          <section id="compare-territori" class="topic-town-links page-width"><div class="topic-town-links-heading"><span class="overline">Schede comunali</span><h2>Apri il territorio</h2><p>Accedi alla scheda comunale e agli indicatori di dettaglio del tema Mobilità e infrastrutture.</p></div><div class="topic-town-card-grid"><a class="topic-town-card" href="../../comuni/camaiore/?tema=mobilita&amp;indicatore=outsideMunicipality"><span class="topic-town-card-media"><img src="../../crests/camaiore.svg" alt="" loading="lazy" referrerpolicy="no-referrer"></span><span class="topic-town-card-copy"><strong>Camaiore</strong><span class="town-current-value"><b>48,4%</b><small>Pendolari in uscita</small></span><small>Apri la scheda →</small></span></a><a class="topic-town-card" href="../../comuni/forte-dei-marmi/?tema=mobilita&amp;indicatore=outsideMunicipality"><span class="topic-town-card-media"><img src="../../crests/forte-dei-marmi.svg" alt="" loading="lazy" referrerpolicy="no-referrer"></span><span class="topic-town-card-copy"><strong>Forte dei Marmi</strong><span class="town-current-value"><b>49,3%</b><small>Pendolari in uscita</small></span><small>Apri la scheda →</small></span></a><a class="topic-town-card" href="../../comuni/massarosa/?tema=mobilita&amp;indicatore=outsideMunicipality"><span class="topic-town-card-media"><img src="../../crests/massarosa.png" alt="" loading="lazy" referrerpolicy="no-referrer"></span><span class="topic-town-card-copy"><strong>Massarosa</strong><span class="town-current-value"><b>62,9%</b><small>Pendolari in uscita</small></span><small>Apri la scheda →</small></span></a><a class="topic-town-card" href="../../comuni/pietrasanta/?tema=mobilita&amp;indicatore=outsideMunicipality"><span class="topic-town-card-media"><img src="../../crests/pietrasanta.svg" alt="" loading="lazy" referrerpolicy="no-referrer"></span><span class="topic-town-card-copy"><strong>Pietrasanta</strong><span class="town-current-value"><b>49,1%</b><small>Pendolari in uscita</small></span><small>Apri la scheda →</small></span></a><a class="topic-town-card" href="../../comuni/seravezza/?tema=mobilita&amp;indicatore=outsideMunicipality"><span class="topic-town-card-media"><img src="../../crests/seravezza.png" alt="" loading="lazy" referrerpolicy="no-referrer"></span><span class="topic-town-card-copy"><strong>Seravezza</strong><span class="town-current-value"><b>64,2%</b><small>Pendolari in uscita</small></span><small>Apri la scheda →</small></span></a><a class="topic-town-card" href="../../comuni/stazzema/?tema=mobilita&amp;indicatore=outsideMunicipality"><span class="topic-town-card-media"><img src="../../crests/stazzema.webp" alt="" loading="lazy" referrerpolicy="no-referrer"></span><span class="topic-town-card-copy"><strong>Stazzema</strong><span class="town-current-value"><b>63,2%</b><small>Pendolari in uscita</small></span><small>Apri la scheda →</small></span></a><a class="topic-town-card" href="../../comuni/viareggio/?tema=mobilita&amp;indicatore=outsideMunicipality"><span class="topic-town-card-media"><img src="../../crests/viareggio.svg" alt="" loading="lazy" referrerpolicy="no-referrer"></span><span class="topic-town-card-copy"><strong>Viareggio</strong><span class="town-current-value"><b>31,8%</b><small>Pendolari in uscita</small></span><small>Apri la scheda →</small></span></a></div></section>
+        </main></div>
+  <div id="site-footer-mount">
+      <footer class="site-footer">
+        <div class="footer-about"><strong>Osservatorio Versilia</strong>
+          <p>Un punto di accesso indipendente ai dati pubblici dei sette comuni della Versilia.</p>
+          <p class="footer-disclaimer">Non è un sito istituzionale e non rappresenta gli enti citati.</p>
+        </div>
+        <nav class="footer-links" aria-label="Informazioni sul progetto">
+          <a href="../../progetto/">Il progetto</a>
+          <a href="../../stato-dati/" data-data-status-nav="footer">Stato dei dati</a>
+          <a href="../../opportunita/">Opportunità</a>
+          <a href="../../progetto/#metodo">Metodo</a>
+          <a href="../../progetto/#licenza">Licenza</a>
+          <a href="../../progetto/#versioni">Versioni dei dati</a>
+          <a href="../../segnala/">Segnala un dato</a>
+          <a href="mailto:info@osservatorioversilia.it">Contatti</a>
+        </nav>
+        
+      <div class="footer-social" data-social-placement="footer" aria-label="Segui Osservatorio Versilia">
+        <strong>Segui Osservatorio Versilia</strong><div class="social-links">
+    <a class="social-profile-link" href="https://www.facebook.com/osservatorioversilia" target="_blank" rel="me noreferrer" aria-label="Segui Osservatorio Versilia su Facebook">
+      <span class="social-profile-mark" aria-hidden="true">f</span>
+      <span class="social-profile-copy"><strong>Facebook</strong><small>@osservatorioversilia</small></span>
+      <b aria-hidden="true">↗</b>
+    </a>
+    <a class="social-profile-link" href="https://www.instagram.com/osservatorioversilia/" target="_blank" rel="me noreferrer" aria-label="Segui Osservatorio Versilia su Instagram">
+      <span class="social-profile-mark" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="5" ry="5"></rect><circle cx="12" cy="12" r="4"></circle><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"></circle></svg></span>
+      <span class="social-profile-copy"><strong>Instagram</strong><small>@osservatorioversilia</small></span>
+      <b aria-hidden="true">↗</b>
+    </a>
+    <a class="social-profile-link" href="https://www.linkedin.com/company/osservatorioversilia" target="_blank" rel="me noreferrer" aria-label="Segui Osservatorio Versilia su LinkedIn">
+      <span class="social-profile-mark" aria-hidden="true">in</span>
+      <span class="social-profile-copy"><strong>LinkedIn</strong><small>Osservatorio Versilia</small></span>
+      <b aria-hidden="true">↗</b>
+    </a>
+    <a class="social-profile-link" href="https://x.com/OssVersilia" target="_blank" rel="me noreferrer" aria-label="Segui Osservatorio Versilia su X">
+      <span class="social-profile-mark" aria-hidden="true">X</span>
+      <span class="social-profile-copy"><strong>X</strong><small>@OssVersilia</small></span>
+      <b aria-hidden="true">↗</b>
+    </a></div>
+      </div><div class="footer-note">
+          <span>7 comuni · 11 temi</span><span>v. dati v1.40.0</span><span>catalogo dati aggiornato al 14 settembre 2026</span>
+        </div>
+      </footer></div>
+  <noscript><div class="app-error">Il sito richiede JavaScript per mostrare confronti, ricerca e schede comunali.</div></noscript>
+  <script src="../../assets/app-bundle.js?v=20261025-ui-shell-consistency" defer=""></script>
+  <script src="../../assets/fidelity.js" defer=""></script>
+  <script src="../../assets/economy-atlas.js" defer=""></script>
+  <script src="../../assets/ux-accordion.js?v=20261025-ui-shell-consistency" defer=""></script>
+  <script src="../../assets/ux-history-core.js?v=20261025-ui-shell-consistency" defer=""></script>
+  <script src="../../assets/ux-history.js?v=20261025-ui-shell-consistency" defer=""></script>
+  <script src="../../assets/export-v161.js?v=20261025-ui-shell-consistency" defer=""></script>
+  <script src="../../assets/visual-grammar.js?v=20261025-ui-shell-consistency" defer=""></script>
+  <script src="../../assets/social-presence.js?v=20261025-ui-shell-consistency" defer=""></script>
+
+
+  <script src="../../assets/pwa.js?v=20260824-pwa9&rev=catalog-v129" defer></script>
+</body></html>

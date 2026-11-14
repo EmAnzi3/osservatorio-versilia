@@ -1,0 +1,201 @@
+{
+  "schemaVersion": 1,
+  "snapshotVersion": "2026-08-26-v3",
+  "status": "release-verified-7of7",
+  "referenceDate": "2026-08-26",
+  "referenceDay": "mercoledì feriale estivo",
+  "scope": {
+    "coverage": "7/7",
+    "towns": [
+      "Camaiore",
+      "Forte dei Marmi",
+      "Massarosa",
+      "Pietrasanta",
+      "Seravezza",
+      "Stazzema",
+      "Viareggio"
+    ],
+    "modes": [
+      "autobus",
+      "ferrovia"
+    ]
+  },
+  "sources": {
+    "Istat confini 2026": {
+      "url": "https://www.istat.it/storage/cartografia/confini_amministrativi/generalizzati/2026/Limiti01012026_g.zip",
+      "sha256": "b011a590656c3a3ebc297fba80726a376aa843b6f164641cf6a4a990021a81d6",
+      "bytes": 10450609,
+      "lastModified": "Fri, 06 Mar 2026 09:47:09 GMT"
+    },
+    "GTFS Autolinee Toscane": {
+      "url": "https://regionetoscana.smartregion.toscana.it/mobility/artifacts/gtfs",
+      "sha256": "799ece1cdfc517044fcd4cf6ff9366effceeab9fa15c8ee5cf9fd7f20b5ed3de",
+      "bytes": 136536110,
+      "serviceWindow": [
+        "2026-08-25",
+        "2026-09-14"
+      ],
+      "activeServiceIds": 468,
+      "activeTripsOnReferenceDate": 21859
+    },
+    "GTFS Trenitalia": {
+      "url": "https://dati.toscana.it/dataset/8bb8f8fe-fe7d-41d0-90dc-49f2456180d1/resource/4f85393b-357d-443d-8378-65de4198505f/download/trenitalia.gtfs",
+      "sha256": "a262c5bdfccd98a5c7e7ae08eea8eecb3189222f34c1015f5d4608faf3efc152",
+      "bytes": 6127610,
+      "serviceWindow": [
+        "2026-01-15",
+        "2026-12-12"
+      ],
+      "activeServiceIds": 121,
+      "activeTripsOnReferenceDate": 774,
+      "lastModified": "Thu, 15 Jan 2026 20:00:20 GMT"
+    }
+  },
+  "rules": {
+    "trip": "Una trip_id è contata una sola volta per Comune se serve almeno uno stop_id geolocalizzato nel territorio comunale in cui sia consentita salita o discesa.",
+    "accessPoint": "Un punto di accesso è la coppia (feed, stop_id) attiva nella data di riferimento e utilizzabile dai passeggeri. Non coincide necessariamente con una fermata fisica unica: direzioni, banchine o feed diversi possono produrre punti distinti.",
+    "route": "Le route_id attive sono conservate come dettaglio descrittivo; non diventano un indicatore canonico perché la granularità con cui gli operatori definiscono una route non è perfettamente omogenea.",
+    "serviceSpan": "Ampiezza, calcolata sui secondi GTFS, tra la prima e l'ultima partenza programmata che serve il Comune nella giornata di servizio. Gli orari oltre 24:00 appartengono alla stessa giornata operativa e sono mostrati come ora del giorno successivo.",
+    "serviceDate": "I service_id attivi sono determinati combinando calendar.txt e calendar_dates.txt per il 26 agosto 2026.",
+    "territory": "Attribuzione tramite coordinate GTFS e confini amministrativi Istat 2026; i nomi delle fermate non determinano il Comune.",
+    "zero": "0 è ammesso solo dopo acquisizione, calendario e join geografico validi e conteggio realmente nullo.",
+    "missing": "n.d. quando fonte, data o attribuzione non sono disponibili o validabili; una riga assente non viene trasformata in zero."
+  },
+  "raw": {
+    "Camaiore": {
+      "trips": 330,
+      "busTrips": 298,
+      "railTrips": 32,
+      "activeAccessPoints": 151,
+      "routes": 19,
+      "first": "05:50:00",
+      "last": "29:51:10",
+      "serviceSpanHours": 24.02,
+      "population": 31763,
+      "tripsPer1000": 10.389446840663666,
+      "accessPointsPer1000": 4.753959008909738,
+      "firstDisplay": "05:50",
+      "lastDisplay": "05:51 (+1 giorno)",
+      "status": "ok"
+    },
+    "Forte dei Marmi": {
+      "trips": 110,
+      "busTrips": 110,
+      "railTrips": 0,
+      "activeAccessPoints": 31,
+      "routes": 6,
+      "first": "06:28:56",
+      "last": "29:24:04",
+      "serviceSpanHours": 22.92,
+      "population": 6550,
+      "tripsPer1000": 16.793893129770993,
+      "accessPointsPer1000": 4.732824427480916,
+      "firstDisplay": "06:28",
+      "lastDisplay": "05:24 (+1 giorno)",
+      "status": "ok"
+    },
+    "Massarosa": {
+      "trips": 106,
+      "busTrips": 86,
+      "railTrips": 20,
+      "activeAccessPoints": 131,
+      "routes": 6,
+      "first": "05:52:00",
+      "last": "21:34:34",
+      "serviceSpanHours": 15.71,
+      "population": 21782,
+      "tripsPer1000": 4.866403452391884,
+      "accessPointsPer1000": 6.0141401156918555,
+      "firstDisplay": "05:52",
+      "lastDisplay": "21:34",
+      "status": "ok"
+    },
+    "Pietrasanta": {
+      "trips": 236,
+      "busTrips": 182,
+      "railTrips": 54,
+      "activeAccessPoints": 107,
+      "routes": 12,
+      "first": "05:23:00",
+      "last": "29:41:00",
+      "serviceSpanHours": 24.3,
+      "population": 22678,
+      "tripsPer1000": 10.406561425169768,
+      "accessPointsPer1000": 4.718229120733751,
+      "firstDisplay": "05:23",
+      "lastDisplay": "05:41 (+1 giorno)",
+      "status": "ok"
+    },
+    "Seravezza": {
+      "trips": 119,
+      "busTrips": 65,
+      "railTrips": 54,
+      "activeAccessPoints": 102,
+      "routes": 9,
+      "first": "05:19:00",
+      "last": "23:12:00",
+      "serviceSpanHours": 17.88,
+      "population": 12284,
+      "tripsPer1000": 9.68739824161511,
+      "accessPointsPer1000": 8.303484207098665,
+      "firstDisplay": "05:19",
+      "lastDisplay": "23:12",
+      "status": "ok"
+    },
+    "Stazzema": {
+      "trips": 26,
+      "busTrips": 26,
+      "railTrips": 0,
+      "activeAccessPoints": 80,
+      "routes": 1,
+      "first": "06:10:32",
+      "last": "20:07:02",
+      "serviceSpanHours": 13.94,
+      "population": 2783,
+      "tripsPer1000": 9.342436219906576,
+      "accessPointsPer1000": 28.74595759971254,
+      "firstDisplay": "06:10",
+      "lastDisplay": "20:07",
+      "status": "ok"
+    },
+    "Viareggio": {
+      "trips": 659,
+      "busTrips": 549,
+      "railTrips": 110,
+      "activeAccessPoints": 254,
+      "routes": 21,
+      "first": "05:30:00",
+      "last": "30:04:00",
+      "serviceSpanHours": 24.57,
+      "population": 60680,
+      "tripsPer1000": 10.860250494396835,
+      "accessPointsPer1000": 4.185893210283454,
+      "firstDisplay": "05:30",
+      "lastDisplay": "06:04 (+1 giorno)",
+      "status": "ok"
+    }
+  },
+  "derivation": {
+    "metricKeys": [
+      "scheduledTplTripsPer1000",
+      "activeTplAccessPoints",
+      "tplServiceSpan"
+    ],
+    "scheduledTrips": "corse programmate che servono il Comune; valore assoluto e, come scala rapportata, corse / residenti al 1 gennaio 2026 × 1.000",
+    "accessPoints": "coppie (feed, stop_id) GTFS attive e utilizzabili nel Comune; valore assoluto e, come scala rapportata, punti / residenti × 1.000. Gli identificativi dei due feed non vengono fusi tra loro.",
+    "serviceSpan": "differenza in ore, sui secondi GTFS, tra prima e ultima partenza programmata della giornata di servizio",
+    "aggregateTrips": "scala assoluta: media aritmetica dei sette conteggi comunali; scala per 1.000: somma dei conteggi comunali / popolazione complessiva × 1.000. Il totale territoriale non è usato come benchmark.",
+    "aggregateAccessPoints": "scala assoluta: media aritmetica dei sette conteggi comunali; scala per 1.000: 856 punti GTFS comunali / popolazione complessiva × 1.000. Il totale 7 Comuni resta solo descrittivo.",
+    "aggregateServiceSpan": "media aritmetica delle sette ampiezze orarie comunali; la somma delle ore comunali non viene usata come riferimento grafico."
+  },
+  "candidateDecisions": {
+    "scheduledTplTripsPer1000": "promosso: indicatore canonico con doppia scala, assoluta e per 1.000 residenti; bus/ferrovia restano dettagli della stessa offerta",
+    "activeGtfsStopsPer1000": "promosso come Punti di accesso GTFS attivi, con doppia scala assoluta e per 1.000 residenti",
+    "averageFrequency": "scartato come media comunale per ambiguità metodologica",
+    "serviceSpan": "promosso come Ampiezza oraria programmata del servizio TPL; prima e ultima partenza restano dettagli descrittivi",
+    "activeRoutes": "conservato come dettaglio, non indicatore autonomo, per la diversa granularità delle route_id tra operatori",
+    "populationWithin500m": "rinviato: richiede metodologia GIS pedonale e allocazione della popolazione senza stime arbitrarie",
+    "realtimeReliability": "rinviato: richiede raccolta storica e misurazione preventiva della copertura realtime",
+    "populationInsistence": "sospeso: gli allegati pubblici Istat 2021-2023 non espongono i sette Comuni in forma direttamente riproducibile"
+  }
+}

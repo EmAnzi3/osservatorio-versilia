@@ -1,0 +1,2995 @@
+{
+  "metricId": "foreignResidents",
+  "years": [
+    2024,
+    2025
+  ],
+  "towns": {
+    "Camaiore": {
+      "code": "046005",
+      "years": [
+        2024,
+        2025
+      ],
+      "values": [
+        5.874968616620638,
+        5.965694898215633
+      ],
+      "foreignCitizens": [
+        1872,
+        1899
+      ],
+      "population": [
+        31864,
+        31832
+      ],
+      "nativeRows2024": 83
+    },
+    "Forte dei Marmi": {
+      "code": "046013",
+      "years": [
+        2024,
+        2025
+      ],
+      "values": [
+        7.569721115537849,
+        7.935793579357936
+      ],
+      "foreignCitizens": [
+        513,
+        529
+      ],
+      "population": [
+        6777,
+        6666
+      ],
+      "nativeRows2024": 46
+    },
+    "Massarosa": {
+      "code": "046018",
+      "years": [
+        2024,
+        2025
+      ],
+      "values": [
+        4.646695632289046,
+        4.723470604420801
+      ],
+      "foreignCitizens": [
+        1016,
+        1030
+      ],
+      "population": [
+        21865,
+        21806
+      ],
+      "nativeRows2024": 72
+    },
+    "Pietrasanta": {
+      "code": "046024",
+      "years": [
+        2024,
+        2025
+      ],
+      "values": [
+        5.779357556608741,
+        6.0546102097348635
+      ],
+      "foreignCitizens": [
+        1317,
+        1377
+      ],
+      "population": [
+        22788,
+        22743
+      ],
+      "nativeRows2024": 79
+    },
+    "Seravezza": {
+      "code": "046028",
+      "years": [
+        2024,
+        2025
+      ],
+      "values": [
+        5.444310414153599,
+        5.75882400452306
+      ],
+      "foreignCitizens": [
+        677,
+        713
+      ],
+      "population": [
+        12435,
+        12381
+      ],
+      "nativeRows2024": 54
+    },
+    "Stazzema": {
+      "code": "046030",
+      "years": [
+        2024,
+        2025
+      ],
+      "values": [
+        5.408198415432311,
+        5.636237897648686
+      ],
+      "foreignCitizens": [
+        157,
+        163
+      ],
+      "population": [
+        2903,
+        2892
+      ],
+      "nativeRows2024": 31
+    },
+    "Viareggio": {
+      "code": "046033",
+      "years": [
+        2024,
+        2025
+      ],
+      "values": [
+        8.142539708665954,
+        8.291266620475767
+      ],
+      "foreignCitizens": [
+        4947,
+        5026
+      ],
+      "population": [
+        60755,
+        60618
+      ],
+      "nativeRows2024": 103
+    }
+  },
+  "sources": {
+    "2024": {
+      "url": "https://demo.istat.it/data/rcs/Dati_RCS_cittadinanza_2024.zip",
+      "archiveMember": "Dati_cittadinanza_2024.csv",
+      "sha256": "dccda782f833ff8e3a60fbaf8ee9f7e77adba15036c76e8d2740c97c07d91876",
+      "bytes": 1935553,
+      "memberSha256": "23064341ad8f89be0dc9945a7c657e54b533bf96f9731184b0a1ff5943f4b717"
+    },
+    "2025": {
+      "sourceSnapshot": "istat-rcs-demography-2025.json",
+      "url": "https://demo.istat.it/data/rcs/Dati_RCS_cittadinanza_2025.zip",
+      "snapshotSha256": "ac8c4845e395babe33f26f088f5178c2514070dc0289a37c69b19d769ad44d6c"
+    }
+  },
+  "qualityGate": {
+    "status": "PASS",
+    "population2024MatchesP027of7": true,
+    "current2025Matches7of7": true
+  },
+  "schemaVersion": 1,
+  "publisher": "Istat RCS — popolazione residente per cittadinanza",
+  "nativeCitizenship2024": {
+    "046005": [
+      {
+        "citizenshipCode": "100",
+        "men": 14570,
+        "women": 15422,
+        "total": 29992
+      },
+      {
+        "citizenshipCode": "201",
+        "men": 51,
+        "women": 61,
+        "total": 112
+      },
+      {
+        "citizenshipCode": "401",
+        "men": 1,
+        "women": 1,
+        "total": 2
+      },
+      {
+        "citizenshipCode": "602",
+        "men": 1,
+        "women": 4,
+        "total": 5
+      },
+      {
+        "citizenshipCode": "701",
+        "men": 2,
+        "women": 4,
+        "total": 6
+      },
+      {
+        "citizenshipCode": "203",
+        "men": 3,
+        "women": 3,
+        "total": 6
+      },
+      {
+        "citizenshipCode": "359",
+        "men": 0,
+        "women": 1,
+        "total": 1
+      },
+      {
+        "citizenshipCode": "305",
+        "men": 27,
+        "women": 10,
+        "total": 37
+      },
+      {
+        "citizenshipCode": "206",
+        "men": 2,
+        "women": 4,
+        "total": 6
+      },
+      {
+        "citizenshipCode": "256",
+        "men": 1,
+        "women": 3,
+        "total": 4
+      },
+      {
+        "citizenshipCode": "605",
+        "men": 15,
+        "women": 20,
+        "total": 35
+      },
+      {
+        "citizenshipCode": "209",
+        "men": 2,
+        "women": 10,
+        "total": 12
+      },
+      {
+        "citizenshipCode": "410",
+        "men": 1,
+        "women": 0,
+        "total": 1
+      },
+      {
+        "citizenshipCode": "411",
+        "men": 2,
+        "women": 0,
+        "total": 2
+      },
+      {
+        "citizenshipCode": "509",
+        "men": 2,
+        "women": 3,
+        "total": 5
+      },
+      {
+        "citizenshipCode": "314",
+        "men": 54,
+        "women": 35,
+        "total": 89
+      },
+      {
+        "citizenshipCode": "315",
+        "men": 1,
+        "women": 1,
+        "total": 2
+      },
+      {
+        "citizenshipCode": "608",
+        "men": 3,
+        "women": 6,
+        "total": 9
+      },
+      {
+        "citizenshipCode": "320",
+        "men": 0,
+        "women": 1,
+        "total": 1
+      },
+      {
+        "citizenshipCode": "404",
+        "men": 4,
+        "women": 0,
+        "total": 4
+      },
+      {
+        "citizenshipCode": "250",
+        "men": 1,
+        "women": 2,
+        "total": 3
+      },
+      {
+        "citizenshipCode": "514",
+        "men": 4,
+        "women": 17,
+        "total": 21
+      },
+      {
+        "citizenshipCode": "212",
+        "men": 2,
+        "women": 1,
+        "total": 3
+      },
+      {
+        "citizenshipCode": "609",
+        "men": 4,
+        "women": 1,
+        "total": 5
+      },
+      {
+        "citizenshipCode": "419",
+        "men": 6,
+        "women": 4,
+        "total": 10
+      },
+      {
+        "citizenshipCode": "517",
+        "men": 1,
+        "women": 2,
+        "total": 3
+      },
+      {
+        "citizenshipCode": "420",
+        "men": 0,
+        "women": 1,
+        "total": 1
+      },
+      {
+        "citizenshipCode": "245",
+        "men": 13,
+        "women": 35,
+        "total": 48
+      },
+      {
+        "citizenshipCode": "323",
+        "men": 4,
+        "women": 7,
+        "total": 11
+      },
+      {
+        "citizenshipCode": "215",
+        "men": 7,
+        "women": 16,
+        "total": 23
+      },
+      {
+        "citizenshipCode": "422",
+        "men": 3,
+        "women": 0,
+        "total": 3
+      },
+      {
+        "citizenshipCode": "360",
+        "men": 1,
+        "women": 30,
+        "total": 31
+      },
+      {
+        "citizenshipCode": "216",
+        "men": 14,
+        "women": 23,
+        "total": 37
+      },
+      {
+        "citizenshipCode": "423",
+        "men": 3,
+        "women": 0,
+        "total": 3
+      },
+      {
+        "citizenshipCode": "326",
+        "men": 0,
+        "women": 3,
+        "total": 3
+      },
+      {
+        "citizenshipCode": "220",
+        "men": 1,
+        "women": 3,
+        "total": 4
+      },
+      {
+        "citizenshipCode": "523",
+        "men": 0,
+        "women": 1,
+        "total": 1
+      },
+      {
+        "citizenshipCode": "425",
+        "men": 8,
+        "women": 1,
+        "total": 9
+      },
+      {
+        "citizenshipCode": "330",
+        "men": 2,
+        "women": 4,
+        "total": 6
+      },
+      {
+        "citizenshipCode": "332",
+        "men": 0,
+        "women": 1,
+        "total": 1
+      },
+      {
+        "citizenshipCode": "221",
+        "men": 2,
+        "women": 2,
+        "total": 4
+      },
+      {
+        "citizenshipCode": "356",
+        "men": 0,
+        "women": 3,
+        "total": 3
+      },
+      {
+        "citizenshipCode": "428",
+        "men": 0,
+        "women": 1,
+        "total": 1
+      },
+      {
+        "citizenshipCode": "272",
+        "men": 1,
+        "women": 0,
+        "total": 1
+      },
+      {
+        "citizenshipCode": "248",
+        "men": 0,
+        "women": 1,
+        "total": 1
+      },
+      {
+        "citizenshipCode": "249",
+        "men": 0,
+        "women": 4,
+        "total": 4
+      },
+      {
+        "citizenshipCode": "253",
+        "men": 1,
+        "women": 0,
+        "total": 1
+      },
+      {
+        "citizenshipCode": "436",
+        "men": 148,
+        "women": 104,
+        "total": 252
+      },
+      {
+        "citizenshipCode": "527",
+        "men": 0,
+        "women": 1,
+        "total": 1
+      },
+      {
+        "citizenshipCode": "254",
+        "men": 2,
+        "women": 12,
+        "total": 14
+      },
+      {
+        "citizenshipCode": "270",
+        "men": 0,
+        "women": 1,
+        "total": 1
+      },
+      {
+        "citizenshipCode": "443",
+        "men": 0,
+        "women": 9,
+        "total": 9
+      },
+      {
+        "citizenshipCode": "719",
+        "men": 0,
+        "women": 1,
+        "total": 1
+      },
+      {
+        "citizenshipCode": "232",
+        "men": 4,
+        "women": 6,
+        "total": 10
+      },
+      {
+        "citizenshipCode": "344",
+        "men": 12,
+        "women": 2,
+        "total": 14
+      },
+      {
+        "citizenshipCode": "615",
+        "men": 6,
+        "women": 9,
+        "total": 15
+      },
+      {
+        "citizenshipCode": "233",
+        "men": 23,
+        "women": 41,
+        "total": 64
+      },
+      {
+        "citizenshipCode": "234",
+        "men": 2,
+        "women": 1,
+        "total": 3
+      },
+      {
+        "citizenshipCode": "219",
+        "men": 27,
+        "women": 34,
+        "total": 61
+      },
+      {
+        "citizenshipCode": "257",
+        "men": 1,
+        "women": 4,
+        "total": 5
+      },
+      {
+        "citizenshipCode": "516",
+        "men": 7,
+        "women": 13,
+        "total": 20
+      },
+      {
+        "citizenshipCode": "235",
+        "men": 194,
+        "women": 322,
+        "total": 516
+      },
+      {
+        "citizenshipCode": "446",
+        "men": 0,
+        "women": 1,
+        "total": 1
+      },
+      {
+        "citizenshipCode": "450",
+        "men": 47,
+        "women": 8,
+        "total": 55
+      },
+      {
+        "citizenshipCode": "271",
+        "men": 3,
+        "women": 4,
+        "total": 7
+      },
+      {
+        "citizenshipCode": "255",
+        "men": 0,
+        "women": 1,
+        "total": 1
+      },
+      {
+        "citizenshipCode": "453",
+        "men": 0,
+        "women": 1,
+        "total": 1
+      },
+      {
+        "citizenshipCode": "239",
+        "men": 3,
+        "women": 10,
+        "total": 13
+      },
+      {
+        "citizenshipCode": "311",
+        "men": 10,
+        "women": 13,
+        "total": 23
+      },
+      {
+        "citizenshipCode": "536",
+        "men": 9,
+        "women": 11,
+        "total": 20
+      },
+      {
+        "citizenshipCode": "454",
+        "men": 0,
+        "women": 1,
+        "total": 1
+      },
+      {
+        "citizenshipCode": "455",
+        "men": 1,
+        "women": 0,
+        "total": 1
+      },
+      {
+        "citizenshipCode": "240",
+        "men": 0,
+        "women": 2,
+        "total": 2
+      },
+      {
+        "citizenshipCode": "241",
+        "men": 4,
+        "women": 8,
+        "total": 12
+      },
+      {
+        "citizenshipCode": "362",
+        "men": 4,
+        "women": 2,
+        "total": 6
+      },
+      {
+        "citizenshipCode": "349",
+        "men": 2,
+        "women": 5,
+        "total": 7
+      },
+      {
+        "citizenshipCode": "458",
+        "men": 1,
+        "women": 1,
+        "total": 2
+      },
+      {
+        "citizenshipCode": "460",
+        "men": 26,
+        "women": 14,
+        "total": 40
+      },
+      {
+        "citizenshipCode": "243",
+        "men": 20,
+        "women": 66,
+        "total": 86
+      },
+      {
+        "citizenshipCode": "244",
+        "men": 2,
+        "women": 6,
+        "total": 8
+      },
+      {
+        "citizenshipCode": "618",
+        "men": 1,
+        "women": 0,
+        "total": 1
+      },
+      {
+        "citizenshipCode": "357",
+        "men": 1,
+        "women": 1,
+        "total": 2
+      },
+      {
+        "citizenshipCode": "619",
+        "men": 4,
+        "women": 13,
+        "total": 17
+      }
+    ],
+    "046013": [
+      {
+        "citizenshipCode": "100",
+        "men": 2930,
+        "women": 3334,
+        "total": 6264
+      },
+      {
+        "citizenshipCode": "201",
+        "men": 11,
+        "women": 14,
+        "total": 25
+      },
+      {
+        "citizenshipCode": "602",
+        "men": 1,
+        "women": 0,
+        "total": 1
+      },
+      {
+        "citizenshipCode": "305",
+        "men": 1,
+        "women": 0,
+        "total": 1
+      },
+      {
+        "citizenshipCode": "256",
+        "men": 1,
+        "women": 1,
+        "total": 2
+      },
+      {
+        "citizenshipCode": "605",
+        "men": 0,
+        "women": 2,
+        "total": 2
+      },
+      {
+        "citizenshipCode": "209",
+        "men": 0,
+        "women": 2,
+        "total": 2
+      },
+      {
+        "citizenshipCode": "509",
+        "men": 2,
+        "women": 0,
+        "total": 2
+      },
+      {
+        "citizenshipCode": "314",
+        "men": 0,
+        "women": 1,
+        "total": 1
+      },
+      {
+        "citizenshipCode": "315",
+        "men": 11,
+        "women": 10,
+        "total": 21
+      },
+      {
+        "citizenshipCode": "608",
+        "men": 1,
+        "women": 2,
+        "total": 3
+      },
+      {
+        "citizenshipCode": "250",
+        "men": 1,
+        "women": 0,
+        "total": 1
+      },
+      {
+        "citizenshipCode": "514",
+        "men": 2,
+        "women": 1,
+        "total": 3
+      },
+      {
+        "citizenshipCode": "517",
+        "men": 0,
+        "women": 1,
+        "total": 1
+      },
+      {
+        "citizenshipCode": "245",
+        "men": 58,
+        "women": 82,
+        "total": 140
+      },
+      {
+        "citizenshipCode": "323",
+        "men": 3,
+        "women": 14,
+        "total": 17
+      },
+      {
+        "citizenshipCode": "215",
+        "men": 1,
+        "women": 2,
+        "total": 3
+      },
+      {
+        "citizenshipCode": "360",
+        "men": 2,
+        "women": 11,
+        "total": 13
+      },
+      {
+        "citizenshipCode": "216",
+        "men": 3,
+        "women": 4,
+        "total": 7
+      },
+      {
+        "citizenshipCode": "220",
+        "men": 1,
+        "women": 0,
+        "total": 1
+      },
+      {
+        "citizenshipCode": "332",
+        "men": 1,
+        "women": 2,
+        "total": 3
+      },
+      {
+        "citizenshipCode": "334",
+        "men": 1,
+        "women": 1,
+        "total": 2
+      },
+      {
+        "citizenshipCode": "428",
+        "men": 1,
+        "women": 0,
+        "total": 1
+      },
+      {
+        "citizenshipCode": "248",
+        "men": 0,
+        "women": 1,
+        "total": 1
+      },
+      {
+        "citizenshipCode": "337",
+        "men": 1,
+        "women": 0,
+        "total": 1
+      },
+      {
+        "citizenshipCode": "431",
+        "men": 1,
+        "women": 3,
+        "total": 4
+      },
+      {
+        "citizenshipCode": "227",
+        "men": 3,
+        "women": 5,
+        "total": 8
+      },
+      {
+        "citizenshipCode": "436",
+        "men": 8,
+        "women": 8,
+        "total": 16
+      },
+      {
+        "citizenshipCode": "254",
+        "men": 0,
+        "women": 5,
+        "total": 5
+      },
+      {
+        "citizenshipCode": "443",
+        "men": 3,
+        "women": 1,
+        "total": 4
+      },
+      {
+        "citizenshipCode": "232",
+        "men": 2,
+        "women": 4,
+        "total": 6
+      },
+      {
+        "citizenshipCode": "615",
+        "men": 1,
+        "women": 4,
+        "total": 5
+      },
+      {
+        "citizenshipCode": "233",
+        "men": 1,
+        "women": 10,
+        "total": 11
+      },
+      {
+        "citizenshipCode": "234",
+        "men": 2,
+        "women": 3,
+        "total": 5
+      },
+      {
+        "citizenshipCode": "219",
+        "men": 9,
+        "women": 9,
+        "total": 18
+      },
+      {
+        "citizenshipCode": "516",
+        "men": 1,
+        "women": 1,
+        "total": 2
+      },
+      {
+        "citizenshipCode": "235",
+        "men": 23,
+        "women": 65,
+        "total": 88
+      },
+      {
+        "citizenshipCode": "450",
+        "men": 2,
+        "women": 3,
+        "total": 5
+      },
+      {
+        "citizenshipCode": "271",
+        "men": 1,
+        "women": 1,
+        "total": 2
+      },
+      {
+        "citizenshipCode": "239",
+        "men": 2,
+        "women": 0,
+        "total": 2
+      },
+      {
+        "citizenshipCode": "311",
+        "men": 10,
+        "women": 10,
+        "total": 20
+      },
+      {
+        "citizenshipCode": "536",
+        "men": 2,
+        "women": 1,
+        "total": 3
+      },
+      {
+        "citizenshipCode": "241",
+        "men": 0,
+        "women": 1,
+        "total": 1
+      },
+      {
+        "citizenshipCode": "457",
+        "men": 1,
+        "women": 0,
+        "total": 1
+      },
+      {
+        "citizenshipCode": "349",
+        "men": 0,
+        "women": 3,
+        "total": 3
+      },
+      {
+        "citizenshipCode": "243",
+        "men": 20,
+        "women": 30,
+        "total": 50
+      }
+    ],
+    "046018": [
+      {
+        "citizenshipCode": "100",
+        "men": 10310,
+        "women": 10539,
+        "total": 20849
+      },
+      {
+        "citizenshipCode": "301",
+        "men": 2,
+        "women": 0,
+        "total": 2
+      },
+      {
+        "citizenshipCode": "201",
+        "men": 33,
+        "women": 32,
+        "total": 65
+      },
+      {
+        "citizenshipCode": "602",
+        "men": 1,
+        "women": 5,
+        "total": 6
+      },
+      {
+        "citizenshipCode": "701",
+        "men": 3,
+        "women": 0,
+        "total": 3
+      },
+      {
+        "citizenshipCode": "203",
+        "men": 0,
+        "women": 4,
+        "total": 4
+      },
+      {
+        "citizenshipCode": "305",
+        "men": 8,
+        "women": 0,
+        "total": 8
+      },
+      {
+        "citizenshipCode": "206",
+        "men": 0,
+        "women": 2,
+        "total": 2
+      },
+      {
+        "citizenshipCode": "406",
+        "men": 1,
+        "women": 0,
+        "total": 1
+      },
+      {
+        "citizenshipCode": "252",
+        "men": 2,
+        "women": 1,
+        "total": 3
+      },
+      {
+        "citizenshipCode": "605",
+        "men": 6,
+        "women": 20,
+        "total": 26
+      },
+      {
+        "citizenshipCode": "209",
+        "men": 1,
+        "women": 5,
+        "total": 6
+      },
+      {
+        "citizenshipCode": "411",
+        "men": 2,
+        "women": 0,
+        "total": 2
+      },
+      {
+        "citizenshipCode": "413",
+        "men": 1,
+        "women": 0,
+        "total": 1
+      },
+      {
+        "citizenshipCode": "314",
+        "men": 5,
+        "women": 7,
+        "total": 12
+      },
+      {
+        "citizenshipCode": "608",
+        "men": 0,
+        "women": 1,
+        "total": 1
+      },
+      {
+        "citizenshipCode": "404",
+        "men": 2,
+        "women": 0,
+        "total": 2
+      },
+      {
+        "citizenshipCode": "514",
+        "men": 2,
+        "women": 5,
+        "total": 7
+      },
+      {
+        "citizenshipCode": "212",
+        "men": 0,
+        "women": 2,
+        "total": 2
+      },
+      {
+        "citizenshipCode": "609",
+        "men": 0,
+        "women": 4,
+        "total": 4
+      },
+      {
+        "citizenshipCode": "419",
+        "men": 7,
+        "women": 2,
+        "total": 9
+      },
+      {
+        "citizenshipCode": "517",
+        "men": 2,
+        "women": 0,
+        "total": 2
+      },
+      {
+        "citizenshipCode": "247",
+        "men": 0,
+        "women": 2,
+        "total": 2
+      },
+      {
+        "citizenshipCode": "245",
+        "men": 14,
+        "women": 15,
+        "total": 29
+      },
+      {
+        "citizenshipCode": "323",
+        "men": 1,
+        "women": 6,
+        "total": 7
+      },
+      {
+        "citizenshipCode": "215",
+        "men": 4,
+        "women": 10,
+        "total": 14
+      },
+      {
+        "citizenshipCode": "422",
+        "men": 2,
+        "women": 0,
+        "total": 2
+      },
+      {
+        "citizenshipCode": "360",
+        "men": 3,
+        "women": 11,
+        "total": 14
+      },
+      {
+        "citizenshipCode": "216",
+        "men": 8,
+        "women": 16,
+        "total": 24
+      },
+      {
+        "citizenshipCode": "423",
+        "men": 2,
+        "women": 0,
+        "total": 2
+      },
+      {
+        "citizenshipCode": "425",
+        "men": 3,
+        "women": 0,
+        "total": 3
+      },
+      {
+        "citizenshipCode": "525",
+        "men": 0,
+        "women": 2,
+        "total": 2
+      },
+      {
+        "citizenshipCode": "330",
+        "men": 0,
+        "women": 1,
+        "total": 1
+      },
+      {
+        "citizenshipCode": "221",
+        "men": 0,
+        "women": 2,
+        "total": 2
+      },
+      {
+        "citizenshipCode": "334",
+        "men": 1,
+        "women": 0,
+        "total": 1
+      },
+      {
+        "citizenshipCode": "356",
+        "men": 0,
+        "women": 2,
+        "total": 2
+      },
+      {
+        "citizenshipCode": "428",
+        "men": 0,
+        "women": 1,
+        "total": 1
+      },
+      {
+        "citizenshipCode": "337",
+        "men": 0,
+        "women": 1,
+        "total": 1
+      },
+      {
+        "citizenshipCode": "249",
+        "men": 0,
+        "women": 1,
+        "total": 1
+      },
+      {
+        "citizenshipCode": "340",
+        "men": 0,
+        "women": 1,
+        "total": 1
+      },
+      {
+        "citizenshipCode": "435",
+        "men": 3,
+        "women": 0,
+        "total": 3
+      },
+      {
+        "citizenshipCode": "436",
+        "men": 57,
+        "women": 50,
+        "total": 107
+      },
+      {
+        "citizenshipCode": "527",
+        "men": 1,
+        "women": 2,
+        "total": 3
+      },
+      {
+        "citizenshipCode": "254",
+        "men": 6,
+        "women": 10,
+        "total": 16
+      },
+      {
+        "citizenshipCode": "443",
+        "men": 12,
+        "women": 5,
+        "total": 17
+      },
+      {
+        "citizenshipCode": "231",
+        "men": 0,
+        "women": 1,
+        "total": 1
+      },
+      {
+        "citizenshipCode": "232",
+        "men": 3,
+        "women": 5,
+        "total": 8
+      },
+      {
+        "citizenshipCode": "344",
+        "men": 11,
+        "women": 1,
+        "total": 12
+      },
+      {
+        "citizenshipCode": "614",
+        "men": 0,
+        "women": 1,
+        "total": 1
+      },
+      {
+        "citizenshipCode": "615",
+        "men": 3,
+        "women": 2,
+        "total": 5
+      },
+      {
+        "citizenshipCode": "233",
+        "men": 2,
+        "women": 12,
+        "total": 14
+      },
+      {
+        "citizenshipCode": "234",
+        "men": 0,
+        "women": 2,
+        "total": 2
+      },
+      {
+        "citizenshipCode": "219",
+        "men": 9,
+        "women": 7,
+        "total": 16
+      },
+      {
+        "citizenshipCode": "257",
+        "men": 4,
+        "women": 5,
+        "total": 9
+      },
+      {
+        "citizenshipCode": "463",
+        "men": 0,
+        "women": 2,
+        "total": 2
+      },
+      {
+        "citizenshipCode": "516",
+        "men": 5,
+        "women": 6,
+        "total": 11
+      },
+      {
+        "citizenshipCode": "235",
+        "men": 181,
+        "women": 215,
+        "total": 396
+      },
+      {
+        "citizenshipCode": "446",
+        "men": 1,
+        "women": 0,
+        "total": 1
+      },
+      {
+        "citizenshipCode": "450",
+        "men": 14,
+        "women": 2,
+        "total": 16
+      },
+      {
+        "citizenshipCode": "271",
+        "men": 0,
+        "women": 2,
+        "total": 2
+      },
+      {
+        "citizenshipCode": "255",
+        "men": 0,
+        "women": 1,
+        "total": 1
+      },
+      {
+        "citizenshipCode": "239",
+        "men": 5,
+        "women": 5,
+        "total": 10
+      },
+      {
+        "citizenshipCode": "311",
+        "men": 4,
+        "women": 1,
+        "total": 5
+      },
+      {
+        "citizenshipCode": "536",
+        "men": 2,
+        "women": 1,
+        "total": 3
+      },
+      {
+        "citizenshipCode": "241",
+        "men": 0,
+        "women": 4,
+        "total": 4
+      },
+      {
+        "citizenshipCode": "457",
+        "men": 0,
+        "women": 1,
+        "total": 1
+      },
+      {
+        "citizenshipCode": "349",
+        "men": 0,
+        "women": 1,
+        "total": 1
+      },
+      {
+        "citizenshipCode": "460",
+        "men": 11,
+        "women": 6,
+        "total": 17
+      },
+      {
+        "citizenshipCode": "351",
+        "men": 1,
+        "women": 0,
+        "total": 1
+      },
+      {
+        "citizenshipCode": "243",
+        "men": 14,
+        "women": 37,
+        "total": 51
+      },
+      {
+        "citizenshipCode": "244",
+        "men": 0,
+        "women": 1,
+        "total": 1
+      },
+      {
+        "citizenshipCode": "619",
+        "men": 1,
+        "women": 1,
+        "total": 2
+      }
+    ],
+    "046024": [
+      {
+        "citizenshipCode": "100",
+        "men": 10232,
+        "women": 11239,
+        "total": 21471
+      },
+      {
+        "citizenshipCode": "201",
+        "men": 64,
+        "women": 59,
+        "total": 123
+      },
+      {
+        "citizenshipCode": "401",
+        "men": 0,
+        "women": 1,
+        "total": 1
+      },
+      {
+        "citizenshipCode": "602",
+        "men": 3,
+        "women": 4,
+        "total": 7
+      },
+      {
+        "citizenshipCode": "358",
+        "men": 0,
+        "women": 1,
+        "total": 1
+      },
+      {
+        "citizenshipCode": "701",
+        "men": 1,
+        "women": 0,
+        "total": 1
+      },
+      {
+        "citizenshipCode": "203",
+        "men": 0,
+        "women": 3,
+        "total": 3
+      },
+      {
+        "citizenshipCode": "305",
+        "men": 1,
+        "women": 0,
+        "total": 1
+      },
+      {
+        "citizenshipCode": "206",
+        "men": 1,
+        "women": 6,
+        "total": 7
+      },
+      {
+        "citizenshipCode": "256",
+        "men": 0,
+        "women": 1,
+        "total": 1
+      },
+      {
+        "citizenshipCode": "604",
+        "men": 1,
+        "women": 0,
+        "total": 1
+      },
+      {
+        "citizenshipCode": "252",
+        "men": 0,
+        "women": 1,
+        "total": 1
+      },
+      {
+        "citizenshipCode": "605",
+        "men": 9,
+        "women": 15,
+        "total": 24
+      },
+      {
+        "citizenshipCode": "209",
+        "men": 1,
+        "women": 8,
+        "total": 9
+      },
+      {
+        "citizenshipCode": "509",
+        "men": 0,
+        "women": 1,
+        "total": 1
+      },
+      {
+        "citizenshipCode": "413",
+        "men": 1,
+        "women": 3,
+        "total": 4
+      },
+      {
+        "citizenshipCode": "606",
+        "men": 1,
+        "women": 0,
+        "total": 1
+      },
+      {
+        "citizenshipCode": "314",
+        "men": 26,
+        "women": 30,
+        "total": 56
+      },
+      {
+        "citizenshipCode": "315",
+        "men": 1,
+        "women": 3,
+        "total": 4
+      },
+      {
+        "citizenshipCode": "608",
+        "men": 2,
+        "women": 3,
+        "total": 5
+      },
+      {
+        "citizenshipCode": "320",
+        "men": 5,
+        "women": 8,
+        "total": 13
+      },
+      {
+        "citizenshipCode": "250",
+        "men": 1,
+        "women": 0,
+        "total": 1
+      },
+      {
+        "citizenshipCode": "514",
+        "men": 3,
+        "women": 5,
+        "total": 8
+      },
+      {
+        "citizenshipCode": "212",
+        "men": 4,
+        "women": 8,
+        "total": 12
+      },
+      {
+        "citizenshipCode": "609",
+        "men": 0,
+        "women": 2,
+        "total": 2
+      },
+      {
+        "citizenshipCode": "419",
+        "men": 1,
+        "women": 2,
+        "total": 3
+      },
+      {
+        "citizenshipCode": "517",
+        "men": 1,
+        "women": 0,
+        "total": 1
+      },
+      {
+        "citizenshipCode": "247",
+        "men": 3,
+        "women": 3,
+        "total": 6
+      },
+      {
+        "citizenshipCode": "245",
+        "men": 16,
+        "women": 35,
+        "total": 51
+      },
+      {
+        "citizenshipCode": "323",
+        "men": 17,
+        "women": 13,
+        "total": 30
+      },
+      {
+        "citizenshipCode": "215",
+        "men": 16,
+        "women": 16,
+        "total": 32
+      },
+      {
+        "citizenshipCode": "360",
+        "men": 0,
+        "women": 23,
+        "total": 23
+      },
+      {
+        "citizenshipCode": "216",
+        "men": 7,
+        "women": 21,
+        "total": 28
+      },
+      {
+        "citizenshipCode": "423",
+        "men": 3,
+        "women": 0,
+        "total": 3
+      },
+      {
+        "citizenshipCode": "326",
+        "men": 3,
+        "women": 3,
+        "total": 6
+      },
+      {
+        "citizenshipCode": "220",
+        "men": 1,
+        "women": 0,
+        "total": 1
+      },
+      {
+        "citizenshipCode": "523",
+        "men": 0,
+        "women": 1,
+        "total": 1
+      },
+      {
+        "citizenshipCode": "425",
+        "men": 1,
+        "women": 2,
+        "total": 3
+      },
+      {
+        "citizenshipCode": "525",
+        "men": 1,
+        "women": 1,
+        "total": 2
+      },
+      {
+        "citizenshipCode": "330",
+        "men": 3,
+        "women": 3,
+        "total": 6
+      },
+      {
+        "citizenshipCode": "331",
+        "men": 0,
+        "women": 2,
+        "total": 2
+      },
+      {
+        "citizenshipCode": "221",
+        "men": 1,
+        "women": 2,
+        "total": 3
+      },
+      {
+        "citizenshipCode": "356",
+        "men": 0,
+        "women": 2,
+        "total": 2
+      },
+      {
+        "citizenshipCode": "428",
+        "men": 0,
+        "women": 1,
+        "total": 1
+      },
+      {
+        "citizenshipCode": "248",
+        "men": 0,
+        "women": 1,
+        "total": 1
+      },
+      {
+        "citizenshipCode": "337",
+        "men": 1,
+        "women": 1,
+        "total": 2
+      },
+      {
+        "citizenshipCode": "249",
+        "men": 0,
+        "women": 1,
+        "total": 1
+      },
+      {
+        "citizenshipCode": "253",
+        "men": 0,
+        "women": 4,
+        "total": 4
+      },
+      {
+        "citizenshipCode": "432",
+        "men": 0,
+        "women": 1,
+        "total": 1
+      },
+      {
+        "citizenshipCode": "436",
+        "men": 73,
+        "women": 47,
+        "total": 120
+      },
+      {
+        "citizenshipCode": "527",
+        "men": 4,
+        "women": 1,
+        "total": 5
+      },
+      {
+        "citizenshipCode": "254",
+        "men": 6,
+        "women": 18,
+        "total": 24
+      },
+      {
+        "citizenshipCode": "442",
+        "men": 0,
+        "women": 1,
+        "total": 1
+      },
+      {
+        "citizenshipCode": "443",
+        "men": 1,
+        "women": 3,
+        "total": 4
+      },
+      {
+        "citizenshipCode": "231",
+        "men": 1,
+        "women": 2,
+        "total": 3
+      },
+      {
+        "citizenshipCode": "719",
+        "men": 0,
+        "women": 1,
+        "total": 1
+      },
+      {
+        "citizenshipCode": "232",
+        "men": 6,
+        "women": 6,
+        "total": 12
+      },
+      {
+        "citizenshipCode": "344",
+        "men": 10,
+        "women": 5,
+        "total": 15
+      },
+      {
+        "citizenshipCode": "615",
+        "men": 0,
+        "women": 2,
+        "total": 2
+      },
+      {
+        "citizenshipCode": "233",
+        "men": 18,
+        "women": 51,
+        "total": 69
+      },
+      {
+        "citizenshipCode": "219",
+        "men": 8,
+        "women": 13,
+        "total": 21
+      },
+      {
+        "citizenshipCode": "257",
+        "men": 3,
+        "women": 5,
+        "total": 8
+      },
+      {
+        "citizenshipCode": "516",
+        "men": 1,
+        "women": 1,
+        "total": 2
+      },
+      {
+        "citizenshipCode": "235",
+        "men": 105,
+        "women": 244,
+        "total": 349
+      },
+      {
+        "citizenshipCode": "450",
+        "men": 28,
+        "women": 5,
+        "total": 33
+      },
+      {
+        "citizenshipCode": "451",
+        "men": 1,
+        "women": 0,
+        "total": 1
+      },
+      {
+        "citizenshipCode": "255",
+        "men": 0,
+        "women": 1,
+        "total": 1
+      },
+      {
+        "citizenshipCode": "239",
+        "men": 3,
+        "women": 5,
+        "total": 8
+      },
+      {
+        "citizenshipCode": "311",
+        "men": 11,
+        "women": 9,
+        "total": 20
+      },
+      {
+        "citizenshipCode": "536",
+        "men": 8,
+        "women": 16,
+        "total": 24
+      },
+      {
+        "citizenshipCode": "454",
+        "men": 1,
+        "women": 0,
+        "total": 1
+      },
+      {
+        "citizenshipCode": "240",
+        "men": 1,
+        "women": 3,
+        "total": 4
+      },
+      {
+        "citizenshipCode": "241",
+        "men": 3,
+        "women": 1,
+        "total": 4
+      },
+      {
+        "citizenshipCode": "457",
+        "men": 3,
+        "women": 0,
+        "total": 3
+      },
+      {
+        "citizenshipCode": "349",
+        "men": 0,
+        "women": 3,
+        "total": 3
+      },
+      {
+        "citizenshipCode": "460",
+        "men": 11,
+        "women": 6,
+        "total": 17
+      },
+      {
+        "citizenshipCode": "243",
+        "men": 8,
+        "women": 37,
+        "total": 45
+      },
+      {
+        "citizenshipCode": "244",
+        "men": 1,
+        "women": 4,
+        "total": 5
+      },
+      {
+        "citizenshipCode": "619",
+        "men": 4,
+        "women": 8,
+        "total": 12
+      }
+    ],
+    "046028": [
+      {
+        "citizenshipCode": "100",
+        "men": 5632,
+        "women": 6126,
+        "total": 11758
+      },
+      {
+        "citizenshipCode": "201",
+        "men": 58,
+        "women": 49,
+        "total": 107
+      },
+      {
+        "citizenshipCode": "602",
+        "men": 1,
+        "women": 3,
+        "total": 4
+      },
+      {
+        "citizenshipCode": "358",
+        "men": 1,
+        "women": 0,
+        "total": 1
+      },
+      {
+        "citizenshipCode": "203",
+        "men": 1,
+        "women": 0,
+        "total": 1
+      },
+      {
+        "citizenshipCode": "206",
+        "men": 0,
+        "women": 1,
+        "total": 1
+      },
+      {
+        "citizenshipCode": "256",
+        "men": 0,
+        "women": 5,
+        "total": 5
+      },
+      {
+        "citizenshipCode": "605",
+        "men": 0,
+        "women": 10,
+        "total": 10
+      },
+      {
+        "citizenshipCode": "209",
+        "men": 0,
+        "women": 3,
+        "total": 3
+      },
+      {
+        "citizenshipCode": "413",
+        "men": 1,
+        "women": 0,
+        "total": 1
+      },
+      {
+        "citizenshipCode": "314",
+        "men": 9,
+        "women": 8,
+        "total": 17
+      },
+      {
+        "citizenshipCode": "320",
+        "men": 0,
+        "women": 2,
+        "total": 2
+      },
+      {
+        "citizenshipCode": "514",
+        "men": 2,
+        "women": 10,
+        "total": 12
+      },
+      {
+        "citizenshipCode": "609",
+        "men": 0,
+        "women": 1,
+        "total": 1
+      },
+      {
+        "citizenshipCode": "419",
+        "men": 1,
+        "women": 0,
+        "total": 1
+      },
+      {
+        "citizenshipCode": "247",
+        "men": 0,
+        "women": 1,
+        "total": 1
+      },
+      {
+        "citizenshipCode": "245",
+        "men": 6,
+        "women": 10,
+        "total": 16
+      },
+      {
+        "citizenshipCode": "323",
+        "men": 2,
+        "women": 7,
+        "total": 9
+      },
+      {
+        "citizenshipCode": "214",
+        "men": 1,
+        "women": 0,
+        "total": 1
+      },
+      {
+        "citizenshipCode": "215",
+        "men": 2,
+        "women": 3,
+        "total": 5
+      },
+      {
+        "citizenshipCode": "360",
+        "men": 0,
+        "women": 8,
+        "total": 8
+      },
+      {
+        "citizenshipCode": "216",
+        "men": 5,
+        "women": 4,
+        "total": 9
+      },
+      {
+        "citizenshipCode": "326",
+        "men": 1,
+        "women": 0,
+        "total": 1
+      },
+      {
+        "citizenshipCode": "220",
+        "men": 0,
+        "women": 1,
+        "total": 1
+      },
+      {
+        "citizenshipCode": "425",
+        "men": 1,
+        "women": 0,
+        "total": 1
+      },
+      {
+        "citizenshipCode": "330",
+        "men": 1,
+        "women": 0,
+        "total": 1
+      },
+      {
+        "citizenshipCode": "332",
+        "men": 1,
+        "women": 0,
+        "total": 1
+      },
+      {
+        "citizenshipCode": "356",
+        "men": 1,
+        "women": 1,
+        "total": 2
+      },
+      {
+        "citizenshipCode": "428",
+        "men": 1,
+        "women": 0,
+        "total": 1
+      },
+      {
+        "citizenshipCode": "248",
+        "men": 1,
+        "women": 0,
+        "total": 1
+      },
+      {
+        "citizenshipCode": "249",
+        "men": 0,
+        "women": 3,
+        "total": 3
+      },
+      {
+        "citizenshipCode": "436",
+        "men": 40,
+        "women": 29,
+        "total": 69
+      },
+      {
+        "citizenshipCode": "254",
+        "men": 5,
+        "women": 5,
+        "total": 10
+      },
+      {
+        "citizenshipCode": "442",
+        "men": 1,
+        "women": 0,
+        "total": 1
+      },
+      {
+        "citizenshipCode": "443",
+        "men": 0,
+        "women": 1,
+        "total": 1
+      },
+      {
+        "citizenshipCode": "232",
+        "men": 2,
+        "women": 2,
+        "total": 4
+      },
+      {
+        "citizenshipCode": "344",
+        "men": 1,
+        "women": 0,
+        "total": 1
+      },
+      {
+        "citizenshipCode": "615",
+        "men": 1,
+        "women": 3,
+        "total": 4
+      },
+      {
+        "citizenshipCode": "233",
+        "men": 5,
+        "women": 24,
+        "total": 29
+      },
+      {
+        "citizenshipCode": "219",
+        "men": 0,
+        "women": 5,
+        "total": 5
+      },
+      {
+        "citizenshipCode": "257",
+        "men": 0,
+        "women": 1,
+        "total": 1
+      },
+      {
+        "citizenshipCode": "463",
+        "men": 1,
+        "women": 3,
+        "total": 4
+      },
+      {
+        "citizenshipCode": "235",
+        "men": 85,
+        "women": 137,
+        "total": 222
+      },
+      {
+        "citizenshipCode": "450",
+        "men": 22,
+        "women": 2,
+        "total": 24
+      },
+      {
+        "citizenshipCode": "271",
+        "men": 2,
+        "women": 2,
+        "total": 4
+      },
+      {
+        "citizenshipCode": "255",
+        "men": 1,
+        "women": 4,
+        "total": 5
+      },
+      {
+        "citizenshipCode": "239",
+        "men": 5,
+        "women": 6,
+        "total": 11
+      },
+      {
+        "citizenshipCode": "311",
+        "men": 1,
+        "women": 0,
+        "total": 1
+      },
+      {
+        "citizenshipCode": "536",
+        "men": 2,
+        "women": 1,
+        "total": 3
+      },
+      {
+        "citizenshipCode": "241",
+        "men": 1,
+        "women": 0,
+        "total": 1
+      },
+      {
+        "citizenshipCode": "349",
+        "men": 0,
+        "women": 4,
+        "total": 4
+      },
+      {
+        "citizenshipCode": "460",
+        "men": 3,
+        "women": 2,
+        "total": 5
+      },
+      {
+        "citizenshipCode": "243",
+        "men": 12,
+        "women": 26,
+        "total": 38
+      },
+      {
+        "citizenshipCode": "244",
+        "men": 1,
+        "women": 2,
+        "total": 3
+      }
+    ],
+    "046030": [
+      {
+        "citizenshipCode": "100",
+        "men": 1387,
+        "women": 1359,
+        "total": 2746
+      },
+      {
+        "citizenshipCode": "201",
+        "men": 2,
+        "women": 2,
+        "total": 4
+      },
+      {
+        "citizenshipCode": "305",
+        "men": 2,
+        "women": 0,
+        "total": 2
+      },
+      {
+        "citizenshipCode": "206",
+        "men": 1,
+        "women": 1,
+        "total": 2
+      },
+      {
+        "citizenshipCode": "605",
+        "men": 1,
+        "women": 2,
+        "total": 3
+      },
+      {
+        "citizenshipCode": "209",
+        "men": 2,
+        "women": 3,
+        "total": 5
+      },
+      {
+        "citizenshipCode": "413",
+        "men": 1,
+        "women": 1,
+        "total": 2
+      },
+      {
+        "citizenshipCode": "514",
+        "men": 1,
+        "women": 1,
+        "total": 2
+      },
+      {
+        "citizenshipCode": "212",
+        "men": 1,
+        "women": 0,
+        "total": 1
+      },
+      {
+        "citizenshipCode": "245",
+        "men": 0,
+        "women": 1,
+        "total": 1
+      },
+      {
+        "citizenshipCode": "323",
+        "men": 2,
+        "women": 2,
+        "total": 4
+      },
+      {
+        "citizenshipCode": "360",
+        "men": 0,
+        "women": 1,
+        "total": 1
+      },
+      {
+        "citizenshipCode": "216",
+        "men": 0,
+        "women": 3,
+        "total": 3
+      },
+      {
+        "citizenshipCode": "326",
+        "men": 0,
+        "women": 1,
+        "total": 1
+      },
+      {
+        "citizenshipCode": "523",
+        "men": 1,
+        "women": 2,
+        "total": 3
+      },
+      {
+        "citizenshipCode": "425",
+        "men": 1,
+        "women": 0,
+        "total": 1
+      },
+      {
+        "citizenshipCode": "525",
+        "men": 1,
+        "women": 1,
+        "total": 2
+      },
+      {
+        "citizenshipCode": "361",
+        "men": 0,
+        "women": 1,
+        "total": 1
+      },
+      {
+        "citizenshipCode": "248",
+        "men": 2,
+        "women": 0,
+        "total": 2
+      },
+      {
+        "citizenshipCode": "435",
+        "men": 1,
+        "women": 0,
+        "total": 1
+      },
+      {
+        "citizenshipCode": "436",
+        "men": 29,
+        "women": 8,
+        "total": 37
+      },
+      {
+        "citizenshipCode": "232",
+        "men": 0,
+        "women": 2,
+        "total": 2
+      },
+      {
+        "citizenshipCode": "233",
+        "men": 6,
+        "women": 12,
+        "total": 18
+      },
+      {
+        "citizenshipCode": "219",
+        "men": 3,
+        "women": 2,
+        "total": 5
+      },
+      {
+        "citizenshipCode": "235",
+        "men": 15,
+        "women": 25,
+        "total": 40
+      },
+      {
+        "citizenshipCode": "450",
+        "men": 2,
+        "women": 0,
+        "total": 2
+      },
+      {
+        "citizenshipCode": "536",
+        "men": 0,
+        "women": 1,
+        "total": 1
+      },
+      {
+        "citizenshipCode": "241",
+        "men": 0,
+        "women": 1,
+        "total": 1
+      },
+      {
+        "citizenshipCode": "349",
+        "men": 0,
+        "women": 1,
+        "total": 1
+      },
+      {
+        "citizenshipCode": "460",
+        "men": 2,
+        "women": 3,
+        "total": 5
+      },
+      {
+        "citizenshipCode": "243",
+        "men": 1,
+        "women": 3,
+        "total": 4
+      }
+    ],
+    "046033": [
+      {
+        "citizenshipCode": "100",
+        "men": 26778,
+        "women": 29030,
+        "total": 55808
+      },
+      {
+        "citizenshipCode": "301",
+        "men": 4,
+        "women": 1,
+        "total": 5
+      },
+      {
+        "citizenshipCode": "201",
+        "men": 228,
+        "women": 205,
+        "total": 433
+      },
+      {
+        "citizenshipCode": "401",
+        "men": 3,
+        "women": 1,
+        "total": 4
+      },
+      {
+        "citizenshipCode": "302",
+        "men": 1,
+        "women": 0,
+        "total": 1
+      },
+      {
+        "citizenshipCode": "602",
+        "men": 5,
+        "women": 7,
+        "total": 12
+      },
+      {
+        "citizenshipCode": "701",
+        "men": 1,
+        "women": 2,
+        "total": 3
+      },
+      {
+        "citizenshipCode": "203",
+        "men": 2,
+        "women": 5,
+        "total": 7
+      },
+      {
+        "citizenshipCode": "359",
+        "men": 0,
+        "women": 2,
+        "total": 2
+      },
+      {
+        "citizenshipCode": "305",
+        "men": 151,
+        "women": 62,
+        "total": 213
+      },
+      {
+        "citizenshipCode": "206",
+        "men": 4,
+        "women": 7,
+        "total": 11
+      },
+      {
+        "citizenshipCode": "256",
+        "men": 2,
+        "women": 8,
+        "total": 10
+      },
+      {
+        "citizenshipCode": "604",
+        "men": 0,
+        "women": 1,
+        "total": 1
+      },
+      {
+        "citizenshipCode": "252",
+        "men": 1,
+        "women": 3,
+        "total": 4
+      },
+      {
+        "citizenshipCode": "605",
+        "men": 53,
+        "women": 54,
+        "total": 107
+      },
+      {
+        "citizenshipCode": "209",
+        "men": 8,
+        "women": 31,
+        "total": 39
+      },
+      {
+        "citizenshipCode": "411",
+        "men": 1,
+        "women": 0,
+        "total": 1
+      },
+      {
+        "citizenshipCode": "509",
+        "men": 0,
+        "women": 1,
+        "total": 1
+      },
+      {
+        "citizenshipCode": "606",
+        "men": 3,
+        "women": 6,
+        "total": 9
+      },
+      {
+        "citizenshipCode": "314",
+        "men": 111,
+        "women": 105,
+        "total": 216
+      },
+      {
+        "citizenshipCode": "608",
+        "men": 3,
+        "women": 4,
+        "total": 7
+      },
+      {
+        "citizenshipCode": "320",
+        "men": 0,
+        "women": 1,
+        "total": 1
+      },
+      {
+        "citizenshipCode": "404",
+        "men": 3,
+        "women": 1,
+        "total": 4
+      },
+      {
+        "citizenshipCode": "250",
+        "men": 2,
+        "women": 5,
+        "total": 7
+      },
+      {
+        "citizenshipCode": "514",
+        "men": 2,
+        "women": 15,
+        "total": 17
+      },
+      {
+        "citizenshipCode": "212",
+        "men": 1,
+        "women": 1,
+        "total": 2
+      },
+      {
+        "citizenshipCode": "515",
+        "men": 0,
+        "women": 1,
+        "total": 1
+      },
+      {
+        "citizenshipCode": "609",
+        "men": 3,
+        "women": 7,
+        "total": 10
+      },
+      {
+        "citizenshipCode": "419",
+        "men": 19,
+        "women": 9,
+        "total": 28
+      },
+      {
+        "citizenshipCode": "517",
+        "men": 3,
+        "women": 4,
+        "total": 7
+      },
+      {
+        "citizenshipCode": "247",
+        "men": 0,
+        "women": 1,
+        "total": 1
+      },
+      {
+        "citizenshipCode": "420",
+        "men": 3,
+        "women": 6,
+        "total": 9
+      },
+      {
+        "citizenshipCode": "245",
+        "men": 25,
+        "women": 86,
+        "total": 111
+      },
+      {
+        "citizenshipCode": "323",
+        "men": 115,
+        "women": 125,
+        "total": 240
+      },
+      {
+        "citizenshipCode": "214",
+        "men": 0,
+        "women": 2,
+        "total": 2
+      },
+      {
+        "citizenshipCode": "215",
+        "men": 10,
+        "women": 21,
+        "total": 31
+      },
+      {
+        "citizenshipCode": "422",
+        "men": 12,
+        "women": 0,
+        "total": 12
+      },
+      {
+        "citizenshipCode": "360",
+        "men": 8,
+        "women": 85,
+        "total": 93
+      },
+      {
+        "citizenshipCode": "216",
+        "men": 19,
+        "women": 27,
+        "total": 46
+      },
+      {
+        "citizenshipCode": "423",
+        "men": 11,
+        "women": 1,
+        "total": 12
+      },
+      {
+        "citizenshipCode": "326",
+        "men": 1,
+        "women": 6,
+        "total": 7
+      },
+      {
+        "citizenshipCode": "327",
+        "men": 2,
+        "women": 0,
+        "total": 2
+      },
+      {
+        "citizenshipCode": "220",
+        "men": 3,
+        "women": 1,
+        "total": 4
+      },
+      {
+        "citizenshipCode": "425",
+        "men": 5,
+        "women": 0,
+        "total": 5
+      },
+      {
+        "citizenshipCode": "426",
+        "men": 2,
+        "women": 0,
+        "total": 2
+      },
+      {
+        "citizenshipCode": "330",
+        "men": 21,
+        "women": 14,
+        "total": 35
+      },
+      {
+        "citizenshipCode": "331",
+        "men": 1,
+        "women": 2,
+        "total": 3
+      },
+      {
+        "citizenshipCode": "332",
+        "men": 1,
+        "women": 1,
+        "total": 2
+      },
+      {
+        "citizenshipCode": "221",
+        "men": 1,
+        "women": 1,
+        "total": 2
+      },
+      {
+        "citizenshipCode": "356",
+        "men": 2,
+        "women": 4,
+        "total": 6
+      },
+      {
+        "citizenshipCode": "428",
+        "men": 0,
+        "women": 2,
+        "total": 2
+      },
+      {
+        "citizenshipCode": "361",
+        "men": 0,
+        "women": 1,
+        "total": 1
+      },
+      {
+        "citizenshipCode": "272",
+        "men": 2,
+        "women": 2,
+        "total": 4
+      },
+      {
+        "citizenshipCode": "248",
+        "men": 0,
+        "women": 2,
+        "total": 2
+      },
+      {
+        "citizenshipCode": "337",
+        "men": 2,
+        "women": 3,
+        "total": 5
+      },
+      {
+        "citizenshipCode": "249",
+        "men": 3,
+        "women": 11,
+        "total": 14
+      },
+      {
+        "citizenshipCode": "253",
+        "men": 2,
+        "women": 1,
+        "total": 3
+      },
+      {
+        "citizenshipCode": "435",
+        "men": 11,
+        "women": 0,
+        "total": 11
+      },
+      {
+        "citizenshipCode": "436",
+        "men": 205,
+        "women": 144,
+        "total": 349
+      },
+      {
+        "citizenshipCode": "527",
+        "men": 2,
+        "women": 4,
+        "total": 6
+      },
+      {
+        "citizenshipCode": "254",
+        "men": 21,
+        "women": 63,
+        "total": 84
+      },
+      {
+        "citizenshipCode": "342",
+        "men": 1,
+        "women": 0,
+        "total": 1
+      },
+      {
+        "citizenshipCode": "529",
+        "men": 0,
+        "women": 1,
+        "total": 1
+      },
+      {
+        "citizenshipCode": "442",
+        "men": 1,
+        "women": 1,
+        "total": 2
+      },
+      {
+        "citizenshipCode": "443",
+        "men": 35,
+        "women": 13,
+        "total": 48
+      },
+      {
+        "citizenshipCode": "231",
+        "men": 1,
+        "women": 0,
+        "total": 1
+      },
+      {
+        "citizenshipCode": "719",
+        "men": 1,
+        "women": 0,
+        "total": 1
+      },
+      {
+        "citizenshipCode": "232",
+        "men": 1,
+        "women": 5,
+        "total": 6
+      },
+      {
+        "citizenshipCode": "344",
+        "men": 135,
+        "women": 22,
+        "total": 157
+      },
+      {
+        "citizenshipCode": "530",
+        "men": 0,
+        "women": 1,
+        "total": 1
+      },
+      {
+        "citizenshipCode": "615",
+        "men": 3,
+        "women": 11,
+        "total": 14
+      },
+      {
+        "citizenshipCode": "233",
+        "men": 42,
+        "women": 100,
+        "total": 142
+      },
+      {
+        "citizenshipCode": "234",
+        "men": 5,
+        "women": 5,
+        "total": 10
+      },
+      {
+        "citizenshipCode": "219",
+        "men": 24,
+        "women": 21,
+        "total": 45
+      },
+      {
+        "citizenshipCode": "257",
+        "men": 1,
+        "women": 4,
+        "total": 5
+      },
+      {
+        "citizenshipCode": "516",
+        "men": 15,
+        "women": 30,
+        "total": 45
+      },
+      {
+        "citizenshipCode": "235",
+        "men": 672,
+        "women": 840,
+        "total": 1512
+      },
+      {
+        "citizenshipCode": "450",
+        "men": 99,
+        "women": 23,
+        "total": 122
+      },
+      {
+        "citizenshipCode": "271",
+        "men": 8,
+        "women": 7,
+        "total": 15
+      },
+      {
+        "citizenshipCode": "346",
+        "men": 0,
+        "women": 2,
+        "total": 2
+      },
+      {
+        "citizenshipCode": "348",
+        "men": 0,
+        "women": 3,
+        "total": 3
+      },
+      {
+        "citizenshipCode": "255",
+        "men": 1,
+        "women": 7,
+        "total": 8
+      },
+      {
+        "citizenshipCode": "251",
+        "men": 0,
+        "women": 1,
+        "total": 1
+      },
+      {
+        "citizenshipCode": "453",
+        "men": 0,
+        "women": 1,
+        "total": 1
+      },
+      {
+        "citizenshipCode": "239",
+        "men": 2,
+        "women": 20,
+        "total": 22
+      },
+      {
+        "citizenshipCode": "311",
+        "men": 16,
+        "women": 16,
+        "total": 32
+      },
+      {
+        "citizenshipCode": "536",
+        "men": 7,
+        "women": 12,
+        "total": 19
+      },
+      {
+        "citizenshipCode": "454",
+        "men": 1,
+        "women": 0,
+        "total": 1
+      },
+      {
+        "citizenshipCode": "455",
+        "men": 1,
+        "women": 0,
+        "total": 1
+      },
+      {
+        "citizenshipCode": "240",
+        "men": 3,
+        "women": 4,
+        "total": 7
+      },
+      {
+        "citizenshipCode": "241",
+        "men": 2,
+        "women": 8,
+        "total": 10
+      },
+      {
+        "citizenshipCode": "349",
+        "men": 0,
+        "women": 7,
+        "total": 7
+      },
+      {
+        "citizenshipCode": "458",
+        "men": 0,
+        "women": 2,
+        "total": 2
+      },
+      {
+        "citizenshipCode": "460",
+        "men": 83,
+        "women": 29,
+        "total": 112
+      },
+      {
+        "citizenshipCode": "351",
+        "men": 3,
+        "women": 0,
+        "total": 3
+      },
+      {
+        "citizenshipCode": "243",
+        "men": 54,
+        "women": 238,
+        "total": 292
+      },
+      {
+        "citizenshipCode": "461",
+        "men": 2,
+        "women": 0,
+        "total": 2
+      },
+      {
+        "citizenshipCode": "244",
+        "men": 1,
+        "women": 10,
+        "total": 11
+      },
+      {
+        "citizenshipCode": "618",
+        "men": 3,
+        "women": 0,
+        "total": 3
+      },
+      {
+        "citizenshipCode": "357",
+        "men": 0,
+        "women": 1,
+        "total": 1
+      },
+      {
+        "citizenshipCode": "619",
+        "men": 2,
+        "women": 6,
+        "total": 8
+      },
+      {
+        "citizenshipCode": "353",
+        "men": 0,
+        "women": 1,
+        "total": 1
+      },
+      {
+        "citizenshipCode": "465",
+        "men": 1,
+        "women": 0,
+        "total": 1
+      }
+    ]
+  },
+  "note": "Popolazione al 1° gennaio; quote comunali calcolate sui conteggi nativi per cittadinanza. Dal 2019 dati di fonte censuaria. Denominatori P02 riconciliati con tutti i residenti RCS."
+}

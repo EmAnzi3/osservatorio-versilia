@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 1,
+  "version": "a3-agcom-benchmark-2026-10-05-v1",
+  "retrieved": "2026-11-08",
+  "publisher": "AGCOM — Broadband Map, reportistica comunale",
+  "sourceProfileId": "agcom-quarterly",
+  "candidateState": "ACQUIRED_CANDIDATE",
+  "sourceUrl": "https://geo.agcom.it/arcgis/sharing/rest/content/items/e78bb4e1d6c64123a241d522d845daab/data",
+  "referenceDate": "05/10/2026",
+  "qualityGate": {
+    "status": "PASS",
+    "municipalityCountItaly": 7896,
+    "municipalityCountTuscany": 273,
+    "publicPercentageReconciliation": "2 metrics × 7/7 PASS",
+    "errors": []
+  },
+  "benchmarks": {
+    "ftthCoverageDesi": {
+      "year": "5 ottobre 2026",
+      "unit": "percent",
+      "formula": "media delle percentuali comunali AGCOM ponderata per famiglie residenti",
+      "tuscany": 71.98869774182955,
+      "italy": 82.91842278439191
+    },
+    "ftthCoverage20m": {
+      "year": "5 ottobre 2026",
+      "unit": "percent",
+      "formula": "media delle percentuali comunali AGCOM ponderata per famiglie residenti",
+      "tuscany": 63.936378969366,
+      "italy": 74.67492746972177
+    }
+  },
+  "blocked": {
+    "ftthReachedHouseholds": "benchmark assoluto non pubblicato: celle ufficiali mancanti, nessuna ricostruzione dalle percentuali",
+    "ftthUnreachedHouseholds": "benchmark assoluto non pubblicato: celle ufficiali mancanti, nessuna ricostruzione dalle percentuali"
+  },
+  "acquisitionEvidence": {
+    "script": "scripts/update_source_data.py agcom-ftth",
+    "catalogueSha256": "aad13bf8700ff9ba77b7ca437587a680e7128762a12030403295f4246d4a06ce",
+    "csvSha256": "bb23081d4a8de2db4798a9bba9c5fc27845a153e91f948c48ebf07af9dd5ed6e"
+  }
+}

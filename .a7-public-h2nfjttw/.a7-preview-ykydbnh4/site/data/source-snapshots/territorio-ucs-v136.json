@@ -1,0 +1,198 @@
+{
+  "schemaVersion": 2,
+  "release": "v1.36.0",
+  "scope": "Classificazioni territoriali, linea litoranea statistica e UCS 2007-2019",
+  "municipalityOrder": [
+    "Camaiore",
+    "Forte dei Marmi",
+    "Massarosa",
+    "Pietrasanta",
+    "Seravezza",
+    "Stazzema",
+    "Viareggio"
+  ],
+  "sources": {
+    "istatFunctionalGeographies": {
+      "publisher": "Istat",
+      "referenceYear": 2021,
+      "publication": "2026-03-17",
+      "page": "https://www.istat.it/comunicato-stampa/geografie-funzionali-per-lanalisi-territoriale/",
+      "notes": "DEGURBA e zone costiere 2021; classificazione comunale congelata per i sette Comuni."
+    },
+    "istatCoastline": {
+      "publisher": "Istat",
+      "referenceDate": "2021-12-31",
+      "page": "https://www.istat.it/classificazione/principali-statistiche-geografiche-sui-comuni/",
+      "canonicalFile": "Linea_litoranea_al-31-12-2021.zip",
+      "sha256": "d0d2a693dfefe78ac77a113b1a3358cd8aff6f5149f2850b5650a19df727467e",
+      "lengthField": "SHAPE_Leng",
+      "lengthUnit": "metres",
+      "crs": "EPSG:32632",
+      "definition": "Linea litoranea statistica Istat; include anche tratti antropizzati secondo le basi territoriali censuarie."
+    },
+    "regioneToscanaUcs": {
+      "publisher": "Regione Toscana",
+      "metadataId": "r_toscan:0d4d6640-9a1c-47a4-9a5d-a85cdb36927c",
+      "referenceYears": [
+        2007,
+        2010,
+        2013,
+        2016,
+        2019
+      ],
+      "page": "https://dati.toscana.it/dataset/ucs",
+      "canonicalFile": "USO_E_COPERTURA_DEL_SUOLO_REGIONE_TOSCANA.zip",
+      "sha256": "0cc9527546e6220b99632a9cedc2e908d775e729e4e97de00ebb417fadde8a9d",
+      "crs": "EPSG:3003",
+      "scale": "1:10000",
+      "method": "Copertura poligonale UCS Regione Toscana; categorie gerarchiche Corine Land Cover. Percentuali calcolate sul totale UCS del medesimo Comune/anno."
+    }
+  },
+  "classifications": {
+    "Camaiore": {
+      "littoral": true,
+      "coastalZone": true,
+      "degurba": 2,
+      "degurbaLabel": "Zone a densità intermedia di popolazione",
+      "sourceStatus": "verified-official-2021-classification"
+    },
+    "Forte dei Marmi": {
+      "littoral": true,
+      "coastalZone": true,
+      "degurba": 2,
+      "degurbaLabel": "Zone a densità intermedia di popolazione",
+      "sourceStatus": "verified-official-2021-classification"
+    },
+    "Massarosa": {
+      "littoral": false,
+      "coastalZone": true,
+      "degurba": 2,
+      "degurbaLabel": "Zone a densità intermedia di popolazione",
+      "sourceStatus": "verified-official-2021-classification"
+    },
+    "Pietrasanta": {
+      "littoral": true,
+      "coastalZone": true,
+      "degurba": 2,
+      "degurbaLabel": "Zone a densità intermedia di popolazione",
+      "sourceStatus": "verified-official-2021-classification"
+    },
+    "Seravezza": {
+      "littoral": false,
+      "coastalZone": true,
+      "degurba": 2,
+      "degurbaLabel": "Zone a densità intermedia di popolazione",
+      "sourceStatus": "verified-official-2021-classification"
+    },
+    "Stazzema": {
+      "littoral": false,
+      "coastalZone": false,
+      "degurba": 3,
+      "degurbaLabel": "Zone scarsamente popolate",
+      "sourceStatus": "verified-official-2021-classification"
+    },
+    "Viareggio": {
+      "littoral": true,
+      "coastalZone": true,
+      "degurba": 2,
+      "degurbaLabel": "Zone a densità intermedia di popolazione",
+      "sourceStatus": "verified-official-2021-classification"
+    }
+  },
+  "coastlineKm": {
+    "Camaiore": 3.238942133,
+    "Forte dei Marmi": 5.195521714,
+    "Massarosa": null,
+    "Pietrasanta": 4.737747793,
+    "Seravezza": null,
+    "Stazzema": null,
+    "Viareggio": 13.598604591
+  },
+  "landCover": {
+    "years": [
+      2007,
+      2010,
+      2013,
+      2016,
+      2019
+    ],
+    "categoryDefinitions": [
+      {"key": "artificialized", "label": "Territori modellati artificialmente", "shortLabel": "Artificializzato", "level": "macro", "ucs": "1"},
+      {"key": "agricultural", "label": "Superfici agricole utilizzate", "shortLabel": "Agricolo", "level": "macro", "ucs": "2"},
+      {"key": "forest_seminatural_total", "label": "Territori boscati e ambienti seminaturali", "shortLabel": "Boscato e seminaturale", "level": "macro", "ucs": "3"},
+      {"key": "wetlands", "label": "Zone umide", "shortLabel": "Zone umide", "level": "macro", "ucs": "4"},
+      {"key": "water", "label": "Corpi idrici", "shortLabel": "Corpi idrici", "level": "macro", "ucs": "5"},
+      {"key": "forest", "label": "Boschi", "shortLabel": "Boschi", "level": "detail", "ucs": "31", "parent": "forest_seminatural_total"},
+      {"key": "seminativi", "label": "Seminativi", "shortLabel": "Seminativi", "level": "detail", "ucs": "21", "parent": "agricultural"},
+      {"key": "permanent_crops", "label": "Colture permanenti", "shortLabel": "Colture permanenti", "level": "detail", "ucs": "22", "parent": "agricultural"},
+      {"key": "seminatural_nonforest", "label": "Ambienti seminaturali non forestali", "shortLabel": "Seminaturale non forestale", "level": "detail", "ucs": "32+33", "parent": "forest_seminatural_total"},
+      {"key": "urban_green_cartographic", "label": "Verde urbano cartografato UCS", "shortLabel": "Verde urbano UCS", "level": "detail", "ucs": "141", "parent": "artificialized", "caveat": "Classe cartografica UCS: non equivale alla dotazione di verde pubblico fruibile."}
+    ],
+    "valueOrder": ["artificialized", "agricultural", "forest_seminatural_total", "wetlands", "water", "forest", "seminativi", "permanent_crops", "seminatural_nonforest", "urban_green_cartographic"],
+    "municipalities": {
+      "Camaiore": {"totalHa": 8468.744599, "rows": {
+        "2007": [1456.032228, 2270.221508, 4729.853571, 0.0, 12.637292, 3997.209396, 1028.405506, 804.663922, 732.644175, 89.841217],
+        "2010": [1486.753195, 2245.142369, 4724.211744, 0.0, 12.637292, 3991.877784, 1001.41374, 805.810457, 732.33396, 84.763257],
+        "2013": [1492.22761, 2241.957658, 4721.922039, 0.0, 12.637292, 3988.726487, 1002.444389, 802.060114, 733.195553, 82.868507],
+        "2016": [1499.263575, 2240.217087, 4716.626646, 0.0, 12.637292, 3981.414181, 1005.385136, 798.766555, 735.212465, 82.53538],
+        "2019": [1501.148142, 2239.122399, 4715.836766, 0.0, 12.637292, 3980.624302, 1005.180681, 798.261395, 735.212465, 81.471859]
+      }},
+      "Forte dei Marmi": {"totalHa": 913.548823, "rows": {
+        "2007": [750.136985, 82.659935, 80.26342, 0.0, 0.488483, 19.961155, 62.206255, 4.849332, 60.302265, 77.341659],
+        "2010": [752.314178, 79.70218, 81.043982, 0.0, 0.488483, 19.556234, 57.136683, 4.849332, 61.487748, 71.847584],
+        "2013": [752.457842, 80.687853, 79.914645, 0.0, 0.488483, 19.41257, 58.255073, 4.716615, 60.502075, 68.930574],
+        "2016": [753.758382, 79.504366, 79.797592, 0.0, 0.488483, 19.295518, 57.26974, 4.716615, 60.502075, 66.09689],
+        "2019": [754.545901, 78.716846, 79.797592, 0.0, 0.488483, 19.295518, 56.482221, 4.716615, 60.502075, 65.158824]
+      }},
+      "Massarosa": {"totalHa": 6856.246245, "rows": {
+        "2007": [948.55224, 2609.122587, 1585.23973, 628.15526, 1085.176428, 1339.464537, 1470.379517, 863.722876, 245.775193, 42.906497],
+        "2010": [953.791337, 2586.218667, 1602.927274, 628.15526, 1085.153707, 1340.376932, 1438.874716, 867.443895, 262.550342, 42.252261],
+        "2013": [970.639841, 2574.630787, 1597.666651, 628.15526, 1085.153707, 1340.087125, 1433.190762, 859.086264, 257.579525, 40.831529],
+        "2016": [975.480722, 2569.008997, 1598.447559, 628.15526, 1085.153707, 1339.257408, 1441.888389, 849.995859, 259.190151, 39.65192],
+        "2019": [979.778635, 2566.720344, 1596.4383, 628.15526, 1085.153707, 1339.077975, 1446.540213, 843.033114, 257.360325, 39.004132]
+      }},
+      "Pietrasanta": {"totalHa": 4199.231675, "rows": {
+        "2007": [1620.494339, 1375.193091, 1184.09369, 2.6958, 16.754756, 1006.012384, 652.698709, 522.120936, 178.081306, 137.111054],
+        "2010": [1641.161243, 1352.767507, 1185.852369, 3.106663, 16.343892, 1006.085622, 635.749365, 515.538932, 179.766747, 128.624058],
+        "2013": [1644.357349, 1352.427287, 1182.996483, 3.106663, 16.343892, 1001.768633, 643.235826, 507.649986, 181.22785, 125.480641],
+        "2016": [1652.395139, 1352.412337, 1174.973643, 3.106663, 16.343892, 972.343568, 654.408851, 501.195843, 202.630075, 124.180236],
+        "2019": [1652.660246, 1353.324739, 1173.796134, 3.106663, 16.343892, 970.76789, 653.361118, 498.434011, 203.028244, 123.946098]
+      }},
+      "Seravezza": {"totalHa": 3936.271083, "rows": {
+        "2007": [619.914883, 374.602679, 2925.047981, 0.0, 16.70554, 2006.326299, 122.367207, 118.142521, 918.721682, 16.596759],
+        "2010": [628.897624, 369.26019, 2921.407729, 0.0, 16.70554, 2004.862973, 119.063701, 116.088754, 916.544755, 16.920366],
+        "2013": [643.466601, 358.686553, 2917.412389, 0.0, 16.70554, 2001.777674, 108.197701, 114.29842, 915.634715, 17.036638],
+        "2016": [643.963139, 358.417752, 2917.184652, 0.0, 16.70554, 1990.763525, 107.857136, 113.805676, 926.421127, 17.546748],
+        "2019": [643.616663, 358.764229, 2917.184652, 0.0, 16.70554, 1992.278708, 108.409445, 113.805676, 924.905944, 17.546748]
+      }},
+      "Stazzema": {"totalHa": 8070.230381, "rows": {
+        "2007": [318.938923, 195.850838, 7541.48546, 0.0, 13.95516, 5800.206592, 46.932238, 16.893039, 1741.278868, 3.227646],
+        "2010": [316.458222, 195.964964, 7543.852035, 0.0, 13.95516, 5795.028011, 46.932238, 16.959882, 1748.824024, 3.227646],
+        "2013": [316.310121, 194.400027, 7545.565073, 0.0, 13.95516, 5794.92439, 45.086947, 17.074245, 1750.640683, 3.227646],
+        "2016": [319.445311, 202.804749, 7533.890109, 0.0, 14.090211, 5800.134917, 43.806636, 12.510538, 1733.755193, 3.227646],
+        "2019": [316.567491, 204.629262, 7534.943417, 0.0, 14.090211, 5811.2241, 41.406438, 12.510538, 1723.719317, 3.227646]
+      }},
+      "Viareggio": {"totalHa": 3241.963386, "rows": {
+        "2007": [1503.993653, 753.007216, 720.798325, 104.861732, 159.30246, 454.644581, 613.309595, 12.163488, 266.153744, 168.123046],
+        "2010": [1519.987337, 736.013949, 721.797909, 104.861732, 159.30246, 454.644581, 593.523824, 14.670454, 267.153329, 162.75252],
+        "2013": [1526.069117, 728.695011, 723.035067, 104.861732, 159.30246, 454.644581, 590.012346, 13.57646, 268.390486, 159.699262],
+        "2016": [1523.995865, 731.097326, 722.706004, 104.861732, 159.30246, 454.644581, 595.067441, 11.392955, 268.061423, 159.595584],
+        "2019": [1527.040649, 729.60247, 721.108983, 104.861732, 159.349554, 454.644581, 593.372576, 11.392955, 266.464402, 158.868435]
+      }}
+    },
+    "transformation2007_2019": {
+      "Camaiore": {"changedHa": 56.774378},
+      "Forte dei Marmi": {"changedHa": 4.812964},
+      "Massarosa": {"changedHa": 57.612158},
+      "Pietrasanta": {"changedHa": 58.899261},
+      "Seravezza": {"changedHa": 37.247011},
+      "Stazzema": {"changedHa": 33.833719},
+      "Viareggio": {"changedHa": 26.709616}
+    }
+  },
+  "validation": {
+    "aggregationRule": "Versilia: somma ettari categoria / somma ettari UCS; mai media semplice delle percentuali comunali.",
+    "transformationRule": "Poligoni con macroclasse UCS livello 1 diversa tra 2007 e 2019.",
+    "coastlineRule": "Somma lunghezze statistiche Istat dei soli Comuni litoranei; n.a. per gli altri."
+  }
+}

@@ -1,0 +1,346 @@
+<!doctype html>
+<html lang="it"><head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ambiente · Confronto dei comuni della Versilia</title>
+  <meta name="description" content="Clima, suolo, rifiuti, agricoltura biologica ed esposizione concreta ai rischi idrogeologici.">
+  <meta property="og:title" content="Ambiente · Confronto dei comuni della Versilia">
+  <meta property="og:description" content="Clima, suolo, rifiuti, agricoltura biologica ed esposizione concreta ai rischi idrogeologici.">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="it_IT">
+  <link rel="icon" href="../../favicon.svg?v=20260824-ov4" sizes="any">
+  <link rel="icon" href="../../favicon.svg?v=20260824-ov4" type="image/svg+xml">
+  <link rel="manifest" href="../../site.webmanifest?v=20260824-pwa9">
+  <link rel="stylesheet" href="../../assets/original.css">
+  <link rel="stylesheet" href="../../assets/static.css">
+  <link rel="stylesheet" href="../../assets/fidelity.css?v=20261025-ui-shell-consistency">
+  <link rel="stylesheet" href="../../assets/fonts.css">
+  <link rel="stylesheet" href="../../assets/ux-experiment.css?v=20261025-ui-shell-consistency">
+  <link rel="stylesheet" href="../../assets/ux-background-match.css?v=20261025-ui-shell-consistency">
+  <link rel="stylesheet" href="../../assets/export-v161.css?v=20261025-ui-shell-consistency">
+  <link rel="stylesheet" href="../../assets/visual-grammar.css?v=20261025-ui-shell-consistency">
+  <link rel="stylesheet" href="../../assets/indicator-pages.css?v=20261025-ui-shell-consistency">
+  <link rel="stylesheet" href="../../assets/social-presence.css?v=20261025-ui-shell-consistency">
+<style id="ov-invalsi-benchmark-history-style">
+.ux-history-chart .ux-series-group[data-history-town="toscana"] .ux-series-line{stroke-dasharray:10 5;stroke-width:3;opacity:.9}
+.ux-history-chart .ux-series-group[data-history-town="italia"] .ux-series-line{stroke-dasharray:2 5;stroke-width:3;opacity:.9}
+.ux-history-legend button[data-history-select="toscana"]::before,.ux-history-legend button[data-history-select="italia"]::before{width:20px;height:2px;border-radius:0}
+.ux-history-legend button[data-history-select="toscana"]::before{background:repeating-linear-gradient(90deg,var(--series-color) 0 8px,transparent 8px 12px)}
+.ux-history-legend button[data-history-select="italia"]::before{background:repeating-linear-gradient(90deg,var(--series-color) 0 2px,transparent 2px 6px)}
+</style><style id="ov-climate-current-grammar-style">
+      .ov-climate-current-legend{
+        display:flex;align-items:center;gap:18px;margin:0 0 14px;padding:0 2px;
+        color:var(--muted);font-size:9px;font-weight:700
+      }
+      .ov-climate-current-legend span{display:inline-flex;align-items:center;gap:7px}
+      .ov-climate-current-legend .ov-legend-dot{
+        width:9px;height:9px;border-radius:50%;background:var(--surface,#fffaf1);
+        border:2px solid var(--theme-color,#52785c)
+      }
+      .ov-climate-current-legend .ov-legend-mean{width:2px;height:16px;background:#607b88}
+      .ov-climate-current-list{
+        display:grid;gap:11px
+      }
+      .ov-climate-current-list .ov-climate-current-row{
+        border-radius:8px;grid-template-columns:24px minmax(110px,1.1fr) minmax(150px,3fr) minmax(70px,auto);
+        align-items:center;gap:12px;min-height:54px;padding:0;display:grid;position:relative;
+        color:inherit;text-decoration:none;transition:background .15s
+      }
+      .ov-climate-current-list .ov-climate-current-row:hover,
+      .ov-climate-current-list .ov-climate-current-row.selected{background:var(--blue-soft)}
+      .ov-climate-current-list .ov-climate-current-row .town{
+        grid-column:2;font-size:13px;font-weight:690
+      }
+      .ov-climate-current-list .ov-climate-current-row strong{
+        grid-column:4;font-family:var(--font-geist-mono),monospace;text-align:right;
+        white-space:nowrap;font-size:12px
+      }
+      .ov-climate-current-list .ov-climate-current-track{
+        grid-column:3;position:relative;height:9px;border-radius:999px;background:#e4e9e7;
+        overflow:visible
+      }
+      .ov-climate-current-list.uses-versilia-marker .ov-climate-current-track::after{
+        content:'';position:absolute;z-index:1;left:var(--ov-mean-position);top:-5px;width:2px;height:19px;
+        background:#607b88;transform:translateX(-1px)
+      }
+      .ov-climate-current-list.uses-versilia-marker .ov-climate-current-track>i{
+        position:absolute;z-index:2;top:50%;left:var(--ov-value-position)!important;
+        width:11px;height:11px;margin:-5.5px 0 0 -5.5px;border-radius:50%;
+        background:var(--surface,#fffaf1);border:3px solid var(--theme-color,#52785c);
+        box-shadow:0 1px 4px color-mix(in srgb,var(--ink) 18%,transparent)
+      }
+      .ov-climate-current-list .bar-hover-label{display:none}
+      @media(max-width:700px){
+        .ov-climate-current-list .ov-climate-current-row{
+          grid-template-columns:18px minmax(82px,1fr) minmax(70px,1.4fr) auto;gap:7px
+        }
+        .ov-climate-current-list .ov-climate-current-row .town{font-size:11px}
+        .ov-climate-current-list .ov-climate-current-row strong{font-size:10px}
+      }
+    </style>
+  <link rel="canonical" href="https://osservatorioversilia.it/confronta/ambiente/">
+  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"url":"https://osservatorioversilia.it/confronta/ambiente/","name":"Ambiente · Confronto dei comuni della Versilia","description":"Clima, suolo, rifiuti, agricoltura biologica ed esposizione concreta ai rischi idrogeologici.","inLanguage":"it-IT","isAccessibleForFree":true,"creator":{"@type":"Person","name":"Emanuele Anzilotti"},"publisher":{"@type":"Person","name":"Emanuele Anzilotti"},"@type":"Dataset","spatialCoverage":{"@type":"Place","name":"Versilia, Toscana, Italia"},"variableMeasured":["Superficie comunale","Densità abitativa","Distribuzione altimetrica del territorio","Classificazioni territoriali","Linea litoranea statistica","Uso e copertura del suolo","Copertura forestale","Indice composito di fragilità comunale","Pericolosità ed esposizione a frane","Pericolosità ed esposizione ad alluvioni","Territorio in aree naturali protette","Accessibilità ai servizi essenziali","Suolo consumato","Consumo di suolo annuale","Lunghezza interventi PAB programmati","Interventi PAB programmati","Valore manutenzione PAB programmata","Reticolo idrografico","Elementi di opere idrauliche censiti","Interventi di manutenzione in corso","Interventi di manutenzione completati","Valore lordo operativo degli interventi in corso","Valore lordo operativo degli interventi completati","Variazione della temperatura media in 50 anni","Variazione delle precipitazioni in 50 anni","Andamento delle temperature minime","Andamento delle temperature massime","Qualità delle aree di balneazione","Campioni di balneazione non conformi","Spiagge Bandiera Blu","Dinamica del litorale","Costa protetta da opere di difesa rigide","Concessioni demaniali marittime","Canoni demaniali dovuti","Perdite della rete idrica","Qualità dell’acqua potabile","Siti oggetto di procedimento di bonifica","Aziende agricole","Superficie agricola utilizzata (SAU)","Dimensione media delle aziende agricole","Profilo delle colture","Superficie irrigata","Superficie agricola utilizzata biologica","Ricambio e conduzione delle aziende agricole","Diversificazione e modernizzazione delle aziende agricole","Siti censiti in RTCave","Produzione estrattiva","Quadro estrattivo PRC","Raccolta differenziata","Rifiuti urbani per residente","Costo totale del servizio rifiuti per abitante","Rifiuto residuo per residente"]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Osservatorio Versilia","item":"https://osservatorioversilia.it/"},{"@type":"ListItem","position":2,"name":"Temi","item":"https://osservatorioversilia.it/#temi"},{"@type":"ListItem","position":3,"name":"Ambiente · Confronto dei comuni della Versilia","item":"https://osservatorioversilia.it/confronta/ambiente/"}]}]}</script>
+
+  <meta property="og:url" content="https://osservatorioversilia.it/confronta/ambiente/">
+  <meta property="og:site_name" content="Osservatorio Versilia">
+  <meta property="og:image" content="https://osservatorioversilia.it/images/versilia-viareggio-apuane.jpg">
+  <meta property="og:image:alt" content="Viareggio e le Alpi Apuane, immagine di Osservatorio Versilia">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Ambiente · Confronto dei comuni della Versilia">
+  <meta name="twitter:description" content="Clima, suolo, rifiuti, agricoltura biologica ed esposizione concreta ai rischi idrogeologici.">
+  <meta name="twitter:site" content="@OssVersilia">
+  <meta name="twitter:image" content="https://osservatorioversilia.it/images/versilia-viareggio-apuane.jpg">
+  <meta name="twitter:image:alt" content="Viareggio e le Alpi Apuane, immagine di Osservatorio Versilia">
+  <link rel="stylesheet" href="../../assets/brand.css?v=20260824-ov4">
+  <link rel="stylesheet" href="../../assets/mobile-accordion-fix.css?v=20260809-3">
+  <link rel="stylesheet" href="../../assets/chart-surfaces.css?v=20260826-v120">
+  <meta name="theme-color" content="#0F3654">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Osservatorio Versilia">
+  <link rel="apple-touch-icon" sizes="180x180" href="../../pwa/icon-180.png?v=20260824-pwa9">
+  <link rel="stylesheet" href="../../assets/pwa.css?v=20260824-pwa9">
+</head>
+<body class="antialiased" data-page="compare" data-theme="ambiente" data-town="" data-prerendered="true">
+  <div id="site-header-mount">
+      <a class="skip-link" href="#app">Vai al contenuto</a>
+      <header class="site-header">
+        <div class="site-header-inner">
+          <a href="../../" class="site-brand" aria-label="Osservatorio Versilia, torna alla home">
+            <span class="site-brand-mark" aria-hidden="true"><svg class="ov-mark-svg" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 76 64"><g fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="27" cy="32" r="22" stroke="#0F3654" stroke-width="6"/>
+    <path d="M43 28 53 48 71 15" stroke="#0F3654" stroke-width="6"/>
+    <path d="M57 27 70 9" stroke="#58A28F" stroke-width="3.2"/>
+  </g>
+  <g fill="#6F8FA3">
+    <rect x="16" y="34" width="5.5" height="9" rx="1"/>
+    <rect x="24" y="28" width="5.5" height="15" rx="1"/>
+    <rect x="32" y="20" width="5.5" height="23" rx="1"/>
+  </g>
+  <path d="M10 43c7-5.5 14-7.2 20-5.3 4.4 1.4 8 4.1 12 4.7v5.1c-4.6-.5-8.7-3-13.1-4.1-5.7-1.5-11.7-.1-18.9 4.1Z" fill="#58A28F"/>
+  <path d="M11.5 45.2c6.2-3.2 11.9-4.2 17.1-3 4.3 1 8.1 3.2 12.2 3.8" fill="none" stroke="#F7FAF8" stroke-width="1.8" stroke-linecap="round"/>
+</svg></span>
+            <span class="site-brand-copy"><strong>Osservatorio Versilia</strong><small>Versilia in numeri</small></span>
+          </a>
+          <div class="site-header-actions">
+            <nav aria-label="Navigazione principale">
+              <a href="../../#temi" aria-current="page">Temi</a>
+              <a href="../../#comuni">Comuni</a>
+              <a href="../../dossier/">Dossier</a>
+              <a href="../../chiedi/">Chiedi</a>
+              <a href="../../opportunita/">Opportunità</a>
+              <a href="../../progetto/">Il progetto</a>
+              <a href="../../stato-dati/" data-data-status-nav="header">Stato dati</a>
+              <a href="../../segnala/">Segnala</a>
+            </nav>
+            <button class="global-search-trigger" type="button" aria-haspopup="dialog" aria-expanded="false">
+              <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg><span>Cerca</span><kbd>/</kbd>
+            </button>
+          </div>
+        </div>
+      </header></div>
+  <div id="app"><main class="inner-page a5-editorial-pilot" data-theme="ambiente">
+          <section class="compare-showcase-hero" aria-labelledby="compare-page-title">
+            <div class="compare-showcase-hero-media" style="background-image:linear-gradient(90deg,rgba(10,45,67,.86) 0%,rgba(10,45,67,.62) 43%,rgba(10,45,67,.16) 78%),url('../../images/versilia-viareggio-apuane.jpg')"></div>
+            <div class="compare-showcase-hero-copy page-width">
+              <span class="overline">Confronto territoriale · 09</span>
+              <h1 id="compare-page-title">Ambiente</h1>
+              <p>Ambiente, clima, costa, acqua, bonifiche, agricoltura, attività estrattive, rifiuti e rischi del territorio.</p>
+              <div class="compare-showcase-actions">
+                <a class="compare-showcase-primary" href="#compare-workspace">Esplora i dati <span aria-hidden="true">→</span></a>
+                <a class="compare-showcase-secondary" href="#compare-territori">Scopri i comuni</a>
+              </div>
+              <div class="compare-showcase-facts"><span>7 Comuni</span><span>52 indicatori Ambiente</span><span>Catalogo al 14 settembre 2026</span></div>
+            </div>
+          </section>
+          <div class="breadcrumbs page-width"><a href="/">Home</a><span>›</span><strong>Ambiente</strong></div>
+          <nav class="compare-context-nav page-width" aria-label="Passa a un altro tema">
+      <div class="context-nav-title"><small>Esplora</small><strong>Temi</strong></div>
+      <div class="context-nav-links"><a href="/confronta/demografia/?indicatore=population" data-context-theme="demografia" class=""><small>01</small><span>Demografia</span></a><a href="/confronta/economia/?indicatore=income" data-context-theme="economia" class=""><small>02</small><span>Economia</span></a><a href="/confronta/lavoro/?indicatore=employmentRate" data-context-theme="lavoro" class=""><small>03</small><span>Lavoro</span></a><a href="/confronta/istruzione/?indicatore=diplomaPlus" data-context-theme="istruzione" class=""><small>04</small><span>Istruzione</span></a><a href="/confronta/salute/?indicatore=lifeExpectancy" data-context-theme="salute" class=""><small>05</small><span>Salute</span></a><a href="/confronta/mobilita/?indicatore=outsideMunicipality" data-context-theme="mobilita" class=""><small>06</small><span>Mobilità e infrastrutture</span></a><a href="/confronta/sicurezza/?indicatore=roadSafety" data-context-theme="sicurezza" class=""><small>07</small><span>Sicurezza e territorio</span></a><a href="/confronta/abitare/?indicatore=omiResidential" data-context-theme="abitare" class=""><small>08</small><span>Abitare</span></a><a href="/confronta/ambiente/?indicatore=municipalSurface" data-context-theme="ambiente" class="active" aria-current="page"><small>09</small><span>Ambiente</span></a><a href="/confronta/bilanci/?indicatore=currentRevenueAccruedPerResident" data-context-theme="bilanci" class=""><small>10</small><span>Bilanci e amministrazione</span></a><a href="/confronta/comunita/?indicatore=publicWorks" data-context-theme="comunita" class=""><small>11</small><span>Comunità e welfare</span></a></div>
+    </nav>
+          <section class="topic-hero page-width" data-theme="ambiente">
+            <div class="topic-symbol"><svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"></path><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"></path></svg><small>09</small></div>
+            <div class="topic-hero-copy"><span class="overline">Per leggere il territorio</span><h2>Quali pressioni insistono sul territorio?</h2></div>
+            <div class="topic-hero-context"><span class="overline">Come si legge</span><p>Scegli un indicatore: valore attuale dei sette Comuni, serie storica e, dove disponibile, confronto con Toscana e Italia. Fonte e metodo sono indicati sotto ogni grafico.</p></div>
+          </section>
+          <section id="compare-workspace" class="topic-dashboard page-width" data-theme="ambiente">
+            <aside class="topic-controls">
+      <div class="topic-controls-heading"><div><span class="overline">Gruppi di indicatori</span><strong>52 indicatori</strong></div><small>Scegli il dato da confrontare</small></div>
+      <div class="metric-switch metric-catalog compact-list" role="tablist" aria-label="Indicatori di Ambiente" data-ux-accordion-delegated="true" data-ux-visible-tabs="true" data-ux-accordion-ready="true"><section class="metric-group is-open" data-section="profilo-territoriale" data-ux-accordion="true">
+      <div class="metric-group-heading ux-section-toggle" role="button" tabindex="0" aria-controls="ux-section-1" data-ux-accordion-heading="true" aria-expanded="true"><strong>Profilo fisico del territorio</strong><span>Superficie, densità abitativa e distribuzione altimetrica per leggere la forma fisica dei sette Comuni.</span><span class="ux-section-tools"><span>5 indicatori</span><span class="ux-section-chevron" aria-hidden="true">⌄</span></span></div>
+      <div class="metric-group-buttons" id="ux-section-1"><button type="button" role="tab" data-metric="municipalSurface" class="active" aria-selected="true" tabindex="0">Superficie</button><button type="button" role="tab" data-metric="populationDensity" class="" aria-selected="false" tabindex="-1">Densità</button><button type="button" role="tab" data-metric="altitudeProfile" class="" aria-selected="false" tabindex="-1">Profilo altimetrico</button><button type="button" role="tab" data-metric="territorialClassification" class="" aria-selected="false" tabindex="-1">Classificazioni</button><button type="button" role="tab" data-metric="statisticalCoastlineLength" class="" aria-selected="false" tabindex="-1">Linea litoranea</button></div>
+    </section><section class="metric-group" data-section="uso-copertura-suolo" data-ux-accordion="true">
+      <div class="metric-group-heading ux-section-toggle" role="button" tabindex="0" aria-controls="ux-section-2" data-ux-accordion-heading="true" aria-expanded="false"><strong>Uso e copertura del suolo</strong><span>Serie UCS 2007–2019: composizione territoriale, dettaglio gerarchico e trasformazioni.</span><span class="ux-section-tools"><span>1 indicatore</span><span class="ux-section-chevron" aria-hidden="true">⌄</span></span></div>
+      <div class="metric-group-buttons" id="ux-section-2" hidden=""><button type="button" role="tab" data-metric="landCoverProfile" class="" aria-selected="false" tabindex="-1">Copertura del suolo</button></div>
+    </section><section class="metric-group" data-section="copertura-forestale" data-ux-accordion="true">
+      <div class="metric-group-heading ux-section-toggle" role="button" tabindex="0" aria-controls="ux-section-3" data-ux-accordion-heading="true" aria-expanded="false"><strong>Copertura forestale</strong><span>Fotografia forestale nazionale CFI/SINFor, distinta dalla serie storica regionale UCS.</span><span class="ux-section-tools"><span>1 indicatore</span><span class="ux-section-chevron" aria-hidden="true">⌄</span></span></div>
+      <div class="metric-group-buttons" id="ux-section-3" hidden=""><button type="button" role="tab" data-metric="forestCoverIndex" class="" aria-selected="false" tabindex="-1">Copertura forestale</button></div>
+    </section><section class="metric-group" data-section="fragilita-rischi" data-ux-accordion="true">
+      <div class="metric-group-heading ux-section-toggle" role="button" tabindex="0" aria-controls="ux-section-4" data-ux-accordion-heading="true" aria-expanded="false"><strong>Fragilità territoriale e rischi</strong><span>Fragilità comunale, aree protette e accessibilità ai servizi, con lettura distinta di pericolosità territoriale ed esposizione della popolazione a frane e alluvioni.</span><span class="ux-section-tools"><span>5 indicatori</span><span class="ux-section-chevron" aria-hidden="true">⌄</span></span></div>
+      <div class="metric-group-buttons" id="ux-section-4" hidden=""><button type="button" role="tab" data-metric="municipalFragility" class="" aria-selected="false" tabindex="-1">Fragilità comunale</button><button type="button" role="tab" data-metric="landslideExposure" class="" aria-selected="false" tabindex="-1">Frane</button><button type="button" role="tab" data-metric="floodExposure" class="" aria-selected="false" tabindex="-1">Alluvioni</button><button type="button" role="tab" data-metric="protectedNaturalAreas" class="" aria-selected="false" tabindex="-1">Aree protette</button><button type="button" role="tab" data-metric="essentialServicesAccessibility" class="" aria-selected="false" tabindex="-1">Accessibilità servizi</button></div>
+    </section><section class="metric-group" data-section="suolo-territorio" data-ux-accordion="true">
+      <div class="metric-group-heading ux-section-toggle" role="button" tabindex="0" aria-controls="ux-section-5" data-ux-accordion-heading="true" aria-expanded="false"><strong>Suolo e territorio</strong><span>Consumo di suolo e variazioni recenti della superficie consumata.</span><span class="ux-section-tools"><span>2 indicatori</span><span class="ux-section-chevron" aria-hidden="true">⌄</span></span></div>
+      <div class="metric-group-buttons" id="ux-section-5" hidden=""><button type="button" role="tab" data-metric="landUse" class="" aria-selected="false" tabindex="-1">Suolo consumato</button><button type="button" role="tab" data-metric="landUseChange" class="" aria-selected="false" tabindex="-1">Consumo annuale</button></div>
+    </section><section class="metric-group" data-section="gestione-rischio" data-ux-accordion="true">
+      <div class="metric-group-heading ux-section-toggle" role="button" tabindex="0" aria-controls="ux-section-6" data-ux-accordion-heading="true" aria-expanded="false"><strong>Gestione del rischio e manutenzione</strong><span>Reticolo in gestione, opere idrauliche, interventi e programmazione della manutenzione.</span><span class="ux-section-tools"><span>9 indicatori</span><span class="ux-section-chevron" aria-hidden="true">⌄</span></span></div>
+      <div class="metric-group-buttons" id="ux-section-6" hidden=""><button type="button" role="tab" data-metric="pabProgrammedInterventionLength" class="" aria-selected="false" tabindex="-1">Interventi PAB · km</button><button type="button" role="tab" data-metric="pabProgrammedInterventions" class="" aria-selected="false" tabindex="-1">Interventi PAB programmati</button><button type="button" role="tab" data-metric="pabProgrammedMaintenanceValue" class="" aria-selected="false" tabindex="-1">Valore PAB programmato</button><button type="button" role="tab" data-metric="managedReticulumLength" class="" aria-selected="false" tabindex="-1">Reticolo idrografico</button><button type="button" role="tab" data-metric="hydraulicWorksCensusElements" class="" aria-selected="false" tabindex="-1">Opere idrauliche · elementi censiti</button><button type="button" role="tab" data-metric="pabInterventionsInProgress" class="" aria-selected="false" tabindex="-1">Interventi in corso</button><button type="button" role="tab" data-metric="pabInterventionsCompleted" class="" aria-selected="false" tabindex="-1">Interventi completati</button><button type="button" role="tab" data-metric="pabInProgressOperationalGrossValue" class="" aria-selected="false" tabindex="-1">Valore operativo · in corso</button><button type="button" role="tab" data-metric="pabCompletedOperationalGrossValue" class="" aria-selected="false" tabindex="-1">Valore operativo · completati</button></div>
+    </section><section class="metric-group" data-section="clima" data-ux-accordion="true">
+      <div class="metric-group-heading ux-section-toggle" role="button" tabindex="0" aria-controls="ux-section-7" data-ux-accordion-heading="true" aria-expanded="false"><strong>Clima</strong><span>Temperatura e precipitazioni: andamento storico e variazioni di lungo periodo.</span><span class="ux-section-tools"><span>4 indicatori</span><span class="ux-section-chevron" aria-hidden="true">⌄</span></span></div>
+      <div class="metric-group-buttons" id="ux-section-7" hidden=""><button type="button" role="tab" data-metric="climateTemperatureTrend50y" class="" aria-selected="false" tabindex="-1">Temperatura media</button><button type="button" role="tab" data-metric="climatePrecipitationTrend50y" class="" aria-selected="false" tabindex="-1">Precipitazioni annue</button><button type="button" role="tab" data-metric="climateTminTrend" class="" aria-selected="false" tabindex="-1">Temperatura minima media</button><button type="button" role="tab" data-metric="climateTmaxTrend" class="" aria-selected="false" tabindex="-1">Temperatura massima media</button></div>
+    </section><section class="metric-group" data-section="costa-mare" data-ux-accordion="true">
+      <div class="metric-group-heading ux-section-toggle" role="button" tabindex="0" aria-controls="ux-section-8" data-ux-accordion-heading="true" aria-expanded="false"><strong>Costa e mare</strong><span>Balneazione, concessioni demaniali e assetto fisico del litorale nei quattro Comuni costieri.</span><span class="ux-section-tools"><span>7 indicatori</span><span class="ux-section-chevron" aria-hidden="true">⌄</span></span></div>
+      <div class="metric-group-buttons" id="ux-section-8" hidden=""><button type="button" role="tab" data-metric="bathingWaterQuality" class="" aria-selected="false" tabindex="-1">Qualità balneazione</button><button type="button" role="tab" data-metric="bathingNonCompliantSamples" class="" aria-selected="false" tabindex="-1">Campioni non conformi</button><button type="button" role="tab" data-metric="blueFlagBeaches" class="" aria-selected="false" tabindex="-1">Spiagge Bandiera Blu</button><button type="button" role="tab" data-metric="shorelineDynamics" class="" aria-selected="false" tabindex="-1">Dinamica del litorale</button><button type="button" role="tab" data-metric="rigidDefenceProtectedCoast" class="" aria-selected="false" tabindex="-1">Costa protetta</button><button type="button" role="tab" data-metric="maritimeConcessions" class="" aria-selected="false" tabindex="-1">Concessioni demaniali</button><button type="button" role="tab" data-metric="maritimeConcessionFeesDue" class="" aria-selected="false" tabindex="-1">Canoni demaniali dovuti</button></div>
+    </section><section class="metric-group" data-section="acqua-bonifiche" data-ux-accordion="true">
+      <div class="metric-group-heading ux-section-toggle" role="button" tabindex="0" aria-controls="ux-section-9" data-ux-accordion-heading="true" aria-expanded="false"><strong>Acqua e bonifiche</strong><span>Rete idrica, qualità dell’acqua potabile e procedimenti di bonifica con fonti ufficiali e granularità dichiarata.</span><span class="ux-section-tools"><span>3 indicatori</span><span class="ux-section-chevron" aria-hidden="true">⌄</span></span></div>
+      <div class="metric-group-buttons" id="ux-section-9" hidden=""><button type="button" role="tab" data-metric="waterNetworkLosses" class="" aria-selected="false" tabindex="-1">Perdite rete idrica</button><button type="button" role="tab" data-metric="drinkingWaterQuality" class="" aria-selected="false" tabindex="-1">Qualità acqua potabile</button><button type="button" role="tab" data-metric="remediationProceedings" class="" aria-selected="false" tabindex="-1">Procedimenti di bonifica</button></div>
+    </section><section class="metric-group" data-section="agricoltura" data-ux-accordion="true">
+      <div class="metric-group-heading ux-section-toggle" role="button" tabindex="0" aria-controls="ux-section-10" data-ux-accordion-heading="true" aria-expanded="false"><strong>Agricoltura e territorio</strong><span>Aziende, SAU, colture e irrigazione, con nuove letture su ricambio generazionale, conduzione, diversificazione, digitalizzazione e innovazione. I denominatori restano espliciti e gli aggregati territoriali non usano medie semplici.</span><span class="ux-section-tools"><span>8 indicatori</span><span class="ux-section-chevron" aria-hidden="true">⌄</span></span></div>
+      <div class="metric-group-buttons" id="ux-section-10" hidden=""><button type="button" role="tab" data-metric="agriculturalFarms" class="" aria-selected="false" tabindex="-1">Aziende agricole</button><button type="button" role="tab" data-metric="agriculturalUsedArea" class="" aria-selected="false" tabindex="-1">SAU del territorio</button><button type="button" role="tab" data-metric="averageAgriculturalFarmSize" class="" aria-selected="false" tabindex="-1">Dimensione media aziendale</button><button type="button" role="tab" data-metric="cropProfile" class="" aria-selected="false" tabindex="-1">Profilo colture</button><button type="button" role="tab" data-metric="irrigatedAgriculturalArea" class="" aria-selected="false" tabindex="-1">SAU irrigata</button><button type="button" role="tab" data-metric="organicAgriculturalAreaShare" class="" aria-selected="false" tabindex="-1">SAU biologica</button><button type="button" role="tab" data-metric="agriculturalRenewalAndLeadership" class="" aria-selected="false" tabindex="-1">Ricambio e conduzione</button><button type="button" role="tab" data-metric="agriculturalDiversificationAndModernization" class="" aria-selected="false" tabindex="-1">Diversificazione e modernizzazione</button></div>
+    </section><section class="metric-group" data-section="attivita-estrattive" data-ux-accordion="true">
+      <div class="metric-group-heading ux-section-toggle" role="button" tabindex="0" aria-controls="ux-section-11" data-ux-accordion-heading="true" aria-expanded="false"><strong>Attività estrattive</strong><span>Siti RTCave, produzione effettivamente estratta e quadro pianificatorio del Piano Regionale Cave, mantenendo distinti stato operativo, produzione e categorie territoriali.</span><span class="ux-section-tools"><span>3 indicatori</span><span class="ux-section-chevron" aria-hidden="true">⌄</span></span></div>
+      <div class="metric-group-buttons" id="ux-section-11" hidden=""><button type="button" role="tab" data-metric="extractiveSites" class="" aria-selected="false" tabindex="-1">Siti RTCave</button><button type="button" role="tab" data-metric="extractiveProduction" class="" aria-selected="false" tabindex="-1">Produzione estrattiva</button><button type="button" role="tab" data-metric="extractivePlanning" class="" aria-selected="false" tabindex="-1">Quadro estrattivo PRC</button></div>
+    </section><section class="metric-group" data-section="rifiuti" data-ux-accordion="true">
+      <div class="metric-group-heading ux-section-toggle" role="button" tabindex="0" aria-controls="ux-section-12" data-ux-accordion-heading="true" aria-expanded="false"><strong>Rifiuti e circolarità</strong><span>Produzione, raccolta differenziata e costo complessivo del servizio rifiuti.</span><span class="ux-section-tools"><span>4 indicatori</span><span class="ux-section-chevron" aria-hidden="true">⌄</span></span></div>
+      <div class="metric-group-buttons" id="ux-section-12" hidden=""><button type="button" role="tab" data-metric="recycling" class="" aria-selected="false" tabindex="-1">Raccolta differenziata</button><button type="button" role="tab" data-metric="wastePerResident" class="" aria-selected="false" tabindex="-1">Rifiuti per residente</button><button type="button" role="tab" data-metric="wasteServiceCost" class="" aria-selected="false" tabindex="-1">Costo servizio rifiuti</button><button type="button" role="tab" data-metric="residualWaste" class="" aria-selected="false" tabindex="-1">Rifiuto residuo</button></div>
+    </section></div>
+      <div id="compare-definition" class="topic-side-definition"><div class="indicator-definition"><h2>Superficie comunale</h2><p>Estensione territoriale del Comune espressa in chilometri quadrati.</p><dl><div><dt>Anno</dt><dd>31 dicembre 2021</dd></div><div><dt>Fonte</dt><dd><a href="https://www.istat.it/classificazione/principali-statistiche-geografiche-sui-comuni/" target="_blank" rel="noreferrer">Istat — Principali statistiche geografiche sui comuni ↗</a></dd></div><div><dt>Versilia · superficie dei 7 Comuni</dt><dd>357,23 km²</dd></div></dl><small class="aggregate-note">Somma delle superfici comunali; non è una media.</small></div></div>
+    </aside>
+            <div class="compare-main-column">
+              <header class="compare-panel-heading"><span class="overline">Confronto tra Comuni della Versilia</span></header>
+              <div id="compare-bars" class="a5-shared-chart" data-age-pyramid-delegated="1"><div class="ux-view-shell" data-view-shell="ux-view-1"><div class="ux-view-toolbar"><div class="ux-view-toolbar-copy"><small class="a5-toolbar-overline">Confronto tra Comuni della Versilia</small><strong>Come vuoi leggere l’indicatore?</strong><span>Fotografia dell’ultimo anno oppure confronto dell’andamento tra i sette comuni.</span></div><div class="data-actions"><a href="../../indicatori/superficie-comunale/">Scheda indicatore</a><button type="button" data-download="">Scarica CSV</button><button type="button" data-print="">Stampa / PDF</button></div><div class="ux-view-toggle" role="tablist" aria-label="Vista dell’indicatore"><button id="ux-view-1-tab-current" type="button" role="tab" aria-controls="ux-view-1-current" data-view-mode="current" class="active" aria-selected="true" tabindex="0">Valore attuale</button><button id="ux-view-1-tab-history" type="button" role="tab" aria-controls="ux-view-1-history" data-view-mode="history" disabled="" aria-selected="false" tabindex="-1">Storico</button></div></div><p class="ux-view-note">Per questo indicatore non esistono almeno due anni omogenei per tutti e sette i comuni.</p><div id="ux-view-1-current" class="ux-view-pane" role="tabpanel" aria-labelledby="ux-view-1-tab-current" data-view-pane="current"><div class="topic-bars"><div class="comparison-bars" data-visual-contract="canonical" data-visual-unit="squareKm" data-visual-grammar-signature="municipalSurface|r|||357.22613717487|squareKm|84.6916646245|80.639757592|68.2455922649|42.2685463205|39.4677282042|32.7261333045|9.18671486427" data-viz="lollipop"><div class="comparison-legend"><span><i class="comparison-legend-dot" aria-hidden="true"></i>Comune</span><span><i class="comparison-legend-reference" aria-hidden="true"></i>Versilia · superficie dei 7 Comuni</span></div><a href="/comuni/camaiore/?tema=ambiente&amp;indicatore=municipalSurface" class="bar-row comparison-row" aria-label="Camaiore: 84,7 squareKm; Versilia · superficie dei 7 Comuni: 357 squareKm">
+        <span class="bar-town">Camaiore</span>
+        <span class="bar-track">
+        <span class="comparison-axis-line" aria-hidden="true"></span>
+        
+        <span class="comparison-reference" style="left:89.3065342937175%" aria-hidden="true"></span>
+        <span class="comparison-stem" style="left:0%;width:21.172916156125%" aria-hidden="true"></span>
+        <span class="comparison-dot" style="left:21.172916156125%" aria-hidden="true"></span><span class="bar-hover-label">Camaiore: 84,7 squareKm · Versilia · superficie dei 7 Comuni: 357 squareKm</span></span>
+        <strong>84,69 km²</strong>
+      </a><a href="/comuni/stazzema/?tema=ambiente&amp;indicatore=municipalSurface" class="bar-row comparison-row" aria-label="Stazzema: 80,6 squareKm; Versilia · superficie dei 7 Comuni: 357 squareKm">
+        <span class="bar-town">Stazzema</span>
+        <span class="bar-track">
+        <span class="comparison-axis-line" aria-hidden="true"></span>
+        
+        <span class="comparison-reference" style="left:89.3065342937175%" aria-hidden="true"></span>
+        <span class="comparison-stem" style="left:0%;width:20.159939398%" aria-hidden="true"></span>
+        <span class="comparison-dot" style="left:20.159939398%" aria-hidden="true"></span><span class="bar-hover-label">Stazzema: 80,6 squareKm · Versilia · superficie dei 7 Comuni: 357 squareKm</span></span>
+        <strong>80,64 km²</strong>
+      </a><a href="/comuni/massarosa/?tema=ambiente&amp;indicatore=municipalSurface" class="bar-row comparison-row" aria-label="Massarosa: 68,2 squareKm; Versilia · superficie dei 7 Comuni: 357 squareKm">
+        <span class="bar-town">Massarosa</span>
+        <span class="bar-track">
+        <span class="comparison-axis-line" aria-hidden="true"></span>
+        
+        <span class="comparison-reference" style="left:89.3065342937175%" aria-hidden="true"></span>
+        <span class="comparison-stem" style="left:0%;width:17.061398066225%" aria-hidden="true"></span>
+        <span class="comparison-dot" style="left:17.061398066225%" aria-hidden="true"></span><span class="bar-hover-label">Massarosa: 68,2 squareKm · Versilia · superficie dei 7 Comuni: 357 squareKm</span></span>
+        <strong>68,25 km²</strong>
+      </a><a href="/comuni/pietrasanta/?tema=ambiente&amp;indicatore=municipalSurface" class="bar-row comparison-row" aria-label="Pietrasanta: 42,3 squareKm; Versilia · superficie dei 7 Comuni: 357 squareKm">
+        <span class="bar-town">Pietrasanta</span>
+        <span class="bar-track">
+        <span class="comparison-axis-line" aria-hidden="true"></span>
+        
+        <span class="comparison-reference" style="left:89.3065342937175%" aria-hidden="true"></span>
+        <span class="comparison-stem" style="left:0%;width:10.567136580125%" aria-hidden="true"></span>
+        <span class="comparison-dot" style="left:10.567136580125%" aria-hidden="true"></span><span class="bar-hover-label">Pietrasanta: 42,3 squareKm · Versilia · superficie dei 7 Comuni: 357 squareKm</span></span>
+        <strong>42,27 km²</strong>
+      </a><a href="/comuni/seravezza/?tema=ambiente&amp;indicatore=municipalSurface" class="bar-row comparison-row" aria-label="Seravezza: 39,5 squareKm; Versilia · superficie dei 7 Comuni: 357 squareKm">
+        <span class="bar-town">Seravezza</span>
+        <span class="bar-track">
+        <span class="comparison-axis-line" aria-hidden="true"></span>
+        
+        <span class="comparison-reference" style="left:89.3065342937175%" aria-hidden="true"></span>
+        <span class="comparison-stem" style="left:0%;width:9.86693205105%" aria-hidden="true"></span>
+        <span class="comparison-dot" style="left:9.86693205105%" aria-hidden="true"></span><span class="bar-hover-label">Seravezza: 39,5 squareKm · Versilia · superficie dei 7 Comuni: 357 squareKm</span></span>
+        <strong>39,47 km²</strong>
+      </a><a href="/comuni/viareggio/?tema=ambiente&amp;indicatore=municipalSurface" class="bar-row comparison-row" aria-label="Viareggio: 32,7 squareKm; Versilia · superficie dei 7 Comuni: 357 squareKm">
+        <span class="bar-town">Viareggio</span>
+        <span class="bar-track">
+        <span class="comparison-axis-line" aria-hidden="true"></span>
+        
+        <span class="comparison-reference" style="left:89.3065342937175%" aria-hidden="true"></span>
+        <span class="comparison-stem" style="left:0%;width:8.181533326125%" aria-hidden="true"></span>
+        <span class="comparison-dot" style="left:8.181533326125%" aria-hidden="true"></span><span class="bar-hover-label">Viareggio: 32,7 squareKm · Versilia · superficie dei 7 Comuni: 357 squareKm</span></span>
+        <strong>32,73 km²</strong>
+      </a><a href="/comuni/forte-dei-marmi/?tema=ambiente&amp;indicatore=municipalSurface" class="bar-row comparison-row" aria-label="Forte dei Marmi: 9,2 squareKm; Versilia · superficie dei 7 Comuni: 357 squareKm">
+        <span class="bar-town">Forte dei Marmi</span>
+        <span class="bar-track">
+        <span class="comparison-axis-line" aria-hidden="true"></span>
+        
+        <span class="comparison-reference" style="left:89.3065342937175%" aria-hidden="true"></span>
+        <span class="comparison-stem" style="left:0%;width:2.2966787160675%" aria-hidden="true"></span>
+        <span class="comparison-dot" style="left:2.2966787160675%" aria-hidden="true"></span><span class="bar-hover-label">Forte dei Marmi: 9,2 squareKm · Versilia · superficie dei 7 Comuni: 357 squareKm</span></span>
+        <strong>9,19 km²</strong>
+      </a><div class="comparison-axis"><span>0,0 squareKm</span><span>scala con origine a zero</span><span>400 squareKm</span></div><p class="comparison-note">I comuni sono ordinati per valore per facilitare il confronto. L’ordine non esprime merito o qualità.</p></div></div></div><div id="ux-view-1-history" class="ux-view-pane" role="tabpanel" aria-labelledby="ux-view-1-tab-history" data-view-pane="history" hidden=""><div class="ux-history-unavailable"><strong>Serie storica non disponibile</strong><p>Servono almeno due anni omogenei e comuni a tutti e sette i territori.</p></div></div></div></div>
+            </div>
+          </section>
+          <section id="compare-demographic-pyramid" class="compare-demographic-pyramid page-width"></section>
+          <section id="compare-benchmark" class="page-width a5-benchmark-host"><section class="benchmark-section"><div class="section-heading compact"><div><span class="overline">Confronto omogeneo · 31 dicembre 2021</span><h2>Territorio, Toscana e Italia</h2></div></div>
+      <div class="benchmark-grid"><article class="benchmark-card benchmark-local"><span>Versilia · superficie dei 7 Comuni</span><strong>357,23 km²</strong><small>Somma delle superfici comunali; non è una media.</small></article>
+      <article class="benchmark-card"><span>Toscana</span><strong>84,21 km²</strong><small>Istat — Principali statistiche geografiche sui comuni</small></article>
+      <article class="benchmark-card"><span>Italia</span><strong>38,22 km²</strong><small>Istat — Principali statistiche geografiche sui comuni</small></article></div>
+      <p class="benchmark-note">Toscana e Italia ricalcolate sul perimetro comunale ufficiale; rapporti e quote sono ottenuti su aggregati, non come media semplice. <a href="https://www.istat.it/classificazione/principali-statistiche-geografiche-sui-comuni/" target="_blank" rel="noreferrer">Apri la fonte ↗</a></p></section></section>
+          
+          <section id="compare-tools" class="compare-post-benchmark-tools page-width"><details class="method-disclosure"><summary><span>Metodo e comparabilità</span><small>Formula, natura del dato e criticità</small></summary><div class="method-disclosure-body"><dl><div><dt>Natura</dt><dd>Dato territoriale ufficiale</dd></div><div><dt>Formula</dt><dd>Superficie territoriale comunale in km².</dd></div><div><dt>Copertura</dt><dd>7/7</dd></div></dl><p><strong>Nota:</strong> Riferimento territoriale 31 dicembre 2021.</p></div></details><aside class="reading-scale" data-reading-scale="territorial" data-reading-metric="municipalSurface">
+      <div><span class="overline">Scala di lettura</span><strong>Territoriale</strong></div>
+      <p>Il dato descrive residenti, stock o fenomeni localizzati nel Comune. Il confine è utile per leggere il territorio, ma non implica che il Comune sia un sistema autonomo.</p>
+    </aside></section>
+          <section id="compare-territori" class="topic-town-links page-width"><div class="topic-town-links-heading"><span class="overline">Schede comunali</span><h2>Apri il territorio</h2><p>Accedi alla scheda comunale e agli indicatori di dettaglio del tema Ambiente.</p></div><div class="topic-town-card-grid"><a class="topic-town-card" href="../../comuni/camaiore/?tema=ambiente&amp;indicatore=municipalSurface"><span class="topic-town-card-media"><img src="../../crests/camaiore.svg" alt="" loading="lazy" referrerpolicy="no-referrer"></span><span class="topic-town-card-copy"><strong>Camaiore</strong><span class="town-current-value"><b>84,69 km²</b><small>Superficie</small></span><small>Apri la scheda →</small></span></a><a class="topic-town-card" href="../../comuni/forte-dei-marmi/?tema=ambiente&amp;indicatore=municipalSurface"><span class="topic-town-card-media"><img src="../../crests/forte-dei-marmi.svg" alt="" loading="lazy" referrerpolicy="no-referrer"></span><span class="topic-town-card-copy"><strong>Forte dei Marmi</strong><span class="town-current-value"><b>9,19 km²</b><small>Superficie</small></span><small>Apri la scheda →</small></span></a><a class="topic-town-card" href="../../comuni/massarosa/?tema=ambiente&amp;indicatore=municipalSurface"><span class="topic-town-card-media"><img src="../../crests/massarosa.png" alt="" loading="lazy" referrerpolicy="no-referrer"></span><span class="topic-town-card-copy"><strong>Massarosa</strong><span class="town-current-value"><b>68,25 km²</b><small>Superficie</small></span><small>Apri la scheda →</small></span></a><a class="topic-town-card" href="../../comuni/pietrasanta/?tema=ambiente&amp;indicatore=municipalSurface"><span class="topic-town-card-media"><img src="../../crests/pietrasanta.svg" alt="" loading="lazy" referrerpolicy="no-referrer"></span><span class="topic-town-card-copy"><strong>Pietrasanta</strong><span class="town-current-value"><b>42,27 km²</b><small>Superficie</small></span><small>Apri la scheda →</small></span></a><a class="topic-town-card" href="../../comuni/seravezza/?tema=ambiente&amp;indicatore=municipalSurface"><span class="topic-town-card-media"><img src="../../crests/seravezza.png" alt="" loading="lazy" referrerpolicy="no-referrer"></span><span class="topic-town-card-copy"><strong>Seravezza</strong><span class="town-current-value"><b>39,47 km²</b><small>Superficie</small></span><small>Apri la scheda →</small></span></a><a class="topic-town-card" href="../../comuni/stazzema/?tema=ambiente&amp;indicatore=municipalSurface"><span class="topic-town-card-media"><img src="../../crests/stazzema.webp" alt="" loading="lazy" referrerpolicy="no-referrer"></span><span class="topic-town-card-copy"><strong>Stazzema</strong><span class="town-current-value"><b>80,64 km²</b><small>Superficie</small></span><small>Apri la scheda →</small></span></a><a class="topic-town-card" href="../../comuni/viareggio/?tema=ambiente&amp;indicatore=municipalSurface"><span class="topic-town-card-media"><img src="../../crests/viareggio.svg" alt="" loading="lazy" referrerpolicy="no-referrer"></span><span class="topic-town-card-copy"><strong>Viareggio</strong><span class="town-current-value"><b>32,73 km²</b><small>Superficie</small></span><small>Apri la scheda →</small></span></a></div></section>
+        </main></div>
+  <div id="site-footer-mount">
+      <footer class="site-footer">
+        <div class="footer-about"><strong>Osservatorio Versilia</strong>
+          <p>Un punto di accesso indipendente ai dati pubblici dei sette comuni della Versilia.</p>
+          <p class="footer-disclaimer">Non è un sito istituzionale e non rappresenta gli enti citati.</p>
+        </div>
+        <nav class="footer-links" aria-label="Informazioni sul progetto">
+          <a href="../../progetto/">Il progetto</a>
+          <a href="../../stato-dati/" data-data-status-nav="footer">Stato dei dati</a>
+          <a href="../../opportunita/">Opportunità</a>
+          <a href="../../progetto/#metodo">Metodo</a>
+          <a href="../../progetto/#licenza">Licenza</a>
+          <a href="../../progetto/#versioni">Versioni dei dati</a>
+          <a href="../../segnala/">Segnala un dato</a>
+          <a href="mailto:info@osservatorioversilia.it">Contatti</a>
+        </nav>
+        
+      <div class="footer-social" data-social-placement="footer" aria-label="Segui Osservatorio Versilia">
+        <strong>Segui Osservatorio Versilia</strong><div class="social-links">
+    <a class="social-profile-link" href="https://www.facebook.com/osservatorioversilia" target="_blank" rel="me noreferrer" aria-label="Segui Osservatorio Versilia su Facebook">
+      <span class="social-profile-mark" aria-hidden="true">f</span>
+      <span class="social-profile-copy"><strong>Facebook</strong><small>@osservatorioversilia</small></span>
+      <b aria-hidden="true">↗</b>
+    </a>
+    <a class="social-profile-link" href="https://www.instagram.com/osservatorioversilia/" target="_blank" rel="me noreferrer" aria-label="Segui Osservatorio Versilia su Instagram">
+      <span class="social-profile-mark" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="5" ry="5"></rect><circle cx="12" cy="12" r="4"></circle><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"></circle></svg></span>
+      <span class="social-profile-copy"><strong>Instagram</strong><small>@osservatorioversilia</small></span>
+      <b aria-hidden="true">↗</b>
+    </a>
+    <a class="social-profile-link" href="https://www.linkedin.com/company/osservatorioversilia" target="_blank" rel="me noreferrer" aria-label="Segui Osservatorio Versilia su LinkedIn">
+      <span class="social-profile-mark" aria-hidden="true">in</span>
+      <span class="social-profile-copy"><strong>LinkedIn</strong><small>Osservatorio Versilia</small></span>
+      <b aria-hidden="true">↗</b>
+    </a>
+    <a class="social-profile-link" href="https://x.com/OssVersilia" target="_blank" rel="me noreferrer" aria-label="Segui Osservatorio Versilia su X">
+      <span class="social-profile-mark" aria-hidden="true">X</span>
+      <span class="social-profile-copy"><strong>X</strong><small>@OssVersilia</small></span>
+      <b aria-hidden="true">↗</b>
+    </a></div>
+      </div><div class="footer-note">
+          <span>7 comuni · 11 temi</span><span>v. dati v1.40.0</span><span>catalogo dati aggiornato al 14 settembre 2026</span>
+        </div>
+      </footer></div>
+  <noscript><div class="app-error">Il sito richiede JavaScript per mostrare confronti, ricerca e schede comunali.</div></noscript>
+  <script src="../../assets/app-bundle.js?v=20261025-ui-shell-consistency" defer=""></script>
+  <script src="../../assets/fidelity.js" defer=""></script>
+  <script src="../../assets/economy-atlas.js" defer=""></script>
+  <script src="../../assets/ux-accordion.js?v=20261025-ui-shell-consistency" defer=""></script>
+  <script src="../../assets/ux-history-core.js?v=20261025-ui-shell-consistency" defer=""></script>
+  <script src="../../assets/ux-history.js?v=20261025-ui-shell-consistency" defer=""></script>
+  <script src="../../assets/export-v161.js?v=20261025-ui-shell-consistency" defer=""></script>
+  <script src="../../assets/visual-grammar.js?v=20261025-ui-shell-consistency" defer=""></script>
+  <script src="../../assets/social-presence.js?v=20261025-ui-shell-consistency" defer=""></script>
+
+
+  <script src="../../assets/pwa.js?v=20260824-pwa9&rev=catalog-v129" defer></script>
+</body></html>

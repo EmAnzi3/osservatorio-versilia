@@ -1,0 +1,108 @@
+{
+  "schemaVersion": 1,
+  "version": "a3-istat-business-benchmark-2024-v1",
+  "retrieved": "2026-11-08",
+  "publisher": "Istat — ASIA Unità Locali",
+  "sourceProfileId": "istat-business-annual",
+  "candidateState": "ACQUIRED_CANDIDATE",
+  "sourceUrl": "https://esploradati.istat.it/databrowser/#/it/dw/categories/IT1,Z0900ENT,1.0/DICA_ASIA/DICA_ASIAULP/183_1163_DF_DICA_ASIAULP_TERRIFDATA_7",
+  "retrieval": "Istat SEP SDMX ufficiale",
+  "qualityGate": {
+    "status": "PASS",
+    "errors": [],
+    "candidateMetrics": [
+      "employeesPerLocalUnit",
+      "localEmployees",
+      "localEmployeesChange",
+      "localUnits",
+      "localUnitsChange"
+    ],
+    "publicSnapshotReconciliation": "metric-level 7/7 × 2018/2024; Toscana e Italia aggregati dalle stesse osservazioni comunali ufficiali"
+  },
+  "benchmarks": {
+    "localUnits": {
+      "year": "2024",
+      "unit": "number",
+      "formula": "unità locali attive",
+      "tuscany": 366076,
+      "italy": 5157564
+    },
+    "localUnitsChange": {
+      "year": "2018–2024",
+      "unit": "percent",
+      "formula": "((UL 2024 / UL 2018)-1)×100",
+      "tuscany": 5.061718119957859,
+      "italy": 8.357329570689709
+    },
+    "localEmployees": {
+      "year": "2024",
+      "unit": "number",
+      "formula": "addetti medi annui",
+      "tuscany": 1296423.49,
+      "italy": 18845823.94
+    },
+    "localEmployeesChange": {
+      "year": "2018–2024",
+      "unit": "percent",
+      "formula": "((addetti 2024 / addetti 2018)-1)×100",
+      "tuscany": 6.839529464624072,
+      "italy": 9.011703475903143
+    },
+    "employeesPerLocalUnit": {
+      "year": "2024",
+      "unit": "decimal",
+      "formula": "addetti medi annui / unità locali",
+      "tuscany": 3.5414053092800404,
+      "italy": 3.654016496935375
+    }
+  },
+  "evidence": {
+    "LU": {
+      "tuscany": {
+        "2018": 348439,
+        "2024": 366076
+      },
+      "italy": {
+        "2018": 4759774,
+        "2024": 5157564
+      }
+    },
+    "LUEMPDAA": {
+      "tuscany": {
+        "2018": 1213430.55,
+        "2024": 1296423.49
+      },
+      "italy": {
+        "2018": 17287890.51,
+        "2024": 18845823.94
+      }
+    },
+    "historicalTuscanyMunicipalityCount": {
+      "2018": 274,
+      "2024": 273
+    }
+  },
+  "blocked": {
+    "microUnits": "richiede distribuzione per classe dimensionale ASIA-UL; non inferita dal totale"
+  },
+  "acquisitionEvidence": {
+    "script": "scripts/update_source_data.py istat-asia --year 2024",
+    "sources": {
+      "lu": {
+        "url": "https://esploradati.istat.it/SDMXWS/rest/data/IT1,183_1163_DF_DICA_ASIAULP_TERRIFDATA_7,1.0/A..LU.0010.TOTAL?startPeriod=2018&endPeriod=2024",
+        "sha256": "b990ad4438f950ec4ba9bf1a3db2cfa37ac2d2b2474505bf001801a955b12613",
+        "bytes": 6907350
+      },
+      "emp": {
+        "url": "https://esploradati.istat.it/SDMXWS/rest/data/IT1,183_1163_DF_DICA_ASIAULP_TERRIFDATA_7,1.0/A..LUEMPDAA.0010.TOTAL?startPeriod=2018&endPeriod=2024",
+        "sha256": "361c3f0ae584214016e91f905b1669364beb25d8092baae0d9df6107401c27d5",
+        "bytes": 6244094
+      },
+      "micro": {
+        "url": "https://esploradati.istat.it/SDMXWS/rest/data/IT1,183_1163_DF_DICA_ASIAULP_TERRIFDATA_7,1.0/A..LU.0010.W0_9+TOTAL?startPeriod=2024&endPeriod=2024",
+        "sha256": "d236d70865abd7c95d1607d7522a3ab7c1d64c7e3e35736c385fb36a7ab4864a",
+        "bytes": 1886028
+      }
+    }
+  }
+}

@@ -1,0 +1,89 @@
+hidden>
+          <line class="chart-guide" x1="${point.x}" y1="${point.y}" x2="${point.x}" y2="${boxY < point.y ? boxY + boxHeight : boxY}"></line>
+          <rect x="${boxX}" y="${boxY}" width="${boxWidth}" height="${boxHeight}" rx="8"></rect>
+          <text class="chart-tooltip-year" x="${boxX + 12}" y="${boxY + 14}">${html(point.year)}</text>
+          <text class="chart-tooltip-value" x="${boxX + 12}" y="${boxY + 29}">${html(formatValue(point.value, unit))}</text>
+        </g>
+      </g>`;
+    }).join('');
+    return `<div class="chart-shell"><div class="trend-chart"><svg viewBox="0 0 ${width} ${height}" role="img" aria-label="${html(label)}">
+      ${grid}<polygon class="chart-area" points="${area}"/><polyline class="chart-line" points="${line}"/>${points}
+      ${pts.map(point => `<text class="chart-label" x="${point.x}" y="${height - 10}" text-anchor="middle">${html(point.year)}</text>`).join('')}
+      </svg></div></div>
+      <div class="chart-a11y-table"><strong>${html(label)}</strong>${pts.map(point => `<span>${html(point.year)}: ${html(formatValue(point.value, unit))}</span>`).join('')}</div>`;
+  }
+
+  function installChartInteractions(root) {
+    root.querySelectorAll('.trend-chart').forEach(chart => {
+      const points = [...chart.querySelectorAll('.chart-point')];
+      const hideAll = () => points.forEach(point => {
+        point.classList.remove('active');
+        const tooltip = point.querySelector('.chart-tooltip');
+        if (tooltip) tooltip.setAttribute('hidden', '');
+      });
+      const show = point => {
+        hideAll();
+        point.classList.add('active');
+        const tooltip = point.querySelector('.chart-tooltip');
+        if (tooltip) tooltip.removeAttribute('hidden');
+      };
+      const hideUnlessKeyboardFocused = () => {
+        const focused = document.activeElement;
+        if (focused && chart.contains(focused) && focused.classList?.contains('chart-point')) return;
+        hideAll();
+      };
+      points.forEach((point, index) => {
+        point.addEventListener('mouseenter', () => show(point));
+        point.addEventListener('mouseleave', hideUnlessKeyboardFocused);
+        point.addEventListener('focus', () => show(point));
+        point.addEventListener('blur', hideAll);
+        point.addEventListener('click', () => show(point));
+        point.addEventListener('keydown', event => {
+          if (event.key === 'Escape') { hideAll(); point.blur(); return; }
+          if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
+          event.preventDefault();
+          let next = index;
+          if (event.key === 'ArrowLeft') next = (index - 1 + points.length) % points.length;
+          if (event.key === 'ArrowRight') next = (index + 1) % points.length;
+          if (event.key === 'Home') next = 0;
+          if (event.key === 'End') next = points.length - 1;
+          points[next]?.focus();
+        });
+      });
+      chart.addEventListener('mouseleave', hideUnlessKeyboardFocused);
+    });
+  }
+
+  function deepDiveMarkup(data, town, themeKey, metricKey = '') {
+    const detail = data.details[town.code];
+    if (!detail) return '';
+    if (themeKey === 'salute') return '';
+    if (themeKey === 'economia') {
+      const e = detail.economy;
+      return `<section class="topic-deep-dive"><div class="deep-heading"><div><span class="overline">Approfondimento comunale</span><h3>Redditi dichiarati</h3></div><p>Dettaglio aggiuntivo delle fasce di reddito del Comune. L'Atlante ATECO è disponibile come sezione autonoma nel selettore Economia.</p></div>
+        <div class="deep-facts-grid"><article class="deep-fact"><span>Dichiaranti</span><strong>${number0.format(town.taxpayers)}</strong><small>Anno ${html(e.incomeYear)}</small></article></div>
+        <details class="detail-disclosure"><summary><span>Mostra le fasce di reddito</span><small>Distribuzione dei dichiaranti</small></summary><div><h4>Dichiaranti per fascia di reddito</h4><ul class="deep-list deep-list--income">${e.incomeBands.map(b => `<li><span>${html(b.label)}</span><span class="deep-list-value"><strong>${number0.format(b.people)}</strong><small>dichiaranti</small></span></li>`).join('')}</ul></div></details></section>`;
+    }
+    if (themeKey === 'mobilita') {
+      const m = detail.mobility;
+      const metric = data.metrics?.[metricKey];
+      const flowSection = data.themes?.mobilita?.sections?.find(section => section.key === 'pendolarismo');
+      const isTpl = metric?.meta?.detailGroup === 'tpl';
+      const isFlow = Boolean(flowSection?.metrics?.includes(metricKey));
+      if (isTpl && m.tpl) {
+        return `<section class="topic-deep-dive tpl-town-deep-dive"><div class="deep-heading"><div><span class="overline">Approfondimento comunale</span><h3>Trasporto pubblico programmato</h3></div><p>Dettaglio del servizio GTFS nella giornata di riferimento. Corse, accessi e ampiezza oraria descrivono l’offerta programmata, non puntualità, capacità o passeggeri.</p></div>
+          <details class="detail-disclosure tpl-town-detail"><summary><span>Mostra il dettaglio TPL programmato</span><small>Bus, ferrovia, accessi, route e orari</small></summary><div class="deep-facts-grid tpl-town-service-grid" role="list" aria-label="Dettaglio del servizio TPL programmato"><article class="deep-fact" role="listitem"><span>Corse programmate</span><strong>${number0.format(m.tpl.trips)}</strong><small>totale bus e ferrovia</small></article><article class="deep-fact" role="listitem"><span>Bus</span><strong>${number0.format(m.tpl.busTrips)}</strong><small>corse programmate</small></article><article class="deep-fact" role="listitem"><span>Ferrovia</span><strong>${number0.format(m.tpl.railTrips)}</strong><small>corse programmate</small></article><article class="deep-fact" role="listitem"><span>Punti di accesso GTFS</span><strong>${number0.format(m.tpl.activeAccessPoints)}</strong><small>coppie feed e stop_id attive</small></article><article class="deep-fact" role="listitem"><span>Route GTFS attive</span><strong>${number0.format(m.tpl.routes)}</strong><small>dettaglio descrittivo</small></article><article class="deep-fact tpl-town-service-fact" role="listitem"><span>Finestra di servizio</span><strong class="tpl-town-service-range">${html(m.tpl.firstDeparture)}–${html(m.tpl.lastDeparture)}</strong><small class="tpl-town-service-span">${number2.format(m.tpl.serviceSpanHours)} h</small></article></div><p class="aggregate-note tpl-detail-note">Fotografia del servizio programmato del 26 agosto 2026. I punti GTFS non coincidono necessariamente con fermate fisiche uniche; gli orari “+1 giorno” appartengono alla stessa giornata operativa.</p></details></section>`;
+      }
+      if (!isFlow) return '';
+      return `<section class="topic-deep-dive"><div class="deep-heading"><div><span class="overline">Approfondimento comunale</span><h3>Flussi di pendolarismo</h3></div><p>Origini e destinazioni principali dei flussi rilevati dal censimento. Il saldo non misura la qualità della mobilità.</p></div>
+        <details class="detail-disclosure"><summary><span>Mostra origini e destinazioni</span><small>Prime cinque relazioni di pendolarismo</small></summary><div class="deep-columns"><div><h4>Destinazioni principali</h4><ul class="deep-list deep-list--flows">${m.topDestinations.map(x => `<li><span>${html(x.name)}</span><span class="deep-list-value"><strong>${number0.format(x.people)}</strong><small>pendolari</small></span></li>`).join('')}</ul></div><div><h4>Origini principali</h4><ul class="deep-list deep-list--flows">${m.topOrigins.map(x => `<li><span>${html(x.name)}</span><span class="deep-list-value"><strong>${number0.format(x.people)}</strong><small>pendolari</small></span></li>`).join('')}</ul></div></div></details></section>`;
+    }
+    if (themeKey === 'ambiente') {
+      if (!['floodExposure','landslideExposure'].includes(metricKey)) return '';
+      const e = detail.environment;
+      return `<section class="topic-deep-dive"><div class="deep-heading"><div><span class="overline">Approfondimento comunale</span><h3>Pressioni ambientali</h3></div><p>Andamento dei rifiuti, incremento netto di suolo consumato ed esposizione della popolazione ai rischi territoriali.</p></div>
+        <details class="detail-disclosure" open><summary><span>Mostra il dettaglio dei rischi</span><small>Edifici esposti</small></summary><div class="risk-grid"><article><span>Edifici esposti ad alluvioni</span><strong>${number0.format(e.flood.buildings)}</strong></article><article><span>Edifici esposti a frane</span><strong>${number0.format(e.landslide.buildings)}</strong></article></div></details></section>`;
+    }
+    if (themeKey === 'comunita') {
+      const g = detail.government;
+      return `<section class="topic-deep-dive"><div class="deep-heading"><div><span class="overline">Approfondimento comunale</span><h3>Cassa, opere e PNRR</h3></div><p>Pagamenti e
