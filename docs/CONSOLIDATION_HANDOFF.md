@@ -1,5 +1,11 @@
 # Consolidamento Osservatorio Versilia — handoff operativo
 
+## Stato del monitor versionato allineato al catalogo (14 novembre 2026)
+
+- `data/source-monitor-state.json` aveva 29 `publishedPeriod` rimasti alle edizioni precedenti dopo i merge di dati (ASIA 2024, ricettività 2025, suolo e veicoli 2025, FTTH 5/10/2026, OMI 1° sem. 2026, TARI/IMU 2026, GAIA 1° sem. 2026, ERP 2025 e altri). Il sito non ne risentiva finché un run live veniva accettato, ma è il ripiego del deploy.
+- Periodi riallineati al catalogo. Dove `observedLatestPeriod` coincideva con il vecchio periodo pubblicato (acqua potabile, morosità ERP) è portato al nuovo, già verificato dalla PR di aggiornamento.
+- Nuovo vincolo in `scripts/test_source_monitor_runtime_snapshot.py`: ogni metrica dello stato versionato deve avere lo stesso periodo pubblicato del catalogo. Da ora una PR di dati che non aggiorna lo stato fallisce.
+
 ## Stato dati: data dell'ultimo controllo ferma dopo i merge di dati (14 novembre 2026)
 
 - Sintomo: la pagina Stato dati mostrava come ultimo controllo il 5 novembre, nonostante i run giornalieri di «Controllo frequente fonti» riusciti dal 6 al 13 novembre.

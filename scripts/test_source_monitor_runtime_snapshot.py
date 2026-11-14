@@ -84,6 +84,11 @@ def main():
     root = Path(__file__).resolve().parents[1]
     catalog = json.loads((root / "data/site-data.json").read_text())
     registry = json.loads((root / "data/source-registry.json").read_text())
+    # Lo stato versionato è il ripiego del deploy: deve seguire il catalogo, quindi
+    # ogni PR di dati aggiorna anche il periodo pubblicato nello stato del monitor.
+    repo_state = json.loads((root / "data/source-monitor-state.json").read_text())
+    drift = sorted(key for key, metric in catalog["metrics"].items() if repo_state["metrics"].get(key, {}).get("publishedPeriod") != published_period(metric))
+    assert not drift, f"Periodi dello stato versionato non allineati al catalogo: {drift}"
     findings, sources, _ = coverage.validate_dataset(catalog, registry)
     assert not [f for f in findings if f["level"] == "error"]
     state = {"schemaVersion": 2, "mode": "live", "depth": "light", "checkedAt": current["checkedAt"], "metrics": {key: {"publishedPeriod": published_period(metric)} for key, metric in catalog["metrics"].items()}, "sources": {url: {} for url in sources}}
