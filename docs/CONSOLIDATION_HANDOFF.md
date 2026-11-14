@@ -1,5 +1,10 @@
 # Consolidamento Osservatorio Versilia — handoff operativo
 
+## Chiedi: «Fonte» dell'Osservatorio anche per clima, affluenza e atlante (14 novembre 2026)
+
+- I 6 indicatori senza pagina `indicatori/<slug>/` (4 andamenti del clima, atlante delle attività economiche, affluenza) avevano ancora la fonte esterna. Ora `indicator_pages` usa la stessa regola del sito: `meta.detailRoute` per le rotte dedicate, `confronta/meteo-clima/?indicatore=…` più la sezione di `meta.climateDetail` per il clima.
+- `scripts/test_chiedi_domande.py` richiede una pagina esistente per tutti i 225 indicatori (prima bastava il 90%) e controlla le tre rotte dedicate.
+
 ## Chiedi: conversazione, suggeritore e fonti dell'Osservatorio (14 novembre 2026)
 
 - Domande di seguito («e Camaiore?», «e nel tempo?», «e le donne?», «e il reddito?») con contesto visibile e «Nuovo argomento»; suggeritore in digitazione (combobox ARIA) con proposte verificate dall'interprete; refusi e nomi dei Comuni scritti male corretti.

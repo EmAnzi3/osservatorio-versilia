@@ -69,9 +69,14 @@ def check_interpreter(graph, dist):
                 assert got['kind'] == 'reading' and got['operation'] == item['reading'], item
     assert any('Viareggio' in i['text'] for i in out['suggestions'][1]), 'chiedi_suggest_town_prefix'
     # «Fonte» porta alla pagina dell'indicatore dell'Osservatorio, che deve esistere.
-    assert len(out['pages']) >= out['metrics'] * 0.9, 'chiedi_source_pages_missing'
+    # Tutti: pagina indicatore, rotta dedicata (affluenza, atlante) o Meteo e clima.
+    assert len(out['pages']) == out['metrics'], 'chiedi_source_pages_missing'
     for page in out['pages']:
-        assert page.startswith('../indicatori/') and (dist/'chiedi'/page/'index.html').resolve().is_file(), page
+        path = page.split('#')[0].split('?')[0]
+        assert path.startswith(('../indicatori/', '../confronta/')) and (dist/'chiedi'/path/'index.html').resolve().is_file(), page
+    for page in ('../confronta/comunita/affluenza/', '../confronta/economia/atlante-attivita-economiche/',
+                 '../confronta/meteo-clima/?indicatore=temperature#temperature-min-max'):
+        assert page in out['pages'], f'chiedi_dedicated_page_missing:{page}'
     return len(cases)
 
 
@@ -158,7 +163,7 @@ def main():
     dist = args.dist.resolve()
     count = check_interpreter(graph_dir(dist), dist)
     check_browser(dist)
-    print(f'Chiedi domande PASS: {count} domande di prova (con seguiti), suggeritore, fonti dell’Osservatorio, risposta e dati nel browser a 1440 e 390 px')
+    print(f'Chiedi domande PASS: {count} domande di prova (con seguiti), suggeritore, fonti dell’Osservatorio per tutti gli indicatori, risposta e dati nel browser a 1440 e 390 px')
 
 
 if __name__ == '__main__':

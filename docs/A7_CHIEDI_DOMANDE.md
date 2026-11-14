@@ -56,8 +56,11 @@ indicatori vicini e chiede il Comune quando la lettura riguarda un Comune solo.
 - **Fonte.** Il link «Fonte» della risposta, delle tabelle di una misura e
   delle coppie degli incroci porta alla pagina dell'indicatore sull'Osservatorio
   (`indicatori/<slug>/`), che riporta origine, aggiornamento e metodo. Il link
-  originale resta nel CSV e nell'evidenza. Per i pochi indicatori senza pagina
-  propria (clima, atlante delle attività, affluenza) resta il link originale.
+  originale resta nel CSV e nell'evidenza. Gli indicatori con una rotta dedicata
+  usano quella, come nel resto del sito: affluenza e atlante delle attività
+  (`meta.detailRoute`), i quattro andamenti del clima `confronta/meteo-clima/`
+  con l'indicatore e la sezione di `meta.climateDetail`. Il test richiede una
+  pagina esistente per tutti gli indicatori.
 
 ## Verifica
 
