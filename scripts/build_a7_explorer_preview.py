@@ -117,9 +117,14 @@ def build(dist, runtime, output, *, public=False, associations=False):
             soup.head.append(soup.new_tag('meta', attrs={'name':'robots', 'content':'noindex,nofollow'}))
         graph = Path(tmp)/'graph'
         descriptor = package_runtime(runtime, stage/'data/site-data.json', graph/'package')
-        metadata = 'export default '+encode(public_labels(presentation(stage/'data/site-data.json'), runtime, stage))+';\n'
+        labels = public_labels(presentation(stage/'data/site-data.json'), runtime, stage)
+        metadata = 'export default '+encode(labels)+';\n'
         (graph/'presentation.mjs').write_text(metadata, encoding='utf-8')
-        for name in ['explorer.mjs', 'explorer.css', 'limits-it.mjs']:
+        # Interprete statico delle domande: solo etichette e letture disponibili.
+        from a7_ask_index import ask_index
+        views = {key: value['views'] for key, value in labels['metrics'].items()}
+        (graph/'ask-index.mjs').write_text('export default '+encode(ask_index(stage/'data/site-data.json', runtime, views))+';\n', encoding='utf-8')
+        for name in ['explorer.mjs', 'explorer.css', 'limits-it.mjs', 'ask.mjs', 'ask.css']:
             shutil.copyfile(ASSETS/name, graph/name)
         if associations:
             for name in ['associations.mjs', 'associations.css']:
@@ -129,6 +134,7 @@ def build(dist, runtime, output, *, public=False, associations=False):
             "import('./explorer.mjs'),import('./presentation.mjs'),import('./package/"+descriptor['entrypoint']+"')]);"
             "await startExplorer(openPackagedRuntime,presentation);"+
             ("const {startAssociations}=await import('./associations.mjs');await startAssociations(openPackagedRuntime,presentation);" if associations else '')+
+            "try{const [{startAsk},{default:askIndex}]=await Promise.all([import('./ask.mjs'),import('./ask-index.mjs')]);startAsk(askIndex,presentation);}catch{}"+
             "}catch{status.textContent='Impossibile caricare e verificare questa versione. Riprova la stessa versione.';"
             "document.getElementById('explorer-retry').hidden=false;document.getElementById('explorer-retry').onclick=()=>location.reload();}}\nboot();\n")
         (graph/'entry.mjs').write_text(entry, encoding='utf-8')
@@ -157,6 +163,7 @@ def build(dist, runtime, output, *, public=False, associations=False):
         else:
             soup.select_one('#a7-guided').insert(1, panel.section)
         soup.head.append(soup.new_tag('link', rel='stylesheet', href=relative+'explorer.css'))
+        soup.head.append(soup.new_tag('link', rel='stylesheet', href=relative+'ask.css'))
         if associations:
             soup.head.append(soup.new_tag('link', rel='stylesheet', href=relative+'associations.css'))
         soup.body.append(soup.new_tag('script', type='module', src=relative+'entry.mjs'))

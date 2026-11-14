@@ -48,7 +48,7 @@ export async function startAssociations(openRuntime,presentation){
  let runtime,root,steps=[],generation=0,pending=null;
  const revoke=()=>{generation++;pending=null;consent.hidden=true;out.hidden=true;out.replaceChildren();};
  const mode=pair=>{revoke();measure.hidden=pair;panel.hidden=!pair;one.setAttribute('aria-pressed',String(!pair));two.setAttribute('aria-pressed',String(pair));status.textContent='Scegli la relazione e mostra i dati per consultarla.';};
- one.onclick=()=>mode(false);two.onclick=()=>mode(true);mode(true);
+ one.onclick=()=>mode(false);two.onclick=()=>mode(true);mode(false); // si parte da «Una misura»
  const fail=()=>{revoke();fields.disabled=true;retry.hidden=false;status.textContent='Non possiamo verificare questa selezione. Nessun risultato viene mostrato. Riprova la stessa versione.';};
  const safe=fn=>async(...args)=>{try{await fn(...args);}catch{fail();}};
  const town=code=>root.towns.find(t=>t.code===code)?.name||String(code);
@@ -162,5 +162,10 @@ export async function startAssociations(openRuntime,presentation){
    if(steps.some(s=>!Array.isArray(s.request.selectors)||s.request.selectors.length!==2))throw Error('association_controls_require_two_selectors');
    fill('left',steps,s=>key(s.request.selectors[0]),s=>selectorLabel(s.request.selectors[0]));update('left');fields.disabled=false;
  }
+ // «Fai una domanda» chiede un incrocio rivisto per identificativo.
+ document.addEventListener('chiedi-association',event=>{const step=steps.find(s=>s.id===event.detail?.id);if(!step||fields.disabled)return;mode(true);
+   const r=step.request;controls.left.value=key(r.selectors[0]);update('left');controls.right.value=key(r.selectors[1]);update('right');
+   controls.axis.value=String(r.axis??'');update('axis');controls.method.value=String(r.method??'');update('method');controls.scope.value=step.id;update('scope');
+   if(!run.disabled){form.requestSubmit();panel.scrollIntoView({block:'start'});}});
  retry.onclick=safe(initialize);await safe(initialize)();
 }

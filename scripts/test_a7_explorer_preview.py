@@ -87,7 +87,7 @@ def verify_association_interface(catalog, runtime, expected, output, *, dist=Non
                     page=browser.new_page(viewport=dict(width=width,height=900))
                     fetched=[];page.on('request',lambda r:fetched.append(r.url) if r.url.endswith('.json.gz') else None)
                     page.goto(f'http://127.0.0.1:{server.server_port}/guided/chiedi/')
-                    page.wait_for_selector('#association-run:enabled')
+                    page.wait_for_selector('#association-run:enabled',state='attached');page.click('#association-mode-pair')
                     assert not fetched,'association_eager_response_fetch'
                     page.click('#association-mode-measure')
                     assert page.locator('#explorer-form').is_visible() and page.locator('#association-explorer').is_hidden()
@@ -142,16 +142,16 @@ def verify_association_interface(catalog, runtime, expected, output, *, dist=Non
                         if index==7:assert len(fetched)==before,'association_cached_selection_refetched'
                     assert page.evaluate('document.documentElement.scrollWidth<=innerWidth+1'),'association_page_overflow'
                     # A missing block fails closed and retry keeps the same anchored release.
-                    page.reload();page.wait_for_selector('#association-run:enabled')
+                    page.reload();page.wait_for_selector('#association-run:enabled',state='attached');page.click('#association-mode-pair')
                     missing=entries[0]['artifact']['path']
                     page.route('**/'+missing,lambda route:route.fulfill(status=404,body='missing'))
                     choose(page,0);page.click('#association-run');page.wait_for_selector('#association-retry:not([hidden])')
                     assert page.locator('#association-result').is_hidden()
-                    page.unroute('**/'+missing);page.click('#association-retry');page.wait_for_selector('#association-run:enabled')
+                    page.unroute('**/'+missing);page.click('#association-retry');page.wait_for_selector('#association-run:enabled',state='attached');page.click('#association-mode-pair')
                     choose(page,0);page.click('#association-run');page.wait_for_selector('[data-association-evidence]',state='attached')
                     assert json.loads(page.locator('[data-association-evidence]').text_content())['steps'][0]['response']==by_id[requests[0]['id']]
                     # Changing controls revokes a pending request before it can render.
-                    page.reload();page.wait_for_selector('#association-run:enabled');held=[]
+                    page.reload();page.wait_for_selector('#association-run:enabled',state='attached');page.click('#association-mode-pair');held=[]
                     page.route('**/'+missing,lambda route:held.append(route))
                     choose(page,0)
                     with page.expect_request(lambda r:r.url.endswith(missing)):page.click('#association-run')

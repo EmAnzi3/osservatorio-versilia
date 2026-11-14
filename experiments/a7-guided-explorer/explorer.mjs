@@ -11,7 +11,7 @@ const changes=['absolute_change','relative_change','percentage_points'];
 const trendReasons={census_historical_dimension_not_available:'Per questo dettaglio la serie storica non è disponibile. Non significa che il dato manchi nella fonte.',insufficient_observations:'Ci sono troppo pochi anni disponibili per calcolare una tendenza.',distinct_finance_massarosa_osl_temporal_perimeter_not_attested:'Per Massarosa la continuità fra bilancio ordinario e gestione del dissesto non è garantita.'};
 const outlierReasons={anomaly_zero_interquartile_range:'Almeno metà dei Comuni ha valori molto vicini o uguali: lo scarto interquartile è zero e la regola non può distinguere valori fuori scala.',anomaly_requires_four_usable_observations:'Servono almeno quattro valori disponibili per applicare la regola.'};
 const outlierClasses={above_fence:'Sopra la soglia superiore',below_fence:'Sotto la soglia inferiore',within_fences:'Entro le soglie'};
-const units={count:'unità',meters:'m',hectares:'ha',cubicMetres:'m³',currency2:'€',eurliter:'€/l',eurm2:'€/m²',eurm2month:'€/m²/mese',per10k:'per 10.000',km2:'km²',celsius:'°C',index:'indice',percent_change:'%',sqm_per_resident:'m²/residente',km_per_km2:'km/km²',currency_per_resident:'€/residente',number:'unità',percentage_points:'punti percentuali',percentagePoints:'punti percentuali',hectaresPerFarm:'ha/azienda',per1000:'per 1.000',per100:'per 100',per100k:'per 100.000',minutes:'minuti',hours:'ore',people:'persone',squareKm:'km²',peoplePerSquareKm:'residenti/km²',eurPerResident:'€/residente',invalsi_score:'punti INVALSI',nights:'notti',decimal:'',percent:'%',currency:'€',years:'anni',category_code:'categoria',millionCurrency:'milioni di €',studentsPerClass:'alunni per classe'};
+export const units={count:'unità',meters:'m',hectares:'ha',cubicMetres:'m³',currency2:'€',eurliter:'€/l',eurm2:'€/m²',eurm2month:'€/m²/mese',per10k:'per 10.000',km2:'km²',celsius:'°C',index:'indice',percent_change:'%',sqm_per_resident:'m²/residente',km_per_km2:'km/km²',currency_per_resident:'€/residente',number:'unità',percentage_points:'punti percentuali',percentagePoints:'punti percentuali',hectaresPerFarm:'ha/azienda',per1000:'per 1.000',per100:'per 100',per100k:'per 100.000',minutes:'minuti',hours:'ore',people:'persone',squareKm:'km²',peoplePerSquareKm:'residenti/km²',eurPerResident:'€/residente',invalsi_score:'punti INVALSI',nights:'notti',decimal:'',percent:'%',currency:'€',years:'anni',category_code:'categoria',millionCurrency:'milioni di €',studentsPerClass:'alunni per classe'};
 // Public display: at most two decimals. Exact values stay in the downloadable evidence.
 const number=x=>x!==0&&Math.abs(x)<.005?(x<0?'> −0,01':'< 0,01'):new Intl.NumberFormat('it-IT',{maximumFractionDigits:2}).format(x);
 const concise=number;
@@ -422,5 +422,7 @@ export async function startExplorer(openRuntime,presentation){
    await restore();
  }
  $('retry').onclick=safe(initialize);
+ // Le domande di «Fai una domanda» arrivano come link condivisibili dell'esploratore.
+ window.addEventListener('hashchange',()=>{if(root&&location.hash.startsWith('#'+SHARE+'&'))safe(restore)();});
  await safe(initialize)();
 }

@@ -1,5 +1,13 @@
 # Consolidamento Osservatorio Versilia — handoff operativo
 
+## Chiedi: «Fai una domanda» in italiano (14 novembre 2026)
+
+- Nuovo riquadro in cima a Chiedi: domanda libera → interprete statico (`experiments/a7-guided-explorer/ask.mjs`, indice `scripts/a7_ask_index.py`) → selezione dell'esploratore esistente o incrocio rivisto. La risposta dice come è stata capita la domanda, dà il valore (solo dall'evidenza del motore), propone indicatori vicini e chiede il Comune se serve.
+- Domande fuori catalogo: risposta esplicita «Non ho trovato…», nessuna lettura forzata.
+- «Due variabili» non è più la vista iniziale: si parte da «Una misura»; i test dell'anteprima cliccano la modalità.
+- Test `scripts/test_chiedi_domande.py` (63 domande con attese scritte a mano + browser 1440/390) registrato in `ci/workflow-contract.json`.
+- Metodo e percorso verso un LLM: `docs/A7_CHIEDI_DOMANDE.md`.
+
 ## Chiedi: incroci pubblici del piano rivisto (14 novembre 2026)
 
 - «Chiedi» offre ora «Due variabili» accanto a «Una misura»: le sei associazioni riviste il 26 ottobre (`ci/a7-association-perimeter.json`), Spearman fra i sette Comuni, con coefficiente originale, coppie, grafico, tabella con periodi e fonti e limiti.
