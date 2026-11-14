@@ -1,7 +1,8 @@
-.a7-explorer .association-explorer{border-top:2px solid #cbd5dc;margin-top:2rem;padding-top:1rem;background:#fff}
+.a7-explorer .association-explorer{border-top:2px solid #cbd5dc;margin-top:2rem;padding-top:1rem}
 #a7-explorer #association-measure{padding:0;border:0;border-radius:0;margin:0;box-shadow:none;background:none}
-#a7-explorer #association-explorer{padding:1rem 0 0;border:0;border-top:1px solid #cbd5dc;border-radius:0;margin:1.5rem 0 0;box-shadow:none;background:#fff}
-#a7-explorer #association-result,#a7-explorer #association-consent{padding:1rem 0 0;border:0;border-top:1px solid #cbd5dc;border-radius:0;margin:1rem 0 0;box-shadow:none;background:#fff;scroll-margin-top:7rem}
+/* Il titolo e il testo della sezione stanno sullo sfondo del pannello, allineati agli altri titoli; i box bianchi hanno sempre margine interno. */
+#a7-explorer #association-explorer{padding:1.25rem 0 0;border:0;border-top:1px solid #cbd5dc;border-radius:0;margin:1.5rem 0 0;box-shadow:none;background:none}
+#a7-explorer #association-result,#a7-explorer #association-consent{padding:clamp(1rem,2.5vw,1.8rem);border:0;border-radius:16px;margin:1.4rem 0 0;box-shadow:0 10px 30px -18px rgba(20,50,74,.45),0 1px 2px rgba(20,50,74,.08);background:#fff;scroll-margin-top:7rem}
 .a7-explorer #association-modes{display:flex;flex-wrap:wrap;gap:.5rem;margin:1rem 0}
 .a7-explorer #association-modes button[aria-pressed="false"]{background:#fff;color:#104b70}
 .a7-explorer .association-explorer figure{margin:1.5rem 0}
@@ -24,3 +25,4 @@
 #a7-explorer .association-pairs td>*{grid-column:2}
 #a7-explorer .association-pairs td>p:first-child{white-space:normal}
 }
+#a7-explorer #association-explorer>h3+p{margin:0 0 1.2rem}

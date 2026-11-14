@@ -1,6 +1,6 @@
 {
  "schemaVersion": 1,
- "note": "Domande di prova dell'interprete statico di Chiedi: attese scritte a mano, non generate dal coefficiente o dai valori. Una domanda fuori catalogo deve dare no_metric.",
+ "note": "Domande di prova dell'interprete statico di Chiedi: attese scritte a mano e riviste, non generate dal coefficiente o dai valori. Una domanda fuori catalogo deve dare no_metric. Il campo `after` elenca le domande precedenti della stessa conversazione: la domanda va letta come seguito dell'ultima lettura riuscita.",
  "questions": [
   {
    "question": "Quanti abitanti ha Viareggio?",
@@ -513,6 +513,1101 @@
    "question": "Relazione tra reddito e rifiuti",
    "kind": "association",
    "association": "income_waste_association"
+  },
+  {
+   "question": "quanta gente vive a pietrasanta",
+   "kind": "reading",
+   "metric": "population",
+   "operation": "observe",
+   "town": "046024",
+   "detail": "total"
+  },
+  {
+   "question": "abitanti forte dei marmi",
+   "kind": "reading",
+   "metric": "population",
+   "operation": "observe",
+   "town": "046013",
+   "detail": "total"
+  },
+  {
+   "question": "popolazione di seravezza nel 2015",
+   "kind": "reading",
+   "metric": "population",
+   "operation": "observe",
+   "town": "046028",
+   "detail": "total"
+  },
+  {
+   "question": "viareggio quanti residenti ha",
+   "kind": "reading",
+   "metric": "population",
+   "operation": "observe",
+   "town": "046033",
+   "detail": "total"
+  },
+  {
+   "question": "quanti anziani ci sono a stazzema",
+   "kind": "reading",
+   "metric": "oldAgeIndex",
+   "operation": "observe",
+   "town": "046030",
+   "detail": "total"
+  },
+  {
+   "question": "il comune più vecchio della versilia",
+   "kind": "reading",
+   "metric": "oldAgeIndex",
+   "operation": "rank",
+   "town": null,
+   "detail": "total"
+  },
+  {
+   "question": "dove si guadagna di più",
+   "kind": "reading",
+   "metric": "income",
+   "operation": "rank",
+   "town": null,
+   "detail": "total"
+  },
+  {
+   "question": "reddito medio viareggio",
+   "kind": "reading",
+   "metric": "income",
+   "operation": "observe",
+   "town": "046033",
+   "detail": "total"
+  },
+  {
+   "question": "quanto guadagnano a massarosa",
+   "kind": "reading",
+   "metric": "income",
+   "operation": "observe",
+   "town": "046018",
+   "detail": "total"
+  },
+  {
+   "question": "stipendi a camaiore",
+   "kind": "reading",
+   "metric": "income",
+   "operation": "observe",
+   "town": "046005",
+   "detail": "total"
+  },
+  {
+   "question": "quanto costa la casa a pietrasanta",
+   "kind": "reading",
+   "metric": "omiResidential",
+   "operation": "observe",
+   "town": "046024",
+   "detail": "total"
+  },
+  {
+   "question": "prezzo delle case a viareggio al metro quadro",
+   "kind": "reading",
+   "metric": "omiResidential",
+   "operation": "observe",
+   "town": "046033",
+   "detail": "total"
+  },
+  {
+   "question": "affitti a forte dei marmi",
+   "kind": "reading",
+   "metric": "omiResidential",
+   "operation": "observe",
+   "town": "046013",
+   "detail": "rentMean"
+  },
+  {
+   "question": "quante case vuote ci sono a forte dei marmi",
+   "kind": "reading",
+   "metric": "vacantHomes",
+   "operation": "observe",
+   "town": "046013",
+   "detail": "total"
+  },
+  {
+   "question": "seconde case a camaiore",
+   "kind": "reading",
+   "metric": "vacantHomes",
+   "operation": "observe",
+   "town": "046005",
+   "detail": "total"
+  },
+  {
+   "question": "disoccupati a viareggio",
+   "kind": "reading",
+   "metric": "unemploymentRate",
+   "operation": "observe",
+   "town": "046033",
+   "detail": "total"
+  },
+  {
+   "question": "lavoro a massarosa",
+   "kind": "reading",
+   "metric": "employmentRate",
+   "operation": "observe",
+   "town": "046018",
+   "detail": "total"
+  },
+  {
+   "question": "quanti lavorano a pietrasanta",
+   "kind": "reading",
+   "metric": "employmentRate",
+   "operation": "observe",
+   "town": "046024",
+   "detail": "total"
+  },
+  {
+   "question": "occupazione delle donne a camaiore",
+   "kind": "reading",
+   "metric": "femaleEmploymentRate",
+   "operation": "observe",
+   "town": "046005",
+   "detail": "total"
+  },
+  {
+   "question": "giovani che non lavorano",
+   "kind": "reading",
+   "metric": "unemploymentRate",
+   "operation": "compare",
+   "town": null,
+   "detail": "age:15-24|sex:total"
+  },
+  {
+   "question": "quanti turisti vanno a forte dei marmi",
+   "kind": "reading",
+   "metric": "tourismPresences",
+   "operation": "observe",
+   "town": "046013",
+   "detail": "total"
+  },
+  {
+   "question": "turismo a viareggio negli anni",
+   "kind": "reading",
+   "metric": "tourismPresences",
+   "operation": "series",
+   "town": "046033",
+   "detail": "total"
+  },
+  {
+   "question": "dove ci sono più turisti",
+   "kind": "reading",
+   "metric": "tourismPresences",
+   "operation": "rank",
+   "town": null,
+   "detail": "total"
+  },
+  {
+   "question": "alberghi a camaiore",
+   "kind": "reading",
+   "metric": "tourismBeds",
+   "operation": "observe",
+   "town": "046005",
+   "detail": "total"
+  },
+  {
+   "question": "quanto restano i turisti a pietrasanta",
+   "kind": "reading",
+   "metric": "tourismAverageStay",
+   "operation": "observe",
+   "town": "046024",
+   "detail": "total"
+  },
+  {
+   "question": "turisti stranieri a forte dei marmi",
+   "kind": "reading",
+   "metric": "foreignTourismShare",
+   "operation": "observe",
+   "town": "046013",
+   "detail": "total"
+  },
+  {
+   "question": "raccolta differenziata viareggio",
+   "kind": "reading",
+   "metric": "recycling",
+   "operation": "observe",
+   "town": "046033",
+   "detail": "total"
+  },
+  {
+   "question": "chi ricicla di più",
+   "kind": "reading",
+   "metric": "recycling",
+   "operation": "rank",
+   "town": null,
+   "detail": "total"
+  },
+  {
+   "question": "quanta spazzatura produce camaiore",
+   "kind": "reading",
+   "metric": "wastePerResident",
+   "operation": "observe",
+   "town": "046005",
+   "detail": "total"
+  },
+  {
+   "question": "quanto si paga di tari a pietrasanta",
+   "kind": "reading",
+   "metric": "tariStandardHousehold",
+   "operation": "observe",
+   "town": "046024",
+   "detail": "total"
+  },
+  {
+   "question": "costo dei rifiuti a massarosa",
+   "kind": "reading",
+   "metric": "wasteServiceCost",
+   "operation": "observe",
+   "town": "046018",
+   "detail": "total"
+  },
+  {
+   "question": "imu a forte dei marmi",
+   "kind": "reading",
+   "metric": "municipalImuStandard",
+   "operation": "observe",
+   "town": "046013",
+   "detail": "total"
+  },
+  {
+   "question": "addizionale irpef viareggio",
+   "kind": "reading",
+   "metric": "municipalIrpef",
+   "operation": "observe",
+   "town": "046033",
+   "detail": "total"
+  },
+  {
+   "question": "tasse comunali a camaiore",
+   "kind": "reading",
+   "metric": "municipalIrpef",
+   "operation": "observe",
+   "town": "046005",
+   "detail": "total"
+  },
+  {
+   "question": "quanti stranieri ci sono a camaiore",
+   "kind": "reading",
+   "metric": "foreignResidents",
+   "operation": "observe",
+   "town": "046005",
+   "detail": "total"
+  },
+  {
+   "question": "immigrati a viareggio",
+   "kind": "reading",
+   "metric": "foreignResidents",
+   "operation": "observe",
+   "town": "046033",
+   "detail": "total"
+  },
+  {
+   "question": "nascite a viareggio",
+   "kind": "reading",
+   "metric": "naturalDemographicDynamics",
+   "operation": "observe",
+   "town": "046033",
+   "detail": "part:births"
+  },
+  {
+   "question": "quanti bambini nascono in versilia",
+   "kind": "reading",
+   "metric": "naturalDemographicDynamics",
+   "operation": "weighted_ratio",
+   "town": null,
+   "detail": "part:births"
+  },
+  {
+   "question": "quante scuole ci sono a massarosa",
+   "kind": "reading",
+   "metric": "schoolSites",
+   "operation": "observe",
+   "town": "046018",
+   "detail": "total"
+  },
+  {
+   "question": "studenti a viareggio",
+   "kind": "reading",
+   "metric": "schoolStudents",
+   "operation": "observe",
+   "town": "046033",
+   "detail": "total"
+  },
+  {
+   "question": "risultati invalsi pietrasanta",
+   "kind": "reading",
+   "metric": "invalsiResults",
+   "operation": "observe",
+   "town": "046024",
+   "detail": "total"
+  },
+  {
+   "question": "laureati a forte dei marmi",
+   "kind": "reading",
+   "metric": "tertiary",
+   "operation": "observe",
+   "town": "046013",
+   "detail": "total"
+  },
+  {
+   "question": "diplomati versilia",
+   "kind": "reading",
+   "metric": "diplomaPlus",
+   "operation": "compare",
+   "town": null,
+   "detail": "total"
+  },
+  {
+   "question": "ospedali in versilia",
+   "kind": "reading",
+   "metric": "hospitals",
+   "operation": "compare",
+   "town": null,
+   "detail": "total"
+  },
+  {
+   "question": "pronto soccorso viareggio",
+   "kind": "reading",
+   "metric": "emergencyAccess",
+   "operation": "observe",
+   "town": "046033",
+   "detail": "total"
+  },
+  {
+   "question": "farmacie a camaiore",
+   "kind": "reading",
+   "metric": "pharmaciesPer1000",
+   "operation": "observe",
+   "town": "046005",
+   "detail": "total"
+  },
+  {
+   "question": "speranza di vita a forte dei marmi",
+   "kind": "reading",
+   "metric": "lifeExpectancy",
+   "operation": "observe",
+   "town": "046013",
+   "detail": "total"
+  },
+  {
+   "question": "mortalità per tumori a viareggio",
+   "kind": "reading",
+   "metric": "mortalityCancer",
+   "operation": "observe",
+   "town": "046033",
+   "detail": "total"
+  },
+  {
+   "question": "diabete a massarosa",
+   "kind": "reading",
+   "metric": "diabetes",
+   "operation": "observe",
+   "town": "046018",
+   "detail": "total"
+  },
+  {
+   "question": "quante auto a stazzema",
+   "kind": "reading",
+   "metric": "motorization",
+   "operation": "observe",
+   "town": "046030",
+   "detail": "total"
+  },
+  {
+   "question": "auto inquinanti a viareggio",
+   "kind": "reading",
+   "metric": "pollutingCars",
+   "operation": "observe",
+   "town": "046033",
+   "detail": "total"
+  },
+  {
+   "question": "colonnine di ricarica a pietrasanta",
+   "kind": "reading",
+   "metric": "evPoints",
+   "operation": "observe",
+   "town": "046024",
+   "detail": "total"
+  },
+  {
+   "question": "autobus a massarosa",
+   "kind": "reading",
+   "metric": "scheduledTplTripsPer1000",
+   "operation": "observe",
+   "town": "046018",
+   "detail": "total"
+  },
+  {
+   "question": "piste ciclabili a camaiore",
+   "kind": "reading",
+   "metric": "slowMobilityBici",
+   "operation": "observe",
+   "town": "046005",
+   "detail": "total"
+  },
+  {
+   "question": "incidenti stradali a viareggio",
+   "kind": "reading",
+   "metric": "roadSafety",
+   "operation": "observe",
+   "town": "046033",
+   "detail": "measure:incidents"
+  },
+  {
+   "question": "fibra ottica a seravezza",
+   "kind": "reading",
+   "metric": "ftthCoverageDesi",
+   "operation": "observe",
+   "town": "046028",
+   "detail": "total"
+  },
+  {
+   "question": "internet veloce a stazzema",
+   "kind": "reading",
+   "metric": "ftthCoverageDesi",
+   "operation": "observe",
+   "town": "046030",
+   "detail": "total"
+  },
+  {
+   "question": "benzina più economica",
+   "kind": "reading",
+   "metric": "fuelPrices",
+   "operation": "rank",
+   "town": null,
+   "detail": "fuel:benzina"
+  },
+  {
+   "question": "prezzo del diesel a pietrasanta",
+   "kind": "reading",
+   "metric": "fuelPrices",
+   "operation": "observe",
+   "town": "046024",
+   "detail": "fuel:gasolio"
+  },
+  {
+   "question": "rischio alluvione a massarosa",
+   "kind": "reading",
+   "metric": "floodExposure",
+   "operation": "observe",
+   "town": "046018",
+   "detail": "total"
+  },
+  {
+   "question": "frane a stazzema",
+   "kind": "reading",
+   "metric": "landslideExposure",
+   "operation": "observe",
+   "town": "046030",
+   "detail": "total"
+  },
+  {
+   "question": "suolo consumato a viareggio",
+   "kind": "reading",
+   "metric": "landUse",
+   "operation": "observe",
+   "town": "046033",
+   "detail": "total"
+  },
+  {
+   "question": "boschi a stazzema",
+   "kind": "reading",
+   "metric": "forestCoverIndex",
+   "operation": "observe",
+   "town": "046030",
+   "detail": "total"
+  },
+  {
+   "question": "aree protette a massarosa",
+   "kind": "reading",
+   "metric": "protectedNaturalAreas",
+   "operation": "observe",
+   "town": "046018",
+   "detail": "total"
+  },
+  {
+   "question": "qualità del mare a forte dei marmi",
+   "kind": "reading",
+   "metric": "bathingWaterQuality",
+   "operation": "observe",
+   "town": "046013",
+   "detail": "total"
+  },
+  {
+   "question": "bandiere blu in versilia",
+   "kind": "reading",
+   "metric": "blueFlagBeaches",
+   "operation": "compare",
+   "town": null,
+   "detail": "total"
+  },
+  {
+   "question": "erosione della costa a viareggio",
+   "kind": "reading",
+   "metric": "rigidDefenceProtectedCoast",
+   "operation": "observe",
+   "town": "046033",
+   "detail": "total"
+  },
+  {
+   "question": "concessioni balneari a viareggio",
+   "kind": "reading",
+   "metric": "maritimeConcessions",
+   "operation": "observe",
+   "town": "046033",
+   "detail": "total"
+  },
+  {
+   "question": "debito del comune di viareggio",
+   "kind": "reading",
+   "metric": "financialDebtProfile",
+   "operation": "observe",
+   "town": "046033",
+   "detail": "total"
+  },
+  {
+   "question": "spesa per la sicurezza a forte dei marmi",
+   "kind": "reading",
+   "metric": "securityMissionExpenditurePerResident",
+   "operation": "observe",
+   "town": "046013",
+   "detail": "total"
+  },
+  {
+   "question": "spesa sociale a camaiore",
+   "kind": "reading",
+   "metric": "socialMissionExpenditurePerResident",
+   "operation": "observe",
+   "town": "046005",
+   "detail": "total"
+  },
+  {
+   "question": "quanto spende massarosa per la scuola",
+   "kind": "reading",
+   "metric": "educationMissionExpenditurePerResident",
+   "operation": "observe",
+   "town": "046018",
+   "detail": "total"
+  },
+  {
+   "question": "fondi pnrr a pietrasanta",
+   "kind": "reading",
+   "metric": "pnrrFunding",
+   "operation": "observe",
+   "town": "046024",
+   "detail": "total"
+  },
+  {
+   "question": "progetti pnrr conclusi a viareggio",
+   "kind": "reading",
+   "metric": "pnrrConcluded",
+   "operation": "observe",
+   "town": "046033",
+   "detail": "total"
+  },
+  {
+   "question": "opere pubbliche a camaiore",
+   "kind": "reading",
+   "metric": "publicWorks",
+   "operation": "observe",
+   "town": "046005",
+   "detail": "total"
+  },
+  {
+   "question": "biblioteche a massarosa",
+   "kind": "reading",
+   "metric": "libraryLoansPerResident",
+   "operation": "observe",
+   "town": "046018",
+   "detail": "total"
+  },
+  {
+   "question": "affluenza alle elezioni a viareggio",
+   "kind": "reading",
+   "metric": "voterTurnout",
+   "operation": "observe",
+   "town": "046033",
+   "detail": "family:politiche_camera"
+  },
+  {
+   "question": "dipendenti comunali a stazzema",
+   "kind": "reading",
+   "metric": "municipalEmployeesPer1000",
+   "operation": "observe",
+   "town": "046030",
+   "detail": "total"
+  },
+  {
+   "question": "servizi online del comune di camaiore",
+   "kind": "reading",
+   "metric": "municipalOnlineServicesAdvanced",
+   "operation": "observe",
+   "town": "046005",
+   "detail": "total"
+  },
+  {
+   "question": "associazioni del terzo settore a pietrasanta",
+   "kind": "reading",
+   "metric": "thirdSector",
+   "operation": "observe",
+   "town": "046024",
+   "detail": "total"
+  },
+  {
+   "question": "aziende agricole a massarosa",
+   "kind": "reading",
+   "metric": "agriculturalFarms",
+   "operation": "observe",
+   "town": "046018",
+   "detail": "total"
+  },
+  {
+   "question": "imprese a forte dei marmi",
+   "kind": "reading",
+   "metric": "localUnits",
+   "operation": "observe",
+   "town": "046013",
+   "detail": "total"
+  },
+  {
+   "question": "negozi a viareggio",
+   "kind": "reading",
+   "metric": "localUnits",
+   "operation": "observe",
+   "town": "046033",
+   "detail": "total"
+  },
+  {
+   "question": "fatturato delle imprese a pietrasanta",
+   "kind": "reading",
+   "metric": "businessTurnover",
+   "operation": "observe",
+   "town": "046024",
+   "detail": "total"
+  },
+  {
+   "question": "pendolari a seravezza",
+   "kind": "reading",
+   "metric": "outsideMunicipality",
+   "operation": "observe",
+   "town": "046028",
+   "detail": "total"
+  },
+  {
+   "question": "quanti escono dal comune per lavorare a massarosa",
+   "kind": "reading",
+   "metric": "outboundCommuters",
+   "operation": "observe",
+   "town": "046018",
+   "detail": "total"
+  },
+  {
+   "question": "superficie del comune di stazzema",
+   "kind": "reading",
+   "metric": "municipalSurface",
+   "operation": "observe",
+   "town": "046030",
+   "detail": "total"
+  },
+  {
+   "question": "densità abitativa a viareggio",
+   "kind": "reading",
+   "metric": "populationDensity",
+   "operation": "observe",
+   "town": "046033",
+   "detail": "total"
+  },
+  {
+   "question": "famiglie con una sola persona a forte dei marmi",
+   "kind": "reading",
+   "metric": "singleHouseholds",
+   "operation": "observe",
+   "town": "046013",
+   "detail": "total"
+  },
+  {
+   "question": "temperatura a viareggio negli ultimi 50 anni",
+   "kind": "reading",
+   "metric": "climateTemperatureTrend50y",
+   "operation": "observe",
+   "town": "046033",
+   "detail": "total"
+  },
+  {
+   "question": "pioggia a stazzema",
+   "kind": "reading",
+   "metric": "climatePrecipitationTrend50y",
+   "operation": "observe",
+   "town": "046030",
+   "detail": "total"
+  },
+  {
+   "question": "chi è il sindaco di viareggio",
+   "kind": "no_metric"
+  },
+  {
+   "question": "orari della farmacia di turno",
+   "kind": "no_metric"
+  },
+  {
+   "question": "quando apre il mercato di forte dei marmi",
+   "kind": "no_metric"
+  },
+  {
+   "question": "ristoranti a pietrasanta",
+   "kind": "no_metric"
+  },
+  {
+   "question": "come si fa la carta d'identità",
+   "kind": "no_metric"
+  },
+  {
+   "question": "miglior spiaggia della versilia",
+   "kind": "no_metric"
+  },
+  {
+   "question": "ricetta della torta",
+   "kind": "no_metric"
+  },
+  {
+   "question": "redito viareggio",
+   "kind": "reading",
+   "metric": "income",
+   "operation": "observe",
+   "town": "046033",
+   "detail": "total"
+  },
+  {
+   "question": "popolazzione camaiore",
+   "kind": "reading",
+   "metric": "population",
+   "operation": "observe",
+   "town": "046005",
+   "detail": "total"
+  },
+  {
+   "question": "disocupazione a massarosa",
+   "kind": "reading",
+   "metric": "unemploymentRate",
+   "operation": "observe",
+   "town": "046018",
+   "detail": "total"
+  },
+  {
+   "question": "raccolta diferenziata pietrasanta",
+   "kind": "reading",
+   "metric": "recycling",
+   "operation": "observe",
+   "town": "046024",
+   "detail": "total"
+  },
+  {
+   "question": "turisiti a forte",
+   "kind": "reading",
+   "metric": "tourismPresences",
+   "operation": "observe",
+   "town": "046013",
+   "detail": "total"
+  },
+  {
+   "question": "quanti abbitanti ha stazzema",
+   "kind": "reading",
+   "metric": "population",
+   "operation": "observe",
+   "town": "046030",
+   "detail": "total"
+  },
+  {
+   "question": "farmace a seravezza",
+   "kind": "reading",
+   "metric": "pharmaciesPer1000",
+   "operation": "observe",
+   "town": "046028",
+   "detail": "total"
+  },
+  {
+   "question": "reddito a viaregio",
+   "kind": "reading",
+   "metric": "income",
+   "operation": "observe",
+   "town": "046033",
+   "detail": "total"
+  },
+  {
+   "question": "popolazione pietrasnta",
+   "kind": "reading",
+   "metric": "population",
+   "operation": "observe",
+   "town": "046024",
+   "detail": "total"
+  },
+  {
+   "question": "turisti a camajore",
+   "kind": "reading",
+   "metric": "tourismPresences",
+   "operation": "observe",
+   "town": "046005",
+   "detail": "total"
+  },
+  {
+   "question": "scuole a seraveza",
+   "kind": "reading",
+   "metric": "schoolSites",
+   "operation": "observe",
+   "town": "046028",
+   "detail": "total"
+  },
+  {
+   "question": "massaroza abitanti",
+   "kind": "reading",
+   "metric": "population",
+   "operation": "observe",
+   "town": "046018",
+   "detail": "total"
+  },
+  {
+   "after": [
+    "Quanti abitanti ha Viareggio?"
+   ],
+   "question": "e Camaiore?",
+   "kind": "reading",
+   "metric": "population",
+   "operation": "observe",
+   "town": "046005",
+   "detail": "total"
+  },
+  {
+   "after": [
+    "Quanti abitanti ha Viareggio?",
+    "e Camaiore?"
+   ],
+   "question": "e nel tempo?",
+   "kind": "reading",
+   "metric": "population",
+   "operation": "series",
+   "town": "046005",
+   "detail": "total"
+  },
+  {
+   "after": [
+    "Quanti abitanti ha Viareggio?",
+    "e Camaiore?",
+    "e nel tempo?"
+   ],
+   "question": "e le donne?",
+   "kind": "reading",
+   "metric": "population",
+   "operation": "observe",
+   "town": "046005",
+   "detail": "sex:women"
+  },
+  {
+   "after": [
+    "Quanti abitanti ha Viareggio?",
+    "e Camaiore?",
+    "e nel tempo?",
+    "e le donne?"
+   ],
+   "question": "e fra i comuni?",
+   "kind": "reading",
+   "metric": "population",
+   "operation": "compare",
+   "town": null,
+   "detail": "sex:women"
+  },
+  {
+   "after": [
+    "Quanti abitanti ha Viareggio?",
+    "e Camaiore?",
+    "e nel tempo?",
+    "e le donne?",
+    "e fra i comuni?"
+   ],
+   "question": "Che tempo farà domani a Viareggio?",
+   "kind": "no_metric"
+  },
+  {
+   "after": [
+    "Quale Comune ha il reddito più alto?"
+   ],
+   "question": "e Viareggio?",
+   "kind": "reading",
+   "metric": "income",
+   "operation": "observe",
+   "town": "046033",
+   "detail": "total"
+  },
+  {
+   "after": [
+    "Quale Comune ha il reddito più alto?",
+    "e Viareggio?"
+   ],
+   "question": "e dieci anni fa?",
+   "kind": "reading",
+   "metric": "income",
+   "operation": "series",
+   "town": "046033",
+   "detail": "total"
+  },
+  {
+   "after": [
+    "Quale Comune ha il reddito più alto?",
+    "e Viareggio?",
+    "e dieci anni fa?"
+   ],
+   "question": "invece la disoccupazione?",
+   "kind": "reading",
+   "metric": "unemploymentRate",
+   "operation": "series",
+   "town": "046033",
+   "detail": "total"
+  },
+  {
+   "after": [
+    "Quale Comune ha il reddito più alto?",
+    "e Viareggio?",
+    "e dieci anni fa?",
+    "invece la disoccupazione?"
+   ],
+   "question": "e per i giovani?",
+   "kind": "reading",
+   "metric": "unemploymentRate",
+   "operation": "series",
+   "town": "046033",
+   "detail": "age:15-24|sex:total"
+  },
+  {
+   "after": [
+    "Quale Comune ha il reddito più alto?",
+    "e Viareggio?",
+    "e dieci anni fa?",
+    "invece la disoccupazione?",
+    "e per i giovani?"
+   ],
+   "question": "e Forte?",
+   "kind": "reading",
+   "metric": "unemploymentRate",
+   "operation": "series",
+   "town": "046013",
+   "detail": "age:15-24|sex:total"
+  },
+  {
+   "after": [
+    "Disoccupazione giovanile a Seravezza"
+   ],
+   "question": "e a Stazzema?",
+   "kind": "reading",
+   "metric": "unemploymentRate",
+   "operation": "observe",
+   "town": "046030",
+   "detail": "age:15-24|sex:total"
+  },
+  {
+   "after": [
+    "Disoccupazione giovanile a Seravezza",
+    "e a Stazzema?"
+   ],
+   "question": "e le donne?",
+   "kind": "reading",
+   "metric": "unemploymentRate",
+   "operation": "observe",
+   "town": "046030",
+   "detail": "age:15-24|sex:women"
+  },
+  {
+   "after": [
+    "Raccolta differenziata a Pietrasanta"
+   ],
+   "question": "e i rifiuti per abitante?",
+   "kind": "reading",
+   "metric": "wastePerResident",
+   "operation": "observe",
+   "town": "046024",
+   "detail": "total"
+  },
+  {
+   "after": [
+    "Raccolta differenziata a Pietrasanta",
+    "e i rifiuti per abitante?"
+   ],
+   "question": "classifica",
+   "kind": "reading",
+   "metric": "wastePerResident",
+   "operation": "rank",
+   "town": null,
+   "detail": "total"
+  },
+  {
+   "after": [
+    "Raccolta differenziata a Pietrasanta",
+    "e i rifiuti per abitante?",
+    "classifica"
+   ],
+   "question": "e Massarosa?",
+   "kind": "reading",
+   "metric": "wastePerResident",
+   "operation": "observe",
+   "town": "046018",
+   "detail": "total"
+  },
+  {
+   "after": [
+    "Tasso di disoccupazione a Massarosa"
+   ],
+   "question": "e le donne?",
+   "kind": "reading",
+   "metric": "unemploymentRate",
+   "operation": "observe",
+   "town": "046018",
+   "detail": "age:25-64|sex:women"
+  },
+  {
+   "after": [
+    "Tasso di disoccupazione a Massarosa",
+    "e le donne?"
+   ],
+   "question": "rispetto alla Toscana",
+   "kind": "reading",
+   "metric": "unemploymentRate",
+   "operation": "observe",
+   "town": "046018",
+   "detail": "age:25-64|sex:women"
+  },
+  {
+   "after": [
+    "Prezzo del gasolio a Viareggio"
+   ],
+   "question": "e la benzina?",
+   "kind": "reading",
+   "metric": "fuelPrices",
+   "operation": "observe",
+   "town": "046033",
+   "detail": "fuel:benzina"
+  },
+  {
+   "after": [
+    "Prezzo del gasolio a Viareggio",
+    "e la benzina?"
+   ],
+   "question": "e a Camaiore?",
+   "kind": "reading",
+   "metric": "fuelPrices",
+   "operation": "observe",
+   "town": "046005",
+   "detail": "fuel:benzina"
+  },
+  {
+   "after": [
+    "Reddito di Massarosa rispetto all'Italia"
+   ],
+   "question": "e Pietrasanta?",
+   "kind": "reading",
+   "metric": "income",
+   "operation": "benchmark_gap",
+   "town": "046024",
+   "detail": "total",
+   "benchmark": "italy"
   }
  ]
 }

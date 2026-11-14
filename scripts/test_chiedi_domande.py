@@ -3,8 +3,11 @@
 
 Esegue con Node l'interprete e l'indice effettivamente pubblicati in dist (non una
 copia di sviluppo) sulle domande di prova di `ci/chiedi-domande.json`, con attese
-scritte a mano. Poi verifica nel browser che una domanda produca la risposta e i
-dati verificati dell'esploratore, a 1440 e 390 px, senza scorrimento orizzontale.
+scritte a mano, comprese le domande di seguito di una conversazione (`after`).
+Verifica che ogni domanda proposta dal suggeritore sia capita come promesso e che
+le pagine «Fonte» dell'Osservatorio esistano. Poi controlla nel browser, a 1440 e
+390 px: suggeritore, risposta e dati dell'esploratore, domanda di seguito, link
+alla fonte, margini interni dei box e assenza di scorrimento orizzontale.
 """
 import argparse
 import functools
@@ -18,12 +21,19 @@ ROOT = Path(__file__).resolve().parents[1]
 QUESTIONS = ROOT/'ci/chiedi-domande.json'
 
 RUNNER = r"""
-import {prepare,interpret} from %(ask)s;
+import {prepare,interpret,suggest} from %(ask)s;
 import index from %(index)s;
-const questions=JSON.parse(process.argv[1]);
+const {cases,inputs}=JSON.parse(process.argv[1]);
 const p=prepare(index);
-console.log(JSON.stringify(questions.map(q=>{const r=interpret(q,p);return {kind:r.kind,metric:r.metric?.key??null,association:r.association?.id??null,operation:r.selection?.domanda??null,town:r.selection?.comune??null,detail:r.selection?.dettaglio??null,benchmark:r.selection?.riferimento??null};})));
+const view=r=>({kind:r.kind,metric:r.metric?.key??null,association:r.association?.id??null,operation:r.selection?.domanda??null,town:r.selection?.comune??null,detail:r.selection?.dettaglio??null,benchmark:r.selection?.riferimento??null});
+// Conversazione: ogni domanda precedente aggiorna l'ultima lettura riuscita.
+const answers=cases.map(c=>{let prev=null;for(const q of [].concat(c.after||[])){const r=interpret(q,p,{previous:prev});if(r.kind==='reading')prev=r;}return view(interpret(c.question,p,{previous:prev}));});
+const suggestions=inputs.map(i=>suggest(i,p).map(s=>({text:s.text,kind:s.kind,reading:s.reading,association:s.association??null,got:s.kind==='question'?view(interpret(s.text,p)):null})));
+const pages=index.metrics.filter(m=>m.page).map(m=>m.page);
+console.log(JSON.stringify({answers,suggestions,pages,metrics:index.metrics.length}));
 """
+# Inizi di domanda come li scrive una persona: il suggeritore deve proporre qualcosa.
+SUGGEST_INPUTS = ['redd', 'reddito a viar', 'quanti abit', 'disocc', 'turis', 'benz', 'case a forte', 'relazione tra reddito', 'rifiuti a massarosa', 'scuol']
 
 
 def graph_dir(dist):
@@ -33,18 +43,44 @@ def graph_dir(dist):
     return graph
 
 
-def check_interpreter(graph):
+def check_interpreter(graph, dist):
     cases = json.loads(QUESTIONS.read_text(encoding='utf-8'))['questions']
     script = RUNNER % {'ask': json.dumps((graph/'ask.mjs').as_uri()), 'index': json.dumps((graph/'ask-index.mjs').as_uri())}
-    out = subprocess.run(['node', '--input-type=module', '-e', script, json.dumps([c['question'] for c in cases])],
-                         check=True, capture_output=True, text=True, timeout=120).stdout
+    payload = json.dumps({'cases': [{'question': c['question'], 'after': c.get('after')} for c in cases], 'inputs': SUGGEST_INPUTS})
+    out = json.loads(subprocess.run(['node', '--input-type=module', '-e', script, payload],
+                                    check=True, capture_output=True, text=True, timeout=180).stdout)
     failures = []
-    for case, got in zip(cases, json.loads(out)):
+    for case, got in zip(cases, out['answers']):
         for field in ('kind', 'metric', 'association', 'operation', 'town', 'detail', 'benchmark'):
             if field in case and case[field] != got[field]:
-                failures.append(f"{case['question']}: {field} atteso {case[field]!r}, ottenuto {got[field]!r}")
+                failures.append(f"{' → '.join([*([] if not case.get('after') else case['after']), case['question']])}: {field} atteso {case[field]!r}, ottenuto {got[field]!r}")
     assert not failures, 'Interprete Chiedi:\n' + '\n'.join(failures)
+    assert sum(1 for c in cases if c.get('after')) >= 15, 'chiedi_follow_up_cases_missing'
+    # Suggeritore: proposte non vuote, e ogni domanda proposta viene capita come annunciato.
+    for text, items in zip(SUGGEST_INPUTS, out['suggestions']):
+        assert items, f'chiedi_no_suggestion:{text}'
+        for item in items:
+            got = item['got']
+            if item['kind'] != 'question':
+                assert item['kind'] == 'complete' and item['text'].endswith('a …'), item
+            elif item['association']:
+                assert got['kind'] == 'association' and got['association'] == item['association'], item
+            else:
+                assert got['kind'] == 'reading' and got['operation'] == item['reading'], item
+    assert any('Viareggio' in i['text'] for i in out['suggestions'][1]), 'chiedi_suggest_town_prefix'
+    # «Fonte» porta alla pagina dell'indicatore dell'Osservatorio, che deve esistere.
+    assert len(out['pages']) >= out['metrics'] * 0.9, 'chiedi_source_pages_missing'
+    for page in out['pages']:
+        assert page.startswith('../indicatori/') and (dist/'chiedi'/page/'index.html').resolve().is_file(), page
     return len(cases)
+
+
+# Testi (titoli, paragrafi, etichette) a meno di 8 px dal bordo del box con sfondo o bordo che li contiene.
+TIGHT_TEXT = """()=>{const out=[];const skip=['INPUT','SELECT','BUTTON','OPTION','TD','TH','TR','TABLE','TBODY','THEAD','A','SPAN','LI','SUMMARY'];
+const framed=e=>{const cs=getComputedStyle(e);return cs.backgroundColor!=='rgba(0, 0, 0, 0)'||parseFloat(cs.borderLeftWidth)>0;};
+for(const box of document.querySelectorAll('#a7-explorer *')){if(!box.offsetParent||skip.includes(box.tagName)||!framed(box)||box.getBoundingClientRect().width<120)continue;const r=box.getBoundingClientRect();
+for(const t of box.querySelectorAll('h2,h3,h4,p,legend,label,figcaption')){if(!t.offsetParent||!t.textContent.trim())continue;let a=t.parentElement,inner=false;while(a&&a!==box){if(framed(a)){inner=true;break;}a=a.parentElement;}if(inner)continue;
+const range=document.createRange();range.selectNodeContents(t);const tr=range.getBoundingClientRect();if(!tr.width)continue;if(Math.min(tr.left-r.left,r.right-tr.right)<8)out.push((box.id||box.className)+': '+t.textContent.trim().slice(0,40));}}return out;}"""
 
 
 def check_browser(dist):
@@ -65,9 +101,17 @@ def check_browser(dist):
                 page.goto(f'http://127.0.0.1:{server.server_port}/chiedi/')
                 page.wait_for_selector('#ask-input')
                 page.wait_for_selector('#explorer-theme option:nth-child(2)', state='attached')
-                page.fill('#ask-input', 'Quanti abitanti ha Viareggio?')
-                page.click('#ask-send')
-                page.wait_for_selector('#ask-log .ask-reply')
+                # Suggeritore: proposte mentre si scrive, scelta da tastiera.
+                page.click('#ask-input')
+                page.keyboard.type('quanti abitanti ha viar', delay=20)
+                page.wait_for_selector('#ask-suggest:not([hidden]) [role=option]')
+                assert page.get_attribute('#ask-input', 'aria-expanded') == 'true'
+                first = page.locator('#ask-suggest [role=option] .ask-suggestion-text').first.text_content()
+                assert first == 'Popolazione residente a Viareggio', first
+                page.keyboard.press('ArrowDown')
+                assert page.get_attribute('#ask-input', 'aria-activedescendant') == 'ask-suggest-0'
+                page.keyboard.press('Enter')
+                page.wait_for_selector('#ask-log .ask-source a', state='attached')
                 reply = page.locator('#ask-log .ask-reply').first.text_content()
                 assert reply.startswith('Viareggio: '), 'chiedi_reply_missing'
                 assert page.locator('#explorer-result').is_visible(), 'chiedi_result_not_shown'
@@ -77,6 +121,25 @@ def check_browser(dist):
                 # La frase riporta il valore esatto del motore, arrotondato solo per la lettura.
                 value = evidence['steps'][0]['response']['observations'][0]['value']
                 assert f'{round(value):,}'.replace(',', '.') in reply, 'chiedi_reply_not_from_engine'
+                source = page.locator('#ask-log .ask-source a').first.get_attribute('href')
+                assert source.startswith('../indicatori/') and (dist/'chiedi'/source/'index.html').resolve().is_file(), source
+                table_source = page.locator('#explorer-result td a').first.get_attribute('href')
+                assert table_source == source, table_source
+                # Domanda di seguito: stesso indicatore, altro Comune.
+                page.fill('#ask-input', 'e Camaiore?')
+                page.click('#ask-send')
+                page.wait_for_selector('#ask-log .ask-turn:first-child .ask-source a', state='attached')
+                follow = page.locator('#ask-log .ask-turn').first
+                assert follow.locator('.ask-reply').text_content().startswith('Camaiore: '), 'chiedi_follow_up_failed'
+                assert 'Continuo dalla domanda precedente' in follow.text_content()
+                assert 'Camaiore' in page.locator('#ask-context').text_content()
+                # Testi dentro i box: mai attaccati al bordo (almeno 8 px).
+                tight = page.evaluate(TIGHT_TEXT)
+                assert not tight, f'chiedi_text_touches_box_edge:{tight}'
+                page.click('#association-mode-pair')
+                tight = page.evaluate(TIGHT_TEXT)
+                assert not tight, f'chiedi_text_touches_box_edge:{tight}'
+                page.click('#association-mode-measure')
                 page.fill('#ask-input', 'Chi vincerà le elezioni?')
                 page.click('#ask-send')
                 assert 'Non ho trovato' in page.locator('#ask-log li').first.text_content(), 'chiedi_out_of_scope_answered'
@@ -93,9 +156,9 @@ def main():
     parser.add_argument('--dist', type=Path, required=True)
     args = parser.parse_args()
     dist = args.dist.resolve()
-    count = check_interpreter(graph_dir(dist))
+    count = check_interpreter(graph_dir(dist), dist)
     check_browser(dist)
-    print(f'Chiedi domande PASS: {count} domande di prova, risposta e dati nel browser a 1440 e 390 px')
+    print(f'Chiedi domande PASS: {count} domande di prova (con seguiti), suggeritore, fonti dell’Osservatorio, risposta e dati nel browser a 1440 e 390 px')
 
 
 if __name__ == '__main__':

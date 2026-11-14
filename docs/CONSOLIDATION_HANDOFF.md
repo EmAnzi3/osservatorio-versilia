@@ -1,5 +1,12 @@
 # Consolidamento Osservatorio Versilia — handoff operativo
 
+## Chiedi: conversazione, suggeritore e fonti dell'Osservatorio (14 novembre 2026)
+
+- Domande di seguito («e Camaiore?», «e nel tempo?», «e le donne?», «e il reddito?») con contesto visibile e «Nuovo argomento»; suggeritore in digitazione (combobox ARIA) con proposte verificate dall'interprete; refusi e nomi dei Comuni scritti male corretti.
+- «Fonte» (risposta, tabelle, coppie degli incroci) porta alla pagina `indicatori/<slug>/` dell'Osservatorio; link originale nel CSV e nell'evidenza; ripiego sul link originale solo per gli indicatori senza pagina.
+- Margini: il titolo e il testo di «Metti in relazione due variabili» non stanno più su una fascia bianca senza margine; risultato e avviso degli incroci sono schede con margine interno come quelle di una misura.
+- `ci/chiedi-domande.json` da 70 a 200 domande (refusi, fuori catalogo, conversazioni con `after`); `scripts/test_chiedi_domande.py` verifica anche suggeritore, pagine fonte, seguito nel browser e margine minimo dei testi nei box. Dettagli in `docs/A7_CHIEDI_DOMANDE.md`.
+
 ## Stato del monitor versionato allineato al catalogo (14 novembre 2026)
 
 - `data/source-monitor-state.json` aveva 29 `publishedPeriod` rimasti alle edizioni precedenti dopo i merge di dati (ASIA 2024, ricettività 2025, suolo e veicoli 2025, FTTH 5/10/2026, OMI 1° sem. 2026, TARI/IMU 2026, GAIA 1° sem. 2026, ERP 2025 e altri). Il sito non ne risentiva finché un run live veniva accettato, ma è il ripiego del deploy.
