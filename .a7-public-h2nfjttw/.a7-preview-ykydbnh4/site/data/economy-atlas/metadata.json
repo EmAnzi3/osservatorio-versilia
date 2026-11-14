@@ -1,0 +1,20 @@
+{
+  "version": "2026-09-04",
+  "codes": 1228,
+  "years": [2010, 2025],
+  "main_history": [2014, 2025],
+  "classification": "Ateco2007",
+  "excluded_raw": ["788"],
+  "source_files": {
+    "municipal_ateco_sha256": "f83e8f682c5056a82eca465444c67e0d2ab275da5b07ad1d04abd162b4e9dc68",
+    "tuscany_ateco_sha256": "384a11cb041c6fc7182e6ab4e72ec78d075c4484ca1b9b7348929d4b9537b2fe",
+    "municipal_totals_sha256": "4cf4b8812d8ab3bb4eb38c1e08f33e8fe84c8a24eb63c8f2a48b1505289dd764",
+    "tuscany_totals_sha256": "a0f8a78ab93574bee54ce9fbcee3e4f52e0ccf93605f281548f3b3c9d09f8fab"
+  },
+  "chunks": 10,
+  "runtime_format": "compact-v2",
+  "runtime_years": [2014, 2025],
+  "files": ["atlas-00.b64","atlas-01.b64","atlas-02.b64","atlas-03.b64","atlas-04.b64","atlas-05.b64","atlas-06.b64","atlas-07.b64","atlas-08.b64","atlas-09.b64"],
+  "taxonomy": "ISTAT ATECO 2007 aggiornamento 2022",
+  "taxonomy_files": ["ateco-taxonomy-00.b64","ateco-taxonomy-01.b64","ateco-taxonomy-02.b64","ateco-taxonomy-03.b64","ateco-taxonomy-04.b64"]
+}

@@ -1,0 +1,408 @@
+<!doctype html>
+<html lang="it"><head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Distribuzione per fasce d’età in Versilia · Osservatorio Versilia</title>
+  <meta name="description" content="Distribuzione per fasce d’età nei sette comuni della Versilia: valori 2026, serie storiche disponibili, metodo e fonte ufficiale.">
+  <meta property="og:title" content="Distribuzione per fasce d’età in Versilia · Osservatorio Versilia">
+  <meta property="og:description" content="Distribuzione per fasce d’età nei sette comuni della Versilia: valori 2026, serie storiche disponibili, metodo e fonte ufficiale.">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="it_IT">
+  <link rel="icon" href="../../favicon.svg?v=20260824-ov4" sizes="any">
+  <link rel="icon" href="../../favicon.svg?v=20260824-ov4" type="image/svg+xml">
+  <link rel="manifest" href="../../site.webmanifest?v=20260824-pwa9">
+  <link rel="stylesheet" href="../../assets/original.css">
+  <link rel="stylesheet" href="../../assets/static.css">
+  <link rel="stylesheet" href="../../assets/fidelity.css?v=20261025-ui-shell-consistency">
+  <link rel="stylesheet" href="../../assets/fonts.css">
+  <link rel="stylesheet" href="../../assets/ux-experiment.css?v=20261025-ui-shell-consistency">
+  <link rel="stylesheet" href="../../assets/ux-background-match.css?v=20261025-ui-shell-consistency">
+  <link rel="stylesheet" href="../../assets/export-v161.css?v=20261025-ui-shell-consistency">
+  <link rel="stylesheet" href="../../assets/visual-grammar.css?v=20261025-ui-shell-consistency">
+  <link rel="stylesheet" href="../../assets/indicator-pages.css?v=20261025-ui-shell-consistency">
+  <link rel="stylesheet" href="../../assets/social-presence.css?v=20261025-ui-shell-consistency">
+<style id="ov-invalsi-benchmark-history-style">
+.ux-history-chart .ux-series-group[data-history-town="toscana"] .ux-series-line{stroke-dasharray:10 5;stroke-width:3;opacity:.9}
+.ux-history-chart .ux-series-group[data-history-town="italia"] .ux-series-line{stroke-dasharray:2 5;stroke-width:3;opacity:.9}
+.ux-history-legend button[data-history-select="toscana"]::before,.ux-history-legend button[data-history-select="italia"]::before{width:20px;height:2px;border-radius:0}
+.ux-history-legend button[data-history-select="toscana"]::before{background:repeating-linear-gradient(90deg,var(--series-color) 0 8px,transparent 8px 12px)}
+.ux-history-legend button[data-history-select="italia"]::before{background:repeating-linear-gradient(90deg,var(--series-color) 0 2px,transparent 2px 6px)}
+</style><style id="ov-climate-current-grammar-style">
+      .ov-climate-current-legend{
+        display:flex;align-items:center;gap:18px;margin:0 0 14px;padding:0 2px;
+        color:var(--muted);font-size:9px;font-weight:700
+      }
+      .ov-climate-current-legend span{display:inline-flex;align-items:center;gap:7px}
+      .ov-climate-current-legend .ov-legend-dot{
+        width:9px;height:9px;border-radius:50%;background:var(--surface,#fffaf1);
+        border:2px solid var(--theme-color,#52785c)
+      }
+      .ov-climate-current-legend .ov-legend-mean{width:2px;height:16px;background:#607b88}
+      .ov-climate-current-list{
+        display:grid;gap:11px
+      }
+      .ov-climate-current-list .ov-climate-current-row{
+        border-radius:8px;grid-template-columns:24px minmax(110px,1.1fr) minmax(150px,3fr) minmax(70px,auto);
+        align-items:center;gap:12px;min-height:54px;padding:0;display:grid;position:relative;
+        color:inherit;text-decoration:none;transition:background .15s
+      }
+      .ov-climate-current-list .ov-climate-current-row:hover,
+      .ov-climate-current-list .ov-climate-current-row.selected{background:var(--blue-soft)}
+      .ov-climate-current-list .ov-climate-current-row .town{
+        grid-column:2;font-size:13px;font-weight:690
+      }
+      .ov-climate-current-list .ov-climate-current-row strong{
+        grid-column:4;font-family:var(--font-geist-mono),monospace;text-align:right;
+        white-space:nowrap;font-size:12px
+      }
+      .ov-climate-current-list .ov-climate-current-track{
+        grid-column:3;position:relative;height:9px;border-radius:999px;background:#e4e9e7;
+        overflow:visible
+      }
+      .ov-climate-current-list.uses-versilia-marker .ov-climate-current-track::after{
+        content:'';position:absolute;z-index:1;left:var(--ov-mean-position);top:-5px;width:2px;height:19px;
+        background:#607b88;transform:translateX(-1px)
+      }
+      .ov-climate-current-list.uses-versilia-marker .ov-climate-current-track>i{
+        position:absolute;z-index:2;top:50%;left:var(--ov-value-position)!important;
+        width:11px;height:11px;margin:-5.5px 0 0 -5.5px;border-radius:50%;
+        background:var(--surface,#fffaf1);border:3px solid var(--theme-color,#52785c);
+        box-shadow:0 1px 4px color-mix(in srgb,var(--ink) 18%,transparent)
+      }
+      .ov-climate-current-list .bar-hover-label{display:none}
+      @media(max-width:700px){
+        .ov-climate-current-list .ov-climate-current-row{
+          grid-template-columns:18px minmax(82px,1fr) minmax(70px,1.4fr) auto;gap:7px
+        }
+        .ov-climate-current-list .ov-climate-current-row .town{font-size:11px}
+        .ov-climate-current-list .ov-climate-current-row strong{font-size:10px}
+      }
+    </style>
+  <link rel="canonical" href="https://osservatorioversilia.it/indicatori/distribuzione-per-fasce-d-eta/">
+  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"url":"https://osservatorioversilia.it/indicatori/distribuzione-per-fasce-d-eta/","name":"Distribuzione per fasce d’età in Versilia · Osservatorio Versilia","description":"Distribuzione per fasce d’età nei sette comuni della Versilia: valori 2026, serie storiche disponibili, metodo e fonte ufficiale.","inLanguage":"it-IT","isAccessibleForFree":true,"creator":{"@type":"Person","name":"Emanuele Anzilotti"},"publisher":{"@type":"Person","name":"Emanuele Anzilotti"},"@type":"Dataset","identifier":"ageDistribution","dateModified":"2026-09-14","spatialCoverage":{"@type":"Place","name":"Versilia, Toscana, Italia"},"temporalCoverage":"2026","variableMeasured":{"@type":"PropertyValue","name":"Distribuzione per fasce d’età","unitText":"percent"},"isBasedOn":"https://demo.istat.it/app/?a=2025&i=POS","measurementTechnique":"residenti della fascia / popolazione residente totale × 100; età media = somma(età × residenti alla singola età) / residenti totali"},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Osservatorio Versilia","item":"https://osservatorioversilia.it/"},{"@type":"ListItem","position":2,"name":"Demografia","item":"https://osservatorioversilia.it/confronta/demografia/"},{"@type":"ListItem","position":3,"name":"Distribuzione per fasce d’età in Versilia · Osservatorio Versilia","item":"https://osservatorioversilia.it/indicatori/distribuzione-per-fasce-d-eta/"}]}]}</script>
+
+  <meta property="og:url" content="https://osservatorioversilia.it/indicatori/distribuzione-per-fasce-d-eta/">
+  <meta property="og:site_name" content="Osservatorio Versilia">
+  <meta property="og:image" content="https://osservatorioversilia.it/images/versilia-viareggio-apuane.jpg">
+  <meta property="og:image:alt" content="Viareggio e le Alpi Apuane, immagine di Osservatorio Versilia">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Distribuzione per fasce d’età in Versilia · Osservatorio Versilia">
+  <meta name="twitter:description" content="Distribuzione per fasce d’età nei sette comuni della Versilia: valori 2026, serie storiche disponibili, metodo e fonte ufficiale.">
+  <meta name="twitter:site" content="@OssVersilia">
+  <meta name="twitter:image" content="https://osservatorioversilia.it/images/versilia-viareggio-apuane.jpg">
+  <meta name="twitter:image:alt" content="Viareggio e le Alpi Apuane, immagine di Osservatorio Versilia">
+  <link rel="stylesheet" href="../../assets/brand.css?v=20260824-ov4">
+  <link rel="stylesheet" href="../../assets/mobile-accordion-fix.css?v=20260809-3">
+  <link rel="stylesheet" href="../../assets/chart-surfaces.css?v=20260826-v120">
+  <meta name="theme-color" content="#0F3654">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Osservatorio Versilia">
+  <link rel="apple-touch-icon" sizes="180x180" href="../../pwa/icon-180.png?v=20260824-pwa9">
+  <link rel="stylesheet" href="../../assets/pwa.css?v=20260824-pwa9">
+</head>
+<body class="antialiased" data-page="indicator" data-theme="demografia" data-town="" data-metric="ageDistribution" data-prerendered="true">
+  <div id="site-header-mount">
+      <a class="skip-link" href="#app">Vai al contenuto</a>
+      <header class="site-header">
+        <div class="site-header-inner">
+          <a href="../../" class="site-brand" aria-label="Osservatorio Versilia, torna alla home">
+            <span class="site-brand-mark" aria-hidden="true"><svg class="ov-mark-svg" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 76 64"><g fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="27" cy="32" r="22" stroke="#0F3654" stroke-width="6"/>
+    <path d="M43 28 53 48 71 15" stroke="#0F3654" stroke-width="6"/>
+    <path d="M57 27 70 9" stroke="#58A28F" stroke-width="3.2"/>
+  </g>
+  <g fill="#6F8FA3">
+    <rect x="16" y="34" width="5.5" height="9" rx="1"/>
+    <rect x="24" y="28" width="5.5" height="15" rx="1"/>
+    <rect x="32" y="20" width="5.5" height="23" rx="1"/>
+  </g>
+  <path d="M10 43c7-5.5 14-7.2 20-5.3 4.4 1.4 8 4.1 12 4.7v5.1c-4.6-.5-8.7-3-13.1-4.1-5.7-1.5-11.7-.1-18.9 4.1Z" fill="#58A28F"/>
+  <path d="M11.5 45.2c6.2-3.2 11.9-4.2 17.1-3 4.3 1 8.1 3.2 12.2 3.8" fill="none" stroke="#F7FAF8" stroke-width="1.8" stroke-linecap="round"/>
+</svg></span>
+            <span class="site-brand-copy"><strong>Osservatorio Versilia</strong><small>Versilia in numeri</small></span>
+          </a>
+          <div class="site-header-actions">
+            <nav aria-label="Navigazione principale">
+              <a href="../../#temi">Temi</a>
+              <a href="../../#comuni">Comuni</a>
+              <a href="../../dossier/">Dossier</a>
+              <a href="../../chiedi/">Chiedi</a>
+              <a href="../../opportunita/">Opportunità</a>
+              <a href="../../progetto/">Il progetto</a>
+              <a href="../../stato-dati/" data-data-status-nav="header">Stato dati</a>
+              <a href="../../segnala/">Segnala</a>
+            </nav>
+            <button class="global-search-trigger" type="button" aria-haspopup="dialog" aria-expanded="false">
+              <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg><span>Cerca</span><kbd>/</kbd>
+            </button>
+          </div>
+        </div>
+      </header></div>
+  <div id="app"><main class="inner-page indicator-page" data-theme="demografia">
+      <nav class="breadcrumbs page-width" aria-label="Percorso"><a href="/">Home</a><span>›</span><a href="/confronta/demografia/">Demografia</a><span>›</span><strong data-financial-indicator-breadcrumb="">Distribuzione per fasce d’età</strong></nav>
+      <section class="indicator-hero page-width"><div><span class="overline">Indicatore · Demografia</span><h1 data-financial-indicator-hero-title="">Distribuzione per fasce d’età</h1><p data-financial-indicator-hero-description="">Quota dei residenti nelle fasce 0–14, 15–19, 20–34, 35–49, 50–64, 65–79, 80–84 e 85 anni e oltre. La piramide per età e sesso è disponibile sia nelle schede comunali sia per l’intera Versilia.</p></div>
+        <dl><div><dt>Anno</dt><dd>2026</dd></div><div><dt>Copertura</dt><dd>7/7</dd></div><div><dt>Serie storica</dt><dd>Non disponibile</dd></div></dl>
+        <div class="indicator-hero-actions"><a class="button-link" href="/confronta/demografia/?indicatore=ageDistribution">Confronta i 7 comuni <span>→</span></a><a class="source-pill" href="https://demo.istat.it/app/?a=2025&amp;i=POS" target="_blank" rel="noreferrer">Fonte originale ↗</a></div></section>
+      <section class="indicator-current page-width" aria-labelledby="indicator-current-title"><div class="section-heading"><div><span class="overline">Valori comunali</span><h2 id="indicator-current-title" data-financial-indicator-title="">Il dato nei sette comuni</h2></div><p data-financial-indicator-description="">Ordine alfabetico: nessuna graduatoria e nessun giudizio di merito.</p></div>
+        
+        <div class="indicator-current-layout"><div data-financial-indicator-comparison=""><div class="indicator-composite-table"><div class="composite-legend"><span><i class="composite-swatch part-0"></i>0–14 anni</span><span><i class="composite-swatch part-1"></i>15–19 anni</span><span><i class="composite-swatch part-2"></i>20–34 anni</span><span><i class="composite-swatch part-3"></i>35–49 anni</span><span><i class="composite-swatch part-4"></i>50–64 anni</span><span><i class="composite-swatch part-5"></i>65–79 anni</span><span><i class="composite-swatch part-6"></i>80–84 anni</span><span><i class="composite-swatch part-7"></i>85 anni e oltre</span></div><div class="composite-distribution-list"><div class="composite-distribution-row">
+        <div class="composite-row-head"><a class="composite-town-link" href="/comuni/forte-dei-marmi/?tema=demografia&amp;indicatore=ageDistribution">Forte dei Marmi</a><span>Età media <b>52,6 anni</b></span></div>
+        <div class="composite-stack " role="list" aria-label="Distribuzione per fasce d’età · Forte dei Marmi"><span class="composite-segment part-0" role="listitem" tabindex="0" style="width:8.229007633587786%" aria-label="0–14 anni: 8,2%">
+      <b aria-hidden="true">8,2%</b>
+      <span class="bar-hover-label">0–14 anni · 8,2%</span>
+    </span><span class="composite-segment part-1 label-narrow" role="listitem" tabindex="0" style="width:4.229007633587786%" aria-label="15–19 anni: 4,2%">
+      <b aria-hidden="true">4,2%</b>
+      <span class="bar-hover-label">15–19 anni · 4,2%</span>
+    </span><span class="composite-segment part-2" role="listitem" tabindex="0" style="width:12.259541984732824%" aria-label="20–34 anni: 12,3%">
+      <b aria-hidden="true">12,3%</b>
+      <span class="bar-hover-label">20–34 anni · 12,3%</span>
+    </span><span class="composite-segment part-3" role="listitem" tabindex="0" style="width:14.18320610687023%" aria-label="35–49 anni: 14,2%">
+      <b aria-hidden="true">14,2%</b>
+      <span class="bar-hover-label">35–49 anni · 14,2%</span>
+    </span><span class="composite-segment part-4" role="listitem" tabindex="0" style="width:26.183206106870227%" aria-label="50–64 anni: 26,2%">
+      <b aria-hidden="true">26,2%</b>
+      <span class="bar-hover-label">50–64 anni · 26,2%</span>
+    </span><span class="composite-segment part-5" role="listitem" tabindex="0" style="width:22.427480916030536%" aria-label="65–79 anni: 22,4%">
+      <b aria-hidden="true">22,4%</b>
+      <span class="bar-hover-label">65–79 anni · 22,4%</span>
+    </span><span class="composite-segment part-6 label-narrow" role="listitem" tabindex="0" style="width:5.206106870229007%" aria-label="80–84 anni: 5,2%">
+      <b aria-hidden="true">5,2%</b>
+      <span class="bar-hover-label">80–84 anni · 5,2%</span>
+    </span><span class="composite-segment part-7" role="listitem" tabindex="0" style="width:7.2824427480916025%" aria-label="85 anni e oltre: 7,3%">
+      <b aria-hidden="true">7,3%</b>
+      <span class="bar-hover-label">85 anni e oltre · 7,3%</span>
+    </span></div>
+      </div><div class="composite-distribution-row">
+        <div class="composite-row-head"><a class="composite-town-link" href="/comuni/stazzema/?tema=demografia&amp;indicatore=ageDistribution">Stazzema</a><span>Età media <b>50,5 anni</b></span></div>
+        <div class="composite-stack " role="list" aria-label="Distribuzione per fasce d’età · Stazzema"><span class="composite-segment part-0" role="listitem" tabindex="0" style="width:8.156665468918433%" aria-label="0–14 anni: 8,2%">
+      <b aria-hidden="true">8,2%</b>
+      <span class="bar-hover-label">0–14 anni · 8,2%</span>
+    </span><span class="composite-segment part-1 label-narrow" role="listitem" tabindex="0" style="width:3.9525691699604746%" aria-label="15–19 anni: 4,0%">
+      <b aria-hidden="true">4,0%</b>
+      <span class="bar-hover-label">15–19 anni · 4,0%</span>
+    </span><span class="composite-segment part-2" role="listitem" tabindex="0" style="width:12.720086237872799%" aria-label="20–34 anni: 12,7%">
+      <b aria-hidden="true">12,7%</b>
+      <span class="bar-hover-label">20–34 anni · 12,7%</span>
+    </span><span class="composite-segment part-3" role="listitem" tabindex="0" style="width:18.75673733381243%" aria-label="35–49 anni: 18,8%">
+      <b aria-hidden="true">18,8%</b>
+      <span class="bar-hover-label">35–49 anni · 18,8%</span>
+    </span><span class="composite-segment part-4" role="listitem" tabindex="0" style="width:26.73374056773266%" aria-label="50–64 anni: 26,7%">
+      <b aria-hidden="true">26,7%</b>
+      <span class="bar-hover-label">50–64 anni · 26,7%</span>
+    </span><span class="composite-segment part-5" role="listitem" tabindex="0" style="width:20.481494789795185%" aria-label="65–79 anni: 20,5%">
+      <b aria-hidden="true">20,5%</b>
+      <span class="bar-hover-label">65–79 anni · 20,5%</span>
+    </span><span class="composite-segment part-6 label-narrow" role="listitem" tabindex="0" style="width:3.9166367229608334%" aria-label="80–84 anni: 3,9%">
+      <b aria-hidden="true">3,9%</b>
+      <span class="bar-hover-label">80–84 anni · 3,9%</span>
+    </span><span class="composite-segment part-7 label-narrow" role="listitem" tabindex="0" style="width:5.282069708947179%" aria-label="85 anni e oltre: 5,3%">
+      <b aria-hidden="true">5,3%</b>
+      <span class="bar-hover-label">85 anni e oltre · 5,3%</span>
+    </span></div>
+      </div><div class="composite-distribution-row">
+        <div class="composite-row-head"><a class="composite-town-link" href="/comuni/pietrasanta/?tema=demografia&amp;indicatore=ageDistribution">Pietrasanta</a><span>Età media <b>50,3 anni</b></span></div>
+        <div class="composite-stack " role="list" aria-label="Distribuzione per fasce d’età · Pietrasanta"><span class="composite-segment part-0" role="listitem" tabindex="0" style="width:9.09251256724579%" aria-label="0–14 anni: 9,1%">
+      <b aria-hidden="true">9,1%</b>
+      <span class="bar-hover-label">0–14 anni · 9,1%</span>
+    </span><span class="composite-segment part-1 label-narrow" role="listitem" tabindex="0" style="width:4.21112972925302%" aria-label="15–19 anni: 4,2%">
+      <b aria-hidden="true">4,2%</b>
+      <span class="bar-hover-label">15–19 anni · 4,2%</span>
+    </span><span class="composite-segment part-2" role="listitem" tabindex="0" style="width:13.400652614869035%" aria-label="20–34 anni: 13,4%">
+      <b aria-hidden="true">13,4%</b>
+      <span class="bar-hover-label">20–34 anni · 13,4%</span>
+    </span><span class="composite-segment part-3" role="listitem" tabindex="0" style="width:16.306552606049916%" aria-label="35–49 anni: 16,3%">
+      <b aria-hidden="true">16,3%</b>
+      <span class="bar-hover-label">35–49 anni · 16,3%</span>
+    </span><span class="composite-segment part-4" role="listitem" tabindex="0" style="width:26.479407355145955%" aria-label="50–64 anni: 26,5%">
+      <b aria-hidden="true">26,5%</b>
+      <span class="bar-hover-label">50–64 anni · 26,5%</span>
+    </span><span class="composite-segment part-5" role="listitem" tabindex="0" style="width:21.042419966487344%" aria-label="65–79 anni: 21,0%">
+      <b aria-hidden="true">21,0%</b>
+      <span class="bar-hover-label">65–79 anni · 21,0%</span>
+    </span><span class="composite-segment part-6 label-narrow" role="listitem" tabindex="0" style="width:4.21553928917894%" aria-label="80–84 anni: 4,2%">
+      <b aria-hidden="true">4,2%</b>
+      <span class="bar-hover-label">80–84 anni · 4,2%</span>
+    </span><span class="composite-segment part-7 label-narrow" role="listitem" tabindex="0" style="width:5.2517858717699974%" aria-label="85 anni e oltre: 5,3%">
+      <b aria-hidden="true">5,3%</b>
+      <span class="bar-hover-label">85 anni e oltre · 5,3%</span>
+    </span></div>
+      </div><div class="composite-distribution-row">
+        <div class="composite-row-head"><a class="composite-town-link" href="/comuni/seravezza/?tema=demografia&amp;indicatore=ageDistribution">Seravezza</a><span>Età media <b>49,8 anni</b></span></div>
+        <div class="composite-stack " role="list" aria-label="Distribuzione per fasce d’età · Seravezza"><span class="composite-segment part-0" role="listitem" tabindex="0" style="width:9.622272875284924%" aria-label="0–14 anni: 9,6%">
+      <b aria-hidden="true">9,6%</b>
+      <span class="bar-hover-label">0–14 anni · 9,6%</span>
+    </span><span class="composite-segment part-1 label-narrow" role="listitem" tabindex="0" style="width:4.078476066427874%" aria-label="15–19 anni: 4,1%">
+      <b aria-hidden="true">4,1%</b>
+      <span class="bar-hover-label">15–19 anni · 4,1%</span>
+    </span><span class="composite-segment part-2" role="listitem" tabindex="0" style="width:13.228590035818952%" aria-label="20–34 anni: 13,2%">
+      <b aria-hidden="true">13,2%</b>
+      <span class="bar-hover-label">20–34 anni · 13,2%</span>
+    </span><span class="composite-segment part-3" role="listitem" tabindex="0" style="width:17.583848909150113%" aria-label="35–49 anni: 17,6%">
+      <b aria-hidden="true">17,6%</b>
+      <span class="bar-hover-label">35–49 anni · 17,6%</span>
+    </span><span class="composite-segment part-4" role="listitem" tabindex="0" style="width:26.06642787365679%" aria-label="50–64 anni: 26,1%">
+      <b aria-hidden="true">26,1%</b>
+      <span class="bar-hover-label">50–64 anni · 26,1%</span>
+    </span><span class="composite-segment part-5" role="listitem" tabindex="0" style="width:20.27027027027027%" aria-label="65–79 anni: 20,3%">
+      <b aria-hidden="true">20,3%</b>
+      <span class="bar-hover-label">65–79 anni · 20,3%</span>
+    </span><span class="composite-segment part-6 label-narrow" role="listitem" tabindex="0" style="width:4.208726799088245%" aria-label="80–84 anni: 4,2%">
+      <b aria-hidden="true">4,2%</b>
+      <span class="bar-hover-label">80–84 anni · 4,2%</span>
+    </span><span class="composite-segment part-7 label-narrow" role="listitem" tabindex="0" style="width:4.941387170302833%" aria-label="85 anni e oltre: 4,9%">
+      <b aria-hidden="true">4,9%</b>
+      <span class="bar-hover-label">85 anni e oltre · 4,9%</span>
+    </span></div>
+      </div><div class="composite-distribution-row">
+        <div class="composite-row-head"><a class="composite-town-link" href="/comuni/camaiore/?tema=demografia&amp;indicatore=ageDistribution">Camaiore</a><span>Età media <b>48,9 anni</b></span></div>
+        <div class="composite-stack " role="list" aria-label="Distribuzione per fasce d’età · Camaiore"><span class="composite-segment part-0" role="listitem" tabindex="0" style="width:9.652740610143878%" aria-label="0–14 anni: 9,7%">
+      <b aria-hidden="true">9,7%</b>
+      <span class="bar-hover-label">0–14 anni · 9,7%</span>
+    </span><span class="composite-segment part-1 label-narrow" role="listitem" tabindex="0" style="width:4.62172968548311%" aria-label="15–19 anni: 4,6%">
+      <b aria-hidden="true">4,6%</b>
+      <span class="bar-hover-label">15–19 anni · 4,6%</span>
+    </span><span class="composite-segment part-2" role="listitem" tabindex="0" style="width:14.013159965998174%" aria-label="20–34 anni: 14,0%">
+      <b aria-hidden="true">14,0%</b>
+      <span class="bar-hover-label">20–34 anni · 14,0%</span>
+    </span><span class="composite-segment part-3" role="listitem" tabindex="0" style="width:17.696691118597112%" aria-label="35–49 anni: 17,7%">
+      <b aria-hidden="true">17,7%</b>
+      <span class="bar-hover-label">35–49 anni · 17,7%</span>
+    </span><span class="composite-segment part-4" role="listitem" tabindex="0" style="width:26.29789377577685%" aria-label="50–64 anni: 26,3%">
+      <b aria-hidden="true">26,3%</b>
+      <span class="bar-hover-label">50–64 anni · 26,3%</span>
+    </span><span class="composite-segment part-5" role="listitem" tabindex="0" style="width:18.823788684947896%" aria-label="65–79 anni: 18,8%">
+      <b aria-hidden="true">18,8%</b>
+      <span class="bar-hover-label">65–79 anni · 18,8%</span>
+    </span><span class="composite-segment part-6 label-narrow" role="listitem" tabindex="0" style="width:3.9952145578188456%" aria-label="80–84 anni: 4,0%">
+      <b aria-hidden="true">4,0%</b>
+      <span class="bar-hover-label">80–84 anni · 4,0%</span>
+    </span><span class="composite-segment part-7 label-narrow" role="listitem" tabindex="0" style="width:4.89878160123414%" aria-label="85 anni e oltre: 4,9%">
+      <b aria-hidden="true">4,9%</b>
+      <span class="bar-hover-label">85 anni e oltre · 4,9%</span>
+    </span></div>
+      </div><div class="composite-distribution-row">
+        <div class="composite-row-head"><a class="composite-town-link" href="/comuni/viareggio/?tema=demografia&amp;indicatore=ageDistribution">Viareggio</a><span>Età media <b>48,9 anni</b></span></div>
+        <div class="composite-stack " role="list" aria-label="Distribuzione per fasce d’età · Viareggio"><span class="composite-segment part-0" role="listitem" tabindex="0" style="width:9.98022412656559%" aria-label="0–14 anni: 10,0%">
+      <b aria-hidden="true">10,0%</b>
+      <span class="bar-hover-label">0–14 anni · 10,0%</span>
+    </span><span class="composite-segment part-1 label-narrow" role="listitem" tabindex="0" style="width:4.50560316413975%" aria-label="15–19 anni: 4,5%">
+      <b aria-hidden="true">4,5%</b>
+      <span class="bar-hover-label">15–19 anni · 4,5%</span>
+    </span><span class="composite-segment part-2" role="listitem" tabindex="0" style="width:14.296308503625577%" aria-label="20–34 anni: 14,3%">
+      <b aria-hidden="true">14,3%</b>
+      <span class="bar-hover-label">20–34 anni · 14,3%</span>
+    </span><span class="composite-segment part-3" role="listitem" tabindex="0" style="width:17.48681608437706%" aria-label="35–49 anni: 17,5%">
+      <b aria-hidden="true">17,5%</b>
+      <span class="bar-hover-label">35–49 anni · 17,5%</span>
+    </span><span class="composite-segment part-4" role="listitem" tabindex="0" style="width:25.40210942649967%" aria-label="50–64 anni: 25,4%">
+      <b aria-hidden="true">25,4%</b>
+      <span class="bar-hover-label">50–64 anni · 25,4%</span>
+    </span><span class="composite-segment part-5" role="listitem" tabindex="0" style="width:19.080421885299934%" aria-label="65–79 anni: 19,1%">
+      <b aria-hidden="true">19,1%</b>
+      <span class="bar-hover-label">65–79 anni · 19,1%</span>
+    </span><span class="composite-segment part-6 label-narrow" role="listitem" tabindex="0" style="width:4.395187870797627%" aria-label="80–84 anni: 4,4%">
+      <b aria-hidden="true">4,4%</b>
+      <span class="bar-hover-label">80–84 anni · 4,4%</span>
+    </span><span class="composite-segment part-7 label-narrow" role="listitem" tabindex="0" style="width:4.853328938694792%" aria-label="85 anni e oltre: 4,9%">
+      <b aria-hidden="true">4,9%</b>
+      <span class="bar-hover-label">85 anni e oltre · 4,9%</span>
+    </span></div>
+      </div><div class="composite-distribution-row">
+        <div class="composite-row-head"><a class="composite-town-link" href="/comuni/massarosa/?tema=demografia&amp;indicatore=ageDistribution">Massarosa</a><span>Età media <b>48,1 anni</b></span></div>
+        <div class="composite-stack " role="list" aria-label="Distribuzione per fasce d’età · Massarosa"><span class="composite-segment part-0" role="listitem" tabindex="0" style="width:10.159764943531355%" aria-label="0–14 anni: 10,2%">
+      <b aria-hidden="true">10,2%</b>
+      <span class="bar-hover-label">0–14 anni · 10,2%</span>
+    </span><span class="composite-segment part-1 label-narrow" role="listitem" tabindex="0" style="width:4.797539252593885%" aria-label="15–19 anni: 4,8%">
+      <b aria-hidden="true">4,8%</b>
+      <span class="bar-hover-label">15–19 anni · 4,8%</span>
+    </span><span class="composite-segment part-2" role="listitem" tabindex="0" style="width:14.332935451290055%" aria-label="20–34 anni: 14,3%">
+      <b aria-hidden="true">14,3%</b>
+      <span class="bar-hover-label">20–34 anni · 14,3%</span>
+    </span><span class="composite-segment part-3" role="listitem" tabindex="0" style="width:17.799100174455972%" aria-label="35–49 anni: 17,8%">
+      <b aria-hidden="true">17,8%</b>
+      <span class="bar-hover-label">35–49 anni · 17,8%</span>
+    </span><span class="composite-segment part-4" role="listitem" tabindex="0" style="width:26.783582774768156%" aria-label="50–64 anni: 26,8%">
+      <b aria-hidden="true">26,8%</b>
+      <span class="bar-hover-label">50–64 anni · 26,8%</span>
+    </span><span class="composite-segment part-5" role="listitem" tabindex="0" style="width:18.212285373243965%" aria-label="65–79 anni: 18,2%">
+      <b aria-hidden="true">18,2%</b>
+      <span class="bar-hover-label">65–79 anni · 18,2%</span>
+    </span><span class="composite-segment part-6 label-narrow" role="listitem" tabindex="0" style="width:3.8196676154623086%" aria-label="80–84 anni: 3,8%">
+      <b aria-hidden="true">3,8%</b>
+      <span class="bar-hover-label">80–84 anni · 3,8%</span>
+    </span><span class="composite-segment part-7 label-narrow" role="listitem" tabindex="0" style="width:4.095124414654302%" aria-label="85 anni e oltre: 4,1%">
+      <b aria-hidden="true">4,1%</b>
+      <span class="bar-hover-label">85 anni e oltre · 4,1%</span>
+    </span></div>
+      </div></div><details class="detail-disclosure age-pyramid-detail"><summary><span>Piramide per età e sesso</span><small>2026 · asse X in residenti</small></summary><div class="age-pyramid-body"><div class="trend-chart age-pyramid-trend"><svg class="age-pyramid-chart" viewBox="0 0 860 653" role="img" aria-label="Piramide per età e sesso di Versilia"><text x="215" y="32" text-anchor="middle" class="age-pyramid-title">Uomini</text><text x="645" y="32" text-anchor="middle" class="age-pyramid-title">Donne</text><text x="430" y="54" text-anchor="middle" class="age-pyramid-unit">Scala: residenti per classe d’età</text><g class="age-pyramid-axis"><line x1="88" y1="58" x2="88" y2="609"></line><text x="88" y="631" text-anchor="middle">7.500</text></g><g class="age-pyramid-axis"><line x1="238" y1="58" x2="238" y2="609"></line><text x="238" y="631" text-anchor="middle">3.750</text></g><g class="age-pyramid-axis"><line x1="430" y1="58" x2="430" y2="609"></line><text x="430" y="631" text-anchor="middle">0</text></g><g class="age-pyramid-axis"><line x1="622" y1="58" x2="622" y2="609"></line><text x="622" y="631" text-anchor="middle">3.750</text></g><g class="age-pyramid-axis"><line x1="772" y1="58" x2="772" y2="609"></line><text x="772" y="631" text-anchor="middle">7.500</text></g><line x1="388" y1="52" x2="388" y2="609" class="age-pyramid-center"></line><line x1="472" y1="52" x2="472" y2="609" class="age-pyramid-center"></line><g class="age-pyramid-row"><g class="chart-point age-pyramid-point" tabindex="0" role="button" aria-label="100+ · Uomini: 12 residenti"><rect x="387.52" y="74" width="0.48000000000000004" height="17" rx="3" class="age-pyramid-men"></rect><g class="chart-tooltip" hidden=""><line class="chart-guide" x1="387.52" y1="82.5" x2="387.52" y2="96"></line><rect x="169.51999999999998" y="96" width="208" height="40" rx="8"></rect><text class="chart-tooltip-year" x="181.51999999999998" y="111">100+ · Uomini</text><text class="chart-tooltip-value" x="181.51999999999998" y="127">12 residenti</text></g></g><g class="chart-point age-pyramid-point" tabindex="0" role="button" aria-label="100+ · Donne: 57 residenti"><rect x="472" y="74" width="2.28" height="17" rx="3" class="age-pyramid-women"></rect><g class="chart-tooltip" hidden=""><line class="chart-guide" x1="474.28" y1="82.5" x2="474.28" y2="96"></line><rect x="484.28" y="96" width="208" height="40" rx="8"></rect><text class="chart-tooltip-year" x="496.28" y="111">100+ · Donne</text><text class="chart-tooltip-value" x="496.28" y="127">57 residenti</text></g></g><text x="430" y="87" text-anchor="middle">100+</text></g><g class="age-pyramid-row"><g class="chart-point age-pyramid-point" tabindex="0" role="button" aria-label="95–99 · Uomini: 113 residenti"><rect x="383.48" y="99" width="4.5200000000000005" height="17" rx="3" class="age-pyramid-men"></rect><g class="chart-tooltip" hidden=""><line class="chart-guide" x1="383.48" y1="107.5" x2="383.48" y2="121"></line><rect x="165.48000000000002" y="121" width="208" height="40" rx="8"></rect><text class="chart-tooltip-year" x="177.48000000000002" y="136">95–99 · Uomini</text><text class="chart-tooltip-value" x="177.48000000000002" y="152">113 residenti</text></g></g><g class="chart-point age-pyramid-point" tabindex="0" role="button" aria-label="95–99 · Donne: 421 residenti"><rect x="472" y="99" width="16.84" height="17" rx="3" class="age-pyramid-women"></rect><g class="chart-tooltip" hidden=""><line class="chart-guide" x1="488.84" y1="107.5" x2="488.84" y2="121"></line><rect x="498.84" y="121" width="208" height="40" rx="8"></rect><text class="chart-tooltip-year" x="510.84" y="136">95–99 · Donne</text><text class="chart-tooltip-value" x="510.84" y="152">421 residenti</text></g></g><text x="430" y="112" text-anchor="middle">95–99</text></g><g class="age-pyramid-row"><g class="chart-point age-pyramid-point" tabindex="0" role="button" aria-label="90–94 · Uomini: 665 residenti"><rect x="361.4" y="124" width="26.6" height="17" rx="3" class="age-pyramid-men"></rect><g class="chart-tooltip" hidden=""><line class="chart-guide" x1="361.4" y1="132.5" x2="361.4" y2="118"></line><rect x="143.39999999999998" y="78" width="208" height="40" rx="8"></rect><text class="chart-tooltip-year" x="155.39999999999998" y="93">90–94 · Uomini</text><text class="chart-tooltip-value" x="155.39999999999998" y="109">665 residenti</text></g></g><g class="chart-point age-pyramid-point" tabindex="0" role="button" aria-label="90–94 · Donne: 1.517 residenti"><rect x="472" y="124" width="60.68000000000001" height="17" rx="3" class="age-pyramid-women"></rect><g class="chart-tooltip" hidden=""><line class="chart-guide" x1="532.6800000000001" y1="132.5" x2="532.6800000000001" y2="118"></line><rect x="542.6800000000001" y="78" width="208" height="40" rx="8"></rect><text class="chart-tooltip-year" x="554.6800000000001" y="93">90–94 · Donne</text><text class="chart-tooltip-value" x="554.6800000000001" y="109">1.517 residenti</text></g></g><text x="430" y="137" text-anchor="middle">90–94</text></g><g class="age-pyramid-row"><g class="chart-point age-pyramid-point" tabindex="0" role="button" aria-label="85–89 · Uomini: 1.868 residenti"><rect x="313.28" y="149" width="74.72" height="17" rx="3" class="age-pyramid-men"></rect><g class="chart-tooltip" hidden=""><line class="chart-guide" x1="313.28" y1="157.5" x2="313.28" y2="143"></line><rect x="95.27999999999997" y="103" width="208" height="40" rx="8"></rect><text class="chart-tooltip-year" x="107.27999999999997" y="118">85–89 · Uomini</text><text class="chart-tooltip-value" x="107.27999999999997" y="134">1.868 residenti</text></g></g><g class="chart-point age-pyramid-point" tabindex="0" role="button" aria-label="85–89 · Donne: 3.162 residenti"><rect x="472" y="149" width="126.47999999999999" height="17" rx="3" class="age-pyramid-women"></rect><g class="chart-tooltip" hidden=""><line class="chart-guide" x1="598.48" y1="157.5" x2="598.48" y2="143"></line><rect x="608.48" y="103" width="208" height="40" rx="8"></rect><text class="chart-tooltip-year" x="620.48" y="118">85–89 · Donne</text><text class="chart-tooltip-value" x="620.48" y="134">3.162 residenti</text></g></g><text x="430" y="162" text-anchor="middle">85–89</text></g><g class="age-pyramid-row"><g class="chart-point age-pyramid-point" tabindex="0" role="button" aria-label="80–84 · Uomini: 2.812 residenti"><rect x="275.52" y="174" width="112.48" height="17" rx="3" class="age-pyramid-men"></rect><g class="chart-tooltip" hidden=""><line class="chart-guide" x1="275.52" y1="182.5" x2="275.52" y2="168"></line><rect x="57.51999999999998" y="128" width="208" height="40" rx="8"></rect><text class="chart-tooltip-year" x="69.51999999999998" y="143">80–84 · Uomini</text><text class="chart-tooltip-value" x="69.51999999999998" y="159">2.812 residenti</text></g></g><g class="chart-point age-pyramid-point" tabindex="0" role="button" aria-label="80–84 · Donne: 3.879 residenti"><rect x="472" y="174" width="155.16" height="17" rx="3" class="age-pyramid-women"></rect><g class="chart-tooltip" hidden=""><line class="chart-guide" x1="627.16" y1="182.5" x2="627.16" y2="168"></line><rect x="637.16" y="128" width="208" height="40" rx="8"></rect><text class="chart-tooltip-year" x="649.16" y="143">80–84 · Donne</text><text class="chart-tooltip-value" x="649.16" y="159">3.879 residenti</text></g></g><text x="430" y="187" text-anchor="middle">80–84</text></g><g class="age-pyramid-row"><g class="chart-point age-pyramid-point" tabindex="0" role="button" aria-label="75–79 · Uomini: 4.239 residenti"><rect x="218.44" y="199" width="169.56" height="17" rx="3" class="age-pyramid-men"></rect><g class="chart-tooltip" hidden=""><line class="chart-guide" x1="218.44" y1="207.5" x2="218.44" y2="193"></line><rect x="8" y="153" width="208" height="40" rx="8"></rect><text class="chart-tooltip-year" x="20" y="168">75–79 · Uomini</text><text class="chart-tooltip-value" x="20" y="184">4.239 residenti</text></g></g><g class="chart-point age-pyramid-point" tabindex="0" role="button" aria-label="75–79 · Donne: 5.117 residenti"><rect x="472" y="199" width="204.68" height="17" rx="3" class="age-pyramid-women"></rect><g class="chart-tooltip" hidden=""><line class="chart-guide" x1="676.6800000000001" y1="207.5" x2="676.6800000000001" y2="193"></line><rect x="644" y="153" width="208" height="40" rx="8"></rect><text class="chart-tooltip-year" x="656" y="168">75–79 · Donne</text><text class="chart-tooltip-value" x="656" y="184">5.117 residenti</text></g></g><text x="430" y="212" text-anchor="middle">75–79</text></g><g class="age-pyramid-row"><g class="chart-point age-pyramid-point" tabindex="0" role="button" aria-label="70–74 · Uomini: 4.526 residenti"><rect x="206.95999999999998" y="224" width="181.04000000000002" height="17" rx="3" class="age-pyramid-men"></rect><g class="chart-tooltip" hidden=""><line class="chart-guide" x1="206.95999999999998" y1="232.5" x2="206.95999999999998" y2="218"></line><rect x="8" y="178" width="208" height="40" rx="8"></rect><text class="chart-tooltip-year" x="20" y="193">70–74 · Uomini</text><text class="chart-tooltip-value" x="20" y="209">4.526 residenti</text></g></g><g class="chart-point age-pyramid-point" tabindex="0" role="button" aria-label="70–74 · Donne: 5.168 residenti"><rect x="472" y="224" width="206.72000000000003" height="17" rx="3" class="age-pyramid-women"></rect><g class="chart-tooltip" hidden=""><line class="chart-guide" x1="678.72" y1="232.5" x2="678.72" y2="218"></line><rect x="644" y="178" width="208" height="40" rx="8"></rect><text class="chart-tooltip-year" x="656" y="193">70–74 · Donne</text><text class="chart-tooltip-value" x="656" y="209">5.168 residenti</text></g></g><text x="430" y="237" text-anchor="middle">70–74</text></g><g class="age-pyramid-row"><g class="chart-point age-pyramid-point" tabindex="0" role="button" aria-label="65–69 · Uomini: 5.653 residenti"><rect x="161.88" y="249" width="226.12" height="17" rx="3" class="age-pyramid-men"></rect><g class="chart-tooltip" hidden=""><line class="chart-guide" x1="161.88" y1="257.5" x2="161.88" y2="243"></line><rect x="8" y="203" width="208" height="40" rx="8"></rect><text class="chart-tooltip-year" x="20" y="218">65–69 · Uomini</text><text class="chart-tooltip-value" x="20" y="234">5.653 residenti</text></g></g><g class="chart-point age-pyramid-point" tabindex="0" role="button" aria-label="65–69 · Donne: 6.122 residenti"><rect x="472" y="249" width="244.88" height="17" rx="3" class="age-pyramid-women"></rect><g class="chart-tooltip" hidden=""><line class="chart-guide" x1="716.88" y1="257.5" x2="716.88" y2="243"></line><rect x="644" y="203" width="208" height="40" rx="8"></rect><text class="chart-tooltip-year" x="656" y="218">65–69 · Donne</text><text class="chart-tooltip-value" x="656" y="234">6.122 residenti</text></g></g><text x="430" y="262" text-anchor="middle">65–69</text></g><g class="age-pyramid-row"><g class="chart-point age-pyramid-point" tabindex="0" role="button" aria-label="60–64 · Uomini: 6.766 residenti"><rect x="117.36000000000001" y="274" width="270.64" height="17" rx="3" class="age-pyramid-men"></rect><g class="chart-tooltip" hidden=""><line class="chart-guide" x1="117.36000000000001" y1="282.5" x2="117.36000000000001" y2="268"></line><rect x="8" y="228" width="208" height="40" rx="8"></rect><text class="chart-tooltip-year" x="20" y="243">60–64 · Uomini</text><text class="chart-tooltip-value" x="20" y="259">6.766 residenti</text></g></g><g class="chart-point age-pyramid-point" tabindex="0" role="button" aria-label="60–64 · Donne: 7.419 residenti"><rect x="472" y="274" width="296.76" height="17" rx="3" class="age-pyramid-women"></rect><g class="chart-tooltip" hidden=""><line class="chart-guide" x1="768.76" y1="282.5" x2="768.76" y2="268"></line><rect x="644" y="228" width="208" height="40" rx="8"></rect><text class="chart-tooltip-year" x="656" y="243">60–64 · Donne</text><text class="chart-tooltip-value" x="656" y="259">7.419 residenti</text></g></g><text x="430" y="287" text-anchor="middle">60–64</text></g><g class="age-pyramid-row"><g class="chart-point age-pyramid-point" tabindex="0" role="button" aria-label="55–59 · Uomini: 6.668 residenti"><rect x="121.27999999999997" y="299" width="266.72" height="17" rx="3" class="age-pyramid-men"></rect><g class="chart-tooltip" hidden=""><line class="chart-guide" x1="121.27999999999997" y1="307.5" x2="121.27999999999997" y2="293"></line><rect x="8" y="253" width="208" height="40" rx="8"></rect><text class="chart-tooltip-year" x="20" y="268">55–59 · Uomini</text><text class="chart-tooltip-value" x="20" y="284">6.668 residenti</text></g></g><g class="chart-point age-pyramid-point" tabindex="0" role="button" aria-label="55–59 · Donne: 7.107 residenti"><rect x="472" y="299" width="284.28" height="17" rx="3" class="age-pyramid-women"></rect><g class="chart-tooltip" hidden=""><line class="chart-guide" x1="756.28" y1="307.5" x2="756.28" y2="293"></line><rect x="644" y="253" width="208" height="40" rx="8"></rect><text class="chart-tooltip-year" x="656" y="268">55–59 · Donne</text><text class="chart-tooltip-value" x="656" y="284">7.107 residenti</text></g></g><text x="430" y="312" text-anchor="middle">55–59</text></g><g class="age-pyramid-row"><g class="chart-point age-pyramid-point" tabindex="0" role="button" aria-label="50–54 · Uomini: 6.376 residenti"><rect x="132.96" y="324" width="255.04" height="17" rx="3" class="age-pyramid-men"></rect><g class="chart-tooltip" hidden=""><line class="chart-guide" x1="132.96" y1="332.5" x2="132.96" y2="318"></line><rect x="8" y="278" width="208" height="40" rx="8"></rect><text class="chart-tooltip-year" x="20" y="293">50–54 · Uomini</text><text class="chart-tooltip-value" x="20" y="309">6.376 residenti</text></g></g><g class="chart-point age-pyramid-point" tabindex="0" role="button" aria-label="50–54 · Donne: 6.931 residenti"><rect x="472" y="324" width="277.24" height="17" rx="3" class="age-pyramid-women"></rect><g class="chart-tooltip" hidden=""><line class="chart-guide" x1="749.24" y1="332.5" x2="749.24" y2="318"></line><rect x="644" y="278" width="208" height="40" rx="8"></rect><text class="chart-tooltip-year" x="656" y="293">50–54 · Donne</text><text class="chart-tooltip-value" x="656" y="309">6.931 residenti</text></g></g><text x="430" y="337" text-anchor="middle">50–54</text></g><g class="age-pyramid-row"><g class="chart-point age-pyramid-point" tabindex="0" role="button" aria-label="45–49 · Uomini: 5.172 residenti"><rect x="181.12" y="349" width="206.88" height="17" rx="3" class="age-pyramid-men"></rect><g class="chart-tooltip" hidden=""><line class="chart-guide" x1="181.12" y1="357.5" x2="181.12" y2="343"></line><rect x="8" y="303" width="208" height="40" rx="8"></rect><text class="chart-tooltip-year" x="20" y="318">45–49 · Uomini</text><text class="chart-tooltip-value" x="20" y="334">5.172 residenti</text></g></g><g class="chart-point age-pyramid-point" tabindex="0" role="button" aria-label="45–49 · Donne: 5.482 residenti"><rect x="472" y="349" width="219.28" height="17" rx="3" class="age-pyramid-women"></rect><g class="chart-tooltip" hidden=""><line class="chart-guide" x1="691.28" y1="357.5" x2="691.28" y2="343"></line><rect x="644" y="303" width="208" height="40" rx="8"></rect><text class="chart-tooltip-year" x="656" y="318">45–49 · Donne</text><text class="chart-tooltip-value" x="656" y="334">5.482 residenti</text></g></g><text x="430" y="362" text-anchor="middle">45–49</text></g><g class="age-pyramid-row"><g class="chart-point age-pyramid-point" tabindex="0" role="button" aria-label="40–44 · Uomini: 4.377 residenti"><rect x="212.92" y="374" width="175.08" height="17" rx="3" class="age-pyramid-men"></rect><g class="chart-tooltip" hidden=""><line class="chart-guide" x1="212.92" y1="382.5" x2="212.92" y2="368"></line><rect x="8" y="328" width="208" height="40" rx="8"></rect><text class="chart-tooltip-year" x="20" y="343">40–44 · Uomini</text><text class="chart-tooltip-value" x="20" y="359">4.377 residenti</text></g></g><g class="chart-point age-pyramid-point" tabindex="0" role="button" aria-label="40–44 · Donne: 4.445 residenti"><rect x="472" y="374" width="177.8" height="17" rx="3" class="age-pyramid-women"></rect><g class="chart-tooltip" hidden=""><line class="chart-guide" x1="649.8" y1="382.5" x2="649.8" y2="368"></line><rect x="644" y="328" width="208" height="40" rx="8"></rect><text class="chart-tooltip-year" x="656" y="343">40–44 · Donne</text><text class="chart-tooltip-value" x="656" y="359">4.445 residenti</text></g></g><text x="430" y="387" text-anchor="middle">40–44</text></g><g class="age-pyramid-row"><g class="chart-point age-pyramid-point" tabindex="0" role="button" aria-label="35–39 · Uomini: 3.970 residenti"><rect x="229.20000000000002" y="399" width="158.79999999999998" height="17" rx="3" class="age-pyramid-men"></rect><g class="chart-tooltip" hidden=""><line class="chart-guide" x1="229.20000000000002" y1="407.5" x2="229.20000000000002" y2="393"></line><rect x="11.200000000000017" y="353" width="208" height="40" rx="8"></rect><text class="chart-tooltip-year" x="23.200000000000017" y="368">35–39 · Uomini</text><text class="chart-tooltip-value" x="23.200000000000017" y="384">3.970 residenti</text></g></g><g class="chart-point age-pyramid-point" tabindex="0" role="button" aria-label="35–39 · Donne: 3.972 residenti"><rect x="472" y="399" width="158.88" height="17" rx="3" class="age-pyramid-women"></rect><g class="chart-tooltip" hidden=""><line class="chart-guide" x1="630.88" y1="407.5" x2="630.88" y2="393"></line><rect x="640.88" y="353" width="208" height="40" rx="8"></rect><text class="chart-tooltip-year" x="652.88" y="368">35–39 · Donne</text><text class="chart-tooltip-value" x="652.88" y="384">3.972 residenti</text></g></g><text x="430" y="412" text-anchor="middle">35–39</text></g><g class="age-pyramid-row"><g class="chart-point age-pyramid-point" tabindex="0" role="button" aria-label="30–34 · Uomini: 3.885 residenti"><rect x="232.6" y="424" width="155.4" height="17" rx="3" class="age-pyramid-men"></rect><g class="chart-tooltip" hidden=""><line class="chart-guide" x1="232.6" y1="432.5" x2="232.6" y2="418"></line><rect x="14.599999999999994" y="378" width="208" height="40" rx="8"></rect><text class="chart-tooltip-year" x="26.599999999999994" y="393">30–34 · Uomini</text><text class="chart-tooltip-value" x="26.599999999999994" y="409">3.885 residenti</text></g></g><g class="chart-point age-pyramid-point" tabindex="0" role="button" aria-label="30–34 · Donne: 3.688 residenti"><rect x="472" y="424" width="147.52" height="17" rx="3" class="age-pyramid-women"></rect><g class="chart-tooltip" hidden=""><line class="chart-guide" x1="619.52" y1="432.5" x2="619.52" y2="418"></line><rect x="629.52" y="378" width="208" height="40" rx="8"></rect><text class="chart-tooltip-year" x="641.52" y="393">30–34 · Donne</text><text class="chart-tooltip-value" x="641.52" y="409">3.688 residenti</text></g></g><text x="430" y="437" text-anchor="middle">30–34</text></g><g class="age-pyramid-row"><g class="chart-point age-pyramid-point" tabindex="0" role="button" aria-label="25–29 · Uomini: 3.826 residenti"><rect x="234.96" y="449" width="153.04" height="17" rx="3" class="age-pyramid-men"></rect><g class="chart-tooltip" hidden=""><line class="chart-guide" x1="234.96" y1="457.5" x2="234.96" y2="443"></line><rect x="16.960000000000008" y="403" width="208" height="40" rx="8"></rect><text class="chart-tooltip-year" x="28.960000000000008" y="418">25–29 · Uomini</text><text class="chart-tooltip-value" x="28.960000000000008" y="434">3.826 residenti</text></g></g><g class="chart-point age-pyramid-point" tabindex="0" role="button" aria-label="25–29 · Donne: 3.389 residenti"><rect x="472" y="449" width="135.56" height="17" rx="3" class="age-pyramid-women"></rect><g class="chart-tooltip" hidden=""><line class="chart-guide" x1="607.56" y1="457.5" x2="607.56" y2="443"></line><rect x="617.56" y="403" width="208" height="40" rx="8"></rect><text class="chart-tooltip-year" x="629.56" y="418">25–29 · Donne</text><text class="chart-tooltip-value" x="629.56" y="434">3.389 residenti</text></g></g><text x="430" y="462" text-anchor="middle">25–29</text></g><g class="age-pyramid-row"><g class="chart-point age-pyramid-point" tabindex="0" role="button" aria-label="20–24 · Uomini: 3.790 residenti"><rect x="236.4" y="474" width="151.6" height="17" rx="3" class="age-pyramid-men"></rect><g class="chart-tooltip" hidden=""><line class="chart-guide" x1="236.4" y1="482.5" x2="236.4" y2="468"></line><rect x="18.400000000000006" y="428" width="208" height="40" rx="8"></rect><text class="chart-tooltip-year" x="30.400000000000006" y="443">20–24 · Uomini</text><text class="chart-tooltip-value" x="30.400000000000006" y="459">3.790 residenti</text></g></g><g class="chart-point age-pyramid-point" tabindex="0" role="button" aria-label="20–24 · Donne: 3.491 residenti"><rect x="472" y="474" width="139.64" height="17" rx="3" class="age-pyramid-women"></rect><g class="chart-tooltip" hidden=""><line class="chart-guide" x1="611.64" y1="482.5" x2="611.64" y2="468"></line><rect x="621.64" y="428" width="208" height="40" rx="8"></rect><text class="chart-tooltip-year" x="633.64" y="443">20–24 · Donne</text><text class="chart-tooltip-value" x="633.64" y="459">3.491 residenti</text></g></g><text x="430" y="487" text-anchor="middle">20–24</text></g><g class="age-pyramid-row"><g class="chart-point age-pyramid-point" tabindex="0" role="button" aria-label="15–19 · Uomini: 3.734 residenti"><rect x="238.64" y="499" width="149.36" height="17" rx="3" class="age-pyramid-men"></rect><g class="chart-tooltip" hidden=""><line class="chart-guide" x1="238.64" y1="507.5" x2="238.64" y2="493"></line><rect x="20.639999999999986" y="453" width="208" height="40" rx="8"></rect><text class="chart-tooltip-year" x="32.639999999999986" y="468">15–19 · Uomini</text><text class="chart-tooltip-value" x="32.639999999999986" y="484">3.734 residenti</text></g></g><g class="chart-point age-pyramid-point" tabindex="0" role="button" aria-label="15–19 · Donne: 3.356 residenti"><rect x="472" y="499" width="134.24" height="17" rx="3" class="age-pyramid-women"></rect><g class="chart-tooltip" hidden=""><line class="chart-guide" x1="606.24" y1="507.5" x2="606.24" y2="493"></line><rect x="616.24" y="453" width="208" height="40" rx="8"></rect><text class="chart-tooltip-year" x="628.24" y="468">15–19 · Donne</text><text class="chart-tooltip-value" x="628.24" y="484">3.356 residenti</text></g></g><text x="430" y="512" text-anchor="middle">15–19</text></g><g class="age-pyramid-row"><g class="chart-point age-pyramid-point" tabindex="0" role="button" aria-label="10–14 · Uomini: 3.099 residenti"><rect x="264.03999999999996" y="524" width="123.96000000000001" height="17" rx="3" class="age-pyramid-men"></rect><g class="chart-tooltip" hidden=""><line class="chart-guide" x1="264.03999999999996" y1="532.5" x2="264.03999999999996" y2="518"></line><rect x="46.039999999999964" y="478" width="208" height="40" rx="8"></rect><text class="chart-tooltip-year" x="58.039999999999964" y="493">10–14 · Uomini</text><text class="chart-tooltip-value" x="58.039999999999964" y="509">3.099 residenti</text></g></g><g class="chart-point age-pyramid-point" tabindex="0" role="button" aria-label="10–14 · Donne: 3.022 residenti"><rect x="472" y="524" width="120.88" height="17" rx="3" class="age-pyramid-women"></rect><g class="chart-tooltip" hidden=""><line class="chart-guide" x1="592.88" y1="532.5" x2="592.88" y2="518"></line><rect x="602.88" y="478" width="208" height="40" rx="8"></rect><text class="chart-tooltip-year" x="614.88" y="493">10–14 · Donne</text><text class="chart-tooltip-value" x="614.88" y="509">3.022 residenti</text></g></g><text x="430" y="537" text-anchor="middle">10–14</text></g><g class="age-pyramid-row"><g class="chart-point age-pyramid-point" tabindex="0" role="button" aria-label="5–9 · Uomini: 2.611 residenti"><rect x="283.56" y="549" width="104.44000000000001" height="17" rx="3" class="age-pyramid-men"></rect><g class="chart-tooltip" hidden=""><line class="chart-guide" x1="283.56" y1="557.5" x2="283.56" y2="543"></line><rect x="65.56" y="503" width="208" height="40" rx="8"></rect><text class="chart-tooltip-year" x="77.56" y="518">5–9 · Uomini</text><text class="chart-tooltip-value" x="77.56" y="534">2.611 residenti</text></g></g><g class="chart-point age-pyramid-point" tabindex="0" role="button" aria-label="5–9 · Donne: 2.483 residenti"><rect x="472" y="549" width="99.32000000000001" height="17" rx="3" class="age-pyramid-women"></rect><g class="chart-tooltip" hidden=""><line class="chart-guide" x1="571.32" y1="557.5" x2="571.32" y2="543"></line><rect x="581.32" y="503" width="208" height="40" rx="8"></rect><text class="chart-tooltip-year" x="593.32" y="518">5–9 · Donne</text><text class="chart-tooltip-value" x="593.32" y="534">2.483 residenti</text></g></g><text x="430" y="562" text-anchor="middle">5–9</text></g><g class="age-pyramid-row"><g class="chart-point age-pyramid-point" tabindex="0" role="button" aria-label="0–4 · Uomini: 2.133 residenti"><rect x="302.68" y="574" width="85.32" height="17" rx="3" class="age-pyramid-men"></rect><g class="chart-tooltip" hidden=""><line class="chart-guide" x1="302.68" y1="582.5" x2="302.68" y2="568"></line><rect x="84.68" y="528" width="208" height="40" rx="8"></rect><text class="chart-tooltip-year" x="96.68" y="543">0–4 · Uomini</text><text class="chart-tooltip-value" x="96.68" y="559">2.133 residenti</text></g></g><g class="chart-point age-pyramid-point" tabindex="0" role="button" aria-label="0–4 · Donne: 1.997 residenti"><rect x="472" y="574" width="79.88" height="17" rx="3" class="age-pyramid-women"></rect><g class="chart-tooltip" hidden=""><line class="chart-guide" x1="551.88" y1="582.5" x2="551.88" y2="568"></line><rect x="561.88" y="528" width="208" height="40" rx="8"></rect><text class="chart-tooltip-year" x="573.88" y="543">0–4 · Donne</text><text class="chart-tooltip-value" x="573.88" y="559">1.997 residenti</text></g></g><text x="430" y="587" text-anchor="middle">0–4</text></g><text x="430" y="649" text-anchor="middle" class="age-pyramid-unit">residenti</text></svg></div><p class="aggregate-note age-pyramid-note">Classi quinquennali costruite dal dettaglio POSAS per singola età e sesso.</p></div></details></div></div><aside data-financial-indicator-aggregate=""><span>Età media Versilia</span><strong>49,3 anni</strong><p>Età media ponderata sulla popolazione dei sette comuni; la barra mostra la distribuzione completa per fascia.</p></aside></div></section>
+      <section class="indicator-benchmark page-width"><section class="benchmark-section"><div class="section-heading compact"><div><span class="overline">Confronto omogeneo · 2026</span><h2>Territorio, Toscana e Italia</h2></div></div>
+      <div class="benchmark-grid"><article class="benchmark-card benchmark-local"><span>Versilia · 20–34 anni</span><strong>13,9%</strong><small>Quota calcolata sul totale dei residenti dei sette comuni; la barra mostra tutte le fasce senza sovrapposizioni.</small></article>
+      <article class="benchmark-card"><span>Toscana</span><strong>14,9%</strong><small>Istat — popolazione residente per età (POSAS)</small></article>
+      <article class="benchmark-card"><span>Italia</span><strong>15,8%</strong><small>Istat — popolazione residente per età (POSAS)</small></article></div>
+      <p class="benchmark-note">Benchmark riferito alla voce predefinita «20–34 anni». Le quote sono calcolate sui conteggi POSAS aggregati Toscana/Italia; Età=999 è solo controllo del totale. <a href="https://demo.istat.it/app/?a=2025&amp;i=POS" target="_blank" rel="noreferrer">Apri la fonte ↗</a></p></section></section>
+      <section class="indicator-history page-width" aria-labelledby="indicator-history-title"><div class="section-heading"><div><span class="overline">Andamento</span><h2 id="indicator-history-title">Serie storica comunale</h2></div><p>I valori compaiono soltanto quando la definizione resta omogenea nel tempo.</p></div><div data-financial-indicator-history=""><div class="indicator-history-empty"><strong>Serie storica non ancora disponibile</strong><p>La fonte utilizzata non consente, al momento, di pubblicare una sequenza comunale omogenea. Il sito mantiene quindi soltanto l’ultima annualità verificata.</p></div></div></section>
+      <section class="indicator-method page-width" aria-labelledby="indicator-method-title"><div class="section-heading"><div><span class="overline">Trasparenza</span><h2 id="indicator-method-title">Fonte, aggiornamento e metodo</h2></div><p>Le informazioni necessarie per ricostruire e valutare il dato.</p></div>
+        <div class="indicator-governance-grid"><dl><div><dt>Produttore</dt><dd>Istat</dd></div><div><dt>Fonte utilizzata</dt><dd><a href="https://demo.istat.it/app/?a=2025&amp;i=POS" target="_blank" rel="noreferrer">Istat — popolazione residente per età (POSAS) ↗</a></dd></div><div><dt>Frequenza</dt><dd>Annuale</dd></div><div><dt>Prossimo aggiornamento atteso</dt><dd>Primo semestre dell'anno di riferimento</dd></div><div><dt>Ultimo controllo della fonte</dt><dd>5 novembre 2026</dd></div><div><dt>Licenza o condizioni di riuso</dt><dd><a href="https://www.istat.it/note-legali/" target="_blank" rel="noreferrer">CC BY 4.0 ↗</a></dd></div></dl>
+          <div><h3>Acquisizione</h3><p>Download o consultazione del sistema demografico Istat; serie e trasformazioni conservate negli snapshot della repository.</p><div data-financial-indicator-method=""><details class="method-disclosure"><summary><span>Metodo e comparabilità</span><small>Formula, natura del dato e criticità</small></summary><div class="method-disclosure-body"><dl><div><dt>Natura</dt><dd>Elaborazione Osservatorio su dati Istat POSAS</dd></div><div><dt>Formula</dt><dd>residenti della fascia / popolazione residente totale × 100; età media = somma(età × residenti alla singola età) / residenti totali</dd></div><div><dt>Copertura</dt><dd>7/7</dd></div></dl><p><strong>Nota:</strong> Distribuzione, piramide ed età media sono calcolate sulla stessa popolazione POSAS al 1° gennaio 2026. L’età media è un’elaborazione Osservatorio sui conteggi per singola età.</p></div></details></div></div></div>
+        <div class="data-actions indicator-data-actions"><button type="button" data-share="">Condividi</button><button type="button" data-download="">Scarica CSV</button><button type="button" data-print="">Stampa / PDF</button></div></section>
+      <section class="topic-town-links page-width"><div><span class="overline">Schede comunali</span><h2>Apri il territorio</h2></div><div><a href="/comuni/camaiore/?tema=demografia&amp;indicatore=ageDistribution"><span>Camaiore</span><b>→</b></a><a href="/comuni/forte-dei-marmi/?tema=demografia&amp;indicatore=ageDistribution"><span>Forte dei Marmi</span><b>→</b></a><a href="/comuni/massarosa/?tema=demografia&amp;indicatore=ageDistribution"><span>Massarosa</span><b>→</b></a><a href="/comuni/pietrasanta/?tema=demografia&amp;indicatore=ageDistribution"><span>Pietrasanta</span><b>→</b></a><a href="/comuni/seravezza/?tema=demografia&amp;indicatore=ageDistribution"><span>Seravezza</span><b>→</b></a><a href="/comuni/stazzema/?tema=demografia&amp;indicatore=ageDistribution"><span>Stazzema</span><b>→</b></a><a href="/comuni/viareggio/?tema=demografia&amp;indicatore=ageDistribution"><span>Viareggio</span><b>→</b></a></div></section>
+    </main></div>
+  <div id="site-footer-mount">
+      <footer class="site-footer">
+        <div class="footer-about"><strong>Osservatorio Versilia</strong>
+          <p>Un punto di accesso indipendente ai dati pubblici dei sette comuni della Versilia.</p>
+          <p class="footer-disclaimer">Non è un sito istituzionale e non rappresenta gli enti citati.</p>
+        </div>
+        <nav class="footer-links" aria-label="Informazioni sul progetto">
+          <a href="../../progetto/">Il progetto</a>
+          <a href="../../stato-dati/" data-data-status-nav="footer">Stato dei dati</a>
+          <a href="../../opportunita/">Opportunità</a>
+          <a href="../../progetto/#metodo">Metodo</a>
+          <a href="../../progetto/#licenza">Licenza</a>
+          <a href="../../progetto/#versioni">Versioni dei dati</a>
+          <a href="../../segnala/">Segnala un dato</a>
+          <a href="mailto:info@osservatorioversilia.it">Contatti</a>
+        </nav>
+        
+      <div class="footer-social" data-social-placement="footer" aria-label="Segui Osservatorio Versilia">
+        <strong>Segui Osservatorio Versilia</strong><div class="social-links">
+    <a class="social-profile-link" href="https://www.facebook.com/osservatorioversilia" target="_blank" rel="me noreferrer" aria-label="Segui Osservatorio Versilia su Facebook">
+      <span class="social-profile-mark" aria-hidden="true">f</span>
+      <span class="social-profile-copy"><strong>Facebook</strong><small>@osservatorioversilia</small></span>
+      <b aria-hidden="true">↗</b>
+    </a>
+    <a class="social-profile-link" href="https://www.instagram.com/osservatorioversilia/" target="_blank" rel="me noreferrer" aria-label="Segui Osservatorio Versilia su Instagram">
+      <span class="social-profile-mark" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="5" ry="5"></rect><circle cx="12" cy="12" r="4"></circle><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"></circle></svg></span>
+      <span class="social-profile-copy"><strong>Instagram</strong><small>@osservatorioversilia</small></span>
+      <b aria-hidden="true">↗</b>
+    </a>
+    <a class="social-profile-link" href="https://www.linkedin.com/company/osservatorioversilia" target="_blank" rel="me noreferrer" aria-label="Segui Osservatorio Versilia su LinkedIn">
+      <span class="social-profile-mark" aria-hidden="true">in</span>
+      <span class="social-profile-copy"><strong>LinkedIn</strong><small>Osservatorio Versilia</small></span>
+      <b aria-hidden="true">↗</b>
+    </a>
+    <a class="social-profile-link" href="https://x.com/OssVersilia" target="_blank" rel="me noreferrer" aria-label="Segui Osservatorio Versilia su X">
+      <span class="social-profile-mark" aria-hidden="true">X</span>
+      <span class="social-profile-copy"><strong>X</strong><small>@OssVersilia</small></span>
+      <b aria-hidden="true">↗</b>
+    </a></div>
+      </div><div class="footer-note">
+          <span>7 comuni · 11 temi</span><span>v. dati v1.40.0</span><span>catalogo dati aggiornato al 14 settembre 2026</span>
+        </div>
+      </footer></div>
+  <noscript><div class="app-error">Il sito richiede JavaScript per mostrare confronti, ricerca e schede comunali.</div></noscript>
+  <script src="../../assets/fidelity.js" defer=""></script>
+  <script src="../../assets/app-bundle.js?v=20261025-ui-shell-consistency" defer=""></script>
+  <script src="../../assets/economy-atlas.js" defer=""></script>
+  <script src="../../assets/ux-accordion.js?v=20261025-ui-shell-consistency" defer=""></script>
+  <script src="../../assets/ux-history-core.js?v=20261025-ui-shell-consistency" defer=""></script>
+  <script src="../../assets/ux-history.js?v=20261025-ui-shell-consistency" defer=""></script>
+  <script src="../../assets/export-v161.js?v=20261025-ui-shell-consistency" defer=""></script>
+  <script src="../../assets/visual-grammar.js?v=20261025-ui-shell-consistency" defer=""></script>
+  <script src="../../assets/social-presence.js?v=20261025-ui-shell-consistency" defer=""></script>
+
+
+  <script src="../../assets/pwa.js?v=20260824-pwa9&rev=catalog-v129" defer></script>
+</body></html>

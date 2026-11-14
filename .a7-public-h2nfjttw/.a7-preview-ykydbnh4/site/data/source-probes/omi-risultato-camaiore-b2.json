@@ -1,0 +1,343 @@
+{
+ "schemaVersion": 1,
+ "createdAt": "2026-11-10T10:10:00Z",
+ "note": "Sonda: struttura della fonte consultata; non è un dato pubblicato.",
+ "follow": null,
+ "result": {
+  "url": "https://www1.agenziaentrate.gov.it/servizi/Consultazione/ricerca.htm",
+  "contentType": "text/html; charset=UTF-8",
+  "bytes": 36337,
+  "sha256": "4c4979944f62c411660864e7d1e98b22c7112e204ae0ec0d190df7e2c821c851",
+  "forms": [
+   {
+    "action": "https://www.agenziaentrate.gov.it/portale/ricerca",
+    "method": "get",
+    "fields": [
+     {
+      "tag": "input",
+      "name": "",
+      "type": "text",
+      "value": "",
+      "options": []
+     }
+    ]
+   },
+   {
+    "action": "https://www.agenziaentrate.gov.it/portale/ricerca",
+    "method": "get",
+    "fields": [
+     {
+      "tag": "input",
+      "name": "",
+      "type": "text",
+      "value": "",
+      "options": []
+     }
+    ]
+   },
+   {
+    "action": "https://www1.agenziaentrate.gov.it/servizi/Consultazione/ricerca.htm",
+    "method": "post",
+    "fields": [
+     {
+      "tag": "input",
+      "name": "level",
+      "type": "hidden",
+      "value": "1",
+      "options": []
+     },
+     {
+      "tag": "input",
+      "name": "lingua",
+      "type": "hidden",
+      "value": "IT",
+      "options": []
+     },
+     {
+      "tag": "select",
+      "name": "pr",
+      "type": "",
+      "value": "",
+      "options": [
+       [
+        "AG",
+        "AGRIGENTO"
+       ],
+       [
+        "AL",
+        "ALESSANDRIA"
+       ],
+       [
+        "AN",
+        "ANCONA"
+       ],
+       [
+        "AO",
+        "AOSTA"
+       ],
+       [
+        "AR",
+        "AREZZO"
+       ],
+       [
+        "AP",
+        "ASCOLI PICENO"
+       ],
+       [
+        "AT",
+        "ASTI"
+       ],
+       [
+        "AV",
+        "AVELLINO"
+       ],
+       [
+        "BA",
+        "BARI"
+       ],
+       [
+        "BL",
+        "BELLUNO"
+       ],
+       [
+        "BN",
+        "BENEVENTO"
+       ],
+       [
+        "BG",
+        "BERGAMO"
+       ],
+       [
+        "BI",
+        "BIELLA"
+       ],
+       [
+        "BO",
+        "BOLOGNA"
+       ],
+       [
+        "BZ",
+        "BOLZANO .BOZEN"
+       ],
+       [
+        "BS",
+        "BRESCIA"
+       ],
+       [
+        "BR",
+        "BRINDISI"
+       ],
+       [
+        "CA",
+        "CAGLIARI"
+       ],
+       [
+        "CL",
+        "CALTANISSETTA"
+       ],
+       [
+        "CB",
+        "CAMPOBASSO"
+       ],
+       [
+        "CE",
+        "CASERTA"
+       ],
+       [
+        "CT",
+        "CATANIA"
+       ],
+       [
+        "CZ",
+        "CATANZARO"
+       ],
+       [
+        "CH",
+        "CHIETI"
+       ],
+       [
+        "CO",
+        "COMO"
+       ],
+       [
+        "CS",
+        "COSENZA"
+       ],
+       [
+        "CR",
+        "CREMONA"
+       ],
+       [
+        "KR",
+        "CROTONE"
+       ],
+       [
+        "CN",
+        "CUNEO"
+       ],
+       [
+        "EN",
+        "ENNA"
+       ],
+       [
+        "FE",
+        "FERRARA"
+       ],
+       [
+        "FI",
+        "FIRENZE"
+       ],
+       [
+        "FG",
+        "FOGGIA"
+       ],
+       [
+        "FO",
+        "FORLI`"
+       ],
+       [
+        "FR",
+        "FROSINONE"
+       ],
+       [
+        "GE",
+        "GENOVA"
+       ],
+       [
+        "GO",
+        "GORIZIA"
+       ],
+       [
+        "GR",
+        "GROSSETO"
+       ],
+       [
+        "IM",
+        "IMPERIA"
+       ],
+       [
+        "IS",
+        "ISERNIA"
+       ]
+      ]
+     },
+     {
+      "tag": "input",
+      "name": "",
+      "type": "submit",
+      "value": "Cerca comuni",
+      "options": []
+     }
+    ]
+   }
+  ],
+  "scripts": [
+   "https://www1.agenziaentrate.gov.it/piec/resources/js/jquery.min.js",
+   "https://www1.agenziaentrate.gov.it/piec/resources/js/bootstrap.min.js"
+  ],
+  "inlineScript": "\n\n\n\t\t\twindow.onload = (event) => {\n\t\t\t\tconst form = document.querySelector('#openk9-form-trigger');\n\t\t\t\tconst formMobile = document.querySelector('#openk9-form-trigger-mobile');\n\t\t\t\t\n\t\t\t\tconst goToOpenk9Page = (event) => {\n\t\t\t\t\tevent.preventDefault();\n\n\t\t\t\t\tconst input = document.querySelector('#openk9-input-trigger');\n\t\t\t\t\tconst inputMobile = document.querySelector('#openk9-input-trigger-mobile');\n\t\t\t\t\tconst inputValue = input?.value ? input?.value : inputMobile?.value ? inputMobile?.value : \"\";\n\n\t\t\t\t\tvar openk9Server = 'https://www.agenziaentrate.gov.it';\n\t\t\t\t\tvar openk9URL = '/ricerca' || '/ricerca';\n\t\t\t\t\tif (inputValue) {\n\t\t\t\t\t\topenk9URL += '?keywords=' + inputValue;\n\t\t\t\t\t}\n\t\t\t\t\twindow.location.href = openk9Server + '/portale' + openk9URL;\n\t\t\t\t};\n\t\t\t\tform?.addEventListener('submit', goToOpenk9Page);\n\t\t\t\tformMobile?.addEventListener('submit', goToOpenk9Page);\n\t\t\t};\n\t\t\n\n\t  var _paq = window._paq || [];\n\t  /* tracker methods like \"setCustomDimension\" should be called before \"trackPageView\" */\n\t  _paq.push([\"setCookieDomain\", \"*.www.agenziaentrate.gov.it\"]);\n\t  _paq.push(['trackPageView']);\n\t  _paq.push(['enableLinkTracking']);\n\t  (function() {\n\t\tvar u=\"https://aews-analytics.sogei.it/piwik/\";\n\t\t_paq.push(['setTrackerUrl', u+'matomo.php']);\n\t\t_paq.push(['setSiteId', '3']);\n\t\tvar d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];\n\t\tg.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'matomo.js'; s.parentNode.insertBefore(g,s);\n\t  })();\n\t\n\n<!--\nfunction indietro(level){\n document.IlForm1.level.value=level;\n\n document.IlForm1.action=\"ricerca.php\";\n \n document.IlForm1.submit();\n}\n//-->\n",
+  "links": [
+   {
+    "url": "https://www1.agenziaentrate.gov.it/servizi/Consultazione/errata_corrige.csv",
+    "text": "Errata corrige"
+   }
+  ],
+  "text": "--> --> Agenzia Entrate - Banca dati delle quotazioni immobiliari - Ricerca Salta al contenuto Ministero dell'Economia e delle Finanze Facebook Twitter Linkedin Instagram Whatsapp You tube RSS Lingue disponibili: ITA ENG DEU Menu di servizio Prenota appuntamento Chiamaci 800.90.96.96 Accesso ai servizi Contatti e assistenza Trova l'ufficio Portale Agenzia Entrate Apri menu principale Cerca nel sito: Cerca Portale Agenzia Entrate-Riscossione Menu principale Cerca nel sito: Cerca Cittadini Agevolazioni Dichiarazioni Pagamenti e rimborsi Fabbricati e terreni Accertamenti e regolarizzazioni Istanze e comunicazioni Imprese Agevolazioni Dichiarazioni Pagamenti Rimborsi Fabbricati e terreni Accertamenti e regolarizzazioni Istanze Comunicazioni Professionisti Agevolazioni Dichiarazioni Pagamenti Rimborsi Fabbricati e terreni Accertamenti e regolarizzazioni Istanze Comunicazioni Intermediari Agevolazioni Dichiarazioni Pagamenti Rimborsi Fabbricati e terreni Accertamenti e regolarizzazioni Istanze Comunicazioni Enti e PA Agevolazioni Dichiarazioni Pagamenti Rimborsi Fabbricati e terreni Accertamenti e regolarizzazioni Istanze Comunicazioni L'Agenzia Chi siamo Uffici e Pec Azioni collettive Carta dei servizi e sistema di ascolto Amministrazione trasparente Prevenzione della corruzione e trasparenza L'agenzia comunica Informativa sul trattamento dei dati personali Area riservata Ti trovi in: Home Servizi Ricerca Banca dati delle quotazioni immobiliari - Ricerca Scelta provincia Provincia: AGRIGENTO ALESSANDRIA ANCONA AOSTA AREZZO ASCOLI PICENO ASTI AVELLINO BARI BELLUNO BENEVENTO BERGAMO BIELLA BOLOGNA BOLZANO .BOZEN BRESCIA BRINDISI CAGLIARI CALTANISSETTA CAMPOBASSO CASERTA CATANIA CATANZARO CHIETI COMO COSENZA CREMONA CROTONE CUNEO ENNA FERRARA FIRENZE FOGGIA FORLI` FROSINONE GENOVA GORIZIA GROSSETO IMPERIA ISERNIA LA SPEZIA L`AQUILA LATINA LECCE LECCO LIVORNO LODI LUCCA MACERATA MANTOVA MASSA CARRARA MATERA MESSINA MILANO MODENA NAPOLI NOVARA NUORO ORISTANO PADOVA PALERMO PARMA PAVIA PERUGIA PESARO PESCARA PIACENZA PISA PISTOIA PORDENONE POTENZA PRATO RAGUSA RAVENNA REGGIO CALABRIA REGGIO EMILIA RIETI RIMINI ROMA ROVIGO SALERNO SASSARI SAVONA SIENA SIRACUSA SONDRIO TARANTO TERAMO TERNI TORINO TRAPANI TRENTO TREVISO TRIESTE UDINE VARESE VENEZIA VERBANIA VERCELLI VERONA VIBO VALENTIA VICENZA VITERBO Altre opzioni Ricerca su mappa Deutsch-Version für die Provinz Bozen Errata corrige Informazioni sul sito dell'Agenzia delle Entrate L'Agenzia Chi siamo Amministrazione trasparente Atti di notifica Accesso civico Vedi tutti i contenuti Servizi Correzione dati catastali Controllo partita Iva Archivio Vies Verifica glifo Vedi tutti i servizi Strumenti Software di compilazione Modelli Specifiche tecniche Codici tributo Vedi tutti gli strumenti Sede Legale Agenzia delle Entrate - via Giorgione n. 106, 00147 Roma Codice Fiscale e Partita Iva: 06363391001 Contatti e assistenza Prenota un appuntamento e recapiti uffici Direzioni regionali Seguici su Facebook Twitter Linkedin Instagram Whatsapp YouTube RSS Altre informazioni Link utili Archivio Privacy e note legali Dichiarazione di accessibilità"
+ },
+ "steps": [
+  {
+   "url": "https://www1.agenziaentrate.gov.it/servizi/Consultazione/risultato.php",
+   "post": "pr=LU&co=B455&anno_semestre=20252&linkzona=LU00000045&idstrada=&fasciazona=Centrale%2FCAPOLUOGO+CENTRO&codzona=B2&lingua=IT&level=4&utilizzo=Residenziale&bt1=Mostra+valori",
+   "contentType": "text/html; charset=UTF-8",
+   "bytes": 36259,
+   "sha256": "a05cc4fd6af86fb7341f163fafdcd09b938c87023afa5eb178eeb468b668d2b6",
+   "forms": [
+    {
+     "action": "https://www.agenziaentrate.gov.it/portale/ricerca",
+     "method": "get",
+     "fields": [
+      {
+       "tag": "input",
+       "name": "",
+       "type": "text",
+       "value": "",
+       "options": []
+      }
+     ]
+    },
+    {
+     "action": "https://www.agenziaentrate.gov.it/portale/ricerca",
+     "method": "get",
+     "fields": [
+      {
+       "tag": "input",
+       "name": "",
+       "type": "text",
+       "value": "",
+       "options": []
+      }
+     ]
+    }
+   ],
+   "scripts": [
+    "https://www1.agenziaentrate.gov.it/piec/resources/js/jquery.min.js",
+    "https://www1.agenziaentrate.gov.it/piec/resources/js/bootstrap.min.js"
+   ],
+   "inlineScript": "\n\n\n\t\t\twindow.onload = (event) => {\n\t\t\t\tconst form = document.querySelector('#openk9-form-trigger');\n\t\t\t\tconst formMobile = document.querySelector('#openk9-form-trigger-mobile');\n\t\t\t\t\n\t\t\t\tconst goToOpenk9Page = (event) => {\n\t\t\t\t\tevent.preventDefault();\n\n\t\t\t\t\tconst input = document.querySelector('#openk9-input-trigger');\n\t\t\t\t\tconst inputMobile = document.querySelector('#openk9-input-trigger-mobile');\n\t\t\t\t\tconst inputValue = input?.value ? input?.value : inputMobile?.value ? inputMobile?.value : \"\";\n\n\t\t\t\t\tvar openk9Server = 'https://www.agenziaentrate.gov.it';\n\t\t\t\t\tvar openk9URL = '/ricerca' || '/ricerca';\n\t\t\t\t\tif (inputValue) {\n\t\t\t\t\t\topenk9URL += '?keywords=' + inputValue;\n\t\t\t\t\t}\n\t\t\t\t\twindow.location.href = openk9Server + '/portale' + openk9URL;\n\t\t\t\t};\n\t\t\t\tform?.addEventListener('submit', goToOpenk9Page);\n\t\t\t\tformMobile?.addEventListener('submit', goToOpenk9Page);\n\t\t\t};\n\t\t\n\n\t  var _paq = window._paq || [];\n\t  /* tracker methods like \"setCustomDimension\" should be called before \"trackPageView\" */\n\t  _paq.push([\"setCookieDomain\", \"*.www.agenziaentrate.gov.it\"]);\n\t  _paq.push(['trackPageView']);\n\t  _paq.push(['enableLinkTracking']);\n\t  (function() {\n\t\tvar u=\"https://aews-analytics.sogei.it/piwik/\";\n\t\t_paq.push(['setTrackerUrl', u+'matomo.php']);\n\t\t_paq.push(['setSiteId', '3']);\n\t\tvar d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];\n\t\tg.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'matomo.js'; s.parentNode.insertBefore(g,s);\n\t  })();\n\t",
+   "links": [
+    {
+     "url": "https://www1.agenziaentrate.gov.it/servizi/Consultazione/glossario_omi.pdf",
+     "text": "Il codice definitorio"
+    }
+   ],
+   "text": "--> --> Agenzia Entrate - Banca dati delle quotazioni immobiliari - Risultato Salta al contenuto Ministero dell'Economia e delle Finanze Facebook Twitter Linkedin Instagram Whatsapp You tube RSS Lingue disponibili: ITA ENG DEU Menu di servizio Prenota appuntamento Chiamaci 800.90.96.96 Accesso ai servizi Contatti e assistenza Trova l'ufficio Portale Agenzia Entrate Apri menu principale Cerca nel sito: Cerca Portale Agenzia Entrate-Riscossione Menu principale Cerca nel sito: Cerca Cittadini Agevolazioni Dichiarazioni Pagamenti e rimborsi Fabbricati e terreni Accertamenti e regolarizzazioni Istanze e comunicazioni Imprese Agevolazioni Dichiarazioni Pagamenti Rimborsi Fabbricati e terreni Accertamenti e regolarizzazioni Istanze Comunicazioni Professionisti Agevolazioni Dichiarazioni Pagamenti Rimborsi Fabbricati e terreni Accertamenti e regolarizzazioni Istanze Comunicazioni Intermediari Agevolazioni Dichiarazioni Pagamenti Rimborsi Fabbricati e terreni Accertamenti e regolarizzazioni Istanze Comunicazioni Enti e PA Agevolazioni Dichiarazioni Pagamenti Rimborsi Fabbricati e terreni Accertamenti e regolarizzazioni Istanze Comunicazioni L'Agenzia Chi siamo Uffici e Pec Azioni collettive Carta dei servizi e sistema di ascolto Amministrazione trasparente Prevenzione della corruzione e trasparenza L'agenzia comunica Informativa sul trattamento dei dati personali Area riservata Ti trovi in: Home Servizi Risultato Banca dati delle quotazioni immobiliari - Risultato CAMAIORE B455 LUCCA LU Risultato interrogazione: Anno 2025 - Semestre 2 Provincia: LUCCA Comune: CAMAIORE Fascia/zona: Centrale/CAPOLUOGO CENTRO Codice di zona: B2 Microzona catastale n.: 3 Tipologia prevalente: Abitazioni civili Destinazione: Residenziale Tipologia Stato conservativo Valori Compravendita (€/mq) Superficie (L/N) Valori Locazione (€/mq x mese) Superficie (L/N) Min Max Min Max Abitazioni civili NORMALE 1550 2300 L 5,7 8 L Abitazioni di tipo economico NORMALE 1350 1950 L 4,5 6,6 L Box NORMALE 700 1050 L Ville e Villini NORMALE 1900 2800 L Lo STATO CONSERVATIVO indicato con lettere MAIUSCOLE si riferisce a quello più frequente di ZONA Il Valore di Mercato è espresso in Euro/mq riferito alla superficie Netta (N) ovvero Lorda (L) Il Valore di Locazione è espresso in Euro/mq per mese riferito alla superficie Netta (N) ovvero Lorda (L) La presenza del carattere asterisco (*) accanto alla tipologia segnala che i relativi Valori di Mercato o di Locazione sono stati oggetto di rettifica. Per le tipologie Box, Posti auto ed Autorimesse non risulta significativo il diverso apprezzamento del mercato secondo lo stato conservativo Per la tipologia Negozi il giudizio O/ N /S è da intendersi riferito alla posizione commerciale e non allo stato conservativo dell'unità immobiliare Legenda Il Valore di Mercato è espresso in Euro/mq riferito alla superficie Netta (N) ovvero Lorda (L) Il Valore di Locazione è espresso in Euro/mq per mese riferito alla superficie Netta (N) ovvero Lorda (L) Nella tipologia è indicato lo stato di conservazione e manutenzione che può assumere i seguenti valori: Ottimo Normale Scadente Nella descrizione della Zona omogenea è, in generale, indicata la microzona catastale nella quale essa ricade, così come deliberata dal Comune ai sensi del D.P.R. n.138 del 23 marzo 1998. Per maggiori dettagli vedi Il codice definitorio Torna alla pagina di ricerca Informazioni sul sito dell'Agenzia delle Entrate L'Agenzia Chi siamo Amministrazione trasparente Atti di notifica Accesso civico Vedi tutti i contenuti Servizi Correzione dati catastali Controllo partita Iva Archivio Vies Verifica glifo Vedi tutti i servizi Strumenti Software di compilazione Modelli Specifiche tecniche Codici tributo Vedi tutti gli strumenti Sede Legale Agenzia delle Entrate - via Giorgione n. 106, 00147 Roma Codice Fiscale e Partita Iva: 06363391001 Contatti e assistenza Prenota un appuntamento e recapiti uffici Direzioni regionali Seguici su Facebook Twitter Linkedin Instagram Whatsapp YouTube RSS Altre informazioni Link utili Archivio Privacy e note legali Dichiarazione di accessibilità"
+  },
+  {
+   "url": "https://www1.agenziaentrate.gov.it/servizi/Consultazione/risultato.php",
+   "post": "pr=LU&co=B455&anno_semestre=20261&linkzona=LU00000045&idstrada=&fasciazona=Centrale%2FCAPOLUOGO+CENTRO&codzona=B2&lingua=IT&level=4&utilizzo=Residenziale&bt1=Mostra+valori",
+   "contentType": "text/html; charset=UTF-8",
+   "bytes": 36259,
+   "sha256": "6ed534dffcff70b9bdc58f3bc75c1a41ec40a62ebc66a88ef31e70d2146dea8d",
+   "forms": [
+    {
+     "action": "https://www.agenziaentrate.gov.it/portale/ricerca",
+     "method": "get",
+     "fields": [
+      {
+       "tag": "input",
+       "name": "",
+       "type": "text",
+       "value": "",
+       "options": []
+      }
+     ]
+    },
+    {
+     "action": "https://www.agenziaentrate.gov.it/portale/ricerca",
+     "method": "get",
+     "fields": [
+      {
+       "tag": "input",
+       "name": "",
+       "type": "text",
+       "value": "",
+       "options": []
+      }
+     ]
+    }
+   ],
+   "scripts": [
+    "https://www1.agenziaentrate.gov.it/piec/resources/js/jquery.min.js",
+    "https://www1.agenziaentrate.gov.it/piec/resources/js/bootstrap.min.js"
+   ],
+   "inlineScript": "\n\n\n\t\t\twindow.onload = (event) => {\n\t\t\t\tconst form = document.querySelector('#openk9-form-trigger');\n\t\t\t\tconst formMobile = document.querySelector('#openk9-form-trigger-mobile');\n\t\t\t\t\n\t\t\t\tconst goToOpenk9Page = (event) => {\n\t\t\t\t\tevent.preventDefault();\n\n\t\t\t\t\tconst input = document.querySelector('#openk9-input-trigger');\n\t\t\t\t\tconst inputMobile = document.querySelector('#openk9-input-trigger-mobile');\n\t\t\t\t\tconst inputValue = input?.value ? input?.value : inputMobile?.value ? inputMobile?.value : \"\";\n\n\t\t\t\t\tvar openk9Server = 'https://www.agenziaentrate.gov.it';\n\t\t\t\t\tvar openk9URL = '/ricerca' || '/ricerca';\n\t\t\t\t\tif (inputValue) {\n\t\t\t\t\t\topenk9URL += '?keywords=' + inputValue;\n\t\t\t\t\t}\n\t\t\t\t\twindow.location.href = openk9Server + '/portale' + openk9URL;\n\t\t\t\t};\n\t\t\t\tform?.addEventListener('submit', goToOpenk9Page);\n\t\t\t\tformMobile?.addEventListener('submit', goToOpenk9Page);\n\t\t\t};\n\t\t\n\n\t  var _paq = window._paq || [];\n\t  /* tracker methods like \"setCustomDimension\" should be called before \"trackPageView\" */\n\t  _paq.push([\"setCookieDomain\", \"*.www.agenziaentrate.gov.it\"]);\n\t  _paq.push(['trackPageView']);\n\t  _paq.push(['enableLinkTracking']);\n\t  (function() {\n\t\tvar u=\"https://aews-analytics.sogei.it/piwik/\";\n\t\t_paq.push(['setTrackerUrl', u+'matomo.php']);\n\t\t_paq.push(['setSiteId', '3']);\n\t\tvar d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];\n\t\tg.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'matomo.js'; s.parentNode.insertBefore(g,s);\n\t  })();\n\t",
+   "links": [
+    {
+     "url": "https://www1.agenziaentrate.gov.it/servizi/Consultazione/glossario_omi.pdf",
+     "text": "Il codice definitorio"
+    }
+   ],
+   "text": "--> --> Agenzia Entrate - Banca dati delle quotazioni immobiliari - Risultato Salta al contenuto Ministero dell'Economia e delle Finanze Facebook Twitter Linkedin Instagram Whatsapp You tube RSS Lingue disponibili: ITA ENG DEU Menu di servizio Prenota appuntamento Chiamaci 800.90.96.96 Accesso ai servizi Contatti e assistenza Trova l'ufficio Portale Agenzia Entrate Apri menu principale Cerca nel sito: Cerca Portale Agenzia Entrate-Riscossione Menu principale Cerca nel sito: Cerca Cittadini Agevolazioni Dichiarazioni Pagamenti e rimborsi Fabbricati e terreni Accertamenti e regolarizzazioni Istanze e comunicazioni Imprese Agevolazioni Dichiarazioni Pagamenti Rimborsi Fabbricati e terreni Accertamenti e regolarizzazioni Istanze Comunicazioni Professionisti Agevolazioni Dichiarazioni Pagamenti Rimborsi Fabbricati e terreni Accertamenti e regolarizzazioni Istanze Comunicazioni Intermediari Agevolazioni Dichiarazioni Pagamenti Rimborsi Fabbricati e terreni Accertamenti e regolarizzazioni Istanze Comunicazioni Enti e PA Agevolazioni Dichiarazioni Pagamenti Rimborsi Fabbricati e terreni Accertamenti e regolarizzazioni Istanze Comunicazioni L'Agenzia Chi siamo Uffici e Pec Azioni collettive Carta dei servizi e sistema di ascolto Amministrazione trasparente Prevenzione della corruzione e trasparenza L'agenzia comunica Informativa sul trattamento dei dati personali Area riservata Ti trovi in: Home Servizi Risultato Banca dati delle quotazioni immobiliari - Risultato CAMAIORE B455 LUCCA LU Risultato interrogazione: Anno 2026 - Semestre 1 Provincia: LUCCA Comune: CAMAIORE Fascia/zona: Centrale/CAPOLUOGO CENTRO Codice di zona: B2 Microzona catastale n.: 3 Tipologia prevalente: Abitazioni civili Destinazione: Residenziale Tipologia Stato conservativo Valori Compravendita (€/mq) Superficie (L/N) Valori Locazione (€/mq x mese) Superficie (L/N) Min Max Min Max Abitazioni civili NORMALE 1500 2200 L 5,7 8 L Abitazioni di tipo economico NORMALE 1350 1950 L 4,5 6,6 L Box NORMALE 700 1050 L Ville e Villini NORMALE 1900 2800 L Lo STATO CONSERVATIVO indicato con lettere MAIUSCOLE si riferisce a quello più frequente di ZONA Il Valore di Mercato è espresso in Euro/mq riferito alla superficie Netta (N) ovvero Lorda (L) Il Valore di Locazione è espresso in Euro/mq per mese riferito alla superficie Netta (N) ovvero Lorda (L) La presenza del carattere asterisco (*) accanto alla tipologia segnala che i relativi Valori di Mercato o di Locazione sono stati oggetto di rettifica. Per le tipologie Box, Posti auto ed Autorimesse non risulta significativo il diverso apprezzamento del mercato secondo lo stato conservativo Per la tipologia Negozi il giudizio O/ N /S è da intendersi riferito alla posizione commerciale e non allo stato conservativo dell'unità immobiliare Legenda Il Valore di Mercato è espresso in Euro/mq riferito alla superficie Netta (N) ovvero Lorda (L) Il Valore di Locazione è espresso in Euro/mq per mese riferito alla superficie Netta (N) ovvero Lorda (L) Nella tipologia è indicato lo stato di conservazione e manutenzione che può assumere i seguenti valori: Ottimo Normale Scadente Nella descrizione della Zona omogenea è, in generale, indicata la microzona catastale nella quale essa ricade, così come deliberata dal Comune ai sensi del D.P.R. n.138 del 23 marzo 1998. Per maggiori dettagli vedi Il codice definitorio Torna alla pagina di ricerca Informazioni sul sito dell'Agenzia delle Entrate L'Agenzia Chi siamo Amministrazione trasparente Atti di notifica Accesso civico Vedi tutti i contenuti Servizi Correzione dati catastali Controllo partita Iva Archivio Vies Verifica glifo Vedi tutti i servizi Strumenti Software di compilazione Modelli Specifiche tecniche Codici tributo Vedi tutti gli strumenti Sede Legale Agenzia delle Entrate - via Giorgione n. 106, 00147 Roma Codice Fiscale e Partita Iva: 06363391001 Contatti e assistenza Prenota un appuntamento e recapiti uffici Direzioni regionali Seguici su Facebook Twitter Linkedin Instagram Whatsapp YouTube RSS Altre informazioni Link utili Archivio Privacy e note legali Dichiarazione di accessibilità"
+  }
+ ]
+}

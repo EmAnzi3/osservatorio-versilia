@@ -1,0 +1,282 @@
+{
+  "schemaVersion": "1.0",
+  "auditDate": "2026-09-08",
+  "wave": 6,
+  "status": "open_not_saturated",
+  "implementationFrozen": true,
+  "referenceSnapshot": {
+    "path": "data/opportunity-daily-public.json",
+    "generatedAt": "2026-09-07T09:35:26+00:00",
+    "publicCount": 29,
+    "reviewInternalCount": 40
+  },
+  "saturation": {
+    "requiredConsecutiveCleanSweeps": 2,
+    "currentConsecutiveCleanSweeps": 0,
+    "reason": "Wave 6 finds a new current false negative with mandatory local/regional authority beneficiaries (CIRCBIO-04) and a current promotion gap already discovered internally (Co-create NEB), plus additional current conditional-partner/source-family gaps."
+  },
+  "currentFindings": [
+    {
+      "id": "horizon-cl6-2026-01-circbio-04",
+      "title": "HORIZON-CL6-2026-01-CIRCBIO-04 · Demonstrating and deploying innovative collection, sorting-for-reuse and repair systems for textiles at city/region level",
+      "opensAt": "2026-04-17",
+      "deadlineAt": "2026-09-17",
+      "radarStatus": "absent_from_public_and_internal_review",
+      "auditClass": "current_required_local_authority_false_negative",
+      "severity": "critical",
+      "municipalityRole": "required_local_or_regional_authority_beneficiary",
+      "funding": "Horizon Europe Innovation Action; EUR 10 million topic budget; around EUR 5 million per project",
+      "eligibilityEvidence": "The topic requires at least nine distinct regional/local authorities as beneficiaries: three demonstration cities/regions and six replication cities/regions.",
+      "officialSource": "https://ec.europa.eu/info/funding-tenders/opportunities/docs/2021-2027/horizon/wp-call/2026-2027/wp-9-food-bioeconomy-natural-resources-agriculture-and-environment_horizon-2026-2027_en.pdf"
+    },
+    {
+      "id": "eit-community-co-create-neb-2027",
+      "title": "Co-create NEB · Open Call 2027",
+      "opensAt": "2026-07-15",
+      "deadlineAt": "2026-09-30T17:00:00+02:00",
+      "radarStatus": "internal_review_not_public",
+      "auditClass": "promotion_gap",
+      "severity": "high",
+      "municipalityRole": "required_municipality_region_or_affiliated_entity_in_2_to_4_partner_consortium",
+      "funding": "Grant up to EUR 49,300; co-funding EUR 8,700; total project budget EUR 58,000",
+      "eligibilityEvidence": "Co-create NEB requires a consortium of 2-4 partners with at least one municipality, region or affiliated entity and targets place-based public-space transformation through municipal collaboration.",
+      "officialSources": [
+        "https://www.eit.europa.eu/our-activities/opportunities/connect-neb-co-create-neb",
+        "https://new-european-bauhaus.europa.eu/calls-proposals/co-create-neb_en"
+      ]
+    }
+  ],
+  "conditionalCurrentGaps": [
+    {
+      "id": "life-2026-cet-enerpov",
+      "deadlineAt": "2026-09-16T17:00:00+02:00",
+      "radarStatus": "absent_exact_topic",
+      "auditClass": "conditional_partner",
+      "municipalityRole": "local_public_authority_can_be_supported_or_participate_in_policy_governance",
+      "note": "Strongest residual LIFE CET municipal fit; local authorities are explicitly within the public-authority scope, but a municipality is not established as a mandatory beneficiary in every proposal.",
+      "officialSource": "https://cinea.ec.europa.eu/funding-opportunities/calls-proposals/alleviating-household-energy-poverty-europe-1_en"
+    },
+    {
+      "id": "life-2026-cet-oss",
+      "deadlineAt": "2026-09-16T17:00:00+02:00",
+      "radarStatus": "absent_exact_topic",
+      "auditClass": "conditional_partner",
+      "municipalityRole": "territorial_delivery_partner_or_applicant_where_project_structure_supports_it",
+      "note": "Integrated renovation one-stop-shops rely on strong territorial partnerships including local/regional authorities; no universal mandatory municipal beneficiary was established.",
+      "officialSource": "https://cinea.ec.europa.eu/funding-opportunities/calls-proposals/one-stop-shops-integrated-services-clean-energy-transition-private-buildings_en"
+    },
+    {
+      "id": "horizon-cl6-2026-01-zeropollution-03",
+      "title": "Developing managed aquifer recharge techniques (MAR) in a rural context",
+      "opensAt": "2026-04-17",
+      "deadlineAt": "2026-09-17",
+      "radarStatus": "absent_exact_topic",
+      "auditClass": "conditional_partner",
+      "municipalityRole": "required_relevant_stakeholder_involvement_not_mandatory_beneficiary",
+      "note": "The topic requires the multi-actor approach and adequate involvement of relevant stakeholders including local authorities, but does not require a municipality to be a beneficiary.",
+      "officialSource": "https://ec.europa.eu/info/funding-tenders/opportunities/docs/2021-2027/horizon/wp-call/2026-2027/wp-9-food-bioeconomy-natural-resources-agriculture-and-environment_horizon-2026-2027_en.pdf"
+    },
+    {
+      "id": "horizon-cl5-2026-10-d6-09",
+      "deadlineAt": "2026-10-08",
+      "radarStatus": "absent_exact_topic",
+      "auditClass": "conditional_partner",
+      "municipalityRole": "local_or_regional_road_authority_partner",
+      "note": "The topic targets tools for local/regional authorities and strongly recommends involvement of road authorities; no mandatory municipal beneficiary condition was established."
+    },
+    {
+      "id": "horizon-cl5-2026-10-d6-07",
+      "deadlineAt": "2026-10-08",
+      "radarStatus": "absent_exact_topic",
+      "auditClass": "conditional_partner",
+      "municipalityRole": "city_or_local_regional_authority_capacity_and_replication_partner",
+      "note": "CIVITAS CSA is explicitly city/local-regional in delivery and capacity building, but a mandatory municipal beneficiary was not established."
+    },
+    {
+      "id": "i3-2026-inv1",
+      "opensAt": "2026-05-13",
+      "deadlineAt": "2026-11-12T17:00:00+01:00",
+      "radarStatus": "absent_exact_call",
+      "auditClass": "conditional_partner",
+      "municipalityRole": "public_authority_partner_in_interregional_s3_investment_ecosystem",
+      "rootCauseFamily": "DG_REGIO_EISMEA_source_family_gap",
+      "note": "Public authorities are among programme target organisations, but municipality fit requires an interregional consortium and shared/complementary smart-specialisation priorities.",
+      "officialSource": "https://eismea.ec.europa.eu/funding-opportunities/calls-proposals_en"
+    },
+    {
+      "id": "i3-2026-inv2a",
+      "opensAt": "2026-05-13",
+      "deadlineAt": "2026-11-12T17:00:00+01:00",
+      "radarStatus": "absent_exact_call",
+      "auditClass": "conditional_partner",
+      "municipalityRole": "public_authority_partner_in_interregional_s3_investment_ecosystem",
+      "rootCauseFamily": "DG_REGIO_EISMEA_source_family_gap",
+      "officialSource": "https://eismea.ec.europa.eu/funding-opportunities/calls-proposals/interregional-innovation-investments-strand-2a-i3-2026-inv2a_en"
+    }
+  ],
+  "scopeMatrices": {
+    "nebFacility2026": {
+      "call": "HORIZON-NEB-2026-01",
+      "opensAt": "2026-05-05",
+      "deadlineAt": "2026-12-01T17:00:00+01:00",
+      "topicCount": 9,
+      "radarStatus": "no_exact_HORIZON_NEB_2026_topic_in_reference_snapshot",
+      "officialSources": [
+        "https://cinea.ec.europa.eu/funding-opportunities/calls-proposals/horizon-europe-eur-1011-million-under-new-european-bauhaus-facility_en",
+        "https://ec.europa.eu/info/funding-tenders/opportunities/docs/2021-2027/horizon/wp-call/2026-2027/wp-13-new-european-bauhaus-facility_horizon-2026-2027_en.pdf"
+      ],
+      "topics": [
+        {
+          "id": "HORIZON-NEB-2026-01-PARTICIPATION-01",
+          "auditClass": "conditional_partner",
+          "municipalityRole": "neighbourhood_homelessness_policy_and_demo_partner"
+        },
+        {
+          "id": "HORIZON-NEB-2026-01-PARTICIPATION-02",
+          "auditClass": "conditional_partner",
+          "municipalityRole": "neighbourhood_spatial_design_decision_maker_or_demo_partner"
+        },
+        {
+          "id": "HORIZON-NEB-2026-01-PARTICIPATION-03",
+          "auditClass": "scope_review",
+          "municipalityRole": "local_authority_policy_end_user"
+        },
+        {
+          "id": "HORIZON-NEB-2026-01-REGEN-01",
+          "auditClass": "scope_review",
+          "municipalityRole": "possible_public_building_or_demo_asset_partner"
+        },
+        {
+          "id": "HORIZON-NEB-2026-01-REGEN-02",
+          "auditClass": "conditional_partner",
+          "municipalityRole": "possible_building_owner_or_demo_asset_partner"
+        },
+        {
+          "id": "HORIZON-NEB-2026-01-REGEN-03",
+          "auditClass": "scope_review",
+          "municipalityRole": "possible_local_planning_or_demo_partner"
+        },
+        {
+          "id": "HORIZON-NEB-2026-01-BUSINESS-01",
+          "auditClass": "conditional_partner",
+          "municipalityRole": "public_social_infrastructure_and_services_partner"
+        },
+        {
+          "id": "HORIZON-NEB-2026-01-BUSINESS-02",
+          "auditClass": "scope_review",
+          "municipalityRole": "public_authority_stakeholder_or_end_user"
+        },
+        {
+          "id": "HORIZON-NEB-2026-01-BUSINESS-03",
+          "auditClass": "conditional_partner",
+          "municipalityRole": "explicit_local_authority_target_for_vacant_space_identification_and_reuse"
+        }
+      ]
+    },
+    "lifeCetResidual2026": [
+      {
+        "id": "LIFE-2026-CET-POLICY",
+        "auditClass": "scope_review",
+        "municipalityRole": "public_authority_possible_partner_not_local_mandatory"
+      },
+      {
+        "id": "LIFE-2026-CET-ENERPOV",
+        "auditClass": "conditional_partner",
+        "municipalityRole": "local_public_authority_policy_governance"
+      },
+      {
+        "id": "LIFE-2026-CET-OSS",
+        "auditClass": "conditional_partner",
+        "municipalityRole": "territorial_one_stop_shop_partner_or_applicant"
+      },
+      {
+        "id": "LIFE-2026-CET-RENEWHC",
+        "auditClass": "scope_review",
+        "municipalityRole": "national_or_regional_framework_focus"
+      },
+      {
+        "id": "LIFE-2026-CET-BETTERRENO",
+        "auditClass": "conditional_partner",
+        "municipalityRole": "renovation_market_or_policy_partner"
+      }
+    ],
+    "cluster5Current": [
+      {
+        "id": "HORIZON-CL5-2026-10-D6-09",
+        "auditClass": "conditional_partner"
+      },
+      {
+        "id": "HORIZON-CL5-2026-10-D6-07",
+        "auditClass": "conditional_partner"
+      },
+      {
+        "id": "HORIZON-CL5-2026-10-D6-01",
+        "auditClass": "scope_review"
+      },
+      {
+        "id": "HORIZON-CL5-2026-09-D4-04",
+        "auditClass": "scope_review"
+      }
+    ]
+  },
+  "routeAndLifecycleControls": [
+    {
+      "id": "amif-2026-integration-at-local-level",
+      "auditClass": "national_route_watch",
+      "radarStatus": "Italian_selection_mechanism_unresolved",
+      "municipalityRole": "eligible_city_or_municipality_via_national_managing_authority_selection",
+      "funding": "EUR 77 million Specific Action; EUR 0.8-7.5 million per project; up to 90% EU co-financing",
+      "deadlineAt": "2026-10-02",
+      "note": "The 2 October deadline is for national Managing Authorities to submit to the Commission. No dedicated Italian selection notice clearly mapping this action was confirmed in this sweep.",
+      "officialSource": "https://home-affairs.ec.europa.eu/news/integration-local-level-eur-77-million-under-amif-specific-action-2026-05-21_en"
+    },
+    {
+      "id": "mission-ocean-downstream-community-support",
+      "auditClass": "downstream_EOI_expected",
+      "municipalityRole": "future_city_region_or_water_port_authority_recipient_of_technical_assistance",
+      "note": "Upstream contractor procurement is complete/under award lifecycle; no downstream municipal EOI was confirmed published as of 8 September."
+    },
+    {
+      "id": "eui-peer-reviews-autumn-2026",
+      "opensAt": "2026-10-01",
+      "deadlineAt": "2026-11-12T12:00:00+01:00",
+      "radarStatus": "internal_review_preopening",
+      "auditClass": "announced_upcoming",
+      "municipalityRole": "Article_11_city_under_review_or_any_EU_urban_authority_peer_reviewer",
+      "note": "Not a runtime miss on 8 September because the call has not opened. Article 11 status is required for the primary city-under-review role; peer reviewers can represent any EU urban authority with relevant experience.",
+      "officialSource": "https://www.urban-initiative.eu/capacity-building/peer-reviews/call-autumn2026"
+    }
+  ],
+  "internalReviewControls": [
+    {
+      "id": "tuscany-anci-duplicate-control",
+      "auditClass": "captured",
+      "note": "ANCI discovery duplicates for Amianto Edifici Pubblici, Mercati rionali and Toscana Diffusa remain in internal_review, but the canonical Regione Toscana/Sviluppo Toscana opportunities are already public. This is queue noise/dedup, not a promotion gap."
+    },
+    {
+      "id": "eui-city-to-city-duplicate-control",
+      "auditClass": "captured",
+      "note": "City-to-City Exchanges is already public as rolling_open while additional fragments of the same official page remain in internal_review. Again this is dedup noise rather than missing publication."
+    }
+  ],
+  "positiveOrNegativeControls": [
+    {
+      "id": "eit-connect-neb-2027",
+      "auditClass": "scope_review",
+      "note": "Connect NEB is open in the same EIT call, but its single-beneficiary target list focuses on community organisations, NGOs, social innovators, artists/designers, SMEs and research groups; no municipality requirement supports automatic promotion."
+    },
+    {
+      "id": "horizon-cl6-2026-01-zeropollution-03-beneficiary-control",
+      "auditClass": "conditional_partner",
+      "note": "Local-authority involvement is required as a relevant stakeholder under the multi-actor approach, but beneficiary status is not mandatory; preserve this distinction in future rules."
+    }
+  ],
+  "next": [
+    "complete remaining current cascade/FSTP/replicator directories and associated-region calls",
+    "complete Cluster 3/5/6 sweep beyond already identified topic codes for mandatory or demonstrator local-authority roles",
+    "continue Italian AMIF Managing Authority route watch",
+    "audit remaining internal_review items only after canonical-public dedup to avoid false promotion-gap counts",
+    "run a new independent sweep only after these axes are exhausted",
+    "only a sweep with no new current actionable gap may advance the saturation counter to 1/2"
+  ]
+}

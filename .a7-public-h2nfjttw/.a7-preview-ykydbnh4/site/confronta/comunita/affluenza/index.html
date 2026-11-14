@@ -1,0 +1,632 @@
+<!doctype html>
+<html lang="it"><head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Affluenza al voto · Comunità e welfare · Osservatorio Versilia</title>
+  <meta name="description" content="Archivio dell’affluenza alle consultazioni elettorali nei sette Comuni della Versilia: Politiche, Europee, Regionali Toscana, Referendum e Comunali.">
+  <meta property="og:title" content="Affluenza al voto · Osservatorio Versilia">
+  <meta property="og:description" content="Archivio storico dell’affluenza nei sette Comuni della Versilia, con confronti omogenei, serie comunali e dettaglio uomini/donne quando disponibile.">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="it_IT">
+  <link rel="icon" href="../../../favicon.svg?v=20260824-ov4" sizes="any">
+  <link rel="manifest" href="../../../site.webmanifest?v=20260824-pwa9">
+  <link rel="stylesheet" href="../../../assets/original.css">
+  <link rel="stylesheet" href="../../../assets/static.css">
+  <link rel="stylesheet" href="../../../assets/affluenza-v3.css?v=20261025-ui">
+  <link rel="stylesheet" href="../../../assets/fidelity.css?v=20261025-ui-shell-consistency">
+  <link rel="stylesheet" href="../../../assets/fonts.css">
+  <link rel="stylesheet" href="../../../assets/ux-experiment.css?v=20261025-ui-shell-consistency">
+  <link rel="stylesheet" href="../../../assets/ux-background-match.css?v=20261025-ui-shell-consistency">
+  <link rel="stylesheet" href="../../../assets/export-v161.css?v=20261025-ui-shell-consistency">
+  <link rel="stylesheet" href="../../../assets/visual-grammar.css?v=20261025-ui-shell-consistency">
+  <link rel="stylesheet" href="../../../assets/indicator-pages.css?v=20261025-ui-shell-consistency">
+  <link rel="stylesheet" href="../../../assets/social-presence.css?v=20261025-ui-shell-consistency"><style id="ov-invalsi-benchmark-history-style">
+.ux-history-chart .ux-series-group[data-history-town="toscana"] .ux-series-line{stroke-dasharray:10 5;stroke-width:3;opacity:.9}
+.ux-history-chart .ux-series-group[data-history-town="italia"] .ux-series-line{stroke-dasharray:2 5;stroke-width:3;opacity:.9}
+.ux-history-legend button[data-history-select="toscana"]::before,.ux-history-legend button[data-history-select="italia"]::before{width:20px;height:2px;border-radius:0}
+.ux-history-legend button[data-history-select="toscana"]::before{background:repeating-linear-gradient(90deg,var(--series-color) 0 8px,transparent 8px 12px)}
+.ux-history-legend button[data-history-select="italia"]::before{background:repeating-linear-gradient(90deg,var(--series-color) 0 2px,transparent 2px 6px)}
+</style><style id="ov-climate-current-grammar-style">
+      .ov-climate-current-legend{
+        display:flex;align-items:center;gap:18px;margin:0 0 14px;padding:0 2px;
+        color:var(--muted);font-size:9px;font-weight:700
+      }
+      .ov-climate-current-legend span{display:inline-flex;align-items:center;gap:7px}
+      .ov-climate-current-legend .ov-legend-dot{
+        width:9px;height:9px;border-radius:50%;background:var(--surface,#fffaf1);
+        border:2px solid var(--theme-color,#52785c)
+      }
+      .ov-climate-current-legend .ov-legend-mean{width:2px;height:16px;background:#607b88}
+      .ov-climate-current-list{
+        display:grid;gap:11px
+      }
+      .ov-climate-current-list .ov-climate-current-row{
+        border-radius:8px;grid-template-columns:24px minmax(110px,1.1fr) minmax(150px,3fr) minmax(70px,auto);
+        align-items:center;gap:12px;min-height:54px;padding:0;display:grid;position:relative;
+        color:inherit;text-decoration:none;transition:background .15s
+      }
+      .ov-climate-current-list .ov-climate-current-row:hover,
+      .ov-climate-current-list .ov-climate-current-row.selected{background:var(--blue-soft)}
+      .ov-climate-current-list .ov-climate-current-row .town{
+        grid-column:2;font-size:13px;font-weight:690
+      }
+      .ov-climate-current-list .ov-climate-current-row strong{
+        grid-column:4;font-family:var(--font-geist-mono),monospace;text-align:right;
+        white-space:nowrap;font-size:12px
+      }
+      .ov-climate-current-list .ov-climate-current-track{
+        grid-column:3;position:relative;height:9px;border-radius:999px;background:#e4e9e7;
+        overflow:visible
+      }
+      .ov-climate-current-list.uses-versilia-marker .ov-climate-current-track::after{
+        content:'';position:absolute;z-index:1;left:var(--ov-mean-position);top:-5px;width:2px;height:19px;
+        background:#607b88;transform:translateX(-1px)
+      }
+      .ov-climate-current-list.uses-versilia-marker .ov-climate-current-track>i{
+        position:absolute;z-index:2;top:50%;left:var(--ov-value-position)!important;
+        width:11px;height:11px;margin:-5.5px 0 0 -5.5px;border-radius:50%;
+        background:var(--surface,#fffaf1);border:3px solid var(--theme-color,#52785c);
+        box-shadow:0 1px 4px color-mix(in srgb,var(--ink) 18%,transparent)
+      }
+      .ov-climate-current-list .bar-hover-label{display:none}
+      @media(max-width:700px){
+        .ov-climate-current-list .ov-climate-current-row{
+          grid-template-columns:18px minmax(82px,1fr) minmax(70px,1.4fr) auto;gap:7px
+        }
+        .ov-climate-current-list .ov-climate-current-row .town{font-size:11px}
+        .ov-climate-current-list .ov-climate-current-row strong{font-size:10px}
+      }
+    </style>
+  <link rel="canonical" href="https://osservatorioversilia.it/confronta/comunita/affluenza/">
+  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"url":"https://osservatorioversilia.it/confronta/comunita/affluenza/","name":"Affluenza al voto · Comunità e welfare · Osservatorio Versilia","description":"Archivio dell’affluenza alle consultazioni elettorali nei sette Comuni della Versilia: Politiche, Europee, Regionali Toscana, Referendum e Comunali.","inLanguage":"it-IT","isAccessibleForFree":true,"creator":{"@type":"Person","name":"Emanuele Anzilotti"},"publisher":{"@type":"Person","name":"Emanuele Anzilotti"},"@type":"Dataset","spatialCoverage":{"@type":"Place","name":"Versilia, Toscana, Italia"},"variableMeasured":["Valore delle opere per residente","Risorse PNRR per residente","Progetti PNRR conclusi","Enti del Terzo settore ogni 1.000 residenti","Spesa per interventi e servizi sociali per abitante","Composizione della spesa sociale per area di utenza","Prestiti bibliotecari per residente","Utenti attivi del prestito ogni 100 residenti","Ore medie di apertura settimanale","Affluenza al voto"]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Osservatorio Versilia","item":"https://osservatorioversilia.it/"},{"@type":"ListItem","position":2,"name":"Temi","item":"https://osservatorioversilia.it/#temi"},{"@type":"ListItem","position":3,"name":"Affluenza al voto · Comunità e welfare · Osservatorio Versilia","item":"https://osservatorioversilia.it/confronta/comunita/affluenza/"}]}]}</script>
+
+  <meta property="og:url" content="https://osservatorioversilia.it/confronta/comunita/affluenza/">
+  <meta property="og:site_name" content="Osservatorio Versilia">
+  <meta property="og:image" content="https://osservatorioversilia.it/images/versilia-viareggio-apuane.jpg">
+  <meta property="og:image:alt" content="Viareggio e le Alpi Apuane, immagine di Osservatorio Versilia">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Affluenza al voto · Osservatorio Versilia">
+  <meta name="twitter:description" content="Archivio storico dell’affluenza nei sette Comuni della Versilia, con confronti omogenei, serie comunali e dettaglio uomini/donne quando disponibile.">
+  <meta name="twitter:site" content="@OssVersilia">
+  <meta name="twitter:image" content="https://osservatorioversilia.it/images/versilia-viareggio-apuane.jpg">
+  <meta name="twitter:image:alt" content="Viareggio e le Alpi Apuane, immagine di Osservatorio Versilia">
+  <link rel="stylesheet" href="../../../assets/brand.css?v=20260824-ov4">
+  <link rel="stylesheet" href="../../../assets/mobile-accordion-fix.css?v=20260809-3">
+  <link rel="stylesheet" href="../../../assets/chart-surfaces.css?v=20260826-v120">
+  <meta name="theme-color" content="#0F3654">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Osservatorio Versilia">
+  <link rel="apple-touch-icon" sizes="180x180" href="../../../pwa/icon-180.png?v=20260824-pwa9">
+  <link rel="stylesheet" href="../../../assets/pwa.css?v=20260824-pwa9">
+</head>
+<body class="antialiased" data-page="special" data-theme="comunita" data-town="" data-prerendered="true">
+  <div id="site-header-mount">
+      <a class="skip-link" href="#app">Vai al contenuto</a>
+      <header class="site-header">
+        <div class="site-header-inner">
+          <a href="../../../" class="site-brand" aria-label="Osservatorio Versilia, torna alla home">
+            <span class="site-brand-mark" aria-hidden="true"><svg class="ov-mark-svg" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 76 64"><g fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="27" cy="32" r="22" stroke="#0F3654" stroke-width="6"/>
+    <path d="M43 28 53 48 71 15" stroke="#0F3654" stroke-width="6"/>
+    <path d="M57 27 70 9" stroke="#58A28F" stroke-width="3.2"/>
+  </g>
+  <g fill="#6F8FA3">
+    <rect x="16" y="34" width="5.5" height="9" rx="1"/>
+    <rect x="24" y="28" width="5.5" height="15" rx="1"/>
+    <rect x="32" y="20" width="5.5" height="23" rx="1"/>
+  </g>
+  <path d="M10 43c7-5.5 14-7.2 20-5.3 4.4 1.4 8 4.1 12 4.7v5.1c-4.6-.5-8.7-3-13.1-4.1-5.7-1.5-11.7-.1-18.9 4.1Z" fill="#58A28F"/>
+  <path d="M11.5 45.2c6.2-3.2 11.9-4.2 17.1-3 4.3 1 8.1 3.2 12.2 3.8" fill="none" stroke="#F7FAF8" stroke-width="1.8" stroke-linecap="round"/>
+</svg></span>
+            <span class="site-brand-copy"><strong>Osservatorio Versilia</strong><small>Versilia in numeri</small></span>
+          </a>
+          <div class="site-header-actions">
+            <nav aria-label="Navigazione principale">
+              <a href="../../../#temi" aria-current="page">Temi</a>
+              <a href="../../../#comuni">Comuni</a>
+              <a href="../../../dossier/">Dossier</a>
+              <a href="../../../chiedi/">Chiedi</a>
+              <a href="../../../opportunita/">Opportunità</a>
+              <a href="../../../progetto/">Il progetto</a>
+              <a href="../../../stato-dati/" data-data-status-nav="header">Stato dati</a>
+              <a href="../../../segnala/">Segnala</a>
+            </nav>
+            <button class="global-search-trigger" type="button" aria-haspopup="dialog" aria-expanded="false">
+              <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg><span>Cerca</span><kbd>/</kbd>
+            </button>
+          </div>
+        </div>
+      </header></div>
+  <div id="app">
+    <main class="inner-page indicator-page turnout-page" data-theme="comunita">
+      <nav class="breadcrumbs page-width" aria-label="Percorso"><a href="../../../">Home</a><span>›</span><a href="../">Comunità e welfare</a><span>›</span><strong>Affluenza al voto</strong></nav>
+      <section class="turnout-hero" aria-labelledby="turnout-title">
+        <div class="turnout-hero-inner">
+          <div class="turnout-hero-symbol" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 21h16"></path><path d="M6 21V11h12v10"></path><path d="M9 11V4h6v7"></path><path d="m10.5 7.5 1 1 2-2"></path></svg></div>
+          <div class="turnout-hero-copy">
+            <span class="overline">Comunità e welfare · Partecipazione civica</span>
+            <h1 id="turnout-title">Affluenza al voto</h1>
+            <p>Archivio della partecipazione alle consultazioni elettorali nei sette Comuni della Versilia. Politiche, Europee, Regionali Toscana e Referendum sono confrontati solo a parità di consultazione; le Comunali restano storie locali separate.</p>
+            <ul class="turnout-hero-meta" aria-label="In sintesi">
+              <li><strong>7 Comuni</strong> + aggregato Versilia</li>
+              <li>Politiche · Europee · Regionali · Referendum</li>
+              <li>Comunali come serie locali</li>
+              <li>Fonte: Ministero dell’Interno</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+      <div class="turnout-hero-actions page-width"><a class="button-link" href="../">Torna a Comunità e welfare <span aria-hidden="true">→</span></a><a class="source-pill" href="https://elezionistorico.interno.gov.it/eligendo/opendata.php" target="_blank" rel="noreferrer">Fonte: Ministero dell’Interno ↗</a></div>
+      <div id="turnout-app"><section class="indicator-current page-width" aria-labelledby="turnout-current-title"><div class="section-heading"><div><span class="overline">Confronto territoriale</span><h2 id="turnout-current-title">Affluenza alla consultazione selezionata</h2></div><p>Ogni confronto usa la stessa consultazione, data, turno e universo elettorale per tutti i sette Comuni.</p></div>
+      <div class="data-actions turnout-data-actions"><button type="button" data-turnout-download="">Scarica CSV</button><button type="button" data-turnout-print="">Stampa / PDF</button></div>
+      <div class="topic-dashboard turnout-dashboard"><aside class="topic-controls"><div class="metric-switch turnout-family-tabs" role="tablist" aria-label="Famiglia elettorale"><button type="button" role="tab" aria-selected="false" data-family="politiche_camera" class="">Politiche</button><button type="button" role="tab" aria-selected="false" data-family="europee" class="">Europee</button><button type="button" role="tab" aria-selected="false" data-family="regionali_toscana" class="">Regionali</button><button type="button" role="tab" aria-selected="true" data-family="referendum" class="active">Referendum</button></div>
+      <label class="turnout-event-field"><span>Consultazione</span><select id="turnout-event-select" aria-label="Seleziona la consultazione"><option value="referendum-20260322-q1" selected="">22/03/2026 · Quesito 1 · REFERENDUM COSTITUZIONALE – ORDINAMENTO GIURISDIZIONALE E ISTITUZIONE DELLA CORT</option><option value="referendum-20250608-q5">08/06/2025 · Quesito 5 · CITTADINANZA ITALIANA: DIMEZZAMENTO DA 10 A 5 ANNI DEI TEMPI DI RESIDENZA LEGALE</option><option value="referendum-20250608-q4">08/06/2025 · Quesito 4 · ESCLUSIONE DELLA RESPONSABILITA SOLIDALE DI COMMITTENTE, APPALTATORE E SUBAPPALT</option><option value="referendum-20250608-q3">08/06/2025 · Quesito 3 · ABROGAZIONE PARZIALE DI NORME IN MATERIA DI APPOSIZIONE DI TERMINE AL CONTRATTO </option><option value="referendum-20250608-q2">08/06/2025 · Quesito 2 · PICCOLE IMPRESE ? LICENZIAMENTI E RELATIVA INDENNITA: ABROGAZIONE PARZIALE</option><option value="referendum-20250608-q1">08/06/2025 · Quesito 1 · CONTRATTO DI LAVORO A TUTELE CRESCENTI - DISCIPLINA DEI LICENZIAMENTI ILLEGITTIM</option><option value="referendum-20220612-q5">12/06/2022 · Quesito 5 · Quesito 5</option><option value="referendum-20220612-q4">12/06/2022 · Quesito 4 · Quesito 4</option><option value="referendum-20220612-q3">12/06/2022 · Quesito 3 · Quesito 3</option><option value="referendum-20220612-q2">12/06/2022 · Quesito 2 · Quesito 2</option><option value="referendum-20220612-q1">12/06/2022 · Quesito 1 · Quesito 1</option><option value="referendum-20200920-q1">20/09/2020 · Quesito 1 · Referendum Costituzionale - riduzione del numero dei parlamentari</option><option value="referendum-20161204-q1">04/12/2016 · Quesito 1 · PER L'APPROVAZIONE DELLA LEGGE DI RIFORMA COSTITUZIONALE</option><option value="referendum-20160417-q1">17/04/2016 · Quesito 1 · DURATA TRIVELLAZIONI IN MARE</option><option value="referendum-20110612-q4">12/06/2011 · Quesito 4 · Abrogazione di norme della legge 7 aprile 2010, n.51, in materia di legittimo im</option><option value="referendum-20110612-q3">12/06/2011 · Quesito 3 · Abrogazione delle nuove norme che consentono la produzione nel territorio di ene</option><option value="referendum-20110612-q2">12/06/2011 · Quesito 2 · Determinazione della tariffa del servizio idrico integrato in base all'adeguata </option><option value="referendum-20110612-q1">12/06/2011 · Quesito 1 · Modalita' di affidamento e gestione dei servizi pubblici locali di rilevanza eco</option><option value="referendum-20090621-q3">21/06/2009 · Quesito 3 · Elezione della Camera dei Deputati. Abrogazione della possibilita' per uno stess</option><option value="referendum-20090621-q2">21/06/2009 · Quesito 2 · Elezione del Senato della Repubblica. Abrogazione della possibilita' di collegam</option><option value="referendum-20090621-q1">21/06/2009 · Quesito 1 · Elezione della Camera dei Deputati. Abrogazione della possibilita' di collegamen</option><option value="referendum-19850609-q1">09/06/1985 · Quesito 1 · Indennita' di contingenza</option><option value="referendum-19810517-q5,00">17/05/1981 · Quesito 5,00 · Interruzione gravidanza (Proposta Movimento per la vita)</option><option value="referendum-19810517-q4,00">17/05/1981 · Quesito 4,00 · Interruzione gravidanza (Proposta radicale)</option><option value="referendum-19810517-q3,00">17/05/1981 · Quesito 3,00 · Porto d'armi</option><option value="referendum-19810517-q2,00">17/05/1981 · Quesito 2,00 · Ergastolo</option><option value="referendum-19810517-q1,00">17/05/1981 · Quesito 1,00 · Ordine pubblico</option><option value="referendum-19780611-q2">11/06/1978 · Quesito 2 · Finanziamento pubblico dei partiti</option><option value="referendum-19780611-q1">11/06/1978 · Quesito 1 · Ordine pubblico</option><option value="referendum-19740512-q1">12/05/1974 · Quesito 1 · DIVORZIO</option></select></label><div class="indicator-definition"><h2>Referendum</h2><p>Ogni quesito resta una consultazione distinta e viene confrontato solo a parità di quesito.</p><dl><div><dt>Data / quesito</dt><dd>22/03/2026 · Quesito 1</dd></div><div><dt>Affluenza Versilia</dt><dd>62,9%</dd></div></dl><small class="aggregate-note">Il dato Versilia considera insieme elettori e votanti dei sette Comuni, evitando una semplice media delle percentuali.</small></div></aside>
+      <div class="topic-bars"><div class="turnout-event-question"><strong>22/03/2026 · Quesito 1</strong>REFERENDUM COSTITUZIONALE – ORDINAMENTO GIURISDIZIONALE E ISTITUZIONE DELLA CORTE DISCIPLINARE</div><div class="comparison-bars turnout-comparison" data-viz="lollipop">
+      <div class="comparison-legend"><span><i class="comparison-legend-dot" aria-hidden="true"></i>Comune</span><span><i class="comparison-legend-reference" aria-hidden="true"></i>Versilia · 62,9%</span></div>
+      <div class="bar-row comparison-row" aria-label="Forte dei Marmi: 65,5%; Versilia: 62,9%"><span class="bar-town">Forte dei Marmi</span><span class="bar-track"><span class="comparison-axis-line" aria-hidden="true"></span><span class="comparison-reference" style="left:62.9326%" aria-hidden="true"></span><span class="comparison-stem" style="left:0%;width:65.5363%" aria-hidden="true"></span><span class="comparison-dot" style="left:65.5363%" aria-hidden="true"></span><span class="bar-hover-label">Forte dei Marmi · 65,5%</span></span><strong>65,5%</strong></div><div class="bar-row comparison-row" aria-label="Pietrasanta: 64,2%; Versilia: 62,9%"><span class="bar-town">Pietrasanta</span><span class="bar-track"><span class="comparison-axis-line" aria-hidden="true"></span><span class="comparison-reference" style="left:62.9326%" aria-hidden="true"></span><span class="comparison-stem" style="left:0%;width:64.2185%" aria-hidden="true"></span><span class="comparison-dot" style="left:64.2185%" aria-hidden="true"></span><span class="bar-hover-label">Pietrasanta · 64,2%</span></span><strong>64,2%</strong></div><div class="bar-row comparison-row" aria-label="Viareggio: 63,2%; Versilia: 62,9%"><span class="bar-town">Viareggio</span><span class="bar-track"><span class="comparison-axis-line" aria-hidden="true"></span><span class="comparison-reference" style="left:62.9326%" aria-hidden="true"></span><span class="comparison-stem" style="left:0%;width:63.2455%" aria-hidden="true"></span><span class="comparison-dot" style="left:63.2455%" aria-hidden="true"></span><span class="bar-hover-label">Viareggio · 63,2%</span></span><strong>63,2%</strong></div><div class="bar-row comparison-row" aria-label="Massarosa: 62,7%; Versilia: 62,9%"><span class="bar-town">Massarosa</span><span class="bar-track"><span class="comparison-axis-line" aria-hidden="true"></span><span class="comparison-reference" style="left:62.9326%" aria-hidden="true"></span><span class="comparison-stem" style="left:0%;width:62.6684%" aria-hidden="true"></span><span class="comparison-dot" style="left:62.6684%" aria-hidden="true"></span><span class="bar-hover-label">Massarosa · 62,7%</span></span><strong>62,7%</strong></div><div class="bar-row comparison-row" aria-label="Camaiore: 62,6%; Versilia: 62,9%"><span class="bar-town">Camaiore</span><span class="bar-track"><span class="comparison-axis-line" aria-hidden="true"></span><span class="comparison-reference" style="left:62.9326%" aria-hidden="true"></span><span class="comparison-stem" style="left:0%;width:62.6024%" aria-hidden="true"></span><span class="comparison-dot" style="left:62.6024%" aria-hidden="true"></span><span class="bar-hover-label">Camaiore · 62,6%</span></span><strong>62,6%</strong></div><div class="bar-row comparison-row" aria-label="Seravezza: 60,5%; Versilia: 62,9%"><span class="bar-town">Seravezza</span><span class="bar-track"><span class="comparison-axis-line" aria-hidden="true"></span><span class="comparison-reference" style="left:62.9326%" aria-hidden="true"></span><span class="comparison-stem" style="left:0%;width:60.4633%" aria-hidden="true"></span><span class="comparison-dot" style="left:60.4633%" aria-hidden="true"></span><span class="bar-hover-label">Seravezza · 60,5%</span></span><strong>60,5%</strong></div><div class="bar-row comparison-row" aria-label="Stazzema: 56,6%; Versilia: 62,9%"><span class="bar-town">Stazzema</span><span class="bar-track"><span class="comparison-axis-line" aria-hidden="true"></span><span class="comparison-reference" style="left:62.9326%" aria-hidden="true"></span><span class="comparison-stem" style="left:0%;width:56.6442%" aria-hidden="true"></span><span class="comparison-dot" style="left:56.6442%" aria-hidden="true"></span><span class="bar-hover-label">Stazzema · 56,6%</span></span><strong>56,6%</strong></div>
+      <div class="comparison-axis"><span>0%</span><span>scala con origine a zero</span><span>100%</span></div>
+      <p class="comparison-note">I Comuni sono ordinati per affluenza per facilitare il confronto. L’ordine non esprime merito o qualità.</p>
+    </div><details class="detail-disclosure turnout-sex-detail"><summary><span>Affluenza per sesso</span><small>Dettaglio non disponibile per tutti i Comuni</small></summary><div class="method-disclosure-body"><p>Il dettaglio uomini/donne è mostrato solo quando la fonte lo rende disponibile per tutti i Comuni.</p></div></details></div></div></section><section class="indicator-history page-width" aria-labelledby="turnout-history-title"><div class="section-heading"><div><span class="overline">Andamento</span><h2 id="turnout-history-title">Serie storica comunale e Versilia</h2></div><p>Il confronto nel tempo resta all’interno della stessa famiglia elettorale.</p></div><div class="turnout-history-toolbar"><div class="metric-switch turnout-town-tabs" role="tablist" aria-label="Comune della serie storica"><button type="button" role="tab" aria-selected="true" data-trend-town="Camaiore" class="active">Camaiore</button><button type="button" role="tab" aria-selected="false" data-trend-town="Forte dei Marmi" class="">Forte dei Marmi</button><button type="button" role="tab" aria-selected="false" data-trend-town="Massarosa" class="">Massarosa</button><button type="button" role="tab" aria-selected="false" data-trend-town="Pietrasanta" class="">Pietrasanta</button><button type="button" role="tab" aria-selected="false" data-trend-town="Seravezza" class="">Seravezza</button><button type="button" role="tab" aria-selected="false" data-trend-town="Stazzema" class="">Stazzema</button><button type="button" role="tab" aria-selected="false" data-trend-town="Viareggio" class="">Viareggio</button></div></div><section class="history-panel"><div class="panel-title"><div><span class="overline">Referendum</span><h3>Camaiore · evoluzione dell’affluenza</h3></div><a class="source-pill" href="https://elezionistorico.interno.gov.it/eligendo/opendata.php" target="_blank" rel="noreferrer">Fonte DAIT / Eligendo ↗</a></div><div class="turnout-chart-legend"><span><i></i>Camaiore</span><span><i class="ref"></i>Versilia</span></div><div class="chart-shell"><div class="trend-chart ux-history-chart turnout-history-chart" style="--series-color:var(--theme-color)" data-ov-tooltip-wired="1"><svg viewBox="0 0 920 300" role="img" aria-label="Storico Referendum per Camaiore"><line class="chart-grid" x1="66" x2="896" y1="252" y2="252"></line><text class="chart-label chart-y-label" x="58" y="256" text-anchor="end">0,0%</text><line class="chart-grid" x1="66" x2="896" y1="195" y2="195"></line><text class="chart-label chart-y-label" x="58" y="199" text-anchor="end">25,0%</text><line class="chart-grid" x1="66" x2="896" y1="138" y2="138"></line><text class="chart-label chart-y-label" x="58" y="142" text-anchor="end">50,0%</text><line class="chart-grid" x1="66" x2="896" y1="81" y2="81"></line><text class="chart-label chart-y-label" x="58" y="85" text-anchor="end">75,0%</text><line class="chart-grid" x1="66" x2="896" y1="24" y2="24"></line><text class="chart-label chart-y-label" x="58" y="28" text-anchor="end">100,0%</text><path class="chart-line " d="M66.0,39.7 L94.6,50.2 L123.2,50.2 L151.9,55.5 L180.5,55.5 L209.1,55.5 L237.7,55.6 L266.3,55.5 L295.0,53.2 L323.6,214.8 L352.2,214.8 L380.8,214.2 L409.4,125.3 L438.1,125.2 L466.7,125.3 L495.3,125.3 L523.9,185.7 L552.6,92.5 L581.2,114.7 L609.8,143.1 L638.4,143.3 L667.0,143.3 L695.7,143.4 L724.3,143.4 L752.9,180.8 L781.5,180.9 L810.1,180.8 L838.8,180.8 L867.4,180.9 L896.0,109.3"></path><path class="chart-line turnout-versilia-line" d="M66.0,40.9 L94.6,52.5 L123.2,52.5 L151.9,57.6 L180.5,57.6 L209.1,57.6 L237.7,57.6 L266.3,57.6 L295.0,57.6 L323.6,202.7 L352.2,202.7 L380.8,201.9 L409.4,118.0 L438.1,118.0 L466.7,118.1 L495.3,118.1 L523.9,180.8 L552.6,92.9 L581.2,109.0 L609.8,198.1 L638.4,198.1 L667.0,198.1 L695.7,198.1 L724.3,198.1 L752.9,176.0 L781.5,176.1 L810.1,176.0 L838.8,176.0 L867.4,176.1 L896.0,108.5"></path><g class="chart-point" tabindex="0" role="button" aria-label="12/05/1974 · Quesito 1 · Camaiore: 93,1%">
+      <circle class="chart-hit" cx="66" cy="39.66747600000001" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="66" cy="39.66747600000001" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="66" y1="39.66747600000001" x2="66" y2="57.66747600000001"></line>
+        <rect x="58" y="57.66747600000001" width="230" height="66" rx="8"></rect>
+        <text class="chart-tooltip-year" x="70" y="71.66747600000001">12/05/1974 · Quesito 1 · Camaiore</text>
+        <text class="chart-tooltip-value" x="70" y="91.66747600000001">93,1%</text>
+        <text class="chart-tooltip-detail" x="70" y="110.66747600000001">Versilia 92,6%</text>
+      </g>
+    </g><g class="chart-point" tabindex="0" role="button" aria-label="11/06/1978 · Quesito 1 · Camaiore: 88,5%">
+      <circle class="chart-hit" cx="94.62068965517241" cy="50.23732799999999" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="94.62068965517241" cy="50.23732799999999" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="94.62068965517241" y1="50.23732799999999" x2="94.62068965517241" y2="68.23732799999999"></line>
+        <rect x="58" y="68.23732799999999" width="230" height="66" rx="8"></rect>
+        <text class="chart-tooltip-year" x="70" y="82.23732799999999">11/06/1978 · Quesito 1 · Camaiore</text>
+        <text class="chart-tooltip-value" x="70" y="102.23732799999999">88,5%</text>
+        <text class="chart-tooltip-detail" x="70" y="121.23732799999999">Versilia 87,5%</text>
+      </g>
+    </g><g class="chart-point" tabindex="0" role="button" aria-label="11/06/1978 · Quesito 2 · Camaiore: 88,5%">
+      <circle class="chart-hit" cx="123.24137931034483" cy="50.23732799999999" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="123.24137931034483" cy="50.23732799999999" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="123.24137931034483" y1="50.23732799999999" x2="123.24137931034483" y2="68.23732799999999"></line>
+        <rect x="58" y="68.23732799999999" width="230" height="66" rx="8"></rect>
+        <text class="chart-tooltip-year" x="70" y="82.23732799999999">11/06/1978 · Quesito 2 · Camaiore</text>
+        <text class="chart-tooltip-value" x="70" y="102.23732799999999">88,5%</text>
+        <text class="chart-tooltip-detail" x="70" y="121.23732799999999">Versilia 87,5%</text>
+      </g>
+    </g><g class="chart-point" tabindex="0" role="button" aria-label="17/05/1981 · Quesito 1,00 · Camaiore: 86,2%">
+      <circle class="chart-hit" cx="151.86206896551724" cy="55.539696000000006" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="151.86206896551724" cy="55.539696000000006" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="151.86206896551724" y1="55.539696000000006" x2="151.86206896551724" y2="73.539696"></line>
+        <rect x="58" y="73.539696" width="230" height="66" rx="8"></rect>
+        <text class="chart-tooltip-year" x="70" y="87.539696">17/05/1981 · Quesito 1,00 · Camaiore</text>
+        <text class="chart-tooltip-value" x="70" y="107.539696">86,2%</text>
+        <text class="chart-tooltip-detail" x="70" y="126.539696">Versilia 85,3%</text>
+      </g>
+    </g><g class="chart-point" tabindex="0" role="button" aria-label="17/05/1981 · Quesito 2,00 · Camaiore: 86,2%">
+      <circle class="chart-hit" cx="180.48275862068965" cy="55.549272" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="180.48275862068965" cy="55.549272" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="180.48275862068965" y1="55.549272" x2="180.48275862068965" y2="73.549272"></line>
+        <rect x="65.48275862068965" y="73.549272" width="230" height="66" rx="8"></rect>
+        <text class="chart-tooltip-year" x="77.48275862068965" y="87.549272">17/05/1981 · Quesito 2,00 · Camaiore</text>
+        <text class="chart-tooltip-value" x="77.48275862068965" y="107.549272">86,2%</text>
+        <text class="chart-tooltip-detail" x="77.48275862068965" y="126.549272">Versilia 85,3%</text>
+      </g>
+    </g><g class="chart-point" tabindex="0" role="button" aria-label="17/05/1981 · Quesito 3,00 · Camaiore: 86,2%">
+      <circle class="chart-hit" cx="209.1034482758621" cy="55.53011999999998" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="209.1034482758621" cy="55.53011999999998" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="209.1034482758621" y1="55.53011999999998" x2="209.1034482758621" y2="73.53011999999998"></line>
+        <rect x="94.10344827586209" y="73.53011999999998" width="230" height="66" rx="8"></rect>
+        <text class="chart-tooltip-year" x="106.10344827586209" y="87.53011999999998">17/05/1981 · Quesito 3,00 · Camaiore</text>
+        <text class="chart-tooltip-value" x="106.10344827586209" y="107.53011999999998">86,2%</text>
+        <text class="chart-tooltip-detail" x="106.10344827586209" y="126.53011999999998">Versilia 85,3%</text>
+      </g>
+    </g><g class="chart-point" tabindex="0" role="button" aria-label="17/05/1981 · Quesito 4,00 · Camaiore: 86,1%">
+      <circle class="chart-hit" cx="237.72413793103448" cy="55.61676000000001" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="237.72413793103448" cy="55.61676000000001" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="237.72413793103448" y1="55.61676000000001" x2="237.72413793103448" y2="73.61676000000001"></line>
+        <rect x="122.72413793103448" y="73.61676000000001" width="230" height="66" rx="8"></rect>
+        <text class="chart-tooltip-year" x="134.72413793103448" y="87.61676000000001">17/05/1981 · Quesito 4,00 · Camaiore</text>
+        <text class="chart-tooltip-value" x="134.72413793103448" y="107.61676000000001">86,1%</text>
+        <text class="chart-tooltip-detail" x="134.72413793103448" y="126.61676000000001">Versilia 85,3%</text>
+      </g>
+    </g><g class="chart-point" tabindex="0" role="button" aria-label="17/05/1981 · Quesito 5,00 · Camaiore: 86,2%">
+      <circle class="chart-hit" cx="266.3448275862069" cy="55.520316000000015" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="266.3448275862069" cy="55.520316000000015" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="266.3448275862069" y1="55.520316000000015" x2="266.3448275862069" y2="73.52031600000001"></line>
+        <rect x="151.34482758620692" y="73.52031600000001" width="230" height="66" rx="8"></rect>
+        <text class="chart-tooltip-year" x="163.34482758620692" y="87.52031600000001">17/05/1981 · Quesito 5,00 · Camaiore</text>
+        <text class="chart-tooltip-value" x="163.34482758620692" y="107.52031600000001">86,2%</text>
+        <text class="chart-tooltip-detail" x="163.34482758620692" y="126.52031600000001">Versilia 85,3%</text>
+      </g>
+    </g><g class="chart-point" tabindex="0" role="button" aria-label="09/06/1985 · Quesito 1 · Camaiore: 87,2%">
+      <circle class="chart-hit" cx="294.9655172413793" cy="53.178756000000014" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="294.9655172413793" cy="53.178756000000014" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="294.9655172413793" y1="53.178756000000014" x2="294.9655172413793" y2="71.17875600000002"></line>
+        <rect x="179.9655172413793" y="71.17875600000002" width="230" height="66" rx="8"></rect>
+        <text class="chart-tooltip-year" x="191.9655172413793" y="85.17875600000002">09/06/1985 · Quesito 1 · Camaiore</text>
+        <text class="chart-tooltip-value" x="191.9655172413793" y="105.17875600000002">87,2%</text>
+        <text class="chart-tooltip-detail" x="191.9655172413793" y="124.17875600000002">Versilia 85,3%</text>
+      </g>
+    </g><g class="chart-point" tabindex="0" role="button" aria-label="21/06/2009 · Quesito 1 · Camaiore: 16,3%">
+      <circle class="chart-hit" cx="323.58620689655174" cy="214.845576" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="323.58620689655174" cy="214.845576" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="323.58620689655174" y1="214.845576" x2="323.58620689655174" y2="198.845576"></line>
+        <rect x="208.58620689655174" y="132.845576" width="230" height="66" rx="8"></rect>
+        <text class="chart-tooltip-year" x="220.58620689655174" y="146.845576">21/06/2009 · Quesito 1 · Camaiore</text>
+        <text class="chart-tooltip-value" x="220.58620689655174" y="166.845576">16,3%</text>
+        <text class="chart-tooltip-detail" x="220.58620689655174" y="185.845576">Versilia 21,6%</text>
+      </g>
+    </g><g class="chart-point" tabindex="0" role="button" aria-label="21/06/2009 · Quesito 2 · Camaiore: 16,3%">
+      <circle class="chart-hit" cx="352.2068965517242" cy="214.82801999999998" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="352.2068965517242" cy="214.82801999999998" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="352.2068965517242" y1="214.82801999999998" x2="352.2068965517242" y2="198.82801999999998"></line>
+        <rect x="237.20689655172418" y="132.82801999999998" width="230" height="66" rx="8"></rect>
+        <text class="chart-tooltip-year" x="249.20689655172418" y="146.82801999999998">21/06/2009 · Quesito 2 · Camaiore</text>
+        <text class="chart-tooltip-value" x="249.20689655172418" y="166.82801999999998">16,3%</text>
+        <text class="chart-tooltip-detail" x="249.20689655172418" y="185.82801999999998">Versilia 21,6%</text>
+      </g>
+    </g><g class="chart-point" tabindex="0" role="button" aria-label="21/06/2009 · Quesito 3 · Camaiore: 16,6%">
+      <circle class="chart-hit" cx="380.8275862068965" cy="214.24206" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="380.8275862068965" cy="214.24206" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="380.8275862068965" y1="214.24206" x2="380.8275862068965" y2="198.24206"></line>
+        <rect x="265.8275862068965" y="132.24206" width="230" height="66" rx="8"></rect>
+        <text class="chart-tooltip-year" x="277.8275862068965" y="146.24206">21/06/2009 · Quesito 3 · Camaiore</text>
+        <text class="chart-tooltip-value" x="277.8275862068965" y="166.24206">16,6%</text>
+        <text class="chart-tooltip-detail" x="277.8275862068965" y="185.24206">Versilia 22,0%</text>
+      </g>
+    </g><g class="chart-point" tabindex="0" role="button" aria-label="12/06/2011 · Quesito 1 · Camaiore: 55,6%">
+      <circle class="chart-hit" cx="409.44827586206895" cy="125.25822" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="409.44827586206895" cy="125.25822" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="409.44827586206895" y1="125.25822" x2="409.44827586206895" y2="109.25822"></line>
+        <rect x="294.44827586206895" y="43.258219999999994" width="230" height="66" rx="8"></rect>
+        <text class="chart-tooltip-year" x="306.44827586206895" y="57.258219999999994">12/06/2011 · Quesito 1 · Camaiore</text>
+        <text class="chart-tooltip-value" x="306.44827586206895" y="77.25822">55,6%</text>
+        <text class="chart-tooltip-detail" x="306.44827586206895" y="96.25822">Versilia 58,8%</text>
+      </g>
+    </g><g class="chart-point" tabindex="0" role="button" aria-label="12/06/2011 · Quesito 2 · Camaiore: 55,6%">
+      <circle class="chart-hit" cx="438.0689655172414" cy="125.22356399999998" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="438.0689655172414" cy="125.22356399999998" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="438.0689655172414" y1="125.22356399999998" x2="438.0689655172414" y2="109.22356399999998"></line>
+        <rect x="323.0689655172414" y="43.22356399999998" width="230" height="66" rx="8"></rect>
+        <text class="chart-tooltip-year" x="335.0689655172414" y="57.22356399999998">12/06/2011 · Quesito 2 · Camaiore</text>
+        <text class="chart-tooltip-value" x="335.0689655172414" y="77.22356399999998">55,6%</text>
+        <text class="chart-tooltip-detail" x="335.0689655172414" y="96.22356399999998">Versilia 58,8%</text>
+      </g>
+    </g><g class="chart-point" tabindex="0" role="button" aria-label="12/06/2011 · Quesito 3 · Camaiore: 55,6%">
+      <circle class="chart-hit" cx="466.68965517241384" cy="125.30154" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="466.68965517241384" cy="125.30154" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="466.68965517241384" y1="125.30154" x2="466.68965517241384" y2="109.30154"></line>
+        <rect x="351.68965517241384" y="43.30154" width="230" height="66" rx="8"></rect>
+        <text class="chart-tooltip-year" x="363.68965517241384" y="57.30154">12/06/2011 · Quesito 3 · Camaiore</text>
+        <text class="chart-tooltip-value" x="363.68965517241384" y="77.30154">55,6%</text>
+        <text class="chart-tooltip-detail" x="363.68965517241384" y="96.30154">Versilia 58,7%</text>
+      </g>
+    </g><g class="chart-point" tabindex="0" role="button" aria-label="12/06/2011 · Quesito 4 · Camaiore: 55,6%">
+      <circle class="chart-hit" cx="495.3103448275862" cy="125.29287599999999" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="495.3103448275862" cy="125.29287599999999" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="495.3103448275862" y1="125.29287599999999" x2="495.3103448275862" y2="109.29287599999999"></line>
+        <rect x="380.3103448275862" y="43.29287599999999" width="230" height="66" rx="8"></rect>
+        <text class="chart-tooltip-year" x="392.3103448275862" y="57.29287599999999">12/06/2011 · Quesito 4 · Camaiore</text>
+        <text class="chart-tooltip-value" x="392.3103448275862" y="77.29287599999999">55,6%</text>
+        <text class="chart-tooltip-detail" x="392.3103448275862" y="96.29287599999999">Versilia 58,7%</text>
+      </g>
+    </g><g class="chart-point" tabindex="0" role="button" aria-label="17/04/2016 · Quesito 1 · Camaiore: 29,1%">
+      <circle class="chart-hit" cx="523.9310344827586" cy="185.72678399999998" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="523.9310344827586" cy="185.72678399999998" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="523.9310344827586" y1="185.72678399999998" x2="523.9310344827586" y2="169.72678399999998"></line>
+        <rect x="408.9310344827586" y="103.72678399999998" width="230" height="66" rx="8"></rect>
+        <text class="chart-tooltip-year" x="420.9310344827586" y="117.72678399999998">17/04/2016 · Quesito 1 · Camaiore</text>
+        <text class="chart-tooltip-value" x="420.9310344827586" y="137.72678399999998">29,1%</text>
+        <text class="chart-tooltip-detail" x="420.9310344827586" y="156.72678399999998">Versilia 31,2%</text>
+      </g>
+    </g><g class="chart-point" tabindex="0" role="button" aria-label="04/12/2016 · Quesito 1 · Camaiore: 70,0%">
+      <circle class="chart-hit" cx="552.5517241379309" cy="92.50715999999998" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="552.5517241379309" cy="92.50715999999998" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="552.5517241379309" y1="92.50715999999998" x2="552.5517241379309" y2="110.50715999999998"></line>
+        <rect x="437.55172413793093" y="110.50715999999998" width="230" height="66" rx="8"></rect>
+        <text class="chart-tooltip-year" x="449.55172413793093" y="124.50715999999998">04/12/2016 · Quesito 1 · Camaiore</text>
+        <text class="chart-tooltip-value" x="449.55172413793093" y="144.50716">70,0%</text>
+        <text class="chart-tooltip-detail" x="449.55172413793093" y="163.50716">Versilia 69,8%</text>
+      </g>
+    </g><g class="chart-point" tabindex="0" role="button" aria-label="20/09/2020 · Quesito 1 · Camaiore: 60,2%">
+      <circle class="chart-hit" cx="581.1724137931035" cy="114.71321999999999" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="581.1724137931035" cy="114.71321999999999" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="581.1724137931035" y1="114.71321999999999" x2="581.1724137931035" y2="98.71321999999999"></line>
+        <rect x="466.1724137931035" y="32.71321999999999" width="230" height="66" rx="8"></rect>
+        <text class="chart-tooltip-year" x="478.1724137931035" y="46.71321999999999">20/09/2020 · Quesito 1 · Camaiore</text>
+        <text class="chart-tooltip-value" x="478.1724137931035" y="66.71321999999999">60,2%</text>
+        <text class="chart-tooltip-detail" x="478.1724137931035" y="85.71321999999999">Versilia 62,7%</text>
+      </g>
+    </g><g class="chart-point" tabindex="0" role="button" aria-label="12/06/2022 · Quesito 1 · Camaiore: 47,8%">
+      <circle class="chart-hit" cx="609.7931034482758" cy="143.120424" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="609.7931034482758" cy="143.120424" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="609.7931034482758" y1="143.120424" x2="609.7931034482758" y2="127.12042400000001"></line>
+        <rect x="494.7931034482758" y="61.120424000000014" width="230" height="66" rx="8"></rect>
+        <text class="chart-tooltip-year" x="506.7931034482758" y="75.12042400000001">12/06/2022 · Quesito 1 · Camaiore</text>
+        <text class="chart-tooltip-value" x="506.7931034482758" y="95.12042400000001">47,8%</text>
+        <text class="chart-tooltip-detail" x="506.7931034482758" y="114.12042400000001">Versilia 23,7%</text>
+      </g>
+    </g><g class="chart-point" tabindex="0" role="button" aria-label="12/06/2022 · Quesito 2 · Camaiore: 47,7%">
+      <circle class="chart-hit" cx="638.4137931034484" cy="143.277288" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="638.4137931034484" cy="143.277288" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="638.4137931034484" y1="143.277288" x2="638.4137931034484" y2="127.277288"></line>
+        <rect x="523.4137931034484" y="61.277288" width="230" height="66" rx="8"></rect>
+        <text class="chart-tooltip-year" x="535.4137931034484" y="75.277288">12/06/2022 · Quesito 2 · Camaiore</text>
+        <text class="chart-tooltip-value" x="535.4137931034484" y="95.277288">47,7%</text>
+        <text class="chart-tooltip-detail" x="535.4137931034484" y="114.277288">Versilia 23,6%</text>
+      </g>
+    </g><g class="chart-point" tabindex="0" role="button" aria-label="12/06/2022 · Quesito 3 · Camaiore: 47,7%">
+      <circle class="chart-hit" cx="667.0344827586207" cy="143.268396" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="667.0344827586207" cy="143.268396" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="667.0344827586207" y1="143.268396" x2="667.0344827586207" y2="127.268396"></line>
+        <rect x="552.0344827586207" y="61.268395999999996" width="230" height="66" rx="8"></rect>
+        <text class="chart-tooltip-year" x="564.0344827586207" y="75.268396">12/06/2022 · Quesito 3 · Camaiore</text>
+        <text class="chart-tooltip-value" x="564.0344827586207" y="95.268396">47,7%</text>
+        <text class="chart-tooltip-detail" x="564.0344827586207" y="114.268396">Versilia 23,7%</text>
+      </g>
+    </g><g class="chart-point" tabindex="0" role="button" aria-label="12/06/2022 · Quesito 4 · Camaiore: 47,7%">
+      <circle class="chart-hit" cx="695.655172413793" cy="143.355492" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="695.655172413793" cy="143.355492" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="695.655172413793" y1="143.355492" x2="695.655172413793" y2="127.355492"></line>
+        <rect x="580.655172413793" y="61.355492" width="230" height="66" rx="8"></rect>
+        <text class="chart-tooltip-year" x="592.655172413793" y="75.355492">12/06/2022 · Quesito 4 · Camaiore</text>
+        <text class="chart-tooltip-value" x="592.655172413793" y="95.355492">47,7%</text>
+        <text class="chart-tooltip-detail" x="592.655172413793" y="114.355492">Versilia 23,6%</text>
+      </g>
+    </g><g class="chart-point" tabindex="0" role="button" aria-label="12/06/2022 · Quesito 5 · Camaiore: 47,6%">
+      <circle class="chart-hit" cx="724.2758620689656" cy="143.39904" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="724.2758620689656" cy="143.39904" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="724.2758620689656" y1="143.39904" x2="724.2758620689656" y2="127.39904000000001"></line>
+        <rect x="609.2758620689656" y="61.399040000000014" width="230" height="66" rx="8"></rect>
+        <text class="chart-tooltip-year" x="621.2758620689656" y="75.39904000000001">12/06/2022 · Quesito 5 · Camaiore</text>
+        <text class="chart-tooltip-value" x="621.2758620689656" y="95.39904000000001">47,6%</text>
+        <text class="chart-tooltip-detail" x="621.2758620689656" y="114.39904000000001">Versilia 23,6%</text>
+      </g>
+    </g><g class="chart-point" tabindex="0" role="button" aria-label="08/06/2025 · Quesito 1 · Camaiore: 31,2%">
+      <circle class="chart-hit" cx="752.8965517241379" cy="180.82296" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="752.8965517241379" cy="180.82296" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="752.8965517241379" y1="180.82296" x2="752.8965517241379" y2="164.82296"></line>
+        <rect x="637.8965517241379" y="98.82296" width="230" height="66" rx="8"></rect>
+        <text class="chart-tooltip-year" x="649.8965517241379" y="112.82296">08/06/2025 · Quesito 1 · Camaiore</text>
+        <text class="chart-tooltip-value" x="649.8965517241379" y="132.82296">31,2%</text>
+        <text class="chart-tooltip-detail" x="649.8965517241379" y="151.82296">Versilia 33,3%</text>
+      </g>
+    </g><g class="chart-point" tabindex="0" role="button" aria-label="08/06/2025 · Quesito 2 · Camaiore: 31,2%">
+      <circle class="chart-hit" cx="781.5172413793103" cy="180.875172" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="781.5172413793103" cy="180.875172" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="781.5172413793103" y1="180.875172" x2="781.5172413793103" y2="164.875172"></line>
+        <rect x="666" y="98.87517199999999" width="230" height="66" rx="8"></rect>
+        <text class="chart-tooltip-year" x="678" y="112.87517199999999">08/06/2025 · Quesito 2 · Camaiore</text>
+        <text class="chart-tooltip-value" x="678" y="132.875172">31,2%</text>
+        <text class="chart-tooltip-detail" x="678" y="151.875172">Versilia 33,3%</text>
+      </g>
+    </g><g class="chart-point" tabindex="0" role="button" aria-label="08/06/2025 · Quesito 3 · Camaiore: 31,2%">
+      <circle class="chart-hit" cx="810.1379310344828" cy="180.84028800000002" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="810.1379310344828" cy="180.84028800000002" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="810.1379310344828" y1="180.84028800000002" x2="810.1379310344828" y2="164.84028800000002"></line>
+        <rect x="666" y="98.84028800000002" width="230" height="66" rx="8"></rect>
+        <text class="chart-tooltip-year" x="678" y="112.84028800000002">08/06/2025 · Quesito 3 · Camaiore</text>
+        <text class="chart-tooltip-value" x="678" y="132.84028800000002">31,2%</text>
+        <text class="chart-tooltip-detail" x="678" y="151.84028800000002">Versilia 33,3%</text>
+      </g>
+    </g><g class="chart-point" tabindex="0" role="button" aria-label="08/06/2025 · Quesito 4 · Camaiore: 31,2%">
+      <circle class="chart-hit" cx="838.7586206896551" cy="180.814068" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="838.7586206896551" cy="180.814068" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="838.7586206896551" y1="180.814068" x2="838.7586206896551" y2="164.814068"></line>
+        <rect x="666" y="98.81406799999999" width="230" height="66" rx="8"></rect>
+        <text class="chart-tooltip-year" x="678" y="112.81406799999999">08/06/2025 · Quesito 4 · Camaiore</text>
+        <text class="chart-tooltip-value" x="678" y="132.814068">31,2%</text>
+        <text class="chart-tooltip-detail" x="678" y="151.814068">Versilia 33,3%</text>
+      </g>
+    </g><g class="chart-point" tabindex="0" role="button" aria-label="08/06/2025 · Quesito 5 · Camaiore: 31,2%">
+      <circle class="chart-hit" cx="867.3793103448277" cy="180.90982799999998" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="867.3793103448277" cy="180.90982799999998" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="867.3793103448277" y1="180.90982799999998" x2="867.3793103448277" y2="164.90982799999998"></line>
+        <rect x="666" y="98.90982799999998" width="230" height="66" rx="8"></rect>
+        <text class="chart-tooltip-year" x="678" y="112.90982799999998">08/06/2025 · Quesito 5 · Camaiore</text>
+        <text class="chart-tooltip-value" x="678" y="132.90982799999998">31,2%</text>
+        <text class="chart-tooltip-detail" x="678" y="151.90982799999998">Versilia 33,3%</text>
+      </g>
+    </g><g class="chart-point" tabindex="0" role="button" aria-label="22/03/2026 · Quesito 1 · Camaiore: 62,6%">
+      <circle class="chart-hit" cx="896" cy="109.266528" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="896" cy="109.266528" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="896" y1="109.266528" x2="896" y2="93.266528"></line>
+        <rect x="666" y="27.266527999999994" width="230" height="66" rx="8"></rect>
+        <text class="chart-tooltip-year" x="678" y="41.266527999999994">22/03/2026 · Quesito 1 · Camaiore</text>
+        <text class="chart-tooltip-value" x="678" y="61.266527999999994">62,6%</text>
+        <text class="chart-tooltip-detail" x="678" y="80.266528">Versilia 62,9%</text>
+      </g>
+    </g><circle class="turnout-versilia-dot" cx="66" cy="40.941767999999996" r="3" aria-hidden="true"></circle><circle class="turnout-versilia-dot" cx="94.62068965517241" cy="52.484724000000014" r="3" aria-hidden="true"></circle><circle class="turnout-versilia-dot" cx="123.24137931034483" cy="52.484724000000014" r="3" aria-hidden="true"></circle><circle class="turnout-versilia-dot" cx="151.86206896551724" cy="57.575508000000006" r="3" aria-hidden="true"></circle><circle class="turnout-versilia-dot" cx="180.48275862068965" cy="57.571860000000015" r="3" aria-hidden="true"></circle><circle class="turnout-versilia-dot" cx="209.1034482758621" cy="57.56821199999999" r="3" aria-hidden="true"></circle><circle class="turnout-versilia-dot" cx="237.72413793103448" cy="57.58622400000001" r="3" aria-hidden="true"></circle><circle class="turnout-versilia-dot" cx="266.3448275862069" cy="57.560916000000006" r="3" aria-hidden="true"></circle><circle class="turnout-versilia-dot" cx="294.9655172413793" cy="57.56593200000001" r="3" aria-hidden="true"></circle><circle class="turnout-versilia-dot" cx="323.58620689655174" cy="202.73968799999997" r="3" aria-hidden="true"></circle><circle class="turnout-versilia-dot" cx="352.2068965517242" cy="202.737864" r="3" aria-hidden="true"></circle><circle class="turnout-versilia-dot" cx="380.8275862068965" cy="201.864168" r="3" aria-hidden="true"></circle><circle class="turnout-versilia-dot" cx="409.44827586206895" cy="117.988896" r="3" aria-hidden="true"></circle><circle class="turnout-versilia-dot" cx="438.0689655172414" cy="117.970656" r="3" aria-hidden="true"></circle><circle class="turnout-versilia-dot" cx="466.68965517241384" cy="118.104264" r="3" aria-hidden="true"></circle><circle class="turnout-versilia-dot" cx="495.3103448275862" cy="118.122732" r="3" aria-hidden="true"></circle><circle class="turnout-versilia-dot" cx="523.9310344827586" cy="180.83458799999997" r="3" aria-hidden="true"></circle><circle class="turnout-versilia-dot" cx="552.5517241379309" cy="92.94241199999999" r="3" aria-hidden="true"></circle><circle class="turnout-versilia-dot" cx="581.1724137931035" cy="108.996348" r="3" aria-hidden="true"></circle><circle class="turnout-versilia-dot" cx="609.7931034482758" cy="198.059304" r="3" aria-hidden="true"></circle><circle class="turnout-versilia-dot" cx="638.4137931034484" cy="198.10992000000002" r="3" aria-hidden="true"></circle><circle class="turnout-versilia-dot" cx="667.0344827586207" cy="198.071616" r="3" aria-hidden="true"></circle><circle class="turnout-versilia-dot" cx="695.655172413793" cy="198.111516" r="3" aria-hidden="true"></circle><circle class="turnout-versilia-dot" cx="724.2758620689656" cy="198.10285199999998" r="3" aria-hidden="true"></circle><circle class="turnout-versilia-dot" cx="752.8965517241379" cy="176.02857600000002" r="3" aria-hidden="true"></circle><circle class="turnout-versilia-dot" cx="781.5172413793103" cy="176.051376" r="3" aria-hidden="true"></circle><circle class="turnout-versilia-dot" cx="810.1379310344828" cy="176.025156" r="3" aria-hidden="true"></circle><circle class="turnout-versilia-dot" cx="838.7586206896551" cy="175.99711200000002" r="3" aria-hidden="true"></circle><circle class="turnout-versilia-dot" cx="867.3793103448277" cy="176.12319599999998" r="3" aria-hidden="true"></circle><circle class="turnout-versilia-dot" cx="896" cy="108.513672" r="3" aria-hidden="true"></circle><text class="chart-label" x="66" y="286" text-anchor="middle">1974</text><text class="chart-label" x="151.86206896551724" y="286" text-anchor="middle">1981</text><text class="chart-label" x="237.72413793103448" y="286" text-anchor="middle">1981</text><text class="chart-label" x="323.58620689655174" y="286" text-anchor="middle">2009</text><text class="chart-label" x="409.44827586206895" y="286" text-anchor="middle">2011</text><text class="chart-label" x="495.3103448275862" y="286" text-anchor="middle">2011</text><text class="chart-label" x="581.1724137931035" y="286" text-anchor="middle">2020</text><text class="chart-label" x="667.0344827586207" y="286" text-anchor="middle">2022</text><text class="chart-label" x="752.8965517241379" y="286" text-anchor="middle">2025</text><text class="chart-label" x="838.7586206896551" y="286" text-anchor="middle">2025</text><text class="chart-label" x="896" y="286" text-anchor="middle">2026</text></svg></div></div><small class="aggregate-note turnout-history-note">Nei referendum ogni quesito resta una voce distinta.</small></section></section><section class="indicator-history page-width turnout-municipal-section" aria-labelledby="turnout-municipal-title">
+      <div class="section-heading"><div><span class="overline">Elezioni comunali</span><h2 id="turnout-municipal-title">Serie storiche comunali</h2></div><p>Primo turno o turno unico. Ogni Comune vota in anni diversi, quindi le serie restano separate.</p></div>
+      <div class="turnout-history-toolbar"><div class="metric-switch turnout-town-tabs" role="tablist" aria-label="Comune della serie storica delle elezioni comunali"><button type="button" role="tab" aria-selected="true" data-municipal-town="Camaiore" class="active">Camaiore</button><button type="button" role="tab" aria-selected="false" data-municipal-town="Forte dei Marmi" class="">Forte dei Marmi</button><button type="button" role="tab" aria-selected="false" data-municipal-town="Massarosa" class="">Massarosa</button><button type="button" role="tab" aria-selected="false" data-municipal-town="Pietrasanta" class="">Pietrasanta</button><button type="button" role="tab" aria-selected="false" data-municipal-town="Seravezza" class="">Seravezza</button><button type="button" role="tab" aria-selected="false" data-municipal-town="Stazzema" class="">Stazzema</button><button type="button" role="tab" aria-selected="false" data-municipal-town="Viareggio" class="">Viareggio</button></div></div>
+      <section class="history-panel turnout-municipal-history"><div class="panel-title"><div><span class="overline">Comunali · primo turno / turno unico</span><h3>Camaiore · 1989–2022</h3></div><a class="source-pill" href="https://elezionistorico.interno.gov.it/eligendo/opendata.php" target="_blank" rel="noreferrer">Fonti ufficiali ↗</a></div>
+        <dl class="turnout-municipal-latest"><div><dt>Ultima consultazione</dt><dd>12/06/2022</dd></div><div><dt>Affluenza</dt><dd>52,0%</dd></div><div><dt>Votanti</dt><dd>14.593</dd></div><div><dt>Elettori</dt><dd>28.049</dd></div></dl>
+        <div class="chart-shell"><div class="trend-chart ux-history-chart turnout-history-chart" style="--series-color:var(--theme-color)" data-ov-tooltip-wired="1"><svg viewBox="0 0 920 300" role="img" aria-label="Elezioni comunali: serie storica dell'affluenza per Camaiore"><line class="chart-grid" x1="66" x2="896" y1="252" y2="252"></line><text class="chart-label chart-y-label" x="58" y="256" text-anchor="end">-0,1%</text><line class="chart-grid" x1="66" x2="896" y1="195" y2="195"></line><text class="chart-label chart-y-label" x="58" y="199" text-anchor="end">24,9%</text><line class="chart-grid" x1="66" x2="896" y1="138" y2="138"></line><text class="chart-label chart-y-label" x="58" y="142" text-anchor="end">50,0%</text><line class="chart-grid" x1="66" x2="896" y1="81" y2="81"></line><text class="chart-label chart-y-label" x="58" y="85" text-anchor="end">75,0%</text><line class="chart-grid" x1="66" x2="896" y1="24" y2="24"></line><text class="chart-label chart-y-label" x="58" y="28" text-anchor="end">100,1%</text><path class="chart-line " d="M66.0,55.3 L184.6,60.1 L303.1,79.5 L421.7,82.9 L540.3,87.5 L658.9,108.3 L777.4,114.8 L896.0,133.4"></path><g class="chart-point" tabindex="0" role="button" aria-label="28/05/1989 · Camaiore: 86,3%">
+      <circle class="chart-hit" cx="66" cy="55.324920000000006" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="66" cy="55.324920000000006" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="66" y1="55.324920000000006" x2="66" y2="73.32492"></line>
+        <rect x="58" y="73.32492" width="230" height="66" rx="8"></rect>
+        <text class="chart-tooltip-year" x="70" y="87.32492">28/05/1989 · Camaiore</text>
+        <text class="chart-tooltip-value" x="70" y="107.32492">86,3%</text>
+        <text class="chart-tooltip-detail" x="70" y="126.32492">21.931 votanti / 25.424 elettori</text>
+      </g>
+    </g><g class="chart-point" tabindex="0" role="button" aria-label="12/06/1994 · Camaiore: 84,2%">
+      <circle class="chart-hit" cx="184.57142857142856" cy="60.10950000000001" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="184.57142857142856" cy="60.10950000000001" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="184.57142857142856" y1="60.10950000000001" x2="184.57142857142856" y2="78.10950000000001"></line>
+        <rect x="69.57142857142856" y="78.10950000000001" width="230" height="66" rx="8"></rect>
+        <text class="chart-tooltip-year" x="81.57142857142856" y="92.10950000000001">12/06/1994 · Camaiore</text>
+        <text class="chart-tooltip-value" x="81.57142857142856" y="112.10950000000001">84,2%</text>
+        <text class="chart-tooltip-detail" x="81.57142857142856" y="131.10950000000003">21.873 votanti / 25.989 elettori</text>
+      </g>
+    </g><g class="chart-point" tabindex="0" role="button" aria-label="24/05/1998 · Camaiore: 75,7%">
+      <circle class="chart-hit" cx="303.1428571428571" cy="79.462824" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="303.1428571428571" cy="79.462824" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="303.1428571428571" y1="79.462824" x2="303.1428571428571" y2="97.462824"></line>
+        <rect x="188.1428571428571" y="97.462824" width="230" height="66" rx="8"></rect>
+        <text class="chart-tooltip-year" x="200.1428571428571" y="111.462824">24/05/1998 · Camaiore</text>
+        <text class="chart-tooltip-value" x="200.1428571428571" y="131.462824">75,7%</text>
+        <text class="chart-tooltip-detail" x="200.1428571428571" y="150.462824">19.726 votanti / 26.067 elettori</text>
+      </g>
+    </g><g class="chart-point" tabindex="0" role="button" aria-label="26/05/2002 · Camaiore: 74,2%">
+      <circle class="chart-hit" cx="421.7142857142857" cy="82.91292" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="421.7142857142857" cy="82.91292" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="421.7142857142857" y1="82.91292" x2="421.7142857142857" y2="100.91292"></line>
+        <rect x="306.7142857142857" y="100.91292" width="230" height="66" rx="8"></rect>
+        <text class="chart-tooltip-year" x="318.7142857142857" y="114.91292">26/05/2002 · Camaiore</text>
+        <text class="chart-tooltip-value" x="318.7142857142857" y="134.91291999999999">74,2%</text>
+        <text class="chart-tooltip-detail" x="318.7142857142857" y="153.91291999999999">19.313 votanti / 26.042 elettori</text>
+      </g>
+    </g><g class="chart-point" tabindex="0" role="button" aria-label="27/05/2007 · Camaiore: 72,1%">
+      <circle class="chart-hit" cx="540.2857142857142" cy="87.49868400000001" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="540.2857142857142" cy="87.49868400000001" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="540.2857142857142" y1="87.49868400000001" x2="540.2857142857142" y2="105.49868400000001"></line>
+        <rect x="425.2857142857142" y="105.49868400000001" width="230" height="66" rx="8"></rect>
+        <text class="chart-tooltip-year" x="437.2857142857142" y="119.49868400000001">27/05/2007 · Camaiore</text>
+        <text class="chart-tooltip-value" x="437.2857142857142" y="139.49868400000003">72,1%</text>
+        <text class="chart-tooltip-detail" x="437.2857142857142" y="158.49868400000003">19.225 votanti / 26.646 elettori</text>
+      </g>
+    </g><g class="chart-point" tabindex="0" role="button" aria-label="06/05/2012 · Camaiore: 63,0%">
+      <circle class="chart-hit" cx="658.8571428571429" cy="108.33834" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="658.8571428571429" cy="108.33834" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="658.8571428571429" y1="108.33834" x2="658.8571428571429" y2="92.33834"></line>
+        <rect x="543.8571428571429" y="26.338340000000002" width="230" height="66" rx="8"></rect>
+        <text class="chart-tooltip-year" x="555.8571428571429" y="40.33834">06/05/2012 · Camaiore</text>
+        <text class="chart-tooltip-value" x="555.8571428571429" y="60.33834">63,0%</text>
+        <text class="chart-tooltip-detail" x="555.8571428571429" y="79.33834">17.407 votanti / 27.626 elettori</text>
+      </g>
+    </g><g class="chart-point" tabindex="0" role="button" aria-label="11/06/2017 · Camaiore: 60,2%">
+      <circle class="chart-hit" cx="777.4285714285714" cy="114.81810000000002" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="777.4285714285714" cy="114.81810000000002" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="777.4285714285714" y1="114.81810000000002" x2="777.4285714285714" y2="98.81810000000002"></line>
+        <rect x="662.4285714285714" y="32.818100000000015" width="230" height="66" rx="8"></rect>
+        <text class="chart-tooltip-year" x="674.4285714285714" y="46.818100000000015">11/06/2017 · Camaiore</text>
+        <text class="chart-tooltip-value" x="674.4285714285714" y="66.81810000000002">60,2%</text>
+        <text class="chart-tooltip-detail" x="674.4285714285714" y="85.81810000000002">16.812 votanti / 27.942 elettori</text>
+      </g>
+    </g><g class="chart-point" tabindex="0" role="button" aria-label="12/06/2022 · Camaiore: 52,0%">
+      <circle class="chart-hit" cx="896" cy="133.378896" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="896" cy="133.378896" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="896" y1="133.378896" x2="896" y2="117.378896"></line>
+        <rect x="666" y="51.378896" width="230" height="66" rx="8"></rect>
+        <text class="chart-tooltip-year" x="678" y="65.378896">12/06/2022 · Camaiore</text>
+        <text class="chart-tooltip-value" x="678" y="85.378896">52,0%</text>
+        <text class="chart-tooltip-detail" x="678" y="104.378896">14.593 votanti / 28.049 elettori</text>
+      </g>
+    </g><text class="chart-label" x="66" y="286" text-anchor="middle">1989</text><text class="chart-label" x="184.57142857142856" y="286" text-anchor="middle">1994</text><text class="chart-label" x="303.1428571428571" y="286" text-anchor="middle">1998</text><text class="chart-label" x="421.7142857142857" y="286" text-anchor="middle">2002</text><text class="chart-label" x="540.2857142857142" y="286" text-anchor="middle">2007</text><text class="chart-label" x="658.8571428571429" y="286" text-anchor="middle">2012</text><text class="chart-label" x="777.4285714285714" y="286" text-anchor="middle">2017</text><text class="chart-label" x="896" y="286" text-anchor="middle">2022</text></svg></div></div>
+        <div class="indicator-table-scroll turnout-municipal-history-table"><table class="indicator-history-table"><thead><tr><th>Data</th><th>Affluenza</th><th>Votanti</th><th>Elettori</th><th>Uomini</th><th>Donne</th></tr></thead><tbody><tr><th scope="row">28/05/1989</th><td>86,3%</td><td>21.931</td><td>25.424</td><td>n.d.</td><td>n.d.</td></tr><tr><th scope="row">12/06/1994</th><td>84,2%</td><td>21.873</td><td>25.989</td><td>86,1%</td><td>82,4%</td></tr><tr><th scope="row">24/05/1998</th><td>75,7%</td><td>19.726</td><td>26.067</td><td>n.d.</td><td>n.d.</td></tr><tr><th scope="row">26/05/2002</th><td>74,2%</td><td>19.313</td><td>26.042</td><td>75,9%</td><td>72,6%</td></tr><tr><th scope="row">27/05/2007</th><td>72,1%</td><td>19.225</td><td>26.646</td><td>73,8%</td><td>70,7%</td></tr><tr><th scope="row">06/05/2012</th><td>63,0%</td><td>17.407</td><td>27.626</td><td>63,9%</td><td>62,2%</td></tr><tr><th scope="row">11/06/2017</th><td>60,2%</td><td>16.812</td><td>27.942</td><td>60,9%</td><td>59,5%</td></tr><tr><th scope="row">12/06/2022</th><td>52,0%</td><td>14.593</td><td>28.049</td><td>52,6%</td><td>51,5%</td></tr></tbody></table></div>
+        <p class="aggregate-note turnout-municipal-note">Sono mostrate le consultazioni disponibili nelle fonti ufficiali.</p>
+      </section>
+      <details class="detail-disclosure turnout-latest-all"><summary><span>Ultime Comunali nei sette Comuni</span><small>Anni diversi · nessun aggregato Versilia</small></summary><div class="method-disclosure-body"><div class="indicator-table-scroll"><table class="indicator-values-table turnout-municipal-table"><thead><tr><th>Comune</th><th>Data</th><th>Affluenza</th><th>Votanti / elettori</th></tr></thead><tbody><tr><th scope="row">Camaiore</th><td>12/06/2022</td><td>52,0%</td><td>14.593 / 28.049</td></tr><tr><th scope="row">Forte dei Marmi</th><td>12/06/2022</td><td>64,5%</td><td>4046 / 6271</td></tr><tr><th scope="row">Massarosa</th><td>03/10/2021</td><td>50,7%</td><td>9852 / 19.419</td></tr><tr><th scope="row">Pietrasanta</th><td>14/05/2023</td><td>57,1%</td><td>11.903 / 20.836</td></tr><tr><th scope="row">Seravezza</th><td>03/10/2021</td><td>55,8%</td><td>6250 / 11.194</td></tr><tr><th scope="row">Stazzema</th><td>09/06/2024</td><td>41,0%</td><td>1401 / 3416</td></tr><tr><th scope="row">Viareggio</th><td>24/05/2026</td><td>55,0%</td><td>28.841 / 52.432</td></tr></tbody></table></div></div></details>
+    </section><section class="indicator-history page-width" aria-labelledby="turnout-province-title"><div class="section-heading"><div><span class="overline">Contesto storico</span><h2 id="turnout-province-title">Referendum senza dettaglio comunale</h2></div><p>Per queste tornate è disponibile soltanto il dato provinciale.</p></div><div class="indicator-history-empty"><strong>Provincia di Lucca, non Versilia</strong><p>Per alcune consultazioni tra 1987 e 2006 è disponibile solo il dato della Provincia di Lucca.</p></div><div class="turnout-province-list"><details class="detail-disclosure"><summary><span>08/11/1987</span><small>5 quesiti · Provincia di Lucca</small></summary><div class="method-disclosure-body"><table class="turnout-province-table"><thead><tr><th>Quesito</th><th>Affluenza</th></tr></thead><tbody><tr><td>Responsabilita' civile del giudice</td><td>68,6%</td></tr><tr><td>Commissione inquirente</td><td>68,6%</td></tr><tr><td>Localizzazione centrali nucleari</td><td>68,5%</td></tr><tr><td>Contributi enti locali</td><td>68,5%</td></tr><tr><td>Divieto partecipazione dell'ENEL a impianti nucleari all'estero</td><td>68,6%</td></tr></tbody></table></div></details><details class="detail-disclosure"><summary><span>18/06/1989</span><small>1 quesito · Provincia di Lucca</small></summary><div class="method-disclosure-body"><table class="turnout-province-table"><thead><tr><th>Quesito</th><th>Affluenza</th></tr></thead><tbody><tr><td>REFERENDUM CONSULTIVO. Conferimento del mandato costituente al Parlamento Europeo</td><td>83,0%</td></tr></tbody></table></div></details><details class="detail-disclosure"><summary><span>03/06/1990</span><small>3 quesiti · Provincia di Lucca</small></summary><div class="method-disclosure-body"><table class="turnout-province-table"><thead><tr><th>Quesito</th><th>Affluenza</th></tr></thead><tbody><tr><td>Disciplina della caccia</td><td>37,8%</td></tr><tr><td>Accesso dei cacciatori a fondi privati</td><td>37,8%</td></tr><tr><td>Uso dei pesticidi</td><td>38,2%</td></tr></tbody></table></div></details><details class="detail-disclosure"><summary><span>09/06/1991</span><small>1 quesito · Provincia di Lucca</small></summary><div class="method-disclosure-body"><table class="turnout-province-table"><thead><tr><th>Quesito</th><th>Affluenza</th></tr></thead><tbody><tr><td>Riduzione preferenze Camera dei Deputati</td><td>60,4%</td></tr></tbody></table></div></details><details class="detail-disclosure"><summary><span>18/04/1993</span><small>8 quesiti · Provincia di Lucca</small></summary><div class="method-disclosure-body"><table class="turnout-province-table"><thead><tr><th>Quesito</th><th>Affluenza</th></tr></thead><tbody><tr><td>Competenze USL</td><td>79,6%</td></tr><tr><td>Stupefacenti e sostanze  psicotrope</td><td>79,7%</td></tr><tr><td>Finanziamento pubblico dei partiti</td><td>79,7%</td></tr><tr><td>Casse Risparmio e Monti Pieta'</td><td>79,6%</td></tr><tr><td>Ministero delle partecipazioni statali</td><td>79,6%</td></tr><tr><td>Elezione Senato della Repubblica</td><td>79,8%</td></tr><tr><td>Ministero agricoltura e foreste</td><td>79,6%</td></tr><tr><td>Ministero turismo e spettacolo</td><td>79,5%</td></tr></tbody></table></div></details><details class="detail-disclosure"><summary><span>11/06/1995</span><small>12 quesiti · Provincia di Lucca</small></summary><div class="method-disclosure-body"><table class="turnout-province-table"><thead><tr><th>Quesito</th><th>Affluenza</th></tr></thead><tbody><tr><td>Concessioni televisive nazionali</td><td>60,4%</td></tr><tr><td>Raccolta pubblicita' radiotelevisiva</td><td>60,4%</td></tr><tr><td>Interruzioni pubblicitarie</td><td>60,4%</td></tr><tr><td>Rappresentanze sindacali (richiesta massimale)</td><td>59,1%</td></tr><tr><td>Rappresentanze sindacali (richiesta minimale)</td><td>59,1%</td></tr><tr><td>Contrattazione pubblico impiego</td><td>59,0%</td></tr><tr><td>Soggiorno cautelare</td><td>59,2%</td></tr><tr><td>Privatizzazione RAI</td><td>59,4%</td></tr><tr><td>Autorizzazione al commercio</td><td>59,2%</td></tr><tr><td>Trattenute contributi sindacali</td><td>59,3%</td></tr><tr><td>Legge elettorale comuni</td><td>55,4%</td></tr><tr><td>Orari esercizi commerciali</td><td>59,3%</td></tr></tbody></table></div></details><details class="detail-disclosure"><summary><span>15/06/1997</span><small>7 quesiti · Provincia di Lucca</small></summary><div class="method-disclosure-body"><table class="turnout-province-table"><thead><tr><th>Quesito</th><th>Affluenza</th></tr></thead><tbody><tr><td>Privatizzazione</td><td>25,8%</td></tr><tr><td>Obiezione di coscienza</td><td>26,0%</td></tr><tr><td>Caccia</td><td>25,7%</td></tr><tr><td>Carriere dei magistrati</td><td>25,8%</td></tr><tr><td>Ordine dei giornalisti</td><td>25,7%</td></tr><tr><td>Incarichi extragiudiziari dei magistrati</td><td>25,9%</td></tr><tr><td>Ministero per le politiche agricole</td><td>25,7%</td></tr></tbody></table></div></details><details class="detail-disclosure"><summary><span>18/04/1999</span><small>1 quesito · Provincia di Lucca</small></summary><div class="method-disclosure-body"><table class="turnout-province-table"><thead><tr><th>Quesito</th><th>Affluenza</th></tr></thead><tbody><tr><td>Elezione Camera Deputati (abolizione del voto di lista)</td><td>51,7%</td></tr></tbody></table></div></details><details class="detail-disclosure"><summary><span>21/05/2000</span><small>7 quesiti · Provincia di Lucca</small></summary><div class="method-disclosure-body"><table class="turnout-province-table"><thead><tr><th>Quesito</th><th>Affluenza</th></tr></thead><tbody><tr><td>Rimborso spese per consultazioni elettorali e referendarie</td><td>33,5%</td></tr><tr><td>Elezione Camera dei Deputati (abolizione del voto di lista)</td><td>33,8%</td></tr><tr><td>Elezione del Consiglio Superiore della Magistratura</td><td>33,0%</td></tr><tr><td>Ordinamento giudiziario</td><td>33,1%</td></tr><tr><td>Incarichi extragiudiziari dei magistrati</td><td>33,2%</td></tr><tr><td>Licenziamenti</td><td>34,0%</td></tr><tr><td>Trattenute associative e sindacali tramite gli enti previdenziali</td><td>33,6%</td></tr></tbody></table></div></details><details class="detail-disclosure"><summary><span>07/10/2001</span><small>1 quesito · Provincia di Lucca</small></summary><div class="method-disclosure-body"><table class="turnout-province-table"><thead><tr><th>Quesito</th><th>Affluenza</th></tr></thead><tbody><tr><td>REFERENDUM COSTITUZIONALE. Modifica al titolo V della parte seconda della Costituzione</td><td>34,9%</td></tr></tbody></table></div></details><details class="detail-disclosure"><summary><span>15/06/2003</span><small>2 quesiti · Provincia di Lucca</small></summary><div class="method-disclosure-body"><table class="turnout-province-table"><thead><tr><th>Quesito</th><th>Affluenza</th></tr></thead><tbody><tr><td>Reintegrazione dei lavoratori illegittimamente licenziati</td><td>31,0%</td></tr><tr><td>Servitu' coattiva di elettrodotto</td><td>31,1%</td></tr></tbody></table></div></details><details class="detail-disclosure"><summary><span>12/06/2005</span><small>4 quesiti · Provincia di Lucca</small></summary><div class="method-disclosure-body"><table class="turnout-province-table"><thead><tr><th>Quesito</th><th>Affluenza</th></tr></thead><tbody><tr><td>PROCREAZIONE MEDICALMENTE ASSISTITA. Limite alla ricerca clinica e sperimentale sugli embrioni. Abrogazione parziale.</td><td>30,9%</td></tr><tr><td>PROCREAZIONE MEDICALMENTE ASSISTITA. Norme sui limiti all'accesso. Abrogazione parziale</td><td>30,9%</td></tr><tr><td>PROCREAZIONE MEDICALMENTE ASSISTITA. Norme sulle finalita', sui diritti dei soggetti coinvolti e sui limiti all'accesso. Abrogazione parziale</td><td>30,9%</td></tr><tr><td>PROCREAZIONE MEDICALMENTE ASSISTITA. Divieto di fecondazione eterologa. Abrogazione parziale</td><td>31,1%</td></tr></tbody></table></div></details><details class="detail-disclosure"><summary><span>25/06/2006</span><small>1 quesito · Provincia di Lucca</small></summary><div class="method-disclosure-body"><table class="turnout-province-table"><thead><tr><th>Quesito</th><th>Affluenza</th></tr></thead><tbody><tr><td>REFERENDUM COSTITUZIONALE. Approvazione legge di modifica alla parte seconda della Costituzione</td><td>55,7%</td></tr></tbody></table></div></details></div></section></div>
+      <div id="turnout-method-root"><section class="indicator-method page-width" aria-labelledby="turnout-method-title"><div class="section-heading"><div><span class="overline">Come leggere i dati</span><h2 id="turnout-method-title">Confronti e limiti</h2></div><p>Politiche, Europee, Regionali e Referendum sono confrontati solo all’interno della stessa consultazione. Le Comunali restano separate per Comune.</p></div><details class="method-disclosure"><summary><span>Informazioni utili</span><small>Disponibilità e confronti</small></summary><div class="method-disclosure-body"><p>Il dettaglio uomini/donne compare soltanto quando è disponibile nelle fonti ufficiali. Per alcune consultazioni referendarie storiche è disponibile soltanto il dato provinciale, mostrato in una sezione separata.</p></div></details><div class="turnout-method-source-links"><a class="source-pill" href="../../../stato-dati/">Stato dei dati</a><a class="source-pill" href="https://elezionistorico.interno.gov.it/eligendo/opendata.php" target="_blank" rel="noreferrer">Ministero dell’Interno ↗</a></div></section></div>
+      <section class="topic-town-links page-width"><div><span class="overline">Schede comunali</span><h2>Apri il territorio</h2></div><div>
+        <a href="../../../comuni/camaiore/?tema=comunita&amp;indicatore=voterTurnout"><span>Camaiore</span><b>→</b></a>
+        <a href="../../../comuni/forte-dei-marmi/?tema=comunita&amp;indicatore=voterTurnout"><span>Forte dei Marmi</span><b>→</b></a>
+        <a href="../../../comuni/massarosa/?tema=comunita&amp;indicatore=voterTurnout"><span>Massarosa</span><b>→</b></a>
+        <a href="../../../comuni/pietrasanta/?tema=comunita&amp;indicatore=voterTurnout"><span>Pietrasanta</span><b>→</b></a>
+        <a href="../../../comuni/seravezza/?tema=comunita&amp;indicatore=voterTurnout"><span>Seravezza</span><b>→</b></a>
+        <a href="../../../comuni/stazzema/?tema=comunita&amp;indicatore=voterTurnout"><span>Stazzema</span><b>→</b></a>
+        <a href="../../../comuni/viareggio/?tema=comunita&amp;indicatore=voterTurnout"><span>Viareggio</span><b>→</b></a>
+      </div></section>
+    </main>
+  </div>
+  <div id="site-footer-mount">
+      <footer class="site-footer">
+        <div class="footer-about"><strong>Osservatorio Versilia</strong>
+          <p>Un punto di accesso indipendente ai dati pubblici dei sette comuni della Versilia.</p>
+          <p class="footer-disclaimer">Non è un sito istituzionale e non rappresenta gli enti citati.</p>
+        </div>
+        <nav class="footer-links" aria-label="Informazioni sul progetto">
+          <a href="../../../progetto/">Il progetto</a>
+          <a href="../../../stato-dati/" data-data-status-nav="footer">Stato dei dati</a>
+          <a href="../../../opportunita/">Opportunità</a>
+          <a href="../../../progetto/#metodo">Metodo</a>
+          <a href="../../../progetto/#licenza">Licenza</a>
+          <a href="../../../progetto/#versioni">Versioni dei dati</a>
+          <a href="../../../segnala/">Segnala un dato</a>
+          <a href="mailto:info@osservatorioversilia.it">Contatti</a>
+        </nav>
+        
+      <div class="footer-social" data-social-placement="footer" aria-label="Segui Osservatorio Versilia">
+        <strong>Segui Osservatorio Versilia</strong><div class="social-links">
+    <a class="social-profile-link" href="https://www.facebook.com/osservatorioversilia" target="_blank" rel="me noreferrer" aria-label="Segui Osservatorio Versilia su Facebook">
+      <span class="social-profile-mark" aria-hidden="true">f</span>
+      <span class="social-profile-copy"><strong>Facebook</strong><small>@osservatorioversilia</small></span>
+      <b aria-hidden="true">↗</b>
+    </a>
+    <a class="social-profile-link" href="https://www.instagram.com/osservatorioversilia/" target="_blank" rel="me noreferrer" aria-label="Segui Osservatorio Versilia su Instagram">
+      <span class="social-profile-mark" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="5" ry="5"></rect><circle cx="12" cy="12" r="4"></circle><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"></circle></svg></span>
+      <span class="social-profile-copy"><strong>Instagram</strong><small>@osservatorioversilia</small></span>
+      <b aria-hidden="true">↗</b>
+    </a>
+    <a class="social-profile-link" href="https://www.linkedin.com/company/osservatorioversilia" target="_blank" rel="me noreferrer" aria-label="Segui Osservatorio Versilia su LinkedIn">
+      <span class="social-profile-mark" aria-hidden="true">in</span>
+      <span class="social-profile-copy"><strong>LinkedIn</strong><small>Osservatorio Versilia</small></span>
+      <b aria-hidden="true">↗</b>
+    </a>
+    <a class="social-profile-link" href="https://x.com/OssVersilia" target="_blank" rel="me noreferrer" aria-label="Segui Osservatorio Versilia su X">
+      <span class="social-profile-mark" aria-hidden="true">X</span>
+      <span class="social-profile-copy"><strong>X</strong><small>@OssVersilia</small></span>
+      <b aria-hidden="true">↗</b>
+    </a></div>
+      </div><div class="footer-note">
+          <span>7 comuni · 11 temi</span><span>v. dati v1.40.0</span><span>catalogo dati aggiornato al 14 settembre 2026</span>
+        </div>
+      </footer></div>
+  <noscript><div class="app-error">Il sito richiede JavaScript per esplorare l’archivio dell’affluenza.</div></noscript>
+  <script src="../../../assets/affluenza-hotfix.js?v=20261025-ui" defer=""></script>
+  <script src="../../../assets/affluenza-v3.js?v=20261025-ui" defer=""></script>
+  <script src="../../../assets/fidelity.js" defer=""></script>
+  <script src="../../../assets/app-bundle.js?v=20261025-ui-shell-consistency" defer=""></script>
+  <script src="../../../assets/economy-atlas.js" defer=""></script>
+  <script src="../../../assets/ux-accordion.js?v=20261025-ui-shell-consistency" defer=""></script>
+  <script src="../../../assets/ux-history-core.js?v=20261025-ui-shell-consistency" defer=""></script>
+  <script src="../../../assets/ux-history.js?v=20261025-ui-shell-consistency" defer=""></script>
+  <script src="../../../assets/export-v161.js?v=20261025-ui-shell-consistency" defer=""></script>
+  <script src="../../../assets/visual-grammar.js?v=20261025-ui-shell-consistency" defer=""></script>
+  <script src="../../../assets/social-presence.js?v=20261025-ui-shell-consistency" defer=""></script>
+
+
+  <script src="../../../assets/pwa.js?v=20260824-pwa9&rev=catalog-v129" defer></script>
+</body></html>

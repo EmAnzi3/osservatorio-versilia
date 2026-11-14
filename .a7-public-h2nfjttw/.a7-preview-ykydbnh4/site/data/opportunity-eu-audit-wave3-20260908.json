@@ -1,0 +1,384 @@
+{
+  "schemaVersion": "1.0",
+  "auditDate": "2026-09-08",
+  "wave": 3,
+  "status": "open_not_saturated",
+  "implementationFrozen": true,
+  "referenceSnapshot": {
+    "path": "data/opportunity-daily-public.json",
+    "generatedAt": "2026-09-07T09:35:26+00:00",
+    "publicCount": 29,
+    "reviewInternalCount": 40
+  },
+  "saturationRule": {
+    "requiredConsecutiveIndependentSweepsWithZeroNewCurrentActionable": 2,
+    "currentConsecutiveCleanSweeps": 0,
+    "reason": "Wave 3 ha trovato nuovi casi correnti azionabili assenti dallo snapshot, incluso un canale third-party EU-funded fuori dai domini Commissione/CINEA."
+  },
+  "corrections": [
+    {
+      "id": "life-cet-v044-correction",
+      "title": "LIFE CET v0.4.4: quattro casi sono gia captured",
+      "classification": "captured_with_excessive_detection_lag",
+      "coverageIds": [
+        "life-2026-cet-heatcoolplan",
+        "life-2026-cet-pda",
+        "life-2026-cet-enercom",
+        "life-2026-cet-empower"
+      ],
+      "publishedAt": "2026-04-21",
+      "firstSeenAt": "2026-08-24",
+      "detectionLagDays": 125,
+      "note": "La prima ricerca testuale aveva prodotto un falso negativo di audit. L'ispezione diretta di opportunity-verified-v044.json e dello snapshot pubblico conferma che i quattro casi sono presenti. EMPOWER richiede comunque role/lifecycle review perche il valore municipale principale passa anche da future cascade call per autorita locali."
+    }
+  ],
+  "findings": [
+    {
+      "id": "life-2026-clima-sap-cca",
+      "title": "LIFE 2026 - Climate Change Adaptation",
+      "officialUrl": "https://cinea.ec.europa.eu/funding-opportunities/calls-proposals/climate-change-adaptation-0_en",
+      "publishedOrOpenedAt": "2026-04-21",
+      "deadlineAt": "2026-09-22T17:00:00+02:00",
+      "municipalityRole": "conditional_direct_or_partner_public_body",
+      "radarStatus": "absent_from_reference_snapshot",
+      "auditClass": "current_promotion_gap",
+      "severity": "critical",
+      "minimumDetectionLagDaysAtSnapshot": 139,
+      "note": "Il topic include esplicitamente l'attuazione di politiche e strategie di adattamento da parte di autorita nazionali, regionali e locali, inclusi city councils."
+    },
+    {
+      "id": "life-2026-sap-clima-gov",
+      "title": "LIFE 2026 - Climate Governance and Information",
+      "officialUrl": "https://cinea.ec.europa.eu/funding-opportunities/calls-proposals/climate-governance-and-information-0_en",
+      "publishedOrOpenedAt": "2026-04-21",
+      "deadlineAt": "2026-09-22T17:00:00+02:00",
+      "municipalityRole": "conditional_direct_or_partner_public_body",
+      "radarStatus": "absent_from_reference_snapshot",
+      "auditClass": "current_promotion_gap",
+      "severity": "high",
+      "minimumDetectionLagDaysAtSnapshot": 139,
+      "note": "Il topic comprende governance multilivello e cooperazione tra autorita regionali/locali su strategie clima-energia."
+    },
+    {
+      "id": "life-2026-sap-env-environment",
+      "title": "LIFE 2026 - Circular Economy and Zero Pollution - Environment",
+      "officialUrl": "https://cinea.ec.europa.eu/funding-opportunities/calls-proposals/standard-action-projects-saps-circular-economy-and-zero-pollution-environment-0_en",
+      "publishedOrOpenedAt": "2026-04-21",
+      "deadlineAt": "2026-09-22T17:00:00+02:00",
+      "municipalityRole": "conditional_direct_or_partner_public_body",
+      "radarStatus": "absent_from_reference_snapshot",
+      "auditClass": "current_promotion_gap",
+      "severity": "critical",
+      "minimumDetectionLagDaysAtSnapshot": 139,
+      "note": "Priorita con ruolo territoriale diretto includono acqua, drenaggio urbano, servizi idrici e Green/Circular Public Procurement."
+    },
+    {
+      "id": "life-2026-sap-env-gov",
+      "title": "LIFE 2026 - Environmental Governance",
+      "officialUrl": "https://cinea.ec.europa.eu/funding-opportunities/calls-proposals/standard-action-projects-saps-environmental-governance-0_en",
+      "publishedOrOpenedAt": "2026-04-21",
+      "deadlineAt": "2026-09-22T17:00:00+02:00",
+      "municipalityRole": "conditional_direct_or_partner_public_body",
+      "radarStatus": "absent_from_reference_snapshot",
+      "auditClass": "current_promotion_scope_gap",
+      "severity": "high",
+      "minimumDetectionLagDaysAtSnapshot": 139
+    },
+    {
+      "id": "life-2026-sap-nat-nature",
+      "title": "LIFE 2026 - Nature and Biodiversity",
+      "officialUrl": "https://cinea.ec.europa.eu/funding-opportunities/calls-proposals/standard-action-projects-saps-nature-and-biodiversity-nature-1_en",
+      "publishedOrOpenedAt": "2026-04-21",
+      "deadlineAt": "2026-09-22T17:00:00+02:00",
+      "municipalityRole": "conditional_direct_or_partner_public_body",
+      "radarStatus": "absent_from_reference_snapshot",
+      "auditClass": "current_promotion_scope_gap",
+      "severity": "high",
+      "minimumDetectionLagDaysAtSnapshot": 139,
+      "conditions": ["progetto natura/biodiversita pertinente", "eventuale Natura 2000/restoration relevance", "azioni non meramente ricorrenti"]
+    },
+    {
+      "id": "life-2026-sap-nat-gov",
+      "title": "LIFE 2026 - Nature Governance and Information",
+      "officialUrl": "https://cinea.ec.europa.eu/life-calls-proposals-2026_en",
+      "publishedOrOpenedAt": "2026-04-21",
+      "deadlineAt": "2026-09-22T17:00:00+02:00",
+      "municipalityRole": "conditional_direct_or_partner_public_body",
+      "radarStatus": "absent_from_reference_snapshot",
+      "auditClass": "current_promotion_scope_gap",
+      "severity": "high",
+      "minimumDetectionLagDaysAtSnapshot": 139
+    },
+    {
+      "id": "life-2026-plp-ener-gov",
+      "title": "LIFE 2026 - Multilevel climate and energy dialogue",
+      "officialUrl": "https://cinea.ec.europa.eu/funding-opportunities/calls-proposals/multilevel-climate-and-energy-dialogue-deliver-governance-regulation-and-post-2030-energy-and_en",
+      "publishedOrOpenedAt": "2026-04-21",
+      "deadlineAt": "2026-09-22T17:00:00+02:00",
+      "municipalityRole": "conditional_partner_or_participant",
+      "radarStatus": "absent_from_reference_snapshot",
+      "auditClass": "current_scope_review_high",
+      "severity": "medium",
+      "minimumDetectionLagDaysAtSnapshot": 139,
+      "note": "Le autorita locali sono parte esplicita del dialogo multilivello; la call finanzia un progetto di scala ampia, quindi non va presentata come semplice grant comunale standalone."
+    },
+    {
+      "id": "life-2026-ta-pp-clima-sip",
+      "title": "LIFE 2026 - Technical Assistance for preparation of SIPs - Climate",
+      "officialUrl": "https://cinea.ec.europa.eu/life-calls-proposals-2026_en",
+      "publishedOrOpenedAt": "2026-04-21",
+      "deadlineAt": "2026-09-22T17:00:00+02:00",
+      "municipalityRole": "public_body_eligibility_but_project_scale_to_resolve",
+      "radarStatus": "absent_from_reference_snapshot",
+      "auditClass": "scope_review",
+      "severity": "medium",
+      "note": "La sola ammissibilita come ente pubblico non basta: la TA prepara Strategic Integrated Projects e richiede una scala/strategia coerente."
+    },
+    {
+      "id": "horizon-miss-2026-04-cit-matrix",
+      "title": "Horizon Cities Mission 2026 - 3 topic",
+      "officialUrl": "https://cinea.ec.europa.eu/funding-opportunities/calls-proposals/horizon-europe-eur-855-million-available-under-climate-neutral-and-smart-cities-eu-mission_en",
+      "publishedOrOpenedAt": "2026-02-04",
+      "deadlineAt": "2026-10-08T17:00:00+02:00",
+      "municipalityRole": "city_beneficiary_in_topic_specific_consortia",
+      "radarStatus": "generic_eu_horizon_source_present_topics_absent",
+      "auditClass": "current_topic_level_promotion_gap",
+      "severity": "critical",
+      "minimumDetectionLagDaysAtSnapshot": 215,
+      "topics": [
+        "HORIZON-MISS-2026-04-CIT-01",
+        "HORIZON-MISS-2026-04-CIT-02",
+        "HORIZON-MISS-2026-04-CIT-NEB-B4P-CCRI-03"
+      ],
+      "note": "Il terzo topic richiede esplicitamente dimostrazioni in almeno tre citta di paesi diversi, con le citta come beneficiari e almeno una Mission City. Gli altri topic richiedono analoga risoluzione puntuale delle citta coinvolte."
+    },
+    {
+      "id": "horizon-miss-2026-01-clima-05",
+      "title": "Mission Adaptation - cultural heritage climate resilience",
+      "officialUrl": "https://research-and-innovation.ec.europa.eu/funding/funding-opportunities/funding-programmes-and-open-calls/horizon-europe/eu-missions-horizon-europe/adaptation-climate-change_en",
+      "publishedOrOpenedAt": "2026-02-04",
+      "deadlineAt": "2026-09-23T17:00:00+02:00",
+      "municipalityRole": "conditional_beneficiary_or_associated_partner",
+      "radarStatus": "absent_from_reference_snapshot",
+      "auditClass": "current_topic_level_promotion_gap",
+      "severity": "high",
+      "minimumDetectionLagDaysAtSnapshot": 215,
+      "note": "Le dimostrazioni devono coinvolgere territori di autorita regionali/locali con patrimonio culturale; il ruolo concreto va legato al sito e al consorzio."
+    },
+    {
+      "id": "horizon-miss-2026-01-clima-07",
+      "title": "Mission Adaptation - financing local adaptation actions",
+      "officialUrl": "https://research-and-innovation.ec.europa.eu/funding/funding-opportunities/funding-programmes-and-open-calls/horizon-europe/eu-missions-horizon-europe/adaptation-climate-change_en",
+      "publishedOrOpenedAt": "2026-02-04",
+      "deadlineAt": "2026-09-23T17:00:00+02:00",
+      "municipalityRole": "future_cascade_recipient",
+      "radarStatus": "absent_from_reference_snapshot",
+      "auditClass": "cascade_prospective_gap",
+      "severity": "high",
+      "note": "Il progetto selezionato deve finanziare azioni locali tramite FSTP; serve una sentinella sulla successiva cascade call, non una scheda comunale fuorviante sulla call principale."
+    },
+    {
+      "id": "horizon-miss-2026-03-ocean-01",
+      "title": "Mission Ocean - marine habitat mapping / Nature Restoration Regulation",
+      "officialUrl": "https://projects.research-and-innovation.ec.europa.eu/en/funding/funding-opportunities/funding-programmes-and-open-calls/horizon-europe/eu-missions-horizon-europe/restore-our-ocean-and-waters/horizon-miss-2026-03-ocean-01-large-scale-demonstration-mapping-distribution-and-condition-marine",
+      "publishedOrOpenedAt": "2026-02-04",
+      "deadlineAt": "2026-09-23T17:00:00+02:00",
+      "municipalityRole": "conditional_public_authority_partner_or_associated_region_route",
+      "radarStatus": "absent_from_reference_snapshot",
+      "auditClass": "current_topic_level_scope_promotion_gap",
+      "severity": "high",
+      "minimumDetectionLagDaysAtSnapshot": 215
+    },
+    {
+      "id": "horizon-miss-2026-03-ocean-02",
+      "title": "Mission Ocean - aquatic pollution and biodiversity loss",
+      "officialUrl": "https://projects.research-and-innovation.ec.europa.eu/en/funding/funding-opportunities/funding-programmes-and-open-calls/horizon-europe/eu-missions-horizon-europe/restore-our-ocean-and-waters/horizon-miss-2026-03-ocean-02-addressing-aquatic-pollution-and-biodiversity-loss-through-nature",
+      "publishedOrOpenedAt": "2026-02-04",
+      "deadlineAt": "2026-09-23T17:00:00+02:00",
+      "municipalityRole": "conditional_local_public_authority_partner_or_associated_region_route",
+      "radarStatus": "absent_from_reference_snapshot",
+      "auditClass": "current_topic_level_scope_promotion_gap",
+      "severity": "critical",
+      "minimumDetectionLagDaysAtSnapshot": 215,
+      "note": "Il topic mira esplicitamente a dare accesso e supporto ad autorita nazionali, regionali e locali per soluzioni nature-positive contro inquinamento e perdita di biodiversita."
+    },
+    {
+      "id": "horizon-neb-facility-2026-matrix",
+      "title": "New European Bauhaus Facility 2026 - topic matrix",
+      "officialUrl": "https://new-european-bauhaus.europa.eu/funding/horizon-europe-2026-2027_en",
+      "publishedOrOpenedAt": "2026-05-05",
+      "deadlineAt": "2026-12-01T17:00:00+01:00",
+      "municipalityRole": "topic_dependent_partner_demo_site_or_end_user",
+      "radarStatus": "generic_horizon_source_present_topics_absent",
+      "auditClass": "current_topic_matrix_promotion_gap",
+      "severity": "critical",
+      "topicsHighMunicipalRelevance": [
+        "HORIZON-NEB-2026-01-BUSINESS-03",
+        "HORIZON-NEB-2026-01-PARTICIPATION-02",
+        "HORIZON-NEB-2026-01-REGEN-01",
+        "HORIZON-NEB-2026-01-REGEN-02",
+        "HORIZON-NEB-2026-01-BUSINESS-01"
+      ],
+      "topicsLikelyEndUserOrLowerPriority": [
+        "HORIZON-NEB-2026-01-PARTICIPATION-03"
+      ],
+      "note": "Non promuovere la Facility in blocco: ogni topic va risolto per ruolo comunale, demo site, patrimonio/edifici/spazi e struttura del consorzio."
+    },
+    {
+      "id": "erasmus-2026-ka152",
+      "title": "Erasmus+ KA152 - Youth Exchanges - second round",
+      "officialUrl": "https://agenziagioventu.gov.it/new-presentare-un-progetto/",
+      "deadlineAt": "2026-10-01T12:00:00+02:00",
+      "municipalityRole": "conditional_direct_applicant_public_body",
+      "radarStatus": "absent_from_reference_snapshot",
+      "auditClass": "current_false_negative_action_level",
+      "severity": "high"
+    },
+    {
+      "id": "erasmus-2026-ka153",
+      "title": "Erasmus+ KA153 - Mobility of youth workers - second round",
+      "officialUrl": "https://agenziagioventu.gov.it/new-presentare-un-progetto/",
+      "deadlineAt": "2026-10-01T12:00:00+02:00",
+      "municipalityRole": "conditional_direct_applicant_public_body",
+      "radarStatus": "absent_from_reference_snapshot",
+      "auditClass": "current_false_negative_action_level",
+      "severity": "high"
+    },
+    {
+      "id": "erasmus-2026-ka154",
+      "title": "Erasmus+ KA154 - Youth Participation Activities - second round",
+      "officialUrl": "https://agenziagioventu.gov.it/new-presentare-un-progetto/",
+      "deadlineAt": "2026-10-01T12:00:00+02:00",
+      "municipalityRole": "conditional_direct_applicant_public_body",
+      "radarStatus": "absent_from_reference_snapshot",
+      "auditClass": "current_false_negative_action_level",
+      "severity": "high"
+    },
+    {
+      "id": "erasmus-2026-ka155",
+      "title": "Erasmus+ KA155 - DiscoverEU Inclusion Action - second round",
+      "officialUrl": "https://agenziagioventu.gov.it/new-presentare-un-progetto/",
+      "deadlineAt": "2026-10-01T12:00:00+02:00",
+      "municipalityRole": "conditional_direct_applicant_public_body",
+      "radarStatus": "absent_from_reference_snapshot",
+      "auditClass": "current_false_negative_action_level",
+      "severity": "medium"
+    },
+    {
+      "id": "erasmus-2026-ka182",
+      "title": "Erasmus+ KA182 - Mobility of sport staff - second round",
+      "officialUrl": "https://agenziagioventu.gov.it/new-presentare-un-progetto/",
+      "deadlineAt": "2026-10-01T12:00:00+02:00",
+      "municipalityRole": "conditional_direct_applicant_local_public_authority",
+      "radarStatus": "absent_from_reference_snapshot",
+      "auditClass": "current_false_negative_action_level",
+      "severity": "critical",
+      "conditions": ["Comune/ente attivo nello sport e attivita fisica", "attivita grassroots pertinente"]
+    },
+    {
+      "id": "erasmus-2026-ka120",
+      "title": "Erasmus Accreditation KA120 - school/VET/adult education",
+      "officialUrl": "https://erasmus-plus.ec.europa.eu/programme-guide/part-b/key-action-1/erasmus-accreditation-vet-schools-adult-education",
+      "deadlineAt": "2026-09-29T12:00:00+02:00",
+      "municipalityRole": "conditional_direct_applicant_local_or_regional_public_authority",
+      "radarStatus": "absent_from_reference_snapshot",
+      "auditClass": "current_qualification_access_gap",
+      "severity": "high",
+      "conditions": ["ruolo effettivo nel settore scuola, VET o educazione adulti", "domanda alla National Agency italiana competente"]
+    },
+    {
+      "id": "esc-2026-volunteering-quality-label",
+      "title": "European Solidarity Corps - Volunteering Projects + Quality Label",
+      "officialUrl": "https://agenziagioventu.gov.it/new-presenta-un-progetto/",
+      "deadlineAt": "2026-10-01T12:00:00+02:00",
+      "municipalityRole": "conditional_direct_applicant_after_quality_label",
+      "radarStatus": "absent_from_reference_snapshot",
+      "auditClass": "current_false_negative_plus_rolling_qualification_gap",
+      "severity": "high",
+      "rollingComponent": "Quality Label applications are continuous during the year"
+    },
+    {
+      "id": "eu-ias-rapid-response-fund",
+      "title": "European Invasive Alien Species Rapid-Response Fund",
+      "officialUrl": "https://www.iucnsos.org/initiative/european-invasive-alien-species-rapid-response-fund/",
+      "publishedOrOpenedAt": "2026-04-24",
+      "deadlineAt": "2027-02-10T14:00:00+01:00",
+      "municipalityRole": "conditional_direct_public_authority_applicant",
+      "radarStatus": "absent_from_reference_snapshot",
+      "auditClass": "current_false_negative_third_party_editorial_gap",
+      "severity": "critical",
+      "minimumDetectionLagDaysAtSnapshot": 136,
+      "funding": "EUR 10,000-50,000 per project",
+      "conditions": ["new or emerging invasive alien species incursion", "early detection/rapid eradication", "project up to 12 months"],
+      "note": "EU-funded facility implemented by IUCN Save Our Species. Demonstrates a structural blind spot for EU-funded calls hosted by third-party implementers rather than Commission/CINEA programme pages."
+    }
+  ],
+  "calendarAndLifecycleReviews": [
+    {
+      "id": "horizon-mission-prizes-2026",
+      "title": "Four Horizon EU Mission Prizes for local authorities",
+      "officialUrl": "https://ec.europa.eu/info/funding-tenders/opportunities/docs/2021-2027/horizon/wp-call/2026-2027/wp-12-missions_horizon-2026-2027_en.pdf",
+      "plannedOpening": "Q3 2026",
+      "radarStatus": "absent",
+      "auditClass": "announced_upcoming_launch_overdue_review",
+      "severity": "high",
+      "prizes": [
+        "Mission Anchoring Prize",
+        "Mission Citizen Engagement Prize",
+        "Mission Ecosystem Prize",
+        "Mission Knowledge Valorisation Prize"
+      ],
+      "municipalityRole": "direct_local_public_authority_contestant",
+      "budgetPerPrize": "EUR 1.5 million",
+      "awardsPerPrize": [450000, 390000, 330000, 330000],
+      "note": "Il Work Programme annuncia il lancio in Q3 2026; al momento dell'audit non e stata trovata una call page definitiva. Serve una sentinella che segnali un launch window trascorso senza materializzazione."
+    },
+    {
+      "id": "cerv-remembrance-2026",
+      "title": "CERV European Remembrance 2026",
+      "officialUrl": "https://commission.europa.eu/funding-and-tenders/find-funding/eu-funding-programmes/citizens-equality-rights-and-values-programme/citizens-equality-rights-and-values-programme-overview_en",
+      "radarStatus": "calendar_revalidation_required",
+      "auditClass": "announced_upcoming_calendar_change",
+      "severity": "medium",
+      "note": "Planning e comunicazioni successive non sono risultate coerenti sulla finestra 2026. Non classificare come false negative current finche non viene verificata la call definitiva sul Funding & Tenders."
+    }
+  ],
+  "correctlyHeldOrUnresolved": [
+    {
+      "id": "cef-transport-2026",
+      "title": "2026 CEF Transport Calls for proposals",
+      "radarStatus": "audit_review_existing_sentinel_r03",
+      "auditClass": "correctly_held_scope_review",
+      "note": "Public bodies sono ammissibili, ma per una scheda comunale servono topic/TEN-T, asset/progetto e dove previsto accordo dello Stato membro. Non promuovere genericamente ai sette Comuni."
+    },
+    {
+      "id": "amif-integration-local-level-2026",
+      "title": "AMIF Specific Action - Integration at Local Level",
+      "officialUrl": "https://home-affairs.ec.europa.eu/news/integration-local-level-eur-77-million-under-amif-specific-action-2026-05-21_en",
+      "deadlineAt": "2026-10-02",
+      "radarStatus": "absent",
+      "auditClass": "indirect_route_gap_national_selection_unresolved",
+      "severity": "high",
+      "municipalityRole": "eligible_beneficiary_selected_via_national_managing_authority",
+      "note": "DG HOME invita Comuni e citta a passare dalla Managing Authority nazionale. Nelle ricerche effettuate sulle fonti FAMI/Ministero non e stato individuato un avviso italiano inequivocabilmente riferito a questa Specific Action; non si assume che non esista."
+    }
+  ],
+  "structuralDiagnosis": [
+    "configured_program_is_not_effective_topic_coverage",
+    "editorial_channel_coverage_must_be_separate_from_family_coverage",
+    "cascade_and_third_party_implementer_calls_need_dedicated_discovery",
+    "rolling_qualification_and_access_instruments_need_first_class_lifecycle",
+    "announced_calls_need_launch_window_sentinels",
+    "shared_management_needs_eu_to_national_route_tracking",
+    "detection_lag_must_be_measured_even_when_eventually_captured"
+  ],
+  "nextSweeps": [
+    "resolve remaining LIFE CET topics: ENERPOV, POLICY, RENEWHC, BETTERRENO, OSS and negative controls",
+    "resolve each Horizon Cities/Adaptation/Ocean topic to municipality-level eligibility for the seven Versilia municipalities",
+    "complete all nine NEB Facility 2026 topics with beneficiary/partner/end-user classification",
+    "resolve Erasmus+ actions against Italian National Agency definitions and municipality functions",
+    "repeat independent sweep on EU-funded project cascade calls and third-party implementers",
+    "repeat Commission Cities Portal and DG-by-DG sweep after corpus update",
+    "only after two consecutive sweeps with zero new current actionable cases propose engine implementation"
+  ]
+}

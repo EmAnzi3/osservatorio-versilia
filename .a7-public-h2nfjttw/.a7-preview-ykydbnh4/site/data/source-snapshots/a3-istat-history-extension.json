@@ -1,0 +1,2078 @@
+{
+  "schemaVersion": 1,
+  "referenceSnapshot": {
+    "path": "data/source-snapshots/istat-lavoro-istruzione-eta-genere-2024.json",
+    "sha256": "83fab795f7b7a84433473003bc100e911f98b1dbd7c4c58c3e8807f745659428",
+    "year": 2024
+  },
+  "historicalDiploma": {
+    "indicator": "Incidenza di adulti con diploma o laurea",
+    "scope": "25–64 anni, totale residenti",
+    "years": [
+      1991,
+      2001,
+      2011
+    ],
+    "towns": {
+      "046005": {
+        "town": "Camaiore",
+        "url": "https://ottomilacensus.istat.it/fileadmin/dati/csv/046/dati_046_005_010.csv",
+        "sha256": "1e9cb3e44adc7d9587b1e692fb2d015fcba126c02e9e8fe418819b438e669935",
+        "bytes": 2177,
+        "encoding": "cp1252",
+        "rawCsvBase64": "RGVzY3JpemlvbmUgdGVtYTtEZXNjcml6aW9uZSBzb3R0b3RlbWE7Tm9tZSBpbmRpY2F0b3JlO0Rlbm9taW5hemlvbmUxMTtBbm5vQ1A7VmFsdWUNCklzdHJ1emlvbmUgO0lzdHJ1emlvbmUgcGVyIGNsYXNzaSBkaSBldOA7SW5jaWRlbnphIGRpIGFkdWx0aSBjb24gZGlwbG9tYSBvIGxhdXJlYTtDYW1haW9yZTsxOTkxOzI0LDANCklzdHJ1emlvbmUgO0lzdHJ1emlvbmUgcGVyIGNsYXNzaSBkaSBldOA7SW5jaWRlbnphIGRpIGFkdWx0aSBjb24gZGlwbG9tYSBvIGxhdXJlYTtDYW1haW9yZTsyMDAxOzM3LDMNCklzdHJ1emlvbmUgO0lzdHJ1emlvbmUgcGVyIGNsYXNzaSBkaSBldOA7SW5jaWRlbnphIGRpIGFkdWx0aSBjb24gZGlwbG9tYSBvIGxhdXJlYTtDYW1haW9yZTsyMDExOzQ5LDINCklzdHJ1emlvbmUgO0lzdHJ1emlvbmUgcGVyIGNsYXNzaSBkaSBldOA7SW5jaWRlbnphIGRpIGFkdWx0aSBjb24gZGlwbG9tYSBvIGxhdXJlYTtUb3NjYW5hOzIwMTE7NTYsNA0KSXN0cnV6aW9uZSA7SXN0cnV6aW9uZSBwZXIgY2xhc3NpIGRpIGV04DtJbmNpZGVuemEgZGkgYWR1bHRpIGNvbiBkaXBsb21hIG8gbGF1cmVhO0l0YWxpYTsyMDExOzU1LDENCklzdHJ1emlvbmUgO0lzdHJ1emlvbmUgcGVyIGNsYXNzaSBkaSBldOA7SW5jaWRlbnphIGRpIGdpb3ZhbmkgY29uIGlzdHJ1emlvbmUgdW5pdmVyc2l0YXJpYTtDYW1haW9yZTsxOTkxOzYsNQ0KSXN0cnV6aW9uZSA7SXN0cnV6aW9uZSBwZXIgY2xhc3NpIGRpIGV04DtJbmNpZGVuemEgZGkgZ2lvdmFuaSBjb24gaXN0cnV6aW9uZSB1bml2ZXJzaXRhcmlhO0NhbWFpb3JlOzIwMDE7MTAsNg0KSXN0cnV6aW9uZSA7SXN0cnV6aW9uZSBwZXIgY2xhc3NpIGRpIGV04DtJbmNpZGVuemEgZGkgZ2lvdmFuaSBjb24gaXN0cnV6aW9uZSB1bml2ZXJzaXRhcmlhO0NhbWFpb3JlOzIwMTE7MTgsNg0KSXN0cnV6aW9uZSA7SXN0cnV6aW9uZSBwZXIgY2xhc3NpIGRpIGV04DtJbmNpZGVuemEgZGkgZ2lvdmFuaSBjb24gaXN0cnV6aW9uZSB1bml2ZXJzaXRhcmlhO1Rvc2NhbmE7MjAxMTsyNCwwDQpJc3RydXppb25lIDtJc3RydXppb25lIHBlciBjbGFzc2kgZGkgZXTgO0luY2lkZW56YSBkaSBnaW92YW5pIGNvbiBpc3RydXppb25lIHVuaXZlcnNpdGFyaWE7SXRhbGlhOzIwMTE7MjMsMg0KSXN0cnV6aW9uZSA7SXN0cnV6aW9uZSBwZXIgY2xhc3NpIGRpIGV04DtMaXZlbGxvIGRpIGlzdHJ1emlvbmUgZGVpIGdpb3ZhbmkgMTUtMTkgYW5uaTtDYW1haW9yZTsxOTkxOzk0LDgNCklzdHJ1emlvbmUgO0lzdHJ1emlvbmUgcGVyIGNsYXNzaSBkaSBldOA7TGl2ZWxsbyBkaSBpc3RydXppb25lIGRlaSBnaW92YW5pIDE1LTE5IGFubmk7Q2FtYWlvcmU7MjAwMTs5Niw0DQpJc3RydXppb25lIDtJc3RydXppb25lIHBlciBjbGFzc2kgZGkgZXTgO0xpdmVsbG8gZGkgaXN0cnV6aW9uZSBkZWkgZ2lvdmFuaSAxNS0xOSBhbm5pO0NhbWFpb3JlOzIwMTE7OTgsMQ0KSXN0cnV6aW9uZSA7SXN0cnV6aW9uZSBwZXIgY2xhc3NpIGRpIGV04DtMaXZlbGxvIGRpIGlzdHJ1emlvbmUgZGVpIGdpb3ZhbmkgMTUtMTkgYW5uaTtUb3NjYW5hOzIwMTE7OTgsMQ0KSXN0cnV6aW9uZSA7SXN0cnV6aW9uZSBwZXIgY2xhc3NpIGRpIGV04DtMaXZlbGxvIGRpIGlzdHJ1emlvbmUgZGVpIGdpb3ZhbmkgMTUtMTkgYW5uaTtJdGFsaWE7MjAxMTs5Nyw5DQpJc3RydXppb25lIDtJc3RydXppb25lIHBlciBjbGFzc2kgZGkgZXTgO0luY2lkZW56YSBkaSBhZHVsdGkgY29uIGxhIGxpY2VuemEgbWVkaWE7Q2FtYWlvcmU7MTk5MTsyOSwwDQpJc3RydXppb25lIDtJc3RydXppb25lIHBlciBjbGFzc2kgZGkgZXTgO0luY2lkZW56YSBkaSBhZHVsdGkgY29uIGxhIGxpY2VuemEgbWVkaWE7Q2FtYWlvcmU7MjAwMTszNiw3DQpJc3RydXppb25lIDtJc3RydXppb25lIHBlciBjbGFzc2kgZGkgZXTgO0luY2lkZW56YSBkaSBhZHVsdGkgY29uIGxhIGxpY2VuemEgbWVkaWE7Q2FtYWlvcmU7MjAxMTszOSwyDQpJc3RydXppb25lIDtJc3RydXppb25lIHBlciBjbGFzc2kgZGkgZXTgO0luY2lkZW56YSBkaSBhZHVsdGkgY29uIGxhIGxpY2VuemEgbWVkaWE7VG9zY2FuYTsyMDExOzMzLDMNCklzdHJ1emlvbmUgO0lzdHJ1emlvbmUgcGVyIGNsYXNzaSBkaSBldOA7SW5jaWRlbnphIGRpIGFkdWx0aSBjb24gbGEgbGljZW56YSBtZWRpYTtJdGFsaWE7MjAxMTszMyw1DQo=",
+        "records": [
+          {
+            "Descrizione tema": "Istruzione ",
+            "Descrizione sottotema": "Istruzione per classi di età",
+            "Nome indicatore": "Incidenza di adulti con diploma o laurea",
+            "Denominazione11": "Camaiore",
+            "AnnoCP": "1991",
+            "Value": "24,0"
+          },
+          {
+            "Descrizione tema": "Istruzione ",
+            "Descrizione sottotema": "Istruzione per classi di età",
+            "Nome indicatore": "Incidenza di adulti con diploma o laurea",
+            "Denominazione11": "Camaiore",
+            "AnnoCP": "2001",
+            "Value": "37,3"
+          },
+          {
+            "Descrizione tema": "Istruzione ",
+            "Descrizione sottotema": "Istruzione per classi di età",
+            "Nome indicatore": "Incidenza di adulti con diploma o laurea",
+            "Denominazione11": "Camaiore",
+            "AnnoCP": "2011",
+            "Value": "49,2"
+          },
+          {
+            "Descrizione tema": "Istruzione ",
+            "Descrizione sottotema": "Istruzione per classi di età",
+            "Nome indicatore": "Incidenza di adulti con diploma o laurea",
+            "Denominazione11": "Toscana",
+            "AnnoCP": "2011",
+            "Value": "56,4"
+          },
+          {
+            "Descrizione tema": "Istruzione ",
+            "Descrizione sottotema": "Istruzione per classi di età",
+            "Nome indicatore": "Incidenza di adulti con diploma o laurea",
+            "Denominazione11": "Italia",
+            "AnnoCP": "2011",
+            "Value": "55,1"
+          },
+          {
+            "Descrizione tema": "Istruzione ",
+            "Descrizione sottotema": "Istruzione per classi di età",
+            "Nome indicatore": "Incidenza di giovani con istruzione universitaria",
+            "Denominazione11": "Camaiore",
+            "AnnoCP": "1991",
+            "Value": "6,5"
+          },
+          {
+            "Descrizione tema": "Istruzione ",
+            "Descrizione sottotema": "Istruzione per classi di età",
+            "Nome indicatore": "Incidenza di giovani con istruzione universitaria",
+            "Denominazione11": "Camaiore",
+            "AnnoCP": "2001",
+            "Value": "10,6"
+          },
+          {
+            "Descrizione tema": "Istruzione ",
+            "Descrizione sottotema": "Istruzione per classi di età",
+            "Nome indicatore": "Incidenza di giovani con istruzione universitaria",
+            "Denominazione11": "Camaiore",
+            "AnnoCP": "2011",
+            "Value": "18,6"
+          },
+          {
+            "Descrizione tema": "Istruzione ",
+            "Descrizione sottotema": "Istruzione per classi di età",
+            "Nome indicatore": "Incidenza di giovani con istruzione universitaria",
+            "Denominazione11": "Toscana",
+            "AnnoCP": "2011",
+            "Value": "24,0"
+          },
+          {
+            "Descrizione tema": "Istruzione ",
+            "Descrizione sottotema": "Istruzione per classi di età",
+            "Nome indicatore": "Incidenza di giovani con istruzione universitaria",
+            "Denominazione11": "Italia",
+            "AnnoCP": "2011",
+            "Value": "23,2"
+          },
+          {
+            "Descrizione tema": "Istruzione ",
+            "Descrizione sottotema": "Istruzione per classi di età",
+            "Nome indicatore": "Livello di istruzione dei giovani 15-19 anni",
+            "Denominazione11": "Camaiore",
+            "AnnoCP": "1991",
+            "Value": "94,8"
+          },
+          {
+            "Descrizione tema": "Istruzione ",
+            "Descrizione sottotema": "Istruzione per classi di età",
+            "Nome indicatore": "Livello di istruzione dei giovani 15-19 anni",
+            "Denominazione11": "Camaiore",
+            "AnnoCP": "2001",
+            "Value": "96,4"
+          },
+          {
+            "Descrizione tema": "Istruzione ",
+            "Descrizione sottotema": "Istruzione per classi di età",
+            "Nome indicatore": "Livello di istruzione dei giovani 15-19 anni",
+            "Denominazione11": "Camaiore",
+            "AnnoCP": "2011",
+            "Value": "98,1"
+          },
+          {
+            "Descrizione tema": "Istruzione ",
+            "Descrizione sottotema": "Istruzione per classi di età",
+            "Nome indicatore": "Livello di istruzione dei giovani 15-19 anni",
+            "Denominazione11": "Toscana",
+            "AnnoCP": "2011",
+            "Value": "98,1"
+          },
+          {
+            "Descrizione tema": "Istruzione ",
+            "Descrizione sottotema": "Istruzione per classi di età",
+            "Nome indicatore": "Livello di istruzione dei giovani 15-19 anni",
+            "Denominazione11": "Italia",
+            "AnnoCP": "2011",
+            "Value": "97,9"
+          },
+          {
+            "Descrizione tema": "Istruzione ",
+            "Descrizione sottotema": "Istruzione per classi di età",
+            "Nome indicatore": "Incidenza di adulti con la licenza media",
+            "Denominazione11": "Camaiore",
+            "AnnoCP": "1991",
+            "Value": "29,0"
+          },
+          {
+            "Descrizione tema": "Istruzione ",
+            "Descrizione sottotema": "Istruzione per classi di età",
+            "Nome indicatore": "Incidenza di adulti con la licenza media",
+            "Denominazione11": "Camaiore",
+            "AnnoCP": "2001",
+            "Value": "36,7"
+          },
+          {
+            "Descrizione tema": "Istruzione ",
+            "Descrizione sottotema": "Istruzione per classi di età",
+            "Nome indicatore": "Incidenza di adulti con la licenza media",
+            "Denominazione11": "Camaiore",
+            "AnnoCP": "2011",
+            "Value": "39,2"
+          },
+          {
+            "Descrizione tema": "Istruzione ",
+            "Descrizione sottotema": "Istruzione per classi di età",
+            "Nome indicatore": "Incidenza di adulti con la licenza media",
+            "Denominazione11": "Toscana",
+            "AnnoCP": "2011",
+            "Value": "33,3"
+          },
+          {
+            "Descrizione tema": "Istruzione ",
+            "Descrizione sottotema": "Istruzione per classi di età",
+            "Nome indicatore": "Incidenza di adulti con la licenza media",
+            "Denominazione11": "Italia",
+            "AnnoCP": "2011",
+            "Value": "33,5"
+          }
+        ],
+        "years": [
+          1991,
+          2001,
+          2011
+        ],
+        "values": [
+          24.0,
+          37.3,
+          49.2
+        ]
+      },
+      "046013": {
+        "town": "Forte dei Marmi",
+        "url": "https://ottomilacensus.istat.it/fileadmin/dati/csv/046/dati_046_013_010.csv",
+        "sha256": "db46a5a7bd22c04646e3ecb764523fab2f144d4f556d57e534cac4cb5d8e5846",
+        "bytes": 2261,
+        "encoding": "cp1252",
+        "rawCsvBase64": "RGVzY3JpemlvbmUgdGVtYTtEZXNjcml6aW9uZSBzb3R0b3RlbWE7Tm9tZSBpbmRpY2F0b3JlO0Rlbm9taW5hemlvbmUxMTtBbm5vQ1A7VmFsdWUNCklzdHJ1emlvbmUgO0lzdHJ1emlvbmUgcGVyIGNsYXNzaSBkaSBldOA7SW5jaWRlbnphIGRpIGFkdWx0aSBjb24gZGlwbG9tYSBvIGxhdXJlYTtGb3J0ZSBkZWkgTWFybWk7MTk5MTszNCwzDQpJc3RydXppb25lIDtJc3RydXppb25lIHBlciBjbGFzc2kgZGkgZXTgO0luY2lkZW56YSBkaSBhZHVsdGkgY29uIGRpcGxvbWEgbyBsYXVyZWE7Rm9ydGUgZGVpIE1hcm1pOzIwMDE7NDksOQ0KSXN0cnV6aW9uZSA7SXN0cnV6aW9uZSBwZXIgY2xhc3NpIGRpIGV04DtJbmNpZGVuemEgZGkgYWR1bHRpIGNvbiBkaXBsb21hIG8gbGF1cmVhO0ZvcnRlIGRlaSBNYXJtaTsyMDExOzY0LDQNCklzdHJ1emlvbmUgO0lzdHJ1emlvbmUgcGVyIGNsYXNzaSBkaSBldOA7SW5jaWRlbnphIGRpIGFkdWx0aSBjb24gZGlwbG9tYSBvIGxhdXJlYTtUb3NjYW5hOzIwMTE7NTYsNA0KSXN0cnV6aW9uZSA7SXN0cnV6aW9uZSBwZXIgY2xhc3NpIGRpIGV04DtJbmNpZGVuemEgZGkgYWR1bHRpIGNvbiBkaXBsb21hIG8gbGF1cmVhO0l0YWxpYTsyMDExOzU1LDENCklzdHJ1emlvbmUgO0lzdHJ1emlvbmUgcGVyIGNsYXNzaSBkaSBldOA7SW5jaWRlbnphIGRpIGdpb3ZhbmkgY29uIGlzdHJ1emlvbmUgdW5pdmVyc2l0YXJpYTtGb3J0ZSBkZWkgTWFybWk7MTk5MTs4LDMNCklzdHJ1emlvbmUgO0lzdHJ1emlvbmUgcGVyIGNsYXNzaSBkaSBldOA7SW5jaWRlbnphIGRpIGdpb3ZhbmkgY29uIGlzdHJ1emlvbmUgdW5pdmVyc2l0YXJpYTtGb3J0ZSBkZWkgTWFybWk7MjAwMTsxNSw3DQpJc3RydXppb25lIDtJc3RydXppb25lIHBlciBjbGFzc2kgZGkgZXTgO0luY2lkZW56YSBkaSBnaW92YW5pIGNvbiBpc3RydXppb25lIHVuaXZlcnNpdGFyaWE7Rm9ydGUgZGVpIE1hcm1pOzIwMTE7MjksNA0KSXN0cnV6aW9uZSA7SXN0cnV6aW9uZSBwZXIgY2xhc3NpIGRpIGV04DtJbmNpZGVuemEgZGkgZ2lvdmFuaSBjb24gaXN0cnV6aW9uZSB1bml2ZXJzaXRhcmlhO1Rvc2NhbmE7MjAxMTsyNCwwDQpJc3RydXppb25lIDtJc3RydXppb25lIHBlciBjbGFzc2kgZGkgZXTgO0luY2lkZW56YSBkaSBnaW92YW5pIGNvbiBpc3RydXppb25lIHVuaXZlcnNpdGFyaWE7SXRhbGlhOzIwMTE7MjMsMg0KSXN0cnV6aW9uZSA7SXN0cnV6aW9uZSBwZXIgY2xhc3NpIGRpIGV04DtMaXZlbGxvIGRpIGlzdHJ1emlvbmUgZGVpIGdpb3ZhbmkgMTUtMTkgYW5uaTtGb3J0ZSBkZWkgTWFybWk7MTk5MTs5NSwzDQpJc3RydXppb25lIDtJc3RydXppb25lIHBlciBjbGFzc2kgZGkgZXTgO0xpdmVsbG8gZGkgaXN0cnV6aW9uZSBkZWkgZ2lvdmFuaSAxNS0xOSBhbm5pO0ZvcnRlIGRlaSBNYXJtaTsyMDAxOzk4LDYNCklzdHJ1emlvbmUgO0lzdHJ1emlvbmUgcGVyIGNsYXNzaSBkaSBldOA7TGl2ZWxsbyBkaSBpc3RydXppb25lIGRlaSBnaW92YW5pIDE1LTE5IGFubmk7Rm9ydGUgZGVpIE1hcm1pOzIwMTE7OTcsNw0KSXN0cnV6aW9uZSA7SXN0cnV6aW9uZSBwZXIgY2xhc3NpIGRpIGV04DtMaXZlbGxvIGRpIGlzdHJ1emlvbmUgZGVpIGdpb3ZhbmkgMTUtMTkgYW5uaTtUb3NjYW5hOzIwMTE7OTgsMQ0KSXN0cnV6aW9uZSA7SXN0cnV6aW9uZSBwZXIgY2xhc3NpIGRpIGV04DtMaXZlbGxvIGRpIGlzdHJ1emlvbmUgZGVpIGdpb3ZhbmkgMTUtMTkgYW5uaTtJdGFsaWE7MjAxMTs5Nyw5DQpJc3RydXppb25lIDtJc3RydXppb25lIHBlciBjbGFzc2kgZGkgZXTgO0luY2lkZW56YSBkaSBhZHVsdGkgY29uIGxhIGxpY2VuemEgbWVkaWE7Rm9ydGUgZGVpIE1hcm1pOzE5OTE7MzAsMQ0KSXN0cnV6aW9uZSA7SXN0cnV6aW9uZSBwZXIgY2xhc3NpIGRpIGV04DtJbmNpZGVuemEgZGkgYWR1bHRpIGNvbiBsYSBsaWNlbnphIG1lZGlhO0ZvcnRlIGRlaSBNYXJtaTsyMDAxOzMxLDQNCklzdHJ1emlvbmUgO0lzdHJ1emlvbmUgcGVyIGNsYXNzaSBkaSBldOA7SW5jaWRlbnphIGRpIGFkdWx0aSBjb24gbGEgbGljZW56YSBtZWRpYTtGb3J0ZSBkZWkgTWFybWk7MjAxMTsyOCwwDQpJc3RydXppb25lIDtJc3RydXppb25lIHBlciBjbGFzc2kgZGkgZXTgO0luY2lkZW56YSBkaSBhZHVsdGkgY29uIGxhIGxpY2VuemEgbWVkaWE7VG9zY2FuYTsyMDExOzMzLDMNCklzdHJ1emlvbmUgO0lzdHJ1emlvbmUgcGVyIGNsYXNzaSBkaSBldOA7SW5jaWRlbnphIGRpIGFkdWx0aSBjb24gbGEgbGljZW56YSBtZWRpYTtJdGFsaWE7MjAxMTszMyw1DQo=",
+        "records": [
+          {
+            "Descrizione tema": "Istruzione ",
+            "Descrizione sottotema": "Istruzione per classi di età",
+            "Nome indicatore": "Incidenza di adulti con diploma o laurea",
+            "Denominazione11": "Forte dei Marmi",
+            "AnnoCP": "1991",
+            "Value": "34,3"
+          },
+          {
+            "Descrizione tema": "Istruzione ",
+            "Descrizione sottotema": "Istruzione per classi di età",
+            "Nome indicatore": "Incidenza di adulti con diploma o laurea",
+            "Denominazione11": "Forte dei Marmi",
+            "AnnoCP": "2001",
+            "Value": "49,9"
+          },
+          {
+            "Descrizione tema": "Istruzione ",
+            "Descrizione sottotema": "Istruzione per classi di età",
+            "Nome indicatore": "Incidenza di adulti con diploma o laurea",
+            "Denominazione11": "Forte dei Marmi",
+            "AnnoCP": "2011",
+            "Value": "64,4"
+          },
+          {
+            "Descrizione tema": "Istruzione ",
+            "Descrizione sottotema": "Istruzione per classi di età",
+            "Nome indicatore": "Incidenza di adulti con diploma o laurea",
+            "Denominazione11": "Toscana",
+            "AnnoCP": "2011",
+            "Value": "56,4"
+          },
+          {
+            "Descrizione tema": "Istruzione ",
+            "Descrizione sottotema": "Istruzione per classi di età",
+            "Nome indicatore": "Incidenza di adulti con diploma o laurea",
+            "Denominazione11": "Italia",
+            "AnnoCP": "2011",
+            "Value": "55,1"
+          },
+          {
+            "Descrizione tema": "Istruzione ",
+            "Descrizione sottotema": "Istruzione per classi di età",
+            "Nome indicatore": "Incidenza di giovani con istruzione universitaria",
+            "Denominazione11": "Forte dei Marmi",
+            "AnnoCP": "1991",
+            "Value": "8,3"
+          },
+          {
+            "Descrizione tema": "Istruzione ",
+            "Descrizione sottotema": "Istruzione per classi di età",
+            "Nome indicatore": "Incidenza di giovani con istruzione universitaria",
+            "Denominazione11": "Forte dei Marmi",
+            "AnnoCP": "2001",
+            "Value": "15,7"
+          },
+          {
+            "Descrizione tema": "Istruzione ",
+            "Descrizione sottotema": "Istruzione per classi di età",
+            "Nome indicatore": "Incidenza di giovani con istruzione universitaria",
+            "Denominazione11": "Forte dei Marmi",
+            "AnnoCP": "2011",
+            "Value": "29,4"
+          },
+          {
+            "Descrizione tema": "Istruzione ",
+            "Descrizione sottotema": "Istruzione per classi di età",
+            "Nome indicatore": "Incidenza di giovani con istruzione universitaria",
+            "Denominazione11": "Toscana",
+            "AnnoCP": "2011",
+            "Value": "24,0"
+          },
+          {
+            "Descrizione tema": "Istruzione ",
+            "Descrizione sottotema": "Istruzione per classi di età",
+            "Nome indicatore": "Incidenza di giovani con istruzione universitaria",
+            "Denominazione11": "Italia",
+            "AnnoCP": "2011",
+            "Value": "23,2"
+          },
+          {
+            "Descrizione tema": "Istruzione ",
+            "Descrizione sottotema": "Istruzione per classi di età",
+            "Nome indicatore": "Livello di istruzione dei giovani 15-19 anni",
+            "Denominazione11": "Forte dei Marmi",
+            "AnnoCP": "1991",
+            "Value": "95,3"
+          },
+          {
+            "Descrizione tema": "Istruzione ",
+            "Descrizione sottotema": "Istruzione per classi di età",
+            "Nome indicatore": "Livello di istruzione dei giovani 15-19 anni",
+            "Denominazione11": "Forte dei Marmi",
+            "AnnoCP": "2001",
+            "Value": "98,6"
+          },
+          {
+            "Descrizione tema": "Istruzione ",
+            "Descrizione sottotema": "Istruzione per classi di età",
+            "Nome indicatore": "Livello di istruzione dei giovani 15-19 anni",
+            "Denominazione11": "Forte dei Marmi",
+            "AnnoCP": "2011",
+            "Value": "97,7"
+          },
+          {
+            "Descrizione tema": "Istruzione ",
+            "Descrizione sottotema": "Istruzione per classi di età",
+            "Nome indicatore": "Livello di istruzione dei giovani 15-19 anni",
+            "Denominazione11": "Toscana",
+            "AnnoCP": "2011",
+            "Value": "98,1"
+          },
+          {
+            "Descrizione tema": "Istruzione ",
+            "Descrizione sottotema": "Istruzione per classi di età",
+            "Nome indicatore": "Livello di istruzione dei giovani 15-19 anni",
+            "Denominazione11": "Italia",
+            "AnnoCP": "2011",
+            "Value": "97,9"
+          },
+          {
+            "Descrizione tema": "Istruzione ",
+            "Descrizione sottotema": "Istruzione per classi di età",
+            "Nome indicatore": "Incidenza di adulti con la licenza media",
+            "Denominazione11": "Forte dei Marmi",
+            "AnnoCP": "1991",
+            "Value": "30,1"
+          },
+          {
+            "Descrizione tema": "Istruzione ",
+            "Descrizione sottotema": "Istruzione per classi di età",
+            "Nome indicatore": "Incidenza di adulti con la licenza media",
+            "Denominazione11": "Forte dei Marmi",
+            "AnnoCP": "2001",
+            "Value": "31,4"
+          },
+          {
+            "Descrizione tema": "Istruzione ",
+            "Descrizione sottotema": "Istruzione per classi di età",
+            "Nome indicatore": "Incidenza di adulti con la licenza media",
+            "Denominazione11": "Forte dei Marmi",
+            "AnnoCP": "2011",
+            "Value": "28,0"
+          },
+          {
+            "Descrizione tema": "Istruzione ",
+            "Descrizione sottotema": "Istruzione per classi di età",
+            "Nome indicatore": "Incidenza di adulti con la licenza media",
+            "Denominazione11": "Toscana",
+            "AnnoCP": "2011",
+            "Value": "33,3"
+          },
+          {
+            "Descrizione tema": "Istruzione ",
+            "Descrizione sottotema": "Istruzione per classi di età",
+            "Nome indicatore": "Incidenza di adulti con la licenza media",
+            "Denominazione11": "Italia",
+            "AnnoCP": "2011",
+            "Value": "33,5"
+          }
+        ],
+        "years": [
+          1991,
+          2001,
+          2011
+        ],
+        "values": [
+          34.3,
+          49.9,
+          64.4
+        ]
+      },
+      "046018": {
+        "town": "Massarosa",
+        "url": "https://ottomilacensus.istat.it/fileadmin/dati/csv/046/dati_046_018_010.csv",
+        "sha256": "3acbcbec79e9e177b0d6c32ec1305f30baac4f0e7d4994dd103f06f73c7ebf85",
+        "bytes": 2188,
+        "encoding": "cp1252",
+        "rawCsvBase64": "RGVzY3JpemlvbmUgdGVtYTtEZXNjcml6aW9uZSBzb3R0b3RlbWE7Tm9tZSBpbmRpY2F0b3JlO0Rlbm9taW5hemlvbmUxMTtBbm5vQ1A7VmFsdWUNCklzdHJ1emlvbmUgO0lzdHJ1emlvbmUgcGVyIGNsYXNzaSBkaSBldOA7SW5jaWRlbnphIGRpIGFkdWx0aSBjb24gZGlwbG9tYSBvIGxhdXJlYTtNYXNzYXJvc2E7MTk5MTsxOSwzDQpJc3RydXppb25lIDtJc3RydXppb25lIHBlciBjbGFzc2kgZGkgZXTgO0luY2lkZW56YSBkaSBhZHVsdGkgY29uIGRpcGxvbWEgbyBsYXVyZWE7TWFzc2Fyb3NhOzIwMDE7MzIsMg0KSXN0cnV6aW9uZSA7SXN0cnV6aW9uZSBwZXIgY2xhc3NpIGRpIGV04DtJbmNpZGVuemEgZGkgYWR1bHRpIGNvbiBkaXBsb21hIG8gbGF1cmVhO01hc3Nhcm9zYTsyMDExOzQ2LDENCklzdHJ1emlvbmUgO0lzdHJ1emlvbmUgcGVyIGNsYXNzaSBkaSBldOA7SW5jaWRlbnphIGRpIGFkdWx0aSBjb24gZGlwbG9tYSBvIGxhdXJlYTtUb3NjYW5hOzIwMTE7NTYsNA0KSXN0cnV6aW9uZSA7SXN0cnV6aW9uZSBwZXIgY2xhc3NpIGRpIGV04DtJbmNpZGVuemEgZGkgYWR1bHRpIGNvbiBkaXBsb21hIG8gbGF1cmVhO0l0YWxpYTsyMDExOzU1LDENCklzdHJ1emlvbmUgO0lzdHJ1emlvbmUgcGVyIGNsYXNzaSBkaSBldOA7SW5jaWRlbnphIGRpIGdpb3ZhbmkgY29uIGlzdHJ1emlvbmUgdW5pdmVyc2l0YXJpYTtNYXNzYXJvc2E7MTk5MTszLDUNCklzdHJ1emlvbmUgO0lzdHJ1emlvbmUgcGVyIGNsYXNzaSBkaSBldOA7SW5jaWRlbnphIGRpIGdpb3ZhbmkgY29uIGlzdHJ1emlvbmUgdW5pdmVyc2l0YXJpYTtNYXNzYXJvc2E7MjAwMTs3LDgNCklzdHJ1emlvbmUgO0lzdHJ1emlvbmUgcGVyIGNsYXNzaSBkaSBldOA7SW5jaWRlbnphIGRpIGdpb3ZhbmkgY29uIGlzdHJ1emlvbmUgdW5pdmVyc2l0YXJpYTtNYXNzYXJvc2E7MjAxMTsxNiw1DQpJc3RydXppb25lIDtJc3RydXppb25lIHBlciBjbGFzc2kgZGkgZXTgO0luY2lkZW56YSBkaSBnaW92YW5pIGNvbiBpc3RydXppb25lIHVuaXZlcnNpdGFyaWE7VG9zY2FuYTsyMDExOzI0LDANCklzdHJ1emlvbmUgO0lzdHJ1emlvbmUgcGVyIGNsYXNzaSBkaSBldOA7SW5jaWRlbnphIGRpIGdpb3ZhbmkgY29uIGlzdHJ1emlvbmUgdW5pdmVyc2l0YXJpYTtJdGFsaWE7MjAxMTsyMywyDQpJc3RydXppb25lIDtJc3RydXppb25lIHBlciBjbGFzc2kgZGkgZXTgO0xpdmVsbG8gZGkgaXN0cnV6aW9uZSBkZWkgZ2lvdmFuaSAxNS0xOSBhbm5pO01hc3Nhcm9zYTsxOTkxOzkzLDMNCklzdHJ1emlvbmUgO0lzdHJ1emlvbmUgcGVyIGNsYXNzaSBkaSBldOA7TGl2ZWxsbyBkaSBpc3RydXppb25lIGRlaSBnaW92YW5pIDE1LTE5IGFubmk7TWFzc2Fyb3NhOzIwMDE7OTgsNA0KSXN0cnV6aW9uZSA7SXN0cnV6aW9uZSBwZXIgY2xhc3NpIGRpIGV04DtMaXZlbGxvIGRpIGlzdHJ1emlvbmUgZGVpIGdpb3ZhbmkgMTUtMTkgYW5uaTtNYXNzYXJvc2E7MjAxMTs5OCw3DQpJc3RydXppb25lIDtJc3RydXppb25lIHBlciBjbGFzc2kgZGkgZXTgO0xpdmVsbG8gZGkgaXN0cnV6aW9uZSBkZWkgZ2lvdmFuaSAxNS0xOSBhbm5pO1Rvc2NhbmE7MjAxMTs5OCwxDQpJc3RydXppb25lIDtJc3RydXppb25lIHBlciBjbGFzc2kgZGkgZXTgO0xpdmVsbG8gZGkgaXN0cnV6aW9uZSBkZWkgZ2lvdmFuaSAxNS0xOSBhbm5pO0l0YWxpYTsyMDExOzk3LDkNCklzdHJ1emlvbmUgO0lzdHJ1emlvbmUgcGVyIGNsYXNzaSBkaSBldOA7SW5jaWRlbnphIGRpIGFkdWx0aSBjb24gbGEgbGljZW56YSBtZWRpYTtNYXNzYXJvc2E7MTk5MTszMCw3DQpJc3RydXppb25lIDtJc3RydXppb25lIHBlciBjbGFzc2kgZGkgZXTgO0luY2lkZW56YSBkaSBhZHVsdGkgY29uIGxhIGxpY2VuemEgbWVkaWE7TWFzc2Fyb3NhOzIwMDE7NDAsOQ0KSXN0cnV6aW9uZSA7SXN0cnV6aW9uZSBwZXIgY2xhc3NpIGRpIGV04DtJbmNpZGVuemEgZGkgYWR1bHRpIGNvbiBsYSBsaWNlbnphIG1lZGlhO01hc3Nhcm9zYTsyMDExOzQyLDMNCklzdHJ1emlvbmUgO0lzdHJ1emlvbmUgcGVyIGNsYXNzaSBkaSBldOA7SW5jaWRlbnphIGRpIGFkdWx0aSBjb24gbGEgbGljZW56YSBtZWRpYTtUb3NjYW5hOzIwMTE7MzMsMw0KSXN0cnV6aW9uZSA7SXN0cnV6aW9uZSBwZXIgY2xhc3NpIGRpIGV04DtJbmNpZGVuemEgZGkgYWR1bHRpIGNvbiBsYSBsaWNlbnphIG1lZGlhO0l0YWxpYTsyMDExOzMzLDUNCg==",
+        "records": [
+          {
+            "Descrizione tema": "Istruzione ",
+            "Descrizione sottotema": "Istruzione per classi di età",
+            "Nome indicatore": "Incidenza di adulti con diploma o laurea",
+            "Denominazione11": "Massarosa",
+            "AnnoCP": "1991",
+            "Value": "19,3"
+          },
+          {
+            "Descrizione tema": "Istruzione ",
+            "Descrizione sottotema": "Istruzione per classi di età",
+            "Nome indicatore": "Incidenza di adulti con diploma o laurea",
+            "Denominazione11": "Massarosa",
+            "AnnoCP": "2001",
+            "Value": "32,2"
+          },
+          {
+            "Descrizione tema": "Istruzione ",
+            "Descrizione sottotema": "Istruzione per classi di età",
+            "Nome indicatore": "Incidenza di adulti con diploma o laurea",
+            "Denominazione11": "Massarosa",
+            "AnnoCP": "2011",
+            "Value": "46,1"
+          },
+          {
+            "Descrizione tema": "Istruzione ",
+            "Descrizione sottotema": "Istruzione per classi di età",
+            "Nome indicatore": "Incidenza di adulti con diploma o laurea",
+            "Denominazione11": "Toscana",
+            "AnnoCP": "2011",
+            "Value": "56,4"
+          },
+          {
+            "Descrizione tema": "Istruzione ",
+            "Descrizione sottotema": "Istruzione per classi di età",
+            "Nome indicatore": "Incidenza di adulti con diploma o laurea",
+            "Denominazione11": "Italia",
+            "AnnoCP": "2011",
+            "Value": "55,1"
+          },
+          {
+            "Descrizione tema": "Istruzione ",
+            "Descrizione sottotema": "Istruzione per classi di età",
+            "Nome indicatore": "Incidenza di giovani con istruzione universitaria",
+            "Denominazione11": "Massarosa",
+            "AnnoCP": "1991",
+            "Value": "3,5"
+          },
+          {
+            "Descrizione tema": "Istruzione ",
+            "Descrizione sottotema": "Istruzione per classi di età",
+            "Nome indicatore": "Incidenza di giovani con istruzione universitaria",
+            "Denominazione11": "Massarosa",
+            "AnnoCP": "2001",
+            "Value": "7,8"
+          },
+          {
+            "Descrizione tema": "Istruzione ",
+            "Descrizione sottotema": "Istruzione per classi di età",
+            "Nome indicatore": "Incidenza di giovani con istruzione universitaria",
+            "Denominazione11": "Massarosa",
+            "AnnoCP": "2011",
+            "Value": "16,5"
+          },
+          {
+            "Descrizione tema": "Istruzione ",
+            "Descrizione sottotema": "Istruzione per classi di età",
+            "Nome indicatore": "Incidenza di giovani con istruzione universitaria",
+            "Denominazione11": "Toscana",
+            "AnnoCP": "2011",
+            "Value": "24,0"
+          },
+          {
+            "Descrizione tema": "Istruzione ",
+            "Descrizione sottotema": "Istruzione per classi di età",
+            "Nome indicatore": "Incidenza di giovani con istruzione universitaria",
+            "Denominazione11": "Italia",
+            "AnnoCP": "2011",
+            "Value": "23,2"
+          },
+          {
+            "Descrizione tema": "Istruzione ",
+            "Descrizione sottotema": "Istruzione per classi di età",
+            "Nome indicatore": "Livello di istruzione dei giovani 15-19 anni",
+            "Denominazione11": "Massarosa",
+            "AnnoCP": "1991",
+            "Value": "93,3"
+          },
+          {
+            "Descrizione tema": "Istruzione ",
+            "Descrizione sottotema": "Istruzione per classi di età",
+            "Nome indicatore": "Livello di istruzione dei giovani 15-19 anni",
+            "Denominazione11": "Massarosa",
+            "AnnoCP": "2001",
+            "Value": "98,4"
+          },
+          {
+            "Descrizione tema": "Istruzione ",
+            "Descrizione sottotema": "Istruzione per classi di età",
+            "Nome indicatore": "Livello di istruzione dei giovani 15-19 anni",
+            "Denominazione11": "Massarosa",
+            "AnnoCP": "2011",
+            "Value": "98,7"
+          },
+          {
+            "Descrizione tema": "Istruzione ",
+            "Descrizione sottotema": "Istruzione per classi di età",
+            "Nome indicatore": "Livello di istruzione dei giovani 15-19 anni",
+            "Denominazione11": "Toscana",
+            "AnnoCP": "2011",
+            "Value": "98,1"
+          },
+          {
+            "Descrizione tema": "Istruzione ",
+            "Descrizione sottotema": "Istruzione per classi di età",
+            "Nome indicatore": "Livello di istruzione dei giovani 15-19 anni",
+            "Denominazione11": "Italia",
+            "AnnoCP": "2011",
+            "Value": "97,9"
+          },
+          {
+            "Descrizione tema": "Istruzione ",
+            "Descrizione sottotema": "Istruzione per classi di età",
+            "Nome indicatore": "Incidenza di adulti con la licenza media",
+            "Denominazione11": "Massarosa",
+            "AnnoCP": "1991",
+            "Value": "30,7"
+          },
+          {
+            "Descrizione tema": "Istruzione ",
+            "Descrizione sottotema": "Istruzione per classi di età",
+            "Nome indicatore": "Incidenza di adulti con la licenza media",
+            "Denominazione11": "Massarosa",
+            "AnnoCP": "2001",
+            "Value": "40,9"
+          },
+          {
+            "Descrizione tema": "Istruzione ",
+            "Descrizione sottotema": "Istruzione per classi di età",
+            "Nome indicatore": "Incidenza di adulti con la licenza media",
+            "Denominazione11": "Massarosa",
+            "AnnoCP": "2011",
+            "Value": "42,3"
+          },
+          {
+            "Descrizione tema": "Istruzione ",
+            "Descrizione sottotema": "Istruzione per classi di età",
+            "Nome indicatore": "Incidenza di adulti con la licenza media",
+            "Denominazione11": "Toscana",
+            "AnnoCP": "2011",
+            "Value": "33,3"
+          },
+          {
+            "Descrizione tema": "Istruzione ",
+            "Descrizione sottotema": "Istruzione per classi di età",
+            "Nome indicatore": "Incidenza di adulti con la licenza media",
+            "Denominazione11": "Italia",
+            "AnnoCP": "2011",
+            "Value": "33,5"
+          }
+        ],
+        "years": [
+          1991,
+          2001,
+          2011
+        ],
+        "values": [
+          19.3,
+          32.2,
+          46.1
+        ]
+      },
+      "046024": {
+        "town": "Pietrasanta",
+        "url": "https://ottomilacensus.istat.it/fileadmin/dati/csv/046/dati_046_024_010.csv",
+        "sha256": "9d3b2509cea5a3622ac75382e8ab0aa1bea3a07e0bc89981688ab7f6b96a83da",
+        "bytes": 2213,
+        "encoding": "cp1252",
+        "rawCsvBase64": "RGVzY3JpemlvbmUgdGVtYTtEZXNjcml6aW9uZSBzb3R0b3RlbWE7Tm9tZSBpbmRpY2F0b3JlO0Rlbm9taW5hemlvbmUxMTtBbm5vQ1A7VmFsdWUNCklzdHJ1emlvbmUgO0lzdHJ1emlvbmUgcGVyIGNsYXNzaSBkaSBldOA7SW5jaWRlbnphIGRpIGFkdWx0aSBjb24gZGlwbG9tYSBvIGxhdXJlYTtQaWV0cmFzYW50YTsxOTkxOzI2LDcNCklzdHJ1emlvbmUgO0lzdHJ1emlvbmUgcGVyIGNsYXNzaSBkaSBldOA7SW5jaWRlbnphIGRpIGFkdWx0aSBjb24gZGlwbG9tYSBvIGxhdXJlYTtQaWV0cmFzYW50YTsyMDAxOzQxLDcNCklzdHJ1emlvbmUgO0lzdHJ1emlvbmUgcGVyIGNsYXNzaSBkaSBldOA7SW5jaWRlbnphIGRpIGFkdWx0aSBjb24gZGlwbG9tYSBvIGxhdXJlYTtQaWV0cmFzYW50YTsyMDExOzU1LDUNCklzdHJ1emlvbmUgO0lzdHJ1emlvbmUgcGVyIGNsYXNzaSBkaSBldOA7SW5jaWRlbnphIGRpIGFkdWx0aSBjb24gZGlwbG9tYSBvIGxhdXJlYTtUb3NjYW5hOzIwMTE7NTYsNA0KSXN0cnV6aW9uZSA7SXN0cnV6aW9uZSBwZXIgY2xhc3NpIGRpIGV04DtJbmNpZGVuemEgZGkgYWR1bHRpIGNvbiBkaXBsb21hIG8gbGF1cmVhO0l0YWxpYTsyMDExOzU1LDENCklzdHJ1emlvbmUgO0lzdHJ1emlvbmUgcGVyIGNsYXNzaSBkaSBldOA7SW5jaWRlbnphIGRpIGdpb3ZhbmkgY29uIGlzdHJ1emlvbmUgdW5pdmVyc2l0YXJpYTtQaWV0cmFzYW50YTsxOTkxOzgsNA0KSXN0cnV6aW9uZSA7SXN0cnV6aW9uZSBwZXIgY2xhc3NpIGRpIGV04DtJbmNpZGVuemEgZGkgZ2lvdmFuaSBjb24gaXN0cnV6aW9uZSB1bml2ZXJzaXRhcmlhO1BpZXRyYXNhbnRhOzIwMDE7MTEsOA0KSXN0cnV6aW9uZSA7SXN0cnV6aW9uZSBwZXIgY2xhc3NpIGRpIGV04DtJbmNpZGVuemEgZGkgZ2lvdmFuaSBjb24gaXN0cnV6aW9uZSB1bml2ZXJzaXRhcmlhO1BpZXRyYXNhbnRhOzIwMTE7MjMsMw0KSXN0cnV6aW9uZSA7SXN0cnV6aW9uZSBwZXIgY2xhc3NpIGRpIGV04DtJbmNpZGVuemEgZGkgZ2lvdmFuaSBjb24gaXN0cnV6aW9uZSB1bml2ZXJzaXRhcmlhO1Rvc2NhbmE7MjAxMTsyNCwwDQpJc3RydXppb25lIDtJc3RydXppb25lIHBlciBjbGFzc2kgZGkgZXTgO0luY2lkZW56YSBkaSBnaW92YW5pIGNvbiBpc3RydXppb25lIHVuaXZlcnNpdGFyaWE7SXRhbGlhOzIwMTE7MjMsMg0KSXN0cnV6aW9uZSA7SXN0cnV6aW9uZSBwZXIgY2xhc3NpIGRpIGV04DtMaXZlbGxvIGRpIGlzdHJ1emlvbmUgZGVpIGdpb3ZhbmkgMTUtMTkgYW5uaTtQaWV0cmFzYW50YTsxOTkxOzk0LDgNCklzdHJ1emlvbmUgO0lzdHJ1emlvbmUgcGVyIGNsYXNzaSBkaSBldOA7TGl2ZWxsbyBkaSBpc3RydXppb25lIGRlaSBnaW92YW5pIDE1LTE5IGFubmk7UGlldHJhc2FudGE7MjAwMTs5OCw3DQpJc3RydXppb25lIDtJc3RydXppb25lIHBlciBjbGFzc2kgZGkgZXTgO0xpdmVsbG8gZGkgaXN0cnV6aW9uZSBkZWkgZ2lvdmFuaSAxNS0xOSBhbm5pO1BpZXRyYXNhbnRhOzIwMTE7OTgsOQ0KSXN0cnV6aW9uZSA7SXN0cnV6aW9uZSBwZXIgY2xhc3NpIGRpIGV04DtMaXZlbGxvIGRpIGlzdHJ1emlvbmUgZGVpIGdpb3ZhbmkgMTUtMTkgYW5uaTtUb3NjYW5hOzIwMTE7OTgsMQ0KSXN0cnV6aW9uZSA7SXN0cnV6aW9uZSBwZXIgY2xhc3NpIGRpIGV04DtMaXZlbGxvIGRpIGlzdHJ1emlvbmUgZGVpIGdpb3ZhbmkgMTUtMTkgYW5uaTtJdGFsaWE7MjAxMTs5Nyw5DQpJc3RydXppb25lIDtJc3RydXppb25lIHBlciBjbGFzc2kgZGkgZXTgO0luY2lkZW56YSBkaSBhZHVsdGkgY29uIGxhIGxpY2VuemEgbWVkaWE7UGlldHJhc2FudGE7MTk5MTsyOSw1DQpJc3RydXppb25lIDtJc3RydXppb25lIHBlciBjbGFzc2kgZGkgZXTgO0luY2lkZW56YSBkaSBhZHVsdGkgY29uIGxhIGxpY2VuemEgbWVkaWE7UGlldHJhc2FudGE7MjAwMTszNSw5DQpJc3RydXppb25lIDtJc3RydXppb25lIHBlciBjbGFzc2kgZGkgZXTgO0luY2lkZW56YSBkaSBhZHVsdGkgY29uIGxhIGxpY2VuemEgbWVkaWE7UGlldHJhc2FudGE7MjAxMTszNCw5DQpJc3RydXppb25lIDtJc3RydXppb25lIHBlciBjbGFzc2kgZGkgZXTgO0luY2lkZW56YSBkaSBhZHVsdGkgY29uIGxhIGxpY2VuemEgbWVkaWE7VG9zY2FuYTsyMDExOzMzLDMNCklzdHJ1emlvbmUgO0lzdHJ1emlvbmUgcGVyIGNsYXNzaSBkaSBldOA7SW5jaWRlbnphIGRpIGFkdWx0aSBjb24gbGEgbGljZW56YSBtZWRpYTtJdGFsaWE7MjAxMTszMyw1DQo=",
+        "records": [
+          {
+            "Descrizione tema": "Istruzione ",
+            "Descrizione sottotema": "Istruzione per classi di età",
+            "Nome indicatore": "Incidenza di adulti con diploma o laurea",
+            "Denominazione11": "Pietrasanta",
+            "AnnoCP": "1991",
+            "Value": "26,7"
+          },
+          {
+            "Descrizione tema": "Istruzione ",
+            "Descrizione sottotema": "Istruzione per classi di età",
+            "Nome indicatore": "Incidenza di adulti con diploma o laurea",
+            "Denominazione11": "Pietrasanta",
+            "AnnoCP": "2001",
+            "Value": "41,7"
+          },
+          {
+            "Descrizione tema": "Istruzione ",
+            "Descrizione sottotema": "Istruzione per classi di età",
+            "Nome indicatore": "Incidenza di adulti con diploma o laurea",
+            "Denominazione11": "Pietrasanta",
+            "AnnoCP": "2011",
+            "Value": "55,5"
+          },
+          {
+            "Descrizione tema": "Istruzione ",
+            "Descrizione sottotema": "Istruzione per classi di età",
+            "Nome indicatore": "Incidenza di adulti con diploma o laurea",
+            "Denominazione11": "Toscana",
+            "AnnoCP": "2011",
+            "Value": "56,4"
+          },
+          {
+            "Descrizione tema": "Istruzione ",
+            "Descrizione sottotema": "Istruzione per classi di età",
+            "Nome indicatore": "Incidenza di adulti con diploma o laurea",
+            "Denominazione11": "Italia",
+            "AnnoCP": "2011",
+            "Value": "55,1"
+          },
+          {
+            "Descrizione tema": "Istruzione ",
+            "Descrizione sottotema": "Istruzione per classi di età",
+            "Nome indicatore": "Incidenza di giovani con istruzione universitaria",
+            "Denominazione11": "Pietrasanta",
+            "AnnoCP": "1991",
+            "Value": "8,4"
+          },
+          {
+            "Descrizione tema": "Istruzione ",
+            "Descrizione sottotema": "Istruzione per classi di età",
+            "Nome indicatore": "Incidenza di giovani con istruzione universitaria",
+            "Denominazione11": "Pietrasanta",
+            "AnnoCP": "2001",
+            "Value": "11,8"
+          },
+          {
+            "Descrizione tema": "Istruzione ",
+            "Descrizione sottotema": "Istruzione per classi di età",
+            "Nome indicatore": "Incidenza di giovani con istruzione universitaria",
+            "Denominazione11": "Pietrasanta",
+            "AnnoCP": "2011",
+            "Value": "23,3"
+          },
+          {
+            "Descrizione tema": "Istruzione ",
+            "Descrizione sottotema": "Istruzione per classi di età",
+            "Nome indicatore": "Incidenza di giovani con istruzione universitaria",
+            "Denominazione11": "Toscana",
+            "AnnoCP": "2011",
+            "Value": "24,0"
+          },
+          {
+            "Descrizione tema": "Istruzione ",
+            "Descrizione sottotema": "Istruzione per classi di età",
+            "Nome indicatore": "Incidenza di giovani con istruzione universitaria",
+            "Denominazione11": "Italia",
+            "AnnoCP": "2011",
+            "Value": "23,2"
+          },
+          {
+            "Descrizione tema": "Istruzione ",
+            "Descrizione sottotema": "Istruzione per classi di età",
+            "Nome indicatore": "Livello di istruzione dei giovani 15-19 anni",
+            "Denominazione11": "Pietrasanta",
+            "AnnoCP": "1991",
+            "Value": "94,8"
+          },
+          {
+            "Descrizione tema": "Istruzione ",
+            "Descrizione sottotema": "Istruzione per classi di età",
+            "Nome indicatore": "Livello di istruzione dei giovani 15-19 anni",
+            "Denominazione11": "Pietrasanta",
+            "AnnoCP": "2001",
+            "Value": "98,7"
+          },
+          {
+            "Descrizione tema": "Istruzione ",
+            "Descrizione sottotema": "Istruzione per classi di età",
+            "Nome indicatore": "Livello di istruzione dei giovani 15-19 anni",
+            "Denominazione11": "Pietrasanta",
+            "AnnoCP": "2011",
+            "Value": "98,9"
+          },
+          {
+            "Descrizione tema": "Istruzione ",
+            "Descrizione sottotema": "Istruzione per classi di età",
+            "Nome indicatore": "Livello di istruzione dei giovani 15-19 anni",
+            "Denominazione11": "Toscana",
+            "AnnoCP": "2011",
+            "Value": "98,1"
+          },
+          {
+            "Descrizione tema": "Istruzione ",
+            "Descrizione sottotema": "Istruzione per classi di età",
+            "Nome indicatore": "Livello di istruzione dei giovani 15-19 anni",
+            "Denominazione11": "Italia",
+            "AnnoCP": "2011",
+            "Value": "97,9"
+          },
+          {
+            "Descrizione tema": "Istruzione ",
+            "Descrizione sottotema": "Istruzione per classi di età",
+            "Nome indicatore": "Incidenza di adulti con la licenza media",
+            "Denominazione11": "Pietrasanta",
+            "AnnoCP": "1991",
+            "Value": "29,5"
+          },
+          {
+            "Descrizione tema": "Istruzione ",
+            "Descrizione sottotema": "Istruzione per classi di età",
+            "Nome indicatore": "Incidenza di adulti con la licenza media",
+            "Denominazione11": "Pietrasanta",
+            "AnnoCP": "2001",
+            "Value": "35,9"
+          },
+          {
+            "Descrizione tema": "Istruzione ",
+            "Descrizione sottotema": "Istruzione per classi di età",
+            "Nome indicatore": "Incidenza di adulti con la licenza media",
+            "Denominazione11": "Pietrasanta",
+            "AnnoCP": "2011",
+            "Value": "34,9"
+          },
+          {
+            "Descrizione tema": "Istruzione ",
+            "Descrizione sottotema": "Istruzione per classi di età",
+            "Nome indicatore": "Incidenza di adulti con la licenza media",
+            "Denominazione11": "Toscana",
+            "AnnoCP": "2011",
+            "Value": "33,3"
+          },
+          {
+            "Descrizione tema": "Istruzione ",
+            "Descrizione sottotema": "Istruzione per classi di età",
+            "Nome indicatore": "Incidenza di adulti con la licenza media",
+            "Denominazione11": "Italia",
+            "AnnoCP": "2011",
+            "Value": "33,5"
+          }
+        ],
+        "years": [
+          1991,
+          2001,
+          2011
+        ],
+        "values": [
+          26.7,
+          41.7,
+          55.5
+        ]
+      },
+      "046028": {
+        "town": "Seravezza",
+        "url": "https://ottomilacensus.istat.it/fileadmin/dati/csv/046/dati_046_028_010.csv",
+        "sha256": "0393fe7e1698e21b32dea83c4b9c6083da1d34141a7f4f9712c55f30cfab4368",
+        "bytes": 2188,
+        "encoding": "cp1252",
+        "rawCsvBase64": "RGVzY3JpemlvbmUgdGVtYTtEZXNjcml6aW9uZSBzb3R0b3RlbWE7Tm9tZSBpbmRpY2F0b3JlO0Rlbm9taW5hemlvbmUxMTtBbm5vQ1A7VmFsdWUNCklzdHJ1emlvbmUgO0lzdHJ1emlvbmUgcGVyIGNsYXNzaSBkaSBldOA7SW5jaWRlbnphIGRpIGFkdWx0aSBjb24gZGlwbG9tYSBvIGxhdXJlYTtTZXJhdmV6emE7MTk5MTsyNCwzDQpJc3RydXppb25lIDtJc3RydXppb25lIHBlciBjbGFzc2kgZGkgZXTgO0luY2lkZW56YSBkaSBhZHVsdGkgY29uIGRpcGxvbWEgbyBsYXVyZWE7U2VyYXZlenphOzIwMDE7MzgsMg0KSXN0cnV6aW9uZSA7SXN0cnV6aW9uZSBwZXIgY2xhc3NpIGRpIGV04DtJbmNpZGVuemEgZGkgYWR1bHRpIGNvbiBkaXBsb21hIG8gbGF1cmVhO1NlcmF2ZXp6YTsyMDExOzUwLDENCklzdHJ1emlvbmUgO0lzdHJ1emlvbmUgcGVyIGNsYXNzaSBkaSBldOA7SW5jaWRlbnphIGRpIGFkdWx0aSBjb24gZGlwbG9tYSBvIGxhdXJlYTtUb3NjYW5hOzIwMTE7NTYsNA0KSXN0cnV6aW9uZSA7SXN0cnV6aW9uZSBwZXIgY2xhc3NpIGRpIGV04DtJbmNpZGVuemEgZGkgYWR1bHRpIGNvbiBkaXBsb21hIG8gbGF1cmVhO0l0YWxpYTsyMDExOzU1LDENCklzdHJ1emlvbmUgO0lzdHJ1emlvbmUgcGVyIGNsYXNzaSBkaSBldOA7SW5jaWRlbnphIGRpIGdpb3ZhbmkgY29uIGlzdHJ1emlvbmUgdW5pdmVyc2l0YXJpYTtTZXJhdmV6emE7MTk5MTs0LDkNCklzdHJ1emlvbmUgO0lzdHJ1emlvbmUgcGVyIGNsYXNzaSBkaSBldOA7SW5jaWRlbnphIGRpIGdpb3ZhbmkgY29uIGlzdHJ1emlvbmUgdW5pdmVyc2l0YXJpYTtTZXJhdmV6emE7MjAwMTs4LDQNCklzdHJ1emlvbmUgO0lzdHJ1emlvbmUgcGVyIGNsYXNzaSBkaSBldOA7SW5jaWRlbnphIGRpIGdpb3ZhbmkgY29uIGlzdHJ1emlvbmUgdW5pdmVyc2l0YXJpYTtTZXJhdmV6emE7MjAxMTsxNSw3DQpJc3RydXppb25lIDtJc3RydXppb25lIHBlciBjbGFzc2kgZGkgZXTgO0luY2lkZW56YSBkaSBnaW92YW5pIGNvbiBpc3RydXppb25lIHVuaXZlcnNpdGFyaWE7VG9zY2FuYTsyMDExOzI0LDANCklzdHJ1emlvbmUgO0lzdHJ1emlvbmUgcGVyIGNsYXNzaSBkaSBldOA7SW5jaWRlbnphIGRpIGdpb3ZhbmkgY29uIGlzdHJ1emlvbmUgdW5pdmVyc2l0YXJpYTtJdGFsaWE7MjAxMTsyMywyDQpJc3RydXppb25lIDtJc3RydXppb25lIHBlciBjbGFzc2kgZGkgZXTgO0xpdmVsbG8gZGkgaXN0cnV6aW9uZSBkZWkgZ2lvdmFuaSAxNS0xOSBhbm5pO1NlcmF2ZXp6YTsxOTkxOzk1LDENCklzdHJ1emlvbmUgO0lzdHJ1emlvbmUgcGVyIGNsYXNzaSBkaSBldOA7TGl2ZWxsbyBkaSBpc3RydXppb25lIGRlaSBnaW92YW5pIDE1LTE5IGFubmk7U2VyYXZlenphOzIwMDE7OTcsNg0KSXN0cnV6aW9uZSA7SXN0cnV6aW9uZSBwZXIgY2xhc3NpIGRpIGV04DtMaXZlbGxvIGRpIGlzdHJ1emlvbmUgZGVpIGdpb3ZhbmkgMTUtMTkgYW5uaTtTZXJhdmV6emE7MjAxMTs5OCwwDQpJc3RydXppb25lIDtJc3RydXppb25lIHBlciBjbGFzc2kgZGkgZXTgO0xpdmVsbG8gZGkgaXN0cnV6aW9uZSBkZWkgZ2lvdmFuaSAxNS0xOSBhbm5pO1Rvc2NhbmE7MjAxMTs5OCwxDQpJc3RydXppb25lIDtJc3RydXppb25lIHBlciBjbGFzc2kgZGkgZXTgO0xpdmVsbG8gZGkgaXN0cnV6aW9uZSBkZWkgZ2lvdmFuaSAxNS0xOSBhbm5pO0l0YWxpYTsyMDExOzk3LDkNCklzdHJ1emlvbmUgO0lzdHJ1emlvbmUgcGVyIGNsYXNzaSBkaSBldOA7SW5jaWRlbnphIGRpIGFkdWx0aSBjb24gbGEgbGljZW56YSBtZWRpYTtTZXJhdmV6emE7MTk5MTszMSwzDQpJc3RydXppb25lIDtJc3RydXppb25lIHBlciBjbGFzc2kgZGkgZXTgO0luY2lkZW56YSBkaSBhZHVsdGkgY29uIGxhIGxpY2VuemEgbWVkaWE7U2VyYXZlenphOzIwMDE7MzgsNQ0KSXN0cnV6aW9uZSA7SXN0cnV6aW9uZSBwZXIgY2xhc3NpIGRpIGV04DtJbmNpZGVuemEgZGkgYWR1bHRpIGNvbiBsYSBsaWNlbnphIG1lZGlhO1NlcmF2ZXp6YTsyMDExOzM4LDkNCklzdHJ1emlvbmUgO0lzdHJ1emlvbmUgcGVyIGNsYXNzaSBkaSBldOA7SW5jaWRlbnphIGRpIGFkdWx0aSBjb24gbGEgbGljZW56YSBtZWRpYTtUb3NjYW5hOzIwMTE7MzMsMw0KSXN0cnV6aW9uZSA7SXN0cnV6aW9uZSBwZXIgY2xhc3NpIGRpIGV04DtJbmNpZGVuemEgZGkgYWR1bHRpIGNvbiBsYSBsaWNlbnphIG1lZGlhO0l0YWxpYTsyMDExOzMzLDUNCg==",
+        "records": [
+          {
+            "Descrizione tema": "Istruzione ",
+            "Descrizione sottotema": "Istruzione per classi di età",
+            "Nome indicatore": "Incidenza di adulti con diploma o laurea",
+            "Denominazione11": "Seravezza",
+            "AnnoCP": "1991",
+            "Value": "24,3"
+          },
+          {
+            "Descrizione tema": "Istruzione ",
+            "Descrizione sottotema": "Istruzione per classi di età",
+            "Nome indicatore": "Incidenza di adulti con diploma o laurea",
+            "Denominazione11": "Seravezza",
+            "AnnoCP": "2001",
+            "Value": "38,2"
+          },
+          {
+            "Descrizione tema": "Istruzione ",
+            "Descrizione sottotema": "Istruzione per classi di età",
+            "Nome indicatore": "Incidenza di adulti con diploma o laurea",
+            "Denominazione11": "Seravezza",
+            "AnnoCP": "2011",
+            "Value": "50,1"
+          },
+          {
+            "Descrizione tema": "Istruzione ",
+            "Descrizione sottotema": "Istruzione per classi di età",
+            "Nome indicatore": "Incidenza di adulti con diploma o laurea",
+            "Denominazione11": "Toscana",
+            "AnnoCP": "2011",
+            "Value": "56,4"
+          },
+          {
+            "Descrizione tema": "Istruzione ",
+            "Descrizione sottotema": "Istruzione per classi di età",
+            "Nome indicatore": "Incidenza di adulti con diploma o laurea",
+            "Denominazione11": "Italia",
+            "AnnoCP": "2011",
+            "Value": "55,1"
+          },
+          {
+            "Descrizione tema": "Istruzione ",
+            "Descrizione sottotema": "Istruzione per classi di età",
+            "Nome indicatore": "Incidenza di giovani con istruzione universitaria",
+            "Denominazione11": "Seravezza",
+            "AnnoCP": "1991",
+            "Value": "4,9"
+          },
+          {
+            "Descrizione tema": "Istruzione ",
+            "Descrizione sottotema": "Istruzione per classi di età",
+            "Nome indicatore": "Incidenza di giovani con istruzione universitaria",
+            "Denominazione11": "Seravezza",
+            "AnnoCP": "2001",
+            "Value": "8,4"
+          },
+          {
+            "Descrizione tema": "Istruzione ",
+            "Descrizione sottotema": "Istruzione per classi di età",
+            "Nome indicatore": "Incidenza di giovani con istruzione universitaria",
+            "Denominazione11": "Seravezza",
+            "AnnoCP": "2011",
+            "Value": "15,7"
+          },
+          {
+            "Descrizione tema": "Istruzione ",
+            "Descrizione sottotema": "Istruzione per classi di età",
+            "Nome indicatore": "Incidenza di giovani con istruzione universitaria",
+            "Denominazione11": "Toscana",
+            "AnnoCP": "2011",
+            "Value": "24,0"
+          },
+          {
+            "Descrizione tema": "Istruzione ",
+            "Descrizione sottotema": "Istruzione per classi di età",
+            "Nome indicatore": "Incidenza di giovani con istruzione universitaria",
+            "Denominazione11": "Italia",
+            "AnnoCP": "2011",
+            "Value": "23,2"
+          },
+          {
+            "Descrizione tema": "Istruzione ",
+            "Descrizione sottotema": "Istruzione per classi di età",
+            "Nome indicatore": "Livello di istruzione dei giovani 15-19 anni",
+            "Denominazione11": "Seravezza",
+            "AnnoCP": "1991",
+            "Value": "95,1"
+          },
+          {
+            "Descrizione tema": "Istruzione ",
+            "Descrizione sottotema": "Istruzione per classi di età",
+            "Nome indicatore": "Livello di istruzione dei giovani 15-19 anni",
+            "Denominazione11": "Seravezza",
+            "AnnoCP": "2001",
+            "Value": "97,6"
+          },
+          {
+            "Descrizione tema": "Istruzione ",
+            "Descrizione sottotema": "Istruzione per classi di età",
+            "Nome indicatore": "Livello di istruzione dei giovani 15-19 anni",
+            "Denominazione11": "Seravezza",
+            "AnnoCP": "2011",
+            "Value": "98,0"
+          },
+          {
+            "Descrizione tema": "Istruzione ",
+            "Descrizione sottotema": "Istruzione per classi di età",
+            "Nome indicatore": "Livello di istruzione dei giovani 15-19 anni",
+            "Denominazione11": "Toscana",
+            "AnnoCP": "2011",
+            "Value": "98,1"
+          },
+          {
+            "Descrizione tema": "Istruzione ",
+            "Descrizione sottotema": "Istruzione per classi di età",
+            "Nome indicatore": "Livello di istruzione dei giovani 15-19 anni",
+            "Denominazione11": "Italia",
+            "AnnoCP": "2011",
+            "Value": "97,9"
+          },
+          {
+            "Descrizione tema": "Istruzione ",
+            "Descrizione sottotema": "Istruzione per classi di età",
+            "Nome indicatore": "Incidenza di adulti con la licenza media",
+            "Denominazione11": "Seravezza",
+            "AnnoCP": "1991",
+            "Value": "31,3"
+          },
+          {
+            "Descrizione tema": "Istruzione ",
+            "Descrizione sottotema": "Istruzione per classi di età",
+            "Nome indicatore": "Incidenza di adulti con la licenza media",
+            "Denominazione11": "Seravezza",
+            "AnnoCP": "2001",
+            "Value": "38,5"
+          },
+          {
+            "Descrizione tema": "Istruzione ",
+            "Descrizione sottotema": "Istruzione per classi di età",
+            "Nome indicatore": "Incidenza di adulti con la licenza media",
+            "Denominazione11": "Seravezza",
+            "AnnoCP": "2011",
+            "Value": "38,9"
+          },
+          {
+            "Descrizione tema": "Istruzione ",
+            "Descrizione sottotema": "Istruzione per classi di età",
+            "Nome indicatore": "Incidenza di adulti con la licenza media",
+            "Denominazione11": "Toscana",
+            "AnnoCP": "2011",
+            "Value": "33,3"
+          },
+          {
+            "Descrizione tema": "Istruzione ",
+            "Descrizione sottotema": "Istruzione per classi di età",
+            "Nome indicatore": "Incidenza di adulti con la licenza media",
+            "Denominazione11": "Italia",
+            "AnnoCP": "2011",
+            "Value": "33,5"
+          }
+        ],
+        "years": [
+          1991,
+          2001,
+          2011
+        ],
+        "values": [
+          24.3,
+          38.2,
+          50.1
+        ]
+      },
+      "046030": {
+        "town": "Stazzema",
+        "url": "https://ottomilacensus.istat.it/fileadmin/dati/csv/046/dati_046_030_010.csv",
+        "sha256": "b3a4dac11a6d71af0ea59d02ab25b3a2674a3f1a285f1f35e6264290a325b7a4",
+        "bytes": 2176,
+        "encoding": "cp1252",
+        "rawCsvBase64": "RGVzY3JpemlvbmUgdGVtYTtEZXNjcml6aW9uZSBzb3R0b3RlbWE7Tm9tZSBpbmRpY2F0b3JlO0Rlbm9taW5hemlvbmUxMTtBbm5vQ1A7VmFsdWUNCklzdHJ1emlvbmUgO0lzdHJ1emlvbmUgcGVyIGNsYXNzaSBkaSBldOA7SW5jaWRlbnphIGRpIGFkdWx0aSBjb24gZGlwbG9tYSBvIGxhdXJlYTtTdGF6emVtYTsxOTkxOzEzLDMNCklzdHJ1emlvbmUgO0lzdHJ1emlvbmUgcGVyIGNsYXNzaSBkaSBldOA7SW5jaWRlbnphIGRpIGFkdWx0aSBjb24gZGlwbG9tYSBvIGxhdXJlYTtTdGF6emVtYTsyMDAxOzI1LDINCklzdHJ1emlvbmUgO0lzdHJ1emlvbmUgcGVyIGNsYXNzaSBkaSBldOA7SW5jaWRlbnphIGRpIGFkdWx0aSBjb24gZGlwbG9tYSBvIGxhdXJlYTtTdGF6emVtYTsyMDExOzM4LDkNCklzdHJ1emlvbmUgO0lzdHJ1emlvbmUgcGVyIGNsYXNzaSBkaSBldOA7SW5jaWRlbnphIGRpIGFkdWx0aSBjb24gZGlwbG9tYSBvIGxhdXJlYTtUb3NjYW5hOzIwMTE7NTYsNA0KSXN0cnV6aW9uZSA7SXN0cnV6aW9uZSBwZXIgY2xhc3NpIGRpIGV04DtJbmNpZGVuemEgZGkgYWR1bHRpIGNvbiBkaXBsb21hIG8gbGF1cmVhO0l0YWxpYTsyMDExOzU1LDENCklzdHJ1emlvbmUgO0lzdHJ1emlvbmUgcGVyIGNsYXNzaSBkaSBldOA7SW5jaWRlbnphIGRpIGdpb3ZhbmkgY29uIGlzdHJ1emlvbmUgdW5pdmVyc2l0YXJpYTtTdGF6emVtYTsxOTkxOzMsNw0KSXN0cnV6aW9uZSA7SXN0cnV6aW9uZSBwZXIgY2xhc3NpIGRpIGV04DtJbmNpZGVuemEgZGkgZ2lvdmFuaSBjb24gaXN0cnV6aW9uZSB1bml2ZXJzaXRhcmlhO1N0YXp6ZW1hOzIwMDE7Myw5DQpJc3RydXppb25lIDtJc3RydXppb25lIHBlciBjbGFzc2kgZGkgZXTgO0luY2lkZW56YSBkaSBnaW92YW5pIGNvbiBpc3RydXppb25lIHVuaXZlcnNpdGFyaWE7U3RhenplbWE7MjAxMTsxMSwzDQpJc3RydXppb25lIDtJc3RydXppb25lIHBlciBjbGFzc2kgZGkgZXTgO0luY2lkZW56YSBkaSBnaW92YW5pIGNvbiBpc3RydXppb25lIHVuaXZlcnNpdGFyaWE7VG9zY2FuYTsyMDExOzI0LDANCklzdHJ1emlvbmUgO0lzdHJ1emlvbmUgcGVyIGNsYXNzaSBkaSBldOA7SW5jaWRlbnphIGRpIGdpb3ZhbmkgY29uIGlzdHJ1emlvbmUgdW5pdmVyc2l0YXJpYTtJdGFsaWE7MjAxMTsyMywyDQpJc3RydXppb25lIDtJc3RydXppb25lIHBlciBjbGFzc2kgZGkgZXTgO0xpdmVsbG8gZGkgaXN0cnV6aW9uZSBkZWkgZ2lvdmFuaSAxNS0xOSBhbm5pO1N0YXp6ZW1hOzE5OTE7OTAsMw0KSXN0cnV6aW9uZSA7SXN0cnV6aW9uZSBwZXIgY2xhc3NpIGRpIGV04DtMaXZlbGxvIGRpIGlzdHJ1emlvbmUgZGVpIGdpb3ZhbmkgMTUtMTkgYW5uaTtTdGF6emVtYTsyMDAxOzk1LDkNCklzdHJ1emlvbmUgO0lzdHJ1emlvbmUgcGVyIGNsYXNzaSBkaSBldOA7TGl2ZWxsbyBkaSBpc3RydXppb25lIGRlaSBnaW92YW5pIDE1LTE5IGFubmk7U3RhenplbWE7MjAxMTs5Nyw1DQpJc3RydXppb25lIDtJc3RydXppb25lIHBlciBjbGFzc2kgZGkgZXTgO0xpdmVsbG8gZGkgaXN0cnV6aW9uZSBkZWkgZ2lvdmFuaSAxNS0xOSBhbm5pO1Rvc2NhbmE7MjAxMTs5OCwxDQpJc3RydXppb25lIDtJc3RydXppb25lIHBlciBjbGFzc2kgZGkgZXTgO0xpdmVsbG8gZGkgaXN0cnV6aW9uZSBkZWkgZ2lvdmFuaSAxNS0xOSBhbm5pO0l0YWxpYTsyMDExOzk3LDkNCklzdHJ1emlvbmUgO0lzdHJ1emlvbmUgcGVyIGNsYXNzaSBkaSBldOA7SW5jaWRlbnphIGRpIGFkdWx0aSBjb24gbGEgbGljZW56YSBtZWRpYTtTdGF6emVtYTsxOTkxOzI2LDkNCklzdHJ1emlvbmUgO0lzdHJ1emlvbmUgcGVyIGNsYXNzaSBkaSBldOA7SW5jaWRlbnphIGRpIGFkdWx0aSBjb24gbGEgbGljZW56YSBtZWRpYTtTdGF6emVtYTsyMDAxOzM5LDgNCklzdHJ1emlvbmUgO0lzdHJ1emlvbmUgcGVyIGNsYXNzaSBkaSBldOA7SW5jaWRlbnphIGRpIGFkdWx0aSBjb24gbGEgbGljZW56YSBtZWRpYTtTdGF6emVtYTsyMDExOzQ0LDYNCklzdHJ1emlvbmUgO0lzdHJ1emlvbmUgcGVyIGNsYXNzaSBkaSBldOA7SW5jaWRlbnphIGRpIGFkdWx0aSBjb24gbGEgbGljZW56YSBtZWRpYTtUb3NjYW5hOzIwMTE7MzMsMw0KSXN0cnV6aW9uZSA7SXN0cnV6aW9uZSBwZXIgY2xhc3NpIGRpIGV04DtJbmNpZGVuemEgZGkgYWR1bHRpIGNvbiBsYSBsaWNlbnphIG1lZGlhO0l0YWxpYTsyMDExOzMzLDUNCg==",
+        "records": [
+          {
+            "Descrizione tema": "Istruzione ",
+            "Descrizione sottotema": "Istruzione per classi di età",
+            "Nome indicatore": "Incidenza di adulti con diploma o laurea",
+            "Denominazione11": "Stazzema",
+            "AnnoCP": "1991",
+            "Value": "13,3"
+          },
+          {
+            "Descrizione tema": "Istruzione ",
+            "Descrizione sottotema": "Istruzione per classi di età",
+            "Nome indicatore": "Incidenza di adulti con diploma o laurea",
+            "Denominazione11": "Stazzema",
+            "AnnoCP": "2001",
+            "Value": "25,2"
+          },
+          {
+            "Descrizione tema": "Istruzione ",
+            "Descrizione sottotema": "Istruzione per classi di età",
+            "Nome indicatore": "Incidenza di adulti con diploma o laurea",
+            "Denominazione11": "Stazzema",
+            "AnnoCP": "2011",
+            "Value": "38,9"
+          },
+          {
+            "Descrizione tema": "Istruzione ",
+            "Descrizione sottotema": "Istruzione per classi di età",
+            "Nome indicatore": "Incidenza di adulti con diploma o laurea",
+            "Denominazione11": "Toscana",
+            "AnnoCP": "2011",
+            "Value": "56,4"
+          },
+          {
+            "Descrizione tema": "Istruzione ",
+            "Descrizione sottotema": "Istruzione per classi di età",
+            "Nome indicatore": "Incidenza di adulti con diploma o laurea",
+            "Denominazione11": "Italia",
+            "AnnoCP": "2011",
+            "Value": "55,1"
+          },
+          {
+            "Descrizione tema": "Istruzione ",
+            "Descrizione sottotema": "Istruzione per classi di età",
+            "Nome indicatore": "Incidenza di giovani con istruzione universitaria",
+            "Denominazione11": "Stazzema",
+            "AnnoCP": "1991",
+            "Value": "3,7"
+          },
+          {
+            "Descrizione tema": "Istruzione ",
+            "Descrizione sottotema": "Istruzione per classi di età",
+            "Nome indicatore": "Incidenza di giovani con istruzione universitaria",
+            "Denominazione11": "Stazzema",
+            "AnnoCP": "2001",
+            "Value": "3,9"
+          },
+          {
+            "Descrizione tema": "Istruzione ",
+            "Descrizione sottotema": "Istruzione per classi di età",
+            "Nome indicatore": "Incidenza di giovani con istruzione universitaria",
+            "Denominazione11": "Stazzema",
+            "AnnoCP": "2011",
+            "Value": "11,3"
+          },
+          {
+            "Descrizione tema": "Istruzione ",
+            "Descrizione sottotema": "Istruzione per classi di età",
+            "Nome indicatore": "Incidenza di giovani con istruzione universitaria",
+            "Denominazione11": "Toscana",
+            "AnnoCP": "2011",
+            "Value": "24,0"
+          },
+          {
+            "Descrizione tema": "Istruzione ",
+            "Descrizione sottotema": "Istruzione per classi di età",
+            "Nome indicatore": "Incidenza di giovani con istruzione universitaria",
+            "Denominazione11": "Italia",
+            "AnnoCP": "2011",
+            "Value": "23,2"
+          },
+          {
+            "Descrizione tema": "Istruzione ",
+            "Descrizione sottotema": "Istruzione per classi di età",
+            "Nome indicatore": "Livello di istruzione dei giovani 15-19 anni",
+            "Denominazione11": "Stazzema",
+            "AnnoCP": "1991",
+            "Value": "90,3"
+          },
+          {
+            "Descrizione tema": "Istruzione ",
+            "Descrizione sottotema": "Istruzione per classi di età",
+            "Nome indicatore": "Livello di istruzione dei giovani 15-19 anni",
+            "Denominazione11": "Stazzema",
+            "AnnoCP": "2001",
+            "Value": "95,9"
+          },
+          {
+            "Descrizione tema": "Istruzione ",
+            "Descrizione sottotema": "Istruzione per classi di età",
+            "Nome indicatore": "Livello di istruzione dei giovani 15-19 anni",
+            "Denominazione11": "Stazzema",
+            "AnnoCP": "2011",
+            "Value": "97,5"
+          },
+          {
+            "Descrizione tema": "Istruzione ",
+            "Descrizione sottotema": "Istruzione per classi di età",
+            "Nome indicatore": "Livello di istruzione dei giovani 15-19 anni",
+            "Denominazione11": "Toscana",
+            "AnnoCP": "2011",
+            "Value": "98,1"
+          },
+          {
+            "Descrizione tema": "Istruzione ",
+            "Descrizione sottotema": "Istruzione per classi di età",
+            "Nome indicatore": "Livello di istruzione dei giovani 15-19 anni",
+            "Denominazione11": "Italia",
+            "AnnoCP": "2011",
+            "Value": "97,9"
+          },
+          {
+            "Descrizione tema": "Istruzione ",
+            "Descrizione sottotema": "Istruzione per classi di età",
+            "Nome indicatore": "Incidenza di adulti con la licenza media",
+            "Denominazione11": "Stazzema",
+            "AnnoCP": "1991",
+            "Value": "26,9"
+          },
+          {
+            "Descrizione tema": "Istruzione ",
+            "Descrizione sottotema": "Istruzione per classi di età",
+            "Nome indicatore": "Incidenza di adulti con la licenza media",
+            "Denominazione11": "Stazzema",
+            "AnnoCP": "2001",
+            "Value": "39,8"
+          },
+          {
+            "Descrizione tema": "Istruzione ",
+            "Descrizione sottotema": "Istruzione per classi di età",
+            "Nome indicatore": "Incidenza di adulti con la licenza media",
+            "Denominazione11": "Stazzema",
+            "AnnoCP": "2011",
+            "Value": "44,6"
+          },
+          {
+            "Descrizione tema": "Istruzione ",
+            "Descrizione sottotema": "Istruzione per classi di età",
+            "Nome indicatore": "Incidenza di adulti con la licenza media",
+            "Denominazione11": "Toscana",
+            "AnnoCP": "2011",
+            "Value": "33,3"
+          },
+          {
+            "Descrizione tema": "Istruzione ",
+            "Descrizione sottotema": "Istruzione per classi di età",
+            "Nome indicatore": "Incidenza di adulti con la licenza media",
+            "Denominazione11": "Italia",
+            "AnnoCP": "2011",
+            "Value": "33,5"
+          }
+        ],
+        "years": [
+          1991,
+          2001,
+          2011
+        ],
+        "values": [
+          13.3,
+          25.2,
+          38.9
+        ]
+      },
+      "046033": {
+        "town": "Viareggio",
+        "url": "https://ottomilacensus.istat.it/fileadmin/dati/csv/046/dati_046_033_010.csv",
+        "sha256": "84c405956ad1d55d7c5bd0513ad34e51f5d79b7150f801deae587c8ee0271de2",
+        "bytes": 2190,
+        "encoding": "cp1252",
+        "rawCsvBase64": "RGVzY3JpemlvbmUgdGVtYTtEZXNjcml6aW9uZSBzb3R0b3RlbWE7Tm9tZSBpbmRpY2F0b3JlO0Rlbm9taW5hemlvbmUxMTtBbm5vQ1A7VmFsdWUNCklzdHJ1emlvbmUgO0lzdHJ1emlvbmUgcGVyIGNsYXNzaSBkaSBldOA7SW5jaWRlbnphIGRpIGFkdWx0aSBjb24gZGlwbG9tYSBvIGxhdXJlYTtWaWFyZWdnaW87MTk5MTszMyw3DQpJc3RydXppb25lIDtJc3RydXppb25lIHBlciBjbGFzc2kgZGkgZXTgO0luY2lkZW56YSBkaSBhZHVsdGkgY29uIGRpcGxvbWEgbyBsYXVyZWE7VmlhcmVnZ2lvOzIwMDE7NDgsNQ0KSXN0cnV6aW9uZSA7SXN0cnV6aW9uZSBwZXIgY2xhc3NpIGRpIGV04DtJbmNpZGVuemEgZGkgYWR1bHRpIGNvbiBkaXBsb21hIG8gbGF1cmVhO1ZpYXJlZ2dpbzsyMDExOzU4LDkNCklzdHJ1emlvbmUgO0lzdHJ1emlvbmUgcGVyIGNsYXNzaSBkaSBldOA7SW5jaWRlbnphIGRpIGFkdWx0aSBjb24gZGlwbG9tYSBvIGxhdXJlYTtUb3NjYW5hOzIwMTE7NTYsNA0KSXN0cnV6aW9uZSA7SXN0cnV6aW9uZSBwZXIgY2xhc3NpIGRpIGV04DtJbmNpZGVuemEgZGkgYWR1bHRpIGNvbiBkaXBsb21hIG8gbGF1cmVhO0l0YWxpYTsyMDExOzU1LDENCklzdHJ1emlvbmUgO0lzdHJ1emlvbmUgcGVyIGNsYXNzaSBkaSBldOA7SW5jaWRlbnphIGRpIGdpb3ZhbmkgY29uIGlzdHJ1emlvbmUgdW5pdmVyc2l0YXJpYTtWaWFyZWdnaW87MTk5MTsxMCw1DQpJc3RydXppb25lIDtJc3RydXppb25lIHBlciBjbGFzc2kgZGkgZXTgO0luY2lkZW56YSBkaSBnaW92YW5pIGNvbiBpc3RydXppb25lIHVuaXZlcnNpdGFyaWE7VmlhcmVnZ2lvOzIwMDE7MTUsNg0KSXN0cnV6aW9uZSA7SXN0cnV6aW9uZSBwZXIgY2xhc3NpIGRpIGV04DtJbmNpZGVuemEgZGkgZ2lvdmFuaSBjb24gaXN0cnV6aW9uZSB1bml2ZXJzaXRhcmlhO1ZpYXJlZ2dpbzsyMDExOzI0LDgNCklzdHJ1emlvbmUgO0lzdHJ1emlvbmUgcGVyIGNsYXNzaSBkaSBldOA7SW5jaWRlbnphIGRpIGdpb3ZhbmkgY29uIGlzdHJ1emlvbmUgdW5pdmVyc2l0YXJpYTtUb3NjYW5hOzIwMTE7MjQsMA0KSXN0cnV6aW9uZSA7SXN0cnV6aW9uZSBwZXIgY2xhc3NpIGRpIGV04DtJbmNpZGVuemEgZGkgZ2lvdmFuaSBjb24gaXN0cnV6aW9uZSB1bml2ZXJzaXRhcmlhO0l0YWxpYTsyMDExOzIzLDINCklzdHJ1emlvbmUgO0lzdHJ1emlvbmUgcGVyIGNsYXNzaSBkaSBldOA7TGl2ZWxsbyBkaSBpc3RydXppb25lIGRlaSBnaW92YW5pIDE1LTE5IGFubmk7VmlhcmVnZ2lvOzE5OTE7OTIsNw0KSXN0cnV6aW9uZSA7SXN0cnV6aW9uZSBwZXIgY2xhc3NpIGRpIGV04DtMaXZlbGxvIGRpIGlzdHJ1emlvbmUgZGVpIGdpb3ZhbmkgMTUtMTkgYW5uaTtWaWFyZWdnaW87MjAwMTs5NywyDQpJc3RydXppb25lIDtJc3RydXppb25lIHBlciBjbGFzc2kgZGkgZXTgO0xpdmVsbG8gZGkgaXN0cnV6aW9uZSBkZWkgZ2lvdmFuaSAxNS0xOSBhbm5pO1ZpYXJlZ2dpbzsyMDExOzk4LDkNCklzdHJ1emlvbmUgO0lzdHJ1emlvbmUgcGVyIGNsYXNzaSBkaSBldOA7TGl2ZWxsbyBkaSBpc3RydXppb25lIGRlaSBnaW92YW5pIDE1LTE5IGFubmk7VG9zY2FuYTsyMDExOzk4LDENCklzdHJ1emlvbmUgO0lzdHJ1emlvbmUgcGVyIGNsYXNzaSBkaSBldOA7TGl2ZWxsbyBkaSBpc3RydXppb25lIGRlaSBnaW92YW5pIDE1LTE5IGFubmk7SXRhbGlhOzIwMTE7OTcsOQ0KSXN0cnV6aW9uZSA7SXN0cnV6aW9uZSBwZXIgY2xhc3NpIGRpIGV04DtJbmNpZGVuemEgZGkgYWR1bHRpIGNvbiBsYSBsaWNlbnphIG1lZGlhO1ZpYXJlZ2dpbzsxOTkxOzMxLDMNCklzdHJ1emlvbmUgO0lzdHJ1emlvbmUgcGVyIGNsYXNzaSBkaSBldOA7SW5jaWRlbnphIGRpIGFkdWx0aSBjb24gbGEgbGljZW56YSBtZWRpYTtWaWFyZWdnaW87MjAwMTszMyw3DQpJc3RydXppb25lIDtJc3RydXppb25lIHBlciBjbGFzc2kgZGkgZXTgO0luY2lkZW56YSBkaSBhZHVsdGkgY29uIGxhIGxpY2VuemEgbWVkaWE7VmlhcmVnZ2lvOzIwMTE7MzIsOA0KSXN0cnV6aW9uZSA7SXN0cnV6aW9uZSBwZXIgY2xhc3NpIGRpIGV04DtJbmNpZGVuemEgZGkgYWR1bHRpIGNvbiBsYSBsaWNlbnphIG1lZGlhO1Rvc2NhbmE7MjAxMTszMywzDQpJc3RydXppb25lIDtJc3RydXppb25lIHBlciBjbGFzc2kgZGkgZXTgO0luY2lkZW56YSBkaSBhZHVsdGkgY29uIGxhIGxpY2VuemEgbWVkaWE7SXRhbGlhOzIwMTE7MzMsNQ0K",
+        "records": [
+          {
+            "Descrizione tema": "Istruzione ",
+            "Descrizione sottotema": "Istruzione per classi di età",
+            "Nome indicatore": "Incidenza di adulti con diploma o laurea",
+            "Denominazione11": "Viareggio",
+            "AnnoCP": "1991",
+            "Value": "33,7"
+          },
+          {
+            "Descrizione tema": "Istruzione ",
+            "Descrizione sottotema": "Istruzione per classi di età",
+            "Nome indicatore": "Incidenza di adulti con diploma o laurea",
+            "Denominazione11": "Viareggio",
+            "AnnoCP": "2001",
+            "Value": "48,5"
+          },
+          {
+            "Descrizione tema": "Istruzione ",
+            "Descrizione sottotema": "Istruzione per classi di età",
+            "Nome indicatore": "Incidenza di adulti con diploma o laurea",
+            "Denominazione11": "Viareggio",
+            "AnnoCP": "2011",
+            "Value": "58,9"
+          },
+          {
+            "Descrizione tema": "Istruzione ",
+            "Descrizione sottotema": "Istruzione per classi di età",
+            "Nome indicatore": "Incidenza di adulti con diploma o laurea",
+            "Denominazione11": "Toscana",
+            "AnnoCP": "2011",
+            "Value": "56,4"
+          },
+          {
+            "Descrizione tema": "Istruzione ",
+            "Descrizione sottotema": "Istruzione per classi di età",
+            "Nome indicatore": "Incidenza di adulti con diploma o laurea",
+            "Denominazione11": "Italia",
+            "AnnoCP": "2011",
+            "Value": "55,1"
+          },
+          {
+            "Descrizione tema": "Istruzione ",
+            "Descrizione sottotema": "Istruzione per classi di età",
+            "Nome indicatore": "Incidenza di giovani con istruzione universitaria",
+            "Denominazione11": "Viareggio",
+            "AnnoCP": "1991",
+            "Value": "10,5"
+          },
+          {
+            "Descrizione tema": "Istruzione ",
+            "Descrizione sottotema": "Istruzione per classi di età",
+            "Nome indicatore": "Incidenza di giovani con istruzione universitaria",
+            "Denominazione11": "Viareggio",
+            "AnnoCP": "2001",
+            "Value": "15,6"
+          },
+          {
+            "Descrizione tema": "Istruzione ",
+            "Descrizione sottotema": "Istruzione per classi di età",
+            "Nome indicatore": "Incidenza di giovani con istruzione universitaria",
+            "Denominazione11": "Viareggio",
+            "AnnoCP": "2011",
+            "Value": "24,8"
+          },
+          {
+            "Descrizione tema": "Istruzione ",
+            "Descrizione sottotema": "Istruzione per classi di età",
+            "Nome indicatore": "Incidenza di giovani con istruzione universitaria",
+            "Denominazione11": "Toscana",
+            "AnnoCP": "2011",
+            "Value": "24,0"
+          },
+          {
+            "Descrizione tema": "Istruzione ",
+            "Descrizione sottotema": "Istruzione per classi di età",
+            "Nome indicatore": "Incidenza di giovani con istruzione universitaria",
+            "Denominazione11": "Italia",
+            "AnnoCP": "2011",
+            "Value": "23,2"
+          },
+          {
+            "Descrizione tema": "Istruzione ",
+            "Descrizione sottotema": "Istruzione per classi di età",
+            "Nome indicatore": "Livello di istruzione dei giovani 15-19 anni",
+            "Denominazione11": "Viareggio",
+            "AnnoCP": "1991",
+            "Value": "92,7"
+          },
+          {
+            "Descrizione tema": "Istruzione ",
+            "Descrizione sottotema": "Istruzione per classi di età",
+            "Nome indicatore": "Livello di istruzione dei giovani 15-19 anni",
+            "Denominazione11": "Viareggio",
+            "AnnoCP": "2001",
+            "Value": "97,2"
+          },
+          {
+            "Descrizione tema": "Istruzione ",
+            "Descrizione sottotema": "Istruzione per classi di età",
+            "Nome indicatore": "Livello di istruzione dei giovani 15-19 anni",
+            "Denominazione11": "Viareggio",
+            "AnnoCP": "2011",
+            "Value": "98,9"
+          },
+          {
+            "Descrizione tema": "Istruzione ",
+            "Descrizione sottotema": "Istruzione per classi di età",
+            "Nome indicatore": "Livello di istruzione dei giovani 15-19 anni",
+            "Denominazione11": "Toscana",
+            "AnnoCP": "2011",
+            "Value": "98,1"
+          },
+          {
+            "Descrizione tema": "Istruzione ",
+            "Descrizione sottotema": "Istruzione per classi di età",
+            "Nome indicatore": "Livello di istruzione dei giovani 15-19 anni",
+            "Denominazione11": "Italia",
+            "AnnoCP": "2011",
+            "Value": "97,9"
+          },
+          {
+            "Descrizione tema": "Istruzione ",
+            "Descrizione sottotema": "Istruzione per classi di età",
+            "Nome indicatore": "Incidenza di adulti con la licenza media",
+            "Denominazione11": "Viareggio",
+            "AnnoCP": "1991",
+            "Value": "31,3"
+          },
+          {
+            "Descrizione tema": "Istruzione ",
+            "Descrizione sottotema": "Istruzione per classi di età",
+            "Nome indicatore": "Incidenza di adulti con la licenza media",
+            "Denominazione11": "Viareggio",
+            "AnnoCP": "2001",
+            "Value": "33,7"
+          },
+          {
+            "Descrizione tema": "Istruzione ",
+            "Descrizione sottotema": "Istruzione per classi di età",
+            "Nome indicatore": "Incidenza di adulti con la licenza media",
+            "Denominazione11": "Viareggio",
+            "AnnoCP": "2011",
+            "Value": "32,8"
+          },
+          {
+            "Descrizione tema": "Istruzione ",
+            "Descrizione sottotema": "Istruzione per classi di età",
+            "Nome indicatore": "Incidenza di adulti con la licenza media",
+            "Denominazione11": "Toscana",
+            "AnnoCP": "2011",
+            "Value": "33,3"
+          },
+          {
+            "Descrizione tema": "Istruzione ",
+            "Descrizione sottotema": "Istruzione per classi di età",
+            "Nome indicatore": "Incidenza di adulti con la licenza media",
+            "Denominazione11": "Italia",
+            "AnnoCP": "2011",
+            "Value": "33,5"
+          }
+        ],
+        "years": [
+          1991,
+          2001,
+          2011
+        ],
+        "values": [
+          33.7,
+          48.5,
+          58.9
+        ]
+      }
+    },
+    "regionalContext2011": {
+      "tuscany": 56.4,
+      "italy": 55.1,
+      "note": "Valori nativi 2011, solo provenienza storica; non sostituiscono benchmark 2024."
+    }
+  },
+  "note": "Censimenti tradizionali 1991/2001/2011 e Censimento permanente 2024: discontinuità di modalità di rilevazione. Nessuna interpolazione annuale e nessun aggregato storico Versilia senza denominatori nativi.",
+  "componentWorkbooks": {
+    "labour": {
+      "url": "https://www.istat.it/storage/misura-comune/5-Lavoro.xlsx",
+      "sha256": "3a735eb22fad37b123d68489652b4b748fdad4f2d6e7e4acc8d9c7fc637aea22",
+      "bytes": 3145506,
+      "extraction": "Native selected full rows, title, header and source/definition footers; workbook bytes not embedded."
+    },
+    "education": {
+      "url": "https://www.istat.it/storage/misura-comune/4-Istruzione.xlsx",
+      "sha256": "7e329c0516a8bca0665b0cf6bacbbe8cbc013c129e6e168c958e0df4a980c760",
+      "bytes": 4329441,
+      "extraction": "Native selected full rows, title, header and source/definition footers; workbook bytes not embedded."
+    }
+  },
+  "componentHistories": {
+    "employmentRate": {
+      "workbook": "labour",
+      "sheet": "Tav. 1.1 Comuni",
+      "partKey": "15plus|total",
+      "years": [
+        2019,
+        2021,
+        2022,
+        2023
+      ],
+      "title": "Tavola 1.1 - Tasso di occupazione per comune. Anni 2019, 2021-2023",
+      "header": [
+        "Ripartizione",
+        "Codice regione",
+        "Denominazione regione",
+        "Provincia",
+        "Capoluogo",
+        "Denominazione comune",
+        "Codice comune Istat",
+        2019,
+        2021,
+        2022,
+        2023,
+        null
+      ],
+      "footers": [
+        "Fonte: Elaborazione su dati Istat - Censimento permanente della popolazione e delle abitazioni. Data warehouse Censimenti Permanenti.",
+        "Algoritmo/caratteristiche dei dati:  Occupati 15 anni e più / Popolazione 15 anni e più*100."
+      ],
+      "transform": "identity",
+      "rows": [
+        {
+          "worksheetRow": 4403,
+          "cells": [
+            "Centro",
+            "09",
+            "Toscana",
+            "Lucca",
+            "0",
+            "Camaiore",
+            "046005",
+            46.338329764454,
+            46.0774298094198,
+            46.5796106987817,
+            47.8962818003914,
+            null
+          ]
+        },
+        {
+          "worksheetRow": 4410,
+          "cells": [
+            "Centro",
+            "09",
+            "Toscana",
+            "Lucca",
+            "0",
+            "Forte dei Marmi",
+            "046013",
+            40.3003560922743,
+            39.9145704793545,
+            40.0286944045911,
+            40.6911028580656,
+            null
+          ]
+        },
+        {
+          "worksheetRow": 4414,
+          "cells": [
+            "Centro",
+            "09",
+            "Toscana",
+            "Lucca",
+            "0",
+            "Massarosa",
+            "046018",
+            47.4172464684799,
+            46.9128109258971,
+            47.6180623803859,
+            49.0938029470658,
+            null
+          ]
+        },
+        {
+          "worksheetRow": 4420,
+          "cells": [
+            "Centro",
+            "09",
+            "Toscana",
+            "Lucca",
+            "0",
+            "Pietrasanta",
+            "046024",
+            44.2685828033209,
+            43.2392058596762,
+            44.0208725902305,
+            44.7051978277735,
+            null
+          ]
+        },
+        {
+          "worksheetRow": 4424,
+          "cells": [
+            "Centro",
+            "09",
+            "Toscana",
+            "Lucca",
+            "0",
+            "Seravezza",
+            "046028",
+            43.2434797829512,
+            43.3413827027994,
+            43.8088406706716,
+            44.9194051117642,
+            null
+          ]
+        },
+        {
+          "worksheetRow": 4425,
+          "cells": [
+            "Centro",
+            "09",
+            "Toscana",
+            "Lucca",
+            "0",
+            "Stazzema",
+            "046030",
+            40.544572920552,
+            40.6857142857143,
+            41.6858237547893,
+            43.3396584440228,
+            null
+          ]
+        },
+        {
+          "worksheetRow": 4427,
+          "cells": [
+            "Centro",
+            "09",
+            "Toscana",
+            "Lucca",
+            "0",
+            "Viareggio",
+            "046033",
+            45.1544354763547,
+            44.9110726516184,
+            45.6876885716388,
+            46.8390487742125,
+            null
+          ]
+        }
+      ],
+      "extractedRowsSha256": "6c6b8c91ab062f636afda07974f3ab2f14af4aba247acf3a507346193fde6dcf"
+    },
+    "unemploymentRate": {
+      "workbook": "labour",
+      "sheet": "Tav. 2.1 Comuni",
+      "partKey": "15plus|total",
+      "years": [
+        2019,
+        2021,
+        2022,
+        2023
+      ],
+      "title": "Tavola 2.1 - Tasso di disoccupazione per comune. Anni 2019, 2021-2023",
+      "header": [
+        "Ripartizione",
+        "Codice regione",
+        "Denominazione regione",
+        "Provincia",
+        "Capoluogo",
+        "Denominazione comune",
+        "Codice comune Istat",
+        2019,
+        2021,
+        2022,
+        2023
+      ],
+      "footers": [
+        "Fonte: Elaborazione su dati Istat - Censimento permanente della popolazione e delle abitazioni. Data warehouse Censimenti Permanenti.",
+        "Algoritmo/caratteristiche dei dati: Disoccupati 15 anni e più / Forza Lavoro 15 anni e più *100."
+      ],
+      "transform": "identity",
+      "rows": [
+        {
+          "worksheetRow": 4403,
+          "cells": [
+            "Centro",
+            "09",
+            "Toscana",
+            "Lucca",
+            "0",
+            "Camaiore",
+            "046005",
+            11.8114514704884,
+            9.30820954631348,
+            7.99246069910234,
+            7.35551961223817
+          ]
+        },
+        {
+          "worksheetRow": 4410,
+          "cells": [
+            "Centro",
+            "09",
+            "Toscana",
+            "Lucca",
+            "0",
+            "Forte dei Marmi",
+            "046013",
+            9.77469670710572,
+            9.44215682177402,
+            8.38730104953737,
+            8.97799356938982
+          ]
+        },
+        {
+          "worksheetRow": 4414,
+          "cells": [
+            "Centro",
+            "09",
+            "Toscana",
+            "Lucca",
+            "0",
+            "Massarosa",
+            "046018",
+            12.2769380789859,
+            9.62167393699024,
+            7.76387617041252,
+            6.80764814101367
+          ]
+        },
+        {
+          "worksheetRow": 4420,
+          "cells": [
+            "Centro",
+            "09",
+            "Toscana",
+            "Lucca",
+            "0",
+            "Pietrasanta",
+            "046024",
+            12.6962849482957,
+            10.0449796015654,
+            8.14506891218283,
+            7.81207440883029
+          ]
+        },
+        {
+          "worksheetRow": 4424,
+          "cells": [
+            "Centro",
+            "09",
+            "Toscana",
+            "Lucca",
+            "0",
+            "Seravezza",
+            "046028",
+            13.8147566718995,
+            10.0463232033256,
+            8.51601371625372,
+            7.9183917943477
+          ]
+        },
+        {
+          "worksheetRow": 4425,
+          "cells": [
+            "Centro",
+            "09",
+            "Toscana",
+            "Lucca",
+            "0",
+            "Stazzema",
+            "046030",
+            14.0711462450593,
+            9.75937428595136,
+            7.90342409303944,
+            7.91927036803905
+          ]
+        },
+        {
+          "worksheetRow": 4427,
+          "cells": [
+            "Centro",
+            "09",
+            "Toscana",
+            "Lucca",
+            "0",
+            "Viareggio",
+            "046033",
+            14.1632117926367,
+            10.124125058353,
+            8.49979227163111,
+            7.87669743105292
+          ]
+        }
+      ],
+      "extractedRowsSha256": "1307e854a355ad7b6173920eb9f9a2e7c777f5fbab57f4c8c26fafad15cb36af"
+    },
+    "activityRate": {
+      "workbook": "labour",
+      "sheet": "Tav. 3.1 Comuni",
+      "partKey": "15plus|total",
+      "years": [
+        2019,
+        2021,
+        2022,
+        2023
+      ],
+      "title": "Tavola 3.1 - Tasso di inattività per comune. Anni 2019, 2021-2023",
+      "header": [
+        "Ripartizione",
+        "Codice regione",
+        "Denominazione regione",
+        "Provincia",
+        "Capoluogo",
+        "Denominazione comune",
+        "Codice comune Istat",
+        2019,
+        2021,
+        2022,
+        2023,
+        null
+      ],
+      "footers": [
+        "Fonte: Elaborazione su dati Istat - Censimento permanente della popolazione e delle abitazioni. Data warehouse Censimenti Permanenti.",
+        "Algoritmo/caratteristiche dei dati: Popolazione non appartenente alle forze di lavoro 15 anni e più / Popolazione residente 15 anni e più *100."
+      ],
+      "transform": "100-minus-native",
+      "rows": [
+        {
+          "worksheetRow": 4403,
+          "cells": [
+            "Centro",
+            "09",
+            "Toscana",
+            "Lucca",
+            "0",
+            "Camaiore",
+            "046005",
+            47.4553890078515,
+            49.1933839006628,
+            49.3741371058195,
+            48.3009871716886,
+            null
+          ]
+        },
+        {
+          "worksheetRow": 4410,
+          "cells": [
+            "Centro",
+            "09",
+            "Toscana",
+            "Lucca",
+            "0",
+            "Forte dei Marmi",
+            "046013",
+            55.3336429787893,
+            55.9236736670074,
+            56.3066093858498,
+            55.2953132393472,
+            null
+          ]
+        },
+        {
+          "worksheetRow": 4414,
+          "cells": [
+            "Centro",
+            "09",
+            "Toscana",
+            "Lucca",
+            "0",
+            "Massarosa",
+            "046018",
+            45.9466582331858,
+            48.0928526014185,
+            48.3737386142077,
+            47.319922753584,
+            null
+          ]
+        },
+        {
+          "worksheetRow": 4420,
+          "cells": [
+            "Centro",
+            "09",
+            "Toscana",
+            "Lucca",
+            "0",
+            "Pietrasanta",
+            "046024",
+            49.2935864446279,
+            51.9324150356942,
+            52.0756566153812,
+            51.506449959586,
+            null
+          ]
+        },
+        {
+          "worksheetRow": 4424,
+          "cells": [
+            "Centro",
+            "09",
+            "Toscana",
+            "Lucca",
+            "0",
+            "Seravezza",
+            "046028",
+            49.8249606161386,
+            51.8181087797384,
+            52.1131047626256,
+            51.2178316744398,
+            null
+          ]
+        },
+        {
+          "worksheetRow": 4425,
+          "cells": [
+            "Centro",
+            "09",
+            "Toscana",
+            "Lucca",
+            "0",
+            "Stazzema",
+            "046030",
+            52.8161133905259,
+            54.9141930657288,
+            54.73683647381,
+            52.9329767289554,
+            null
+          ]
+        },
+        {
+          "worksheetRow": 4427,
+          "cells": [
+            "Centro",
+            "09",
+            "Toscana",
+            "Lucca",
+            "0",
+            "Viareggio",
+            "046033",
+            47.3950081085615,
+            50.0298910238399,
+            50.0682132796145,
+            49.1561337163774,
+            null
+          ]
+        }
+      ],
+      "extractedRowsSha256": "e301aba85d77368d34c82203d495883c5469b86f1f60fc5c802840eee7d11ac8"
+    },
+    "diplomaPlus": {
+      "workbook": "education",
+      "sheet": "Tav. 4.1 Comuni",
+      "partKey": "25-49|total",
+      "years": [
+        2018,
+        2019,
+        2020,
+        2021,
+        2022,
+        2023
+      ],
+      "title": "Tavola 4.1 - Incidenza del conseguimento almeno del titolo secondario per comune. Anni 2018-2023",
+      "header": [
+        "Ripartizione",
+        "Codice regione",
+        "Denominazione regione",
+        "Provincia",
+        "Capoluogo",
+        "Denominazione comune",
+        "Codice comune Istat",
+        2018,
+        2019,
+        2020,
+        2021,
+        2022,
+        2023
+      ],
+      "footers": [
+        "Fonte: Elaborazione su dati Istat - Censimento permanente della popolazione e delle abitazioni. Data warehouse Censimenti Permanenti.",
+        "Algoritmo/caratteristiche dei dati: Persone di 25-49 anni che hanno completato almeno la scuola secondaria di II grado (titolo non inferiore a Isced 3) / Totale delle persone di 25-49 anni*100."
+      ],
+      "transform": "identity",
+      "rows": [
+        {
+          "worksheetRow": 4403,
+          "cells": [
+            "Centro",
+            "09",
+            "Toscana",
+            "Lucca",
+            "0",
+            "Camaiore",
+            "046005",
+            66.1981871881047,
+            67.649210828891,
+            68.4998407474254,
+            69.6810224465686,
+            71.489501312336,
+            72.552095003361
+          ]
+        },
+        {
+          "worksheetRow": 4410,
+          "cells": [
+            "Centro",
+            "09",
+            "Toscana",
+            "Lucca",
+            "0",
+            "Forte dei Marmi",
+            "046013",
+            76.9872151195109,
+            78.8121073672187,
+            76.7175572519084,
+            81.0957254665864,
+            82.0385332504661,
+            81.635301752109
+          ]
+        },
+        {
+          "worksheetRow": 4414,
+          "cells": [
+            "Centro",
+            "09",
+            "Toscana",
+            "Lucca",
+            "0",
+            "Massarosa",
+            "046018",
+            64.6696938626044,
+            66.4768469953544,
+            68.1426628381442,
+            69.6988707653701,
+            71.1132437619962,
+            71.0551948051948
+          ]
+        },
+        {
+          "worksheetRow": 4420,
+          "cells": [
+            "Centro",
+            "09",
+            "Toscana",
+            "Lucca",
+            "0",
+            "Pietrasanta",
+            "046024",
+            71.955223880597,
+            72.1951219512195,
+            73.7318557827376,
+            74.0073353532132,
+            75.6041802743305,
+            76.9929364278507
+          ]
+        },
+        {
+          "worksheetRow": 4424,
+          "cells": [
+            "Centro",
+            "09",
+            "Toscana",
+            "Lucca",
+            "0",
+            "Seravezza",
+            "046028",
+            67.913593256059,
+            67.7947891485361,
+            70.2234636871508,
+            71.0829493087558,
+            73.9181286549708,
+            74.334713187463
+          ]
+        },
+        {
+          "worksheetRow": 4425,
+          "cells": [
+            "Centro",
+            "09",
+            "Toscana",
+            "Lucca",
+            "0",
+            "Stazzema",
+            "046030",
+            58.3424209378408,
+            60.1789709172259,
+            61.5566037735849,
+            59.3261131167268,
+            63.7824474660074,
+            64.2585551330799
+          ]
+        },
+        {
+          "worksheetRow": 4427,
+          "cells": [
+            "Centro",
+            "09",
+            "Toscana",
+            "Lucca",
+            "0",
+            "Viareggio",
+            "046033",
+            69.7366995340774,
+            71.0399468114577,
+            72.1197007481297,
+            72.7174898051654,
+            74.1528354080221,
+            74.440331394324
+          ]
+        }
+      ],
+      "extractedRowsSha256": "1c9363ba9986c7ec02f10b8128f5798b91c71d08669ecacb5a52799b3351f4eb"
+    },
+    "tertiary": {
+      "workbook": "education",
+      "sheet": "Tav. 5.1 Comuni",
+      "partKey": "25-49|total",
+      "years": [
+        2018,
+        2019,
+        2020,
+        2021,
+        2022,
+        2023
+      ],
+      "title": "Tavola 5.1 - Incidenza del conseguimento del titolo terziario per comune. Anni 2018-2023",
+      "header": [
+        "Ripartizione",
+        "Codice regione",
+        "Denominazione regione",
+        "Provincia",
+        "Capoluogo",
+        "Denominazione comune",
+        "Codice comune Istat",
+        2018,
+        2019,
+        2020,
+        2021,
+        2022,
+        2023
+      ],
+      "footers": [
+        "Fonte: Elaborazione su dati Istat - Censimento permanente della popolazione e delle abitazioni. Data warehouse Censimenti Permanenti.",
+        "Algoritmo/caratteristiche dei dati: Persone di 25-49 anni che hanno conseguito un titolo di livello terziario (Isced 5, 6, 7 o 8) / Totale delle persone di 25-49 anni * 100."
+      ],
+      "transform": "identity",
+      "rows": [
+        {
+          "worksheetRow": 4403,
+          "cells": [
+            "Centro",
+            "09",
+            "Toscana",
+            "Lucca",
+            "0",
+            "Camaiore",
+            "046005",
+            20.511253691822,
+            21.2083202675865,
+            22.2422762501327,
+            23.1124476425733,
+            24.1469816272966,
+            25.7114048846068
+          ]
+        },
+        {
+          "worksheetRow": 4410,
+          "cells": [
+            "Centro",
+            "09",
+            "Toscana",
+            "Lucca",
+            "0",
+            "Forte dei Marmi",
+            "046013",
+            28.9049471928849,
+            30.6110793832096,
+            30.9160305343511,
+            31.5472606863335,
+            34.6799254195152,
+            35.1070733290071
+          ]
+        },
+        {
+          "worksheetRow": 4414,
+          "cells": [
+            "Centro",
+            "09",
+            "Toscana",
+            "Lucca",
+            "0",
+            "Massarosa",
+            "046018",
+            16.7130511205508,
+            17.1886707627754,
+            18.664047151277,
+            19.6518193224592,
+            20.7933461292386,
+            22.1590909090909
+          ]
+        },
+        {
+          "worksheetRow": 4420,
+          "cells": [
+            "Centro",
+            "09",
+            "Toscana",
+            "Lucca",
+            "0",
+            "Pietrasanta",
+            "046024",
+            21.9253731343284,
+            22.8201219512195,
+            24.192289683159,
+            25.8969861266146,
+            26.5349444807315,
+            28.1029263370333
+          ]
+        },
+        {
+          "worksheetRow": 4424,
+          "cells": [
+            "Centro",
+            "09",
+            "Toscana",
+            "Lucca",
+            "0",
+            "Seravezza",
+            "046028",
+            17.781875658588,
+            18.184260005372,
+            19.6648044692737,
+            21.0253456221198,
+            22.3391812865497,
+            23.4772324068598
+          ]
+        },
+        {
+          "worksheetRow": 4425,
+          "cells": [
+            "Centro",
+            "09",
+            "Toscana",
+            "Lucca",
+            "0",
+            "Stazzema",
+            "046030",
+            12.9770992366412,
+            13.1991051454139,
+            14.622641509434,
+            14.1997593261131,
+            15.8220024721879,
+            18.3776932826362
+          ]
+        },
+        {
+          "worksheetRow": 4427,
+          "cells": [
+            "Centro",
+            "09",
+            "Toscana",
+            "Lucca",
+            "0",
+            "Viareggio",
+            "046033",
+            24.5909632679597,
+            25.109424344839,
+            26.2621224715988,
+            27.6676483914816,
+            28.5154449054864,
+            29.5787061519478
+          ]
+        }
+      ],
+      "extractedRowsSha256": "86ac7cbcbd89bcf64dff6a2390296c0f1ee631ef194528eb129de8d80c6795aa"
+    }
+  }
+}

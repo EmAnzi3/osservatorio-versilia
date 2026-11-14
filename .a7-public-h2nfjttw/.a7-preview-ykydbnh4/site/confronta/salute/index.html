@@ -1,0 +1,1571 @@
+<!doctype html>
+<html lang="it"><head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Salute · Confronto dei comuni della Versilia</title>
+  <meta name="description" content="Speranza di vita, mortalità, cronicità, ricoveri, pronto soccorso, assistenza territoriale e presìdi.">
+  <meta property="og:title" content="Salute · Confronto dei comuni della Versilia">
+  <meta property="og:description" content="Speranza di vita, mortalità, cronicità, ricoveri, pronto soccorso, assistenza territoriale e presìdi.">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="it_IT">
+  <link rel="icon" href="../../favicon.svg?v=20260824-ov4" sizes="any">
+  <link rel="icon" href="../../favicon.svg?v=20260824-ov4" type="image/svg+xml">
+  <link rel="manifest" href="../../site.webmanifest?v=20260824-pwa9">
+  <link rel="stylesheet" href="../../assets/original.css">
+  <link rel="stylesheet" href="../../assets/static.css">
+  <link rel="stylesheet" href="../../assets/fidelity.css?v=20261025-ui-shell-consistency">
+  <link rel="stylesheet" href="../../assets/fonts.css">
+  <link rel="stylesheet" href="../../assets/ux-experiment.css?v=20261025-ui-shell-consistency">
+  <link rel="stylesheet" href="../../assets/ux-background-match.css?v=20261025-ui-shell-consistency">
+  <link rel="stylesheet" href="../../assets/export-v161.css?v=20261025-ui-shell-consistency">
+  <link rel="stylesheet" href="../../assets/visual-grammar.css?v=20261025-ui-shell-consistency">
+  <link rel="stylesheet" href="../../assets/indicator-pages.css?v=20261025-ui-shell-consistency">
+  <link rel="stylesheet" href="../../assets/social-presence.css?v=20261025-ui-shell-consistency">
+<style id="ov-invalsi-benchmark-history-style">
+.ux-history-chart .ux-series-group[data-history-town="toscana"] .ux-series-line{stroke-dasharray:10 5;stroke-width:3;opacity:.9}
+.ux-history-chart .ux-series-group[data-history-town="italia"] .ux-series-line{stroke-dasharray:2 5;stroke-width:3;opacity:.9}
+.ux-history-legend button[data-history-select="toscana"]::before,.ux-history-legend button[data-history-select="italia"]::before{width:20px;height:2px;border-radius:0}
+.ux-history-legend button[data-history-select="toscana"]::before{background:repeating-linear-gradient(90deg,var(--series-color) 0 8px,transparent 8px 12px)}
+.ux-history-legend button[data-history-select="italia"]::before{background:repeating-linear-gradient(90deg,var(--series-color) 0 2px,transparent 2px 6px)}
+</style><style id="ov-climate-current-grammar-style">
+      .ov-climate-current-legend{
+        display:flex;align-items:center;gap:18px;margin:0 0 14px;padding:0 2px;
+        color:var(--muted);font-size:9px;font-weight:700
+      }
+      .ov-climate-current-legend span{display:inline-flex;align-items:center;gap:7px}
+      .ov-climate-current-legend .ov-legend-dot{
+        width:9px;height:9px;border-radius:50%;background:var(--surface,#fffaf1);
+        border:2px solid var(--theme-color,#52785c)
+      }
+      .ov-climate-current-legend .ov-legend-mean{width:2px;height:16px;background:#607b88}
+      .ov-climate-current-list{
+        display:grid;gap:11px
+      }
+      .ov-climate-current-list .ov-climate-current-row{
+        border-radius:8px;grid-template-columns:24px minmax(110px,1.1fr) minmax(150px,3fr) minmax(70px,auto);
+        align-items:center;gap:12px;min-height:54px;padding:0;display:grid;position:relative;
+        color:inherit;text-decoration:none;transition:background .15s
+      }
+      .ov-climate-current-list .ov-climate-current-row:hover,
+      .ov-climate-current-list .ov-climate-current-row.selected{background:var(--blue-soft)}
+      .ov-climate-current-list .ov-climate-current-row .town{
+        grid-column:2;font-size:13px;font-weight:690
+      }
+      .ov-climate-current-list .ov-climate-current-row strong{
+        grid-column:4;font-family:var(--font-geist-mono),monospace;text-align:right;
+        white-space:nowrap;font-size:12px
+      }
+      .ov-climate-current-list .ov-climate-current-track{
+        grid-column:3;position:relative;height:9px;border-radius:999px;background:#e4e9e7;
+        overflow:visible
+      }
+      .ov-climate-current-list.uses-versilia-marker .ov-climate-current-track::after{
+        content:'';position:absolute;z-index:1;left:var(--ov-mean-position);top:-5px;width:2px;height:19px;
+        background:#607b88;transform:translateX(-1px)
+      }
+      .ov-climate-current-list.uses-versilia-marker .ov-climate-current-track>i{
+        position:absolute;z-index:2;top:50%;left:var(--ov-value-position)!important;
+        width:11px;height:11px;margin:-5.5px 0 0 -5.5px;border-radius:50%;
+        background:var(--surface,#fffaf1);border:3px solid var(--theme-color,#52785c);
+        box-shadow:0 1px 4px color-mix(in srgb,var(--ink) 18%,transparent)
+      }
+      .ov-climate-current-list .bar-hover-label{display:none}
+      @media(max-width:700px){
+        .ov-climate-current-list .ov-climate-current-row{
+          grid-template-columns:18px minmax(82px,1fr) minmax(70px,1.4fr) auto;gap:7px
+        }
+        .ov-climate-current-list .ov-climate-current-row .town{font-size:11px}
+        .ov-climate-current-list .ov-climate-current-row strong{font-size:10px}
+      }
+    </style>
+  <link rel="canonical" href="https://osservatorioversilia.it/confronta/salute/">
+  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"url":"https://osservatorioversilia.it/confronta/salute/","name":"Salute · Confronto dei comuni della Versilia","description":"Speranza di vita, mortalità, cronicità, ricoveri, pronto soccorso, assistenza territoriale e presìdi.","inLanguage":"it-IT","isAccessibleForFree":true,"creator":{"@type":"Person","name":"Emanuele Anzilotti"},"publisher":{"@type":"Person","name":"Emanuele Anzilotti"},"@type":"Dataset","spatialCoverage":{"@type":"Place","name":"Versilia, Toscana, Italia"},"variableMeasured":["Speranza di vita alla nascita","Mortalità per tutte le cause","Mortalità per tumori","Mortalità per malattie del sistema circolatorio","Mortalità per malattie dell’apparato respiratorio","Persone con almeno una patologia cronica","Prevalenza ipertensione","Prevalenza BPCO","Prevalenza cardiopatia ischemica","Prevalenza insufficienza cardiaca/scompenso","Prevalenza pregresso ictus","Persone con diabete","Persone con demenza","Persone 0–64 anni con disabilità riconosciuta","Accessi al pronto soccorso","Tempo di risposta del 118 — 75° percentile","Residenti ricoverati","Anziani assistiti a domicilio","Anziani assistiti in RSA permanente","Accessi per visite specialistiche – 7 specialità PSR","Accessi per prestazioni di diagnostica per immagini","RSA accreditate presenti nel Comune","Farmacie ogni 1.000 residenti","Strutture ospedaliere"]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Osservatorio Versilia","item":"https://osservatorioversilia.it/"},{"@type":"ListItem","position":2,"name":"Temi","item":"https://osservatorioversilia.it/#temi"},{"@type":"ListItem","position":3,"name":"Salute · Confronto dei comuni della Versilia","item":"https://osservatorioversilia.it/confronta/salute/"}]}]}</script>
+
+  <meta property="og:url" content="https://osservatorioversilia.it/confronta/salute/">
+  <meta property="og:site_name" content="Osservatorio Versilia">
+  <meta property="og:image" content="https://osservatorioversilia.it/images/versilia-viareggio-apuane.jpg">
+  <meta property="og:image:alt" content="Viareggio e le Alpi Apuane, immagine di Osservatorio Versilia">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Salute · Confronto dei comuni della Versilia">
+  <meta name="twitter:description" content="Speranza di vita, mortalità, cronicità, ricoveri, pronto soccorso, assistenza territoriale e presìdi.">
+  <meta name="twitter:site" content="@OssVersilia">
+  <meta name="twitter:image" content="https://osservatorioversilia.it/images/versilia-viareggio-apuane.jpg">
+  <meta name="twitter:image:alt" content="Viareggio e le Alpi Apuane, immagine di Osservatorio Versilia">
+  <link rel="stylesheet" href="../../assets/brand.css?v=20260824-ov4">
+  <link rel="stylesheet" href="../../assets/mobile-accordion-fix.css?v=20260809-3">
+  <link rel="stylesheet" href="../../assets/chart-surfaces.css?v=20260826-v120">
+  <meta name="theme-color" content="#0F3654">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Osservatorio Versilia">
+  <link rel="apple-touch-icon" sizes="180x180" href="../../pwa/icon-180.png?v=20260824-pwa9">
+  <link rel="stylesheet" href="../../assets/pwa.css?v=20260824-pwa9">
+</head>
+<body class="antialiased" data-page="compare" data-theme="salute" data-town="" data-prerendered="true">
+  <div id="site-header-mount">
+      <a class="skip-link" href="#app">Vai al contenuto</a>
+      <header class="site-header">
+        <div class="site-header-inner">
+          <a href="../../" class="site-brand" aria-label="Osservatorio Versilia, torna alla home">
+            <span class="site-brand-mark" aria-hidden="true"><svg class="ov-mark-svg" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 76 64"><g fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="27" cy="32" r="22" stroke="#0F3654" stroke-width="6"/>
+    <path d="M43 28 53 48 71 15" stroke="#0F3654" stroke-width="6"/>
+    <path d="M57 27 70 9" stroke="#58A28F" stroke-width="3.2"/>
+  </g>
+  <g fill="#6F8FA3">
+    <rect x="16" y="34" width="5.5" height="9" rx="1"/>
+    <rect x="24" y="28" width="5.5" height="15" rx="1"/>
+    <rect x="32" y="20" width="5.5" height="23" rx="1"/>
+  </g>
+  <path d="M10 43c7-5.5 14-7.2 20-5.3 4.4 1.4 8 4.1 12 4.7v5.1c-4.6-.5-8.7-3-13.1-4.1-5.7-1.5-11.7-.1-18.9 4.1Z" fill="#58A28F"/>
+  <path d="M11.5 45.2c6.2-3.2 11.9-4.2 17.1-3 4.3 1 8.1 3.2 12.2 3.8" fill="none" stroke="#F7FAF8" stroke-width="1.8" stroke-linecap="round"/>
+</svg></span>
+            <span class="site-brand-copy"><strong>Osservatorio Versilia</strong><small>Versilia in numeri</small></span>
+          </a>
+          <div class="site-header-actions">
+            <nav aria-label="Navigazione principale">
+              <a href="../../#temi" aria-current="page">Temi</a>
+              <a href="../../#comuni">Comuni</a>
+              <a href="../../dossier/">Dossier</a>
+              <a href="../../chiedi/">Chiedi</a>
+              <a href="../../opportunita/">Opportunità</a>
+              <a href="../../progetto/">Il progetto</a>
+              <a href="../../stato-dati/" data-data-status-nav="header">Stato dati</a>
+              <a href="../../segnala/">Segnala</a>
+            </nav>
+            <button class="global-search-trigger" type="button" aria-haspopup="dialog" aria-expanded="false">
+              <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg><span>Cerca</span><kbd>/</kbd>
+            </button>
+          </div>
+        </div>
+      </header></div>
+  <div id="app"><main class="inner-page a5-editorial-pilot" data-theme="salute">
+          <section class="compare-showcase-hero" aria-labelledby="compare-page-title">
+            <div class="compare-showcase-hero-media" style="background-image:linear-gradient(90deg,rgba(10,45,67,.86) 0%,rgba(10,45,67,.62) 43%,rgba(10,45,67,.16) 78%),url('../../images/versilia-viareggio-apuane.jpg')"></div>
+            <div class="compare-showcase-hero-copy page-width">
+              <span class="overline">Confronto territoriale · 05</span>
+              <h1 id="compare-page-title">Salute</h1>
+              <p>Speranza di vita, mortalità, cronicità, disabilità riconosciuta, emergenza, ricoveri, assistenza, specialistica e presìdi.</p>
+              <div class="compare-showcase-actions">
+                <a class="compare-showcase-primary" href="#compare-workspace">Esplora i dati <span aria-hidden="true">→</span></a>
+                <a class="compare-showcase-secondary" href="#compare-territori">Scopri i comuni</a>
+              </div>
+              <div class="compare-showcase-facts"><span>7 Comuni</span><span>24 indicatori Salute</span><span>Catalogo al 14 settembre 2026</span></div>
+            </div>
+          </section>
+          <div class="breadcrumbs page-width"><a href="/">Home</a><span>›</span><strong>Salute</strong></div>
+          <nav class="compare-context-nav page-width" aria-label="Passa a un altro tema">
+      <div class="context-nav-title"><small>Esplora</small><strong>Temi</strong></div>
+      <div class="context-nav-links"><a href="/confronta/demografia/?indicatore=population" data-context-theme="demografia" class=""><small>01</small><span>Demografia</span></a><a href="/confronta/economia/?indicatore=income" data-context-theme="economia" class=""><small>02</small><span>Economia</span></a><a href="/confronta/lavoro/?indicatore=employmentRate" data-context-theme="lavoro" class=""><small>03</small><span>Lavoro</span></a><a href="/confronta/istruzione/?indicatore=diplomaPlus" data-context-theme="istruzione" class=""><small>04</small><span>Istruzione</span></a><a href="/confronta/salute/?indicatore=lifeExpectancy" data-context-theme="salute" class="active" aria-current="page"><small>05</small><span>Salute</span></a><a href="/confronta/mobilita/?indicatore=outsideMunicipality" data-context-theme="mobilita" class=""><small>06</small><span>Mobilità e infrastrutture</span></a><a href="/confronta/sicurezza/?indicatore=roadSafety" data-context-theme="sicurezza" class=""><small>07</small><span>Sicurezza e territorio</span></a><a href="/confronta/abitare/?indicatore=omiResidential" data-context-theme="abitare" class=""><small>08</small><span>Abitare</span></a><a href="/confronta/ambiente/?indicatore=municipalSurface" data-context-theme="ambiente" class=""><small>09</small><span>Ambiente</span></a><a href="/confronta/bilanci/?indicatore=currentRevenueAccruedPerResident" data-context-theme="bilanci" class=""><small>10</small><span>Bilanci e amministrazione</span></a><a href="/confronta/comunita/?indicatore=publicWorks" data-context-theme="comunita" class=""><small>11</small><span>Comunità e welfare</span></a></div>
+    </nav>
+          <section class="topic-hero page-width" data-theme="salute">
+            <div class="topic-symbol"><svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 9.5a5.5 5.5 0 0 1 9.591-3.676.56.56 0 0 0 .818 0A5.49 5.49 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5l-5.492 5.313a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5"></path><path d="M3.22 13H9.5l.5-1 2 4.5 2-7 1.5 3.5h5.27"></path></svg><small>05</small></div>
+            <div class="topic-hero-copy"><span class="overline">Per leggere il territorio</span><h2>Come sta la popolazione e come usa i servizi sanitari?</h2></div>
+            <div class="topic-hero-context"><span class="overline">Come si legge</span><p>Scegli un indicatore: valore attuale dei sette Comuni, serie storica e, dove disponibile, confronto con Toscana e Italia. Fonte e metodo sono indicati sotto ogni grafico.</p></div>
+          </section>
+          <section id="compare-workspace" class="topic-dashboard page-width" data-theme="salute">
+            <aside class="topic-controls">
+      <div class="topic-controls-heading"><div><span class="overline">Gruppi di indicatori</span><strong>24 indicatori</strong></div><small>Scegli il dato da confrontare</small></div>
+      <div class="metric-switch metric-catalog compact-list" role="tablist" aria-label="Indicatori di Salute" data-ux-accordion-delegated="true" data-ux-visible-tabs="true" data-ux-accordion-ready="true"><section class="metric-group is-open" data-section="esiti" data-ux-accordion="true">
+      <div class="metric-group-heading ux-section-toggle" role="button" tabindex="0" aria-controls="ux-section-1" data-ux-accordion-heading="true" aria-expanded="true"><strong>Condizioni di salute</strong><span>Speranza di vita, mortalità, cronicità e disabilità riconosciuta.</span><span class="ux-section-tools"><span>14 indicatori</span><span class="ux-section-chevron" aria-hidden="true">⌄</span></span></div>
+      <div class="metric-group-buttons" id="ux-section-1"><button type="button" role="tab" data-metric="lifeExpectancy" class="active" aria-selected="true" tabindex="0">Speranza di vita</button><button type="button" role="tab" data-metric="mortalityAll" class="" aria-selected="false" tabindex="-1">Mortalità complessiva</button><button type="button" role="tab" data-metric="mortalityCancer" class="" aria-selected="false" tabindex="-1">Mortalità per tumori</button><button type="button" role="tab" data-metric="mortalityCirculatory" class="" aria-selected="false" tabindex="-1">Mortalità circolatoria</button><button type="button" role="tab" data-metric="mortalityRespiratory" class="" aria-selected="false" tabindex="-1">Mortalità respiratoria</button><button type="button" role="tab" data-metric="chronicTotal" class="" aria-selected="false" tabindex="-1">Malattie croniche</button><button type="button" role="tab" data-metric="hypertensionPrevalence" class="" aria-selected="false" tabindex="-1">Ipertensione</button><button type="button" role="tab" data-metric="copdPrevalence" class="" aria-selected="false" tabindex="-1">BPCO</button><button type="button" role="tab" data-metric="ischemicHeartDiseasePrevalence" class="" aria-selected="false" tabindex="-1">Cardiopatia ischemica</button><button type="button" role="tab" data-metric="heartFailurePrevalence" class="" aria-selected="false" tabindex="-1">Scompenso cardiaco</button><button type="button" role="tab" data-metric="priorStrokePrevalence" class="" aria-selected="false" tabindex="-1">Pregresso ictus</button><button type="button" role="tab" data-metric="diabetes" class="" aria-selected="false" tabindex="-1">Diabete</button><button type="button" role="tab" data-metric="dementia" class="" aria-selected="false" tabindex="-1">Demenza</button><button type="button" role="tab" data-metric="disability064Per1000" class="" aria-selected="false" tabindex="-1">Disabilità riconosciuta</button></div>
+    </section><section class="metric-group" data-section="emergenza" data-ux-accordion="true">
+      <div class="metric-group-heading ux-section-toggle" role="button" tabindex="0" aria-controls="ux-section-2" data-ux-accordion-heading="true" aria-expanded="false"><strong>Emergenza e ricoveri</strong><span>Ricorso al pronto soccorso, tempi del 118 e ospedalizzazione.</span><span class="ux-section-tools"><span>3 indicatori</span><span class="ux-section-chevron" aria-hidden="true">⌄</span></span></div>
+      <div class="metric-group-buttons" id="ux-section-2" hidden=""><button type="button" role="tab" data-metric="emergencyAccess" class="" aria-selected="false" tabindex="-1">Pronto soccorso</button><button type="button" role="tab" data-metric="emsResponseTimeP75" class="" aria-selected="false" tabindex="-1">Risposta del 118</button><button type="button" role="tab" data-metric="hospitalizedAll" class="" aria-selected="false" tabindex="-1">Ricoveri</button></div>
+    </section><section class="metric-group" data-section="territorio" data-ux-accordion="true">
+      <div class="metric-group-heading ux-section-toggle" role="button" tabindex="0" aria-controls="ux-section-3" data-ux-accordion-heading="true" aria-expanded="false"><strong>Assistenza e presìdi territoriali</strong><span>Assistenza domiciliare, farmacie e strutture ospedaliere.</span><span class="ux-section-tools"><span>7 indicatori</span><span class="ux-section-chevron" aria-hidden="true">⌄</span></span></div>
+      <div class="metric-group-buttons" id="ux-section-3" hidden=""><button type="button" role="tab" data-metric="elderlyHomeCare" class="" aria-selected="false" tabindex="-1">Assistenza domiciliare</button><button type="button" role="tab" data-metric="permanentRsaAssisted" class="" aria-selected="false" tabindex="-1">Anziani in RSA</button><button type="button" role="tab" data-metric="specialistVisits7Psr" class="" aria-selected="false" tabindex="-1">Visite specialistiche</button><button type="button" role="tab" data-metric="diagnosticImagingServices" class="" aria-selected="false" tabindex="-1">Diagnostica per immagini</button><button type="button" role="tab" data-metric="accreditedRsaCount" class="" aria-selected="false" tabindex="-1">RSA accreditate</button><button type="button" role="tab" data-metric="pharmaciesPer1000" class="" aria-selected="false" tabindex="-1">Densità farmacie</button><button type="button" role="tab" data-metric="hospitals" class="" aria-selected="false" tabindex="-1">Ospedali</button></div>
+    </section></div>
+      <div id="compare-definition" class="topic-side-definition"><div class="indicator-definition"><h2>Speranza di vita alla nascita</h2><p>Numero medio di anni che una persona può attendersi di vivere alle condizioni di mortalità osservate. È un indicatore di popolazione, non una previsione individuale.</p><dl><div><dt>Anno</dt><dd>2023</dd></div><div><dt>Fonte</dt><dd><a href="https://www.ars.toscana.it/banche-dati/dettaglio_indicatore-1290-speranza-vita-alla-nascita?dettaglio=ric_anno_geo_comuni&amp;par_top_geografia=046033&amp;provenienza=comuni_elenco_indicatori_sintesi" target="_blank" rel="noreferrer">ARS Toscana / ISPRO — Registro di mortalità ↗</a></dd></div><div><dt>Versilia · Totale</dt><dd>83,24 anni</dd></div></dl><small class="aggregate-note">Aggregato ufficiale Zona Versilia pubblicato da ARS Toscana per la lettura selezionata; non è una media dei valori comunali.</small></div></div>
+    </aside>
+            <div class="compare-main-column">
+              <header class="compare-panel-heading"><span class="overline">Confronto tra Comuni della Versilia</span></header>
+              <div id="compare-bars" class="a5-shared-chart" data-age-pyramid-delegated="1"><div class="ux-view-shell" data-view-shell="ux-view-1"><div class="ux-view-toolbar"><div class="ux-view-toolbar-copy"><small class="a5-toolbar-overline">Confronto tra Comuni della Versilia</small><strong>Come vuoi leggere l’indicatore?</strong><span>Fotografia dell’ultimo anno oppure confronto dell’andamento tra i sette comuni.</span></div><div class="data-actions"><a href="../../indicatori/speranza-di-vita-alla-nascita/">Scheda indicatore</a><button type="button" data-download="">Scarica CSV</button><button type="button" data-print="">Stampa / PDF</button></div><div class="ux-view-toggle" role="tablist" aria-label="Vista dell’indicatore"><button id="ux-view-1-tab-current" type="button" role="tab" aria-controls="ux-view-1-current" data-view-mode="current" class="active" aria-selected="true" tabindex="0">Valore attuale</button><button id="ux-view-1-tab-history" type="button" role="tab" aria-controls="ux-view-1-history" data-view-mode="history" aria-selected="false" tabindex="-1">Storico</button></div></div><p class="ux-view-note">Lo storico utilizza esclusivamente gli anni omogenei presenti per tutti e sette i comuni.</p><div id="ux-view-1-current" class="ux-view-pane" role="tabpanel" aria-labelledby="ux-view-1-tab-current" data-view-pane="current"><div class="topic-bars selectable-topic-bars"><div class="compare-chart-toolbar"><div class="compare-chart-legend-host" aria-live="polite"><div class="comparison-legend"><span><i class="comparison-legend-dot" aria-hidden="true"></i>Comune</span><span><i class="comparison-legend-reference" aria-hidden="true"></i>Versilia (ARS) · Totale</span></div></div><div class="compare-view-controls demographic-view-controls"><label class="compare-choice-select"><span>Sesso</span><select data-composite-component=""><option value="totale" selected="">Totale</option><option value="maschi">Maschi</option><option value="femmine">Femmine</option></select></label></div></div><div class="comparison-bars" data-composite-choice="totale" data-composite-scale="value" data-visual-contract="canonical" data-visual-unit="years" data-visual-grammar-signature="lifeExpectancy|r|totale|value|83.2413|years|85.0509|83.5902|83.5363|82.996|82.9338|82.8487|82.0127" data-viz="lollipop"><a href="/comuni/forte-dei-marmi/?tema=salute&amp;indicatore=lifeExpectancy" class="bar-row comparison-row" aria-label="Forte dei Marmi: 85,1 anni; Versilia (ARS) · Totale: 83,2 anni"><span class="bar-town">Forte dei Marmi</span><span class="bar-track">
+        <span class="comparison-axis-line" aria-hidden="true"></span>
+        
+        <span class="comparison-reference" style="left:83.2413%" aria-hidden="true"></span>
+        <span class="comparison-stem" style="left:0%;width:85.0509%" aria-hidden="true"></span>
+        <span class="comparison-dot" style="left:85.0509%" aria-hidden="true"></span><span class="bar-hover-label">Forte dei Marmi: 85,1 anni · Versilia (ARS) · Totale: 83,2 anni</span></span><strong>85,05 anni</strong></a><a href="/comuni/pietrasanta/?tema=salute&amp;indicatore=lifeExpectancy" class="bar-row comparison-row" aria-label="Pietrasanta: 83,6 anni; Versilia (ARS) · Totale: 83,2 anni"><span class="bar-town">Pietrasanta</span><span class="bar-track">
+        <span class="comparison-axis-line" aria-hidden="true"></span>
+        
+        <span class="comparison-reference" style="left:83.2413%" aria-hidden="true"></span>
+        <span class="comparison-stem" style="left:0%;width:83.5902%" aria-hidden="true"></span>
+        <span class="comparison-dot" style="left:83.5902%" aria-hidden="true"></span><span class="bar-hover-label">Pietrasanta: 83,6 anni · Versilia (ARS) · Totale: 83,2 anni</span></span><strong>83,59 anni</strong></a><a href="/comuni/camaiore/?tema=salute&amp;indicatore=lifeExpectancy" class="bar-row comparison-row" aria-label="Camaiore: 83,5 anni; Versilia (ARS) · Totale: 83,2 anni"><span class="bar-town">Camaiore</span><span class="bar-track">
+        <span class="comparison-axis-line" aria-hidden="true"></span>
+        
+        <span class="comparison-reference" style="left:83.2413%" aria-hidden="true"></span>
+        <span class="comparison-stem" style="left:0%;width:83.5363%" aria-hidden="true"></span>
+        <span class="comparison-dot" style="left:83.5363%" aria-hidden="true"></span><span class="bar-hover-label">Camaiore: 83,5 anni · Versilia (ARS) · Totale: 83,2 anni</span></span><strong>83,54 anni</strong></a><a href="/comuni/viareggio/?tema=salute&amp;indicatore=lifeExpectancy" class="bar-row comparison-row" aria-label="Viareggio: 83,0 anni; Versilia (ARS) · Totale: 83,2 anni"><span class="bar-town">Viareggio</span><span class="bar-track">
+        <span class="comparison-axis-line" aria-hidden="true"></span>
+        
+        <span class="comparison-reference" style="left:83.2413%" aria-hidden="true"></span>
+        <span class="comparison-stem" style="left:0%;width:82.996%" aria-hidden="true"></span>
+        <span class="comparison-dot" style="left:82.996%" aria-hidden="true"></span><span class="bar-hover-label">Viareggio: 83,0 anni · Versilia (ARS) · Totale: 83,2 anni</span></span><strong>83,00 anni</strong></a><a href="/comuni/seravezza/?tema=salute&amp;indicatore=lifeExpectancy" class="bar-row comparison-row" aria-label="Seravezza: 82,9 anni; Versilia (ARS) · Totale: 83,2 anni"><span class="bar-town">Seravezza</span><span class="bar-track">
+        <span class="comparison-axis-line" aria-hidden="true"></span>
+        
+        <span class="comparison-reference" style="left:83.2413%" aria-hidden="true"></span>
+        <span class="comparison-stem" style="left:0%;width:82.9338%" aria-hidden="true"></span>
+        <span class="comparison-dot" style="left:82.9338%" aria-hidden="true"></span><span class="bar-hover-label">Seravezza: 82,9 anni · Versilia (ARS) · Totale: 83,2 anni</span></span><strong>82,93 anni</strong></a><a href="/comuni/massarosa/?tema=salute&amp;indicatore=lifeExpectancy" class="bar-row comparison-row" aria-label="Massarosa: 82,8 anni; Versilia (ARS) · Totale: 83,2 anni"><span class="bar-town">Massarosa</span><span class="bar-track">
+        <span class="comparison-axis-line" aria-hidden="true"></span>
+        
+        <span class="comparison-reference" style="left:83.2413%" aria-hidden="true"></span>
+        <span class="comparison-stem" style="left:0%;width:82.8487%" aria-hidden="true"></span>
+        <span class="comparison-dot" style="left:82.8487%" aria-hidden="true"></span><span class="bar-hover-label">Massarosa: 82,8 anni · Versilia (ARS) · Totale: 83,2 anni</span></span><strong>82,85 anni</strong></a><a href="/comuni/stazzema/?tema=salute&amp;indicatore=lifeExpectancy" class="bar-row comparison-row" aria-label="Stazzema: 82,0 anni; Versilia (ARS) · Totale: 83,2 anni"><span class="bar-town">Stazzema</span><span class="bar-track">
+        <span class="comparison-axis-line" aria-hidden="true"></span>
+        
+        <span class="comparison-reference" style="left:83.2413%" aria-hidden="true"></span>
+        <span class="comparison-stem" style="left:0%;width:82.0127%" aria-hidden="true"></span>
+        <span class="comparison-dot" style="left:82.0127%" aria-hidden="true"></span><span class="bar-hover-label">Stazzema: 82,0 anni · Versilia (ARS) · Totale: 83,2 anni</span></span><strong>82,01 anni</strong></a><div class="comparison-axis"><span>0,0 anni</span><span>scala con origine a zero</span><span>100 anni</span></div><p class="comparison-note">I comuni sono ordinati per valore per facilitare il confronto. L’ordine non esprime merito o qualità.</p></div></div></div><div id="ux-view-1-history" class="ux-view-pane" role="tabpanel" aria-labelledby="ux-view-1-tab-history" data-view-pane="history" hidden=""><div class="ux-history-card"><div class="ux-history-head"><div><strong>Andamento 2008–2023</strong><span>Sette Comuni più l’aggregato ufficiale Versilia; sono mostrati solo gli anni omogenei della fonte ARS.</span></div><span>ARS Toscana / ISPRO — Registro di mortalità</span></div><div class="ux-history-scroll"><div class="ux-history-chart has-selection" data-unit="years" data-ov-tooltip-wired="1"><svg viewBox="0 0 920 390" role="img" aria-label="Speranza di vita alla nascita · Totale: confronto storico dei sette Comuni e della Versilia"><line class="ux-history-grid" x1="78" y1="26" x2="890" y2="26"></line><text class="ux-history-axis-label" x="68" y="30" text-anchor="end">85,7 anni</text><line class="ux-history-grid" x1="78" y1="104" x2="890" y2="104"></line><text class="ux-history-axis-label" x="68" y="108" text-anchor="end">83,5 anni</text><line class="ux-history-grid" x1="78" y1="182" x2="890" y2="182"></line><text class="ux-history-axis-label" x="68" y="186" text-anchor="end">81,3 anni</text><line class="ux-history-grid" x1="78" y1="260" x2="890" y2="260"></line><text class="ux-history-axis-label" x="68" y="264" text-anchor="end">79,1 anni</text><line class="ux-history-grid" x1="78" y1="338" x2="890" y2="338"></line><text class="ux-history-axis-label" x="68" y="342" text-anchor="end">76,9 anni</text><g class="ux-series-group " data-history-town="massarosa" style="--series-color:#0f5c6e"><polyline class="ux-series-line" points="78,215.62068965517258 132.13333333333333,204.1753484959647 186.26666666666665,204.89068231841503 240.4,195.94900953778406 294.5333333333333,181.64233308877482 348.6666666666667,164.83198826118868 402.8,158.39398385913415 456.93333333333334,151.95597945708013 511.06666666666666,160.89765223771107 565.2,134.07263389581823 619.3333333333334,118.69295671313272 673.4666666666667,116.54695524578122 727.6,147.6639765223771 781.7333333333333,147.30630961115168 835.8666666666667,148.02164343360252 890,126.20396184886302"></polyline><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Massarosa · 2008: 80,4 anni" style="pointer-events: none;">
+      <circle class="chart-hit" cx="78" cy="215.62068965517258" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="78" cy="215.62068965517258" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="78" y1="215.62068965517258" x2="78" y2="199.62068965517258"></line>
+        <rect x="70" y="149.62068965517258" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="82" y="163.62068965517258">Massarosa · 2008</text>
+        <text class="chart-tooltip-value" x="82" y="183.62068965517258">80,4 anni</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Massarosa · 2009: 80,7 anni" style="pointer-events: none;">
+      <circle class="chart-hit" cx="132.13333333333333" cy="204.1753484959647" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="132.13333333333333" cy="204.1753484959647" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="132.13333333333333" y1="204.1753484959647" x2="132.13333333333333" y2="188.1753484959647"></line>
+        <rect x="70" y="138.1753484959647" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="82" y="152.1753484959647">Massarosa · 2009</text>
+        <text class="chart-tooltip-value" x="82" y="172.1753484959647">80,7 anni</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Massarosa · 2010: 80,7 anni" style="pointer-events: none;">
+      <circle class="chart-hit" cx="186.26666666666665" cy="204.89068231841503" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="186.26666666666665" cy="204.89068231841503" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="186.26666666666665" y1="204.89068231841503" x2="186.26666666666665" y2="188.89068231841503"></line>
+        <rect x="81.26666666666665" y="138.89068231841503" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="93.26666666666665" y="152.89068231841503">Massarosa · 2010</text>
+        <text class="chart-tooltip-value" x="93.26666666666665" y="172.89068231841503">80,7 anni</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Massarosa · 2011: 80,9 anni" style="pointer-events: none;">
+      <circle class="chart-hit" cx="240.4" cy="195.94900953778406" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="240.4" cy="195.94900953778406" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="240.4" y1="195.94900953778406" x2="240.4" y2="179.94900953778406"></line>
+        <rect x="135.4" y="129.94900953778406" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="147.4" y="143.94900953778406">Massarosa · 2011</text>
+        <text class="chart-tooltip-value" x="147.4" y="163.94900953778406">80,9 anni</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Massarosa · 2012: 81,3 anni" style="pointer-events: none;">
+      <circle class="chart-hit" cx="294.5333333333333" cy="181.64233308877482" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="294.5333333333333" cy="181.64233308877482" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="294.5333333333333" y1="181.64233308877482" x2="294.5333333333333" y2="165.64233308877482"></line>
+        <rect x="189.5333333333333" y="115.64233308877482" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="201.5333333333333" y="129.64233308877482">Massarosa · 2012</text>
+        <text class="chart-tooltip-value" x="201.5333333333333" y="149.64233308877482">81,3 anni</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Massarosa · 2013: 81,8 anni" style="pointer-events: none;">
+      <circle class="chart-hit" cx="348.6666666666667" cy="164.83198826118868" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="348.6666666666667" cy="164.83198826118868" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="348.6666666666667" y1="164.83198826118868" x2="348.6666666666667" y2="148.83198826118868"></line>
+        <rect x="243.66666666666669" y="98.83198826118868" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="255.66666666666669" y="112.83198826118868">Massarosa · 2013</text>
+        <text class="chart-tooltip-value" x="255.66666666666669" y="132.83198826118868">81,8 anni</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Massarosa · 2014: 82,0 anni" style="pointer-events: none;">
+      <circle class="chart-hit" cx="402.8" cy="158.39398385913415" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="402.8" cy="158.39398385913415" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="402.8" y1="158.39398385913415" x2="402.8" y2="142.39398385913415"></line>
+        <rect x="297.8" y="92.39398385913415" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="309.8" y="106.39398385913415">Massarosa · 2014</text>
+        <text class="chart-tooltip-value" x="309.8" y="126.39398385913415">82,0 anni</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Massarosa · 2015: 82,1 anni" style="pointer-events: none;">
+      <circle class="chart-hit" cx="456.93333333333334" cy="151.95597945708013" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="456.93333333333334" cy="151.95597945708013" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="456.93333333333334" y1="151.95597945708013" x2="456.93333333333334" y2="135.95597945708013"></line>
+        <rect x="351.93333333333334" y="85.95597945708013" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="363.93333333333334" y="99.95597945708013">Massarosa · 2015</text>
+        <text class="chart-tooltip-value" x="363.93333333333334" y="119.95597945708013">82,1 anni</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Massarosa · 2016: 81,9 anni" style="pointer-events: none;">
+      <circle class="chart-hit" cx="511.06666666666666" cy="160.89765223771107" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="511.06666666666666" cy="160.89765223771107" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="511.06666666666666" y1="160.89765223771107" x2="511.06666666666666" y2="144.89765223771107"></line>
+        <rect x="406.06666666666666" y="94.89765223771107" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="418.06666666666666" y="108.89765223771107">Massarosa · 2016</text>
+        <text class="chart-tooltip-value" x="418.06666666666666" y="128.89765223771107">81,9 anni</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Massarosa · 2017: 82,6 anni" style="pointer-events: none;">
+      <circle class="chart-hit" cx="565.2" cy="134.07263389581823" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="565.2" cy="134.07263389581823" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="565.2" y1="134.07263389581823" x2="565.2" y2="118.07263389581823"></line>
+        <rect x="460.20000000000005" y="68.07263389581823" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="472.20000000000005" y="82.07263389581823">Massarosa · 2017</text>
+        <text class="chart-tooltip-value" x="472.20000000000005" y="102.07263389581823">82,6 anni</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Massarosa · 2018: 83,1 anni" style="pointer-events: none;">
+      <circle class="chart-hit" cx="619.3333333333334" cy="118.69295671313272" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="619.3333333333334" cy="118.69295671313272" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="619.3333333333334" y1="118.69295671313272" x2="619.3333333333334" y2="102.69295671313272"></line>
+        <rect x="514.3333333333334" y="52.692956713132716" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="526.3333333333334" y="66.69295671313272">Massarosa · 2018</text>
+        <text class="chart-tooltip-value" x="526.3333333333334" y="86.69295671313272">83,1 anni</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Massarosa · 2019: 83,1 anni" style="pointer-events: none;">
+      <circle class="chart-hit" cx="673.4666666666667" cy="116.54695524578122" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="673.4666666666667" cy="116.54695524578122" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="673.4666666666667" y1="116.54695524578122" x2="673.4666666666667" y2="100.54695524578122"></line>
+        <rect x="568.4666666666667" y="50.54695524578122" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="580.4666666666667" y="64.54695524578122">Massarosa · 2019</text>
+        <text class="chart-tooltip-value" x="580.4666666666667" y="84.54695524578122">83,1 anni</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Massarosa · 2020: 82,3 anni" style="pointer-events: none;">
+      <circle class="chart-hit" cx="727.6" cy="147.6639765223771" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="727.6" cy="147.6639765223771" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="727.6" y1="147.6639765223771" x2="727.6" y2="131.6639765223771"></line>
+        <rect x="622.6" y="81.66397652237711" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="634.6" y="95.66397652237711">Massarosa · 2020</text>
+        <text class="chart-tooltip-value" x="634.6" y="115.66397652237711">82,3 anni</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Massarosa · 2021: 82,3 anni" style="pointer-events: none;">
+      <circle class="chart-hit" cx="781.7333333333333" cy="147.30630961115168" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="781.7333333333333" cy="147.30630961115168" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="781.7333333333333" y1="147.30630961115168" x2="781.7333333333333" y2="131.30630961115168"></line>
+        <rect x="676.7333333333333" y="81.30630961115168" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="688.7333333333333" y="95.30630961115168">Massarosa · 2021</text>
+        <text class="chart-tooltip-value" x="688.7333333333333" y="115.30630961115168">82,3 anni</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Massarosa · 2022: 82,2 anni" style="pointer-events: none;">
+      <circle class="chart-hit" cx="835.8666666666667" cy="148.02164343360252" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="835.8666666666667" cy="148.02164343360252" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="835.8666666666667" y1="148.02164343360252" x2="835.8666666666667" y2="132.02164343360252"></line>
+        <rect x="680" y="82.02164343360252" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="692" y="96.02164343360252">Massarosa · 2022</text>
+        <text class="chart-tooltip-value" x="692" y="116.02164343360252">82,2 anni</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Massarosa · 2023: 82,9 anni" style="pointer-events: none;">
+      <circle class="chart-hit" cx="890" cy="126.20396184886302" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="890" cy="126.20396184886302" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="890" y1="126.20396184886302" x2="890" y2="110.20396184886302"></line>
+        <rect x="680" y="60.20396184886302" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="692" y="74.20396184886302">Massarosa · 2023</text>
+        <text class="chart-tooltip-value" x="692" y="94.20396184886302">82,9 anni</text>
+        
+      </g>
+    </g></g><g class="ux-series-group is-selected" data-history-town="viareggio" style="--series-color:#b56843"><polyline class="ux-series-line" points="78,166.9779897285402 132.13333333333333,192.01467351430645 186.26666666666665,183.07300073367549 240.4,173.4159941305942 294.5333333333333,161.6129860601614 348.6666666666667,166.26265590608935 402.8,138.72230374174615 456.93333333333334,141.22597212032258 511.06666666666666,139.07997065297155 565.2,126.91929567131335 619.3333333333334,92.58327219369019 673.4666666666667,83.64159941305923 727.6,110.1089508437272 781.7333333333333,130.4959647835655 835.8666666666667,135.8609684519443 890,120.83895818048424"></polyline><g class="chart-point" tabindex="0" role="button" aria-label="Viareggio · 2008: 81,7 anni">
+      <circle class="chart-hit" cx="78" cy="166.9779897285402" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="78" cy="166.9779897285402" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="78" y1="166.9779897285402" x2="78" y2="150.9779897285402"></line>
+        <rect x="70" y="100.9779897285402" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="82" y="114.9779897285402">Viareggio · 2008</text>
+        <text class="chart-tooltip-value" x="82" y="134.9779897285402">81,7 anni</text>
+        
+      </g>
+    </g><g class="chart-point" tabindex="0" role="button" aria-label="Viareggio · 2009: 81,0 anni">
+      <circle class="chart-hit" cx="132.13333333333333" cy="192.01467351430645" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="132.13333333333333" cy="192.01467351430645" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="132.13333333333333" y1="192.01467351430645" x2="132.13333333333333" y2="176.01467351430645"></line>
+        <rect x="70" y="126.01467351430645" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="82" y="140.01467351430645">Viareggio · 2009</text>
+        <text class="chart-tooltip-value" x="82" y="160.01467351430645">81,0 anni</text>
+        
+      </g>
+    </g><g class="chart-point" tabindex="0" role="button" aria-label="Viareggio · 2010: 81,3 anni">
+      <circle class="chart-hit" cx="186.26666666666665" cy="183.07300073367549" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="186.26666666666665" cy="183.07300073367549" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="186.26666666666665" y1="183.07300073367549" x2="186.26666666666665" y2="167.07300073367549"></line>
+        <rect x="81.26666666666665" y="117.07300073367549" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="93.26666666666665" y="131.07300073367549">Viareggio · 2010</text>
+        <text class="chart-tooltip-value" x="93.26666666666665" y="151.07300073367549">81,3 anni</text>
+        
+      </g>
+    </g><g class="chart-point" tabindex="0" role="button" aria-label="Viareggio · 2011: 81,5 anni">
+      <circle class="chart-hit" cx="240.4" cy="173.4159941305942" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="240.4" cy="173.4159941305942" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="240.4" y1="173.4159941305942" x2="240.4" y2="157.4159941305942"></line>
+        <rect x="135.4" y="107.41599413059421" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="147.4" y="121.41599413059421">Viareggio · 2011</text>
+        <text class="chart-tooltip-value" x="147.4" y="141.4159941305942">81,5 anni</text>
+        
+      </g>
+    </g><g class="chart-point" tabindex="0" role="button" aria-label="Viareggio · 2012: 81,9 anni">
+      <circle class="chart-hit" cx="294.5333333333333" cy="161.6129860601614" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="294.5333333333333" cy="161.6129860601614" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="294.5333333333333" y1="161.6129860601614" x2="294.5333333333333" y2="145.6129860601614"></line>
+        <rect x="189.5333333333333" y="95.6129860601614" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="201.5333333333333" y="109.6129860601614">Viareggio · 2012</text>
+        <text class="chart-tooltip-value" x="201.5333333333333" y="129.6129860601614">81,9 anni</text>
+        
+      </g>
+    </g><g class="chart-point" tabindex="0" role="button" aria-label="Viareggio · 2013: 81,7 anni">
+      <circle class="chart-hit" cx="348.6666666666667" cy="166.26265590608935" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="348.6666666666667" cy="166.26265590608935" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="348.6666666666667" y1="166.26265590608935" x2="348.6666666666667" y2="150.26265590608935"></line>
+        <rect x="243.66666666666669" y="100.26265590608935" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="255.66666666666669" y="114.26265590608935">Viareggio · 2013</text>
+        <text class="chart-tooltip-value" x="255.66666666666669" y="134.26265590608935">81,7 anni</text>
+        
+      </g>
+    </g><g class="chart-point" tabindex="0" role="button" aria-label="Viareggio · 2014: 82,5 anni">
+      <circle class="chart-hit" cx="402.8" cy="138.72230374174615" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="402.8" cy="138.72230374174615" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="402.8" y1="138.72230374174615" x2="402.8" y2="122.72230374174615"></line>
+        <rect x="297.8" y="72.72230374174615" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="309.8" y="86.72230374174615">Viareggio · 2014</text>
+        <text class="chart-tooltip-value" x="309.8" y="106.72230374174615">82,5 anni</text>
+        
+      </g>
+    </g><g class="chart-point" tabindex="0" role="button" aria-label="Viareggio · 2015: 82,4 anni">
+      <circle class="chart-hit" cx="456.93333333333334" cy="141.22597212032258" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="456.93333333333334" cy="141.22597212032258" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="456.93333333333334" y1="141.22597212032258" x2="456.93333333333334" y2="125.22597212032258"></line>
+        <rect x="351.93333333333334" y="75.22597212032258" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="363.93333333333334" y="89.22597212032258">Viareggio · 2015</text>
+        <text class="chart-tooltip-value" x="363.93333333333334" y="109.22597212032258">82,4 anni</text>
+        
+      </g>
+    </g><g class="chart-point" tabindex="0" role="button" aria-label="Viareggio · 2016: 82,5 anni">
+      <circle class="chart-hit" cx="511.06666666666666" cy="139.07997065297155" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="511.06666666666666" cy="139.07997065297155" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="511.06666666666666" y1="139.07997065297155" x2="511.06666666666666" y2="123.07997065297155"></line>
+        <rect x="406.06666666666666" y="73.07997065297155" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="418.06666666666666" y="87.07997065297155">Viareggio · 2016</text>
+        <text class="chart-tooltip-value" x="418.06666666666666" y="107.07997065297155">82,5 anni</text>
+        
+      </g>
+    </g><g class="chart-point" tabindex="0" role="button" aria-label="Viareggio · 2017: 82,8 anni">
+      <circle class="chart-hit" cx="565.2" cy="126.91929567131335" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="565.2" cy="126.91929567131335" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="565.2" y1="126.91929567131335" x2="565.2" y2="110.91929567131335"></line>
+        <rect x="460.20000000000005" y="60.91929567131335" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="472.20000000000005" y="74.91929567131335">Viareggio · 2017</text>
+        <text class="chart-tooltip-value" x="472.20000000000005" y="94.91929567131335">82,8 anni</text>
+        
+      </g>
+    </g><g class="chart-point" tabindex="0" role="button" aria-label="Viareggio · 2018: 83,8 anni">
+      <circle class="chart-hit" cx="619.3333333333334" cy="92.58327219369019" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="619.3333333333334" cy="92.58327219369019" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="619.3333333333334" y1="92.58327219369019" x2="619.3333333333334" y2="76.58327219369019"></line>
+        <rect x="514.3333333333334" y="26.583272193690192" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="526.3333333333334" y="40.58327219369019">Viareggio · 2018</text>
+        <text class="chart-tooltip-value" x="526.3333333333334" y="60.58327219369019">83,8 anni</text>
+        
+      </g>
+    </g><g class="chart-point" tabindex="0" role="button" aria-label="Viareggio · 2019: 84,0 anni">
+      <circle class="chart-hit" cx="673.4666666666667" cy="83.64159941305923" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="673.4666666666667" cy="83.64159941305923" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="673.4666666666667" y1="83.64159941305923" x2="673.4666666666667" y2="67.64159941305923"></line>
+        <rect x="568.4666666666667" y="17.641599413059225" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="580.4666666666667" y="31.641599413059225">Viareggio · 2019</text>
+        <text class="chart-tooltip-value" x="580.4666666666667" y="51.641599413059225">84,0 anni</text>
+        
+      </g>
+    </g><g class="chart-point" tabindex="0" role="button" aria-label="Viareggio · 2020: 83,3 anni">
+      <circle class="chart-hit" cx="727.6" cy="110.1089508437272" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="727.6" cy="110.1089508437272" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="727.6" y1="110.1089508437272" x2="727.6" y2="94.1089508437272"></line>
+        <rect x="622.6" y="44.1089508437272" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="634.6" y="58.1089508437272">Viareggio · 2020</text>
+        <text class="chart-tooltip-value" x="634.6" y="78.1089508437272">83,3 anni</text>
+        
+      </g>
+    </g><g class="chart-point" tabindex="0" role="button" aria-label="Viareggio · 2021: 82,7 anni">
+      <circle class="chart-hit" cx="781.7333333333333" cy="130.4959647835655" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="781.7333333333333" cy="130.4959647835655" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="781.7333333333333" y1="130.4959647835655" x2="781.7333333333333" y2="114.49596478356551"></line>
+        <rect x="676.7333333333333" y="64.49596478356551" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="688.7333333333333" y="78.49596478356551">Viareggio · 2021</text>
+        <text class="chart-tooltip-value" x="688.7333333333333" y="98.49596478356551">82,7 anni</text>
+        
+      </g>
+    </g><g class="chart-point" tabindex="0" role="button" aria-label="Viareggio · 2022: 82,6 anni">
+      <circle class="chart-hit" cx="835.8666666666667" cy="135.8609684519443" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="835.8666666666667" cy="135.8609684519443" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="835.8666666666667" y1="135.8609684519443" x2="835.8666666666667" y2="119.8609684519443"></line>
+        <rect x="680" y="69.8609684519443" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="692" y="83.8609684519443">Viareggio · 2022</text>
+        <text class="chart-tooltip-value" x="692" y="103.8609684519443">82,6 anni</text>
+        
+      </g>
+    </g><g class="chart-point" tabindex="0" role="button" aria-label="Viareggio · 2023: 83,0 anni">
+      <circle class="chart-hit" cx="890" cy="120.83895818048424" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="890" cy="120.83895818048424" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="890" y1="120.83895818048424" x2="890" y2="104.83895818048424"></line>
+        <rect x="680" y="54.83895818048424" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="692" y="68.83895818048424">Viareggio · 2023</text>
+        <text class="chart-tooltip-value" x="692" y="88.83895818048424">83,0 anni</text>
+        
+      </g>
+    </g></g><g class="ux-series-group " data-history-town="camaiore" style="--series-color:#64743d"><polyline class="ux-series-line" points="78,186.6496698459282 132.13333333333333,180.21166544387364 186.26666666666665,176.9926632428464 240.4,171.62765957446814 294.5333333333333,180.21166544387364 348.6666666666667,188.79567131327968 402.8,170.19699192956693 456.93333333333334,159.8246515040353 511.06666666666666,135.5033015407189 565.2,136.2186353631697 619.3333333333334,135.5033015407189 673.4666666666667,112.2549523110787 727.6,128.34996331621403 781.7333333333333,129.42296404988977 835.8666666666667,131.21129860601638 890,101.52494497432114"></polyline><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Camaiore · 2008: 81,2 anni" style="pointer-events: none;">
+      <circle class="chart-hit" cx="78" cy="186.6496698459282" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="78" cy="186.6496698459282" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="78" y1="186.6496698459282" x2="78" y2="170.6496698459282"></line>
+        <rect x="70" y="120.6496698459282" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="82" y="134.6496698459282">Camaiore · 2008</text>
+        <text class="chart-tooltip-value" x="82" y="154.6496698459282">81,2 anni</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Camaiore · 2009: 81,3 anni" style="pointer-events: none;">
+      <circle class="chart-hit" cx="132.13333333333333" cy="180.21166544387364" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="132.13333333333333" cy="180.21166544387364" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="132.13333333333333" y1="180.21166544387364" x2="132.13333333333333" y2="164.21166544387364"></line>
+        <rect x="70" y="114.21166544387364" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="82" y="128.21166544387364">Camaiore · 2009</text>
+        <text class="chart-tooltip-value" x="82" y="148.21166544387364">81,3 anni</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Camaiore · 2010: 81,4 anni" style="pointer-events: none;">
+      <circle class="chart-hit" cx="186.26666666666665" cy="176.9926632428464" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="186.26666666666665" cy="176.9926632428464" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="186.26666666666665" y1="176.9926632428464" x2="186.26666666666665" y2="160.9926632428464"></line>
+        <rect x="81.26666666666665" y="110.99266324284639" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="93.26666666666665" y="124.99266324284639">Camaiore · 2010</text>
+        <text class="chart-tooltip-value" x="93.26666666666665" y="144.9926632428464">81,4 anni</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Camaiore · 2011: 81,6 anni" style="pointer-events: none;">
+      <circle class="chart-hit" cx="240.4" cy="171.62765957446814" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="240.4" cy="171.62765957446814" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="240.4" y1="171.62765957446814" x2="240.4" y2="155.62765957446814"></line>
+        <rect x="135.4" y="105.62765957446814" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="147.4" y="119.62765957446814">Camaiore · 2011</text>
+        <text class="chart-tooltip-value" x="147.4" y="139.62765957446814">81,6 anni</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Camaiore · 2012: 81,3 anni" style="pointer-events: none;">
+      <circle class="chart-hit" cx="294.5333333333333" cy="180.21166544387364" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="294.5333333333333" cy="180.21166544387364" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="294.5333333333333" y1="180.21166544387364" x2="294.5333333333333" y2="164.21166544387364"></line>
+        <rect x="189.5333333333333" y="114.21166544387364" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="201.5333333333333" y="128.21166544387364">Camaiore · 2012</text>
+        <text class="chart-tooltip-value" x="201.5333333333333" y="148.21166544387364">81,3 anni</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Camaiore · 2013: 81,1 anni" style="pointer-events: none;">
+      <circle class="chart-hit" cx="348.6666666666667" cy="188.79567131327968" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="348.6666666666667" cy="188.79567131327968" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="348.6666666666667" y1="188.79567131327968" x2="348.6666666666667" y2="172.79567131327968"></line>
+        <rect x="243.66666666666669" y="122.79567131327968" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="255.66666666666669" y="136.79567131327968">Camaiore · 2013</text>
+        <text class="chart-tooltip-value" x="255.66666666666669" y="156.79567131327968">81,1 anni</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Camaiore · 2014: 81,6 anni" style="pointer-events: none;">
+      <circle class="chart-hit" cx="402.8" cy="170.19699192956693" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="402.8" cy="170.19699192956693" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="402.8" y1="170.19699192956693" x2="402.8" y2="154.19699192956693"></line>
+        <rect x="297.8" y="104.19699192956693" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="309.8" y="118.19699192956693">Camaiore · 2014</text>
+        <text class="chart-tooltip-value" x="309.8" y="138.19699192956693">81,6 anni</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Camaiore · 2015: 81,9 anni" style="pointer-events: none;">
+      <circle class="chart-hit" cx="456.93333333333334" cy="159.8246515040353" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="456.93333333333334" cy="159.8246515040353" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="456.93333333333334" y1="159.8246515040353" x2="456.93333333333334" y2="143.8246515040353"></line>
+        <rect x="351.93333333333334" y="93.8246515040353" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="363.93333333333334" y="107.8246515040353">Camaiore · 2015</text>
+        <text class="chart-tooltip-value" x="363.93333333333334" y="127.8246515040353">81,9 anni</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Camaiore · 2016: 82,6 anni" style="pointer-events: none;">
+      <circle class="chart-hit" cx="511.06666666666666" cy="135.5033015407189" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="511.06666666666666" cy="135.5033015407189" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="511.06666666666666" y1="135.5033015407189" x2="511.06666666666666" y2="119.5033015407189"></line>
+        <rect x="406.06666666666666" y="69.5033015407189" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="418.06666666666666" y="83.5033015407189">Camaiore · 2016</text>
+        <text class="chart-tooltip-value" x="418.06666666666666" y="103.5033015407189">82,6 anni</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Camaiore · 2017: 82,6 anni" style="pointer-events: none;">
+      <circle class="chart-hit" cx="565.2" cy="136.2186353631697" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="565.2" cy="136.2186353631697" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="565.2" y1="136.2186353631697" x2="565.2" y2="120.21863536316971"></line>
+        <rect x="460.20000000000005" y="70.21863536316971" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="472.20000000000005" y="84.21863536316971">Camaiore · 2017</text>
+        <text class="chart-tooltip-value" x="472.20000000000005" y="104.21863536316971">82,6 anni</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Camaiore · 2018: 82,6 anni" style="pointer-events: none;">
+      <circle class="chart-hit" cx="619.3333333333334" cy="135.5033015407189" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="619.3333333333334" cy="135.5033015407189" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="619.3333333333334" y1="135.5033015407189" x2="619.3333333333334" y2="119.5033015407189"></line>
+        <rect x="514.3333333333334" y="69.5033015407189" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="526.3333333333334" y="83.5033015407189">Camaiore · 2018</text>
+        <text class="chart-tooltip-value" x="526.3333333333334" y="103.5033015407189">82,6 anni</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Camaiore · 2019: 83,2 anni" style="pointer-events: none;">
+      <circle class="chart-hit" cx="673.4666666666667" cy="112.2549523110787" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="673.4666666666667" cy="112.2549523110787" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="673.4666666666667" y1="112.2549523110787" x2="673.4666666666667" y2="96.2549523110787"></line>
+        <rect x="568.4666666666667" y="46.254952311078696" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="580.4666666666667" y="60.254952311078696">Camaiore · 2019</text>
+        <text class="chart-tooltip-value" x="580.4666666666667" y="80.2549523110787">83,2 anni</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Camaiore · 2020: 82,8 anni" style="pointer-events: none;">
+      <circle class="chart-hit" cx="727.6" cy="128.34996331621403" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="727.6" cy="128.34996331621403" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="727.6" y1="128.34996331621403" x2="727.6" y2="112.34996331621403"></line>
+        <rect x="622.6" y="62.34996331621403" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="634.6" y="76.34996331621403">Camaiore · 2020</text>
+        <text class="chart-tooltip-value" x="634.6" y="96.34996331621403">82,8 anni</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Camaiore · 2021: 82,8 anni" style="pointer-events: none;">
+      <circle class="chart-hit" cx="781.7333333333333" cy="129.42296404988977" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="781.7333333333333" cy="129.42296404988977" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="781.7333333333333" y1="129.42296404988977" x2="781.7333333333333" y2="113.42296404988977"></line>
+        <rect x="676.7333333333333" y="63.42296404988977" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="688.7333333333333" y="77.42296404988977">Camaiore · 2021</text>
+        <text class="chart-tooltip-value" x="688.7333333333333" y="97.42296404988977">82,8 anni</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Camaiore · 2022: 82,7 anni" style="pointer-events: none;">
+      <circle class="chart-hit" cx="835.8666666666667" cy="131.21129860601638" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="835.8666666666667" cy="131.21129860601638" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="835.8666666666667" y1="131.21129860601638" x2="835.8666666666667" y2="115.21129860601638"></line>
+        <rect x="680" y="65.21129860601638" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="692" y="79.21129860601638">Camaiore · 2022</text>
+        <text class="chart-tooltip-value" x="692" y="99.21129860601638">82,7 anni</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Camaiore · 2023: 83,5 anni" style="pointer-events: none;">
+      <circle class="chart-hit" cx="890" cy="101.52494497432114" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="890" cy="101.52494497432114" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="890" y1="101.52494497432114" x2="890" y2="85.52494497432114"></line>
+        <rect x="680" y="35.524944974321144" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="692" y="49.524944974321144">Camaiore · 2023</text>
+        <text class="chart-tooltip-value" x="692" y="69.52494497432114">83,5 anni</text>
+        
+      </g>
+    </g></g><g class="ux-series-group " data-history-town="pietrasanta" style="--series-color:#855b7b"><polyline class="ux-series-line" points="78,185.21900220102702 132.13333333333333,174.8466617754954 186.26666666666665,158.03631694790923 240.4,155.89031548055772 294.5333333333333,187.36500366837853 348.6666666666667,192.37234042553186 402.8,184.5036683785767 456.93333333333334,161.97065297138684 511.06666666666666,168.76632428466627 565.2,132.28429933969161 619.3333333333334,110.1089508437272 673.4666666666667,89.36426999266344 727.6,107.24761555392534 781.7333333333333,122.62729273661033 835.8666666666667,113.32795304475445 890,99.73661041819506"></polyline><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Pietrasanta · 2008: 81,2 anni" style="pointer-events: none;">
+      <circle class="chart-hit" cx="78" cy="185.21900220102702" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="78" cy="185.21900220102702" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="78" y1="185.21900220102702" x2="78" y2="169.21900220102702"></line>
+        <rect x="70" y="119.21900220102702" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="82" y="133.21900220102702">Pietrasanta · 2008</text>
+        <text class="chart-tooltip-value" x="82" y="153.21900220102702">81,2 anni</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Pietrasanta · 2009: 81,5 anni" style="pointer-events: none;">
+      <circle class="chart-hit" cx="132.13333333333333" cy="174.8466617754954" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="132.13333333333333" cy="174.8466617754954" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="132.13333333333333" y1="174.8466617754954" x2="132.13333333333333" y2="158.8466617754954"></line>
+        <rect x="70" y="108.84666177549539" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="82" y="122.84666177549539">Pietrasanta · 2009</text>
+        <text class="chart-tooltip-value" x="82" y="142.8466617754954">81,5 anni</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Pietrasanta · 2010: 82,0 anni" style="pointer-events: none;">
+      <circle class="chart-hit" cx="186.26666666666665" cy="158.03631694790923" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="186.26666666666665" cy="158.03631694790923" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="186.26666666666665" y1="158.03631694790923" x2="186.26666666666665" y2="142.03631694790923"></line>
+        <rect x="81.26666666666665" y="92.03631694790923" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="93.26666666666665" y="106.03631694790923">Pietrasanta · 2010</text>
+        <text class="chart-tooltip-value" x="93.26666666666665" y="126.03631694790923">82,0 anni</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Pietrasanta · 2011: 82,0 anni" style="pointer-events: none;">
+      <circle class="chart-hit" cx="240.4" cy="155.89031548055772" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="240.4" cy="155.89031548055772" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="240.4" y1="155.89031548055772" x2="240.4" y2="139.89031548055772"></line>
+        <rect x="135.4" y="89.89031548055772" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="147.4" y="103.89031548055772">Pietrasanta · 2011</text>
+        <text class="chart-tooltip-value" x="147.4" y="123.89031548055772">82,0 anni</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Pietrasanta · 2012: 81,1 anni" style="pointer-events: none;">
+      <circle class="chart-hit" cx="294.5333333333333" cy="187.36500366837853" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="294.5333333333333" cy="187.36500366837853" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="294.5333333333333" y1="187.36500366837853" x2="294.5333333333333" y2="171.36500366837853"></line>
+        <rect x="189.5333333333333" y="121.36500366837853" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="201.5333333333333" y="135.36500366837853">Pietrasanta · 2012</text>
+        <text class="chart-tooltip-value" x="201.5333333333333" y="155.36500366837853">81,1 anni</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Pietrasanta · 2013: 81,0 anni" style="pointer-events: none;">
+      <circle class="chart-hit" cx="348.6666666666667" cy="192.37234042553186" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="348.6666666666667" cy="192.37234042553186" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="348.6666666666667" y1="192.37234042553186" x2="348.6666666666667" y2="176.37234042553186"></line>
+        <rect x="243.66666666666669" y="126.37234042553186" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="255.66666666666669" y="140.37234042553186">Pietrasanta · 2013</text>
+        <text class="chart-tooltip-value" x="255.66666666666669" y="160.37234042553186">81,0 anni</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Pietrasanta · 2014: 81,2 anni" style="pointer-events: none;">
+      <circle class="chart-hit" cx="402.8" cy="184.5036683785767" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="402.8" cy="184.5036683785767" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="402.8" y1="184.5036683785767" x2="402.8" y2="168.5036683785767"></line>
+        <rect x="297.8" y="118.50366837857669" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="309.8" y="132.5036683785767">Pietrasanta · 2014</text>
+        <text class="chart-tooltip-value" x="309.8" y="152.5036683785767">81,2 anni</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Pietrasanta · 2015: 81,9 anni" style="pointer-events: none;">
+      <circle class="chart-hit" cx="456.93333333333334" cy="161.97065297138684" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="456.93333333333334" cy="161.97065297138684" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="456.93333333333334" y1="161.97065297138684" x2="456.93333333333334" y2="145.97065297138684"></line>
+        <rect x="351.93333333333334" y="95.97065297138684" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="363.93333333333334" y="109.97065297138684">Pietrasanta · 2015</text>
+        <text class="chart-tooltip-value" x="363.93333333333334" y="129.97065297138684">81,9 anni</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Pietrasanta · 2016: 81,7 anni" style="pointer-events: none;">
+      <circle class="chart-hit" cx="511.06666666666666" cy="168.76632428466627" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="511.06666666666666" cy="168.76632428466627" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="511.06666666666666" y1="168.76632428466627" x2="511.06666666666666" y2="152.76632428466627"></line>
+        <rect x="406.06666666666666" y="102.76632428466627" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="418.06666666666666" y="116.76632428466627">Pietrasanta · 2016</text>
+        <text class="chart-tooltip-value" x="418.06666666666666" y="136.76632428466627">81,7 anni</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Pietrasanta · 2017: 82,7 anni" style="pointer-events: none;">
+      <circle class="chart-hit" cx="565.2" cy="132.28429933969161" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="565.2" cy="132.28429933969161" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="565.2" y1="132.28429933969161" x2="565.2" y2="116.28429933969161"></line>
+        <rect x="460.20000000000005" y="66.28429933969161" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="472.20000000000005" y="80.28429933969161">Pietrasanta · 2017</text>
+        <text class="chart-tooltip-value" x="472.20000000000005" y="100.28429933969161">82,7 anni</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Pietrasanta · 2018: 83,3 anni" style="pointer-events: none;">
+      <circle class="chart-hit" cx="619.3333333333334" cy="110.1089508437272" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="619.3333333333334" cy="110.1089508437272" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="619.3333333333334" y1="110.1089508437272" x2="619.3333333333334" y2="94.1089508437272"></line>
+        <rect x="514.3333333333334" y="44.1089508437272" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="526.3333333333334" y="58.1089508437272">Pietrasanta · 2018</text>
+        <text class="chart-tooltip-value" x="526.3333333333334" y="78.1089508437272">83,3 anni</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Pietrasanta · 2019: 83,9 anni" style="pointer-events: none;">
+      <circle class="chart-hit" cx="673.4666666666667" cy="89.36426999266344" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="673.4666666666667" cy="89.36426999266344" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="673.4666666666667" y1="89.36426999266344" x2="673.4666666666667" y2="73.36426999266344"></line>
+        <rect x="568.4666666666667" y="23.364269992663438" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="580.4666666666667" y="37.36426999266344">Pietrasanta · 2019</text>
+        <text class="chart-tooltip-value" x="580.4666666666667" y="57.36426999266344">83,9 anni</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Pietrasanta · 2020: 83,4 anni" style="pointer-events: none;">
+      <circle class="chart-hit" cx="727.6" cy="107.24761555392534" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="727.6" cy="107.24761555392534" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="727.6" y1="107.24761555392534" x2="727.6" y2="91.24761555392534"></line>
+        <rect x="622.6" y="41.24761555392534" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="634.6" y="55.24761555392534">Pietrasanta · 2020</text>
+        <text class="chart-tooltip-value" x="634.6" y="75.24761555392534">83,4 anni</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Pietrasanta · 2021: 83,0 anni" style="pointer-events: none;">
+      <circle class="chart-hit" cx="781.7333333333333" cy="122.62729273661033" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="781.7333333333333" cy="122.62729273661033" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="781.7333333333333" y1="122.62729273661033" x2="781.7333333333333" y2="106.62729273661033"></line>
+        <rect x="676.7333333333333" y="56.62729273661033" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="688.7333333333333" y="70.62729273661033">Pietrasanta · 2021</text>
+        <text class="chart-tooltip-value" x="688.7333333333333" y="90.62729273661033">83,0 anni</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Pietrasanta · 2022: 83,2 anni" style="pointer-events: none;">
+      <circle class="chart-hit" cx="835.8666666666667" cy="113.32795304475445" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="835.8666666666667" cy="113.32795304475445" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="835.8666666666667" y1="113.32795304475445" x2="835.8666666666667" y2="97.32795304475445"></line>
+        <rect x="680" y="47.32795304475445" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="692" y="61.32795304475445">Pietrasanta · 2022</text>
+        <text class="chart-tooltip-value" x="692" y="81.32795304475445">83,2 anni</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Pietrasanta · 2023: 83,6 anni" style="pointer-events: none;">
+      <circle class="chart-hit" cx="890" cy="99.73661041819506" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="890" cy="99.73661041819506" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="890" y1="99.73661041819506" x2="890" y2="83.73661041819506"></line>
+        <rect x="680" y="33.736610418195056" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="692" y="47.736610418195056">Pietrasanta · 2023</text>
+        <text class="chart-tooltip-value" x="692" y="67.73661041819506">83,6 anni</text>
+        
+      </g>
+    </g></g><g class="ux-series-group " data-history-town="seravezza" style="--series-color:#b88a1c"><polyline class="ux-series-line" points="78,207.39435069699195 132.13333333333333,188.08033749082887 186.26666666666665,193.44534115920766 240.4,170.19699192956693 294.5333333333333,163.75898752751291 348.6666666666667,143.7296404988995 402.8,130.13829787234062 456.93333333333334,140.51063829787222 511.06666666666666,106.88994864269992 565.2,134.78796771826853 619.3333333333334,141.9413059427734 673.4666666666667,155.17498165810687 727.6,149.09464416727826 781.7333333333333,156.2479823917826 835.8666666666667,161.6129860601614 890,123.34262655906066"></polyline><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Seravezza · 2008: 80,6 anni" style="pointer-events: none;">
+      <circle class="chart-hit" cx="78" cy="207.39435069699195" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="78" cy="207.39435069699195" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="78" y1="207.39435069699195" x2="78" y2="191.39435069699195"></line>
+        <rect x="70" y="141.39435069699195" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="82" y="155.39435069699195">Seravezza · 2008</text>
+        <text class="chart-tooltip-value" x="82" y="175.39435069699195">80,6 anni</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Seravezza · 2009: 81,1 anni" style="pointer-events: none;">
+      <circle class="chart-hit" cx="132.13333333333333" cy="188.08033749082887" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="132.13333333333333" cy="188.08033749082887" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="132.13333333333333" y1="188.08033749082887" x2="132.13333333333333" y2="172.08033749082887"></line>
+        <rect x="70" y="122.08033749082887" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="82" y="136.08033749082887">Seravezza · 2009</text>
+        <text class="chart-tooltip-value" x="82" y="156.08033749082887">81,1 anni</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Seravezza · 2010: 81,0 anni" style="pointer-events: none;">
+      <circle class="chart-hit" cx="186.26666666666665" cy="193.44534115920766" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="186.26666666666665" cy="193.44534115920766" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="186.26666666666665" y1="193.44534115920766" x2="186.26666666666665" y2="177.44534115920766"></line>
+        <rect x="81.26666666666665" y="127.44534115920766" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="93.26666666666665" y="141.44534115920766">Seravezza · 2010</text>
+        <text class="chart-tooltip-value" x="93.26666666666665" y="161.44534115920766">81,0 anni</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Seravezza · 2011: 81,6 anni" style="pointer-events: none;">
+      <circle class="chart-hit" cx="240.4" cy="170.19699192956693" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="240.4" cy="170.19699192956693" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="240.4" y1="170.19699192956693" x2="240.4" y2="154.19699192956693"></line>
+        <rect x="135.4" y="104.19699192956693" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="147.4" y="118.19699192956693">Seravezza · 2011</text>
+        <text class="chart-tooltip-value" x="147.4" y="138.19699192956693">81,6 anni</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Seravezza · 2012: 81,8 anni" style="pointer-events: none;">
+      <circle class="chart-hit" cx="294.5333333333333" cy="163.75898752751291" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="294.5333333333333" cy="163.75898752751291" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="294.5333333333333" y1="163.75898752751291" x2="294.5333333333333" y2="147.75898752751291"></line>
+        <rect x="189.5333333333333" y="97.75898752751291" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="201.5333333333333" y="111.75898752751291">Seravezza · 2012</text>
+        <text class="chart-tooltip-value" x="201.5333333333333" y="131.75898752751291">81,8 anni</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Seravezza · 2013: 82,4 anni" style="pointer-events: none;">
+      <circle class="chart-hit" cx="348.6666666666667" cy="143.7296404988995" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="348.6666666666667" cy="143.7296404988995" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="348.6666666666667" y1="143.7296404988995" x2="348.6666666666667" y2="127.7296404988995"></line>
+        <rect x="243.66666666666669" y="77.7296404988995" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="255.66666666666669" y="91.7296404988995">Seravezza · 2013</text>
+        <text class="chart-tooltip-value" x="255.66666666666669" y="111.7296404988995">82,4 anni</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Seravezza · 2014: 82,7 anni" style="pointer-events: none;">
+      <circle class="chart-hit" cx="402.8" cy="130.13829787234062" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="402.8" cy="130.13829787234062" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="402.8" y1="130.13829787234062" x2="402.8" y2="114.13829787234062"></line>
+        <rect x="297.8" y="64.13829787234062" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="309.8" y="78.13829787234062">Seravezza · 2014</text>
+        <text class="chart-tooltip-value" x="309.8" y="98.13829787234062">82,7 anni</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Seravezza · 2015: 82,5 anni" style="pointer-events: none;">
+      <circle class="chart-hit" cx="456.93333333333334" cy="140.51063829787222" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="456.93333333333334" cy="140.51063829787222" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="456.93333333333334" y1="140.51063829787222" x2="456.93333333333334" y2="124.51063829787222"></line>
+        <rect x="351.93333333333334" y="74.51063829787222" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="363.93333333333334" y="88.51063829787222">Seravezza · 2015</text>
+        <text class="chart-tooltip-value" x="363.93333333333334" y="108.51063829787222">82,5 anni</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Seravezza · 2016: 83,4 anni" style="pointer-events: none;">
+      <circle class="chart-hit" cx="511.06666666666666" cy="106.88994864269992" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="511.06666666666666" cy="106.88994864269992" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="511.06666666666666" y1="106.88994864269992" x2="511.06666666666666" y2="90.88994864269992"></line>
+        <rect x="406.06666666666666" y="40.88994864269992" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="418.06666666666666" y="54.88994864269992">Seravezza · 2016</text>
+        <text class="chart-tooltip-value" x="418.06666666666666" y="74.88994864269992">83,4 anni</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Seravezza · 2017: 82,6 anni" style="pointer-events: none;">
+      <circle class="chart-hit" cx="565.2" cy="134.78796771826853" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="565.2" cy="134.78796771826853" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="565.2" y1="134.78796771826853" x2="565.2" y2="118.78796771826853"></line>
+        <rect x="460.20000000000005" y="68.78796771826853" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="472.20000000000005" y="82.78796771826853">Seravezza · 2017</text>
+        <text class="chart-tooltip-value" x="472.20000000000005" y="102.78796771826853">82,6 anni</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Seravezza · 2018: 82,4 anni" style="pointer-events: none;">
+      <circle class="chart-hit" cx="619.3333333333334" cy="141.9413059427734" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="619.3333333333334" cy="141.9413059427734" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="619.3333333333334" y1="141.9413059427734" x2="619.3333333333334" y2="125.9413059427734"></line>
+        <rect x="514.3333333333334" y="75.9413059427734" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="526.3333333333334" y="89.9413059427734">Seravezza · 2018</text>
+        <text class="chart-tooltip-value" x="526.3333333333334" y="109.9413059427734">82,4 anni</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Seravezza · 2019: 82,0 anni" style="pointer-events: none;">
+      <circle class="chart-hit" cx="673.4666666666667" cy="155.17498165810687" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="673.4666666666667" cy="155.17498165810687" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="673.4666666666667" y1="155.17498165810687" x2="673.4666666666667" y2="139.17498165810687"></line>
+        <rect x="568.4666666666667" y="89.17498165810687" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="580.4666666666667" y="103.17498165810687">Seravezza · 2019</text>
+        <text class="chart-tooltip-value" x="580.4666666666667" y="123.17498165810687">82,0 anni</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Seravezza · 2020: 82,2 anni" style="pointer-events: none;">
+      <circle class="chart-hit" cx="727.6" cy="149.09464416727826" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="727.6" cy="149.09464416727826" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="727.6" y1="149.09464416727826" x2="727.6" y2="133.09464416727826"></line>
+        <rect x="622.6" y="83.09464416727826" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="634.6" y="97.09464416727826">Seravezza · 2020</text>
+        <text class="chart-tooltip-value" x="634.6" y="117.09464416727826">82,2 anni</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Seravezza · 2021: 82,0 anni" style="pointer-events: none;">
+      <circle class="chart-hit" cx="781.7333333333333" cy="156.2479823917826" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="781.7333333333333" cy="156.2479823917826" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="781.7333333333333" y1="156.2479823917826" x2="781.7333333333333" y2="140.2479823917826"></line>
+        <rect x="676.7333333333333" y="90.24798239178261" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="688.7333333333333" y="104.24798239178261">Seravezza · 2021</text>
+        <text class="chart-tooltip-value" x="688.7333333333333" y="124.24798239178261">82,0 anni</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Seravezza · 2022: 81,9 anni" style="pointer-events: none;">
+      <circle class="chart-hit" cx="835.8666666666667" cy="161.6129860601614" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="835.8666666666667" cy="161.6129860601614" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="835.8666666666667" y1="161.6129860601614" x2="835.8666666666667" y2="145.6129860601614"></line>
+        <rect x="680" y="95.6129860601614" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="692" y="109.6129860601614">Seravezza · 2022</text>
+        <text class="chart-tooltip-value" x="692" y="129.6129860601614">81,9 anni</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Seravezza · 2023: 82,9 anni" style="pointer-events: none;">
+      <circle class="chart-hit" cx="890" cy="123.34262655906066" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="890" cy="123.34262655906066" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="890" y1="123.34262655906066" x2="890" y2="107.34262655906066"></line>
+        <rect x="680" y="57.34262655906066" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="692" y="71.34262655906066">Seravezza · 2023</text>
+        <text class="chart-tooltip-value" x="692" y="91.34262655906066">82,9 anni</text>
+        
+      </g>
+    </g></g><g class="ux-series-group " data-history-town="forte-dei-marmi" style="--series-color:#4e7096"><polyline class="ux-series-line" points="78,210.2556859867938 132.13333333333333,183.78833455612636 186.26666666666665,179.85399853264875 240.4,144.08730741012494 294.5333333333333,144.80264123257524 348.6666666666667,183.43066764490092 402.8,152.31364636830503 456.93333333333334,149.80997798972862 511.06666666666666,94.37160674981679 565.2,109.75128393250178 619.3333333333334,103.31327953044774 673.4666666666667,77.56126192223064 727.6,83.64159941305923 781.7333333333333,58.247248716067546 835.8666666666667,59.3202494497433 890,47.517241379310505"></polyline><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Forte dei Marmi · 2008: 80,5 anni" style="pointer-events: none;">
+      <circle class="chart-hit" cx="78" cy="210.2556859867938" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="78" cy="210.2556859867938" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="78" y1="210.2556859867938" x2="78" y2="194.2556859867938"></line>
+        <rect x="70" y="144.2556859867938" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="82" y="158.2556859867938">Forte dei Marmi · 2008</text>
+        <text class="chart-tooltip-value" x="82" y="178.2556859867938">80,5 anni</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Forte dei Marmi · 2009: 81,2 anni" style="pointer-events: none;">
+      <circle class="chart-hit" cx="132.13333333333333" cy="183.78833455612636" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="132.13333333333333" cy="183.78833455612636" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="132.13333333333333" y1="183.78833455612636" x2="132.13333333333333" y2="167.78833455612636"></line>
+        <rect x="70" y="117.78833455612636" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="82" y="131.78833455612636">Forte dei Marmi · 2009</text>
+        <text class="chart-tooltip-value" x="82" y="151.78833455612636">81,2 anni</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Forte dei Marmi · 2010: 81,4 anni" style="pointer-events: none;">
+      <circle class="chart-hit" cx="186.26666666666665" cy="179.85399853264875" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="186.26666666666665" cy="179.85399853264875" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="186.26666666666665" y1="179.85399853264875" x2="186.26666666666665" y2="163.85399853264875"></line>
+        <rect x="81.26666666666665" y="113.85399853264875" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="93.26666666666665" y="127.85399853264875">Forte dei Marmi · 2010</text>
+        <text class="chart-tooltip-value" x="93.26666666666665" y="147.85399853264875">81,4 anni</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Forte dei Marmi · 2011: 82,4 anni" style="pointer-events: none;">
+      <circle class="chart-hit" cx="240.4" cy="144.08730741012494" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="240.4" cy="144.08730741012494" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="240.4" y1="144.08730741012494" x2="240.4" y2="128.08730741012494"></line>
+        <rect x="135.4" y="78.08730741012494" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="147.4" y="92.08730741012494">Forte dei Marmi · 2011</text>
+        <text class="chart-tooltip-value" x="147.4" y="112.08730741012494">82,4 anni</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Forte dei Marmi · 2012: 82,3 anni" style="pointer-events: none;">
+      <circle class="chart-hit" cx="294.5333333333333" cy="144.80264123257524" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="294.5333333333333" cy="144.80264123257524" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="294.5333333333333" y1="144.80264123257524" x2="294.5333333333333" y2="128.80264123257524"></line>
+        <rect x="189.5333333333333" y="78.80264123257524" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="201.5333333333333" y="92.80264123257524">Forte dei Marmi · 2012</text>
+        <text class="chart-tooltip-value" x="201.5333333333333" y="112.80264123257524">82,3 anni</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Forte dei Marmi · 2013: 81,3 anni" style="pointer-events: none;">
+      <circle class="chart-hit" cx="348.6666666666667" cy="183.43066764490092" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="348.6666666666667" cy="183.43066764490092" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="348.6666666666667" y1="183.43066764490092" x2="348.6666666666667" y2="167.43066764490092"></line>
+        <rect x="243.66666666666669" y="117.43066764490092" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="255.66666666666669" y="131.43066764490092">Forte dei Marmi · 2013</text>
+        <text class="chart-tooltip-value" x="255.66666666666669" y="151.43066764490092">81,3 anni</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Forte dei Marmi · 2014: 82,1 anni" style="pointer-events: none;">
+      <circle class="chart-hit" cx="402.8" cy="152.31364636830503" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="402.8" cy="152.31364636830503" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="402.8" y1="152.31364636830503" x2="402.8" y2="136.31364636830503"></line>
+        <rect x="297.8" y="86.31364636830503" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="309.8" y="100.31364636830503">Forte dei Marmi · 2014</text>
+        <text class="chart-tooltip-value" x="309.8" y="120.31364636830503">82,1 anni</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Forte dei Marmi · 2015: 82,2 anni" style="pointer-events: none;">
+      <circle class="chart-hit" cx="456.93333333333334" cy="149.80997798972862" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="456.93333333333334" cy="149.80997798972862" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="456.93333333333334" y1="149.80997798972862" x2="456.93333333333334" y2="133.80997798972862"></line>
+        <rect x="351.93333333333334" y="83.80997798972862" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="363.93333333333334" y="97.80997798972862">Forte dei Marmi · 2015</text>
+        <text class="chart-tooltip-value" x="363.93333333333334" y="117.80997798972862">82,2 anni</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Forte dei Marmi · 2016: 83,7 anni" style="pointer-events: none;">
+      <circle class="chart-hit" cx="511.06666666666666" cy="94.37160674981679" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="511.06666666666666" cy="94.37160674981679" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="511.06666666666666" y1="94.37160674981679" x2="511.06666666666666" y2="78.37160674981679"></line>
+        <rect x="406.06666666666666" y="28.37160674981679" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="418.06666666666666" y="42.37160674981679">Forte dei Marmi · 2016</text>
+        <text class="chart-tooltip-value" x="418.06666666666666" y="62.37160674981679">83,7 anni</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Forte dei Marmi · 2017: 83,3 anni" style="pointer-events: none;">
+      <circle class="chart-hit" cx="565.2" cy="109.75128393250178" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="565.2" cy="109.75128393250178" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="565.2" y1="109.75128393250178" x2="565.2" y2="93.75128393250178"></line>
+        <rect x="460.20000000000005" y="43.75128393250178" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="472.20000000000005" y="57.75128393250178">Forte dei Marmi · 2017</text>
+        <text class="chart-tooltip-value" x="472.20000000000005" y="77.75128393250178">83,3 anni</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Forte dei Marmi · 2018: 83,5 anni" style="pointer-events: none;">
+      <circle class="chart-hit" cx="619.3333333333334" cy="103.31327953044774" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="619.3333333333334" cy="103.31327953044774" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="619.3333333333334" y1="103.31327953044774" x2="619.3333333333334" y2="87.31327953044774"></line>
+        <rect x="514.3333333333334" y="37.313279530447744" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="526.3333333333334" y="51.313279530447744">Forte dei Marmi · 2018</text>
+        <text class="chart-tooltip-value" x="526.3333333333334" y="71.31327953044774">83,5 anni</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Forte dei Marmi · 2019: 84,2 anni" style="pointer-events: none;">
+      <circle class="chart-hit" cx="673.4666666666667" cy="77.56126192223064" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="673.4666666666667" cy="77.56126192223064" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="673.4666666666667" y1="77.56126192223064" x2="673.4666666666667" y2="95.56126192223064"></line>
+        <rect x="568.4666666666667" y="95.56126192223064" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="580.4666666666667" y="109.56126192223064">Forte dei Marmi · 2019</text>
+        <text class="chart-tooltip-value" x="580.4666666666667" y="129.56126192223064">84,2 anni</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Forte dei Marmi · 2020: 84,0 anni" style="pointer-events: none;">
+      <circle class="chart-hit" cx="727.6" cy="83.64159941305923" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="727.6" cy="83.64159941305923" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="727.6" y1="83.64159941305923" x2="727.6" y2="67.64159941305923"></line>
+        <rect x="622.6" y="17.641599413059225" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="634.6" y="31.641599413059225">Forte dei Marmi · 2020</text>
+        <text class="chart-tooltip-value" x="634.6" y="51.641599413059225">84,0 anni</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Forte dei Marmi · 2021: 84,8 anni" style="pointer-events: none;">
+      <circle class="chart-hit" cx="781.7333333333333" cy="58.247248716067546" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="781.7333333333333" cy="58.247248716067546" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="781.7333333333333" y1="58.247248716067546" x2="781.7333333333333" y2="76.24724871606755"></line>
+        <rect x="676.7333333333333" y="76.24724871606755" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="688.7333333333333" y="90.24724871606755">Forte dei Marmi · 2021</text>
+        <text class="chart-tooltip-value" x="688.7333333333333" y="110.24724871606755">84,8 anni</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Forte dei Marmi · 2022: 84,7 anni" style="pointer-events: none;">
+      <circle class="chart-hit" cx="835.8666666666667" cy="59.3202494497433" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="835.8666666666667" cy="59.3202494497433" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="835.8666666666667" y1="59.3202494497433" x2="835.8666666666667" y2="77.3202494497433"></line>
+        <rect x="680" y="77.3202494497433" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="692" y="91.3202494497433">Forte dei Marmi · 2022</text>
+        <text class="chart-tooltip-value" x="692" y="111.3202494497433">84,7 anni</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Forte dei Marmi · 2023: 85,1 anni" style="pointer-events: none;">
+      <circle class="chart-hit" cx="890" cy="47.517241379310505" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="890" cy="47.517241379310505" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="890" y1="47.517241379310505" x2="890" y2="65.5172413793105"></line>
+        <rect x="680" y="65.5172413793105" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="692" y="79.5172413793105">Forte dei Marmi · 2023</text>
+        <text class="chart-tooltip-value" x="692" y="99.5172413793105">85,1 anni</text>
+        
+      </g>
+    </g></g><g class="ux-series-group " data-history-town="stazzema" style="--series-color:#914d47"><polyline class="ux-series-line" points="78,285.72340425531905 132.13333333333333,256.0370506236243 186.26666666666665,232.78870139398364 240.4,239.9420396184885 294.5333333333333,209.18268525311802 348.6666666666667,242.80337490829035 402.8,212.4016874541453 456.93333333333334,175.2043286867203 511.06666666666666,219.9126925898751 565.2,314.336757153338 619.3333333333334,316.4827586206895 673.4666666666667,255.6793837123989 727.6,204.1753484959647 781.7333333333333,238.86903888481274 835.8666666666667,243.51870873074117 890,156.2479823917826"></polyline><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Stazzema · 2008: 78,4 anni" style="pointer-events: none;">
+      <circle class="chart-hit" cx="78" cy="285.72340425531905" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="78" cy="285.72340425531905" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="78" y1="285.72340425531905" x2="78" y2="269.72340425531905"></line>
+        <rect x="70" y="219.72340425531905" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="82" y="233.72340425531905">Stazzema · 2008</text>
+        <text class="chart-tooltip-value" x="82" y="253.72340425531905">78,4 anni</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Stazzema · 2009: 79,2 anni" style="pointer-events: none;">
+      <circle class="chart-hit" cx="132.13333333333333" cy="256.0370506236243" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="132.13333333333333" cy="256.0370506236243" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="132.13333333333333" y1="256.0370506236243" x2="132.13333333333333" y2="240.03705062362428"></line>
+        <rect x="70" y="190.03705062362428" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="82" y="204.03705062362428">Stazzema · 2009</text>
+        <text class="chart-tooltip-value" x="82" y="224.03705062362428">79,2 anni</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Stazzema · 2010: 79,9 anni" style="pointer-events: none;">
+      <circle class="chart-hit" cx="186.26666666666665" cy="232.78870139398364" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="186.26666666666665" cy="232.78870139398364" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="186.26666666666665" y1="232.78870139398364" x2="186.26666666666665" y2="216.78870139398364"></line>
+        <rect x="81.26666666666665" y="166.78870139398364" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="93.26666666666665" y="180.78870139398364">Stazzema · 2010</text>
+        <text class="chart-tooltip-value" x="93.26666666666665" y="200.78870139398364">79,9 anni</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Stazzema · 2011: 79,7 anni" style="pointer-events: none;">
+      <circle class="chart-hit" cx="240.4" cy="239.9420396184885" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="240.4" cy="239.9420396184885" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="240.4" y1="239.9420396184885" x2="240.4" y2="223.9420396184885"></line>
+        <rect x="135.4" y="173.9420396184885" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="147.4" y="187.9420396184885">Stazzema · 2011</text>
+        <text class="chart-tooltip-value" x="147.4" y="207.9420396184885">79,7 anni</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Stazzema · 2012: 80,5 anni" style="pointer-events: none;">
+      <circle class="chart-hit" cx="294.5333333333333" cy="209.18268525311802" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="294.5333333333333" cy="209.18268525311802" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="294.5333333333333" y1="209.18268525311802" x2="294.5333333333333" y2="193.18268525311802"></line>
+        <rect x="189.5333333333333" y="143.18268525311802" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="201.5333333333333" y="157.18268525311802">Stazzema · 2012</text>
+        <text class="chart-tooltip-value" x="201.5333333333333" y="177.18268525311802">80,5 anni</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Stazzema · 2013: 79,6 anni" style="pointer-events: none;">
+      <circle class="chart-hit" cx="348.6666666666667" cy="242.80337490829035" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="348.6666666666667" cy="242.80337490829035" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="348.6666666666667" y1="242.80337490829035" x2="348.6666666666667" y2="226.80337490829035"></line>
+        <rect x="243.66666666666669" y="176.80337490829035" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="255.66666666666669" y="190.80337490829035">Stazzema · 2013</text>
+        <text class="chart-tooltip-value" x="255.66666666666669" y="210.80337490829035">79,6 anni</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Stazzema · 2014: 80,4 anni" style="pointer-events: none;">
+      <circle class="chart-hit" cx="402.8" cy="212.4016874541453" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="402.8" cy="212.4016874541453" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="402.8" y1="212.4016874541453" x2="402.8" y2="196.4016874541453"></line>
+        <rect x="297.8" y="146.4016874541453" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="309.8" y="160.4016874541453">Stazzema · 2014</text>
+        <text class="chart-tooltip-value" x="309.8" y="180.4016874541453">80,4 anni</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Stazzema · 2015: 81,5 anni" style="pointer-events: none;">
+      <circle class="chart-hit" cx="456.93333333333334" cy="175.2043286867203" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="456.93333333333334" cy="175.2043286867203" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="456.93333333333334" y1="175.2043286867203" x2="456.93333333333334" y2="159.2043286867203"></line>
+        <rect x="351.93333333333334" y="109.20432868672029" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="363.93333333333334" y="123.20432868672029">Stazzema · 2015</text>
+        <text class="chart-tooltip-value" x="363.93333333333334" y="143.2043286867203">81,5 anni</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Stazzema · 2016: 80,2 anni" style="pointer-events: none;">
+      <circle class="chart-hit" cx="511.06666666666666" cy="219.9126925898751" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="511.06666666666666" cy="219.9126925898751" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="511.06666666666666" y1="219.9126925898751" x2="511.06666666666666" y2="203.9126925898751"></line>
+        <rect x="406.06666666666666" y="153.9126925898751" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="418.06666666666666" y="167.9126925898751">Stazzema · 2016</text>
+        <text class="chart-tooltip-value" x="418.06666666666666" y="187.9126925898751">80,2 anni</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Stazzema · 2017: 77,6 anni" style="pointer-events: none;">
+      <circle class="chart-hit" cx="565.2" cy="314.336757153338" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="565.2" cy="314.336757153338" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="565.2" y1="314.336757153338" x2="565.2" y2="298.336757153338"></line>
+        <rect x="460.20000000000005" y="248.336757153338" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="472.20000000000005" y="262.336757153338">Stazzema · 2017</text>
+        <text class="chart-tooltip-value" x="472.20000000000005" y="282.336757153338">77,6 anni</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Stazzema · 2018: 77,5 anni" style="pointer-events: none;">
+      <circle class="chart-hit" cx="619.3333333333334" cy="316.4827586206895" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="619.3333333333334" cy="316.4827586206895" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="619.3333333333334" y1="316.4827586206895" x2="619.3333333333334" y2="300.4827586206895"></line>
+        <rect x="514.3333333333334" y="250.48275862068948" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="526.3333333333334" y="264.4827586206895">Stazzema · 2018</text>
+        <text class="chart-tooltip-value" x="526.3333333333334" y="284.4827586206895">77,5 anni</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Stazzema · 2019: 79,2 anni" style="pointer-events: none;">
+      <circle class="chart-hit" cx="673.4666666666667" cy="255.6793837123989" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="673.4666666666667" cy="255.6793837123989" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="673.4666666666667" y1="255.6793837123989" x2="673.4666666666667" y2="239.6793837123989"></line>
+        <rect x="568.4666666666667" y="189.6793837123989" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="580.4666666666667" y="203.6793837123989">Stazzema · 2019</text>
+        <text class="chart-tooltip-value" x="580.4666666666667" y="223.6793837123989">79,2 anni</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Stazzema · 2020: 80,7 anni" style="pointer-events: none;">
+      <circle class="chart-hit" cx="727.6" cy="204.1753484959647" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="727.6" cy="204.1753484959647" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="727.6" y1="204.1753484959647" x2="727.6" y2="188.1753484959647"></line>
+        <rect x="622.6" y="138.1753484959647" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="634.6" y="152.1753484959647">Stazzema · 2020</text>
+        <text class="chart-tooltip-value" x="634.6" y="172.1753484959647">80,7 anni</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Stazzema · 2021: 79,7 anni" style="pointer-events: none;">
+      <circle class="chart-hit" cx="781.7333333333333" cy="238.86903888481274" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="781.7333333333333" cy="238.86903888481274" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="781.7333333333333" y1="238.86903888481274" x2="781.7333333333333" y2="222.86903888481274"></line>
+        <rect x="676.7333333333333" y="172.86903888481274" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="688.7333333333333" y="186.86903888481274">Stazzema · 2021</text>
+        <text class="chart-tooltip-value" x="688.7333333333333" y="206.86903888481274">79,7 anni</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Stazzema · 2022: 79,6 anni" style="pointer-events: none;">
+      <circle class="chart-hit" cx="835.8666666666667" cy="243.51870873074117" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="835.8666666666667" cy="243.51870873074117" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="835.8666666666667" y1="243.51870873074117" x2="835.8666666666667" y2="227.51870873074117"></line>
+        <rect x="680" y="177.51870873074117" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="692" y="191.51870873074117">Stazzema · 2022</text>
+        <text class="chart-tooltip-value" x="692" y="211.51870873074117">79,6 anni</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Stazzema · 2023: 82,0 anni" style="pointer-events: none;">
+      <circle class="chart-hit" cx="890" cy="156.2479823917826" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="890" cy="156.2479823917826" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="890" y1="156.2479823917826" x2="890" y2="140.2479823917826"></line>
+        <rect x="680" y="90.24798239178261" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="692" y="104.24798239178261">Stazzema · 2023</text>
+        <text class="chart-tooltip-value" x="692" y="124.24798239178261">82,0 anni</text>
+        
+      </g>
+    </g></g><g class="ux-series-group " data-history-town="versilia" style="--series-color:var(--ink)"><polyline class="ux-series-line" points="78,186.6496698459282 132.13333333333333,188.08033749082887 186.26666666666665,181.64233308877482 240.4,172.34299339691847 294.5333333333333,171.2699926632427 348.6666666666667,173.77366104181962 402.8,153.74431401320624 456.93333333333334,149.80997798972862 511.06666666666666,141.9413059427734 565.2,133.7149669845928 619.3333333333334,115.11628760088055 673.4666666666667,104.3862802641235 727.6,121.91195891416 781.7333333333333,131.21129860601638 835.8666666666667,132.28429933969161 890,112.2549523110787"></polyline><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Versilia · 2008: 81,2 anni" style="pointer-events: none;">
+      <circle class="chart-hit" cx="78" cy="186.6496698459282" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="78" cy="186.6496698459282" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="78" y1="186.6496698459282" x2="78" y2="170.6496698459282"></line>
+        <rect x="70" y="120.6496698459282" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="82" y="134.6496698459282">Versilia · 2008</text>
+        <text class="chart-tooltip-value" x="82" y="154.6496698459282">81,2 anni</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Versilia · 2009: 81,1 anni" style="pointer-events: none;">
+      <circle class="chart-hit" cx="132.13333333333333" cy="188.08033749082887" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="132.13333333333333" cy="188.08033749082887" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="132.13333333333333" y1="188.08033749082887" x2="132.13333333333333" y2="172.08033749082887"></line>
+        <rect x="70" y="122.08033749082887" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="82" y="136.08033749082887">Versilia · 2009</text>
+        <text class="chart-tooltip-value" x="82" y="156.08033749082887">81,1 anni</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Versilia · 2010: 81,3 anni" style="pointer-events: none;">
+      <circle class="chart-hit" cx="186.26666666666665" cy="181.64233308877482" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="186.26666666666665" cy="181.64233308877482" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="186.26666666666665" y1="181.64233308877482" x2="186.26666666666665" y2="165.64233308877482"></line>
+        <rect x="81.26666666666665" y="115.64233308877482" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="93.26666666666665" y="129.64233308877482">Versilia · 2010</text>
+        <text class="chart-tooltip-value" x="93.26666666666665" y="149.64233308877482">81,3 anni</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Versilia · 2011: 81,6 anni" style="pointer-events: none;">
+      <circle class="chart-hit" cx="240.4" cy="172.34299339691847" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="240.4" cy="172.34299339691847" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="240.4" y1="172.34299339691847" x2="240.4" y2="156.34299339691847"></line>
+        <rect x="135.4" y="106.34299339691847" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="147.4" y="120.34299339691847">Versilia · 2011</text>
+        <text class="chart-tooltip-value" x="147.4" y="140.34299339691847">81,6 anni</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Versilia · 2012: 81,6 anni" style="pointer-events: none;">
+      <circle class="chart-hit" cx="294.5333333333333" cy="171.2699926632427" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="294.5333333333333" cy="171.2699926632427" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="294.5333333333333" y1="171.2699926632427" x2="294.5333333333333" y2="155.2699926632427"></line>
+        <rect x="189.5333333333333" y="105.2699926632427" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="201.5333333333333" y="119.2699926632427">Versilia · 2012</text>
+        <text class="chart-tooltip-value" x="201.5333333333333" y="139.2699926632427">81,6 anni</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Versilia · 2013: 81,5 anni" style="pointer-events: none;">
+      <circle class="chart-hit" cx="348.6666666666667" cy="173.77366104181962" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="348.6666666666667" cy="173.77366104181962" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="348.6666666666667" y1="173.77366104181962" x2="348.6666666666667" y2="157.77366104181962"></line>
+        <rect x="243.66666666666669" y="107.77366104181962" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="255.66666666666669" y="121.77366104181962">Versilia · 2013</text>
+        <text class="chart-tooltip-value" x="255.66666666666669" y="141.77366104181962">81,5 anni</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Versilia · 2014: 82,1 anni" style="pointer-events: none;">
+      <circle class="chart-hit" cx="402.8" cy="153.74431401320624" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="402.8" cy="153.74431401320624" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="402.8" y1="153.74431401320624" x2="402.8" y2="137.74431401320624"></line>
+        <rect x="297.8" y="87.74431401320624" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="309.8" y="101.74431401320624">Versilia · 2014</text>
+        <text class="chart-tooltip-value" x="309.8" y="121.74431401320624">82,1 anni</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Versilia · 2015: 82,2 anni" style="pointer-events: none;">
+      <circle class="chart-hit" cx="456.93333333333334" cy="149.80997798972862" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="456.93333333333334" cy="149.80997798972862" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="456.93333333333334" y1="149.80997798972862" x2="456.93333333333334" y2="133.80997798972862"></line>
+        <rect x="351.93333333333334" y="83.80997798972862" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="363.93333333333334" y="97.80997798972862">Versilia · 2015</text>
+        <text class="chart-tooltip-value" x="363.93333333333334" y="117.80997798972862">82,2 anni</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Versilia · 2016: 82,4 anni" style="pointer-events: none;">
+      <circle class="chart-hit" cx="511.06666666666666" cy="141.9413059427734" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="511.06666666666666" cy="141.9413059427734" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="511.06666666666666" y1="141.9413059427734" x2="511.06666666666666" y2="125.9413059427734"></line>
+        <rect x="406.06666666666666" y="75.9413059427734" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="418.06666666666666" y="89.9413059427734">Versilia · 2016</text>
+        <text class="chart-tooltip-value" x="418.06666666666666" y="109.9413059427734">82,4 anni</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Versilia · 2017: 82,6 anni" style="pointer-events: none;">
+      <circle class="chart-hit" cx="565.2" cy="133.7149669845928" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="565.2" cy="133.7149669845928" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="565.2" y1="133.7149669845928" x2="565.2" y2="117.71496698459279"></line>
+        <rect x="460.20000000000005" y="67.71496698459279" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="472.20000000000005" y="81.71496698459279">Versilia · 2017</text>
+        <text class="chart-tooltip-value" x="472.20000000000005" y="101.71496698459279">82,6 anni</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Versilia · 2018: 83,2 anni" style="pointer-events: none;">
+      <circle class="chart-hit" cx="619.3333333333334" cy="115.11628760088055" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="619.3333333333334" cy="115.11628760088055" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="619.3333333333334" y1="115.11628760088055" x2="619.3333333333334" y2="99.11628760088055"></line>
+        <rect x="514.3333333333334" y="49.116287600880554" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="526.3333333333334" y="63.116287600880554">Versilia · 2018</text>
+        <text class="chart-tooltip-value" x="526.3333333333334" y="83.11628760088055">83,2 anni</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Versilia · 2019: 83,5 anni" style="pointer-events: none;">
+      <circle class="chart-hit" cx="673.4666666666667" cy="104.3862802641235" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="673.4666666666667" cy="104.3862802641235" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="673.4666666666667" y1="104.3862802641235" x2="673.4666666666667" y2="88.3862802641235"></line>
+        <rect x="568.4666666666667" y="38.3862802641235" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="580.4666666666667" y="52.3862802641235">Versilia · 2019</text>
+        <text class="chart-tooltip-value" x="580.4666666666667" y="72.3862802641235">83,5 anni</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Versilia · 2020: 83,0 anni" style="pointer-events: none;">
+      <circle class="chart-hit" cx="727.6" cy="121.91195891416" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="727.6" cy="121.91195891416" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="727.6" y1="121.91195891416" x2="727.6" y2="105.91195891416"></line>
+        <rect x="622.6" y="55.911958914159996" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="634.6" y="69.91195891416">Versilia · 2020</text>
+        <text class="chart-tooltip-value" x="634.6" y="89.91195891416">83,0 anni</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Versilia · 2021: 82,7 anni" style="pointer-events: none;">
+      <circle class="chart-hit" cx="781.7333333333333" cy="131.21129860601638" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="781.7333333333333" cy="131.21129860601638" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="781.7333333333333" y1="131.21129860601638" x2="781.7333333333333" y2="115.21129860601638"></line>
+        <rect x="676.7333333333333" y="65.21129860601638" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="688.7333333333333" y="79.21129860601638">Versilia · 2021</text>
+        <text class="chart-tooltip-value" x="688.7333333333333" y="99.21129860601638">82,7 anni</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Versilia · 2022: 82,7 anni" style="pointer-events: none;">
+      <circle class="chart-hit" cx="835.8666666666667" cy="132.28429933969161" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="835.8666666666667" cy="132.28429933969161" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="835.8666666666667" y1="132.28429933969161" x2="835.8666666666667" y2="116.28429933969161"></line>
+        <rect x="680" y="66.28429933969161" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="692" y="80.28429933969161">Versilia · 2022</text>
+        <text class="chart-tooltip-value" x="692" y="100.28429933969161">82,7 anni</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Versilia · 2023: 83,2 anni" style="pointer-events: none;">
+      <circle class="chart-hit" cx="890" cy="112.2549523110787" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="890" cy="112.2549523110787" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="890" y1="112.2549523110787" x2="890" y2="96.2549523110787"></line>
+        <rect x="680" y="46.254952311078696" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="692" y="60.254952311078696">Versilia · 2023</text>
+        <text class="chart-tooltip-value" x="692" y="80.2549523110787">83,2 anni</text>
+        
+      </g>
+    </g></g><text class="ux-history-axis-label" x="78" y="374" text-anchor="middle">2008</text><text class="ux-history-axis-label" x="186.26666666666665" y="374" text-anchor="middle">2010</text><text class="ux-history-axis-label" x="294.5333333333333" y="374" text-anchor="middle">2012</text><text class="ux-history-axis-label" x="402.8" y="374" text-anchor="middle">2014</text><text class="ux-history-axis-label" x="511.06666666666666" y="374" text-anchor="middle">2016</text><text class="ux-history-axis-label" x="619.3333333333334" y="374" text-anchor="middle">2018</text><text class="ux-history-axis-label" x="727.6" y="374" text-anchor="middle">2020</text><text class="ux-history-axis-label" x="835.8666666666667" y="374" text-anchor="middle">2022</text><text class="ux-history-axis-label" x="890" y="374" text-anchor="middle">2023</text></svg></div></div><p class="ux-history-scroll-hint">Scorri il grafico orizzontalmente per leggere l’intera serie.</p><div class="ux-history-legend" aria-label="Territori"><button type="button" data-history-select="massarosa" data-town="Massarosa" data-start="80.35" data-end="82.85" data-start-year="2008" data-end-year="2023" aria-pressed="false" style="--series-color:#0f5c6e">Massarosa</button><button type="button" data-history-select="viareggio" data-town="Viareggio" data-start="81.71" data-end="83" data-start-year="2008" data-end-year="2023" aria-pressed="true" style="--series-color:#b56843">Viareggio</button><button type="button" data-history-select="camaiore" data-town="Camaiore" data-start="81.16" data-end="83.54" data-start-year="2008" data-end-year="2023" aria-pressed="false" style="--series-color:#64743d">Camaiore</button><button type="button" data-history-select="pietrasanta" data-town="Pietrasanta" data-start="81.2" data-end="83.59" data-start-year="2008" data-end-year="2023" aria-pressed="false" style="--series-color:#855b7b">Pietrasanta</button><button type="button" data-history-select="seravezza" data-town="Seravezza" data-start="80.58" data-end="82.93" data-start-year="2008" data-end-year="2023" aria-pressed="false" style="--series-color:#b88a1c">Seravezza</button><button type="button" data-history-select="forte-dei-marmi" data-town="Forte dei Marmi" data-start="80.5" data-end="85.05" data-start-year="2008" data-end-year="2023" aria-pressed="false" style="--series-color:#4e7096">Forte dei Marmi</button><button type="button" data-history-select="stazzema" data-town="Stazzema" data-start="78.39" data-end="82.01" data-start-year="2008" data-end-year="2023" aria-pressed="false" style="--series-color:#914d47">Stazzema</button><button type="button" data-history-select="versilia" data-town="Versilia" data-start="81.16" data-end="83.24" data-start-year="2008" data-end-year="2023" aria-pressed="false" style="--series-color:var(--ink)">Versilia</button></div><div class="ux-history-summary" aria-live="polite"><strong>Viareggio</strong>: 2008 81,7 anni → 2023 83,0 anni. Variazione: <strong>+1,3 anni · +1,6%</strong>.</div></div></div></div></div>
+            </div>
+          </section>
+          <section id="compare-demographic-pyramid" class="compare-demographic-pyramid page-width"></section>
+          <section id="compare-benchmark" class="page-width a5-benchmark-host"><section class="benchmark-section"><div class="section-heading compact"><div><span class="overline">Confronto omogeneo · 2023</span><h2>Territorio, Toscana</h2></div></div>
+      <div class="benchmark-grid"><article class="benchmark-card benchmark-local"><span>Versilia · Totale</span><strong>83,24 anni</strong><small>Aggregato ufficiale Zona Versilia pubblicato da ARS Toscana per la lettura selezionata; non è una media dei valori comunali.</small></article>
+      <article class="benchmark-card"><span>Toscana</span><strong>83,64 anni</strong><small>ARS Toscana</small></article>
+      </div>
+      <p class="benchmark-note">Confronto omogeneo con Regione Toscana dalla stessa fonte ARS. Il dato Italia non è presente nello stesso export e non viene inferito. <a href="https://www.ars.toscana.it/banche-dati/actions/esporta.php?indicatore=1290" target="_blank" rel="noreferrer">Apri la fonte ↗</a></p></section></section>
+          
+          <section id="compare-tools" class="compare-post-benchmark-tools page-width"><details class="method-disclosure"><summary><span>Metodo e comparabilità</span><small>Formula, natura del dato e criticità</small></summary><div class="method-disclosure-body"><dl><div><dt>Natura</dt><dd>Dato ufficiale ARS Toscana</dd></div><div><dt>Formula</dt><dd>Valore pubblicato da ARS Toscana per l'indicatore 1290 “Speranza di vita alla nascita”, senza trasformazioni statistiche dell'Osservatorio.</dd></div><div><dt>Copertura</dt><dd>7/7</dd></div></dl><p><strong>Nota:</strong> Serie 2008–2023 con distinzione Totale, Maschi e Femmine. I valori comunali, della Zona Versilia e della Toscana provengono dallo stesso export ufficiale. Nessun valore è interpolato, stimato o ricostruito da medie comunali.</p></div></details><aside class="reading-scale" data-reading-scale="territorial" data-reading-metric="lifeExpectancy">
+      <div><span class="overline">Scala di lettura</span><strong>Territoriale</strong></div>
+      <p>Il dato descrive residenti, stock o fenomeni localizzati nel Comune. Il confine è utile per leggere il territorio, ma non implica che il Comune sia un sistema autonomo.</p>
+    </aside></section>
+          <section id="compare-territori" class="topic-town-links page-width"><div class="topic-town-links-heading"><span class="overline">Schede comunali</span><h2>Apri il territorio</h2><p>Accedi alla scheda comunale e agli indicatori di dettaglio del tema Salute.</p></div><div class="topic-town-card-grid"><a class="topic-town-card" href="../../comuni/camaiore/?tema=salute&amp;indicatore=lifeExpectancy"><span class="topic-town-card-media"><img src="../../crests/camaiore.svg" alt="" loading="lazy" referrerpolicy="no-referrer"></span><span class="topic-town-card-copy"><strong>Camaiore</strong><span class="town-current-value"><b>83,54 anni</b><small>Speranza di vita</small></span><small>Apri la scheda →</small></span></a><a class="topic-town-card" href="../../comuni/forte-dei-marmi/?tema=salute&amp;indicatore=lifeExpectancy"><span class="topic-town-card-media"><img src="../../crests/forte-dei-marmi.svg" alt="" loading="lazy" referrerpolicy="no-referrer"></span><span class="topic-town-card-copy"><strong>Forte dei Marmi</strong><span class="town-current-value"><b>85,05 anni</b><small>Speranza di vita</small></span><small>Apri la scheda →</small></span></a><a class="topic-town-card" href="../../comuni/massarosa/?tema=salute&amp;indicatore=lifeExpectancy"><span class="topic-town-card-media"><img src="../../crests/massarosa.png" alt="" loading="lazy" referrerpolicy="no-referrer"></span><span class="topic-town-card-copy"><strong>Massarosa</strong><span class="town-current-value"><b>82,85 anni</b><small>Speranza di vita</small></span><small>Apri la scheda →</small></span></a><a class="topic-town-card" href="../../comuni/pietrasanta/?tema=salute&amp;indicatore=lifeExpectancy"><span class="topic-town-card-media"><img src="../../crests/pietrasanta.svg" alt="" loading="lazy" referrerpolicy="no-referrer"></span><span class="topic-town-card-copy"><strong>Pietrasanta</strong><span class="town-current-value"><b>83,59 anni</b><small>Speranza di vita</small></span><small>Apri la scheda →</small></span></a><a class="topic-town-card" href="../../comuni/seravezza/?tema=salute&amp;indicatore=lifeExpectancy"><span class="topic-town-card-media"><img src="../../crests/seravezza.png" alt="" loading="lazy" referrerpolicy="no-referrer"></span><span class="topic-town-card-copy"><strong>Seravezza</strong><span class="town-current-value"><b>82,93 anni</b><small>Speranza di vita</small></span><small>Apri la scheda →</small></span></a><a class="topic-town-card" href="../../comuni/stazzema/?tema=salute&amp;indicatore=lifeExpectancy"><span class="topic-town-card-media"><img src="../../crests/stazzema.webp" alt="" loading="lazy" referrerpolicy="no-referrer"></span><span class="topic-town-card-copy"><strong>Stazzema</strong><span class="town-current-value"><b>82,01 anni</b><small>Speranza di vita</small></span><small>Apri la scheda →</small></span></a><a class="topic-town-card" href="../../comuni/viareggio/?tema=salute&amp;indicatore=lifeExpectancy"><span class="topic-town-card-media"><img src="../../crests/viareggio.svg" alt="" loading="lazy" referrerpolicy="no-referrer"></span><span class="topic-town-card-copy"><strong>Viareggio</strong><span class="town-current-value"><b>83,00 anni</b><small>Speranza di vita</small></span><small>Apri la scheda →</small></span></a></div></section>
+        </main></div>
+  <div id="site-footer-mount">
+      <footer class="site-footer">
+        <div class="footer-about"><strong>Osservatorio Versilia</strong>
+          <p>Un punto di accesso indipendente ai dati pubblici dei sette comuni della Versilia.</p>
+          <p class="footer-disclaimer">Non è un sito istituzionale e non rappresenta gli enti citati.</p>
+        </div>
+        <nav class="footer-links" aria-label="Informazioni sul progetto">
+          <a href="../../progetto/">Il progetto</a>
+          <a href="../../stato-dati/" data-data-status-nav="footer">Stato dei dati</a>
+          <a href="../../opportunita/">Opportunità</a>
+          <a href="../../progetto/#metodo">Metodo</a>
+          <a href="../../progetto/#licenza">Licenza</a>
+          <a href="../../progetto/#versioni">Versioni dei dati</a>
+          <a href="../../segnala/">Segnala un dato</a>
+          <a href="mailto:info@osservatorioversilia.it">Contatti</a>
+        </nav>
+        
+      <div class="footer-social" data-social-placement="footer" aria-label="Segui Osservatorio Versilia">
+        <strong>Segui Osservatorio Versilia</strong><div class="social-links">
+    <a class="social-profile-link" href="https://www.facebook.com/osservatorioversilia" target="_blank" rel="me noreferrer" aria-label="Segui Osservatorio Versilia su Facebook">
+      <span class="social-profile-mark" aria-hidden="true">f</span>
+      <span class="social-profile-copy"><strong>Facebook</strong><small>@osservatorioversilia</small></span>
+      <b aria-hidden="true">↗</b>
+    </a>
+    <a class="social-profile-link" href="https://www.instagram.com/osservatorioversilia/" target="_blank" rel="me noreferrer" aria-label="Segui Osservatorio Versilia su Instagram">
+      <span class="social-profile-mark" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="5" ry="5"></rect><circle cx="12" cy="12" r="4"></circle><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"></circle></svg></span>
+      <span class="social-profile-copy"><strong>Instagram</strong><small>@osservatorioversilia</small></span>
+      <b aria-hidden="true">↗</b>
+    </a>
+    <a class="social-profile-link" href="https://www.linkedin.com/company/osservatorioversilia" target="_blank" rel="me noreferrer" aria-label="Segui Osservatorio Versilia su LinkedIn">
+      <span class="social-profile-mark" aria-hidden="true">in</span>
+      <span class="social-profile-copy"><strong>LinkedIn</strong><small>Osservatorio Versilia</small></span>
+      <b aria-hidden="true">↗</b>
+    </a>
+    <a class="social-profile-link" href="https://x.com/OssVersilia" target="_blank" rel="me noreferrer" aria-label="Segui Osservatorio Versilia su X">
+      <span class="social-profile-mark" aria-hidden="true">X</span>
+      <span class="social-profile-copy"><strong>X</strong><small>@OssVersilia</small></span>
+      <b aria-hidden="true">↗</b>
+    </a></div>
+      </div><div class="footer-note">
+          <span>7 comuni · 11 temi</span><span>v. dati v1.40.0</span><span>catalogo dati aggiornato al 14 settembre 2026</span>
+        </div>
+      </footer></div>
+  <noscript><div class="app-error">Il sito richiede JavaScript per mostrare confronti, ricerca e schede comunali.</div></noscript>
+  <script src="../../assets/app-bundle.js?v=20261025-ui-shell-consistency" defer=""></script>
+  <script src="../../assets/fidelity.js" defer=""></script>
+  <script src="../../assets/economy-atlas.js" defer=""></script>
+  <script src="../../assets/ux-accordion.js?v=20261025-ui-shell-consistency" defer=""></script>
+  <script src="../../assets/ux-history-core.js?v=20261025-ui-shell-consistency" defer=""></script>
+  <script src="../../assets/ux-history.js?v=20261025-ui-shell-consistency" defer=""></script>
+  <script src="../../assets/export-v161.js?v=20261025-ui-shell-consistency" defer=""></script>
+  <script src="../../assets/visual-grammar.js?v=20261025-ui-shell-consistency" defer=""></script>
+  <script src="../../assets/social-presence.js?v=20261025-ui-shell-consistency" defer=""></script>
+
+
+  <script src="../../assets/pwa.js?v=20260824-pwa9&rev=catalog-v129" defer></script>
+</body></html>

@@ -1,0 +1,303 @@
+<!doctype html>
+<html lang="it"><head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Risultati INVALSI in Versilia · Osservatorio Versilia</title>
+  <meta name="description" content="Risultati INVALSI nei sette comuni della Versilia: valori 2024-25, serie storiche disponibili, metodo e fonte ufficiale.">
+  <meta property="og:title" content="Risultati INVALSI in Versilia · Osservatorio Versilia">
+  <meta property="og:description" content="Risultati INVALSI nei sette comuni della Versilia: valori 2024-25, serie storiche disponibili, metodo e fonte ufficiale.">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="it_IT">
+  <link rel="icon" href="../../favicon.svg?v=20260824-ov4" sizes="any">
+  <link rel="icon" href="../../favicon.svg?v=20260824-ov4" type="image/svg+xml">
+  <link rel="manifest" href="../../site.webmanifest?v=20260824-pwa9">
+  <link rel="stylesheet" href="../../assets/original.css">
+  <link rel="stylesheet" href="../../assets/static.css">
+  <link rel="stylesheet" href="../../assets/fidelity.css?v=20261025-ui-shell-consistency">
+  <link rel="stylesheet" href="../../assets/fonts.css">
+  <link rel="stylesheet" href="../../assets/ux-experiment.css?v=20261025-ui-shell-consistency">
+  <link rel="stylesheet" href="../../assets/ux-background-match.css?v=20261025-ui-shell-consistency">
+  <link rel="stylesheet" href="../../assets/export-v161.css?v=20261025-ui-shell-consistency">
+  <link rel="stylesheet" href="../../assets/visual-grammar.css?v=20261025-ui-shell-consistency">
+  <link rel="stylesheet" href="../../assets/indicator-pages.css?v=20261025-ui-shell-consistency">
+  <link rel="stylesheet" href="../../assets/social-presence.css?v=20261025-ui-shell-consistency">
+<style id="ov-invalsi-benchmark-history-style">
+.ux-history-chart .ux-series-group[data-history-town="toscana"] .ux-series-line{stroke-dasharray:10 5;stroke-width:3;opacity:.9}
+.ux-history-chart .ux-series-group[data-history-town="italia"] .ux-series-line{stroke-dasharray:2 5;stroke-width:3;opacity:.9}
+.ux-history-legend button[data-history-select="toscana"]::before,.ux-history-legend button[data-history-select="italia"]::before{width:20px;height:2px;border-radius:0}
+.ux-history-legend button[data-history-select="toscana"]::before{background:repeating-linear-gradient(90deg,var(--series-color) 0 8px,transparent 8px 12px)}
+.ux-history-legend button[data-history-select="italia"]::before{background:repeating-linear-gradient(90deg,var(--series-color) 0 2px,transparent 2px 6px)}
+</style><style id="ov-climate-current-grammar-style">
+      .ov-climate-current-legend{
+        display:flex;align-items:center;gap:18px;margin:0 0 14px;padding:0 2px;
+        color:var(--muted);font-size:9px;font-weight:700
+      }
+      .ov-climate-current-legend span{display:inline-flex;align-items:center;gap:7px}
+      .ov-climate-current-legend .ov-legend-dot{
+        width:9px;height:9px;border-radius:50%;background:var(--surface,#fffaf1);
+        border:2px solid var(--theme-color,#52785c)
+      }
+      .ov-climate-current-legend .ov-legend-mean{width:2px;height:16px;background:#607b88}
+      .ov-climate-current-list{
+        display:grid;gap:11px
+      }
+      .ov-climate-current-list .ov-climate-current-row{
+        border-radius:8px;grid-template-columns:24px minmax(110px,1.1fr) minmax(150px,3fr) minmax(70px,auto);
+        align-items:center;gap:12px;min-height:54px;padding:0;display:grid;position:relative;
+        color:inherit;text-decoration:none;transition:background .15s
+      }
+      .ov-climate-current-list .ov-climate-current-row:hover,
+      .ov-climate-current-list .ov-climate-current-row.selected{background:var(--blue-soft)}
+      .ov-climate-current-list .ov-climate-current-row .town{
+        grid-column:2;font-size:13px;font-weight:690
+      }
+      .ov-climate-current-list .ov-climate-current-row strong{
+        grid-column:4;font-family:var(--font-geist-mono),monospace;text-align:right;
+        white-space:nowrap;font-size:12px
+      }
+      .ov-climate-current-list .ov-climate-current-track{
+        grid-column:3;position:relative;height:9px;border-radius:999px;background:#e4e9e7;
+        overflow:visible
+      }
+      .ov-climate-current-list.uses-versilia-marker .ov-climate-current-track::after{
+        content:'';position:absolute;z-index:1;left:var(--ov-mean-position);top:-5px;width:2px;height:19px;
+        background:#607b88;transform:translateX(-1px)
+      }
+      .ov-climate-current-list.uses-versilia-marker .ov-climate-current-track>i{
+        position:absolute;z-index:2;top:50%;left:var(--ov-value-position)!important;
+        width:11px;height:11px;margin:-5.5px 0 0 -5.5px;border-radius:50%;
+        background:var(--surface,#fffaf1);border:3px solid var(--theme-color,#52785c);
+        box-shadow:0 1px 4px color-mix(in srgb,var(--ink) 18%,transparent)
+      }
+      .ov-climate-current-list .bar-hover-label{display:none}
+      @media(max-width:700px){
+        .ov-climate-current-list .ov-climate-current-row{
+          grid-template-columns:18px minmax(82px,1fr) minmax(70px,1.4fr) auto;gap:7px
+        }
+        .ov-climate-current-list .ov-climate-current-row .town{font-size:11px}
+        .ov-climate-current-list .ov-climate-current-row strong{font-size:10px}
+      }
+    </style>
+  <link rel="canonical" href="https://osservatorioversilia.it/indicatori/risultati-invalsi/">
+  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"url":"https://osservatorioversilia.it/indicatori/risultati-invalsi/","name":"Risultati INVALSI in Versilia · Osservatorio Versilia","description":"Risultati INVALSI nei sette comuni della Versilia: valori 2024-25, serie storiche disponibili, metodo e fonte ufficiale.","inLanguage":"it-IT","isAccessibleForFree":true,"creator":{"@type":"Person","name":"Emanuele Anzilotti"},"publisher":{"@type":"Person","name":"Emanuele Anzilotti"},"@type":"Dataset","identifier":"invalsiResults","dateModified":"2026-09-14","spatialCoverage":{"@type":"Place","name":"Versilia, Toscana, Italia"},"temporalCoverage":"2019/2025","variableMeasured":{"@type":"PropertyValue","name":"Risultati INVALSI","unitText":"invalsi_score"},"isBasedOn":"https://serviziostatistico.invalsi.it/invalsi_ss_data/punteggi-e-percentuale-di-studenti-nei-livelli-di-competenza-per-ripartizioni-territoriali-e-caratteristiche-di-contesto/","measurementTechnique":"Valore comunale letto direttamente da 'Comune plesso' con aggregazione Totale. Toscana e Italia lette direttamente dallo stesso dataset; nessuna media tra scuole o Comuni."},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Osservatorio Versilia","item":"https://osservatorioversilia.it/"},{"@type":"ListItem","position":2,"name":"Istruzione","item":"https://osservatorioversilia.it/confronta/istruzione/"},{"@type":"ListItem","position":3,"name":"Risultati INVALSI in Versilia · Osservatorio Versilia","item":"https://osservatorioversilia.it/indicatori/risultati-invalsi/"}]}]}</script>
+
+  <meta property="og:url" content="https://osservatorioversilia.it/indicatori/risultati-invalsi/">
+  <meta property="og:site_name" content="Osservatorio Versilia">
+  <meta property="og:image" content="https://osservatorioversilia.it/images/versilia-viareggio-apuane.jpg">
+  <meta property="og:image:alt" content="Viareggio e le Alpi Apuane, immagine di Osservatorio Versilia">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Risultati INVALSI in Versilia · Osservatorio Versilia">
+  <meta name="twitter:description" content="Risultati INVALSI nei sette comuni della Versilia: valori 2024-25, serie storiche disponibili, metodo e fonte ufficiale.">
+  <meta name="twitter:site" content="@OssVersilia">
+  <meta name="twitter:image" content="https://osservatorioversilia.it/images/versilia-viareggio-apuane.jpg">
+  <meta name="twitter:image:alt" content="Viareggio e le Alpi Apuane, immagine di Osservatorio Versilia">
+  <link rel="stylesheet" href="../../assets/brand.css?v=20260824-ov4">
+  <link rel="stylesheet" href="../../assets/mobile-accordion-fix.css?v=20260809-3">
+  <link rel="stylesheet" href="../../assets/chart-surfaces.css?v=20260826-v120">
+  <meta name="theme-color" content="#0F3654">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Osservatorio Versilia">
+  <link rel="apple-touch-icon" sizes="180x180" href="../../pwa/icon-180.png?v=20260824-pwa9">
+  <link rel="stylesheet" href="../../assets/pwa.css?v=20260824-pwa9">
+</head>
+<body class="antialiased" data-page="indicator" data-theme="istruzione" data-town="" data-metric="invalsiResults" data-prerendered="true">
+  <div id="site-header-mount">
+      <a class="skip-link" href="#app">Vai al contenuto</a>
+      <header class="site-header">
+        <div class="site-header-inner">
+          <a href="../../" class="site-brand" aria-label="Osservatorio Versilia, torna alla home">
+            <span class="site-brand-mark" aria-hidden="true"><svg class="ov-mark-svg" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 76 64"><g fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="27" cy="32" r="22" stroke="#0F3654" stroke-width="6"/>
+    <path d="M43 28 53 48 71 15" stroke="#0F3654" stroke-width="6"/>
+    <path d="M57 27 70 9" stroke="#58A28F" stroke-width="3.2"/>
+  </g>
+  <g fill="#6F8FA3">
+    <rect x="16" y="34" width="5.5" height="9" rx="1"/>
+    <rect x="24" y="28" width="5.5" height="15" rx="1"/>
+    <rect x="32" y="20" width="5.5" height="23" rx="1"/>
+  </g>
+  <path d="M10 43c7-5.5 14-7.2 20-5.3 4.4 1.4 8 4.1 12 4.7v5.1c-4.6-.5-8.7-3-13.1-4.1-5.7-1.5-11.7-.1-18.9 4.1Z" fill="#58A28F"/>
+  <path d="M11.5 45.2c6.2-3.2 11.9-4.2 17.1-3 4.3 1 8.1 3.2 12.2 3.8" fill="none" stroke="#F7FAF8" stroke-width="1.8" stroke-linecap="round"/>
+</svg></span>
+            <span class="site-brand-copy"><strong>Osservatorio Versilia</strong><small>Versilia in numeri</small></span>
+          </a>
+          <div class="site-header-actions">
+            <nav aria-label="Navigazione principale">
+              <a href="../../#temi">Temi</a>
+              <a href="../../#comuni">Comuni</a>
+              <a href="../../dossier/">Dossier</a>
+              <a href="../../chiedi/">Chiedi</a>
+              <a href="../../opportunita/">Opportunità</a>
+              <a href="../../progetto/">Il progetto</a>
+              <a href="../../stato-dati/" data-data-status-nav="header">Stato dati</a>
+              <a href="../../segnala/">Segnala</a>
+            </nav>
+            <button class="global-search-trigger" type="button" aria-haspopup="dialog" aria-expanded="false">
+              <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg><span>Cerca</span><kbd>/</kbd>
+            </button>
+          </div>
+        </div>
+      </header></div>
+  <div id="app"><main class="inner-page indicator-page" data-theme="istruzione">
+      <nav class="breadcrumbs page-width" aria-label="Percorso"><a href="/">Home</a><span>›</span><a href="/confronta/istruzione/">Istruzione</a><span>›</span><strong data-financial-indicator-breadcrumb="">Risultati INVALSI</strong></nav>
+      <section class="indicator-hero page-width"><div><span class="overline">Indicatore · Istruzione</span><h1 data-financial-indicator-hero-title="">Risultati INVALSI</h1><p data-financial-indicator-hero-description="">Punteggio medio WLE delle prove INVALSI nelle scuole localizzate nel Comune, con letture per classe e prova e benchmark ufficiali Toscana e Italia.</p></div>
+        <dl><div><dt>Anno</dt><dd>2024-25</dd></div><div><dt>Copertura</dt><dd>4/7 · 5/7 · 6/7 secondo grado/prova; n.d. mantenuti senza stime.</dd></div><div><dt>Serie storica</dt><dd>7/7 comuni</dd></div></dl>
+        <div class="indicator-hero-actions"><a class="button-link" href="/confronta/istruzione/?indicatore=invalsiResults">Confronta i 7 comuni <span>→</span></a><a class="source-pill" href="https://serviziostatistico.invalsi.it/invalsi_ss_data/punteggi-e-percentuale-di-studenti-nei-livelli-di-competenza-per-ripartizioni-territoriali-e-caratteristiche-di-contesto/" target="_blank" rel="noreferrer">Fonte originale ↗</a></div></section>
+      <section class="indicator-current page-width" aria-labelledby="indicator-current-title"><div class="section-heading"><div><span class="overline">Valori comunali</span><h2 id="indicator-current-title" data-financial-indicator-title="">Il dato nei sette comuni</h2></div><p data-financial-indicator-description="">Ordine alfabetico: nessuna graduatoria e nessun giudizio di merito.</p></div>
+        
+        <div class="indicator-current-layout"><div data-financial-indicator-comparison=""><div class="indicator-composite-table territory-indicator-comparison"><div class="compare-chart-toolbar"><div class="compare-view-controls territory-profile-controls"><label class="compare-choice-select"><span>Classe e prova</span><select data-composite-component=""><option value="g2-italiano">Primaria · classe II · Italiano</option><option value="g2-matematica">Primaria · classe II · Matematica</option><option value="g5-italiano" selected="">Primaria · classe V · Italiano</option><option value="g5-matematica">Primaria · classe V · Matematica</option><option value="g5-inglese-reading">Primaria · classe V · Inglese · Reading</option><option value="g5-inglese-listening">Primaria · classe V · Inglese · Listening</option><option value="g8-italiano">Secondaria di I grado · classe III · Italiano</option><option value="g8-matematica">Secondaria di I grado · classe III · Matematica</option><option value="g8-inglese-reading">Secondaria di I grado · classe III · Inglese · Reading</option><option value="g8-inglese-listening">Secondaria di I grado · classe III · Inglese · Listening</option><option value="g10-italiano">Secondaria di II grado · classe II · Italiano</option><option value="g10-matematica">Secondaria di II grado · classe II · Matematica</option><option value="g13-italiano">Secondaria di II grado · classe V · Italiano</option><option value="g13-matematica">Secondaria di II grado · classe V · Matematica</option><option value="g13-inglese-reading">Secondaria di II grado · classe V · Inglese · Reading</option><option value="g13-inglese-listening">Secondaria di II grado · classe V · Inglese · Listening</option></select></label></div></div><div class="comparison-bars" data-metric-key="invalsiResults" data-composite-choice="g5-italiano" data-composite-scale="value" data-visual-contract="canonical" data-visual-unit="invalsi_score" data-visual-grammar-signature="invalsiResults|r|g5-italiano|value|196.3952|invalsi_score|212.5597|197.7281|197.6839|196.1073|187.8794|185.2472|" data-viz="lollipop"><div class="comparison-legend"><span><i class="comparison-legend-dot" aria-hidden="true"></i>Comune</span><span><i class="comparison-legend-reference" aria-hidden="true"></i>Toscana · Primaria · classe V · Italiano</span></div><a href="/comuni/forte-dei-marmi/?tema=istruzione&amp;indicatore=invalsiResults" class="bar-row comparison-row" aria-label="Forte dei Marmi: 212,6; Toscana · Primaria · classe V · Italiano: 196,4"><span class="bar-town">Forte dei Marmi</span><span class="bar-track">
+        <span class="comparison-axis-line" aria-hidden="true"></span>
+        
+        <span class="comparison-reference" style="left:78.55807999999999%" aria-hidden="true"></span>
+        <span class="comparison-stem" style="left:0%;width:85.02387999999999%" aria-hidden="true"></span>
+        <span class="comparison-dot" style="left:85.02387999999999%" aria-hidden="true"></span><span class="bar-hover-label">Forte dei Marmi · 212,6</span></span><strong>212,6</strong></a><a href="/comuni/pietrasanta/?tema=istruzione&amp;indicatore=invalsiResults" class="bar-row comparison-row" aria-label="Pietrasanta: 197,7; Toscana · Primaria · classe V · Italiano: 196,4"><span class="bar-town">Pietrasanta</span><span class="bar-track">
+        <span class="comparison-axis-line" aria-hidden="true"></span>
+        
+        <span class="comparison-reference" style="left:78.55807999999999%" aria-hidden="true"></span>
+        <span class="comparison-stem" style="left:0%;width:79.09124000000001%" aria-hidden="true"></span>
+        <span class="comparison-dot" style="left:79.09124000000001%" aria-hidden="true"></span><span class="bar-hover-label">Pietrasanta · 197,7</span></span><strong>197,7</strong></a><a href="/comuni/massarosa/?tema=istruzione&amp;indicatore=invalsiResults" class="bar-row comparison-row" aria-label="Massarosa: 197,7; Toscana · Primaria · classe V · Italiano: 196,4"><span class="bar-town">Massarosa</span><span class="bar-track">
+        <span class="comparison-axis-line" aria-hidden="true"></span>
+        
+        <span class="comparison-reference" style="left:78.55807999999999%" aria-hidden="true"></span>
+        <span class="comparison-stem" style="left:0%;width:79.07356%" aria-hidden="true"></span>
+        <span class="comparison-dot" style="left:79.07356%" aria-hidden="true"></span><span class="bar-hover-label">Massarosa · 197,7</span></span><strong>197,7</strong></a><a href="/comuni/viareggio/?tema=istruzione&amp;indicatore=invalsiResults" class="bar-row comparison-row" aria-label="Viareggio: 196,1; Toscana · Primaria · classe V · Italiano: 196,4"><span class="bar-town">Viareggio</span><span class="bar-track">
+        <span class="comparison-axis-line" aria-hidden="true"></span>
+        
+        <span class="comparison-reference" style="left:78.55807999999999%" aria-hidden="true"></span>
+        <span class="comparison-stem" style="left:0%;width:78.44292%" aria-hidden="true"></span>
+        <span class="comparison-dot" style="left:78.44292%" aria-hidden="true"></span><span class="bar-hover-label">Viareggio · 196,1</span></span><strong>196,1</strong></a><a href="/comuni/seravezza/?tema=istruzione&amp;indicatore=invalsiResults" class="bar-row comparison-row" aria-label="Seravezza: 187,9; Toscana · Primaria · classe V · Italiano: 196,4"><span class="bar-town">Seravezza</span><span class="bar-track">
+        <span class="comparison-axis-line" aria-hidden="true"></span>
+        
+        <span class="comparison-reference" style="left:78.55807999999999%" aria-hidden="true"></span>
+        <span class="comparison-stem" style="left:0%;width:75.15176%" aria-hidden="true"></span>
+        <span class="comparison-dot" style="left:75.15176%" aria-hidden="true"></span><span class="bar-hover-label">Seravezza · 187,9</span></span><strong>187,9</strong></a><a href="/comuni/camaiore/?tema=istruzione&amp;indicatore=invalsiResults" class="bar-row comparison-row" aria-label="Camaiore: 185,2; Toscana · Primaria · classe V · Italiano: 196,4"><span class="bar-town">Camaiore</span><span class="bar-track">
+        <span class="comparison-axis-line" aria-hidden="true"></span>
+        
+        <span class="comparison-reference" style="left:78.55807999999999%" aria-hidden="true"></span>
+        <span class="comparison-stem" style="left:0%;width:74.09888%" aria-hidden="true"></span>
+        <span class="comparison-dot" style="left:74.09888%" aria-hidden="true"></span><span class="bar-hover-label">Camaiore · 185,2</span></span><strong>185,2</strong></a><a href="/comuni/stazzema/?tema=istruzione&amp;indicatore=invalsiResults" class="bar-row comparison-row missing" aria-label="Stazzema: n.d."><span class="bar-town">Stazzema</span><span class="bar-track"><span class="comparison-missing">Dato non disponibile</span></span><strong>n.d.</strong></a><div class="comparison-axis"><span>0,0</span><span>scala con origine a zero</span><span>250,0</span></div><p class="comparison-note">I comuni sono ordinati per valore per facilitare il confronto. L’ordine non esprime merito o qualità.</p></div><details class="detail-disclosure invalsi-benchmark-disclosure"><summary><span>Benchmark ufficiali</span><small>Toscana e Italia · stessa prova</small></summary><div class="composite-town-detail invalsi-benchmark-detail"><div><span>Toscana</span><b>196,4</b><small>benchmark regionale · 2024-25</small></div><div><span>Italia</span><b>195,0</b><small>benchmark nazionale · 2024-25</small></div></div><p class="aggregate-note">Benchmark letti direttamente dallo stesso open data INVALSI; nessuna media Versilia viene ricostruita.</p></details></div></div><aside data-financial-indicator-aggregate=""><span>Toscana · Primaria · classe V · Italiano</span><strong>196,4</strong><p>Italia: 195,0. Stessa prova e annualità.</p></aside></div></section>
+      <section class="indicator-benchmark page-width"></section>
+      <section class="indicator-history page-width" aria-labelledby="indicator-history-title"><div class="section-heading"><div><span class="overline">Andamento</span><h2 id="indicator-history-title">Serie storica comunale</h2></div><p>I valori compaiono soltanto quando la definizione resta omogenea nel tempo.</p></div><div data-financial-indicator-history=""><div class="territory-history-chart-shell"><div class="land-cover-controls territory-history-controls"><label><span>Territorio</span><select data-territory-history-town=""><option value="__toscana" selected="">Toscana</option><option value="__italia">Italia</option><option value="046005">Camaiore</option><option value="046013">Forte dei Marmi</option><option value="046018">Massarosa</option><option value="046024">Pietrasanta</option><option value="046028">Seravezza</option><option value="046030">Stazzema</option><option value="046033">Viareggio</option></select></label></div><div class="chart-shell"><div class="trend-chart"><svg viewBox="0 0 760 260" role="img" aria-label="Risultati INVALSI · Primaria · classe V · Italiano · Toscana">
+      <line class="chart-grid" x1="52" y1="24" x2="732" y2="24"></line><text class="chart-label chart-y-label" x="44" y="28" text-anchor="end">210,1</text><line class="chart-grid" x1="52" y1="123" x2="732" y2="123"></line><text class="chart-label chart-y-label" x="44" y="127" text-anchor="end">201,4</text><line class="chart-grid" x1="52" y1="222" x2="732" y2="222"></line><text class="chart-label chart-y-label" x="44" y="226" text-anchor="end">192,6</text><polygon class="chart-area" points="52,222 52,64.90102010473667 188,37.655172413793096 324,112.59966674854101 460,208.34482758620692 596,175.33593637868438 732,179.30525243031167 732,222"></polygon><polyline class="chart-line" points="52,64.90102010473667 188,37.655172413793096 324,112.59966674854101 460,208.34482758620692 596,175.33593637868438 732,179.30525243031167"></polyline><g class="chart-point" tabindex="0" role="button" aria-label="2019: 206,5">
+        <circle class="chart-hit" cx="52" cy="64.90102010473667" r="17"></circle>
+        <circle class="chart-dot" cx="52" cy="64.90102010473667" r="5"></circle>
+        <g class="chart-tooltip" hidden="">
+          <line class="chart-guide" x1="52" y1="64.90102010473667" x2="52" y2="82.90102010473667"></line>
+          <rect x="44" y="82.90102010473667" width="198" height="38" rx="8"></rect>
+          <text class="chart-tooltip-year" x="56" y="96.90102010473667">2019</text>
+          <text class="chart-tooltip-value" x="56" y="111.90102010473667">206,5</text>
+        </g>
+      </g><g class="chart-point" tabindex="0" role="button" aria-label="2021: 208,9">
+        <circle class="chart-hit" cx="188" cy="37.655172413793096" r="17"></circle>
+        <circle class="chart-dot" cx="188" cy="37.655172413793096" r="5"></circle>
+        <g class="chart-tooltip" hidden="">
+          <line class="chart-guide" x1="188" y1="37.655172413793096" x2="188" y2="55.655172413793096"></line>
+          <rect x="89" y="55.655172413793096" width="198" height="38" rx="8"></rect>
+          <text class="chart-tooltip-year" x="101" y="69.6551724137931">2021</text>
+          <text class="chart-tooltip-value" x="101" y="84.6551724137931">208,9</text>
+        </g>
+      </g><g class="chart-point" tabindex="0" role="button" aria-label="2022: 202,3">
+        <circle class="chart-hit" cx="324" cy="112.59966674854101" r="17"></circle>
+        <circle class="chart-dot" cx="324" cy="112.59966674854101" r="5"></circle>
+        <g class="chart-tooltip" hidden="">
+          <line class="chart-guide" x1="324" y1="112.59966674854101" x2="324" y2="96.59966674854101"></line>
+          <rect x="225" y="58.59966674854101" width="198" height="38" rx="8"></rect>
+          <text class="chart-tooltip-year" x="237" y="72.59966674854101">2022</text>
+          <text class="chart-tooltip-value" x="237" y="87.59966674854101">202,3</text>
+        </g>
+      </g><g class="chart-point" tabindex="0" role="button" aria-label="2023: 193,8">
+        <circle class="chart-hit" cx="460" cy="208.34482758620692" r="17"></circle>
+        <circle class="chart-dot" cx="460" cy="208.34482758620692" r="5"></circle>
+        <g class="chart-tooltip" hidden="">
+          <line class="chart-guide" x1="460" y1="208.34482758620692" x2="460" y2="192.34482758620692"></line>
+          <rect x="361" y="154.34482758620692" width="198" height="38" rx="8"></rect>
+          <text class="chart-tooltip-year" x="373" y="168.34482758620692">2023</text>
+          <text class="chart-tooltip-value" x="373" y="183.34482758620692">193,8</text>
+        </g>
+      </g><g class="chart-point" tabindex="0" role="button" aria-label="2024: 196,7">
+        <circle class="chart-hit" cx="596" cy="175.33593637868438" r="17"></circle>
+        <circle class="chart-dot" cx="596" cy="175.33593637868438" r="5"></circle>
+        <g class="chart-tooltip" hidden="">
+          <line class="chart-guide" x1="596" y1="175.33593637868438" x2="596" y2="159.33593637868438"></line>
+          <rect x="497" y="121.33593637868438" width="198" height="38" rx="8"></rect>
+          <text class="chart-tooltip-year" x="509" y="135.33593637868438">2024</text>
+          <text class="chart-tooltip-value" x="509" y="150.33593637868438">196,7</text>
+        </g>
+      </g><g class="chart-point" tabindex="0" role="button" aria-label="2025: 196,4">
+        <circle class="chart-hit" cx="732" cy="179.30525243031167" r="17"></circle>
+        <circle class="chart-dot" cx="732" cy="179.30525243031167" r="5"></circle>
+        <g class="chart-tooltip" hidden="">
+          <line class="chart-guide" x1="732" y1="179.30525243031167" x2="732" y2="163.30525243031167"></line>
+          <rect x="534" y="125.30525243031167" width="198" height="38" rx="8"></rect>
+          <text class="chart-tooltip-year" x="546" y="139.30525243031167">2025</text>
+          <text class="chart-tooltip-value" x="546" y="154.30525243031167">196,4</text>
+        </g>
+      </g>
+      <text class="chart-label" x="52" y="250" text-anchor="middle">2019</text><text class="chart-label" x="188" y="250" text-anchor="middle">2021</text><text class="chart-label" x="324" y="250" text-anchor="middle">2022</text><text class="chart-label" x="460" y="250" text-anchor="middle">2023</text><text class="chart-label" x="596" y="250" text-anchor="middle">2024</text><text class="chart-label" x="732" y="250" text-anchor="middle">2025</text>
+      </svg></div></div>
+      <div class="chart-a11y-table"><strong>Risultati INVALSI · Primaria · classe V · Italiano · Toscana</strong><span>2019: 206,5</span><span>2021: 208,9</span><span>2022: 202,3</span><span>2023: 193,8</span><span>2024: 196,7</span><span>2025: 196,4</span></div></div></div></section>
+      <section class="indicator-method page-width" aria-labelledby="indicator-method-title"><div class="section-heading"><div><span class="overline">Trasparenza</span><h2 id="indicator-method-title">Fonte, aggiornamento e metodo</h2></div><p>Le informazioni necessarie per ricostruire e valutare il dato.</p></div>
+        <div class="indicator-governance-grid"><dl><div><dt>Produttore</dt><dd>INVALSI</dd></div><div><dt>Fonte utilizzata</dt><dd><a href="https://serviziostatistico.invalsi.it/invalsi_ss_data/punteggi-e-percentuale-di-studenti-nei-livelli-di-competenza-per-ripartizioni-territoriali-e-caratteristiche-di-contesto/" target="_blank" rel="noreferrer">INVALSI — Servizio Statistico ↗</a></dd></div><div><dt>Frequenza</dt><dd>Annuale</dd></div><div><dt>Prossimo aggiornamento atteso</dt><dd>Dopo la pubblicazione annuale degli open data territoriali INVALSI</dd></div><div><dt>Ultimo controllo della fonte</dt><dd>5 novembre 2026</dd></div><div><dt>Licenza o condizioni di riuso</dt><dd><a href="https://serviziostatistico.invalsi.it/invalsi_ss_data/punteggi-e-percentuale-di-studenti-nei-livelli-di-competenza-per-ripartizioni-territoriali-e-caratteristiche-di-contesto/" target="_blank" rel="noreferrer">Licenza indicata dal Servizio Statistico INVALSI ↗</a></dd></div></dl>
+          <div><h3>Acquisizione</h3><p>CSV open di popolazione; scala Comune plesso, aggregazione Totale; snapshot versionato e build offline.</p><div data-financial-indicator-method=""><details class="method-disclosure"><summary><span>Metodo e comparabilità</span><small>Formula, natura del dato e criticità</small></summary><div class="method-disclosure-body"><dl><div><dt>Natura</dt><dd>Open data di popolazione INVALSI, aggregazione territoriale ufficiale</dd></div><div><dt>Formula</dt><dd>Valore comunale letto direttamente da 'Comune plesso' con aggregazione Totale. Toscana e Italia lette direttamente dallo stesso dataset; nessuna media tra scuole o Comuni.</dd></div><div><dt>Copertura</dt><dd>4/7 · 5/7 · 6/7 secondo grado/prova; n.d. mantenuti senza stime.</dd></div></dl><p><strong>Nota:</strong> Il Comune identifica la localizzazione del plesso scolastico, non la residenza dello studente. Le assenze ufficiali restano n.d.; la media Versilia non è calcolata perché manca il denominatore di prove valide/studenti per una ponderazione corretta.</p></div></details></div></div></div>
+        <div class="data-actions indicator-data-actions"><button type="button" data-share="">Condividi</button><button type="button" data-download="">Scarica CSV</button><button type="button" data-print="">Stampa / PDF</button></div></section>
+      <section class="topic-town-links page-width"><div><span class="overline">Schede comunali</span><h2>Apri il territorio</h2></div><div><a href="/comuni/camaiore/?tema=istruzione&amp;indicatore=invalsiResults"><span>Camaiore</span><b>→</b></a><a href="/comuni/forte-dei-marmi/?tema=istruzione&amp;indicatore=invalsiResults"><span>Forte dei Marmi</span><b>→</b></a><a href="/comuni/massarosa/?tema=istruzione&amp;indicatore=invalsiResults"><span>Massarosa</span><b>→</b></a><a href="/comuni/pietrasanta/?tema=istruzione&amp;indicatore=invalsiResults"><span>Pietrasanta</span><b>→</b></a><a href="/comuni/seravezza/?tema=istruzione&amp;indicatore=invalsiResults"><span>Seravezza</span><b>→</b></a><a href="/comuni/stazzema/?tema=istruzione&amp;indicatore=invalsiResults"><span>Stazzema</span><b>→</b></a><a href="/comuni/viareggio/?tema=istruzione&amp;indicatore=invalsiResults"><span>Viareggio</span><b>→</b></a></div></section>
+    </main></div>
+  <div id="site-footer-mount">
+      <footer class="site-footer">
+        <div class="footer-about"><strong>Osservatorio Versilia</strong>
+          <p>Un punto di accesso indipendente ai dati pubblici dei sette comuni della Versilia.</p>
+          <p class="footer-disclaimer">Non è un sito istituzionale e non rappresenta gli enti citati.</p>
+        </div>
+        <nav class="footer-links" aria-label="Informazioni sul progetto">
+          <a href="../../progetto/">Il progetto</a>
+          <a href="../../stato-dati/" data-data-status-nav="footer">Stato dei dati</a>
+          <a href="../../opportunita/">Opportunità</a>
+          <a href="../../progetto/#metodo">Metodo</a>
+          <a href="../../progetto/#licenza">Licenza</a>
+          <a href="../../progetto/#versioni">Versioni dei dati</a>
+          <a href="../../segnala/">Segnala un dato</a>
+          <a href="mailto:info@osservatorioversilia.it">Contatti</a>
+        </nav>
+        
+      <div class="footer-social" data-social-placement="footer" aria-label="Segui Osservatorio Versilia">
+        <strong>Segui Osservatorio Versilia</strong><div class="social-links">
+    <a class="social-profile-link" href="https://www.facebook.com/osservatorioversilia" target="_blank" rel="me noreferrer" aria-label="Segui Osservatorio Versilia su Facebook">
+      <span class="social-profile-mark" aria-hidden="true">f</span>
+      <span class="social-profile-copy"><strong>Facebook</strong><small>@osservatorioversilia</small></span>
+      <b aria-hidden="true">↗</b>
+    </a>
+    <a class="social-profile-link" href="https://www.instagram.com/osservatorioversilia/" target="_blank" rel="me noreferrer" aria-label="Segui Osservatorio Versilia su Instagram">
+      <span class="social-profile-mark" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="5" ry="5"></rect><circle cx="12" cy="12" r="4"></circle><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"></circle></svg></span>
+      <span class="social-profile-copy"><strong>Instagram</strong><small>@osservatorioversilia</small></span>
+      <b aria-hidden="true">↗</b>
+    </a>
+    <a class="social-profile-link" href="https://www.linkedin.com/company/osservatorioversilia" target="_blank" rel="me noreferrer" aria-label="Segui Osservatorio Versilia su LinkedIn">
+      <span class="social-profile-mark" aria-hidden="true">in</span>
+      <span class="social-profile-copy"><strong>LinkedIn</strong><small>Osservatorio Versilia</small></span>
+      <b aria-hidden="true">↗</b>
+    </a>
+    <a class="social-profile-link" href="https://x.com/OssVersilia" target="_blank" rel="me noreferrer" aria-label="Segui Osservatorio Versilia su X">
+      <span class="social-profile-mark" aria-hidden="true">X</span>
+      <span class="social-profile-copy"><strong>X</strong><small>@OssVersilia</small></span>
+      <b aria-hidden="true">↗</b>
+    </a></div>
+      </div><div class="footer-note">
+          <span>7 comuni · 11 temi</span><span>v. dati v1.40.0</span><span>catalogo dati aggiornato al 14 settembre 2026</span>
+        </div>
+      </footer></div>
+  <noscript><div class="app-error">Il sito richiede JavaScript per mostrare confronti, ricerca e schede comunali.</div></noscript>
+  <script src="../../assets/fidelity.js" defer=""></script>
+  <script src="../../assets/app-bundle.js?v=20261025-ui-shell-consistency" defer=""></script>
+  <script src="../../assets/economy-atlas.js" defer=""></script>
+  <script src="../../assets/ux-accordion.js?v=20261025-ui-shell-consistency" defer=""></script>
+  <script src="../../assets/ux-history-core.js?v=20261025-ui-shell-consistency" defer=""></script>
+  <script src="../../assets/ux-history.js?v=20261025-ui-shell-consistency" defer=""></script>
+  <script src="../../assets/export-v161.js?v=20261025-ui-shell-consistency" defer=""></script>
+  <script src="../../assets/visual-grammar.js?v=20261025-ui-shell-consistency" defer=""></script>
+  <script src="../../assets/social-presence.js?v=20261025-ui-shell-consistency" defer=""></script>
+
+
+  <script src="../../assets/pwa.js?v=20260824-pwa9&rev=catalog-v129" defer></script>
+</body></html>

@@ -1,0 +1,104 @@
+{
+  "schemaVersion": 1,
+  "referenceYear": 2024,
+  "verifiedAt": "2026-08-22",
+  "source": "Ragioneria Generale dello Stato — Conto Annuale",
+  "pageUrl": "https://contoannuale.rgs.mef.gov.it/web/sicosito/assenze-e-turnover/formazione-acc",
+  "apiUrl": "https://contoannuale.rgs.mef.gov.it/o/sico-rest-APIs/sicoAPI/formazione",
+  "query": {
+    "anno": "2024",
+    "tipoIstituzioneFilters": "C",
+    "istituzioneFilters": "codice istituzione RGS; più codici separati da virgola per l'aggregato Versilia"
+  },
+  "coverage": "7/7",
+  "definitions": {
+    "totalDays": "Giornate di formazione complessive pubblicate da RGS nella colonna Totale.",
+    "menDays": "Giornate di formazione uomini pubblicate da RGS.",
+    "womenDays": "Giornate di formazione donne pubblicate da RGS.",
+    "meanMen": "Valore Media Uomini pubblicato da RGS.",
+    "meanWomen": "Valore Media Donne pubblicato da RGS.",
+    "meanTotalRgs": "Valore Media Totale pubblicato da RGS. Nel payload 2024 coincide, per tutti i sette Comuni e per la selezione congiunta Versilia, con la media aritmetica di Media Uomini e Media Donne; non viene reinterpretato dall'Osservatorio come totale giornate / organico."
+  },
+  "towns": {
+    "Camaiore": {
+      "institutionCode": "1348",
+      "totalDays": 443,
+      "menDays": 124,
+      "womenDays": 319,
+      "meanMen": 1.4761904761904763,
+      "meanWomen": 3.127450980392157,
+      "meanTotalRgs": 2.3018207282913163
+    },
+    "Forte dei Marmi": {
+      "institutionCode": "3135",
+      "totalDays": 130,
+      "menDays": 36,
+      "womenDays": 94,
+      "meanMen": 0.5714285714285714,
+      "meanWomen": 1.2876712328767124,
+      "meanTotalRgs": 0.9295499021526419
+    },
+    "Massarosa": {
+      "institutionCode": "4177",
+      "totalDays": 267,
+      "menDays": 89,
+      "womenDays": 178,
+      "meanMen": 3.0689655172413794,
+      "meanWomen": 3.1228070175438596,
+      "meanTotalRgs": 3.0958862673926193
+    },
+    "Pietrasanta": {
+      "institutionCode": "5461",
+      "totalDays": 204,
+      "menDays": 90,
+      "womenDays": 114,
+      "meanMen": 1.2,
+      "meanWomen": 1.2391304347826086,
+      "meanTotalRgs": 1.2195652173913043
+    },
+    "Seravezza": {
+      "institutionCode": "7010",
+      "totalDays": 159,
+      "menDays": 54,
+      "womenDays": 105,
+      "meanMen": 1.8620689655172413,
+      "meanWomen": 3.0,
+      "meanTotalRgs": 2.4310344827586206
+    },
+    "Stazzema": {
+      "institutionCode": "7266",
+      "totalDays": 11,
+      "menDays": 6,
+      "womenDays": 5,
+      "meanMen": 0.75,
+      "meanWomen": 0.8333333333333334,
+      "meanTotalRgs": 0.7916666666666667
+    },
+    "Viareggio": {
+      "institutionCode": "7967",
+      "totalDays": 64,
+      "menDays": 36,
+      "womenDays": 28,
+      "meanMen": 0.22929936305732485,
+      "meanWomen": 0.11023622047244094,
+      "meanTotalRgs": 0.16976779176488288
+    }
+  },
+  "versilia": {
+    "institutionCodes": ["1348", "3135", "4177", "5461", "7010", "7266", "7967"],
+    "totalDays": 1278,
+    "menDays": 435,
+    "womenDays": 843,
+    "meanMen": 0.9775280898876404,
+    "meanWomen": 1.3618739903069468,
+    "meanTotalRgs": 1.1697010400972936,
+    "aggregation": "Valori restituiti direttamente dall'API RGS selezionando congiuntamente i sette codici istituzione; non media semplice dei sette Comuni."
+  },
+  "audit": {
+    "townCoverage": "7/7",
+    "sumSexDaysEqualsTotalDays": true,
+    "meanTotalEqualsArithmeticMeanOfSexMeans": true,
+    "combinedSevenInstitutionQueryVerified": true,
+    "historyAvailability": "Il sito RGS espone annualità 2008-2024 e documenta l'andamento storico delle giornate di formazione; la prima materializzazione comunale usa esclusivamente il 2024 verificato 7/7."
+  }
+}

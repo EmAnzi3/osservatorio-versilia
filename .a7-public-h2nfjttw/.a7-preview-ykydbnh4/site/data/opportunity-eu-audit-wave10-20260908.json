@@ -1,0 +1,177 @@
+{
+  "schemaVersion": "1.0",
+  "auditDate": "2026-09-08",
+  "wave": 10,
+  "status": "open_not_saturated",
+  "implementationFrozen": true,
+  "referenceSnapshot": {
+    "path": "data/opportunity-daily-public.json",
+    "generatedAt": "2026-09-07T09:35:26+00:00",
+    "exactHorizonNeb2026TopicMatches": 0
+  },
+  "call": {
+    "id": "HORIZON-NEB-2026-01",
+    "title": "Beautiful, inclusive and sustainable neighbourhoods for communities",
+    "publicationDate": "2025-12-12",
+    "opensAt": "2026-05-05",
+    "deadlineAt": "2026-12-01T17:00:00+01:00",
+    "topicCount": 9,
+    "indicativeBudgetEur": 101100000,
+    "officialCallSource": "https://cinea.ec.europa.eu/funding-opportunities/calls-proposals/horizon-europe-eur-1011-million-under-new-european-bauhaus-facility_en",
+    "officialWorkProgramme": "https://ec.europa.eu/info/funding-tenders/opportunities/docs/2021-2027/horizon/wp-call/2026-2027/wp-13-new-european-bauhaus-facility_horizon-2026-2027_en.pdf",
+    "generalEligibilitySource": "https://ec.europa.eu/info/funding-tenders/opportunities/docs/2021-2027/horizon/wp-call/2026-2027/wp-15-general-annexes_horizon-2026-2027_en.pdf"
+  },
+  "saturation": {
+    "requiredConsecutiveCleanSweeps": 2,
+    "currentConsecutiveCleanSweeps": 0,
+    "reason": "Wave 10 identifies a strong current municipality-facing false negative (BUSINESS-03) and several additional conditional consortium/demo partner gaps. The sweep is not clean."
+  },
+  "topics": [
+    {
+      "id": "HORIZON-NEB-2026-01-PARTICIPATION-01",
+      "title": "Addressing homelessness through housing-led approaches aligned with the New European Bauhaus",
+      "typeOfAction": "IA",
+      "topicBudgetEur": 12600000,
+      "expectedEuContributionPerProjectEur": 6300000,
+      "radarStatus": "absent_exact_topic",
+      "auditClass": "conditional_partner",
+      "severity": "high",
+      "municipalityRole": "housing_and_social_service_policy_implementer_or_demo_neighbourhood_partner",
+      "evidence": "The action must refine and demonstrate housing-led approaches in at least three neighbourhoods in different countries, provide permanent housing plus reintegration services, and address institutional barriers. A municipality may participate as a funded beneficiary under Horizon general eligibility when it has relevant housing, homelessness or social-service functions, but the topic does not explicitly require a local authority in the consortium.",
+      "promotionRule": "promote_only_when_partner_role_or_demo_site_is_documented"
+    },
+    {
+      "id": "HORIZON-NEB-2026-01-PARTICIPATION-02",
+      "title": "Innovative approaches for the spatial design of neighbourhoods",
+      "typeOfAction": "IA",
+      "topicBudgetEur": 10000000,
+      "expectedEuContributionPerProjectEur": 5000000,
+      "radarStatus": "absent_exact_topic",
+      "auditClass": "conditional_partner",
+      "severity": "high",
+      "municipalityRole": "public_space_spatial_planning_procurement_or_demo_neighbourhood_partner",
+      "evidence": "Expected outcomes target neighbourhood decision makers and the action develops and demonstrates approaches to public-space design, planning, public-service design and procurement in at least three neighbourhoods. Municipalities are natural operational partners where they control the relevant public space/planning/procurement function, but the topic does not explicitly mandate a local authority beneficiary.",
+      "promotionRule": "promote_as_partner_opportunity_when_public_space_or_planning_role_is_real"
+    },
+    {
+      "id": "HORIZON-NEB-2026-01-PARTICIPATION-03",
+      "title": "Understanding inhabitant’s experiences of neighbourhoods to support their health and well-being",
+      "typeOfAction": "RIA",
+      "topicBudgetEur": 15000000,
+      "expectedEuContributionPerProjectEur": 5000000,
+      "radarStatus": "absent_exact_topic",
+      "auditClass": "end_user_no_auto_promotion",
+      "severity": "low",
+      "municipalityRole": "policy_planning_and_procurement_end_user",
+      "evidence": "Research is expected to inform policies, strategies, neighbourhood planning and procurement and to provide recommendations to local authorities. The Work Programme positions local authorities primarily as users of the evidence, not as mandatory or clearly operational beneficiaries.",
+      "promotionRule": "do_not_auto_promote_without_consoritum_role_evidence"
+    },
+    {
+      "id": "HORIZON-NEB-2026-01-REGEN-01",
+      "title": "Sustainable, inclusive, affordable and beautiful solutions for thermal comfort in buildings",
+      "typeOfAction": "IA",
+      "topicBudgetEur": 12000000,
+      "expectedEuContributionPerProjectEur": 4000000,
+      "radarStatus": "absent_exact_topic",
+      "auditClass": "conditional_partner",
+      "severity": "high",
+      "municipalityRole": "municipal_building_or_cultural_heritage_asset_owner_demo_partner",
+      "evidence": "The action must demonstrate solutions on buildings in at least two climatic zones and include at least one cultural-heritage building. A municipality can be an operational funded partner when it contributes a suitable public/heritage asset or implementation role, but municipal participation is not mandatory.",
+      "promotionRule": "promote_conditionally_for_asset_owner_or_demo_site_role"
+    },
+    {
+      "id": "HORIZON-NEB-2026-01-REGEN-02",
+      "title": "Advancing sustainable maintenance and repair measures for existing buildings",
+      "typeOfAction": "IA",
+      "topicBudgetEur": 10000000,
+      "expectedEuContributionPerProjectEur": 5000000,
+      "radarStatus": "absent_exact_topic",
+      "auditClass": "conditional_partner",
+      "severity": "high",
+      "municipalityRole": "public_heritage_or_social_affordable_housing_asset_owner_demo_partner",
+      "evidence": "Demonstration is required on three buildings in different countries, including at least one heritage building and at least one social/affordable housing project. Municipalities can have a concrete beneficiary role as asset owners/managers or demonstration partners; the topic does not require them automatically.",
+      "promotionRule": "promote_conditionally_for_relevant_public_asset_or_social_housing_role"
+    },
+    {
+      "id": "HORIZON-NEB-2026-01-REGEN-03",
+      "title": "Innovative solutions for the sustainable and beautiful use of vertical space",
+      "typeOfAction": "IA",
+      "topicBudgetEur": 15000000,
+      "expectedEuContributionPerProjectEur": 5000000,
+      "radarStatus": "absent_exact_topic",
+      "auditClass": "scope_review_conditional_partner",
+      "severity": "medium",
+      "municipalityRole": "street_public_building_regulatory_or_demo_site_partner",
+      "evidence": "The topic develops solutions using unused vertical space above buildings and/or streets and requires addressing regulatory and societal barriers and local-community co-creation. A municipality may be relevant as street/public-asset owner, regulator or demonstration partner, but the municipal role is not explicit enough for automatic promotion.",
+      "promotionRule": "retain_for_partner_scope_review_unless_specific_demo_role_is_documented"
+    },
+    {
+      "id": "HORIZON-NEB-2026-01-BUSINESS-01",
+      "title": "Structurally addressing homelessness through coordinated social infrastructure and services in neighbourhoods",
+      "typeOfAction": "IA",
+      "topicBudgetEur": 10500000,
+      "expectedEuContributionPerProjectEur": 3500000,
+      "radarStatus": "absent_exact_topic",
+      "auditClass": "conditional_partner",
+      "severity": "high",
+      "municipalityRole": "local_social_infrastructure_and_service_coordinator_or_demo_neighbourhood_partner",
+      "evidence": "The action develops a system-based approach coordinating healthcare, education, employment, community integration and other social services and validates it in at least five neighbourhoods in different countries. Municipalities with relevant welfare/social-service functions can have an operational consortium role, but local-authority participation is not explicitly mandatory.",
+      "promotionRule": "promote_as_conditional_partner_where_local_social_service_role_is_documented"
+    },
+    {
+      "id": "HORIZON-NEB-2026-01-BUSINESS-02",
+      "title": "Understanding capital market dynamics for increased investment in New European Bauhaus projects in neighbourhoods",
+      "typeOfAction": "RIA",
+      "topicBudgetEur": 7000000,
+      "expectedEuContributionPerProjectEur": 3500000,
+      "radarStatus": "absent_exact_topic",
+      "auditClass": "end_user_no_auto_promotion",
+      "severity": "low",
+      "municipalityRole": "public_authority_policy_or_project_promoter_end_user",
+      "evidence": "Expected outcomes explicitly include public authorities having a better understanding of capital-market dynamics, but the core action is research and validation of investment solutions. Municipalities are primarily policy/project-promoter users unless a concrete consortium role is established.",
+      "promotionRule": "do_not_auto_promote_without_direct_project_promoter_or_consortium_role"
+    },
+    {
+      "id": "HORIZON-NEB-2026-01-BUSINESS-03",
+      "title": "Approaches to reuse vacant, obsolete or underutilised spaces",
+      "typeOfAction": "RIA",
+      "topicBudgetEur": 9000000,
+      "expectedEuContributionPerProjectEur": 4500000,
+      "radarStatus": "absent_exact_topic",
+      "auditClass": "current_conditional_beneficiary_false_negative",
+      "severity": "critical",
+      "municipalityRole": "local_authority_inventory_regulatory_asset_reuse_and_demo_neighbourhood_partner",
+      "evidence": "The expected outcome explicitly seeks an increased number of local authorities systematically identifying and quantifying vacant, obsolete or underutilised spaces for reuse. The approach addresses public-authority resource/regulatory barriers, local governance frameworks and must be validated in at least three neighbourhoods in different countries. Municipalities are eligible legal entities under Horizon general rules and have a directly stated operational target/role.",
+      "promotionRule": "promote_as_conditional_beneficiary_partner_opportunity"
+    }
+  ],
+  "methodControl": {
+    "generalHorizonEligibility": "Any legal entity may participate subject to call/topic conditions; Italian municipalities are legal entities established in an EU Member State and can therefore be funded beneficiaries when consortium and topic requirements are met.",
+    "antiOverpromotionRule": "General legal eligibility alone is not sufficient for Radar promotion. A municipal topic must have a documented operational role, asset/demo-site role, public-authority function, or explicit local-authority outcome. Pure policy/end-user relevance remains non-promoted unless a concrete consortium role is found."
+  },
+  "newCurrentActionableFindings": [
+    "HORIZON-NEB-2026-01-BUSINESS-03"
+  ],
+  "additionalConditionalPartnerGaps": [
+    "HORIZON-NEB-2026-01-PARTICIPATION-01",
+    "HORIZON-NEB-2026-01-PARTICIPATION-02",
+    "HORIZON-NEB-2026-01-REGEN-01",
+    "HORIZON-NEB-2026-01-REGEN-02",
+    "HORIZON-NEB-2026-01-BUSINESS-01"
+  ],
+  "scopeReview": [
+    "HORIZON-NEB-2026-01-REGEN-03"
+  ],
+  "negativePromotionControls": [
+    "HORIZON-NEB-2026-01-PARTICIPATION-03",
+    "HORIZON-NEB-2026-01-BUSINESS-02"
+  ],
+  "waveConclusion": "All nine 2026 NEB Facility topics are now classified. BUSINESS-03 is a strong current municipality-facing false negative. Five additional topics are credible conditional consortium/demo partner opportunities, REGEN-03 remains a partner scope review, and PARTICIPATION-03/BUSINESS-02 should not be auto-promoted based only on end-user relevance. The gate remains 0/2.",
+  "next": [
+    "close residual LIFE CET topics ENERPOV, POLICY, RENEWHC, BETTERRENO and OSS",
+    "finish Cluster 6 CIRCBIO-04 and ZEROPOLLUTION-03",
+    "finish remaining strong Cluster 5 territorial/demo-site topics",
+    "deepen I3 and cascade/downstream calls",
+    "run a complete independent saturation sweep only after these known axes are closed"
+  ]
+}

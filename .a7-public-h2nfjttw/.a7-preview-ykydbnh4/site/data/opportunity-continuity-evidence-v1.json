@@ -1,0 +1,23 @@
+{
+  "schemaVersion": "1",
+  "maxEvidenceAgeDays": 7,
+  "entries": [
+    {
+      "identity_key": "rule:mic-jazz-2027",
+      "rule_id": "mic-jazz-2027",
+      "source_id": "mic-spettacolo",
+      "title": "Bando per la promozione della musica Jazz 2027",
+      "url": "https://cultura.gov.it/comunicato/bando-per-la-promozione-della-musica-jazz-anno-2027-avviso-pubblico-e-apertura-dei-termini-di-presentazione-delle-domande",
+      "deadline_at": "2026-09-10",
+      "deadline_time": "16:00",
+      "evidence_verified_at": "2026-08-23",
+      "evidence_url": "https://cultura.gov.it/comunicato/bando-per-la-promozione-della-musica-jazz-anno-2027-avviso-pubblico-e-apertura-dei-termini-di-presentazione-delle-domande",
+      "required_terms": [
+        "autonomie territoriali",
+        "10 settembre 2026",
+        "16:00"
+      ],
+      "reason": "Pagina ufficiale MiC verificata il 23 agosto 2026; fallback breve ammesso solo per evitare falsi negativi di discovery prima della scadenza."
+    }
+  ]
+}

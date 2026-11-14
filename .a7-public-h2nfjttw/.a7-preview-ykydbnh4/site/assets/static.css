@@ -1,0 +1,234 @@
+/* GitHub Pages adaptation and fidelity fixes */
+:root { --focus-ring: 0 0 0 3px rgba(20, 91, 120, .22); }
+html, body { max-width: 100%; }
+body.search-open { overflow: hidden; }
+button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible {
+  outline: 2px solid var(--blue); outline-offset: 3px;
+}
+.app-loading, .app-error {
+  width: min(760px, calc(100% - 32px)); margin: 80px auto; padding: 28px;
+  border: 1px solid var(--line); border-radius: 18px; background: var(--surface);
+}
+.app-error { color: #7b2d2d; }
+.site-header-actions .current { color: var(--blue); }
+.search-overlay[hidden] { display: none !important; }
+.search-dialog-head, .search-field { flex: none; }
+.search-results { flex: 1 1 auto; }
+.search-group a { cursor: pointer; }
+.search-close-label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+.metric-switch.compact-list { max-height: none; overflow: visible; padding-right: 0; }
+.bar-row { text-decoration: none; }
+.bar-fill { min-width: 2px; }
+.bar-row:focus-visible .bar-hover-label { opacity: 1; transform: translate(-50%, -7px); }
+.topic-bars-empty { color: var(--muted); padding: 45px 10px; text-align: center; }
+.topic-dashboard > *, .topic-controls, #compare-bars { min-width: 0; }
+.topic-dashboard .indicator-definition dd a { color: var(--blue); text-decoration: underline; text-underline-offset: 3px; }
+.aggregate-value { display: block; letter-spacing: -.04em; margin: 10px 0 4px; font-size: 30px; }
+.chart-shell { width: 100%; overflow-x: auto; overflow-y: hidden; }
+.trend-chart { min-width: 560px; }
+.trend-chart svg { width: 100%; height: auto; overflow: visible; }
+.chart-area { fill: color-mix(in srgb, var(--theme-color, var(--blue)) 10%, transparent); }
+.chart-label { fill: var(--muted); font-size: 10px; font-family: var(--font-geist-mono), monospace; }
+.chart-tooltip[hidden] { display: none; }
+.chart-a11y-table {
+  clip: rect(0 0 0 0) !important; clip-path: inset(50%) !important; white-space: nowrap !important;
+  width: 1px !important; height: 1px !important; margin: -1px !important; padding: 0 !important;
+  border: 0 !important; position: absolute !important; overflow: hidden !important;
+}
+.town-data-actions { justify-content: flex-end; margin-top: 18px; }
+.town-topic > .metric-switch { margin-top: 34px; }
+.metric-meta-row { color: var(--muted); display: flex; flex-wrap: wrap; gap: 8px 18px; margin-top: 14px; font-size: 10px; }
+.metric-meta-row span { display: inline-flex; gap: 5px; }
+.metric-meta-row b { color: var(--ink); }
+.topic-deep-dive { margin-top: 55px; }
+.feedback-form button[disabled] { opacity: .55; cursor: wait; }
+.skip-link { position: fixed; top: 8px; left: 8px; z-index: 1000; padding: 8px 12px; transform: translateY(-150%); background: var(--ink); color: white; border-radius: 8px; }
+.skip-link:focus { transform: translateY(0); }
+.no-results { color: var(--muted); padding: 22px 0; }
+.print-only { display: none; }
+.theme-nav { scroll-padding-inline: 20px; }
+.theme-nav button svg { flex: 0 0 auto; }
+.town-profile .crime-context { width: 100%; }
+.town-benchmark.benchmark-unavailable { background: transparent; }
+
+/* Critical correction for the mobile global search */
+@media (max-width: 700px) {
+  .search-overlay { align-items: stretch; padding: 0; }
+  .search-dialog { width: 100%; height: 100dvh; max-height: none; border: 0; border-radius: 0; }
+  .search-dialog-head { position: sticky; top: 0; z-index: 3; padding-top: max(18px, env(safe-area-inset-top)); background: var(--surface); }
+  .search-field { position: sticky; top: calc(77px + env(safe-area-inset-top)); z-index: 2; background: #fff; }
+  .search-results { min-height: 0; padding-bottom: calc(24px + env(safe-area-inset-bottom)); }
+  .search-footer { display: none; }
+  .topic-hero > * { min-width: 0; }
+  .topic-hero h1 { font-size: clamp(42px, 11.5vw, 54px); }
+  .topic-controls .metric-switch { display: flex; flex-wrap: nowrap; align-items: stretch; overflow-x: auto; padding-bottom: 6px; scroll-snap-type: x proximity; }
+  .topic-controls .metric-switch button { flex: 0 0 auto; text-align: center; border-radius: 999px; scroll-snap-align: center; }
+  .town-topic > .metric-switch { flex-wrap: nowrap; overflow-x: auto; padding-bottom: 6px; scroll-snap-type: x proximity; }
+  .town-topic > .metric-switch button { flex: 0 0 auto; scroll-snap-align: center; }
+  .town-data-actions { justify-content: flex-start; }
+  .panel-title { flex-direction: column; align-items: flex-start; gap: 10px; }
+  .source-pill { max-width: 100%; white-space: normal; overflow-wrap: anywhere; }
+  .trend-chart { min-width: 500px; }
+}
+@media print {
+  .site-header, .site-footer, .data-actions, .global-search-trigger, .theme-nav { display: none !important; }
+  body { background: white; }
+  .page-width { width: 100%; }
+  .topic-bars, .explorer-panel, .town-metric-primary, .history-panel { box-shadow: none !important; }
+  .print-only { display: block; }
+}
+
+
+/* economy-atlas-native-integration */
+.metric-route-link{display:flex;align-items:center;justify-content:space-between;gap:12px;text-decoration:none;border:1px solid color-mix(in srgb,var(--theme-accent,#ad6247) 35%,#d9dfdd);border-radius:10px;padding:10px 12px;background:#fff;color:inherit}
+.metric-route-link:hover{border-color:var(--theme-accent,#ad6247);background:#faf6f2}
+.metric-route-link small{font-size:.72rem;color:#667780;white-space:nowrap}
+.special-route-card{text-decoration:none;color:inherit;display:flex;flex-direction:column;align-items:flex-start;min-width:0}
+.special-route-card h5{margin:.35rem 0 .55rem;font-size:1rem}
+.special-route-card p{margin:0 0 .8rem;color:#61717b;line-height:1.45}
+.indicator-card-kicker{font-size:.68rem;text-transform:uppercase;letter-spacing:.08em;font-weight:800;color:#ad6247}
+.economy-atlas-deep-dive{scroll-margin-top:110px}
+.atlas-native-heading{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;margin:32px 0 14px;padding-top:24px;border-top:1px solid rgba(16,47,69,.14)}
+.atlas-native-heading h4{margin:.3rem 0 .4rem;font-size:clamp(1.35rem,2.2vw,1.85rem)}
+.atlas-native-heading p{max-width:760px;margin:0;color:#61717b;line-height:1.5}
+ov-economy-atlas{display:block;min-width:0}
+@media(max-width:700px){.atlas-native-heading{align-items:flex-start;flex-direction:column;gap:10px}.metric-route-link{align-items:flex-start;flex-direction:column;gap:4px}}
+
+/* OV TERRITORIO UCS UI v1.36.0 */
+.territorial-classification-grid,.territorial-classification-summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.territorial-classification-grid article,.territorial-classification-summary article,.land-cover-series-summary article,.land-cover-aggregate-reading,.land-cover-transformation,.degurba-explainer{border:1px solid var(--line,#d8ded8);border-radius:14px;background:#fff;padding:14px}
+.territorial-classification-grid article span,.territorial-classification-summary article span,.land-cover-series-summary span,.land-cover-transformation span,.land-cover-aggregate-reading span{display:block;font-size:.78rem;font-weight:700;letter-spacing:.02em;color:var(--muted,#59655e)}
+.territorial-classification-grid article strong,.territorial-classification-summary article strong,.land-cover-series-summary strong,.land-cover-transformation strong,.land-cover-aggregate-reading strong{display:block;margin-top:5px;font-size:1.35rem;line-height:1.15}
+.territorial-classification-grid article small,.territorial-classification-summary article small,.land-cover-series-summary small,.land-cover-transformation small,.land-cover-aggregate-reading small{display:block;margin-top:5px;color:var(--muted,#667169);line-height:1.35}
+.territorial-classification-list{margin-top:16px;border:1px solid var(--line,#d8ded8);border-radius:14px;overflow:hidden;background:#fff}
+.territorial-classification-head,.territorial-classification-list>a{display:grid;grid-template-columns:minmax(150px,1.25fr) .7fr .8fr minmax(170px,1.3fr);gap:10px;align-items:center;padding:11px 14px}
+.territorial-classification-head{font-size:.76rem;font-weight:800;text-transform:uppercase;letter-spacing:.04em;background:var(--surface-soft,#f5f6f2)}
+.territorial-classification-list>a{color:inherit;text-decoration:none;border-top:1px solid var(--line,#e1e5df)}
+.territorial-classification-list>a:hover{background:var(--surface-soft,#f7f8f4)}
+.territorial-classification-list>a span:last-child small{display:block;margin-top:2px;color:var(--muted,#667169)}
+.degurba-explainer{margin-top:16px}
+.degurba-explainer>p{margin:.5rem 0 0;color:var(--muted,#667169);line-height:1.55}
+.degurba-class-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:12px}
+.degurba-class-grid article{display:grid;grid-template-columns:auto 1fr;gap:10px;align-items:start;border:1px solid var(--line,#e1e5df);border-radius:12px;padding:12px;background:var(--surface-soft,#f7f8f4)}
+.degurba-class-grid article strong{font-size:1.25rem;line-height:1}
+.degurba-class-grid article span{font-size:.86rem;line-height:1.35}
+.land-cover-shell{display:grid;gap:18px}
+.land-cover-controls{display:flex;flex-wrap:wrap;gap:10px;align-items:end;padding:14px;border:1px solid var(--line,#d8ded8);border-radius:14px;background:#fff}
+.land-cover-controls label{display:grid;gap:6px;min-width:150px;flex:1 1 180px}
+.land-cover-controls label:first-child{flex:2 1 260px}
+.land-cover-controls label span{font-size:.76rem;font-weight:800;color:var(--muted,#59655e);text-transform:uppercase;letter-spacing:.04em}
+.land-cover-controls select{width:100%;min-height:42px;border:1px solid var(--line-strong,#bcc5bd);border-radius:10px;background:#fff;color:inherit;padding:8px 34px 8px 10px;font:inherit}
+.land-cover-chart-host{min-width:0}
+.land-cover-series-heading{display:grid;gap:3px;margin-bottom:10px}
+.land-cover-series-heading strong{font-size:1rem}
+.land-cover-series-heading small{color:var(--muted,#667169);line-height:1.4}
+.land-cover-chart-content .trend-chart{box-sizing:border-box;padding-left:18px;padding-right:8px;overflow:visible}
+.land-cover-chart-content .trend-chart svg{overflow:visible}
+.land-cover-series-summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:12px}
+.land-cover-composition,.land-cover-transform-compare{border-top:1px solid var(--line,#d8ded8);padding-top:16px}
+.land-cover-subheading h4{margin:.2rem 0 .8rem}
+.land-cover-aggregate-reading{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.land-cover-aggregate-reading span{margin-right:auto}
+.land-cover-aggregate-reading strong{margin:0}
+.land-cover-transformation strong{font-size:1.7rem}
+.land-cover-caveat{margin-top:8px}
+.land-cover-compare-list{display:grid;gap:11px}
+.land-cover-compare-axis{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:12px;margin-top:-8px;padding:0 0 2px;color:var(--muted,#667169);font-size:.72rem;font-weight:700}
+.land-cover-compare-axis span:nth-child(2){text-align:center;text-transform:uppercase;letter-spacing:.04em}
+.land-cover-compare-list .bar-fill{min-width:0}
+.classification-overview,.coastline-share-overview{display:grid;align-content:start;gap:9px}
+.classification-overview>strong,.coastline-share-overview>strong{margin:0;line-height:1}
+.classification-overview-label,.coastline-share-overview>small{display:block;margin:0;color:var(--muted,#667169);font-size:.76rem;font-weight:650;line-height:1.35}
+.classification-overview>p,.coastline-share-overview>p{margin:0;color:var(--muted,#667169);line-height:1.45}
+.classification-overview-counts{display:grid;gap:3px;min-width:0}
+.classification-overview-counts span{font-size:.72rem;text-transform:uppercase;letter-spacing:.04em}
+.classification-overview-counts b{display:block;line-height:1.25;white-space:normal}
+.land-cover-overview strong small{display:block;margin-top:5px;font-size:.76rem;font-weight:650}
+@media (max-width:760px){
+  .territorial-classification-grid,.territorial-classification-summary,.land-cover-series-summary,.degurba-class-grid{grid-template-columns:1fr}
+  .territorial-classification-head{display:none}
+  .territorial-classification-list>a{grid-template-columns:1fr 1fr;padding:12px}
+  .territorial-classification-list>a strong{grid-column:1/-1}
+  .land-cover-controls{display:grid;grid-template-columns:1fr}
+  .land-cover-controls label,.land-cover-controls label:first-child{min-width:0;width:100%}
+  .land-cover-compare-axis{font-size:.68rem}
+  .land-cover-chart-content .trend-chart{padding-left:12px;padding-right:4px}
+}
+
+/* OV TERRITORIO UCS REVIEW CSS v1.36.0 */
+.territorial-count-box{display:grid;gap:0;border:1px solid var(--line,#d8ded8);border-radius:14px;background:#fff;overflow:hidden;margin-bottom:16px}
+.territorial-count-box>div{display:grid;grid-template-columns:minmax(150px,.8fr) minmax(0,1.8fr);gap:14px;align-items:center;padding:13px 15px;border-top:1px solid var(--line,#e1e5df)}
+.territorial-count-box>div:first-child{border-top:0}
+.territorial-count-box span{color:var(--muted,#59655e);font-size:.82rem;font-weight:700;line-height:1.35}
+.territorial-count-box strong{font-size:1rem;line-height:1.35;text-align:right;overflow-wrap:anywhere}
+.territorial-count-box .territorial-count-primary strong{font-size:1.65rem;text-align:left}
+.territorial-count-box .territorial-count-primary span{font-size:.9rem}
+.territory-canonical-comparison{margin-top:4px}
+.forest-cover-shell{display:grid;gap:16px}
+.forest-cover-town-readings{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.forest-cover-town-readings article{border:1px solid var(--line,#d8ded8);border-radius:14px;background:#fff;padding:14px;min-width:0}
+.forest-cover-town-readings span,.forest-cover-town-readings small{display:block;color:var(--muted,#59655e);line-height:1.4}
+.forest-cover-town-readings span{font-size:.78rem;font-weight:700}
+.forest-cover-town-readings strong{display:block;margin-top:5px;font-size:1.35rem;line-height:1.15;overflow-wrap:anywhere}
+.forest-cover-town-readings small{margin-top:5px;font-size:.78rem}
+.forest-cover-controls label{max-width:520px}
+/* Correzione locale: le etichette Y lunghe in ha/% restano interamente nel pannello UCS. */
+.land-cover-chart-content .trend-chart{box-sizing:border-box;padding-left:46px!important;padding-right:14px!important;overflow:visible!important}
+.land-cover-chart-content .trend-chart svg{overflow:visible!important}
+.land-cover-chart-content .chart-shell{box-sizing:border-box;padding-left:0;overflow-x:auto;overflow-y:visible}
+@media(max-width:760px){
+  .territorial-count-box>div{grid-template-columns:1fr;gap:4px;padding:12px 13px}
+  .territorial-count-box strong,.territorial-count-box .territorial-count-primary strong{text-align:left}
+  .forest-cover-town-readings{grid-template-columns:1fr}
+  .land-cover-chart-content .trend-chart{padding-left:40px!important;padding-right:8px!important;min-width:560px}
+}
+
+/* OV TERRITORIAL COUNT OVERLAP FIX v1.36.0 */
+/*
+ * La grammatica condivisa assegna a .versilia-position > div una griglia a due
+ * colonne. Il box categoriale DEGURBA non è un benchmark numerico: deve avere
+ * etichette e valori in flusso verticale, senza collisioni anche nei pannelli
+ * comunali stretti.
+ */
+.versilia-position > .classification-overview-counts{
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr)!important;
+  align-items:start!important;
+  gap:4px!important;
+  min-width:0!important;
+  margin-top:4px!important;
+  padding-top:12px!important;
+}
+.versilia-position > .classification-overview-counts > span{
+  display:block!important;
+  min-width:0!important;
+  margin:0!important;
+  color:var(--muted,#667169)!important;
+  font-size:.72rem!important;
+  font-weight:720!important;
+  line-height:1.35!important;
+  text-transform:uppercase!important;
+  letter-spacing:.04em!important;
+}
+.versilia-position > .classification-overview-counts > span:not(:first-child){
+  margin-top:10px!important;
+}
+.versilia-position > .classification-overview-counts > b{
+  display:block!important;
+  position:static!important;
+  min-width:0!important;
+  margin:0!important;
+  color:var(--ink)!important;
+  font-family:var(--font-geist-mono),monospace!important;
+  font-size:20px!important;
+  font-weight:820!important;
+  letter-spacing:-.035em!important;
+  line-height:1.25!important;
+  text-align:left!important;
+  white-space:normal!important;
+  overflow-wrap:anywhere!important;
+  word-break:normal!important;
+}
+@media(max-width:760px){
+  .versilia-position > .classification-overview-counts > b{font-size:18px!important}
+}

@@ -1,0 +1,197 @@
+{
+  "schemaVersion": "1.0",
+  "auditDate": "2026-09-08",
+  "wave": 16,
+  "sweepType": "independent_full_corpus",
+  "fullCorpusIndependentSweep": true,
+  "status": "open_not_saturated",
+  "implementationFrozen": true,
+  "referenceSnapshot": {
+    "path": "data/opportunity-daily-public.json",
+    "generatedAt": "2026-09-07T09:35:26+00:00",
+    "publicCount": 29,
+    "reviewInternalCount": 40
+  },
+  "prBaselineBeforeWave16Write": {
+    "pr": 161,
+    "state": "open",
+    "draft": true,
+    "merged": false,
+    "headBranch": "audit/opportunity-eu-120d-20260907",
+    "headSha": "c41d2bfe138a3a9efd65fdb0a1803769b9dffdb5",
+    "base": "main",
+    "commitCount": 32,
+    "changedFileCount": 30
+  },
+  "saturation": {
+    "requiredConsecutiveCleanSweeps": 2,
+    "currentConsecutiveCleanSweeps": 0,
+    "thisSweepClean": false,
+    "countsForCleanSweepGate": true,
+    "reason": "Wave 16 is an independent full-corpus sweep and found three new current actionable or structural support gaps absent from the reference snapshot and Waves 1-15: IRISCC 4th Open Call for Access, the CO-WATERS Coalition support route, and the CO-WATERS Blue Climathons call. Any one current finding keeps the gate at 0/2."
+  },
+  "method": {
+    "seedPolicy": "Wave 16 used a materially different discovery order: Italian national and regional institutional oracles first, followed by EU project-level, research-infrastructure, Mission Ocean, Interreg and horizontal non-cash support oracles. Prior waves and the Radar snapshot were consulted only after candidates surfaced.",
+    "canonicalCrossCheck": "Candidates were checked against the complete reference snapshot, canonical records, coverage rules, auditReview/internal_review evidence and Waves 1-15. Title-only absence was not treated as sufficient proof of a gap.",
+    "municipalities": [
+      "Camaiore",
+      "Forte dei Marmi",
+      "Massarosa",
+      "Pietrasanta",
+      "Seravezza",
+      "Stazzema",
+      "Viareggio"
+    ]
+  },
+  "newCurrentActionableFindings": [
+    {
+      "id": "iriscc-fourth-open-call-access-2026",
+      "title": "IRISCC · 4th Open Call for Access",
+      "opensAt": "2026-07-20",
+      "deadlineAt": "2026-10-15",
+      "radarStatus": "absent_from_reference_snapshot_and_prior_audit_corpus",
+      "auditClass": "current_conditional_applicant_false_negative",
+      "severity": "high",
+      "detectionLagDaysAtReferenceSnapshot": 49,
+      "municipalityRole": "direct_public_authority_applicant_for_sponsored_climate_risk_research_infrastructure_access",
+      "formalApplicabilityToSevenMunicipalities": "all_seven_as_public_authorities; concrete actionability requires a credible climate-risk research, assessment or service-access use case",
+      "funding": "No general cash grant. Sponsored transnational access can cover use of participating laboratories, field stations, instruments, datasets and digital services with expert guidance; approved on-site or hybrid projects may receive travel and subsistence support up to EUR 2,000, subject to call rules.",
+      "eligibilityEvidence": "IRISCC explicitly invites public authorities, alongside researchers, policymakers and industry professionals, to apply for sponsored access to European climate-risk research infrastructures. The service is relevant where an authority has a concrete need concerning hazards, exposure, vulnerability or climate-risk assessment.",
+      "rootCauseFamily": "EU_project_research_infrastructure_access_call_gap",
+      "officialSources": [
+        "https://www.iriscc.eu/",
+        "https://www.iriscc.eu/sponsored-access"
+      ]
+    },
+    {
+      "id": "co-waters-coalition-2026",
+      "title": "CO-WATERS · Coalition for waterfront cities and regions",
+      "publishedAt": "2026-03-04",
+      "deadlineAt": null,
+      "radarStatus": "absent_from_reference_snapshot_and_prior_audit_corpus",
+      "auditClass": "rolling_structural_gap",
+      "severity": "high",
+      "detectionLagDaysAtReferenceSnapshot": 187,
+      "municipalityRole": "direct_waterfront_local_authority_member_receiving_structured_capacity_building_and_peer_support",
+      "formalApplicabilityToSevenMunicipalities": "directly relevant to coastal/waterfront municipalities; concrete fit for non-coastal municipalities depends on qualifying inland-water or waterfront challenges and Coalition scope",
+      "funding": "No cash grant. Structured non-cash support includes networking and peer learning, training and capacity building, citizen/stakeholder engagement support, funding advice and support linked to Mission Ocean implementation.",
+      "eligibilityEvidence": "The European Commission Mission Ocean and CO-WATERS pages describe the Coalition as open to waterfront authorities and local partners, including cities and regions, with tailored services for collaboration, capacity, engagement and implementation.",
+      "rootCauseFamily": "Mission_Ocean_coalition_capacity_building_gap",
+      "officialSources": [
+        "https://projects.research-and-innovation.ec.europa.eu/en/funding/funding-opportunities/funding-programmes-and-open-calls/horizon-europe/eu-missions-horizon-europe/restore-our-ocean-and-waters",
+        "https://co-waters.eu/"
+      ]
+    },
+    {
+      "id": "co-waters-blue-climathons-2026",
+      "title": "CO-WATERS · Blue Climathons 2026",
+      "publishedAt": "2026-08-31",
+      "deadlineAt": "2026-09-27",
+      "radarStatus": "absent_from_reference_snapshot_and_prior_audit_corpus",
+      "auditClass": "current_conditional_beneficiary_false_negative",
+      "severity": "high",
+      "detectionLagDaysAtReferenceSnapshot": 7,
+      "municipalityRole": "direct_coalition_member_city_region_island_or_port_applicant_to_host_a_local_blue_climathon",
+      "formalApplicabilityToSevenMunicipalities": "conditional on Coalition membership and a concrete local water-related challenge; strongest prima facie fit is for the coastal Versilia municipalities",
+      "funding": "No direct event-cost grant. Up to 20 selected organisers receive no-cost structured support for challenge definition, format and facilitation, participant mobilisation, communication, fundraising approaches and continuous expert assistance.",
+      "eligibilityEvidence": "CO-WATERS opened applications on 31 August 2026 for Coalition members to organise Blue Climathons addressing concrete local water challenges, with applications due 27 September 2026.",
+      "rootCauseFamily": "EU_project_city_support_open_call_gap",
+      "officialSource": "https://co-waters.eu/"
+    }
+  ],
+  "announcedUpcoming": [
+    {
+      "id": "sai-2026-ordinary-2402",
+      "title": "Ministero dell'Interno · SAI 2026 · 2,402 posti ordinari",
+      "opensAt": "2026-09-15",
+      "deadlineAt": "2026-11-10T18:00:00+01:00",
+      "auditClass": "announced_upcoming",
+      "countsAsCurrentActionableGap": false,
+      "municipalityRole": "direct_local_authority_applicant_singly_or_jointly",
+      "funding": "FAMI-backed funding for new SAI reception capacity.",
+      "note": "The notices are published, but the authoritative institutional summary states that applications are accepted only from 15 September 2026. On 8 September this is not a current false negative."
+    },
+    {
+      "id": "sai-2026-msna-500",
+      "title": "Ministero dell'Interno · SAI 2026 · 500 posti MSNA",
+      "opensAt": "2026-09-15",
+      "deadlineAt": "2026-11-10T18:00:00+01:00",
+      "auditClass": "announced_upcoming",
+      "countsAsCurrentActionableGap": false,
+      "municipalityRole": "direct_local_authority_applicant_singly_or_jointly",
+      "funding": "FAMI-backed funding for up to 500 places for unaccompanied foreign minors."
+    },
+    {
+      "id": "sai-2026-disagio-300",
+      "title": "Ministero dell'Interno · SAI 2026 · 300 posti disagio mentale/sanitario",
+      "opensAt": "2026-09-15",
+      "deadlineAt": "2026-11-10T18:00:00+01:00",
+      "auditClass": "announced_upcoming",
+      "countsAsCurrentActionableGap": false,
+      "municipalityRole": "direct_local_authority_applicant_singly_or_jointly",
+      "funding": "FAMI-backed funding for up to 300 specialised reception places."
+    }
+  ],
+  "historicalReplayFindings": [
+    {
+      "id": "interno-minori-allontanati-fondo-2026",
+      "title": "Ministero dell'Interno · Fondo 2026 per assistenza ai minori allontanati dalla famiglia",
+      "publishedAt": "2026-04-14",
+      "deadlineAt": "thirty_days_after_2026-04-15_GU_publication",
+      "radarStatus": "absent_from_reference_snapshot_and_prior_audit_corpus",
+      "auditClass": "historical_pre_launch_gap",
+      "severity": "high",
+      "municipalityRole": "direct_municipality_declaration_for_access_to_national_allocation",
+      "funding": "EUR 250 million national 2026 fund after the statutory increase, allocated to municipalities supporting minors placed outside their families by judicial order.",
+      "note": "The municipal declaration window ran for 30 days after publication of the implementing decree in the Official Gazette and therefore closed before the public Radar launch. It is replay evidence, not a current gap.",
+      "officialSource": "https://dait.interno.gov.it/finanza-locale/notizie/comunicato-del-14-aprile-2026"
+    }
+  ],
+  "auditCorrections": [
+    {
+      "id": "rt-parcheggi-2026-wave15-correction",
+      "correctsWave": 15,
+      "previousAuditClass": "announced_upcoming",
+      "correctedAuditClass": "captured",
+      "canonicalId": "opp-7fbab3d295ee2d",
+      "ruleId": "rt-parcheggi-2026",
+      "reason": "Direct inspection of the complete reference snapshot shows Bando parcheggi 2026 already present as an open canonical opportunity, published 12 August 2026 with deadline 30 November 2026 and Tuscan municipalities as direct applicants. The Wave 15 note that the application window started on 14 September was erroneous.",
+      "gateEffect": "none"
+    }
+  ],
+  "capturedAndNegativeControls": [
+    {
+      "id": "interreg-italy-croatia-call4-2026",
+      "auditClass": "correctly_excluded_geography",
+      "countsAsCurrentActionableGap": false,
+      "note": "The 4th call is current and local authorities may participate, but the Italian programme area does not include Tuscany/Versilia."
+    },
+    {
+      "id": "mit-fondo-piccoli-comuni-2026",
+      "auditClass": "captured_announced_upcoming",
+      "countsAsCurrentActionableGap": false,
+      "note": "The announced 2026 road-investment cycle for small municipalities is already present in the reference snapshot as coverage mit-fondo-piccoli-comuni-2026."
+    },
+    {
+      "id": "cef-transport-2026",
+      "auditClass": "scope_review_project_promoter_control",
+      "countsAsCurrentActionableGap": false,
+      "note": "Already present in snapshot auditReview; municipal fit requires a qualifying TEN-T/CEF project and the applicable national support route."
+    },
+    {
+      "id": "mission-ocean-associated-regions-current-check-wave16",
+      "auditClass": "no_new_current_open_call_found",
+      "countsAsCurrentActionableGap": false,
+      "note": "The Commission Associated Regions directory was rechecked; recent entries found in the directory were closed."
+    },
+    {
+      "id": "scu-programmi-progetti-2026",
+      "auditClass": "scope_review_conditional_accreditation_route",
+      "countsAsCurrentActionableGap": false,
+      "note": "The current Universal Civil Service programme/project window is already retained in snapshot auditReview; submission depends on SCU register accreditation and no new seven-municipality accreditation evidence was established."
+    }
+  ],
+  "waveConclusion": "Wave 16 is a valid independent full-corpus sweep but is not clean. Three new current opportunities/support routes were established: IRISCC 4th Open Call for Access, the rolling CO-WATERS Coalition support route, and the current CO-WATERS Blue Climathons call. The three new SAI notices are upcoming rather than current because applications open on 15 September. A historical national fund for minors removed from their families was added as replay evidence, and the Wave 15 Parcheggi lifecycle interpretation was corrected to captured. The saturation counter remains 0/2 and implementation remains frozen.",
+  "nextStep": "Run a fresh independent full-corpus Wave 17 from a materially different oracle ordering. Because Wave 16 is dirty, a clean Wave 17 would move the counter only to 1/2; a second consecutive clean independent sweep would still be required before hardening can begin.",
+  "implementationChanges": []
+}

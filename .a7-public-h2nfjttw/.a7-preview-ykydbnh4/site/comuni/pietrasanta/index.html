@@ -1,0 +1,886 @@
+<!doctype html>
+<html lang="it"><head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pietrasanta · Profilo comunale · Osservatorio Versilia</title>
+  <meta name="description" content="Indicatori, serie storiche e confronti territoriali per il Comune di Pietrasanta.">
+  <meta property="og:title" content="Pietrasanta · Profilo comunale · Osservatorio Versilia">
+  <meta property="og:description" content="Indicatori, serie storiche e confronti territoriali per il Comune di Pietrasanta.">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="it_IT">
+  <link rel="icon" href="../../favicon.svg?v=20260824-ov4" sizes="any">
+  <link rel="icon" href="../../favicon.svg?v=20260824-ov4" type="image/svg+xml">
+  <link rel="manifest" href="../../site.webmanifest?v=20260824-pwa9">
+  <link rel="stylesheet" href="../../assets/original.css">
+  <link rel="stylesheet" href="../../assets/static.css">
+  <link rel="stylesheet" href="../../assets/fidelity.css?v=20261025-ui-shell-consistency">
+  <link rel="stylesheet" href="../../assets/fonts.css">
+  <link rel="stylesheet" href="../../assets/ux-experiment.css?v=20261025-ui-shell-consistency">
+  <link rel="stylesheet" href="../../assets/ux-background-match.css?v=20261025-ui-shell-consistency">
+  <link rel="stylesheet" href="../../assets/export-v161.css?v=20261025-ui-shell-consistency">
+  <link rel="stylesheet" href="../../assets/visual-grammar.css?v=20261025-ui-shell-consistency">
+  <link rel="stylesheet" href="../../assets/indicator-pages.css?v=20261025-ui-shell-consistency">
+  <link rel="stylesheet" href="../../assets/social-presence.css?v=20261025-ui-shell-consistency">
+<style id="ov-invalsi-benchmark-history-style">
+.ux-history-chart .ux-series-group[data-history-town="toscana"] .ux-series-line{stroke-dasharray:10 5;stroke-width:3;opacity:.9}
+.ux-history-chart .ux-series-group[data-history-town="italia"] .ux-series-line{stroke-dasharray:2 5;stroke-width:3;opacity:.9}
+.ux-history-legend button[data-history-select="toscana"]::before,.ux-history-legend button[data-history-select="italia"]::before{width:20px;height:2px;border-radius:0}
+.ux-history-legend button[data-history-select="toscana"]::before{background:repeating-linear-gradient(90deg,var(--series-color) 0 8px,transparent 8px 12px)}
+.ux-history-legend button[data-history-select="italia"]::before{background:repeating-linear-gradient(90deg,var(--series-color) 0 2px,transparent 2px 6px)}
+</style><style id="ov-climate-current-grammar-style">
+      .ov-climate-current-legend{
+        display:flex;align-items:center;gap:18px;margin:0 0 14px;padding:0 2px;
+        color:var(--muted);font-size:9px;font-weight:700
+      }
+      .ov-climate-current-legend span{display:inline-flex;align-items:center;gap:7px}
+      .ov-climate-current-legend .ov-legend-dot{
+        width:9px;height:9px;border-radius:50%;background:var(--surface,#fffaf1);
+        border:2px solid var(--theme-color,#52785c)
+      }
+      .ov-climate-current-legend .ov-legend-mean{width:2px;height:16px;background:#607b88}
+      .ov-climate-current-list{
+        display:grid;gap:11px
+      }
+      .ov-climate-current-list .ov-climate-current-row{
+        border-radius:8px;grid-template-columns:24px minmax(110px,1.1fr) minmax(150px,3fr) minmax(70px,auto);
+        align-items:center;gap:12px;min-height:54px;padding:0;display:grid;position:relative;
+        color:inherit;text-decoration:none;transition:background .15s
+      }
+      .ov-climate-current-list .ov-climate-current-row:hover,
+      .ov-climate-current-list .ov-climate-current-row.selected{background:var(--blue-soft)}
+      .ov-climate-current-list .ov-climate-current-row .town{
+        grid-column:2;font-size:13px;font-weight:690
+      }
+      .ov-climate-current-list .ov-climate-current-row strong{
+        grid-column:4;font-family:var(--font-geist-mono),monospace;text-align:right;
+        white-space:nowrap;font-size:12px
+      }
+      .ov-climate-current-list .ov-climate-current-track{
+        grid-column:3;position:relative;height:9px;border-radius:999px;background:#e4e9e7;
+        overflow:visible
+      }
+      .ov-climate-current-list.uses-versilia-marker .ov-climate-current-track::after{
+        content:'';position:absolute;z-index:1;left:var(--ov-mean-position);top:-5px;width:2px;height:19px;
+        background:#607b88;transform:translateX(-1px)
+      }
+      .ov-climate-current-list.uses-versilia-marker .ov-climate-current-track>i{
+        position:absolute;z-index:2;top:50%;left:var(--ov-value-position)!important;
+        width:11px;height:11px;margin:-5.5px 0 0 -5.5px;border-radius:50%;
+        background:var(--surface,#fffaf1);border:3px solid var(--theme-color,#52785c);
+        box-shadow:0 1px 4px color-mix(in srgb,var(--ink) 18%,transparent)
+      }
+      .ov-climate-current-list .bar-hover-label{display:none}
+      @media(max-width:700px){
+        .ov-climate-current-list .ov-climate-current-row{
+          grid-template-columns:18px minmax(82px,1fr) minmax(70px,1.4fr) auto;gap:7px
+        }
+        .ov-climate-current-list .ov-climate-current-row .town{font-size:11px}
+        .ov-climate-current-list .ov-climate-current-row strong{font-size:10px}
+      }
+    </style>
+  <link rel="canonical" href="https://osservatorioversilia.it/comuni/pietrasanta/">
+  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"url":"https://osservatorioversilia.it/comuni/pietrasanta/","name":"Pietrasanta · Profilo comunale · Osservatorio Versilia","description":"Indicatori, serie storiche e confronti territoriali per il Comune di Pietrasanta.","inLanguage":"it-IT","isAccessibleForFree":true,"creator":{"@type":"Person","name":"Emanuele Anzilotti"},"publisher":{"@type":"Person","name":"Emanuele Anzilotti"},"@type":"Dataset","spatialCoverage":{"@type":"AdministrativeArea","name":"Pietrasanta"},"temporalCoverage":"2019/2026","variableMeasured":["Popolazione residente","Distribuzione per fasce d’età","Indice di vecchiaia","Indici di dipendenza demografica","Residenti di cittadinanza straniera","Mobilità residenziale interna","Mobilità residenziale con l’estero","Mobilità residenziale complessiva","Dinamica naturale della popolazione","Variazione della popolazione dal 2019","Reddito imponibile medio per dichiarante","Distribuzione dei dichiaranti per fascia di reddito","Reddito medio dichiarato per fonte","Peso dei redditi da pensione","Contribuenti ogni 100 maggiorenni","Redditi vs inflazione","Addizionale comunale IRPEF effettiva","TARI standardizzata · 3 persone, 100 m²","IMU seconda abitazione standardizzata","Recupero tributario e accertamento","Addetti in unità locali a bassa produttività","Quota industriale del valore aggiunto","Quota degli addetti nell’industria","Unità locali attive","Addetti nelle unità locali","Addetti per unità locale","Variazione delle unità locali 2018–2024","Variazione degli addetti 2018–2024","Unità locali con meno di 10 addetti","Fatturato delle unità locali","Valore aggiunto delle unità locali","Valore aggiunto per addetto","Fatturato per addetto","Valore aggiunto sul fatturato","Retribuzione media lorda per dipendente","Costo del lavoro","Margine operativo lordo","Ditte individuali con titolare nato all’estero","Imprese attive nei settori dell’innovazione","Presenze turistiche","Arrivi turistici","Permanenza media","Posti letto nelle strutture ricettive","Concentrazione turistica nei tre mesi principali","Presenze turistiche straniere","Presenze turistiche per residente","Posti letto turistici ogni 1.000 residenti","Strutture ricettive ogni 1.000 residenti","Atlante delle attività economiche","Tasso di occupazione 25–64 anni","Tasso di disoccupazione 25–64 anni","Tasso di attività 25–64 anni","Tasso di occupazione femminile 15–64 anni","Tasso di occupazione maschile 15–64 anni","Divario occupazionale di genere 15–64 anni","Giovani 15–24 anni in altra condizione professionale","Diploma o titolo superiore","Titolo terziario","Sedi scolastiche","Alunni nelle scuole del Comune","Alunni per classe","Alunni della primaria a tempo pieno","Certificazioni di sicurezza degli edifici scolastici","Accessibilità degli edifici scolastici","Mensa e palestra negli edifici scolastici","Epoca di costruzione degli edifici scolastici","Raggiungibilità degli edifici scolastici","Tasso di ricettività potenziale dei servizi educativi 0–3 anni","Risultati INVALSI","Livelli e traguardi di competenza","Dispersione scolastica implicita","Eccellenza accademica","Speranza di vita alla nascita","Mortalità per tutte le cause","Mortalità per tumori","Mortalità per malattie del sistema circolatorio","Mortalità per malattie dell’apparato respiratorio","Persone con almeno una patologia cronica","Prevalenza ipertensione","Prevalenza BPCO","Prevalenza cardiopatia ischemica","Prevalenza insufficienza cardiaca/scompenso","Prevalenza pregresso ictus","Persone con diabete","Persone con demenza","Persone 0–64 anni con disabilità riconosciuta","Accessi al pronto soccorso","Tempo di risposta del 118 — 75° percentile","Residenti ricoverati","Anziani assistiti a domicilio","Anziani assistiti in RSA permanente","Accessi per visite specialistiche – 7 specialità PSR","Accessi per prestazioni di diagnostica per immagini","RSA accreditate presenti nel Comune","Farmacie ogni 1.000 residenti","Strutture ospedaliere","Lavoratori fuori comune","Pendolari in uscita per lavoro","Pendolari in entrata per lavoro","Saldo pendolare assoluto","Autocontenimento del lavoro","Saldo dei pendolari per lavoro","Pendolari in uscita ogni 1.000 residenti","Pendolari in entrata ogni 1.000 residenti","Corse TPL programmate","Punti di accesso GTFS attivi","Ampiezza oraria programmata del servizio TPL","Autovetture ogni 1.000 residenti","Autovetture Euro 0–3","Prezzi carburanti self-service","Punti di ricarica attivi ogni 1.000 residenti","Grafo viario Iter.Net","Copertura FTTH DESI","Famiglie raggiunte da FTTH","Famiglie non raggiunte da FTTH","Copertura FTTH entro 20 metri","Percorsi pubblici che attraversano il Comune","Percorsi trekking che attraversano il Comune","Cammini che attraversano il Comune","Percorsi ciclabili che attraversano il Comune","Percorsi MTB che attraversano il Comune","Sicurezza stradale","Spesa impegnata per ordine pubblico e sicurezza per residente","Proventi rendicontati da sanzioni al Codice della strada per abitante","Quotazioni immobiliari OMI","Morosità ERP","Abitazioni ogni 1.000 residenti","Abitazioni non occupate","Abitazioni non occupate ogni 1.000 residenti","Famiglie unipersonali","Componenti medi per famiglia","Famiglie coabitanti","Superficie comunale","Densità abitativa","Distribuzione altimetrica del territorio","Classificazioni territoriali","Linea litoranea statistica","Uso e copertura del suolo","Copertura forestale","Indice composito di fragilità comunale","Pericolosità ed esposizione a frane","Pericolosità ed esposizione ad alluvioni","Territorio in aree naturali protette","Accessibilità ai servizi essenziali","Suolo consumato","Consumo di suolo annuale","Lunghezza interventi PAB programmati","Interventi PAB programmati","Valore manutenzione PAB programmata","Reticolo idrografico","Elementi di opere idrauliche censiti","Interventi di manutenzione in corso","Interventi di manutenzione completati","Valore lordo operativo degli interventi in corso","Valore lordo operativo degli interventi completati","Variazione della temperatura media in 50 anni","Variazione delle precipitazioni in 50 anni","Andamento delle temperature minime","Andamento delle temperature massime","Qualità delle aree di balneazione","Campioni di balneazione non conformi","Spiagge Bandiera Blu","Dinamica del litorale","Costa protetta da opere di difesa rigide","Concessioni demaniali marittime","Canoni demaniali dovuti","Perdite della rete idrica","Qualità dell’acqua potabile","Siti oggetto di procedimento di bonifica","Aziende agricole","Superficie agricola utilizzata (SAU)","Dimensione media delle aziende agricole","Profilo delle colture","Superficie irrigata","Superficie agricola utilizzata biologica","Ricambio e conduzione delle aziende agricole","Diversificazione e modernizzazione delle aziende agricole","Siti censiti in RTCave","Produzione estrattiva","Quadro estrattivo PRC","Raccolta differenziata","Rifiuti urbani per residente","Costo totale del servizio rifiuti per abitante","Rifiuto residuo per residente","Entrate correnti accertate per residente","Spesa corrente impegnata per residente","Spesa in conto capitale impegnata per residente","Quota delle entrate proprie","Capacità di riscossione corrente","Capacità di pagamento corrente","Parte disponibile del risultato di amministrazione per residente","Fondo crediti di dubbia esigibilità per residente","Incidenza delle spese rigide","Debito finanziario e costo degli interessi","Pagamenti complessivi per residente","Pagamenti correnti per residente","Pagamenti in conto capitale per residente","Incassi di cassa per residente","Saldo di cassa per residente","Fondo di cassa al 31 dicembre per residente","Spesa impegnata per istruzione e diritto allo studio per residente","Spesa impegnata per diritti sociali e politiche familiari per residente","Spesa impegnata per territorio e ambiente per residente","Spesa impegnata per trasporti e mobilità per residente","Spesa impegnata per cultura e sport per residente","Spesa impegnata per turismo e sviluppo economico per residente","Spesa impegnata per servizi istituzionali e generali per residente","Spesa impegnata per assetto del territorio ed edilizia abitativa per residente","Spesa impegnata per soccorso civile per residente","Spesa impegnata per sviluppo economico e competitività per residente","Dipendenti comunali per 1.000 residenti","Turnover netto del personale comunale","Struttura per età del personale comunale","Formazione del personale comunale","Servizi comunali online al massimo livello di disponibilità","Valore delle opere per residente","Risorse PNRR per residente","Progetti PNRR conclusi","Enti del Terzo settore ogni 1.000 residenti","Spesa per interventi e servizi sociali per abitante","Composizione della spesa sociale per area di utenza","Prestiti bibliotecari per residente","Utenti attivi del prestito ogni 100 residenti","Ore medie di apertura settimanale","Affluenza al voto"]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Osservatorio Versilia","item":"https://osservatorioversilia.it/"},{"@type":"ListItem","position":2,"name":"Comuni","item":"https://osservatorioversilia.it/#comuni"},{"@type":"ListItem","position":3,"name":"Pietrasanta · Profilo comunale · Osservatorio Versilia","item":"https://osservatorioversilia.it/comuni/pietrasanta/"}]}]}</script>
+
+  <meta property="og:url" content="https://osservatorioversilia.it/comuni/pietrasanta/">
+  <meta property="og:site_name" content="Osservatorio Versilia">
+  <meta property="og:image" content="https://osservatorioversilia.it/images/versilia-viareggio-apuane.jpg">
+  <meta property="og:image:alt" content="Viareggio e le Alpi Apuane, immagine di Osservatorio Versilia">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Pietrasanta · Profilo comunale · Osservatorio Versilia">
+  <meta name="twitter:description" content="Indicatori, serie storiche e confronti territoriali per il Comune di Pietrasanta.">
+  <meta name="twitter:site" content="@OssVersilia">
+  <meta name="twitter:image" content="https://osservatorioversilia.it/images/versilia-viareggio-apuane.jpg">
+  <meta name="twitter:image:alt" content="Viareggio e le Alpi Apuane, immagine di Osservatorio Versilia">
+  <link rel="stylesheet" href="../../assets/brand.css?v=20260824-ov4">
+  <link rel="stylesheet" href="../../assets/mobile-accordion-fix.css?v=20260809-3">
+  <link rel="stylesheet" href="../../assets/chart-surfaces.css?v=20260826-v120">
+  <meta name="theme-color" content="#0F3654">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Osservatorio Versilia">
+  <link rel="apple-touch-icon" sizes="180x180" href="../../pwa/icon-180.png?v=20260824-pwa9">
+  <link rel="stylesheet" href="../../assets/pwa.css?v=20260824-pwa9">
+</head>
+<body class="antialiased" data-page="town" data-theme="" data-town="pietrasanta" data-prerendered="true">
+  <div id="site-header-mount">
+      <a class="skip-link" href="#app">Vai al contenuto</a>
+      <header class="site-header">
+        <div class="site-header-inner">
+          <a href="../../" class="site-brand" aria-label="Osservatorio Versilia, torna alla home">
+            <span class="site-brand-mark" aria-hidden="true"><svg class="ov-mark-svg" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 76 64"><g fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="27" cy="32" r="22" stroke="#0F3654" stroke-width="6"/>
+    <path d="M43 28 53 48 71 15" stroke="#0F3654" stroke-width="6"/>
+    <path d="M57 27 70 9" stroke="#58A28F" stroke-width="3.2"/>
+  </g>
+  <g fill="#6F8FA3">
+    <rect x="16" y="34" width="5.5" height="9" rx="1"/>
+    <rect x="24" y="28" width="5.5" height="15" rx="1"/>
+    <rect x="32" y="20" width="5.5" height="23" rx="1"/>
+  </g>
+  <path d="M10 43c7-5.5 14-7.2 20-5.3 4.4 1.4 8 4.1 12 4.7v5.1c-4.6-.5-8.7-3-13.1-4.1-5.7-1.5-11.7-.1-18.9 4.1Z" fill="#58A28F"/>
+  <path d="M11.5 45.2c6.2-3.2 11.9-4.2 17.1-3 4.3 1 8.1 3.2 12.2 3.8" fill="none" stroke="#F7FAF8" stroke-width="1.8" stroke-linecap="round"/>
+</svg></span>
+            <span class="site-brand-copy"><strong>Osservatorio Versilia</strong><small>Versilia in numeri</small></span>
+          </a>
+          <div class="site-header-actions">
+            <nav aria-label="Navigazione principale">
+              <a href="../../#temi">Temi</a>
+              <a href="../../#comuni" aria-current="page">Comuni</a>
+              <a href="../../dossier/">Dossier</a>
+              <a href="../../chiedi/">Chiedi</a>
+              <a href="../../opportunita/">Opportunità</a>
+              <a href="../../progetto/">Il progetto</a>
+              <a href="../../stato-dati/" data-data-status-nav="header">Stato dati</a>
+              <a href="../../segnala/">Segnala</a>
+            </nav>
+            <button class="global-search-trigger" type="button" aria-haspopup="dialog" aria-expanded="false">
+              <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg><span>Cerca</span><kbd>/</kbd>
+            </button>
+          </div>
+        </div>
+      </header></div>
+  <div id="app"><main class="page-width inner-page town-profile a5-editorial-pilot a5-town-pilot a5-municipal-rollout" data-theme="demografia">
+      <div class="breadcrumbs"><a href="/">Home</a><span>/</span><span>Comuni</span><span>/</span><strong>Pietrasanta</strong></div>
+      <header class="town-hero" style="--a5-town-hero-image:url('https://commons.wikimedia.org/wiki/Special:Redirect/file/Veduta_di_piazza_duomo%2C_Pietrasanta.jpg?width=1800')">
+      <div class="town-hero-shell">
+        <div class="town-identity">
+          <img alt="Stemma di Pietrasanta" src="../../crests/pietrasanta.svg">
+          <div><span class="overline">Profilo comunale · Istat 046024</span><h1>Pietrasanta</h1><p>Numeri, tendenze e confronti per leggere il territorio nel suo contesto.</p></div>
+        </div>
+        <dl class="town-headline-stats">
+          <div><dt><span class="town-stat-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"></path><circle cx="9.5" cy="7" r="4"></circle><path d="M17 11h5"></path><path d="M19.5 8.5v5"></path></svg></span>Popolazione</dt><dd>22.678</dd><dd class="town-stat-note">Residenti · 2026</dd></div>
+          <div><dt><span class="town-stat-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m3 6 5-2 8 3 5-2v13l-5 2-8-3-5 2Z"></path><path d="M8 4v13"></path><path d="M16 7v13"></path></svg></span>Superficie</dt><dd>42,27 km²</dd><dd class="town-stat-note">Superficie comunale</dd></div>
+          <div><dt><span class="town-stat-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 22h18"></path><path d="M6 18V9"></path><path d="M10 18V9"></path><path d="M14 18V9"></path><path d="M18 18V9"></path><path d="m12 2 9 5H3Z"></path></svg></span>Anno di istituzione</dt><dd>1255</dd><dd class="town-stat-note">Profilo storico-amministrativo</dd></div>
+        </dl>
+      </div>
+      <span class="town-hero-photo-credit">Pietrasanta · Piazza Duomo · <a href="https://commons.wikimedia.org/wiki/File:Veduta_di_piazza_duomo,_Pietrasanta.jpg" target="_blank" rel="noreferrer">Wikimedia Commons</a></span>
+    </header>
+      <section class="town-brief" aria-labelledby="town-brief-title">
+      <div><span class="overline">Sintesi</span><h2 id="town-brief-title">Pietrasanta in breve</h2><p>Tre dati essenziali per leggere in modo immediato economia, lavoro e salute del Comune.</p></div>
+      <article><div class="town-brief-head"><span class="town-brief-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 7a6 6 0 1 0 0 10"></path><path d="M5 10h8"></path><path d="M5 14h7"></path></svg></span><span>Reddito medio</span></div><strong>25.239&nbsp;€</strong><small>2024 · +1,3% rispetto alla media Versilia</small></article>
+      <article><div class="town-brief-head"><span class="town-brief-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="7" width="18" height="13" rx="2"></rect><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><path d="M3 12h18"></path><path d="M10 12v2h4v-2"></path></svg></span><span>Tasso di occupazione</span></div><strong>69,9%</strong><small>2024 · −1,3 punti rispetto alla media Versilia</small></article>
+      <article><div class="town-brief-head"><span class="town-brief-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8l1.1 1.1L12 21l7.8-7.5 1.1-1.1a5.5 5.5 0 0 0-.1-7.8Z"></path><path d="M4.5 12h4l1.4-3 2.3 6 1.6-4 1.2 1h4.5"></path></svg></span><span>Speranza di vita</span></div><strong>83,6 anni</strong><small>2023 · serie ufficiale ARS Toscana</small></article>
+    </section>
+      <div class="town-context-nav">
+      <div class="context-nav-row"><div class="context-nav-title"><small>Esplora</small><strong>Comuni</strong></div><div class="context-nav-links"><a href="/comuni/camaiore/?tema=demografia&amp;indicatore=population" data-town-link="camaiore" class="">Camaiore</a><a href="/comuni/forte-dei-marmi/?tema=demografia&amp;indicatore=population" data-town-link="forte-dei-marmi" class="">Forte dei Marmi</a><a href="/comuni/massarosa/?tema=demografia&amp;indicatore=population" data-town-link="massarosa" class="">Massarosa</a><a href="/comuni/pietrasanta/?tema=demografia&amp;indicatore=population" data-town-link="pietrasanta" class="active" aria-current="page">Pietrasanta</a><a href="/comuni/seravezza/?tema=demografia&amp;indicatore=population" data-town-link="seravezza" class="">Seravezza</a><a href="/comuni/stazzema/?tema=demografia&amp;indicatore=population" data-town-link="stazzema" class="">Stazzema</a><a href="/comuni/viareggio/?tema=demografia&amp;indicatore=population" data-town-link="viareggio" class="">Viareggio</a></div></div>
+      <nav class="context-nav-row town-theme-row" aria-label="Temi della scheda"><div class="context-nav-title"><small>Esplora</small><strong>Temi</strong></div><div class="context-nav-links"><a href="/comuni/pietrasanta/?tema=demografia&amp;indicatore=population" data-context-theme="demografia" data-profile-theme="demografia" class="active" aria-current="page"><small>01</small><span>Demografia</span></a><a href="/comuni/pietrasanta/?tema=economia&amp;indicatore=income" data-context-theme="economia" data-profile-theme="economia" class=""><small>02</small><span>Economia</span></a><a href="/comuni/pietrasanta/?tema=lavoro&amp;indicatore=employmentRate" data-context-theme="lavoro" data-profile-theme="lavoro" class=""><small>03</small><span>Lavoro</span></a><a href="/comuni/pietrasanta/?tema=istruzione&amp;indicatore=diplomaPlus" data-context-theme="istruzione" data-profile-theme="istruzione" class=""><small>04</small><span>Istruzione</span></a><a href="/comuni/pietrasanta/?tema=salute&amp;indicatore=lifeExpectancy" data-context-theme="salute" data-profile-theme="salute" class=""><small>05</small><span>Salute</span></a><a href="/comuni/pietrasanta/?tema=mobilita&amp;indicatore=outsideMunicipality" data-context-theme="mobilita" data-profile-theme="mobilita" class=""><small>06</small><span>Mobilità e infrastrutture</span></a><a href="/comuni/pietrasanta/?tema=sicurezza&amp;indicatore=roadSafety" data-context-theme="sicurezza" data-profile-theme="sicurezza" class=""><small>07</small><span>Sicurezza e territorio</span></a><a href="/comuni/pietrasanta/?tema=abitare&amp;indicatore=omiResidential" data-context-theme="abitare" data-profile-theme="abitare" class=""><small>08</small><span>Abitare</span></a><a href="/comuni/pietrasanta/?tema=ambiente&amp;indicatore=municipalSurface" data-context-theme="ambiente" data-profile-theme="ambiente" class=""><small>09</small><span>Ambiente</span></a><a href="/comuni/pietrasanta/?tema=bilanci&amp;indicatore=currentRevenueAccruedPerResident" data-context-theme="bilanci" data-profile-theme="bilanci" class=""><small>10</small><span>Bilanci e amministrazione</span></a><a href="/comuni/pietrasanta/?tema=comunita&amp;indicatore=publicWorks" data-context-theme="comunita" data-profile-theme="comunita" class=""><small>11</small><span>Comunità e welfare</span></a></div></nav>
+    </div>
+      <section id="town-topic" class="town-topic a5-town-topic" data-theme="demografia" data-age-pyramid-delegated="1" data-a5-chrome-observer="1"><div class="town-topic-heading"><div><h2>Come sta cambiando la popolazione?</h2></div><a href="/confronta/demografia/?indicatore=population">Confronta i 7 comuni <span>→</span></a></div>
+      <aside class="topic-controls">
+      <div class="topic-controls-heading"><div><span class="overline">Gruppi di indicatori</span><strong>10 indicatori</strong></div><small>Scegli il dato da confrontare</small></div>
+      <div class="metric-switch metric-catalog compact-list" role="tablist" aria-label="Indicatori di Demografia" data-ux-accordion-delegated="true" data-ux-visible-tabs="true" data-ux-accordion-ready="true"><section class="metric-group is-open" data-section="quadro" data-ux-accordion="true">
+      <div class="metric-group-heading ux-section-toggle" role="button" tabindex="0" aria-controls="ux-section-1" data-ux-accordion-heading="true" aria-expanded="true"><strong>Consistenza e struttura</strong><span>Quanti siamo, come si distribuisce la popolazione per età e cittadinanza e quale rapporto esiste tra fasce dipendenti e popolazione 15–64 anni.</span><span class="ux-section-tools"><span>5 indicatori</span><span class="ux-section-chevron" aria-hidden="true">⌄</span></span></div>
+      <div class="metric-group-buttons" id="ux-section-1"><button type="button" role="tab" data-metric="population" class="active" aria-selected="true" tabindex="0">Residenti</button><button type="button" role="tab" data-metric="ageDistribution" class="" aria-selected="false" tabindex="-1">Distribuzione per fasce d’età</button><button type="button" role="tab" data-metric="oldAgeIndex" class="" aria-selected="false" tabindex="-1">Indice di vecchiaia</button><button type="button" role="tab" data-metric="dependencyIndices" class="" aria-selected="false" tabindex="-1">Indici di dipendenza</button><button type="button" role="tab" data-metric="foreignResidents" class="" aria-selected="false" tabindex="-1">Residenti stranieri</button></div>
+    </section><section class="metric-group" data-section="mobilita-residenziale" data-ux-accordion="true">
+      <div class="metric-group-heading ux-section-toggle" role="button" tabindex="0" aria-controls="ux-section-2" data-ux-accordion-heading="true" aria-expanded="false"><strong>Mobilità residenziale</strong><span>Trasferimenti di residenza tra ciascun Comune, gli altri Comuni italiani e l’estero, con lettura separata e complessiva dei flussi.</span><span class="ux-section-tools"><span>3 indicatori</span><span class="ux-section-chevron" aria-hidden="true">⌄</span></span></div>
+      <div class="metric-group-buttons" id="ux-section-2" hidden=""><button type="button" role="tab" data-metric="internalResidentialMobility" class="" aria-selected="false" tabindex="-1">Mobilità residenziale interna</button><button type="button" role="tab" data-metric="foreignResidentialMobility" class="" aria-selected="false" tabindex="-1">Mobilità con l’estero</button><button type="button" role="tab" data-metric="totalResidentialMobility" class="" aria-selected="false" tabindex="-1">Mobilità complessiva</button></div>
+    </section><section class="metric-group" data-section="dinamica" data-ux-accordion="true">
+      <div class="metric-group-heading ux-section-toggle" role="button" tabindex="0" aria-controls="ux-section-3" data-ux-accordion-heading="true" aria-expanded="false"><strong>Dinamica demografica</strong><span>Nascite, decessi, saldo naturale e variazione complessiva dei residenti.</span><span class="ux-section-tools"><span>2 indicatori</span><span class="ux-section-chevron" aria-hidden="true">⌄</span></span></div>
+      <div class="metric-group-buttons" id="ux-section-3" hidden=""><button type="button" role="tab" data-metric="naturalDemographicDynamics" class="" aria-selected="false" tabindex="-1">Dinamica naturale</button><button type="button" role="tab" data-metric="populationChange" class="" aria-selected="false" tabindex="-1">Variazione dal 2019</button></div>
+    </section></div>
+      
+    </aside>
+      
+      <div class="town-metric-layout"><article class="town-metric-primary"><span class="composite-primary-label a5-primary-label" data-composite-primary-label="">Residenti</span><strong data-composite-primary-value="">22.678</strong><p data-composite-primary-description="">Residenti al 1° gennaio. La serie consente di leggere crescita o contrazione demografica.</p>
+        
+        
+        <div><span>2026</span><a class="inline-source-link" href="https://demo.istat.it/" target="_blank" rel="noreferrer">Fonte originale ↗</a></div></article>
+        <aside class="versilia-position" data-visual-grammar-signature="population|14,3%|della popolazione versiliese|Quota sulla Versilia|Quota dei residenti del comune sul totale della popolazione dei sette comuni."><span class="overline">Quota sulla Versilia</span><strong>14,3%<small>della popolazione versiliese</small></strong><p>Quota dei residenti del comune sul totale della popolazione dei sette comuni.</p><div><span>Totale Versilia</span><b>158.520</b></div></aside></div>
+      <section class="history-panel a5-shared-chart"><div class="panel-title"><div><span class="overline">Confronto dell’indicatore</span><h3>Valore attuale e andamento</h3></div><a class="source-pill" href="https://demo.istat.it/" target="_blank" rel="noreferrer">Fonte Istat — popolazione residente ↗</a></div><div class="ux-view-shell" data-view-shell="ux-view-1"><div class="ux-view-toolbar"><div class="ux-view-toolbar-copy"><small class="a5-toolbar-overline">Confronto tra Comuni della Versilia</small><strong>Come vuoi leggere l’indicatore?</strong><span>Fotografia dell’ultimo anno oppure confronto dell’andamento tra i sette comuni.</span></div><div class="data-actions a5-toolbar-actions"><a href="/indicatori/popolazione-residente/">Scheda indicatore</a><button type="button" data-download="">Scarica CSV</button><button type="button" data-print="">Stampa / PDF</button></div><div class="ux-view-toggle" role="tablist" aria-label="Vista dell’indicatore"><button id="ux-view-1-tab-current" type="button" role="tab" aria-controls="ux-view-1-current" data-view-mode="current" class="active" aria-selected="true" tabindex="0">Valore attuale</button><button id="ux-view-1-tab-history" type="button" role="tab" aria-controls="ux-view-1-history" data-view-mode="history" aria-selected="false" tabindex="-1">Storico</button></div></div><p class="ux-view-note">Nello storico il comune aperto è evidenziato; dalla legenda puoi mettere in primo piano un altro territorio.</p><div id="ux-view-1-current" class="ux-view-pane" role="tabpanel" aria-labelledby="ux-view-1-tab-current" data-view-pane="current"><div class="topic-bars"><div class="comparison-bars" data-visual-contract="rendered" data-visual-unit="number" data-visual-grammar-signature="population|r|||22645.714285714286|number|60680|31763|22678|21782|12284|6550|2783" data-viz="lollipop"><div class="comparison-legend"><span><i class="comparison-legend-dot" aria-hidden="true"></i>Comune</span><span><i class="comparison-legend-reference" aria-hidden="true"></i>Media semplice dei 7 comuni</span></div><a href="../../comuni/viareggio/?tema=demografia&amp;indicatore=population" class="bar-row comparison-row" data-viz-value="60680" data-viz-unit="number" aria-label="Viareggio: 60.680; Media semplice dei 7 comuni: 22.646">
+        <span class="bar-town">Viareggio</span>
+        <span class="bar-track">
+        <span class="comparison-axis-line" aria-hidden="true"></span>
+        
+        <span class="comparison-reference" style="left:28.307142857142857%" aria-hidden="true"></span>
+        <span class="comparison-stem" style="left:0%;width:75.85%" aria-hidden="true"></span>
+        <span class="comparison-dot" style="left:75.85%" aria-hidden="true"></span><span class="bar-hover-label">Viareggio: 60.680 · Media semplice dei 7 comuni: 22.646</span></span>
+        <strong>60.680</strong>
+      </a><a href="../../comuni/camaiore/?tema=demografia&amp;indicatore=population" class="bar-row comparison-row" data-viz-value="31763" data-viz-unit="number" aria-label="Camaiore: 31.763; Media semplice dei 7 comuni: 22.646">
+        <span class="bar-town">Camaiore</span>
+        <span class="bar-track">
+        <span class="comparison-axis-line" aria-hidden="true"></span>
+        
+        <span class="comparison-reference" style="left:28.307142857142857%" aria-hidden="true"></span>
+        <span class="comparison-stem" style="left:0%;width:39.70375%" aria-hidden="true"></span>
+        <span class="comparison-dot" style="left:39.70375%" aria-hidden="true"></span><span class="bar-hover-label">Camaiore: 31.763 · Media semplice dei 7 comuni: 22.646</span></span>
+        <strong>31.763</strong>
+      </a><a href="../../comuni/pietrasanta/?tema=demografia&amp;indicatore=population" class="bar-row selected comparison-row" data-viz-value="22678" data-viz-unit="number" aria-label="Pietrasanta: 22.678; Media semplice dei 7 comuni: 22.646">
+        <span class="bar-town">Pietrasanta</span>
+        <span class="bar-track">
+        <span class="comparison-axis-line" aria-hidden="true"></span>
+        
+        <span class="comparison-reference" style="left:28.307142857142857%" aria-hidden="true"></span>
+        <span class="comparison-stem" style="left:0%;width:28.347499999999997%" aria-hidden="true"></span>
+        <span class="comparison-dot" style="left:28.347499999999997%" aria-hidden="true"></span><span class="bar-hover-label">Pietrasanta: 22.678 · Media semplice dei 7 comuni: 22.646</span></span>
+        <strong>22.678</strong>
+      </a><a href="../../comuni/massarosa/?tema=demografia&amp;indicatore=population" class="bar-row comparison-row" data-viz-value="21782" data-viz-unit="number" aria-label="Massarosa: 21.782; Media semplice dei 7 comuni: 22.646">
+        <span class="bar-town">Massarosa</span>
+        <span class="bar-track">
+        <span class="comparison-axis-line" aria-hidden="true"></span>
+        
+        <span class="comparison-reference" style="left:28.307142857142857%" aria-hidden="true"></span>
+        <span class="comparison-stem" style="left:0%;width:27.2275%" aria-hidden="true"></span>
+        <span class="comparison-dot" style="left:27.2275%" aria-hidden="true"></span><span class="bar-hover-label">Massarosa: 21.782 · Media semplice dei 7 comuni: 22.646</span></span>
+        <strong>21.782</strong>
+      </a><a href="../../comuni/seravezza/?tema=demografia&amp;indicatore=population" class="bar-row comparison-row" data-viz-value="12284" data-viz-unit="number" aria-label="Seravezza: 12.284; Media semplice dei 7 comuni: 22.646">
+        <span class="bar-town">Seravezza</span>
+        <span class="bar-track">
+        <span class="comparison-axis-line" aria-hidden="true"></span>
+        
+        <span class="comparison-reference" style="left:28.307142857142857%" aria-hidden="true"></span>
+        <span class="comparison-stem" style="left:0%;width:15.354999999999999%" aria-hidden="true"></span>
+        <span class="comparison-dot" style="left:15.354999999999999%" aria-hidden="true"></span><span class="bar-hover-label">Seravezza: 12.284 · Media semplice dei 7 comuni: 22.646</span></span>
+        <strong>12.284</strong>
+      </a><a href="../../comuni/forte-dei-marmi/?tema=demografia&amp;indicatore=population" class="bar-row comparison-row" data-viz-value="6550" data-viz-unit="number" aria-label="Forte dei Marmi: 6.550; Media semplice dei 7 comuni: 22.646">
+        <span class="bar-town">Forte dei Marmi</span>
+        <span class="bar-track">
+        <span class="comparison-axis-line" aria-hidden="true"></span>
+        
+        <span class="comparison-reference" style="left:28.307142857142857%" aria-hidden="true"></span>
+        <span class="comparison-stem" style="left:0%;width:8.1875%" aria-hidden="true"></span>
+        <span class="comparison-dot" style="left:8.1875%" aria-hidden="true"></span><span class="bar-hover-label">Forte dei Marmi: 6.550 · Media semplice dei 7 comuni: 22.646</span></span>
+        <strong>6.550</strong>
+      </a><a href="../../comuni/stazzema/?tema=demografia&amp;indicatore=population" class="bar-row comparison-row" data-viz-value="2783" data-viz-unit="number" aria-label="Stazzema: 2.783; Media semplice dei 7 comuni: 22.646">
+        <span class="bar-town">Stazzema</span>
+        <span class="bar-track">
+        <span class="comparison-axis-line" aria-hidden="true"></span>
+        
+        <span class="comparison-reference" style="left:28.307142857142857%" aria-hidden="true"></span>
+        <span class="comparison-stem" style="left:0%;width:3.47875%" aria-hidden="true"></span>
+        <span class="comparison-dot" style="left:3.47875%" aria-hidden="true"></span><span class="bar-hover-label">Stazzema: 2.783 · Media semplice dei 7 comuni: 22.646</span></span>
+        <strong>2.783</strong>
+      </a><div class="comparison-axis"><span>0</span><span>scala con origine a zero</span><span>80.000</span></div><p class="comparison-note">I comuni sono ordinati per valore per facilitare il confronto. L’ordine non esprime merito o qualità.</p></div></div></div><div id="ux-view-1-history" class="ux-view-pane" role="tabpanel" aria-labelledby="ux-view-1-tab-history" data-view-pane="history" hidden=""><div class="ux-history-card"><div class="ux-history-head"><div><strong>Andamento 2019–2026</strong><span>Una linea per territorio; sono mostrati solo gli anni disponibili in modo omogeneo.</span></div><span>Istat — popolazione residente</span></div><div class="ux-history-scroll"><div class="ux-history-chart has-selection" data-unit="number" data-ov-tooltip-wired="1"><svg viewBox="0 0 920 390" role="img" aria-label="Popolazione residente: confronto storico dei sette comuni"><line class="ux-history-grid" x1="78" y1="26" x2="890" y2="26"></line><text class="ux-history-axis-label" x="68" y="30" text-anchor="end">65.928</text><line class="ux-history-grid" x1="78" y1="104" x2="890" y2="104"></line><text class="ux-history-axis-label" x="68" y="108" text-anchor="end">49.446</text><line class="ux-history-grid" x1="78" y1="182" x2="890" y2="182"></line><text class="ux-history-axis-label" x="68" y="186" text-anchor="end">32.964</text><line class="ux-history-grid" x1="78" y1="260" x2="890" y2="260"></line><text class="ux-history-axis-label" x="68" y="264" text-anchor="end">16.482</text><line class="ux-history-grid" x1="78" y1="338" x2="890" y2="338"></line><text class="ux-history-axis-label" x="68" y="342" text-anchor="end">0</text><g class="ux-series-group " data-history-town="massarosa" style="--series-color:#0f5c6e"><polyline class="ux-series-line" points="78,235.32576714995835 194,235.7090918577779 310,234.11900418089672 426,234.72475186732768 542,234.72948427112792 658,234.52599090771753 774,234.8052027319318 890,234.91878042313758"></polyline><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Massarosa · 2019: 21.696" style="pointer-events: none;">
+      <circle class="chart-hit" cx="78" cy="235.32576714995835" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="78" cy="235.32576714995835" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="78" y1="235.32576714995835" x2="78" y2="219.32576714995835"></line>
+        <rect x="70" y="169.32576714995835" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="82" y="183.32576714995835">Massarosa · 2019</text>
+        <text class="chart-tooltip-value" x="82" y="203.32576714995835">21.696</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Massarosa · 2020: 21.615" style="pointer-events: none;">
+      <circle class="chart-hit" cx="194" cy="235.7090918577779" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="194" cy="235.7090918577779" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="194" y1="235.7090918577779" x2="194" y2="219.7090918577779"></line>
+        <rect x="89" y="169.7090918577779" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="101" y="183.7090918577779">Massarosa · 2020</text>
+        <text class="chart-tooltip-value" x="101" y="203.7090918577779">21.615</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Massarosa · 2021: 21.951" style="pointer-events: none;">
+      <circle class="chart-hit" cx="310" cy="234.11900418089672" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="310" cy="234.11900418089672" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="310" y1="234.11900418089672" x2="310" y2="218.11900418089672"></line>
+        <rect x="205" y="168.11900418089672" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="217" y="182.11900418089672">Massarosa · 2021</text>
+        <text class="chart-tooltip-value" x="217" y="202.11900418089672">21.951</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Massarosa · 2022: 21.823" style="pointer-events: none;">
+      <circle class="chart-hit" cx="426" cy="234.72475186732768" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="426" cy="234.72475186732768" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="426" y1="234.72475186732768" x2="426" y2="218.72475186732768"></line>
+        <rect x="321" y="168.72475186732768" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="333" y="182.72475186732768">Massarosa · 2022</text>
+        <text class="chart-tooltip-value" x="333" y="202.72475186732768">21.823</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Massarosa · 2023: 21.822" style="pointer-events: none;">
+      <circle class="chart-hit" cx="542" cy="234.72948427112792" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="542" cy="234.72948427112792" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="542" y1="234.72948427112792" x2="542" y2="218.72948427112792"></line>
+        <rect x="437" y="168.72948427112792" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="449" y="182.72948427112792">Massarosa · 2023</text>
+        <text class="chart-tooltip-value" x="449" y="202.72948427112792">21.822</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Massarosa · 2024: 21.865" style="pointer-events: none;">
+      <circle class="chart-hit" cx="658" cy="234.52599090771753" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="658" cy="234.52599090771753" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="658" y1="234.52599090771753" x2="658" y2="218.52599090771753"></line>
+        <rect x="553" y="168.52599090771753" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="565" y="182.52599090771753">Massarosa · 2024</text>
+        <text class="chart-tooltip-value" x="565" y="202.52599090771753">21.865</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Massarosa · 2025: 21.806" style="pointer-events: none;">
+      <circle class="chart-hit" cx="774" cy="234.8052027319318" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="774" cy="234.8052027319318" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="774" y1="234.8052027319318" x2="774" y2="218.8052027319318"></line>
+        <rect x="669" y="168.8052027319318" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="681" y="182.8052027319318">Massarosa · 2025</text>
+        <text class="chart-tooltip-value" x="681" y="202.8052027319318">21.806</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Massarosa · 2026: 21.782" style="pointer-events: none;">
+      <circle class="chart-hit" cx="890" cy="234.91878042313758" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="890" cy="234.91878042313758" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="890" y1="234.91878042313758" x2="890" y2="218.91878042313758"></line>
+        <rect x="680" y="168.91878042313758" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="692" y="182.91878042313758">Massarosa · 2026</text>
+        <text class="chart-tooltip-value" x="692" y="202.91878042313758">21.782</text>
+        
+      </g>
+    </g></g><g class="ux-series-group " data-history-town="viareggio" style="--series-color:#b56843"><polyline class="ux-series-line" points="78,51.20686489775885 194,51.6327812397806 310,48.135534831402055 426,49.110410014251826 542,49.843932603289275 658,50.482807116321894 774,51.13114643695499 890,50.83773740134001"></polyline><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Viareggio · 2019: 60.602" style="pointer-events: none;">
+      <circle class="chart-hit" cx="78" cy="51.20686489775885" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="78" cy="51.20686489775885" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="78" y1="51.20686489775885" x2="78" y2="69.20686489775885"></line>
+        <rect x="70" y="69.20686489775885" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="82" y="83.20686489775885">Viareggio · 2019</text>
+        <text class="chart-tooltip-value" x="82" y="103.20686489775885">60.602</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Viareggio · 2020: 60.512" style="pointer-events: none;">
+      <circle class="chart-hit" cx="194" cy="51.6327812397806" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="194" cy="51.6327812397806" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="194" y1="51.6327812397806" x2="194" y2="69.6327812397806"></line>
+        <rect x="89" y="69.6327812397806" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="101" y="83.6327812397806">Viareggio · 2020</text>
+        <text class="chart-tooltip-value" x="101" y="103.6327812397806">60.512</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Viareggio · 2021: 61.251" style="pointer-events: none;">
+      <circle class="chart-hit" cx="310" cy="48.135534831402055" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="310" cy="48.135534831402055" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="310" y1="48.135534831402055" x2="310" y2="66.13553483140205"></line>
+        <rect x="205" y="66.13553483140205" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="217" y="80.13553483140205">Viareggio · 2021</text>
+        <text class="chart-tooltip-value" x="217" y="100.13553483140205">61.251</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Viareggio · 2022: 61.045" style="pointer-events: none;">
+      <circle class="chart-hit" cx="426" cy="49.110410014251826" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="426" cy="49.110410014251826" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="426" y1="49.110410014251826" x2="426" y2="67.11041001425183"></line>
+        <rect x="321" y="67.11041001425183" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="333" y="81.11041001425183">Viareggio · 2022</text>
+        <text class="chart-tooltip-value" x="333" y="101.11041001425183">61.045</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Viareggio · 2023: 60.890" style="pointer-events: none;">
+      <circle class="chart-hit" cx="542" cy="49.843932603289275" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="542" cy="49.843932603289275" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="542" y1="49.843932603289275" x2="542" y2="67.84393260328928"></line>
+        <rect x="437" y="67.84393260328928" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="449" y="81.84393260328928">Viareggio · 2023</text>
+        <text class="chart-tooltip-value" x="449" y="101.84393260328928">60.890</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Viareggio · 2024: 60.755" style="pointer-events: none;">
+      <circle class="chart-hit" cx="658" cy="50.482807116321894" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="658" cy="50.482807116321894" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="658" y1="50.482807116321894" x2="658" y2="68.4828071163219"></line>
+        <rect x="553" y="68.4828071163219" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="565" y="82.4828071163219">Viareggio · 2024</text>
+        <text class="chart-tooltip-value" x="565" y="102.4828071163219">60.755</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Viareggio · 2025: 60.618" style="pointer-events: none;">
+      <circle class="chart-hit" cx="774" cy="51.13114643695499" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="774" cy="51.13114643695499" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="774" y1="51.13114643695499" x2="774" y2="69.13114643695499"></line>
+        <rect x="669" y="69.13114643695499" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="681" y="83.13114643695499">Viareggio · 2025</text>
+        <text class="chart-tooltip-value" x="681" y="103.13114643695499">60.618</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Viareggio · 2026: 60.680" style="pointer-events: none;">
+      <circle class="chart-hit" cx="890" cy="50.83773740134001" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="890" cy="50.83773740134001" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="890" y1="50.83773740134001" x2="890" y2="68.83773740134001"></line>
+        <rect x="680" y="68.83773740134001" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="692" y="82.83773740134001">Viareggio · 2026</text>
+        <text class="chart-tooltip-value" x="692" y="102.83773740134001">60.680</text>
+        
+      </g>
+    </g></g><g class="ux-series-group " data-history-town="camaiore" style="--series-color:#64743d"><polyline class="ux-series-line" points="78,188.1247716463487 194,188.72578692897937 310,187.69412290052668 426,187.4101786725122 542,186.97006511908975 658,187.20668530910183 774,187.35812223070954 890,187.6846580929262"></polyline><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Camaiore · 2019: 31.670" style="pointer-events: none;">
+      <circle class="chart-hit" cx="78" cy="188.1247716463487" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="78" cy="188.1247716463487" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="78" y1="188.1247716463487" x2="78" y2="172.1247716463487"></line>
+        <rect x="70" y="122.1247716463487" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="82" y="136.1247716463487">Camaiore · 2019</text>
+        <text class="chart-tooltip-value" x="82" y="156.1247716463487">31.670</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Camaiore · 2020: 31.543" style="pointer-events: none;">
+      <circle class="chart-hit" cx="194" cy="188.72578692897937" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="194" cy="188.72578692897937" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="194" y1="188.72578692897937" x2="194" y2="172.72578692897937"></line>
+        <rect x="89" y="122.72578692897937" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="101" y="136.72578692897937">Camaiore · 2020</text>
+        <text class="chart-tooltip-value" x="101" y="156.72578692897937">31.543</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Camaiore · 2021: 31.761" style="pointer-events: none;">
+      <circle class="chart-hit" cx="310" cy="187.69412290052668" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="310" cy="187.69412290052668" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="310" y1="187.69412290052668" x2="310" y2="171.69412290052668"></line>
+        <rect x="205" y="121.69412290052668" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="217" y="135.69412290052668">Camaiore · 2021</text>
+        <text class="chart-tooltip-value" x="217" y="155.69412290052668">31.761</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Camaiore · 2022: 31.821" style="pointer-events: none;">
+      <circle class="chart-hit" cx="426" cy="187.4101786725122" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="426" cy="187.4101786725122" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="426" y1="187.4101786725122" x2="426" y2="171.4101786725122"></line>
+        <rect x="321" y="121.41017867251219" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="333" y="135.4101786725122">Camaiore · 2022</text>
+        <text class="chart-tooltip-value" x="333" y="155.4101786725122">31.821</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Camaiore · 2023: 31.914" style="pointer-events: none;">
+      <circle class="chart-hit" cx="542" cy="186.97006511908975" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="542" cy="186.97006511908975" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="542" y1="186.97006511908975" x2="542" y2="170.97006511908975"></line>
+        <rect x="437" y="120.97006511908975" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="449" y="134.97006511908975">Camaiore · 2023</text>
+        <text class="chart-tooltip-value" x="449" y="154.97006511908975">31.914</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Camaiore · 2024: 31.864" style="pointer-events: none;">
+      <circle class="chart-hit" cx="658" cy="187.20668530910183" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="658" cy="187.20668530910183" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="658" y1="187.20668530910183" x2="658" y2="171.20668530910183"></line>
+        <rect x="553" y="121.20668530910183" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="565" y="135.20668530910183">Camaiore · 2024</text>
+        <text class="chart-tooltip-value" x="565" y="155.20668530910183">31.864</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Camaiore · 2025: 31.832" style="pointer-events: none;">
+      <circle class="chart-hit" cx="774" cy="187.35812223070954" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="774" cy="187.35812223070954" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="774" y1="187.35812223070954" x2="774" y2="171.35812223070954"></line>
+        <rect x="669" y="121.35812223070954" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="681" y="135.35812223070954">Camaiore · 2025</text>
+        <text class="chart-tooltip-value" x="681" y="155.35812223070954">31.832</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Camaiore · 2026: 31.763" style="pointer-events: none;">
+      <circle class="chart-hit" cx="890" cy="187.6846580929262" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="890" cy="187.6846580929262" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="890" y1="187.6846580929262" x2="890" y2="171.6846580929262"></line>
+        <rect x="680" y="121.68465809292621" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="692" y="135.6846580929262">Camaiore · 2026</text>
+        <text class="chart-tooltip-value" x="692" y="155.6846580929262">31.763</text>
+        
+      </g>
+    </g></g><g class="ux-series-group is-selected" data-history-town="pietrasanta" style="--series-color:#855b7b"><polyline class="ux-series-line" points="78,228.80924711702568 194,229.16890980584404 310,228.5820917346141 426,228.84237394362736 542,229.4717836490595 658,230.15798220009452 774,230.3709403711054 890,230.6785466181211"></polyline><g class="chart-point" tabindex="0" role="button" aria-label="Pietrasanta · 2019: 23.073">
+      <circle class="chart-hit" cx="78" cy="228.80924711702568" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="78" cy="228.80924711702568" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="78" y1="228.80924711702568" x2="78" y2="212.80924711702568"></line>
+        <rect x="70" y="162.80924711702568" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="82" y="176.80924711702568">Pietrasanta · 2019</text>
+        <text class="chart-tooltip-value" x="82" y="196.80924711702568">23.073</text>
+        
+      </g>
+    </g><g class="chart-point" tabindex="0" role="button" aria-label="Pietrasanta · 2020: 22.997">
+      <circle class="chart-hit" cx="194" cy="229.16890980584404" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="194" cy="229.16890980584404" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="194" y1="229.16890980584404" x2="194" y2="213.16890980584404"></line>
+        <rect x="89" y="163.16890980584404" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="101" y="177.16890980584404">Pietrasanta · 2020</text>
+        <text class="chart-tooltip-value" x="101" y="197.16890980584404">22.997</text>
+        
+      </g>
+    </g><g class="chart-point" tabindex="0" role="button" aria-label="Pietrasanta · 2021: 23.121">
+      <circle class="chart-hit" cx="310" cy="228.5820917346141" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="310" cy="228.5820917346141" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="310" y1="228.5820917346141" x2="310" y2="212.5820917346141"></line>
+        <rect x="205" y="162.5820917346141" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="217" y="176.5820917346141">Pietrasanta · 2021</text>
+        <text class="chart-tooltip-value" x="217" y="196.5820917346141">23.121</text>
+        
+      </g>
+    </g><g class="chart-point" tabindex="0" role="button" aria-label="Pietrasanta · 2022: 23.066">
+      <circle class="chart-hit" cx="426" cy="228.84237394362736" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="426" cy="228.84237394362736" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="426" y1="228.84237394362736" x2="426" y2="212.84237394362736"></line>
+        <rect x="321" y="162.84237394362736" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="333" y="176.84237394362736">Pietrasanta · 2022</text>
+        <text class="chart-tooltip-value" x="333" y="196.84237394362736">23.066</text>
+        
+      </g>
+    </g><g class="chart-point" tabindex="0" role="button" aria-label="Pietrasanta · 2023: 22.933">
+      <circle class="chart-hit" cx="542" cy="229.4717836490595" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="542" cy="229.4717836490595" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="542" y1="229.4717836490595" x2="542" y2="213.4717836490595"></line>
+        <rect x="437" y="163.4717836490595" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="449" y="177.4717836490595">Pietrasanta · 2023</text>
+        <text class="chart-tooltip-value" x="449" y="197.4717836490595">22.933</text>
+        
+      </g>
+    </g><g class="chart-point" tabindex="0" role="button" aria-label="Pietrasanta · 2024: 22.788">
+      <circle class="chart-hit" cx="658" cy="230.15798220009452" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="658" cy="230.15798220009452" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="658" y1="230.15798220009452" x2="658" y2="214.15798220009452"></line>
+        <rect x="553" y="164.15798220009452" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="565" y="178.15798220009452">Pietrasanta · 2024</text>
+        <text class="chart-tooltip-value" x="565" y="198.15798220009452">22.788</text>
+        
+      </g>
+    </g><g class="chart-point" tabindex="0" role="button" aria-label="Pietrasanta · 2025: 22.743">
+      <circle class="chart-hit" cx="774" cy="230.3709403711054" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="774" cy="230.3709403711054" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="774" y1="230.3709403711054" x2="774" y2="214.3709403711054"></line>
+        <rect x="669" y="164.3709403711054" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="681" y="178.3709403711054">Pietrasanta · 2025</text>
+        <text class="chart-tooltip-value" x="681" y="198.3709403711054">22.743</text>
+        
+      </g>
+    </g><g class="chart-point" tabindex="0" role="button" aria-label="Pietrasanta · 2026: 22.678">
+      <circle class="chart-hit" cx="890" cy="230.6785466181211" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="890" cy="230.6785466181211" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="890" y1="230.6785466181211" x2="890" y2="214.6785466181211"></line>
+        <rect x="680" y="164.6785466181211" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="692" y="178.6785466181211">Pietrasanta · 2026</text>
+        <text class="chart-tooltip-value" x="692" y="198.6785466181211">22.678</text>
+        
+      </g>
+    </g></g><g class="ux-series-group " data-history-town="seravezza" style="--series-color:#b88a1c"><polyline class="ux-series-line" points="78,277.2122731858967 194,277.5482738557139 310,278.5799378841665 426,279.1241643211943 542,279.34185489600543 658,279.15255874399577 774,279.4081085492088 890,279.86715171783226"></polyline><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Seravezza · 2019: 12.845" style="pointer-events: none;">
+      <circle class="chart-hit" cx="78" cy="277.2122731858967" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="78" cy="277.2122731858967" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="78" y1="277.2122731858967" x2="78" y2="261.2122731858967"></line>
+        <rect x="70" y="211.21227318589672" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="82" y="225.21227318589672">Seravezza · 2019</text>
+        <text class="chart-tooltip-value" x="82" y="245.21227318589672">12.845</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Seravezza · 2020: 12.774" style="pointer-events: none;">
+      <circle class="chart-hit" cx="194" cy="277.5482738557139" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="194" cy="277.5482738557139" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="194" y1="277.5482738557139" x2="194" y2="261.5482738557139"></line>
+        <rect x="89" y="211.5482738557139" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="101" y="225.5482738557139">Seravezza · 2020</text>
+        <text class="chart-tooltip-value" x="101" y="245.5482738557139">12.774</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Seravezza · 2021: 12.556" style="pointer-events: none;">
+      <circle class="chart-hit" cx="310" cy="278.5799378841665" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="310" cy="278.5799378841665" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="310" y1="278.5799378841665" x2="310" y2="262.5799378841665"></line>
+        <rect x="205" y="212.5799378841665" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="217" y="226.5799378841665">Seravezza · 2021</text>
+        <text class="chart-tooltip-value" x="217" y="246.5799378841665">12.556</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Seravezza · 2022: 12.441" style="pointer-events: none;">
+      <circle class="chart-hit" cx="426" cy="279.1241643211943" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="426" cy="279.1241643211943" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="426" y1="279.1241643211943" x2="426" y2="263.1241643211943"></line>
+        <rect x="321" y="213.1241643211943" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="333" y="227.1241643211943">Seravezza · 2022</text>
+        <text class="chart-tooltip-value" x="333" y="247.1241643211943">12.441</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Seravezza · 2023: 12.395" style="pointer-events: none;">
+      <circle class="chart-hit" cx="542" cy="279.34185489600543" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="542" cy="279.34185489600543" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="542" y1="279.34185489600543" x2="542" y2="263.34185489600543"></line>
+        <rect x="437" y="213.34185489600543" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="449" y="227.34185489600543">Seravezza · 2023</text>
+        <text class="chart-tooltip-value" x="449" y="247.34185489600543">12.395</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Seravezza · 2024: 12.435" style="pointer-events: none;">
+      <circle class="chart-hit" cx="658" cy="279.15255874399577" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="658" cy="279.15255874399577" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="658" y1="279.15255874399577" x2="658" y2="263.15255874399577"></line>
+        <rect x="553" y="213.15255874399577" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="565" y="227.15255874399577">Seravezza · 2024</text>
+        <text class="chart-tooltip-value" x="565" y="247.15255874399577">12.435</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Seravezza · 2025: 12.381" style="pointer-events: none;">
+      <circle class="chart-hit" cx="774" cy="279.4081085492088" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="774" cy="279.4081085492088" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="774" y1="279.4081085492088" x2="774" y2="263.4081085492088"></line>
+        <rect x="669" y="213.4081085492088" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="681" y="227.4081085492088">Seravezza · 2025</text>
+        <text class="chart-tooltip-value" x="681" y="247.4081085492088">12.381</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Seravezza · 2026: 12.284" style="pointer-events: none;">
+      <circle class="chart-hit" cx="890" cy="279.86715171783226" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="890" cy="279.86715171783226" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="890" y1="279.86715171783226" x2="890" y2="263.86715171783226"></line>
+        <rect x="680" y="213.86715171783226" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="692" y="227.86715171783226">Seravezza · 2026</text>
+        <text class="chart-tooltip-value" x="692" y="247.86715171783226">12.284</text>
+        
+      </g>
+    </g></g><g class="ux-series-group " data-history-town="forte-dei-marmi" style="--series-color:#4e7096"><polyline class="ux-series-line" points="78,304.1349184054712 194,304.347876576482 310,303.8462417736564 426,305.1429204149226 542,305.44579425813805 658,305.9284994457627 774,306.45379626758955 890,307.00275510841755"></polyline><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Forte dei Marmi · 2019: 7.156" style="pointer-events: none;">
+      <circle class="chart-hit" cx="78" cy="304.1349184054712" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="78" cy="304.1349184054712" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="78" y1="304.1349184054712" x2="78" y2="288.1349184054712"></line>
+        <rect x="70" y="238.13491840547118" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="82" y="252.13491840547118">Forte dei Marmi · 2019</text>
+        <text class="chart-tooltip-value" x="82" y="272.1349184054712">7.156</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Forte dei Marmi · 2020: 7.111" style="pointer-events: none;">
+      <circle class="chart-hit" cx="194" cy="304.347876576482" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="194" cy="304.347876576482" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="194" y1="304.347876576482" x2="194" y2="288.347876576482"></line>
+        <rect x="89" y="238.347876576482" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="101" y="252.347876576482">Forte dei Marmi · 2020</text>
+        <text class="chart-tooltip-value" x="101" y="272.347876576482">7.111</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Forte dei Marmi · 2021: 7.217" style="pointer-events: none;">
+      <circle class="chart-hit" cx="310" cy="303.8462417736564" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="310" cy="303.8462417736564" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="310" y1="303.8462417736564" x2="310" y2="287.8462417736564"></line>
+        <rect x="205" y="237.8462417736564" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="217" y="251.8462417736564">Forte dei Marmi · 2021</text>
+        <text class="chart-tooltip-value" x="217" y="271.8462417736564">7.217</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Forte dei Marmi · 2022: 6.943" style="pointer-events: none;">
+      <circle class="chart-hit" cx="426" cy="305.1429204149226" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="426" cy="305.1429204149226" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="426" y1="305.1429204149226" x2="426" y2="289.1429204149226"></line>
+        <rect x="321" y="239.14292041492263" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="333" y="253.14292041492263">Forte dei Marmi · 2022</text>
+        <text class="chart-tooltip-value" x="333" y="273.1429204149226">6.943</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Forte dei Marmi · 2023: 6.879" style="pointer-events: none;">
+      <circle class="chart-hit" cx="542" cy="305.44579425813805" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="542" cy="305.44579425813805" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="542" y1="305.44579425813805" x2="542" y2="289.44579425813805"></line>
+        <rect x="437" y="239.44579425813805" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="449" y="253.44579425813805">Forte dei Marmi · 2023</text>
+        <text class="chart-tooltip-value" x="449" y="273.44579425813805">6.879</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Forte dei Marmi · 2024: 6.777" style="pointer-events: none;">
+      <circle class="chart-hit" cx="658" cy="305.9284994457627" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="658" cy="305.9284994457627" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="658" y1="305.9284994457627" x2="658" y2="289.9284994457627"></line>
+        <rect x="553" y="239.92849944576272" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="565" y="253.92849944576272">Forte dei Marmi · 2024</text>
+        <text class="chart-tooltip-value" x="565" y="273.9284994457627">6.777</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Forte dei Marmi · 2025: 6.666" style="pointer-events: none;">
+      <circle class="chart-hit" cx="774" cy="306.45379626758955" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="774" cy="306.45379626758955" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="774" y1="306.45379626758955" x2="774" y2="290.45379626758955"></line>
+        <rect x="669" y="240.45379626758955" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="681" y="254.45379626758955">Forte dei Marmi · 2025</text>
+        <text class="chart-tooltip-value" x="681" y="274.45379626758955">6.666</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Forte dei Marmi · 2026: 6.550" style="pointer-events: none;">
+      <circle class="chart-hit" cx="890" cy="307.00275510841755" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="890" cy="307.00275510841755" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="890" y1="307.00275510841755" x2="890" y2="291.00275510841755"></line>
+        <rect x="680" y="241.00275510841755" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="692" y="255.00275510841755">Forte dei Marmi · 2026</text>
+        <text class="chart-tooltip-value" x="692" y="275.00275510841755">6.550</text>
+        
+      </g>
+    </g></g><g class="ux-series-group " data-history-town="stazzema" style="--series-color:#914d47"><polyline class="ux-series-line" points="78,323.9400283094822 194,324.00154955888536 310,324.28549378689985 426,324.3233530173018 542,324.38487426670497 658,324.2618317678987 774,324.3138882097013 890,324.82972022392767"></polyline><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Stazzema · 2019: 2.971" style="pointer-events: none;">
+      <circle class="chart-hit" cx="78" cy="323.9400283094822" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="78" cy="323.9400283094822" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="78" y1="323.9400283094822" x2="78" y2="307.9400283094822"></line>
+        <rect x="70" y="257.9400283094822" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="82" y="271.9400283094822">Stazzema · 2019</text>
+        <text class="chart-tooltip-value" x="82" y="291.9400283094822">2.971</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Stazzema · 2020: 2.958" style="pointer-events: none;">
+      <circle class="chart-hit" cx="194" cy="324.00154955888536" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="194" cy="324.00154955888536" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="194" y1="324.00154955888536" x2="194" y2="308.00154955888536"></line>
+        <rect x="89" y="258.00154955888536" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="101" y="272.00154955888536">Stazzema · 2020</text>
+        <text class="chart-tooltip-value" x="101" y="292.00154955888536">2.958</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Stazzema · 2021: 2.898" style="pointer-events: none;">
+      <circle class="chart-hit" cx="310" cy="324.28549378689985" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="310" cy="324.28549378689985" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="310" y1="324.28549378689985" x2="310" y2="308.28549378689985"></line>
+        <rect x="205" y="258.28549378689985" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="217" y="272.28549378689985">Stazzema · 2021</text>
+        <text class="chart-tooltip-value" x="217" y="292.28549378689985">2.898</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Stazzema · 2022: 2.890" style="pointer-events: none;">
+      <circle class="chart-hit" cx="426" cy="324.3233530173018" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="426" cy="324.3233530173018" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="426" y1="324.3233530173018" x2="426" y2="308.3233530173018"></line>
+        <rect x="321" y="258.3233530173018" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="333" y="272.3233530173018">Stazzema · 2022</text>
+        <text class="chart-tooltip-value" x="333" y="292.3233530173018">2.890</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Stazzema · 2023: 2.877" style="pointer-events: none;">
+      <circle class="chart-hit" cx="542" cy="324.38487426670497" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="542" cy="324.38487426670497" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="542" y1="324.38487426670497" x2="542" y2="308.38487426670497"></line>
+        <rect x="437" y="258.38487426670497" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="449" y="272.38487426670497">Stazzema · 2023</text>
+        <text class="chart-tooltip-value" x="449" y="292.38487426670497">2.877</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Stazzema · 2024: 2.903" style="pointer-events: none;">
+      <circle class="chart-hit" cx="658" cy="324.2618317678987" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="658" cy="324.2618317678987" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="658" y1="324.2618317678987" x2="658" y2="308.2618317678987"></line>
+        <rect x="553" y="258.2618317678987" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="565" y="272.2618317678987">Stazzema · 2024</text>
+        <text class="chart-tooltip-value" x="565" y="292.2618317678987">2.903</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Stazzema · 2025: 2.892" style="pointer-events: none;">
+      <circle class="chart-hit" cx="774" cy="324.3138882097013" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="774" cy="324.3138882097013" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="774" y1="324.3138882097013" x2="774" y2="308.3138882097013"></line>
+        <rect x="669" y="258.3138882097013" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="681" y="272.3138882097013">Stazzema · 2025</text>
+        <text class="chart-tooltip-value" x="681" y="292.3138882097013">2.892</text>
+        
+      </g>
+    </g><g class="chart-point is-tooltip-disabled" tabindex="-1" role="button" aria-label="Stazzema · 2026: 2.783" style="pointer-events: none;">
+      <circle class="chart-hit" cx="890" cy="324.82972022392767" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="890" cy="324.82972022392767" r="4"></circle>
+      <g class="chart-tooltip" hidden="">
+        <line class="chart-guide" x1="890" y1="324.82972022392767" x2="890" y2="308.82972022392767"></line>
+        <rect x="680" y="258.82972022392767" width="210" height="50" rx="8"></rect>
+        <text class="chart-tooltip-year" x="692" y="272.82972022392767">Stazzema · 2026</text>
+        <text class="chart-tooltip-value" x="692" y="292.82972022392767">2.783</text>
+        
+      </g>
+    </g></g><text class="ux-history-axis-label" x="78" y="374" text-anchor="middle">2019</text><text class="ux-history-axis-label" x="194" y="374" text-anchor="middle">2020</text><text class="ux-history-axis-label" x="310" y="374" text-anchor="middle">2021</text><text class="ux-history-axis-label" x="426" y="374" text-anchor="middle">2022</text><text class="ux-history-axis-label" x="542" y="374" text-anchor="middle">2023</text><text class="ux-history-axis-label" x="658" y="374" text-anchor="middle">2024</text><text class="ux-history-axis-label" x="774" y="374" text-anchor="middle">2025</text><text class="ux-history-axis-label" x="890" y="374" text-anchor="middle">2026</text></svg></div></div><p class="ux-history-scroll-hint">Scorri il grafico orizzontalmente per leggere l’intera serie.</p><div class="ux-history-legend" aria-label="Comuni"><button type="button" data-history-select="massarosa" data-town="Massarosa" data-start="21696" data-end="21782" data-start-year="2019" data-end-year="2026" aria-pressed="false" style="--series-color:#0f5c6e">Massarosa</button><button type="button" data-history-select="viareggio" data-town="Viareggio" data-start="60602" data-end="60680" data-start-year="2019" data-end-year="2026" aria-pressed="false" style="--series-color:#b56843">Viareggio</button><button type="button" data-history-select="camaiore" data-town="Camaiore" data-start="31670" data-end="31763" data-start-year="2019" data-end-year="2026" aria-pressed="false" style="--series-color:#64743d">Camaiore</button><button type="button" data-history-select="pietrasanta" data-town="Pietrasanta" data-start="23073" data-end="22678" data-start-year="2019" data-end-year="2026" aria-pressed="true" style="--series-color:#855b7b">Pietrasanta</button><button type="button" data-history-select="seravezza" data-town="Seravezza" data-start="12845" data-end="12284" data-start-year="2019" data-end-year="2026" aria-pressed="false" style="--series-color:#b88a1c">Seravezza</button><button type="button" data-history-select="forte-dei-marmi" data-town="Forte dei Marmi" data-start="7156" data-end="6550" data-start-year="2019" data-end-year="2026" aria-pressed="false" style="--series-color:#4e7096">Forte dei Marmi</button><button type="button" data-history-select="stazzema" data-town="Stazzema" data-start="2971" data-end="2783" data-start-year="2019" data-end-year="2026" aria-pressed="false" style="--series-color:#914d47">Stazzema</button></div><div class="ux-history-summary" aria-live="polite"><strong>Pietrasanta</strong>: 2019 23.073 → 2026 22.678. Variazione: <strong>-395 · -1,7%</strong>.</div></div></div></div></section>
+      
+      
+      
+      
+      <section class="a5-benchmark-host town-benchmark-host"><section class="benchmark-section"><div class="section-heading compact"><div><span class="overline">Confronto omogeneo · 2026</span><h2>Territorio, Toscana e Italia</h2></div></div>
+      <div class="benchmark-grid"><article class="benchmark-card benchmark-local"><span>Pietrasanta</span><strong>22.678</strong><small>Dato comunale riferito al 2026.</small></article>
+      <article class="benchmark-card"><span>Toscana</span><strong>3.659.222</strong><small>Istat — popolazione residente</small></article>
+      <article class="benchmark-card"><span>Italia</span><strong>58.942.828</strong><small>Istat — popolazione residente</small></article></div>
+      <p class="benchmark-note">Toscana e Italia sono aggregati dal perimetro comunale Istat coerente con il dato corrente 2026. <a href="https://demo.istat.it/" target="_blank" rel="noreferrer">Apri la fonte ↗</a></p></section></section>
+      <section class="compare-post-benchmark-tools town-post-benchmark-tools"><details class="method-disclosure"><summary><span>Metodo e comparabilità</span><small>Formula, natura del dato e criticità</small></summary><div class="method-disclosure-body"><dl><div><dt>Natura</dt><dd>Dato ufficiale</dd></div><div><dt>Formula</dt><dd>Valore pubblicato dalla fonte, senza trasformazione ulteriore.</dd></div><div><dt>Copertura</dt><dd>7/7</dd></div></dl><p><strong>Nota:</strong> Verificare a ogni aggiornamento anno, perimetro territoriale e continuità della serie.</p></div></details><aside class="reading-scale" data-reading-scale="territorial" data-reading-metric="population">
+      <div><span class="overline">Scala di lettura</span><strong>Territoriale</strong></div>
+      <p>Il dato descrive residenti, stock o fenomeni localizzati nel Comune. Il confine è utile per leggere il territorio, ma non implica che il Comune sia un sistema autonomo.</p>
+    </aside></section>
+      <div class="data-actions town-data-actions"><a href="/indicatori/popolazione-residente/">Scheda indicatore</a><button type="button" data-download="">Scarica CSV</button><button type="button" data-print="">Stampa / PDF</button></div></section>
+      <div id="town-context"></div>
+    </main></div>
+  <div id="site-footer-mount">
+      <footer class="site-footer">
+        <div class="footer-about"><strong>Osservatorio Versilia</strong>
+          <p>Un punto di accesso indipendente ai dati pubblici dei sette comuni della Versilia.</p>
+          <p class="footer-disclaimer">Non è un sito istituzionale e non rappresenta gli enti citati.</p>
+        </div>
+        <nav class="footer-links" aria-label="Informazioni sul progetto">
+          <a href="../../progetto/">Il progetto</a>
+          <a href="../../stato-dati/" data-data-status-nav="footer">Stato dei dati</a>
+          <a href="../../opportunita/">Opportunità</a>
+          <a href="../../progetto/#metodo">Metodo</a>
+          <a href="../../progetto/#licenza">Licenza</a>
+          <a href="../../progetto/#versioni">Versioni dei dati</a>
+          <a href="../../segnala/">Segnala un dato</a>
+          <a href="mailto:info@osservatorioversilia.it">Contatti</a>
+        </nav>
+        
+      <div class="footer-social" data-social-placement="footer" aria-label="Segui Osservatorio Versilia">
+        <strong>Segui Osservatorio Versilia</strong><div class="social-links">
+    <a class="social-profile-link" href="https://www.facebook.com/osservatorioversilia" target="_blank" rel="me noreferrer" aria-label="Segui Osservatorio Versilia su Facebook">
+      <span class="social-profile-mark" aria-hidden="true">f</span>
+      <span class="social-profile-copy"><strong>Facebook</strong><small>@osservatorioversilia</small></span>
+      <b aria-hidden="true">↗</b>
+    </a>
+    <a class="social-profile-link" href="https://www.instagram.com/osservatorioversilia/" target="_blank" rel="me noreferrer" aria-label="Segui Osservatorio Versilia su Instagram">
+      <span class="social-profile-mark" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="5" ry="5"></rect><circle cx="12" cy="12" r="4"></circle><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"></circle></svg></span>
+      <span class="social-profile-copy"><strong>Instagram</strong><small>@osservatorioversilia</small></span>
+      <b aria-hidden="true">↗</b>
+    </a>
+    <a class="social-profile-link" href="https://www.linkedin.com/company/osservatorioversilia" target="_blank" rel="me noreferrer" aria-label="Segui Osservatorio Versilia su LinkedIn">
+      <span class="social-profile-mark" aria-hidden="true">in</span>
+      <span class="social-profile-copy"><strong>LinkedIn</strong><small>Osservatorio Versilia</small></span>
+      <b aria-hidden="true">↗</b>
+    </a>
+    <a class="social-profile-link" href="https://x.com/OssVersilia" target="_blank" rel="me noreferrer" aria-label="Segui Osservatorio Versilia su X">
+      <span class="social-profile-mark" aria-hidden="true">X</span>
+      <span class="social-profile-copy"><strong>X</strong><small>@OssVersilia</small></span>
+      <b aria-hidden="true">↗</b>
+    </a></div>
+      </div><div class="footer-note">
+          <span>7 comuni · 11 temi</span><span>v. dati v1.40.0</span><span>catalogo dati aggiornato al 14 settembre 2026</span>
+        </div>
+      </footer></div>
+  <noscript><div class="app-error">Il sito richiede JavaScript per mostrare confronti, ricerca e schede comunali.</div></noscript>
+  <script src="../../assets/app-bundle.js?v=20261025-ui-shell-consistency" defer=""></script>
+  <script src="../../assets/fidelity.js" defer=""></script>
+  <script src="../../assets/economy-atlas.js" defer=""></script>
+  <script src="../../assets/ux-accordion.js?v=20261025-ui-shell-consistency" defer=""></script>
+  <script src="../../assets/ux-history-core.js?v=20261025-ui-shell-consistency" defer=""></script>
+  <script src="../../assets/ux-history.js?v=20261025-ui-shell-consistency" defer=""></script>
+  <script src="../../assets/export-v161.js?v=20261025-ui-shell-consistency" defer=""></script>
+  <script src="../../assets/visual-grammar.js?v=20261025-ui-shell-consistency" defer=""></script>
+  <script src="../../assets/social-presence.js?v=20261025-ui-shell-consistency" defer=""></script>
+
+
+  <script src="../../assets/pwa.js?v=20260824-pwa9&rev=catalog-v129" defer></script>
+</body></html>

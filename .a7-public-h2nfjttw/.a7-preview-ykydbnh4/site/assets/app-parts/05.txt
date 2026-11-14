@@ -1,0 +1,306 @@
+incassi di cassa, valore delle opere monitorate e stato dei progetti PNRR censiti.</p></div>
+        <details class="detail-disclosure"><summary><span>Mostra il dettaglio amministrativo</span><small>Cassa e opere monitorate</small></summary><div class="government-grid"><article><span>Pagamenti</span><strong>${currency0.format(g.payments)}</strong><small>Anno ${html(g.year)}</small></article><article><span>Incassi</span><strong>${currency0.format(g.receipts)}</strong><small>Saldo ${currency0.format(g.cashBalance)}</small></article><article><span>Opere monitorate</span><strong>${number0.format(g.publicWorks)}</strong><small>Valore ${currency0.format(g.publicWorksValue)}</small></article></div></details></section>`;
+    }
+    return '';
+  }
+
+
+  function incomeInflationMarkup(data) {
+    const c=data.incomeInflationContext;if(!c?.years?.length)return '';
+    const w=720,h=300,l=52,r=18,t=22,b=42,all=[...c.incomeIndex,...c.priceIndex,...c.realIncomeIndex].map(Number).filter(Number.isFinite),min=Math.floor(Math.min(...all,98)-2),max=Math.ceil(Math.max(...all,102)+2);
+    const x=i=>l+(w-l-r)*i/Math.max(1,c.years.length-1),y=v=>t+(h-t-b)*(max-Number(v))/Math.max(1,max-min),path=values=>values.map((v,i)=>`${i?'L':'M'} ${x(i).toFixed(1)} ${y(v).toFixed(1)}`).join(' '),ticks=[...new Set([min,100,110,120,max].filter(v=>v>=min&&v<=max))].sort((a,b)=>a-b);
+    const grid=ticks.map(v=>`<g><line x1="${l}" x2="${w-r}" y1="${y(v)}" y2="${y(v)}" stroke="currentColor" opacity=".12"></line><text x="${l-10}" y="${y(v)+4}" text-anchor="end" class="chart-label chart-y-label">${html(number0.format(v))}</text></g>`).join(''),labels=c.years.map((year,i)=>(i%2===0||i===c.years.length-1)?`<text x="${x(i)}" y="${h-14}" text-anchor="middle" class="chart-label">${html(year)}</text>`:'').join('');
+    return `<section class="crime-context page-width income-inflation-context" id="redditi-prezzi"><div class="crime-context-copy"><span class="overline">Contesto · redditi e costo della vita</span><h2>Redditi vs inflazione</h2><p>Confronto tra reddito imponibile medio dei sette comuni e NIC nazionale ISTAT, entrambi riportati a <strong>${html(c.base)}</strong>.</p><div class="crime-stats"><article><span>Imponibile medio</span><strong>+${html(number1.format(c.nominalGrowthPercent))}%</strong><small>2016–2024</small></article><article><span>Prezzi NIC Italia</span><strong>+${html(number1.format(c.priceGrowthPercent))}%</strong><small>2016–2024</small></article><article><span>A prezzi costanti</span><strong>+${html(number1.format(c.realGrowthPercent))}%</strong><small>imponibile medio</small></article></div><p class="brain-drain-note">${html(c.note)}</p><div><a class="source-pill" href="${html(c.incomeSourceUrl)}" target="_blank" rel="noreferrer">Fonte redditi · MEF ↗</a> <a class="source-pill" href="${html(c.priceSourceUrl)}" target="_blank" rel="noreferrer">Fonte prezzi · ISTAT ↗</a></div></div><div class="crime-context-data"><h3>Redditi e prezzi · ${html(c.base)}</h3><div class="income-inflation-legend"><span>━ ${html(c.incomeLabel)}</span><span>┅ ${html(c.priceLabel)}</span><span>┈ ${html(c.realLabel)}</span></div><div class="trend-chart"><svg viewBox="0 0 ${w} ${h}" role="img" aria-label="Confronto redditi e prezzi dal 2016 al 2024">${grid}${labels}<path d="${path(c.incomeIndex)}" fill="none" stroke="currentColor" stroke-width="3.4"></path><path d="${path(c.priceIndex)}" fill="none" stroke="currentColor" stroke-width="2.8" stroke-dasharray="10 7" opacity=".72"></path><path d="${path(c.realIncomeIndex)}" fill="none" stroke="currentColor" stroke-width="2.4" stroke-dasharray="2 6" opacity=".9"></path>${c.incomeIndex.map((v,i)=>`<circle cx="${x(i)}" cy="${y(v)}" r="3.5" fill="currentColor"><title>${html(c.years[i])}: ${html(number1.format(v))}</title></circle>`).join('')}</svg></div><p class="brain-drain-note">Il NIC nazionale misura l’andamento medio dei prezzi in Italia. Il reddito è invece calcolato sui sette Comuni della Versilia: il grafico è un confronto di contesto, non un’identità territoriale.</p></div></section>`;
+  }
+
+  function brainDrainMarkup(data) {
+    const b = data.brainDrain;
+    if (!b) return '';
+    return `<section class="crime-context brain-drain-context page-width" id="mobilita-laureati"><div class="crime-context-copy"><span class="overline">Contesto sovracomunale · capitale umano</span><h2>Mobilità dei laureati italiani 25–39 anni</h2><p>L’indicatore ufficiale BesT non è disponibile in modo affidabile per i singoli Comuni. Per la Versilia viene quindi esposto il livello provinciale, senza attribuire il valore di Lucca ai sette territori.</p><a class="source-pill" href="${html(b.sourceUrl)}" target="_blank" rel="noreferrer">Fonte Istat · BesT ↗</a></div><div class="crime-context-data"><h3>Saldo migratorio dei laureati · ${html(b.year)}</h3><div class="crime-stats brain-drain-stats"><article><span>Provincia di Lucca</span><strong>${html(number1.format(b.provinceValue))}‰</strong><small>laureati italiani 25–39 anni</small></article><article><span>Toscana</span><strong>${b.regionValue>0?'+':''}${html(number1.format(b.regionValue))}‰</strong><small>riferimento regionale</small></article><article><span>Italia</span><strong>${b.italyValue>0?'+':''}${html(number1.format(b.italyValue))}‰</strong><small>riferimento nazionale</small></article></div><details class="brain-drain-detail"><summary>Confronta le province toscane <b>+</b></summary><div class="brain-drain-provinces">${b.rows.map(row=>`<div><span>${html(row.name)}</span><strong>${row.value>0?'+':''}${html(number1.format(row.value))}‰</strong></div>`).join('')}</div></details><p class="brain-drain-note">${html(b.note)}</p></div></section>`;
+  }
+
+  function crimeMarkup(data) {
+    return `<section class="crime-context page-width" id="criminalita"><div class="crime-context-copy"><span class="overline">Contesto sovracomunale</span><h2>Criminalità e delitti denunciati</h2><p>Il dato non è disponibile in forma omogenea per comune. Viene quindi mostrato per Provincia di Lucca, Toscana e Italia, senza attribuirlo ai singoli territori.</p><a class="source-pill" href="https://www.istat.it/" target="_blank" rel="noreferrer">Fonte Istat ↗</a></div>
+      <div class="crime-context-data"><div class="crime-tabs">${['total','theft','burglary','fraud'].map((k, i) => `<button type="button" class="${i === 0 ? 'active' : ''}" data-crime="${k}">${{total:'Totale',theft:'Furti',burglary:'In abitazione',fraud:'Truffe e frodi'}[k]}</button>`).join('')}</div><div id="crime-data"></div></div></section>`;
+  }
+
+  function installCrimeInteractions(data) {
+    const root = document.querySelector('.crime-context [data-crime]')?.closest('.crime-context');
+    const target = root?.querySelector('#crime-data');
+    if (!root || !target || !data.crime) return;
+    const update = key => {
+      root.querySelectorAll('[data-crime]').forEach(b => b.classList.toggle('active', b.dataset.crime === key));
+      const labels = { total:'Delitti denunciati', theft:'Furti denunciati', burglary:'Furti in abitazione', fraud:'Truffe e frodi informatiche' };
+      target.innerHTML = `<h3>${labels[key]} · ${html(data.crime.year)}</h3><div class="crime-stats">${data.crime.areas.map(area => `<article><span>${html(area.name)}</span><strong>${number1.format(area.values[key])}</strong><small>ogni 100.000 abitanti</small></article>`).join('')}</div>`;
+    };
+    root.querySelectorAll('[data-crime]').forEach(b => b.addEventListener('click', () => update(b.dataset.crime)));
+    update('total');
+  }
+
+  function resolveSourcePolicy(metricKey, metric, registry) {
+    const defaults = registry?.defaults || {};
+    const override = registry?.metricOverrides?.[metricKey] || {};
+    const profileId = override.profile || registry?.sourceProfileByUrl?.[metric.sourceUrl] || '';
+    const profile = registry?.sourceProfiles?.[profileId] || {};
+    const policy = { ...defaults, ...profile, ...override };
+    delete policy.profile;
+    return { ...policy, profileId };
+  }
+
+  function canonicalSourceForMonitor(value) {
+    try {
+      const url = new URL(value);
+      url.hash = '';
+      ['v','cache','cachebust','timestamp','_'].forEach(key => url.searchParams.delete(key));
+      url.searchParams.sort();
+      return url.href;
+    } catch (_error) {
+      return String(value || '');
+    }
+  }
+
+  function indicatorComparisonTable(data, metricKey, financialChoice='part-0') {
+    const metric = data.metrics[metricKey];
+    const rows = [...metric.rows].sort((a, b) => a.town.localeCompare(b.town, 'it'));
+    if (isTerritoryProfileType(metric)) { const view=arguments[4] || {choice:financialChoice==='part-0'?(metric.meta.defaultView || metric.rows?.[0]?.parts?.[0]?.key):financialChoice,scale:metric.meta.compositeType==='protectedAreasProfile'?'percent':'value'}; return `<div class="indicator-composite-table territory-indicator-comparison"><div class="compare-chart-toolbar">${compositeCompareControls(metric,view.choice,view.scale)}</div><div class="comparison-bars" data-metric-key="${html(metricKey)}" data-composite-choice="${html(view.choice)}" data-composite-scale="${html(view.scale)}">${compositeCompareBarRows(data,metricKey,view.choice,view.scale)}</div>${metric.meta.compositeType==='invalsiProfile'?invalsiCompareDetailMarkup(metric,view.choice):''}</div>`; }
+    if (metric.meta.compositeType === 'financialProfile') return `<div class="indicator-composite-table financial-indicator-comparison"><div class="compare-chart-toolbar"><div><span class="overline">Confronto dei Comuni</span></div>${compositeCompareControls(metric,financialChoice,'value')}</div><div class="comparison-bars" data-composite-choice="${html(financialChoice)}">${compositeCompareBarRows(data,metricKey,financialChoice,'value')}</div></div>`;
+    if (metric.meta.compositeType === 'hydroRisk') {
+      const view = arguments[3] || compositeCompareDefaults(metric);
+      return `<div class="indicator-composite-table hydro-risk-indicator-comparison"><div class="compare-chart-toolbar"><div><span class="overline">Confronto dei Comuni</span></div>${compositeCompareControls(metric,view.choice,view.scale)}</div>${metric.meta.scenarioNote ? `<p class="composite-compare-note"><strong>Come leggere gli scenari:</strong> ${html(metric.meta.scenarioNote)}</p>` : ''}<div class="comparison-bars" data-composite-choice="${html(view.choice)}" data-composite-scale="${html(view.scale)}">${compositeCompareBarRows(data,metricKey,view.choice,view.scale)}</div></div>`;
+    }
+    if (metric.meta.compositeType) return `<div class="indicator-composite-table">${compositeCompareMarkup(data, metricKey)}</div>`;
+    return `<div class="indicator-table-scroll"><table class="indicator-values-table"><thead><tr><th scope="col">Comune</th><th scope="col">Valore · ${html(metric.meta.year)}</th><th scope="col">Apri il territorio</th></tr></thead><tbody>${rows.map(row => `<tr><th scope="row">${html(row.town)}</th><td>${html(formatValue(row.value, metric.meta.unit))}</td><td><a href="${route(`comuni/${row.slug}/?tema=${metric.meta.theme}&indicatore=${metricKey}`)}">Scheda comunale <span aria-hidden="true">→</span></a></td></tr>`).join('')}</tbody></table></div>`;
+  }
+
+
+  function territoryProfileHistoryChart(metric,choice,territory='__versilia') {
+    const part0=metric.rows?.[0]?.parts?.find(part=>part.key===choice) || metric.rows?.[0]?.parts?.[0] || {};
+    const unit=part0.unit || metric.meta.unit;
+    const options=metric.meta.compositeType==='invalsiProfile'?[{key:'__toscana',label:metric.aggregate?.label||'Toscana',source:metric.aggregate},{key:'__italia',label:metric.nationalBenchmark?.label||'Italia',source:metric.nationalBenchmark},...(metric.rows||[]).map(row=>({key:String(row.code||row.slug||row.town),label:row.town,source:row}))]:[{key:'__versilia',label:'Versilia',source:metric.aggregate},...(metric.rows||[]).map(row=>({key:String(row.code||row.slug||row.town),label:row.town,source:row}))];
+    const selected=options.find(item=>item.key===String(territory)) || options[0];
+    const series=selected.source?.seriesByView?.[choice];
+    if (!series?.years?.length) return '<div class="indicator-history-empty"><strong>Serie storica non disponibile per questa lettura</strong></div>';
+    const label=part0.label || metric.meta.label;
+    return `<div class="territory-history-chart-shell"><div class="land-cover-controls territory-history-controls"><label><span>Territorio</span><select data-territory-history-town>${options.map(item=>`<option value="${html(item.key)}" ${item.key===selected.key?'selected':''}>${html(item.label)}</option>`).join('')}</select></label></div>${seriesChart(series,unit,`${metric.meta.label} · ${label} · ${selected.label}`)}</div>`;
+  }
+
+  function territoryProfileIndicatorAsideMarkup(metric,choice,scale='value') {
+    if(metric.meta.compositeType==='invalsiProfile'){const t=invalsiPart(metric.aggregate,choice),i=invalsiPart(metric.nationalBenchmark,choice),u=t.unit||i.unit||metric.meta.unit;return `<span>Toscana · ${html(t.label||metric.meta.label)}</span><strong>${html(formatValue(t.value,u))}</strong><p>Italia: ${html(formatValue(i.value,i.unit||u))}. Stessa prova e annualità.</p>`;}
+    const selected=compositeCompareAggregate(metric,choice,scale);
+    return `<span>${html(selected.label)}</span><strong>${html(formatValue(selected.value,selected.unit))}</strong><p>${html(selected.note || metric.aggregate?.note || '')}</p>`;
+  }
+
+  function financialProfileHistoryTable(metric,choice='part-0') {
+    const selected=financialProfileReading(metric,choice);
+    const rows=[...metric.rows].sort((a,b)=>a.town.localeCompare(b.town,'it'));
+    const sources=[...rows.map(row=>({label:row.town,series:row.parts?.[selected.index]?.series})),{label:'Versilia',series:selected.part.series,aggregate:true}];
+    const years=[...new Set(sources.flatMap(source=>source.series?.years || []))].sort((a,b)=>Number(a)-Number(b));
+    if (!years.length) return '<div class="indicator-history-empty"><strong>Serie storica non disponibile</strong></div>';
+    const body=sources.map(source=>{const values=new Map((source.series?.years || []).map((year,index)=>[String(year),source.series.values[index]]));return `<tr class="${source.aggregate?'financial-versilia-row':''}"><th scope="row">${html(source.label)}</th>${years.map(year=>`<td>${values.has(String(year)) ? html(formatValue(values.get(String(year)),selected.unit)) : 'n.d.'}</td>`).join('')}</tr>`;}).join('');
+    return `<div class="financial-history-intro"><span class="overline">Indicatore ${html(selected.code)}</span><h3>${html(selected.label)}</h3><p>${html(selected.part.aggregation || selected.formula)}</p></div><div class="indicator-table-scroll"><table class="indicator-history-table financial-history-table"><thead><tr><th scope="col">Territorio</th>${years.map(year=>`<th scope="col">${html(year)}</th>`).join('')}</tr></thead><tbody>${body}</tbody></table></div>`;
+  }
+
+  function financialProfileIndicatorAsideMarkup(metric,choice='part-0') {
+    const selected=financialProfileReading(metric,choice);
+    return `<span>${html(`Versilia · ${selected.label}`)}</span><strong>${html(formatValue(selected.part.value,selected.unit))}</strong><p>${html(selected.part.aggregation || selected.formula)}</p>`;
+  }
+
+  function indicatorHistoryTable(metric,financialChoice='part-0') {
+    if (metric.meta.compositeType === 'financialProfile') return financialProfileHistoryTable(metric,financialChoice);
+    if (isTerritoryProfileType(metric)) { const choice=financialChoice==='part-0'?(metric.meta.defaultView || metric.rows?.[0]?.parts?.[0]?.key):financialChoice; return territoryProfileHistoryChart(metric,choice); }
+    const seriesFor = row => metric.meta.key === 'income' && row.longSeries?.years?.length ? row.longSeries : row.series;
+    const historicalRows = metric.rows.filter(row => seriesFor(row)?.years?.length && seriesFor(row)?.values?.length);
+    if (!historicalRows.length) {
+      return `<div class="indicator-history-empty"><strong>Serie storica non ancora disponibile</strong><p>La fonte utilizzata non consente, al momento, di pubblicare una sequenza comunale omogenea. Il sito mantiene quindi soltanto l’ultima annualità verificata.</p></div>`;
+    }
+    const years = [...new Set(historicalRows.flatMap(row => seriesFor(row).years))].sort((a, b) => Number(a) - Number(b));
+    return `${metric.meta.key === 'income' ? `<p class="brain-drain-note">${html(metric.meta.longHistoryNote)}</p>` : ''}<div class="indicator-table-scroll"><table class="indicator-history-table"><thead><tr><th scope="col">Comune</th>${years.map(year => `<th scope="col">${html(year)}</th>`).join('')}</tr></thead><tbody>${historicalRows.sort((a, b) => a.town.localeCompare(b.town, 'it')).map(row => {
+      const series = seriesFor(row);
+      const values = new Map(series.years.map((year, index) => [String(year), series.values[index]]));
+      return `<tr><th scope="row">${html(row.town)}</th>${years.map(year => `<td>${values.has(String(year)) ? html(formatValue(values.get(String(year)), metric.meta.key === 'income' ? 'currency' : metric.meta.unit)) : '—'}</td>`).join('')}</tr>`;
+    }).join('')}</tbody></table></div>`;
+  }
+
+  function renderIndicator(data, registry, monitorState) {
+    if (!data.metrics[pageMetric]) return renderNotFound();
+    const economicContext = economicScopeData(data, pageMetric);
+    data = economicContext.data;
+    const metric = economicContext.metric;
+    const economicScope = economicContext.scope;
+    const theme = data.themes[metric.meta.theme];
+    if (!theme) return renderNotFound();
+    const policy = resolveSourcePolicy(pageMetric, metric, registry);
+    const metricMonitorState = monitorState?.metrics?.[pageMetric];
+    const financialProfile = metric.meta.compositeType === 'financialProfile';
+    const hydroRisk = metric.meta.compositeType === 'hydroRisk';
+    const territoryProfile = isTerritoryProfileType(metric);
+    const initialFinancialChoice = 'part-0';
+    const initialFinancialReading = financialProfile ? financialProfileReading(metric,initialFinancialChoice) : null;
+    const initialHydroView = hydroRisk ? compositeCompareDefaults(metric) : null;
+    const initialHydroAggregate = hydroRisk ? compositeCompareAggregate(metric,initialHydroView.choice,initialHydroView.scale) : null;
+    const initialTerritoryView = territoryProfile ? compositeCompareDefaults(metric) : null;
+    const initialTerritoryChoice = initialTerritoryView?.choice || null;
+    const checkedAt = metricMonitorState?.checkedAt
+      ? new Intl.DateTimeFormat('it-IT', { day: 'numeric', month: 'long', year: 'numeric' }).format(new Date(metricMonitorState.checkedAt))
+      : 'Controllo non ancora registrato';
+    const historyCount = territoryProfile ? metric.rows.filter(row => Object.values(row.seriesByView || {}).some(series=>series?.years?.length)).length : metric.rows.filter(row => row.series?.years?.length).length;
+    const license = policy.licenseUrl
+      ? `<a href="${html(policy.licenseUrl)}" target="_blank" rel="noreferrer">${html(policy.licenseName)} ↗</a>`
+      : html(policy.licenseName || 'Condizioni indicate dalla fonte');
+
+    app.innerHTML = `<main class="inner-page indicator-page" data-theme="${html(theme.key)}">
+      <nav class="breadcrumbs page-width" aria-label="Percorso"><a href="${route('')}">Home</a><span>›</span><a href="${route(`confronta/${theme.key}/`)}">${html(theme.label)}</a><span>›</span><strong data-financial-indicator-breadcrumb>${html(financialProfile ? `${initialFinancialReading.code} · ${initialFinancialReading.label}` : metric.meta.label)}</strong></nav>
+      <section class="indicator-hero page-width"><div><span class="overline">Indicatore · ${html(theme.label)}</span><h1 data-financial-indicator-hero-title>${html(financialProfile ? `${initialFinancialReading.code} · ${initialFinancialReading.label}` : metric.meta.label)}</h1><p data-financial-indicator-hero-description>${html(financialProfile ? initialFinancialReading.description : metric.meta.description)}</p></div>
+        <dl><div><dt>Anno</dt><dd>${html(metric.meta.year)}</dd></div><div><dt>Copertura</dt><dd>${html(metric.method?.coverage || '7/7')}</dd></div><div><dt>Serie storica</dt><dd>${historyCount ? `${historyCount}/7 comuni` : 'Non disponibile'}</dd></div></dl>
+        <div class="indicator-hero-actions"><a class="button-link" href="${route(`confronta/${theme.key}/?indicatore=${pageMetric}`)}">Confronta i 7 comuni <span>→</span></a><a class="source-pill" href="${html(metric.sourceUrl)}" target="_blank" rel="noreferrer">Fonte originale ↗</a></div></section>
+      <section class="indicator-current page-width" aria-labelledby="indicator-current-title"><div class="section-heading"><div><span class="overline">Valori comunali</span><h2 id="indicator-current-title" data-financial-indicator-title>${html(financialProfile ? `${initialFinancialReading.code} · ${initialFinancialReading.label}` : 'Il dato nei sette comuni')}</h2></div><p data-financial-indicator-description>${html(financialProfile ? `${initialFinancialReading.description} I Comuni sono ordinati per valore per facilitare il confronto: nessuna graduatoria e nessun giudizio di merito.` : 'Ordine alfabetico: nessuna graduatoria e nessun giudizio di merito.')}</p></div>
+        ${isEconomicScopeMetric(metric) ? economicScopeControlMarkup(economicScope) : ''}
+        <div class="indicator-current-layout"><div data-financial-indicator-comparison>${indicatorComparisonTable(data, pageMetric, territoryProfile ? initialTerritoryChoice : initialFinancialChoice, initialHydroView, initialTerritoryView)}</div><aside data-financial-indicator-aggregate>${financialProfile ? financialProfileIndicatorAsideMarkup(metric,initialFinancialChoice) : territoryProfile ? territoryProfileIndicatorAsideMarkup(metric,initialTerritoryChoice,initialTerritoryView?.scale || 'value') : hydroRisk ? `<span>${html(initialHydroAggregate.label)}</span><strong>${html(formatValue(initialHydroAggregate.value,initialHydroAggregate.unit))}</strong><p>${html(initialHydroAggregate.note || metric.aggregate.note || '')}</p>` : `<span>${html(metric.meta.compositeType === 'distribution' ? compositeAggregateSummary(metric).label : metric.aggregate.label)}</span><strong>${html(metric.meta.compositeType === 'distribution' ? compositeAggregateSummary(metric).formatted : formatValue(metric.aggregate.value, metric.meta.unit))}</strong><p>${html(metric.meta.compositeType === 'distribution' ? (metric.aggregate.summaryNote || metric.aggregate.note) : metric.aggregate.note)}</p>`}</aside></div></section>
+      <section class="indicator-benchmark page-width">${(financialProfile || territoryProfile || hydroRisk || (isEconomicScopeMetric(metric) && economicScope !== 'total')) ? '' : benchmarkMarkup(metric, metric.aggregate, metric.meta.unit, null)}</section>
+      <section class="indicator-history page-width" aria-labelledby="indicator-history-title"><div class="section-heading"><div><span class="overline">Andamento</span><h2 id="indicator-history-title">Serie storica comunale</h2></div><p>I valori compaiono soltanto quando la definizione resta omogenea nel tempo.</p></div><div data-financial-indicator-history>${indicatorHistoryTable(metric,territoryProfile ? initialTerritoryChoice : initialFinancialChoice)}</div></section>
+      <section class="indicator-method page-width" aria-labelledby="indicator-method-title"><div class="section-heading"><div><span class="overline">Trasparenza</span><h2 id="indicator-method-title">Fonte, aggiornamento e metodo</h2></div><p>Le informazioni necessarie per ricostruire e valutare il dato.</p></div>
+        <div class="indicator-governance-grid"><dl><div><dt>Produttore</dt><dd>${html(policy.publisher || metric.meta.source)}</dd></div><div><dt>Fonte utilizzata</dt><dd><a href="${html(metric.sourceUrl)}" target="_blank" rel="noreferrer">${html(metric.meta.source)} ↗</a></dd></div><div><dt>Frequenza</dt><dd>${html(policy.frequencyLabel || 'Secondo la fonte')}</dd></div><div><dt>Prossimo aggiornamento atteso</dt><dd>${html(policy.expectedRelease || 'Secondo il calendario della fonte')}</dd></div><div><dt>Ultimo controllo della fonte</dt><dd>${html(checkedAt)}</dd></div><div><dt>Licenza o condizioni di riuso</dt><dd>${license}</dd></div></dl>
+          <div><h3>Acquisizione</h3><p>${html(policy.acquisitionMethod || 'Verifica manuale della fonte ufficiale.')}</p><div data-financial-indicator-method>${financialProfile ? financialProfileMethodDisclosure(metric,initialFinancialChoice) : methodDisclosure(metric)}</div></div></div>
+        <div class="data-actions indicator-data-actions"><button type="button" data-share>Condividi</button><button type="button" data-download>Scarica CSV</button><button type="button" data-print>Stampa / PDF</button></div></section>
+      <section class="topic-town-links page-width"><div><span class="overline">Schede comunali</span><h2>Apri il territorio</h2></div><div>${[...metric.rows].sort((a, b) => a.town.localeCompare(b.town, 'it')).map(row => `<a href="${route(`comuni/${row.slug}/?tema=${theme.key}&indicatore=${pageMetric}`)}"><span>${html(row.town)}</span><b>→</b></a>`).join('')}</div></section>
+    </main>`;
+
+    document.querySelectorAll('.indicator-current select[data-economic-scope]').forEach(select => select.addEventListener('change', () => {
+      setEconomicScopeParam(select.value);
+      renderIndicator(data, registry, monitorState);
+    }));
+    syncEconomicScopeLinks(data, pageMetric, economicScope);
+    document.querySelector('[data-share]')?.addEventListener('click', event => shareCurrentPage(event.currentTarget));
+    document.querySelector('[data-download]')?.addEventListener('click', () => downloadMetricCSV(data, pageMetric));
+    document.querySelector('[data-print]')?.addEventListener('click', () => window.print());
+    if (territoryProfile) {
+      const currentSection=document.querySelector('.indicator-current');
+      let territoryView={...initialTerritoryView};
+      const renderTerritory=()=>{
+        const comparisonHost=document.querySelector('[data-financial-indicator-comparison]');
+        const aggregateHost=document.querySelector('[data-financial-indicator-aggregate]');
+        const historyHost=document.querySelector('[data-financial-indicator-history]');
+        if(comparisonHost) comparisonHost.innerHTML=indicatorComparisonTable(data,pageMetric,territoryView.choice,initialHydroView,territoryView);
+        if(aggregateHost) aggregateHost.innerHTML=territoryProfileIndicatorAsideMarkup(metric,territoryView.choice,territoryView.scale);
+        if(historyHost) historyHost.innerHTML=territoryProfileHistoryChart(metric,territoryView.choice);
+      };
+      currentSection?.addEventListener('change',event=>{
+        const select=event.target.closest('select[data-composite-component]');
+        if(select&&currentSection.contains(select)){ territoryView={...territoryView,choice:select.value}; renderTerritory(); }
+      });
+      currentSection?.addEventListener('click',event=>{
+        const button=event.target.closest('button[data-composite-scale]');
+        if(button&&currentSection.contains(button)){ territoryView={...territoryView,scale:button.dataset.compositeScale}; renderTerritory(); }
+      });
+      const territoryHistoryHost=document.querySelector('[data-financial-indicator-history]');
+      territoryHistoryHost?.addEventListener('change',event=>{
+        const select=event.target.closest('select[data-territory-history-town]');
+        if(select&&territoryHistoryHost.contains(select)) territoryHistoryHost.innerHTML=territoryProfileHistoryChart(metric,territoryView.choice,select.value);
+      });
+    }
+    if (financialProfile) {
+      const currentSection=document.querySelector('.indicator-current');
+      const applyFinancialChoice=choice=>{
+        const selected=financialProfileReading(metric,choice);
+        const comparisonHost=document.querySelector('[data-financial-indicator-comparison]');
+        const aggregateHost=document.querySelector('[data-financial-indicator-aggregate]');
+        const historyHost=document.querySelector('[data-financial-indicator-history]');
+        const methodHost=document.querySelector('[data-financial-indicator-method]');
+        const titleHost=document.querySelector('[data-financial-indicator-title]');
+        const descriptionHost=document.querySelector('[data-financial-indicator-description]');
+        const heroTitleHost=document.querySelector('[data-financial-indicator-hero-title]');
+        const heroDescriptionHost=document.querySelector('[data-financial-indicator-hero-description]');
+        const breadcrumbHost=document.querySelector('[data-financial-indicator-breadcrumb]');
+        if(comparisonHost) comparisonHost.innerHTML=indicatorComparisonTable(data,pageMetric,choice);
+        if(aggregateHost) aggregateHost.innerHTML=financialProfileIndicatorAsideMarkup(metric,choice);
+        if(historyHost) historyHost.innerHTML=financialProfileHistoryTable(metric,choice);
+        if(methodHost) methodHost.innerHTML=financialProfileMethodDisclosure(metric,choice);
+        if(titleHost) titleHost.textContent=`${selected.code} · ${selected.label}`;
+        if(descriptionHost) descriptionHost.textContent=`${selected.description} I Comuni sono ordinati per valore per facilitare il confronto: nessuna graduatoria e nessun giudizio di merito.`;
+        if(heroTitleHost) heroTitleHost.textContent=`${selected.code} · ${selected.label}`;
+        if(heroDescriptionHost) heroDescriptionHost.textContent=selected.description;
+        if(breadcrumbHost) breadcrumbHost.textContent=`${selected.code} · ${selected.label}`;
+      };
+      currentSection?.addEventListener('change',event=>{
+        const select=event.target.closest('select[data-composite-component]');
+        if(select&&currentSection.contains(select)) applyFinancialChoice(select.value);
+      });
+    }
+    if (hydroRisk) {
+      const currentSection=document.querySelector('.indicator-current');
+      let hydroView={...initialHydroView};
+      const renderHydro=()=>{
+        const comparisonHost=document.querySelector('[data-financial-indicator-comparison]');
+        const aggregateHost=document.querySelector('[data-financial-indicator-aggregate]');
+        const aggregate=compositeCompareAggregate(metric,hydroView.choice,hydroView.scale);
+        if(comparisonHost) comparisonHost.innerHTML=indicatorComparisonTable(data,pageMetric,initialFinancialChoice,hydroView);
+        if(aggregateHost) aggregateHost.innerHTML=`<span>${html(aggregate.label)}</span><strong>${html(formatValue(aggregate.value,aggregate.unit))}</strong><p>${html(aggregate.note || metric.aggregate.note || '')}</p>`;
+      };
+      currentSection?.addEventListener('change',event=>{
+        const select=event.target.closest('select[data-composite-component]');
+        if(select&&currentSection.contains(select)){ hydroView={...hydroView,choice:select.value}; renderHydro(); }
+      });
+      currentSection?.addEventListener('click',event=>{
+        const button=event.target.closest('button[data-composite-scale]');
+        if(button&&currentSection.contains(button)){ hydroView={...hydroView,scale:button.dataset.compositeScale}; renderHydro(); }
+      });
+    }
+  }
+
+  function renderProject(data) {
+    const sources = [
+      ['Istat','https://www.istat.it/'],['Istat — Frame SBS Territoriale',data.businessSource],['Eurostat','https://ec.europa.eu/eurostat/'],['Regione Toscana','https://www.regione.toscana.it/statistiche'],['Ministero dell’economia e delle finanze','https://www1.finanze.gov.it/finanze/analisi_stat/public/index.php'],['ARS Toscana — La salute dei comuni',data.arsSource],['ISPRO — Registro di mortalità regionale','https://www.ispro.toscana.it/registro-mortalita-regionale-rmr'],['ISPRA','https://www.isprambiente.gov.it/'],['Regione Toscana — RTCave','https://cave.regione.toscana.it/'],['Regione Toscana — Piano Regionale Cave','https://www.regione.toscana.it/piano-regionale-cave'],['MIT / SID — Il Portale del Mare','https://dati.mit.gov.it/catalog/dataset/concessioni-demaniali-marittime-a-agosto-2026'],['BDAP','https://openbdap.rgs.mef.gov.it/'],['SIOPE','https://www.siope.it/'],['Italia Domani — Open data PNRR','https://www.italiadomani.gov.it/it/catalogo-open-data.html'],['ANAC — Open data','https://dati.anticorruzione.it/opendata'],['Cruscotto Italia — AgID','https://cruscotto-italia.dati.gov.it/']
+    ];
+    const versions = [
+      ['2026.09.01-v1.27.0','1 settembre 2026','177 indicatori complessivi in 11 temi, inclusi i 4 indicatori climatici. Aggiunte Concessioni demaniali marittime e Canoni demaniali dovuti dallo snapshot MIT/SID agosto 2026, con selector Totale / Turistico-ricreative e copertura 4 Comuni costieri + 3 n.a. Superficie, metri e quota di litorale restano rinviati per incompletezza geometrica.'],
+      ['2026.08.31-v1.26.0','31 agosto 2026','175 indicatori complessivi in 11 temi, inclusi i 4 indicatori climatici. Lotto Bonifica e rischio idraulico: indicatori PAB 2026, reticolo in gestione DCRT 24/2025, opere idrauliche DGRT 1155/2021 e stato operativo degli interventi al 31 agosto 2026. Restano rinviati soltanto i km fisici unici manutenzionati e la relativa quota di reticolo, perché 49 feature operative non espongono geometria.'],
+      ['2026.08.30-v1.25.0','30 agosto 2026','166 indicatori complessivi in 11 temi, inclusi i 4 indicatori climatici. Aggiunta Morosità ERP: serie 2020–2024 dai bilanci E.R.P. Lucca, percentuali ricalcolate dagli importi elementari e dettaglio contabile 2024 per ciascun Comune.'],
+      ['2026.08.29-v1.24.0','29 agosto 2026','165 indicatori complessivi in 11 temi, inclusi i 4 indicatori climatici. Aggiunto Acqua e bonifiche: perdite della rete idrica Istat, qualità dell’acqua potabile GAIA per 70 località e procedimenti SISBON attivi/chiusi, senza proxy per fognatura o depurazione.'],
+      ['2026.08.28-v1.23.0','28 agosto 2026','162 indicatori complessivi in 11 temi, inclusi i 4 indicatori climatici. Aggiunto il lotto Costa e mare: qualità delle aree di balneazione, campioni non conformi, spiagge Bandiera Blu, dinamica del litorale e costa protetta da opere rigide, con 4 Comuni costieri e 3 n.a. senza stime.'],
+      ['2026.08.28-v1.22.0','28 agosto 2026','157 indicatori complessivi in 11 temi, inclusi i 4 indicatori climatici. Estesa la Speranza di vita alla nascita con serie ufficiali ARS 2008–2022 per Totale, Maschi e Femmine, aggregato ufficiale Versilia e benchmark Toscana.'],
+      ['2026.08.27-v1.21.0','27 agosto 2026','157 indicatori complessivi in 11 temi, inclusi i 4 indicatori climatici. Aggiunti tre indicatori Cultura e biblioteche della Regione Toscana 2024: prestiti per residente, utenti attivi del prestito ogni 100 residenti e ore medie di apertura settimanale, con copertura corrente 5/7 e serie storiche ufficiali senza stime.'],
+      ['2026.08.26-v1.20.0','26 agosto 2026','154 indicatori complessivi in 11 temi, inclusi i 4 indicatori climatici. Aggiunto Agricoltura e territorio: aziende agricole, SAU territoriale e quota comunale, dimensione media aziendale, profilo colture e superficie irrigata dal 7° Censimento Istat 2020.'],
+      ['2026.08.26-v1.19.0','26 agosto 2026','149 indicatori complessivi in 11 temi, inclusi i 4 indicatori climatici. Aggiunti tre indicatori TPL programmato 7/7 da GTFS regionali: corse, punti di accesso attivi e ampiezza oraria del servizio.'],
+      ['2026.08.25-v1.18.0','25 agosto 2026','146 indicatori complessivi in 11 temi, inclusi i 4 indicatori climatici. Aggiunti Welfare e servizi sociali (spesa per abitante e composizione per area di utenza) e Prima infanzia (ricettività potenziale 3–36 mesi).'],
+      ['2026.08.24-v1.17.0','24 agosto 2026','143 indicatori complessivi in 11 temi, inclusi i 4 indicatori climatici. Aggiunto il lotto Scuola MIM: sicurezza documentale, accessibilità, mensa e palestra, epoca di costruzione e raggiungibilità dei 109 edifici scolastici censiti nei sette Comuni.'],
+      ['2026.08.24-v1.16.0','24 agosto 2026','138 indicatori complessivi in 11 temi, inclusi i 4 indicatori climatici. Canonicalizzato il catalogo effettivamente pubblicato; completati Demografia, Redditi, Fiscalità, Amministrazione e letture per età e genere; riallineati versioni, controlli e metadati.'],
+      ['2026.08.20-v1.15.0','20 agosto 2026','132 indicatori complessivi in 11 temi, inclusi i 4 indicatori climatici. Completato il Lotto A Redditi con profilo delle fonti, dettaglio delle fasce, peso delle pensioni e rapporto tra contribuenti e popolazione maggiorenne.'],
+      ['2026.08.20-v1.14.0','20 agosto 2026','129 indicatori complessivi in 11 temi, inclusi i 4 indicatori climatici. Aggiornata la Demografia con dinamica naturale, indici di dipendenza, distribuzione 2026, piramide per età e sesso e dettaglio dei residenti stranieri.'],
+      ['2026.08.16-v1.13.0','16 agosto 2026','127 indicatori complessivi in 11 temi, inclusi i 4 indicatori climatici. Estesi redditi e costo della vita con serie MEF 2011–2024, redditi vs inflazione, fiscalità locale standardizzata, carburanti e costo del servizio rifiuti.'],
+      ['2026.08.14-v1.12.0','14 agosto 2026','121 indicatori complessivi in 11 temi, inclusi i 4 indicatori climatici. Rafforzato Sicurezza e territorio con sicurezza stradale, Missione 03 e proventi del Codice della strada.'],
+      ['2026.08.14-v1.11.0','14 agosto 2026','119 indicatori complessivi in 11 temi, inclusi i 4 indicatori climatici. Aggiunti residenti stranieri, mobilità residenziale con l’estero e complessiva, quotazioni immobiliari OMI e il contesto sulla mobilità dei laureati.'],
+      ['2026.08.14-v1.10.0','14 agosto 2026','115 indicatori complessivi in 11 temi, inclusi i 4 indicatori climatici. Integrate distribuzione per fasce d’età, mobilità residenziale interna e distribuzione dei dichiaranti per fascia di reddito.'],
+      ['2026.08.12-v1.9.0','12 agosto 2026','115 indicatori complessivi in 11 temi, inclusi i 4 indicatori climatici. Integrati Percorsi e mobilità lenta nel dataset principale e separato il tema Sicurezza e territorio.'],
+      ['2026.08.09-v1.8.0','9 agosto 2026','106 indicatori. Aggiunte 106 schede canoniche degli indicatori, politica esplicita di aggiornamento delle fonti e sette serie comunali Istat omogenee 2021–2023.'],
+      ['2026.08.07-v1.7.0','7 agosto 2026','106 indicatori. Aggiunti dettaglio ISTAT ASIA su unità locali, addetti e settori ATECO, dati AGCOM FTTH verificati e controlli automatici rafforzati sulle fonti.'],
+      ['2026.08.05-v1.6.0','5 agosto 2026','98 indicatori. Aggiunto il tema Bilanci comunali con rendiconto 2024–2025, capacità di riscossione e pagamento, risultato di amministrazione e spesa per missione.'],
+      ['2026.08.3','2 agosto 2026','51 indicatori. Ampliata la salute con speranza di vita, mortalità, cronicità, pronto soccorso, ricoveri e assistenza domiciliare, usando tassi comunali e aggregati ufficiali ARS Toscana.'],
+      ['2026.08.2','2 agosto 2026','43 indicatori. Aggiunti valore aggiunto delle unità locali, produttività per addetto e quote dell’industria, con confronti omogenei Toscana–Italia e perimetro distinto dal PIL.'],
+      ['2026.08.1','2 agosto 2026','39 indicatori e nuovi approfondimenti comunali su struttura economica, pendolarismo reale, pressioni ambientali, cassa pubblica, opere, PNRR e contratti.'],
+      ['2026.08','agosto 2026','7 comuni, 9 temi e 27 indicatori con fonti dirette, confronti ponderati, valori normalizzati ed esportazione CSV.'],
+      ['2026.07','luglio 2026','Prima raccolta strutturata e prototipo delle viste comparative e comunali.']
+    ];
+    app.innerHTML = `<main class="editorial-page"><section class="editorial-hero page-width"><span class="overline">Il progetto</span><h1>Un solo posto per capire la Versilia.</h1><p>I dati pubblici esistono, ma spesso sono dispersi tra portali, allegati e fogli di calcolo. Osservatorio Versilia li riunisce, li spiega e li rende confrontabili senza nasconderne limiti e provenienza.</p></section>
+      <section class="project-story page-width"><div><span class="section-number">01</span><h2>Perché nasce</h2></div><div class="prose"><p>Per trovare un numero comunale non dovrebbe essere necessario conoscere decine di banche dati, interpretare formati diversi o ricostruire ogni volta il significato di una voce.</p><p>Il progetto è ideato e curato da <strong>Emanuele Anzilotti</strong> con un obiettivo semplice: offrire un punto di accesso chiaro ai dati che aiutano a leggere i sette comuni della Versilia storica e il territorio nel suo insieme.</p></div></section>
+      <section class="independence-note page-width" aria-label="Natura del progetto"><div><span class="overline">Un progetto civico indipendente</span><h2>Le fonti sono istituzionali.<br>L’osservatorio non lo è.</h2></div><p>Osservatorio Versilia non rappresenta Comuni, Provincia, Regione, Istat o altri enti citati. Le amministrazioni e gli istituti produttori restano la fonte autorevole dei dati; eventuali errori di trascrizione, elaborazione o interpretazione sono responsabilità del progetto.</p></section>
+      <section class="method-detail page-width" id="metodo"><div class="section-heading"><div><span class="section-number">02</span><h2>Il metodo</h2></div><p>Cinque regole per evitare confronti solo apparentemente precisi.</p></div><ol class="principles-grid">
+        ${[['Scala certa','Un dato entra nelle schede comunali solo quando è davvero disponibile a quel livello territoriale.'],['Contesto visibile','Anno, unità, definizione e fonte accompagnano sempre il numero.'],['Confronti omogenei','Toscana e Italia compaiono soltanto quando perimetro e periodo sono compatibili.'],['Aggregazioni dichiarate','Totali e medie della Versilia indicano come sono stati calcolati, incluse le ponderazioni.'],['Nessun voto','Posizioni e distanze descrivono i valori: non diventano pagelle o giudizi politici automatici.']].map((x,i)=>`<li><span>0${i+1}</span><h3>${x[0]}</h3><p>${x[1]}</p></li>`).join('')}</ol></section>
+      <section class="source-directory page-width"><div><span class="section-number">03</span><h2>Le fonti</h2></div><div><p>Ogni indicatore rimanda alla propria fonte. Tra i principali produttori e portali utilizzati:</p><ul>${sources.map(([name,url])=>`<li><a href="${html(url)}" target="_blank" rel="noreferrer">${html(name)} <span>↗</span></a></li>`).join('')}</ul></div></section>
+      <section class="license-section page-width" id="licenza"><div><span class="section-number">04</span><h2>Licenza e riuso</h2></div><div class="prose"><p>Salvo diversa indicazione, testi, elaborazioni e visualizzazioni originali di Osservatorio Versilia sono disponibili con licenza <a href="https://creativecommons.org/licenses/by/4.0/deed.it" target="_blank" rel="noreferrer">CC BY 4.0</a>: possono essere condivisi e adattati citando la fonte.</p><p>Dati, stemmi, fotografie e materiali di terzi mantengono le condizioni d’uso e le licenze indicate dai rispettivi titolari. Per un uso ufficiale o amministrativo va sempre consultata la fonte originaria.</p></div></section>
+      <section class="versions-section page-width" id="versioni"><div><span class="section-number">05</span><h2>Versioni dei dati</h2></div><div class="version-list">${versions.map(v=>`<article><div><strong>${v[0]}</strong><time>${v[1]}</time></div><p>${v[2]}</p></article>`).join('')}<p class="update-policy">Le correzioni puntuali possono essere pubblicate subito; gli aggiornamenti organici ricevono un nuovo numero di versione e una data visibile in tutto il sito.</p></div></section>
+      <section class="contact-panel page-width"><div><span class="overline">Manca qualcosa?</span><h2>Un osservatorio migliora anche grazie alle segnalazioni.</h2></div><div><p>Puoi indicare un errore, una fonte più recente o proporre un nuovo indicatore comunale verificabile.</p><a class="button-link" href="${route('segnala/')}">Invia una segnalazione</a><a class="plain-contact" href="mailto:info@osservatorioversilia.it">info@osservatorioversilia.it</a></div></section>
+    </main>`;
+  }
+
+  function renderFeedback(data) {
+    app.innerHTML = `<main class="editorial-page"><section class="editorial-hero compact page-width"><span class="overline">Segnala</span><h1>Un dato da correggere o aggiungere?</h1><p>Indica l’informazione, il territorio e possibilmente una fonte verificabile. Il modulo prepara un’email nel programma di posta del dispositivo: non salva dati sul sito.</p></section>
+      <section class="feedback-layout page-width"><aside><span class="overline">Prima di inviare</span><h2>Più dettagli dai, più semplice sarà verificare.</h2><ul><li>Indica il comune o se riguarda tutta la Versilia.</li><li>Scrivi il nome dell’indicatore o del tema.</li><li>Allega nel testo un link alla fonte istituzionale.</li><li>Spiega con precisione cosa non torna.</li></ul><p>Puoi anche scrivere direttamente a <a href="mailto:info@osservatorioversilia.it">info@osservatorioversilia.it</a>.</p></aside>
+        <form class="feedback-form"><div class="form-row"><label>Tipo di segnalazione<select name="category" required><option value="" disabled selected>Seleziona</option><option>Errore o dato da correggere</option><option>Nuovo indicatore</option><option>Fonte o dato più recente</option><option>Suggerimento sul sito</option></select></label><label>Comune o territorio<select name="town" required>${['Tutta la Versilia',...data.towns.map(t=>t.name)].map(x=>`<option>${html(x)}</option>`).join('')}</select></label></div>
+        <label>Indicatore o tema<input name="indicator" placeholder="Es. popolazione residente, viabilità, istruzione"></label><label>Link alla fonte<input name="source" type="url" inputmode="url" placeholder="https://…"></label><label>Cosa vuoi segnalare?<textarea name="message" rows="7" required placeholder="Descrivi il dato, l’errore o il suggerimento con le informazioni utili per verificarlo."></textarea></label>
+        <div class="form-row"><label>Nome <span>(facoltativo)</span><input name="name" autocomplete="name"></label><label>Email <span>(facoltativa)</span><input name="email" type="email" autocomplete="email"></label></div><div class="form-submit"><button type="submit">Prepara l’email</button><p>Il modulo non salva né invia dati: apre il programma di posta del tuo dispositivo con un messaggio già compilato.</p></div><p class="form-status" role="status" hidden>Email preparata. Se non si è aperto nulla, scrivi a info@osservatorioversilia.it.</p></form></section></main>`;
+    const form = document.querySelector('.feedback-form');
+    form.addEventListener('submit', event => {
+      event.preventDefault(); const fd = new FormData(form);
+      const category = String(fd.get('category') || ''), town = String(fd.get('town') || '');
+      const subject = `[Osservatorio Versilia] ${category} · ${town}`;
+      const body = [`Tipo: ${category}`,`Comune/territorio: ${town}`,`Indicatore o tema: ${fd.get('indicator') || 'non specificato'}`,`Fonte proposta: ${fd.get('source') || 'non specificata'}`,'',String(fd.get('message') || ''),'',`Nome: ${fd.get('name') || 'non indicato'}`,`Email: ${fd.get('email') || 'non indicata'}`].join('\n');

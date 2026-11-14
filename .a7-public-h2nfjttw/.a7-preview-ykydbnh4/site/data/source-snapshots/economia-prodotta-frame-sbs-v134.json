@@ -1,0 +1,46 @@
+{
+  "schemaVersion": 1,
+  "release": "v1.34.0",
+  "generatedFor": "Osservatorio Versilia · Economia prodotta · Frame SBS Territoriale",
+  "publisher": "Istat",
+  "dataset": "Frame SBS Territoriale / Frame territoriale delle unità locali",
+  "referenceYears": [2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023],
+  "latestReferenceYear": 2023,
+  "scopes": [
+    {"key": "total", "label": "Totale", "definition": "Industria e servizi inclusi nel perimetro Frame SBS Territoriale"},
+    {"key": "industry", "label": "Industria", "definition": "Industria"},
+    {"key": "services", "label": "Servizi", "definition": "Servizi"}
+  ],
+  "towns": [
+    {"name": "Massarosa", "code": "046018"}, {"name": "Viareggio", "code": "046033"},
+    {"name": "Camaiore", "code": "046005"}, {"name": "Pietrasanta", "code": "046024"},
+    {"name": "Seravezza", "code": "046028"}, {"name": "Forte dei Marmi", "code": "046013"},
+    {"name": "Stazzema", "code": "046030"}
+  ],
+  "sources": [
+    {"anno":2015,"pubblicazione":"2018-06-13","file":"Appendice-Statistica_290818.xlsx","sha256":"7f4a8329aea466d651dcd63f1dd0d9a4f300e027a347d34956a824907fcd378d","tavola_totale":"Tav. 28 Comuni","tavola_industria":"Tav. 29 Comuni Industria","tavola_servizi":"Tav. 30 Comuni Servizi","url":"https://www.istat.it/comunicato-stampa/risultati-economici-delle-imprese-a-livello-territoriale-ampliamento-del-dettaglio-di-analisi-anno-2015/","nota":""},
+    {"anno":2016,"pubblicazione":"2019-06-17","file":"Tavole-Frame-Territoriale-2016.xlsx","sha256":"c9a5b5a738ad95a2213288f1d001b9c3ce03389bace7b7ea8ecc783cd7256fba","tavola_totale":"Tav. 28 Comuni","tavola_industria":"Tav. 29 Comuni Industria","tavola_servizi":"Tav. 30 Comuni Servizi","url":"https://www.istat.it/comunicato-stampa/risultati-economici-delle-imprese-a-livello-territoriale-anno-2016/","nota":""},
+    {"anno":2017,"pubblicazione":"2020-06-03","file":"4.-Tavole-2017-protette-comuni.xlsx","sha256":"bdfde772f31c676adf26798e215d96d8509e58d537e28d30cdb4291a8f9fe61b","tavola_totale":"Tav. 28 Comuni","tavola_industria":"Tav. 29 Comuni Industria","tavola_servizi":"Tav. 30 Comuni Servizi","url":"https://www.istat.it/comunicato-stampa/risultati-economici-delle-imprese-e-delle-multinazionali-a-livello-territoriale-anno-2016/","nota":""},
+    {"anno":2018,"pubblicazione":"2020-12-30","file":"Tavole-2018.xlsx","sha256":"e9014e284b01fe9659ab0c50545458704ba870fa8a7a643a6887054d27e84e1f","tavola_totale":"Tav. 28 Comuni","tavola_industria":"Tav. 29 Comuni Industria","tavola_servizi":"Tav. 30 Comuni Servizi","url":"https://www.istat.it/comunicato-stampa/risultati-economici-delle-imprese-e-delle-multinazionali-a-livello-territoriale-anno-2018/","nota":""},
+    {"anno":2019,"pubblicazione":"2021-12-29","file":"tavole-risultati-economici-multinazionali-2019.xlsx","sha256":"5a3e6d82e5bb3b5d37535f45c3eb574a88da566a63a9db474f447df81d23c5fe","tavola_totale":"Tav. 28 Comuni","tavola_industria":"Tav. 29 Comuni Industria","tavola_servizi":"Tav. 30 Comuni Servizi","url":"https://www.istat.it/comunicato-stampa/risultati-economici-delle-imprese-e-delle-multinazionali-a-livello-territoriale-anno-2019/","nota":""},
+    {"anno":2020,"pubblicazione":"2023-01-19","file":"Appendice_Frame_Terr_multinaz_2020_FINALE.xlsx","sha256":"f0aac7cff20839880d1b607d049d79e5de2a2ea845e45134cdf2c11a46f12ce6","tavola_totale":"Tav. 28 Comuni","tavola_industria":"Tav. 29 Comuni Industria","tavola_servizi":"Tav. 30 Comuni Servizi","url":"https://www.istat.it/comunicato-stampa/risultati-economici-delle-imprese-e-delle-multinazionali-a-livello-territoriale-anno-2020/","nota":""},
+    {"anno":2021,"pubblicazione":"2024-01-25","file":"1. Appendice Statistica Report Territoriale 2021.xlsx","sha256":"a765d15fe0559b40a5ee34fb118aa374b8f83365d55ea98188166d4629651d52","tavola_totale":"Tav.39 Comuni_Totale","tavola_industria":"Tav.40 Comuni_Industria","tavola_servizi":"Tav.41 Comuni_Servizi","url":"https://www.istat.it/tavole-di-dati/risultati-economici-delle-imprese-e-delle-multinazionali-a-livello-territoriale-anno-2021/","nota":"Pacchetto corretto Istat del 01/02/2024"},
+    {"anno":2022,"pubblicazione":"2024-12-19","file":"1. Appendice statistica Frame territoriale 2022.xlsx","sha256":"e46327e70f037836ba0d15242396b5e1065ad05c64b6785bdd46ee625200bfb4","tavola_totale":"Tav.39_Comuni_Totale","tavola_industria":"Tav.40_Comuni_Industria","tavola_servizi":"Tav.41_Comuni_Servizi","url":"https://www.istat.it/tavole-di-dati/risultati-economici-delle-imprese-e-delle-multinazionali-a-livello-territoriale-anno-2022/","nota":""},
+    {"anno":2023,"pubblicazione":"2026-01-13","file":"1. Appendice Statistica Frame territoriale.xlsx","sha256":"dceb15c633d26cfad3406a60aaf94ecdb77f26470c9e2668b55dd395f9b885c6","tavola_totale":"Tav.39_Comuni_Totale","tavola_industria":"Tav.40_Comuni_Industria","tavola_servizi":"Tav.41_Comuni_Servizi","url":"https://www.istat.it/tavole-di-dati/risultati-economici-delle-imprese-e-delle-multinazionali-a-livello-territoriale-anno-2023/","nota":""}
+  ],
+  "qualityGate": {"coverage":"7/7","targetRows":189,"suppressedTargetCells":0,"scopeCeiling":"total / industry / services","maxAdditivityDifference":{"localUnits":0,"personsEmployed":1,"employees":1,"monetaryThousandEuro":1},"note":"No target municipality row is suppressed in the 27 municipal tables used. Small differences between Total and Industry+Services are compatible with Istat rounding; official Total values remain authoritative."},
+  "variables": {
+    "personsEmployed":{"unit":"count","direct":true,"availableYears":"2015-2023"},
+    "employees":{"unit":"count","direct":true,"availableYears":"2015-2023"},
+    "grossWagesThousandEuro":{"unit":"thousand_euro","direct":true,"availableYears":"2015-2023"},
+    "labourCostThousandEuro":{"unit":"thousand_euro","direct":true,"availableYears":"2021-2023"},
+    "valueAddedThousandEuro":{"unit":"thousand_euro","direct":true,"availableYears":"2015-2023"},
+    "turnoverThousandEuro":{"unit":"thousand_euro","direct":true,"availableYears":"2015-2023"},
+    "valueAddedPerPersonEmployedThousandEuro":{"unit":"thousand_euro_per_person_employed","direct":true,"availableYears":"2015-2023"},
+    "valueAddedTurnoverPercent":{"unit":"percent","direct":true,"availableYears":"2015-2023"},
+    "averageGrossRemunerationPerEmployeeThousandEuro":{"unit":"thousand_euro_per_employee","direct":true,"availableYears":"2015-2023"},
+    "turnoverPerPersonEmployedThousandEuro":{"formula":"turnoverThousandEuro / personsEmployed","direct":false,"availableYears":"2015-2023"},
+    "grossOperatingMarginThousandEuro":{"formula":"valueAddedThousandEuro - labourCostThousandEuro","direct":false,"availableYears":"2021-2023"}
+  },
+  "parts": ["economia-prodotta-frame-sbs-v134-2015-2017.json","economia-prodotta-frame-sbs-v134-2018-2020.json","economia-prodotta-frame-sbs-v134-2021-2023.json"]
+}

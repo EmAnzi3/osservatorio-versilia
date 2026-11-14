@@ -1,0 +1,50 @@
+.slow-mobility-overview,.slow-mobility-town{border:1px solid #dce7e1;border-radius:24px;background:linear-gradient(145deg,#f5f9f6 0%,#fff 58%);box-shadow:0 10px 34px rgba(23,49,39,.055)}
+.slow-mobility-overview{margin-top:28px;margin-bottom:34px;padding:28px;scroll-margin-top:110px}
+.slow-mobility-heading{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;margin-bottom:22px}
+.slow-mobility-heading h2,.slow-mobility-heading h3{margin:4px 0 0;color:#173127;letter-spacing:-.035em}
+.slow-mobility-heading h2{font-size:clamp(26px,3vw,38px)}
+.slow-mobility-heading h3{font-size:24px}
+.slow-mobility-heading p{max-width:650px;margin:8px 0 0;color:#617169;line-height:1.55}
+.slow-mobility-link{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:42px;padding:0 15px;border:1px solid #b9cfc3;border-radius:999px;background:#173127;color:#fff!important;text-decoration:none;font-size:13px;font-weight:750;white-space:nowrap}
+.slow-mobility-link:hover{background:#245c43}
+.slow-mobility-summary{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:10px;margin:0 0 22px}
+.slow-mobility-stat{min-width:0;padding:15px 14px;border:1px solid #e1e9e5;border-radius:16px;background:#fff}
+.slow-mobility-stat strong{display:block;color:#173127;font-size:25px;line-height:1;font-variant-numeric:tabular-nums}
+.slow-mobility-stat span{display:block;margin-top:7px;color:#66766e;font-size:11px;line-height:1.25}
+.slow-mobility-stat.primary{grid-column:span 1;background:#edf5f0}
+.slow-mobility-table-wrap{overflow-x:auto;border:1px solid #e0e8e4;border-radius:16px;background:#fff}
+.slow-mobility-table{width:100%;border-collapse:collapse;font-size:13px}
+.slow-mobility-table th,.slow-mobility-table td{padding:12px 14px;border-bottom:1px solid #edf2ef;text-align:left;vertical-align:middle}
+.slow-mobility-table tbody tr:last-child th,.slow-mobility-table tbody tr:last-child td{border-bottom:0}
+.slow-mobility-table thead th{background:#f8faf9;color:#64736c;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.04em}
+.slow-mobility-table tbody th{color:#173127;font-weight:750}
+.slow-mobility-table .route-count{font-size:16px;font-weight:800;font-variant-numeric:tabular-nums}
+.slow-mobility-table a{color:#176b4a;font-weight:700;text-decoration:none;white-space:nowrap}
+.slow-mobility-mode-list{display:flex;flex-wrap:wrap;gap:5px}
+.slow-mobility-mode-list span{display:inline-flex;align-items:center;gap:5px;padding:4px 7px;border-radius:999px;background:#f1f5f3;color:#53655c;font-size:11px;white-space:nowrap}
+.slow-mobility-mode-list i{width:7px;height:7px;border-radius:50%;display:block}
+.slow-mobility-note{margin:12px 2px 0;color:#6d7b74;font-size:11px;line-height:1.45}
+
+/* Punto di ingresso compatto nel pannello indicatori: deve essere impossibile
+   arrivare alla pagina Mobilità senza accorgersi che esistono Percorsi e mappa. */
+.slow-mobility-quick{display:grid;gap:12px;margin:16px 0 20px;padding:15px 16px;border:1px solid color-mix(in srgb,#176b4a 24%,transparent);border-radius:15px;background:color-mix(in srgb,#edf5f0 88%,white);box-sizing:border-box;min-width:0;max-width:100%}
+.slow-mobility-quick-copy{display:grid;gap:3px;min-width:0}
+.slow-mobility-quick-copy>span{color:#176b4a;font-size:9px;font-weight:800;letter-spacing:.08em;text-transform:uppercase}
+.slow-mobility-quick-copy>strong{color:#173127;font-size:15px;line-height:1.2;font-variant-numeric:tabular-nums}
+.slow-mobility-quick-copy>small{color:#66766e;font-size:10px;line-height:1.4}
+.slow-mobility-quick-actions{display:flex;flex-wrap:wrap;gap:7px}
+.slow-mobility-quick-actions a{display:inline-flex;align-items:center;justify-content:center;min-height:31px;padding:0 10px;border:1px solid #b9cfc3;border-radius:999px;color:#173127!important;background:#fff;text-decoration:none;font-size:10px;font-weight:750}
+.slow-mobility-quick-actions a:last-child{background:#173127;color:#fff!important;border-color:#173127}
+
+.slow-mobility-town{margin:18px 0 24px;padding:22px}
+.slow-mobility-town .slow-mobility-heading{align-items:center;margin-bottom:17px}
+.slow-mobility-town-grid{display:grid;grid-template-columns:minmax(170px,.75fr) minmax(0,1.6fr);gap:12px}
+.slow-mobility-town-total{padding:18px;border-radius:17px;background:#173127;color:#fff}
+.slow-mobility-town-total strong{display:block;font-size:38px;line-height:1;font-variant-numeric:tabular-nums}
+.slow-mobility-town-total span{display:block;margin-top:7px;font-size:12px;line-height:1.35;color:#dcebe3}
+.slow-mobility-town-modes{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.slow-mobility-town-modes article{padding:12px 13px;border:1px solid #e1e9e5;border-radius:14px;background:#fff}
+.slow-mobility-town-modes strong{display:block;color:#173127;font-size:20px;font-variant-numeric:tabular-nums}
+.slow-mobility-town-modes span{display:block;margin-top:3px;color:#66766e;font-size:11px}
+@media(max-width:900px){.slow-mobility-summary{grid-template-columns:repeat(3,minmax(0,1fr))}.slow-mobility-heading{align-items:flex-start;flex-direction:column}.slow-mobility-town-grid{grid-template-columns:1fr}.slow-mobility-link{white-space:normal}}
+@media(max-width:600px){.slow-mobility-overview{padding:20px 16px;border-radius:20px}.slow-mobility-summary{grid-template-columns:repeat(2,minmax(0,1fr))}.slow-mobility-table thead{display:none}.slow-mobility-table,.slow-mobility-table tbody,.slow-mobility-table tr,.slow-mobility-table th,.slow-mobility-table td{display:block}.slow-mobility-table tr{padding:12px 13px;border-bottom:1px solid #edf2ef}.slow-mobility-table th,.slow-mobility-table td{padding:3px 0;border:0}.slow-mobility-table td:last-child{margin-top:7px}.slow-mobility-town{padding:18px 15px}.slow-mobility-town-modes{grid-template-columns:repeat(2,minmax(0,1fr))}}

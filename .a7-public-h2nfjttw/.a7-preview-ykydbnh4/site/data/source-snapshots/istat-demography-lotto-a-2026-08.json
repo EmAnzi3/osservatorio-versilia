@@ -1,0 +1,5694 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-08-20",
+  "publisher": "Istat",
+  "territory": "Provincia di Lucca · sette Comuni dell’Osservatorio Versilia",
+  "status": {
+    "p02_2025": "provvisorio secondo flag Istat p",
+    "posas_2026": "stima al 1° gennaio 2026"
+  },
+  "p02": {
+    "sources": [
+      {
+        "year": 2019,
+        "url": "https://demo.istat.it/data/p2/P2_2019_it_046_Lucca.zip",
+        "title": "Bilancio demografico e popolazione residente al 31 dicembre 2019"
+      },
+      {
+        "year": 2020,
+        "url": "https://demo.istat.it/data/p2/P2_2020_it_046_Lucca.zip",
+        "title": "Bilancio demografico e popolazione residente al 31 dicembre 2020"
+      },
+      {
+        "year": 2021,
+        "url": "https://demo.istat.it/data/p2/P2_2021_it_046_Lucca.zip",
+        "title": "Bilancio demografico e popolazione residente al 31 dicembre 2021"
+      },
+      {
+        "year": 2022,
+        "url": "https://demo.istat.it/data/p2/P2_2022_it_046_Lucca.zip",
+        "title": "Bilancio demografico e popolazione residente al 31 dicembre 2022"
+      },
+      {
+        "year": 2023,
+        "url": "https://demo.istat.it/data/p2/P2_2023_it_046_Lucca.zip",
+        "title": "Bilancio demografico e popolazione residente al 31 dicembre 2023"
+      },
+      {
+        "year": 2024,
+        "url": "https://demo.istat.it/data/p2/P2_2024_it_046_Lucca.zip",
+        "title": "Bilancio demografico e popolazione residente al 31 dicembre 2024"
+      },
+      {
+        "year": 2025,
+        "url": "https://demo.istat.it/data/p2/P2_2025_it_046_Lucca.zip",
+        "title": "Bilancio demografico e popolazione residente al 31 dicembre 2025"
+      }
+    ],
+    "resolvedHeaders": {
+      "2019": {
+        "populationJan1": "Popolazione censita al 1° gennaio - Totale",
+        "populationDec31": "Popolazione censita al 31 dicembre - Totale",
+        "births": "Nati vivi - Totale",
+        "deaths": "Morti - Totale",
+        "naturalBalance": "Saldo naturale - Totale"
+      },
+      "2020": {
+        "populationJan1": "Popolazione censita al 1° gennaio - Totale",
+        "populationDec31": "Popolazione censita al 31 dicembre - Totale",
+        "births": "Nati vivi - Totale",
+        "deaths": "Morti - Totale",
+        "naturalBalance": "Saldo naturale - Totale"
+      },
+      "2021": {
+        "populationJan1": "Popolazione censita al 1° gennaio - Totale",
+        "populationDec31": "Popolazione censita al 31 dicembre - Totale",
+        "births": "Nati vivi - Totale",
+        "deaths": "Morti - Totale",
+        "naturalBalance": "Saldo naturale - Totale"
+      },
+      "2022": {
+        "populationJan1": "Popolazione censita al 1° gennaio - Totale",
+        "populationDec31": "Popolazione censita al 31 dicembre - Totale",
+        "births": "Nati vivi - Totale",
+        "deaths": "Morti - Totale",
+        "naturalBalance": "Saldo naturale - Totale"
+      },
+      "2023": {
+        "populationJan1": "Popolazione censita al 1° gennaio - Totale",
+        "populationDec31": "Popolazione censita al 31 dicembre - Totale",
+        "births": "Nati vivi - Totale",
+        "deaths": "Morti - Totale",
+        "naturalBalance": "Saldo naturale - Totale"
+      },
+      "2024": {
+        "populationJan1": "Popolazione censita al 1° gennaio - Totale",
+        "populationDec31": "Popolazione censita al 31 dicembre - Totale",
+        "births": "Nati vivi - Totale",
+        "deaths": "Morti - Totale",
+        "naturalBalance": "Saldo naturale - Totale"
+      },
+      "2025": {
+        "populationJan1": "Popolazione censita al 1° gennaio - Totale",
+        "populationDec31": "Popolazione al 31 dicembre - Totale",
+        "births": "Nati vivi - Totale",
+        "deaths": "Morti - Totale",
+        "naturalBalance": "Saldo naturale - Totale"
+      }
+    },
+    "towns": {
+      "Camaiore": [
+        {
+          "year": 2019,
+          "populationJan1": 31670,
+          "populationDec31": 31543,
+          "meanPopulation": 31606.5,
+          "births": 195,
+          "deaths": 360,
+          "naturalBalance": -165,
+          "birthRatePer1000": 6.1696170092,
+          "deathRatePer1000": 11.3900621708,
+          "naturalBalanceRatePer1000": -5.2204451616,
+          "informationFlag": ""
+        },
+        {
+          "year": 2020,
+          "populationJan1": 31543,
+          "populationDec31": 31761,
+          "meanPopulation": 31652.0,
+          "births": 174,
+          "deaths": 448,
+          "naturalBalance": -274,
+          "birthRatePer1000": 5.4972829521,
+          "deathRatePer1000": 14.1539239227,
+          "naturalBalanceRatePer1000": -8.6566409706,
+          "informationFlag": ""
+        },
+        {
+          "year": 2021,
+          "populationJan1": 31761,
+          "populationDec31": 31821,
+          "meanPopulation": 31791.0,
+          "births": 177,
+          "deaths": 435,
+          "naturalBalance": -258,
+          "birthRatePer1000": 5.5676134755,
+          "deathRatePer1000": 13.6831178635,
+          "naturalBalanceRatePer1000": -8.115504388,
+          "informationFlag": ""
+        },
+        {
+          "year": 2022,
+          "populationJan1": 31821,
+          "populationDec31": 31914,
+          "meanPopulation": 31867.5,
+          "births": 164,
+          "deaths": 410,
+          "naturalBalance": -246,
+          "birthRatePer1000": 5.1463089354,
+          "deathRatePer1000": 12.8657723386,
+          "naturalBalanceRatePer1000": -7.7194634032,
+          "informationFlag": ""
+        },
+        {
+          "year": 2023,
+          "populationJan1": 31914,
+          "populationDec31": 31864,
+          "meanPopulation": 31889.0,
+          "births": 153,
+          "deaths": 400,
+          "naturalBalance": -247,
+          "birthRatePer1000": 4.7978926903,
+          "deathRatePer1000": 12.5435103014,
+          "naturalBalanceRatePer1000": -7.7456176111,
+          "informationFlag": ""
+        },
+        {
+          "year": 2024,
+          "populationJan1": 31864,
+          "populationDec31": 31832,
+          "meanPopulation": 31848.0,
+          "births": 149,
+          "deaths": 409,
+          "naturalBalance": -260,
+          "birthRatePer1000": 4.6784727455,
+          "deathRatePer1000": 12.8422506908,
+          "naturalBalanceRatePer1000": -8.1637779452,
+          "informationFlag": ""
+        },
+        {
+          "year": 2025,
+          "populationJan1": 31832,
+          "populationDec31": 31763,
+          "meanPopulation": 31797.5,
+          "births": 165,
+          "deaths": 409,
+          "naturalBalance": -244,
+          "birthRatePer1000": 5.1890871924,
+          "deathRatePer1000": 12.8626464345,
+          "naturalBalanceRatePer1000": -7.6735592421,
+          "informationFlag": "p"
+        }
+      ],
+      "Forte dei Marmi": [
+        {
+          "year": 2019,
+          "populationJan1": 7156,
+          "populationDec31": 7111,
+          "meanPopulation": 7133.5,
+          "births": 27,
+          "deaths": 100,
+          "naturalBalance": -73,
+          "birthRatePer1000": 3.7849582954,
+          "deathRatePer1000": 14.0183640569,
+          "naturalBalanceRatePer1000": -10.2334057615,
+          "informationFlag": ""
+        },
+        {
+          "year": 2020,
+          "populationJan1": 7111,
+          "populationDec31": 7217,
+          "meanPopulation": 7164.0,
+          "births": 20,
+          "deaths": 121,
+          "naturalBalance": -101,
+          "birthRatePer1000": 2.7917364601,
+          "deathRatePer1000": 16.8900055835,
+          "naturalBalanceRatePer1000": -14.0982691234,
+          "informationFlag": ""
+        },
+        {
+          "year": 2021,
+          "populationJan1": 7217,
+          "populationDec31": 6943,
+          "meanPopulation": 7080.0,
+          "births": 26,
+          "deaths": 92,
+          "naturalBalance": -66,
+          "birthRatePer1000": 3.6723163842,
+          "deathRatePer1000": 12.9943502825,
+          "naturalBalanceRatePer1000": -9.3220338983,
+          "informationFlag": ""
+        },
+        {
+          "year": 2022,
+          "populationJan1": 6943,
+          "populationDec31": 6879,
+          "meanPopulation": 6911.0,
+          "births": 28,
+          "deaths": 105,
+          "naturalBalance": -77,
+          "birthRatePer1000": 4.0515120822,
+          "deathRatePer1000": 15.1931703082,
+          "naturalBalanceRatePer1000": -11.141658226,
+          "informationFlag": ""
+        },
+        {
+          "year": 2023,
+          "populationJan1": 6879,
+          "populationDec31": 6777,
+          "meanPopulation": 6828.0,
+          "births": 23,
+          "deaths": 108,
+          "naturalBalance": -85,
+          "birthRatePer1000": 3.3684827182,
+          "deathRatePer1000": 15.8172231986,
+          "naturalBalanceRatePer1000": -12.4487404804,
+          "informationFlag": ""
+        },
+        {
+          "year": 2024,
+          "populationJan1": 6777,
+          "populationDec31": 6666,
+          "meanPopulation": 6721.5,
+          "births": 24,
+          "deaths": 99,
+          "naturalBalance": -75,
+          "birthRatePer1000": 3.5706315555,
+          "deathRatePer1000": 14.7288551663,
+          "naturalBalanceRatePer1000": -11.1582236108,
+          "informationFlag": ""
+        },
+        {
+          "year": 2025,
+          "populationJan1": 6666,
+          "populationDec31": 6550,
+          "meanPopulation": 6608.0,
+          "births": 24,
+          "deaths": 97,
+          "naturalBalance": -73,
+          "birthRatePer1000": 3.6319612591,
+          "deathRatePer1000": 14.6791767554,
+          "naturalBalanceRatePer1000": -11.0472154964,
+          "informationFlag": "p"
+        }
+      ],
+      "Massarosa": [
+        {
+          "year": 2019,
+          "populationJan1": 21696,
+          "populationDec31": 21615,
+          "meanPopulation": 21655.5,
+          "births": 101,
+          "deaths": 251,
+          "naturalBalance": -150,
+          "birthRatePer1000": 4.6639421856,
+          "deathRatePer1000": 11.5905889959,
+          "naturalBalanceRatePer1000": -6.9266468103,
+          "informationFlag": ""
+        },
+        {
+          "year": 2020,
+          "populationJan1": 21615,
+          "populationDec31": 21951,
+          "meanPopulation": 21783.0,
+          "births": 128,
+          "deaths": 275,
+          "naturalBalance": -147,
+          "birthRatePer1000": 5.8761419456,
+          "deathRatePer1000": 12.6245237112,
+          "naturalBalanceRatePer1000": -6.7483817656,
+          "informationFlag": ""
+        },
+        {
+          "year": 2021,
+          "populationJan1": 21951,
+          "populationDec31": 21823,
+          "meanPopulation": 21887.0,
+          "births": 128,
+          "deaths": 275,
+          "naturalBalance": -147,
+          "birthRatePer1000": 5.8482204048,
+          "deathRatePer1000": 12.564536026,
+          "naturalBalanceRatePer1000": -6.7163156211,
+          "informationFlag": ""
+        },
+        {
+          "year": 2022,
+          "populationJan1": 21823,
+          "populationDec31": 21822,
+          "meanPopulation": 21822.5,
+          "births": 113,
+          "deaths": 260,
+          "naturalBalance": -147,
+          "birthRatePer1000": 5.1781418261,
+          "deathRatePer1000": 11.9143086264,
+          "naturalBalanceRatePer1000": -6.7361668003,
+          "informationFlag": ""
+        },
+        {
+          "year": 2023,
+          "populationJan1": 21822,
+          "populationDec31": 21865,
+          "meanPopulation": 21843.5,
+          "births": 102,
+          "deaths": 247,
+          "naturalBalance": -145,
+          "birthRatePer1000": 4.66958134,
+          "deathRatePer1000": 11.3077116762,
+          "naturalBalanceRatePer1000": -6.6381303363,
+          "informationFlag": ""
+        },
+        {
+          "year": 2024,
+          "populationJan1": 21865,
+          "populationDec31": 21806,
+          "meanPopulation": 21835.5,
+          "births": 112,
+          "deaths": 256,
+          "naturalBalance": -144,
+          "birthRatePer1000": 5.1292619816,
+          "deathRatePer1000": 11.7240273866,
+          "naturalBalanceRatePer1000": -6.594765405,
+          "informationFlag": ""
+        },
+        {
+          "year": 2025,
+          "populationJan1": 21806,
+          "populationDec31": 21782,
+          "meanPopulation": 21794.0,
+          "births": 96,
+          "deaths": 256,
+          "naturalBalance": -160,
+          "birthRatePer1000": 4.4048820776,
+          "deathRatePer1000": 11.746352207,
+          "naturalBalanceRatePer1000": -7.3414701294,
+          "informationFlag": "p"
+        }
+      ],
+      "Pietrasanta": [
+        {
+          "year": 2019,
+          "populationJan1": 23073,
+          "populationDec31": 22997,
+          "meanPopulation": 23035.0,
+          "births": 108,
+          "deaths": 293,
+          "naturalBalance": -185,
+          "birthRatePer1000": 4.6885174734,
+          "deathRatePer1000": 12.7197742566,
+          "naturalBalanceRatePer1000": -8.0312567832,
+          "informationFlag": ""
+        },
+        {
+          "year": 2020,
+          "populationJan1": 22997,
+          "populationDec31": 23121,
+          "meanPopulation": 23059.0,
+          "births": 121,
+          "deaths": 333,
+          "naturalBalance": -212,
+          "birthRatePer1000": 5.2474088209,
+          "deathRatePer1000": 14.4412160111,
+          "naturalBalanceRatePer1000": -9.1938071903,
+          "informationFlag": ""
+        },
+        {
+          "year": 2021,
+          "populationJan1": 23121,
+          "populationDec31": 23066,
+          "meanPopulation": 23093.5,
+          "births": 119,
+          "deaths": 343,
+          "naturalBalance": -224,
+          "birthRatePer1000": 5.1529651201,
+          "deathRatePer1000": 14.8526641696,
+          "naturalBalanceRatePer1000": -9.6996990495,
+          "informationFlag": ""
+        },
+        {
+          "year": 2022,
+          "populationJan1": 23066,
+          "populationDec31": 22933,
+          "meanPopulation": 22999.5,
+          "births": 107,
+          "deaths": 313,
+          "naturalBalance": -206,
+          "birthRatePer1000": 4.6522750495,
+          "deathRatePer1000": 13.6089914998,
+          "naturalBalanceRatePer1000": -8.9567164504,
+          "informationFlag": ""
+        },
+        {
+          "year": 2023,
+          "populationJan1": 22933,
+          "populationDec31": 22788,
+          "meanPopulation": 22860.5,
+          "births": 92,
+          "deaths": 324,
+          "naturalBalance": -232,
+          "birthRatePer1000": 4.0244089149,
+          "deathRatePer1000": 14.1729183526,
+          "naturalBalanceRatePer1000": -10.1485094377,
+          "informationFlag": ""
+        },
+        {
+          "year": 2024,
+          "populationJan1": 22788,
+          "populationDec31": 22743,
+          "meanPopulation": 22765.5,
+          "births": 105,
+          "deaths": 318,
+          "naturalBalance": -213,
+          "birthRatePer1000": 4.6122422086,
+          "deathRatePer1000": 13.9685049746,
+          "naturalBalanceRatePer1000": -9.356262766,
+          "informationFlag": ""
+        },
+        {
+          "year": 2025,
+          "populationJan1": 22743,
+          "populationDec31": 22678,
+          "meanPopulation": 22710.5,
+          "births": 98,
+          "deaths": 297,
+          "naturalBalance": -199,
+          "birthRatePer1000": 4.3151846062,
+          "deathRatePer1000": 13.0776513067,
+          "naturalBalanceRatePer1000": -8.7624667004,
+          "informationFlag": "p"
+        }
+      ],
+      "Seravezza": [
+        {
+          "year": 2019,
+          "populationJan1": 12845,
+          "populationDec31": 12774,
+          "meanPopulation": 12809.5,
+          "births": 56,
+          "deaths": 172,
+          "naturalBalance": -116,
+          "birthRatePer1000": 4.3717553378,
+          "deathRatePer1000": 13.4275342519,
+          "naturalBalanceRatePer1000": -9.0557789141,
+          "informationFlag": ""
+        },
+        {
+          "year": 2020,
+          "populationJan1": 12774,
+          "populationDec31": 12556,
+          "meanPopulation": 12665.0,
+          "births": 82,
+          "deaths": 185,
+          "naturalBalance": -103,
+          "birthRatePer1000": 6.4745361232,
+          "deathRatePer1000": 14.6071851559,
+          "naturalBalanceRatePer1000": -8.1326490328,
+          "informationFlag": ""
+        },
+        {
+          "year": 2021,
+          "populationJan1": 12556,
+          "populationDec31": 12441,
+          "meanPopulation": 12498.5,
+          "births": 69,
+          "deaths": 191,
+          "naturalBalance": -122,
+          "birthRatePer1000": 5.5206624795,
+          "deathRatePer1000": 15.2818338201,
+          "naturalBalanceRatePer1000": -9.7611713406,
+          "informationFlag": ""
+        },
+        {
+          "year": 2022,
+          "populationJan1": 12441,
+          "populationDec31": 12395,
+          "meanPopulation": 12418.0,
+          "births": 67,
+          "deaths": 204,
+          "naturalBalance": -137,
+          "birthRatePer1000": 5.3953937832,
+          "deathRatePer1000": 16.4277661459,
+          "naturalBalanceRatePer1000": -11.0323723627,
+          "informationFlag": ""
+        },
+        {
+          "year": 2023,
+          "populationJan1": 12395,
+          "populationDec31": 12435,
+          "meanPopulation": 12415.0,
+          "births": 57,
+          "deaths": 162,
+          "naturalBalance": -105,
+          "birthRatePer1000": 4.591220298,
+          "deathRatePer1000": 13.0487313733,
+          "naturalBalanceRatePer1000": -8.4575110753,
+          "informationFlag": ""
+        },
+        {
+          "year": 2024,
+          "populationJan1": 12435,
+          "populationDec31": 12381,
+          "meanPopulation": 12408.0,
+          "births": 58,
+          "deaths": 184,
+          "naturalBalance": -126,
+          "birthRatePer1000": 4.6744036106,
+          "deathRatePer1000": 14.8291424887,
+          "naturalBalanceRatePer1000": -10.1547388781,
+          "informationFlag": ""
+        },
+        {
+          "year": 2025,
+          "populationJan1": 12381,
+          "populationDec31": 12284,
+          "meanPopulation": 12332.5,
+          "births": 61,
+          "deaths": 208,
+          "naturalBalance": -147,
+          "birthRatePer1000": 4.9462801541,
+          "deathRatePer1000": 16.8660044598,
+          "naturalBalanceRatePer1000": -11.9197243057,
+          "informationFlag": "p"
+        }
+      ],
+      "Stazzema": [
+        {
+          "year": 2019,
+          "populationJan1": 2971,
+          "populationDec31": 2958,
+          "meanPopulation": 2964.5,
+          "births": 16,
+          "deaths": 51,
+          "naturalBalance": -35,
+          "birthRatePer1000": 5.3972002024,
+          "deathRatePer1000": 17.2035756451,
+          "naturalBalanceRatePer1000": -11.8063754427,
+          "informationFlag": ""
+        },
+        {
+          "year": 2020,
+          "populationJan1": 2958,
+          "populationDec31": 2898,
+          "meanPopulation": 2928.0,
+          "births": 13,
+          "deaths": 47,
+          "naturalBalance": -34,
+          "birthRatePer1000": 4.4398907104,
+          "deathRatePer1000": 16.0519125683,
+          "naturalBalanceRatePer1000": -11.6120218579,
+          "informationFlag": ""
+        },
+        {
+          "year": 2021,
+          "populationJan1": 2898,
+          "populationDec31": 2890,
+          "meanPopulation": 2894.0,
+          "births": 15,
+          "deaths": 37,
+          "naturalBalance": -22,
+          "birthRatePer1000": 5.1831375259,
+          "deathRatePer1000": 12.7850725639,
+          "naturalBalanceRatePer1000": -7.601935038,
+          "informationFlag": ""
+        },
+        {
+          "year": 2022,
+          "populationJan1": 2890,
+          "populationDec31": 2877,
+          "meanPopulation": 2883.5,
+          "births": 17,
+          "deaths": 49,
+          "naturalBalance": -32,
+          "birthRatePer1000": 5.8956129703,
+          "deathRatePer1000": 16.9932373851,
+          "naturalBalanceRatePer1000": -11.0976244148,
+          "informationFlag": ""
+        },
+        {
+          "year": 2023,
+          "populationJan1": 2877,
+          "populationDec31": 2903,
+          "meanPopulation": 2890.0,
+          "births": 15,
+          "deaths": 34,
+          "naturalBalance": -19,
+          "birthRatePer1000": 5.1903114187,
+          "deathRatePer1000": 11.7647058824,
+          "naturalBalanceRatePer1000": -6.5743944637,
+          "informationFlag": ""
+        },
+        {
+          "year": 2024,
+          "populationJan1": 2903,
+          "populationDec31": 2892,
+          "meanPopulation": 2897.5,
+          "births": 5,
+          "deaths": 48,
+          "naturalBalance": -43,
+          "birthRatePer1000": 1.7256255393,
+          "deathRatePer1000": 16.5660051769,
+          "naturalBalanceRatePer1000": -14.8403796376,
+          "informationFlag": ""
+        },
+        {
+          "year": 2025,
+          "populationJan1": 2892,
+          "populationDec31": 2783,
+          "meanPopulation": 2837.5,
+          "births": 7,
+          "deaths": 49,
+          "naturalBalance": -42,
+          "birthRatePer1000": 2.4669603524,
+          "deathRatePer1000": 17.268722467,
+          "naturalBalanceRatePer1000": -14.8017621145,
+          "informationFlag": "p"
+        }
+      ],
+      "Viareggio": [
+        {
+          "year": 2019,
+          "populationJan1": 60602,
+          "populationDec31": 60512,
+          "meanPopulation": 60557.0,
+          "births": 399,
+          "deaths": 769,
+          "naturalBalance": -370,
+          "birthRatePer1000": 6.5888336608,
+          "deathRatePer1000": 12.6987796621,
+          "naturalBalanceRatePer1000": -6.1099460013,
+          "informationFlag": ""
+        },
+        {
+          "year": 2020,
+          "populationJan1": 60512,
+          "populationDec31": 61251,
+          "meanPopulation": 60881.5,
+          "births": 336,
+          "deaths": 849,
+          "naturalBalance": -513,
+          "birthRatePer1000": 5.5189178979,
+          "deathRatePer1000": 13.9451229027,
+          "naturalBalanceRatePer1000": -8.4262050048,
+          "informationFlag": ""
+        },
+        {
+          "year": 2021,
+          "populationJan1": 61251,
+          "populationDec31": 61045,
+          "meanPopulation": 61148.0,
+          "births": 360,
+          "deaths": 853,
+          "naturalBalance": -493,
+          "birthRatePer1000": 5.8873552692,
+          "deathRatePer1000": 13.949761235,
+          "naturalBalanceRatePer1000": -8.0624059659,
+          "informationFlag": ""
+        },
+        {
+          "year": 2022,
+          "populationJan1": 61045,
+          "populationDec31": 60890,
+          "meanPopulation": 60967.5,
+          "births": 311,
+          "deaths": 831,
+          "naturalBalance": -520,
+          "birthRatePer1000": 5.1010784434,
+          "deathRatePer1000": 13.6302128183,
+          "naturalBalanceRatePer1000": -8.5291343749,
+          "informationFlag": ""
+        },
+        {
+          "year": 2023,
+          "populationJan1": 60890,
+          "populationDec31": 60755,
+          "meanPopulation": 60822.5,
+          "births": 314,
+          "deaths": 758,
+          "naturalBalance": -444,
+          "birthRatePer1000": 5.1625631962,
+          "deathRatePer1000": 12.4624933207,
+          "naturalBalanceRatePer1000": -7.2999301245,
+          "informationFlag": ""
+        },
+        {
+          "year": 2024,
+          "populationJan1": 60755,
+          "populationDec31": 60618,
+          "meanPopulation": 60686.5,
+          "births": 347,
+          "deaths": 746,
+          "naturalBalance": -399,
+          "birthRatePer1000": 5.7179109028,
+          "deathRatePer1000": 12.2926845345,
+          "naturalBalanceRatePer1000": -6.5747736317,
+          "informationFlag": ""
+        },
+        {
+          "year": 2025,
+          "populationJan1": 60618,
+          "populationDec31": 60680,
+          "meanPopulation": 60649.0,
+          "births": 301,
+          "deaths": 743,
+          "naturalBalance": -442,
+          "birthRatePer1000": 4.962983726,
+          "deathRatePer1000": 12.2508202938,
+          "naturalBalanceRatePer1000": -7.2878365678,
+          "informationFlag": "p"
+        }
+      ]
+    }
+  },
+  "posas": {
+    "sources": [
+      {
+        "year": 2019,
+        "url": "https://demo.istat.it/data/posas/POSAS_2019_it_046_Lucca.zip",
+        "title": "Popolazione residente per età, sesso e stato civile al 1° gennaio 2019"
+      },
+      {
+        "year": 2020,
+        "url": "https://demo.istat.it/data/posas/POSAS_2020_it_046_Lucca.zip",
+        "title": "Popolazione residente per età, sesso e stato civile al 1° gennaio 2020"
+      },
+      {
+        "year": 2021,
+        "url": "https://demo.istat.it/data/posas/POSAS_2021_it_046_Lucca.zip",
+        "title": "Popolazione residente per età, sesso e stato civile al 1° gennaio 2021"
+      },
+      {
+        "year": 2022,
+        "url": "https://demo.istat.it/data/posas/POSAS_2022_it_046_Lucca.zip",
+        "title": "Popolazione residente per età, sesso e stato civile al 1° gennaio 2022"
+      },
+      {
+        "year": 2023,
+        "url": "https://demo.istat.it/data/posas/POSAS_2023_it_046_Lucca.zip",
+        "title": "Popolazione residente per età, sesso e stato civile al 1° gennaio 2023"
+      },
+      {
+        "year": 2024,
+        "url": "https://demo.istat.it/data/posas/POSAS_2024_it_046_Lucca.zip",
+        "title": "Popolazione residente per età, sesso e stato civile al 1° gennaio 2024"
+      },
+      {
+        "year": 2025,
+        "url": "https://demo.istat.it/data/posas/POSAS_2025_it_046_Lucca.zip",
+        "title": "Popolazione residente per età, sesso e stato civile al 1° gennaio 2025"
+      },
+      {
+        "year": 2026,
+        "url": "https://demo.istat.it/data/posas/POSAS_2026_it_046_Lucca.zip",
+        "title": "Popolazione residente per età e sesso al 1° gennaio 2026 (stima)"
+      }
+    ],
+    "towns": {
+      "Camaiore": [
+        {
+          "year": 2019,
+          "population": 31670,
+          "age0to14": 3589,
+          "age15to64": 20107,
+          "age65plus": 7974,
+          "age80plus": 2553,
+          "share80plus": 8.0612567098,
+          "structuralDependencyIndex": 57.5073357537,
+          "oldAgeDependencyIndex": 39.6578306063
+        },
+        {
+          "year": 2020,
+          "population": 31543,
+          "age0to14": 3523,
+          "age15to64": 19946,
+          "age65plus": 8074,
+          "age80plus": 2645,
+          "share80plus": 8.3853786894,
+          "structuralDependencyIndex": 58.1419833551,
+          "oldAgeDependencyIndex": 40.4792940941
+        },
+        {
+          "year": 2021,
+          "population": 31761,
+          "age0to14": 3542,
+          "age15to64": 20053,
+          "age65plus": 8166,
+          "age80plus": 2723,
+          "share80plus": 8.5734076383,
+          "structuralDependencyIndex": 58.3852790106,
+          "oldAgeDependencyIndex": 40.7220864709
+        },
+        {
+          "year": 2022,
+          "population": 31821,
+          "age0to14": 3434,
+          "age15to64": 20166,
+          "age65plus": 8221,
+          "age80plus": 2761,
+          "share80plus": 8.6766600673,
+          "structuralDependencyIndex": 57.7952990181,
+          "oldAgeDependencyIndex": 40.7666369136
+        },
+        {
+          "year": 2023,
+          "population": 31914,
+          "age0to14": 3350,
+          "age15to64": 20222,
+          "age65plus": 8342,
+          "age80plus": 2774,
+          "share80plus": 8.6921100457,
+          "structuralDependencyIndex": 57.8182177826,
+          "oldAgeDependencyIndex": 41.2521016714
+        },
+        {
+          "year": 2024,
+          "population": 31864,
+          "age0to14": 3248,
+          "age15to64": 20136,
+          "age65plus": 8480,
+          "age80plus": 2802,
+          "share80plus": 8.7936228973,
+          "structuralDependencyIndex": 58.2439411998,
+          "oldAgeDependencyIndex": 42.1136273341
+        },
+        {
+          "year": 2025,
+          "population": 31832,
+          "age0to14": 3129,
+          "age15to64": 20087,
+          "age65plus": 8616,
+          "age80plus": 2826,
+          "share80plus": 8.8778587585,
+          "structuralDependencyIndex": 58.4706526609,
+          "oldAgeDependencyIndex": 42.8934136506
+        },
+        {
+          "year": 2026,
+          "population": 31763,
+          "age0to14": 3066,
+          "age15to64": 19893,
+          "age65plus": 8804,
+          "age80plus": 2825,
+          "share80plus": 8.8939961591,
+          "structuralDependencyIndex": 59.6692303825,
+          "oldAgeDependencyIndex": 44.2567737395
+        }
+      ],
+      "Forte dei Marmi": [
+        {
+          "year": 2019,
+          "population": 7156,
+          "age0to14": 682,
+          "age15to64": 4210,
+          "age65plus": 2264,
+          "age80plus": 782,
+          "share80plus": 10.9278926775,
+          "structuralDependencyIndex": 69.9762470309,
+          "oldAgeDependencyIndex": 53.7767220903
+        },
+        {
+          "year": 2020,
+          "population": 7111,
+          "age0to14": 652,
+          "age15to64": 4174,
+          "age65plus": 2285,
+          "age80plus": 816,
+          "share80plus": 11.4751792997,
+          "structuralDependencyIndex": 70.36415908,
+          "oldAgeDependencyIndex": 54.7436511739
+        },
+        {
+          "year": 2021,
+          "population": 7217,
+          "age0to14": 637,
+          "age15to64": 4309,
+          "age65plus": 2271,
+          "age80plus": 821,
+          "share80plus": 11.3759179715,
+          "structuralDependencyIndex": 67.4866558366,
+          "oldAgeDependencyIndex": 52.7036435368
+        },
+        {
+          "year": 2022,
+          "population": 6943,
+          "age0to14": 622,
+          "age15to64": 4041,
+          "age65plus": 2280,
+          "age80plus": 842,
+          "share80plus": 12.1273224831,
+          "structuralDependencyIndex": 71.8139074487,
+          "oldAgeDependencyIndex": 56.4216778025
+        },
+        {
+          "year": 2023,
+          "population": 6879,
+          "age0to14": 606,
+          "age15to64": 3991,
+          "age65plus": 2282,
+          "age80plus": 837,
+          "share80plus": 12.1674662015,
+          "structuralDependencyIndex": 72.3628163368,
+          "oldAgeDependencyIndex": 57.1786519669
+        },
+        {
+          "year": 2024,
+          "population": 6777,
+          "age0to14": 584,
+          "age15to64": 3912,
+          "age65plus": 2281,
+          "age80plus": 823,
+          "share80plus": 12.1440165265,
+          "structuralDependencyIndex": 73.236196319,
+          "oldAgeDependencyIndex": 58.3077709611
+        },
+        {
+          "year": 2025,
+          "population": 6666,
+          "age0to14": 558,
+          "age15to64": 3823,
+          "age65plus": 2285,
+          "age80plus": 811,
+          "share80plus": 12.1662166217,
+          "structuralDependencyIndex": 74.365681402,
+          "oldAgeDependencyIndex": 59.769814282
+        },
+        {
+          "year": 2026,
+          "population": 6550,
+          "age0to14": 539,
+          "age15to64": 3724,
+          "age65plus": 2287,
+          "age80plus": 818,
+          "share80plus": 12.4885496183,
+          "structuralDependencyIndex": 75.8861439313,
+          "oldAgeDependencyIndex": 61.4124597207
+        }
+      ],
+      "Massarosa": [
+        {
+          "year": 2019,
+          "population": 21696,
+          "age0to14": 2720,
+          "age15to64": 13943,
+          "age65plus": 5033,
+          "age80plus": 1511,
+          "share80plus": 6.9644174041,
+          "structuralDependencyIndex": 55.6049630639,
+          "oldAgeDependencyIndex": 36.0969662196
+        },
+        {
+          "year": 2020,
+          "population": 21615,
+          "age0to14": 2643,
+          "age15to64": 13901,
+          "age65plus": 5071,
+          "age80plus": 1545,
+          "share80plus": 7.147814018,
+          "structuralDependencyIndex": 55.4924106179,
+          "oldAgeDependencyIndex": 36.4793899719
+        },
+        {
+          "year": 2021,
+          "population": 21951,
+          "age0to14": 2628,
+          "age15to64": 14066,
+          "age65plus": 5257,
+          "age80plus": 1605,
+          "share80plus": 7.3117397841,
+          "structuralDependencyIndex": 56.0571591071,
+          "oldAgeDependencyIndex": 37.3738091853
+        },
+        {
+          "year": 2022,
+          "population": 21823,
+          "age0to14": 2566,
+          "age15to64": 13989,
+          "age65plus": 5268,
+          "age80plus": 1611,
+          "share80plus": 7.3821197819,
+          "structuralDependencyIndex": 56.0011437558,
+          "oldAgeDependencyIndex": 37.6581599828
+        },
+        {
+          "year": 2023,
+          "population": 21822,
+          "age0to14": 2489,
+          "age15to64": 14008,
+          "age65plus": 5325,
+          "age80plus": 1619,
+          "share80plus": 7.419118321,
+          "structuralDependencyIndex": 55.7824100514,
+          "oldAgeDependencyIndex": 38.0139920046
+        },
+        {
+          "year": 2024,
+          "population": 21865,
+          "age0to14": 2388,
+          "age15to64": 14071,
+          "age65plus": 5406,
+          "age80plus": 1644,
+          "share80plus": 7.5188657672,
+          "structuralDependencyIndex": 55.3905195082,
+          "oldAgeDependencyIndex": 38.419444247
+        },
+        {
+          "year": 2025,
+          "population": 21806,
+          "age0to14": 2306,
+          "age15to64": 13977,
+          "age65plus": 5523,
+          "age80plus": 1703,
+          "share80plus": 7.8097771256,
+          "structuralDependencyIndex": 56.013450669,
+          "oldAgeDependencyIndex": 39.5149173642
+        },
+        {
+          "year": 2026,
+          "population": 21782,
+          "age0to14": 2213,
+          "age15to64": 13878,
+          "age65plus": 5691,
+          "age80plus": 1724,
+          "share80plus": 7.9147920301,
+          "structuralDependencyIndex": 56.953451506,
+          "oldAgeDependencyIndex": 41.0073497622
+        }
+      ],
+      "Pietrasanta": [
+        {
+          "year": 2019,
+          "population": 23073,
+          "age0to14": 2477,
+          "age15to64": 14290,
+          "age65plus": 6306,
+          "age80plus": 2008,
+          "share80plus": 8.7028128115,
+          "structuralDependencyIndex": 61.4625612316,
+          "oldAgeDependencyIndex": 44.1287613716
+        },
+        {
+          "year": 2020,
+          "population": 22997,
+          "age0to14": 2400,
+          "age15to64": 14224,
+          "age65plus": 6373,
+          "age80plus": 2071,
+          "share80plus": 9.0055224595,
+          "structuralDependencyIndex": 61.6774465692,
+          "oldAgeDependencyIndex": 44.8045556805
+        },
+        {
+          "year": 2021,
+          "population": 23121,
+          "age0to14": 2370,
+          "age15to64": 14231,
+          "age65plus": 6520,
+          "age80plus": 2177,
+          "share80plus": 9.4156827127,
+          "structuralDependencyIndex": 62.4692572553,
+          "oldAgeDependencyIndex": 45.8154732626
+        },
+        {
+          "year": 2022,
+          "population": 23066,
+          "age0to14": 2314,
+          "age15to64": 14150,
+          "age65plus": 6602,
+          "age80plus": 2166,
+          "share80plus": 9.3904448105,
+          "structuralDependencyIndex": 63.0106007067,
+          "oldAgeDependencyIndex": 46.6572438163
+        },
+        {
+          "year": 2023,
+          "population": 22933,
+          "age0to14": 2236,
+          "age15to64": 14038,
+          "age65plus": 6659,
+          "age80plus": 2153,
+          "share80plus": 9.388217852,
+          "structuralDependencyIndex": 63.3637270266,
+          "oldAgeDependencyIndex": 47.4355321271
+        },
+        {
+          "year": 2024,
+          "population": 22788,
+          "age0to14": 2164,
+          "age15to64": 13904,
+          "age65plus": 6720,
+          "age80plus": 2121,
+          "share80plus": 9.3075302791,
+          "structuralDependencyIndex": 63.8952819333,
+          "oldAgeDependencyIndex": 48.33141542
+        },
+        {
+          "year": 2025,
+          "population": 22743,
+          "age0to14": 2115,
+          "age15to64": 13800,
+          "age65plus": 6828,
+          "age80plus": 2154,
+          "share80plus": 9.4710460361,
+          "structuralDependencyIndex": 64.8043478261,
+          "oldAgeDependencyIndex": 49.4782608696
+        },
+        {
+          "year": 2026,
+          "population": 22678,
+          "age0to14": 2062,
+          "age15to64": 13697,
+          "age65plus": 6919,
+          "age80plus": 2147,
+          "share80plus": 9.4673251609,
+          "structuralDependencyIndex": 65.5691027232,
+          "oldAgeDependencyIndex": 50.5147112506
+        }
+      ],
+      "Seravezza": [
+        {
+          "year": 2019,
+          "population": 12845,
+          "age0to14": 1393,
+          "age15to64": 8107,
+          "age65plus": 3345,
+          "age80plus": 1081,
+          "share80plus": 8.4157259634,
+          "structuralDependencyIndex": 58.4433205871,
+          "oldAgeDependencyIndex": 41.260638954
+        },
+        {
+          "year": 2020,
+          "population": 12774,
+          "age0to14": 1348,
+          "age15to64": 8009,
+          "age65plus": 3417,
+          "age80plus": 1121,
+          "share80plus": 8.7756380147,
+          "structuralDependencyIndex": 59.4955674866,
+          "oldAgeDependencyIndex": 42.6645024348
+        },
+        {
+          "year": 2021,
+          "population": 12556,
+          "age0to14": 1315,
+          "age15to64": 7822,
+          "age65plus": 3419,
+          "age80plus": 1147,
+          "share80plus": 9.1350748646,
+          "structuralDependencyIndex": 60.5216057274,
+          "oldAgeDependencyIndex": 43.7100485809
+        },
+        {
+          "year": 2022,
+          "population": 12441,
+          "age0to14": 1260,
+          "age15to64": 7742,
+          "age65plus": 3439,
+          "age80plus": 1151,
+          "share80plus": 9.2516678724,
+          "structuralDependencyIndex": 60.6949108757,
+          "oldAgeDependencyIndex": 44.4200464996
+        },
+        {
+          "year": 2023,
+          "population": 12395,
+          "age0to14": 1242,
+          "age15to64": 7646,
+          "age65plus": 3507,
+          "age80plus": 1142,
+          "share80plus": 9.213392497,
+          "structuralDependencyIndex": 62.1109076641,
+          "oldAgeDependencyIndex": 45.8671200628
+        },
+        {
+          "year": 2024,
+          "population": 12435,
+          "age0to14": 1206,
+          "age15to64": 7665,
+          "age65plus": 3564,
+          "age80plus": 1141,
+          "share80plus": 9.1757137113,
+          "structuralDependencyIndex": 62.2309197652,
+          "oldAgeDependencyIndex": 46.4970645793
+        },
+        {
+          "year": 2025,
+          "population": 12381,
+          "age0to14": 1198,
+          "age15to64": 7586,
+          "age65plus": 3597,
+          "age80plus": 1144,
+          "share80plus": 9.2399644617,
+          "structuralDependencyIndex": 63.2085420511,
+          "oldAgeDependencyIndex": 47.4162931716
+        },
+        {
+          "year": 2026,
+          "population": 12284,
+          "age0to14": 1182,
+          "age15to64": 7488,
+          "age65plus": 3614,
+          "age80plus": 1124,
+          "share80plus": 9.1501139694,
+          "structuralDependencyIndex": 64.0491452991,
+          "oldAgeDependencyIndex": 48.2638888889
+        }
+      ],
+      "Stazzema": [
+        {
+          "year": 2019,
+          "population": 2971,
+          "age0to14": 285,
+          "age15to64": 1872,
+          "age65plus": 814,
+          "age80plus": 261,
+          "share80plus": 8.7849209021,
+          "structuralDependencyIndex": 58.7072649573,
+          "oldAgeDependencyIndex": 43.4829059829
+        },
+        {
+          "year": 2020,
+          "population": 2958,
+          "age0to14": 277,
+          "age15to64": 1860,
+          "age65plus": 821,
+          "age80plus": 261,
+          "share80plus": 8.8235294118,
+          "structuralDependencyIndex": 59.0322580645,
+          "oldAgeDependencyIndex": 44.1397849462
+        },
+        {
+          "year": 2021,
+          "population": 2898,
+          "age0to14": 263,
+          "age15to64": 1811,
+          "age65plus": 824,
+          "age80plus": 269,
+          "share80plus": 9.2822636301,
+          "structuralDependencyIndex": 60.0220872446,
+          "oldAgeDependencyIndex": 45.4997239094
+        },
+        {
+          "year": 2022,
+          "population": 2890,
+          "age0to14": 265,
+          "age15to64": 1800,
+          "age65plus": 825,
+          "age80plus": 284,
+          "share80plus": 9.8269896194,
+          "structuralDependencyIndex": 60.5555555556,
+          "oldAgeDependencyIndex": 45.8333333333
+        },
+        {
+          "year": 2023,
+          "population": 2877,
+          "age0to14": 267,
+          "age15to64": 1786,
+          "age65plus": 824,
+          "age80plus": 280,
+          "share80plus": 9.7323600973,
+          "structuralDependencyIndex": 61.0862262038,
+          "oldAgeDependencyIndex": 46.1366181411
+        },
+        {
+          "year": 2024,
+          "population": 2903,
+          "age0to14": 268,
+          "age15to64": 1801,
+          "age65plus": 834,
+          "age80plus": 274,
+          "share80plus": 9.4385118843,
+          "structuralDependencyIndex": 61.1882287618,
+          "oldAgeDependencyIndex": 46.3076068851
+        },
+        {
+          "year": 2025,
+          "population": 2892,
+          "age0to14": 240,
+          "age15to64": 1818,
+          "age65plus": 834,
+          "age80plus": 276,
+          "share80plus": 9.5435684647,
+          "structuralDependencyIndex": 59.0759075908,
+          "oldAgeDependencyIndex": 45.8745874587
+        },
+        {
+          "year": 2026,
+          "population": 2783,
+          "age0to14": 227,
+          "age15to64": 1730,
+          "age65plus": 826,
+          "age80plus": 256,
+          "share80plus": 9.1987064319,
+          "structuralDependencyIndex": 60.8670520231,
+          "oldAgeDependencyIndex": 47.7456647399
+        }
+      ],
+      "Viareggio": [
+        {
+          "year": 2019,
+          "population": 60602,
+          "age0to14": 6935,
+          "age15to64": 37734,
+          "age65plus": 15933,
+          "age80plus": 5024,
+          "share80plus": 8.2901554404,
+          "structuralDependencyIndex": 60.6031695553,
+          "oldAgeDependencyIndex": 42.2245190014
+        },
+        {
+          "year": 2020,
+          "population": 60512,
+          "age0to14": 6865,
+          "age15to64": 37579,
+          "age65plus": 16068,
+          "age80plus": 5114,
+          "share80plus": 8.4512162877,
+          "structuralDependencyIndex": 61.0261050055,
+          "oldAgeDependencyIndex": 42.7579233082
+        },
+        {
+          "year": 2021,
+          "population": 61251,
+          "age0to14": 6892,
+          "age15to64": 38038,
+          "age65plus": 16321,
+          "age80plus": 5283,
+          "share80plus": 8.6251653034,
+          "structuralDependencyIndex": 61.025816289,
+          "oldAgeDependencyIndex": 42.9070929071
+        },
+        {
+          "year": 2022,
+          "population": 61045,
+          "age0to14": 6731,
+          "age15to64": 37904,
+          "age65plus": 16410,
+          "age80plus": 5390,
+          "share80plus": 8.8295519699,
+          "structuralDependencyIndex": 61.0516040523,
+          "oldAgeDependencyIndex": 43.2935837906
+        },
+        {
+          "year": 2023,
+          "population": 60890,
+          "age0to14": 6534,
+          "age15to64": 37910,
+          "age65plus": 16446,
+          "age80plus": 5412,
+          "share80plus": 8.8881589752,
+          "structuralDependencyIndex": 60.6172513849,
+          "oldAgeDependencyIndex": 43.3816934846
+        },
+        {
+          "year": 2024,
+          "population": 60755,
+          "age0to14": 6341,
+          "age15to64": 37793,
+          "age65plus": 16621,
+          "age80plus": 5470,
+          "share80plus": 9.0033742079,
+          "structuralDependencyIndex": 60.7572830948,
+          "oldAgeDependencyIndex": 43.9790437383
+        },
+        {
+          "year": 2025,
+          "population": 60618,
+          "age0to14": 6193,
+          "age15to64": 37559,
+          "age65plus": 16866,
+          "age80plus": 5522,
+          "share80plus": 9.1095054274,
+          "structuralDependencyIndex": 61.3940733246,
+          "oldAgeDependencyIndex": 44.9053489177
+        },
+        {
+          "year": 2026,
+          "population": 60680,
+          "age0to14": 6056,
+          "age15to64": 37434,
+          "age65plus": 17190,
+          "age80plus": 5612,
+          "share80plus": 9.2485168095,
+          "structuralDependencyIndex": 62.0986269167,
+          "oldAgeDependencyIndex": 45.9208206443
+        }
+      ]
+    },
+    "ageSex2026": {
+      "Camaiore": [
+        {
+          "age": 0,
+          "men": 87,
+          "women": 78,
+          "total": 165
+        },
+        {
+          "age": 1,
+          "men": 80,
+          "women": 73,
+          "total": 153
+        },
+        {
+          "age": 2,
+          "men": 78,
+          "women": 71,
+          "total": 149
+        },
+        {
+          "age": 3,
+          "men": 99,
+          "women": 76,
+          "total": 175
+        },
+        {
+          "age": 4,
+          "men": 102,
+          "women": 97,
+          "total": 199
+        },
+        {
+          "age": 5,
+          "men": 98,
+          "women": 90,
+          "total": 188
+        },
+        {
+          "age": 6,
+          "men": 102,
+          "women": 95,
+          "total": 197
+        },
+        {
+          "age": 7,
+          "men": 101,
+          "women": 97,
+          "total": 198
+        },
+        {
+          "age": 8,
+          "men": 116,
+          "women": 79,
+          "total": 195
+        },
+        {
+          "age": 9,
+          "men": 103,
+          "women": 118,
+          "total": 221
+        },
+        {
+          "age": 10,
+          "men": 123,
+          "women": 107,
+          "total": 230
+        },
+        {
+          "age": 11,
+          "men": 114,
+          "women": 119,
+          "total": 233
+        },
+        {
+          "age": 12,
+          "men": 119,
+          "women": 116,
+          "total": 235
+        },
+        {
+          "age": 13,
+          "men": 131,
+          "women": 129,
+          "total": 260
+        },
+        {
+          "age": 14,
+          "men": 129,
+          "women": 139,
+          "total": 268
+        },
+        {
+          "age": 15,
+          "men": 147,
+          "women": 126,
+          "total": 273
+        },
+        {
+          "age": 16,
+          "men": 158,
+          "women": 129,
+          "total": 287
+        },
+        {
+          "age": 17,
+          "men": 161,
+          "women": 143,
+          "total": 304
+        },
+        {
+          "age": 18,
+          "men": 148,
+          "women": 137,
+          "total": 285
+        },
+        {
+          "age": 19,
+          "men": 186,
+          "women": 133,
+          "total": 319
+        },
+        {
+          "age": 20,
+          "men": 173,
+          "women": 131,
+          "total": 304
+        },
+        {
+          "age": 21,
+          "men": 130,
+          "women": 148,
+          "total": 278
+        },
+        {
+          "age": 22,
+          "men": 150,
+          "women": 151,
+          "total": 301
+        },
+        {
+          "age": 23,
+          "men": 143,
+          "women": 139,
+          "total": 282
+        },
+        {
+          "age": 24,
+          "men": 147,
+          "women": 127,
+          "total": 274
+        },
+        {
+          "age": 25,
+          "men": 159,
+          "women": 142,
+          "total": 301
+        },
+        {
+          "age": 26,
+          "men": 157,
+          "women": 121,
+          "total": 278
+        },
+        {
+          "age": 27,
+          "men": 144,
+          "women": 151,
+          "total": 295
+        },
+        {
+          "age": 28,
+          "men": 162,
+          "women": 149,
+          "total": 311
+        },
+        {
+          "age": 29,
+          "men": 163,
+          "women": 155,
+          "total": 318
+        },
+        {
+          "age": 30,
+          "men": 147,
+          "women": 132,
+          "total": 279
+        },
+        {
+          "age": 31,
+          "men": 164,
+          "women": 141,
+          "total": 305
+        },
+        {
+          "age": 32,
+          "men": 138,
+          "women": 142,
+          "total": 280
+        },
+        {
+          "age": 33,
+          "men": 169,
+          "women": 161,
+          "total": 330
+        },
+        {
+          "age": 34,
+          "men": 161,
+          "women": 154,
+          "total": 315
+        },
+        {
+          "age": 35,
+          "men": 169,
+          "women": 145,
+          "total": 314
+        },
+        {
+          "age": 36,
+          "men": 153,
+          "women": 148,
+          "total": 301
+        },
+        {
+          "age": 37,
+          "men": 170,
+          "women": 175,
+          "total": 345
+        },
+        {
+          "age": 38,
+          "men": 161,
+          "women": 168,
+          "total": 329
+        },
+        {
+          "age": 39,
+          "men": 161,
+          "women": 166,
+          "total": 327
+        },
+        {
+          "age": 40,
+          "men": 172,
+          "women": 196,
+          "total": 368
+        },
+        {
+          "age": 41,
+          "men": 188,
+          "women": 182,
+          "total": 370
+        },
+        {
+          "age": 42,
+          "men": 156,
+          "women": 201,
+          "total": 357
+        },
+        {
+          "age": 43,
+          "men": 179,
+          "women": 177,
+          "total": 356
+        },
+        {
+          "age": 44,
+          "men": 185,
+          "women": 182,
+          "total": 367
+        },
+        {
+          "age": 45,
+          "men": 212,
+          "women": 203,
+          "total": 415
+        },
+        {
+          "age": 46,
+          "men": 180,
+          "women": 222,
+          "total": 402
+        },
+        {
+          "age": 47,
+          "men": 196,
+          "women": 216,
+          "total": 412
+        },
+        {
+          "age": 48,
+          "men": 228,
+          "women": 211,
+          "total": 439
+        },
+        {
+          "age": 49,
+          "men": 238,
+          "women": 281,
+          "total": 519
+        },
+        {
+          "age": 50,
+          "men": 254,
+          "women": 263,
+          "total": 517
+        },
+        {
+          "age": 51,
+          "men": 253,
+          "women": 254,
+          "total": 507
+        },
+        {
+          "age": 52,
+          "men": 308,
+          "women": 273,
+          "total": 581
+        },
+        {
+          "age": 53,
+          "men": 271,
+          "women": 278,
+          "total": 549
+        },
+        {
+          "age": 54,
+          "men": 268,
+          "women": 308,
+          "total": 576
+        },
+        {
+          "age": 55,
+          "men": 260,
+          "women": 298,
+          "total": 558
+        },
+        {
+          "age": 56,
+          "men": 260,
+          "women": 270,
+          "total": 530
+        },
+        {
+          "age": 57,
+          "men": 286,
+          "women": 288,
+          "total": 574
+        },
+        {
+          "age": 58,
+          "men": 261,
+          "women": 308,
+          "total": 569
+        },
+        {
+          "age": 59,
+          "men": 266,
+          "women": 297,
+          "total": 563
+        },
+        {
+          "age": 60,
+          "men": 289,
+          "women": 337,
+          "total": 626
+        },
+        {
+          "age": 61,
+          "men": 269,
+          "women": 328,
+          "total": 597
+        },
+        {
+          "age": 62,
+          "men": 281,
+          "women": 283,
+          "total": 564
+        },
+        {
+          "age": 63,
+          "men": 269,
+          "women": 267,
+          "total": 536
+        },
+        {
+          "age": 64,
+          "men": 241,
+          "women": 265,
+          "total": 506
+        },
+        {
+          "age": 65,
+          "men": 270,
+          "women": 288,
+          "total": 558
+        },
+        {
+          "age": 66,
+          "men": 224,
+          "women": 247,
+          "total": 471
+        },
+        {
+          "age": 67,
+          "men": 250,
+          "women": 224,
+          "total": 474
+        },
+        {
+          "age": 68,
+          "men": 213,
+          "women": 214,
+          "total": 427
+        },
+        {
+          "age": 69,
+          "men": 199,
+          "women": 216,
+          "total": 415
+        },
+        {
+          "age": 70,
+          "men": 181,
+          "women": 199,
+          "total": 380
+        },
+        {
+          "age": 71,
+          "men": 186,
+          "women": 208,
+          "total": 394
+        },
+        {
+          "age": 72,
+          "men": 188,
+          "women": 203,
+          "total": 391
+        },
+        {
+          "age": 73,
+          "men": 170,
+          "women": 179,
+          "total": 349
+        },
+        {
+          "age": 74,
+          "men": 170,
+          "women": 190,
+          "total": 360
+        },
+        {
+          "age": 75,
+          "men": 135,
+          "women": 170,
+          "total": 305
+        },
+        {
+          "age": 76,
+          "men": 144,
+          "women": 181,
+          "total": 325
+        },
+        {
+          "age": 77,
+          "men": 183,
+          "women": 215,
+          "total": 398
+        },
+        {
+          "age": 78,
+          "men": 138,
+          "women": 204,
+          "total": 342
+        },
+        {
+          "age": 79,
+          "men": 198,
+          "women": 192,
+          "total": 390
+        },
+        {
+          "age": 80,
+          "men": 119,
+          "women": 143,
+          "total": 262
+        },
+        {
+          "age": 81,
+          "men": 112,
+          "women": 152,
+          "total": 264
+        },
+        {
+          "age": 82,
+          "men": 95,
+          "women": 169,
+          "total": 264
+        },
+        {
+          "age": 83,
+          "men": 91,
+          "women": 144,
+          "total": 235
+        },
+        {
+          "age": 84,
+          "men": 109,
+          "women": 135,
+          "total": 244
+        },
+        {
+          "age": 85,
+          "men": 95,
+          "women": 149,
+          "total": 244
+        },
+        {
+          "age": 86,
+          "men": 98,
+          "women": 150,
+          "total": 248
+        },
+        {
+          "age": 87,
+          "men": 75,
+          "women": 136,
+          "total": 211
+        },
+        {
+          "age": 88,
+          "men": 60,
+          "women": 99,
+          "total": 159
+        },
+        {
+          "age": 89,
+          "men": 49,
+          "women": 95,
+          "total": 144
+        },
+        {
+          "age": 90,
+          "men": 39,
+          "women": 99,
+          "total": 138
+        },
+        {
+          "age": 91,
+          "men": 28,
+          "women": 73,
+          "total": 101
+        },
+        {
+          "age": 92,
+          "men": 25,
+          "women": 53,
+          "total": 78
+        },
+        {
+          "age": 93,
+          "men": 18,
+          "women": 52,
+          "total": 70
+        },
+        {
+          "age": 94,
+          "men": 16,
+          "women": 39,
+          "total": 55
+        },
+        {
+          "age": 95,
+          "men": 11,
+          "women": 32,
+          "total": 43
+        },
+        {
+          "age": 96,
+          "men": 6,
+          "women": 10,
+          "total": 16
+        },
+        {
+          "age": 97,
+          "men": 2,
+          "women": 17,
+          "total": 19
+        },
+        {
+          "age": 98,
+          "men": 1,
+          "women": 9,
+          "total": 10
+        },
+        {
+          "age": 99,
+          "men": 0,
+          "women": 9,
+          "total": 9
+        },
+        {
+          "age": 100,
+          "men": 2,
+          "women": 9,
+          "total": 11
+        }
+      ],
+      "Forte dei Marmi": [
+        {
+          "age": 0,
+          "men": 14,
+          "women": 13,
+          "total": 27
+        },
+        {
+          "age": 1,
+          "men": 12,
+          "women": 10,
+          "total": 22
+        },
+        {
+          "age": 2,
+          "men": 16,
+          "women": 13,
+          "total": 29
+        },
+        {
+          "age": 3,
+          "men": 13,
+          "women": 16,
+          "total": 29
+        },
+        {
+          "age": 4,
+          "men": 12,
+          "women": 14,
+          "total": 26
+        },
+        {
+          "age": 5,
+          "men": 11,
+          "women": 16,
+          "total": 27
+        },
+        {
+          "age": 6,
+          "men": 10,
+          "women": 19,
+          "total": 29
+        },
+        {
+          "age": 7,
+          "men": 23,
+          "women": 16,
+          "total": 39
+        },
+        {
+          "age": 8,
+          "men": 20,
+          "women": 24,
+          "total": 44
+        },
+        {
+          "age": 9,
+          "men": 17,
+          "women": 13,
+          "total": 30
+        },
+        {
+          "age": 10,
+          "men": 17,
+          "women": 26,
+          "total": 43
+        },
+        {
+          "age": 11,
+          "men": 18,
+          "women": 22,
+          "total": 40
+        },
+        {
+          "age": 12,
+          "men": 25,
+          "women": 17,
+          "total": 42
+        },
+        {
+          "age": 13,
+          "men": 32,
+          "women": 28,
+          "total": 60
+        },
+        {
+          "age": 14,
+          "men": 22,
+          "women": 30,
+          "total": 52
+        },
+        {
+          "age": 15,
+          "men": 27,
+          "women": 23,
+          "total": 50
+        },
+        {
+          "age": 16,
+          "men": 27,
+          "women": 34,
+          "total": 61
+        },
+        {
+          "age": 17,
+          "men": 29,
+          "women": 32,
+          "total": 61
+        },
+        {
+          "age": 18,
+          "men": 23,
+          "women": 27,
+          "total": 50
+        },
+        {
+          "age": 19,
+          "men": 23,
+          "women": 32,
+          "total": 55
+        },
+        {
+          "age": 20,
+          "men": 25,
+          "women": 24,
+          "total": 49
+        },
+        {
+          "age": 21,
+          "men": 26,
+          "women": 23,
+          "total": 49
+        },
+        {
+          "age": 22,
+          "men": 30,
+          "women": 19,
+          "total": 49
+        },
+        {
+          "age": 23,
+          "men": 35,
+          "women": 24,
+          "total": 59
+        },
+        {
+          "age": 24,
+          "men": 32,
+          "women": 32,
+          "total": 64
+        },
+        {
+          "age": 25,
+          "men": 28,
+          "women": 29,
+          "total": 57
+        },
+        {
+          "age": 26,
+          "men": 23,
+          "women": 34,
+          "total": 57
+        },
+        {
+          "age": 27,
+          "men": 31,
+          "women": 23,
+          "total": 54
+        },
+        {
+          "age": 28,
+          "men": 39,
+          "women": 23,
+          "total": 62
+        },
+        {
+          "age": 29,
+          "men": 24,
+          "women": 26,
+          "total": 50
+        },
+        {
+          "age": 30,
+          "men": 27,
+          "women": 16,
+          "total": 43
+        },
+        {
+          "age": 31,
+          "men": 30,
+          "women": 24,
+          "total": 54
+        },
+        {
+          "age": 32,
+          "men": 29,
+          "women": 31,
+          "total": 60
+        },
+        {
+          "age": 33,
+          "men": 23,
+          "women": 21,
+          "total": 44
+        },
+        {
+          "age": 34,
+          "men": 23,
+          "women": 29,
+          "total": 52
+        },
+        {
+          "age": 35,
+          "men": 26,
+          "women": 24,
+          "total": 50
+        },
+        {
+          "age": 36,
+          "men": 23,
+          "women": 19,
+          "total": 42
+        },
+        {
+          "age": 37,
+          "men": 26,
+          "women": 28,
+          "total": 54
+        },
+        {
+          "age": 38,
+          "men": 18,
+          "women": 36,
+          "total": 54
+        },
+        {
+          "age": 39,
+          "men": 28,
+          "women": 30,
+          "total": 58
+        },
+        {
+          "age": 40,
+          "men": 22,
+          "women": 30,
+          "total": 52
+        },
+        {
+          "age": 41,
+          "men": 24,
+          "women": 28,
+          "total": 52
+        },
+        {
+          "age": 42,
+          "men": 23,
+          "women": 32,
+          "total": 55
+        },
+        {
+          "age": 43,
+          "men": 33,
+          "women": 25,
+          "total": 58
+        },
+        {
+          "age": 44,
+          "men": 26,
+          "women": 30,
+          "total": 56
+        },
+        {
+          "age": 45,
+          "men": 28,
+          "women": 39,
+          "total": 67
+        },
+        {
+          "age": 46,
+          "men": 41,
+          "women": 50,
+          "total": 91
+        },
+        {
+          "age": 47,
+          "men": 39,
+          "women": 48,
+          "total": 87
+        },
+        {
+          "age": 48,
+          "men": 35,
+          "women": 35,
+          "total": 70
+        },
+        {
+          "age": 49,
+          "men": 46,
+          "women": 37,
+          "total": 83
+        },
+        {
+          "age": 50,
+          "men": 45,
+          "women": 48,
+          "total": 93
+        },
+        {
+          "age": 51,
+          "men": 53,
+          "women": 32,
+          "total": 85
+        },
+        {
+          "age": 52,
+          "men": 44,
+          "women": 53,
+          "total": 97
+        },
+        {
+          "age": 53,
+          "men": 51,
+          "women": 61,
+          "total": 112
+        },
+        {
+          "age": 54,
+          "men": 42,
+          "women": 58,
+          "total": 100
+        },
+        {
+          "age": 55,
+          "men": 42,
+          "women": 51,
+          "total": 93
+        },
+        {
+          "age": 56,
+          "men": 47,
+          "women": 74,
+          "total": 121
+        },
+        {
+          "age": 57,
+          "men": 52,
+          "women": 77,
+          "total": 129
+        },
+        {
+          "age": 58,
+          "men": 53,
+          "women": 68,
+          "total": 121
+        },
+        {
+          "age": 59,
+          "men": 57,
+          "women": 61,
+          "total": 118
+        },
+        {
+          "age": 60,
+          "men": 65,
+          "women": 78,
+          "total": 143
+        },
+        {
+          "age": 61,
+          "men": 63,
+          "women": 74,
+          "total": 137
+        },
+        {
+          "age": 62,
+          "men": 52,
+          "women": 67,
+          "total": 119
+        },
+        {
+          "age": 63,
+          "men": 56,
+          "women": 73,
+          "total": 129
+        },
+        {
+          "age": 64,
+          "men": 53,
+          "women": 65,
+          "total": 118
+        },
+        {
+          "age": 65,
+          "men": 62,
+          "women": 59,
+          "total": 121
+        },
+        {
+          "age": 66,
+          "men": 57,
+          "women": 65,
+          "total": 122
+        },
+        {
+          "age": 67,
+          "men": 56,
+          "women": 54,
+          "total": 110
+        },
+        {
+          "age": 68,
+          "men": 42,
+          "women": 65,
+          "total": 107
+        },
+        {
+          "age": 69,
+          "men": 51,
+          "women": 56,
+          "total": 107
+        },
+        {
+          "age": 70,
+          "men": 44,
+          "women": 47,
+          "total": 91
+        },
+        {
+          "age": 71,
+          "men": 45,
+          "women": 49,
+          "total": 94
+        },
+        {
+          "age": 72,
+          "men": 37,
+          "women": 45,
+          "total": 82
+        },
+        {
+          "age": 73,
+          "men": 40,
+          "women": 51,
+          "total": 91
+        },
+        {
+          "age": 74,
+          "men": 34,
+          "women": 65,
+          "total": 99
+        },
+        {
+          "age": 75,
+          "men": 38,
+          "women": 49,
+          "total": 87
+        },
+        {
+          "age": 76,
+          "men": 37,
+          "women": 44,
+          "total": 81
+        },
+        {
+          "age": 77,
+          "men": 51,
+          "women": 49,
+          "total": 100
+        },
+        {
+          "age": 78,
+          "men": 39,
+          "women": 49,
+          "total": 88
+        },
+        {
+          "age": 79,
+          "men": 30,
+          "women": 59,
+          "total": 89
+        },
+        {
+          "age": 80,
+          "men": 31,
+          "women": 45,
+          "total": 76
+        },
+        {
+          "age": 81,
+          "men": 32,
+          "women": 38,
+          "total": 70
+        },
+        {
+          "age": 82,
+          "men": 32,
+          "women": 36,
+          "total": 68
+        },
+        {
+          "age": 83,
+          "men": 19,
+          "women": 37,
+          "total": 56
+        },
+        {
+          "age": 84,
+          "men": 30,
+          "women": 41,
+          "total": 71
+        },
+        {
+          "age": 85,
+          "men": 31,
+          "women": 50,
+          "total": 81
+        },
+        {
+          "age": 86,
+          "men": 22,
+          "women": 57,
+          "total": 79
+        },
+        {
+          "age": 87,
+          "men": 30,
+          "women": 26,
+          "total": 56
+        },
+        {
+          "age": 88,
+          "men": 17,
+          "women": 41,
+          "total": 58
+        },
+        {
+          "age": 89,
+          "men": 11,
+          "women": 31,
+          "total": 42
+        },
+        {
+          "age": 90,
+          "men": 15,
+          "women": 16,
+          "total": 31
+        },
+        {
+          "age": 91,
+          "men": 8,
+          "women": 15,
+          "total": 23
+        },
+        {
+          "age": 92,
+          "men": 12,
+          "women": 11,
+          "total": 23
+        },
+        {
+          "age": 93,
+          "men": 8,
+          "women": 13,
+          "total": 21
+        },
+        {
+          "age": 94,
+          "men": 11,
+          "women": 11,
+          "total": 22
+        },
+        {
+          "age": 95,
+          "men": 4,
+          "women": 7,
+          "total": 11
+        },
+        {
+          "age": 96,
+          "men": 1,
+          "women": 6,
+          "total": 7
+        },
+        {
+          "age": 97,
+          "men": 0,
+          "women": 8,
+          "total": 8
+        },
+        {
+          "age": 98,
+          "men": 0,
+          "women": 6,
+          "total": 6
+        },
+        {
+          "age": 99,
+          "men": 3,
+          "women": 1,
+          "total": 4
+        },
+        {
+          "age": 100,
+          "men": 0,
+          "women": 5,
+          "total": 5
+        }
+      ],
+      "Massarosa": [
+        {
+          "age": 0,
+          "men": 49,
+          "women": 47,
+          "total": 96
+        },
+        {
+          "age": 1,
+          "men": 62,
+          "women": 49,
+          "total": 111
+        },
+        {
+          "age": 2,
+          "men": 55,
+          "women": 44,
+          "total": 99
+        },
+        {
+          "age": 3,
+          "men": 57,
+          "women": 50,
+          "total": 107
+        },
+        {
+          "age": 4,
+          "men": 64,
+          "women": 74,
+          "total": 138
+        },
+        {
+          "age": 5,
+          "men": 75,
+          "women": 58,
+          "total": 133
+        },
+        {
+          "age": 6,
+          "men": 64,
+          "women": 62,
+          "total": 126
+        },
+        {
+          "age": 7,
+          "men": 84,
+          "women": 76,
+          "total": 160
+        },
+        {
+          "age": 8,
+          "men": 83,
+          "women": 81,
+          "total": 164
+        },
+        {
+          "age": 9,
+          "men": 69,
+          "women": 84,
+          "total": 153
+        },
+        {
+          "age": 10,
+          "men": 105,
+          "women": 68,
+          "total": 173
+        },
+        {
+          "age": 11,
+          "men": 79,
+          "women": 90,
+          "total": 169
+        },
+        {
+          "age": 12,
+          "men": 82,
+          "women": 87,
+          "total": 169
+        },
+        {
+          "age": 13,
+          "men": 102,
+          "women": 107,
+          "total": 209
+        },
+        {
+          "age": 14,
+          "men": 106,
+          "women": 100,
+          "total": 206
+        },
+        {
+          "age": 15,
+          "men": 108,
+          "women": 91,
+          "total": 199
+        },
+        {
+          "age": 16,
+          "men": 100,
+          "women": 96,
+          "total": 196
+        },
+        {
+          "age": 17,
+          "men": 113,
+          "women": 123,
+          "total": 236
+        },
+        {
+          "age": 18,
+          "men": 131,
+          "women": 90,
+          "total": 221
+        },
+        {
+          "age": 19,
+          "men": 96,
+          "women": 97,
+          "total": 193
+        },
+        {
+          "age": 20,
+          "men": 127,
+          "women": 104,
+          "total": 231
+        },
+        {
+          "age": 21,
+          "men": 125,
+          "women": 99,
+          "total": 224
+        },
+        {
+          "age": 22,
+          "men": 103,
+          "women": 95,
+          "total": 198
+        },
+        {
+          "age": 23,
+          "men": 116,
+          "women": 99,
+          "total": 215
+        },
+        {
+          "age": 24,
+          "men": 128,
+          "women": 91,
+          "total": 219
+        },
+        {
+          "age": 25,
+          "men": 94,
+          "women": 87,
+          "total": 181
+        },
+        {
+          "age": 26,
+          "men": 111,
+          "women": 83,
+          "total": 194
+        },
+        {
+          "age": 27,
+          "men": 113,
+          "women": 100,
+          "total": 213
+        },
+        {
+          "age": 28,
+          "men": 97,
+          "women": 100,
+          "total": 197
+        },
+        {
+          "age": 29,
+          "men": 104,
+          "women": 80,
+          "total": 184
+        },
+        {
+          "age": 30,
+          "men": 91,
+          "women": 87,
+          "total": 178
+        },
+        {
+          "age": 31,
+          "men": 111,
+          "women": 114,
+          "total": 225
+        },
+        {
+          "age": 32,
+          "men": 107,
+          "women": 121,
+          "total": 228
+        },
+        {
+          "age": 33,
+          "men": 117,
+          "women": 93,
+          "total": 210
+        },
+        {
+          "age": 34,
+          "men": 117,
+          "women": 108,
+          "total": 225
+        },
+        {
+          "age": 35,
+          "men": 95,
+          "women": 126,
+          "total": 221
+        },
+        {
+          "age": 36,
+          "men": 99,
+          "women": 109,
+          "total": 208
+        },
+        {
+          "age": 37,
+          "men": 115,
+          "women": 111,
+          "total": 226
+        },
+        {
+          "age": 38,
+          "men": 112,
+          "women": 124,
+          "total": 236
+        },
+        {
+          "age": 39,
+          "men": 111,
+          "women": 102,
+          "total": 213
+        },
+        {
+          "age": 40,
+          "men": 111,
+          "women": 123,
+          "total": 234
+        },
+        {
+          "age": 41,
+          "men": 128,
+          "women": 109,
+          "total": 237
+        },
+        {
+          "age": 42,
+          "men": 120,
+          "women": 114,
+          "total": 234
+        },
+        {
+          "age": 43,
+          "men": 134,
+          "women": 145,
+          "total": 279
+        },
+        {
+          "age": 44,
+          "men": 130,
+          "women": 141,
+          "total": 271
+        },
+        {
+          "age": 45,
+          "men": 141,
+          "women": 152,
+          "total": 293
+        },
+        {
+          "age": 46,
+          "men": 127,
+          "women": 131,
+          "total": 258
+        },
+        {
+          "age": 47,
+          "men": 157,
+          "women": 169,
+          "total": 326
+        },
+        {
+          "age": 48,
+          "men": 145,
+          "women": 171,
+          "total": 316
+        },
+        {
+          "age": 49,
+          "men": 171,
+          "women": 154,
+          "total": 325
+        },
+        {
+          "age": 50,
+          "men": 146,
+          "women": 178,
+          "total": 324
+        },
+        {
+          "age": 51,
+          "men": 187,
+          "women": 201,
+          "total": 388
+        },
+        {
+          "age": 52,
+          "men": 193,
+          "women": 198,
+          "total": 391
+        },
+        {
+          "age": 53,
+          "men": 197,
+          "women": 193,
+          "total": 390
+        },
+        {
+          "age": 54,
+          "men": 209,
+          "women": 233,
+          "total": 442
+        },
+        {
+          "age": 55,
+          "men": 179,
+          "women": 168,
+          "total": 347
+        },
+        {
+          "age": 56,
+          "men": 201,
+          "women": 190,
+          "total": 391
+        },
+        {
+          "age": 57,
+          "men": 220,
+          "women": 184,
+          "total": 404
+        },
+        {
+          "age": 58,
+          "men": 178,
+          "women": 196,
+          "total": 374
+        },
+        {
+          "age": 59,
+          "men": 212,
+          "women": 204,
+          "total": 416
+        },
+        {
+          "age": 60,
+          "men": 202,
+          "women": 193,
+          "total": 395
+        },
+        {
+          "age": 61,
+          "men": 217,
+          "women": 199,
+          "total": 416
+        },
+        {
+          "age": 62,
+          "men": 210,
+          "women": 232,
+          "total": 442
+        },
+        {
+          "age": 63,
+          "men": 163,
+          "women": 178,
+          "total": 341
+        },
+        {
+          "age": 64,
+          "men": 196,
+          "women": 177,
+          "total": 373
+        },
+        {
+          "age": 65,
+          "men": 201,
+          "women": 181,
+          "total": 382
+        },
+        {
+          "age": 66,
+          "men": 159,
+          "women": 171,
+          "total": 330
+        },
+        {
+          "age": 67,
+          "men": 129,
+          "women": 162,
+          "total": 291
+        },
+        {
+          "age": 68,
+          "men": 153,
+          "women": 142,
+          "total": 295
+        },
+        {
+          "age": 69,
+          "men": 129,
+          "women": 138,
+          "total": 267
+        },
+        {
+          "age": 70,
+          "men": 106,
+          "women": 147,
+          "total": 253
+        },
+        {
+          "age": 71,
+          "men": 132,
+          "women": 132,
+          "total": 264
+        },
+        {
+          "age": 72,
+          "men": 135,
+          "women": 116,
+          "total": 251
+        },
+        {
+          "age": 73,
+          "men": 128,
+          "women": 115,
+          "total": 243
+        },
+        {
+          "age": 74,
+          "men": 93,
+          "women": 123,
+          "total": 216
+        },
+        {
+          "age": 75,
+          "men": 106,
+          "women": 105,
+          "total": 211
+        },
+        {
+          "age": 76,
+          "men": 118,
+          "women": 125,
+          "total": 243
+        },
+        {
+          "age": 77,
+          "men": 116,
+          "women": 128,
+          "total": 244
+        },
+        {
+          "age": 78,
+          "men": 102,
+          "women": 135,
+          "total": 237
+        },
+        {
+          "age": 79,
+          "men": 105,
+          "women": 135,
+          "total": 240
+        },
+        {
+          "age": 80,
+          "men": 73,
+          "women": 100,
+          "total": 173
+        },
+        {
+          "age": 81,
+          "men": 90,
+          "women": 113,
+          "total": 203
+        },
+        {
+          "age": 82,
+          "men": 75,
+          "women": 88,
+          "total": 163
+        },
+        {
+          "age": 83,
+          "men": 67,
+          "women": 75,
+          "total": 142
+        },
+        {
+          "age": 84,
+          "men": 59,
+          "women": 92,
+          "total": 151
+        },
+        {
+          "age": 85,
+          "men": 53,
+          "women": 89,
+          "total": 142
+        },
+        {
+          "age": 86,
+          "men": 54,
+          "women": 88,
+          "total": 142
+        },
+        {
+          "age": 87,
+          "men": 41,
+          "women": 86,
+          "total": 127
+        },
+        {
+          "age": 88,
+          "men": 33,
+          "women": 71,
+          "total": 104
+        },
+        {
+          "age": 89,
+          "men": 37,
+          "women": 43,
+          "total": 80
+        },
+        {
+          "age": 90,
+          "men": 26,
+          "women": 51,
+          "total": 77
+        },
+        {
+          "age": 91,
+          "men": 23,
+          "women": 37,
+          "total": 60
+        },
+        {
+          "age": 92,
+          "men": 16,
+          "women": 32,
+          "total": 48
+        },
+        {
+          "age": 93,
+          "men": 6,
+          "women": 27,
+          "total": 33
+        },
+        {
+          "age": 94,
+          "men": 13,
+          "women": 13,
+          "total": 26
+        },
+        {
+          "age": 95,
+          "men": 2,
+          "women": 22,
+          "total": 24
+        },
+        {
+          "age": 96,
+          "men": 0,
+          "women": 11,
+          "total": 11
+        },
+        {
+          "age": 97,
+          "men": 2,
+          "women": 8,
+          "total": 10
+        },
+        {
+          "age": 98,
+          "men": 0,
+          "women": 1,
+          "total": 1
+        },
+        {
+          "age": 99,
+          "men": 0,
+          "women": 2,
+          "total": 2
+        },
+        {
+          "age": 100,
+          "men": 3,
+          "women": 2,
+          "total": 5
+        }
+      ],
+      "Pietrasanta": [
+        {
+          "age": 0,
+          "men": 49,
+          "women": 51,
+          "total": 100
+        },
+        {
+          "age": 1,
+          "men": 49,
+          "women": 61,
+          "total": 110
+        },
+        {
+          "age": 2,
+          "men": 61,
+          "women": 38,
+          "total": 99
+        },
+        {
+          "age": 3,
+          "men": 54,
+          "women": 67,
+          "total": 121
+        },
+        {
+          "age": 4,
+          "men": 52,
+          "women": 52,
+          "total": 104
+        },
+        {
+          "age": 5,
+          "men": 63,
+          "women": 58,
+          "total": 121
+        },
+        {
+          "age": 6,
+          "men": 57,
+          "women": 67,
+          "total": 124
+        },
+        {
+          "age": 7,
+          "men": 75,
+          "women": 67,
+          "total": 142
+        },
+        {
+          "age": 8,
+          "men": 74,
+          "women": 79,
+          "total": 153
+        },
+        {
+          "age": 9,
+          "men": 87,
+          "women": 67,
+          "total": 154
+        },
+        {
+          "age": 10,
+          "men": 97,
+          "women": 70,
+          "total": 167
+        },
+        {
+          "age": 11,
+          "men": 63,
+          "women": 82,
+          "total": 145
+        },
+        {
+          "age": 12,
+          "men": 83,
+          "women": 92,
+          "total": 175
+        },
+        {
+          "age": 13,
+          "men": 80,
+          "women": 86,
+          "total": 166
+        },
+        {
+          "age": 14,
+          "men": 95,
+          "women": 86,
+          "total": 181
+        },
+        {
+          "age": 15,
+          "men": 116,
+          "women": 84,
+          "total": 200
+        },
+        {
+          "age": 16,
+          "men": 88,
+          "women": 86,
+          "total": 174
+        },
+        {
+          "age": 17,
+          "men": 106,
+          "women": 95,
+          "total": 201
+        },
+        {
+          "age": 18,
+          "men": 101,
+          "women": 91,
+          "total": 192
+        },
+        {
+          "age": 19,
+          "men": 88,
+          "women": 100,
+          "total": 188
+        },
+        {
+          "age": 20,
+          "men": 108,
+          "women": 118,
+          "total": 226
+        },
+        {
+          "age": 21,
+          "men": 111,
+          "women": 122,
+          "total": 233
+        },
+        {
+          "age": 22,
+          "men": 106,
+          "women": 89,
+          "total": 195
+        },
+        {
+          "age": 23,
+          "men": 110,
+          "women": 112,
+          "total": 222
+        },
+        {
+          "age": 24,
+          "men": 95,
+          "women": 99,
+          "total": 194
+        },
+        {
+          "age": 25,
+          "men": 86,
+          "women": 98,
+          "total": 184
+        },
+        {
+          "age": 26,
+          "men": 91,
+          "women": 86,
+          "total": 177
+        },
+        {
+          "age": 27,
+          "men": 95,
+          "women": 93,
+          "total": 188
+        },
+        {
+          "age": 28,
+          "men": 112,
+          "women": 93,
+          "total": 205
+        },
+        {
+          "age": 29,
+          "men": 100,
+          "women": 82,
+          "total": 182
+        },
+        {
+          "age": 30,
+          "men": 93,
+          "women": 108,
+          "total": 201
+        },
+        {
+          "age": 31,
+          "men": 106,
+          "women": 89,
+          "total": 195
+        },
+        {
+          "age": 32,
+          "men": 107,
+          "women": 110,
+          "total": 217
+        },
+        {
+          "age": 33,
+          "men": 105,
+          "women": 108,
+          "total": 213
+        },
+        {
+          "age": 34,
+          "men": 92,
+          "women": 115,
+          "total": 207
+        },
+        {
+          "age": 35,
+          "men": 102,
+          "women": 99,
+          "total": 201
+        },
+        {
+          "age": 36,
+          "men": 85,
+          "women": 81,
+          "total": 166
+        },
+        {
+          "age": 37,
+          "men": 99,
+          "women": 105,
+          "total": 204
+        },
+        {
+          "age": 38,
+          "men": 106,
+          "women": 103,
+          "total": 209
+        },
+        {
+          "age": 39,
+          "men": 93,
+          "women": 104,
+          "total": 197
+        },
+        {
+          "age": 40,
+          "men": 116,
+          "women": 118,
+          "total": 234
+        },
+        {
+          "age": 41,
+          "men": 104,
+          "women": 118,
+          "total": 222
+        },
+        {
+          "age": 42,
+          "men": 117,
+          "women": 125,
+          "total": 242
+        },
+        {
+          "age": 43,
+          "men": 122,
+          "women": 125,
+          "total": 247
+        },
+        {
+          "age": 44,
+          "men": 148,
+          "women": 133,
+          "total": 281
+        },
+        {
+          "age": 45,
+          "men": 114,
+          "women": 148,
+          "total": 262
+        },
+        {
+          "age": 46,
+          "men": 132,
+          "women": 135,
+          "total": 267
+        },
+        {
+          "age": 47,
+          "men": 139,
+          "women": 165,
+          "total": 304
+        },
+        {
+          "age": 48,
+          "men": 159,
+          "women": 165,
+          "total": 324
+        },
+        {
+          "age": 49,
+          "men": 151,
+          "women": 187,
+          "total": 338
+        },
+        {
+          "age": 50,
+          "men": 173,
+          "women": 182,
+          "total": 355
+        },
+        {
+          "age": 51,
+          "men": 167,
+          "women": 197,
+          "total": 364
+        },
+        {
+          "age": 52,
+          "men": 169,
+          "women": 195,
+          "total": 364
+        },
+        {
+          "age": 53,
+          "men": 171,
+          "women": 211,
+          "total": 382
+        },
+        {
+          "age": 54,
+          "men": 193,
+          "women": 206,
+          "total": 399
+        },
+        {
+          "age": 55,
+          "men": 204,
+          "women": 195,
+          "total": 399
+        },
+        {
+          "age": 56,
+          "men": 188,
+          "women": 198,
+          "total": 386
+        },
+        {
+          "age": 57,
+          "men": 176,
+          "women": 227,
+          "total": 403
+        },
+        {
+          "age": 58,
+          "men": 225,
+          "women": 208,
+          "total": 433
+        },
+        {
+          "age": 59,
+          "men": 200,
+          "women": 220,
+          "total": 420
+        },
+        {
+          "age": 60,
+          "men": 194,
+          "women": 221,
+          "total": 415
+        },
+        {
+          "age": 61,
+          "men": 220,
+          "women": 242,
+          "total": 462
+        },
+        {
+          "age": 62,
+          "men": 225,
+          "women": 235,
+          "total": 460
+        },
+        {
+          "age": 63,
+          "men": 174,
+          "women": 181,
+          "total": 355
+        },
+        {
+          "age": 64,
+          "men": 195,
+          "women": 213,
+          "total": 408
+        },
+        {
+          "age": 65,
+          "men": 199,
+          "women": 179,
+          "total": 378
+        },
+        {
+          "age": 66,
+          "men": 167,
+          "women": 210,
+          "total": 377
+        },
+        {
+          "age": 67,
+          "men": 170,
+          "women": 169,
+          "total": 339
+        },
+        {
+          "age": 68,
+          "men": 145,
+          "women": 204,
+          "total": 349
+        },
+        {
+          "age": 69,
+          "men": 175,
+          "women": 191,
+          "total": 366
+        },
+        {
+          "age": 70,
+          "men": 157,
+          "women": 158,
+          "total": 315
+        },
+        {
+          "age": 71,
+          "men": 147,
+          "women": 168,
+          "total": 315
+        },
+        {
+          "age": 72,
+          "men": 160,
+          "women": 182,
+          "total": 342
+        },
+        {
+          "age": 73,
+          "men": 136,
+          "women": 153,
+          "total": 289
+        },
+        {
+          "age": 74,
+          "men": 126,
+          "women": 149,
+          "total": 275
+        },
+        {
+          "age": 75,
+          "men": 143,
+          "women": 147,
+          "total": 290
+        },
+        {
+          "age": 76,
+          "men": 125,
+          "women": 161,
+          "total": 286
+        },
+        {
+          "age": 77,
+          "men": 130,
+          "women": 151,
+          "total": 281
+        },
+        {
+          "age": 78,
+          "men": 130,
+          "women": 171,
+          "total": 301
+        },
+        {
+          "age": 79,
+          "men": 124,
+          "women": 145,
+          "total": 269
+        },
+        {
+          "age": 80,
+          "men": 86,
+          "women": 113,
+          "total": 199
+        },
+        {
+          "age": 81,
+          "men": 84,
+          "women": 148,
+          "total": 232
+        },
+        {
+          "age": 82,
+          "men": 59,
+          "women": 108,
+          "total": 167
+        },
+        {
+          "age": 83,
+          "men": 80,
+          "women": 98,
+          "total": 178
+        },
+        {
+          "age": 84,
+          "men": 73,
+          "women": 107,
+          "total": 180
+        },
+        {
+          "age": 85,
+          "men": 90,
+          "women": 126,
+          "total": 216
+        },
+        {
+          "age": 86,
+          "men": 68,
+          "women": 109,
+          "total": 177
+        },
+        {
+          "age": 87,
+          "men": 58,
+          "women": 98,
+          "total": 156
+        },
+        {
+          "age": 88,
+          "men": 45,
+          "women": 75,
+          "total": 120
+        },
+        {
+          "age": 89,
+          "men": 39,
+          "women": 66,
+          "total": 105
+        },
+        {
+          "age": 90,
+          "men": 26,
+          "women": 67,
+          "total": 93
+        },
+        {
+          "age": 91,
+          "men": 25,
+          "women": 47,
+          "total": 72
+        },
+        {
+          "age": 92,
+          "men": 16,
+          "women": 43,
+          "total": 59
+        },
+        {
+          "age": 93,
+          "men": 9,
+          "women": 47,
+          "total": 56
+        },
+        {
+          "age": 94,
+          "men": 9,
+          "women": 30,
+          "total": 39
+        },
+        {
+          "age": 95,
+          "men": 7,
+          "women": 27,
+          "total": 34
+        },
+        {
+          "age": 96,
+          "men": 4,
+          "women": 25,
+          "total": 29
+        },
+        {
+          "age": 97,
+          "men": 5,
+          "women": 13,
+          "total": 18
+        },
+        {
+          "age": 98,
+          "men": 3,
+          "women": 7,
+          "total": 10
+        },
+        {
+          "age": 99,
+          "men": 0,
+          "women": 3,
+          "total": 3
+        },
+        {
+          "age": 100,
+          "men": 0,
+          "women": 4,
+          "total": 4
+        }
+      ],
+      "Seravezza": [
+        {
+          "age": 0,
+          "men": 31,
+          "women": 32,
+          "total": 63
+        },
+        {
+          "age": 1,
+          "men": 24,
+          "women": 36,
+          "total": 60
+        },
+        {
+          "age": 2,
+          "men": 32,
+          "women": 27,
+          "total": 59
+        },
+        {
+          "age": 3,
+          "men": 35,
+          "women": 30,
+          "total": 65
+        },
+        {
+          "age": 4,
+          "men": 40,
+          "women": 36,
+          "total": 76
+        },
+        {
+          "age": 5,
+          "men": 42,
+          "women": 40,
+          "total": 82
+        },
+        {
+          "age": 6,
+          "men": 32,
+          "women": 23,
+          "total": 55
+        },
+        {
+          "age": 7,
+          "men": 30,
+          "women": 44,
+          "total": 74
+        },
+        {
+          "age": 8,
+          "men": 38,
+          "women": 45,
+          "total": 83
+        },
+        {
+          "age": 9,
+          "men": 58,
+          "women": 29,
+          "total": 87
+        },
+        {
+          "age": 10,
+          "men": 42,
+          "women": 42,
+          "total": 84
+        },
+        {
+          "age": 11,
+          "men": 48,
+          "women": 53,
+          "total": 101
+        },
+        {
+          "age": 12,
+          "men": 52,
+          "women": 44,
+          "total": 96
+        },
+        {
+          "age": 13,
+          "men": 47,
+          "women": 48,
+          "total": 95
+        },
+        {
+          "age": 14,
+          "men": 57,
+          "women": 45,
+          "total": 102
+        },
+        {
+          "age": 15,
+          "men": 40,
+          "women": 57,
+          "total": 97
+        },
+        {
+          "age": 16,
+          "men": 47,
+          "women": 41,
+          "total": 88
+        },
+        {
+          "age": 17,
+          "men": 64,
+          "women": 52,
+          "total": 116
+        },
+        {
+          "age": 18,
+          "men": 43,
+          "women": 53,
+          "total": 96
+        },
+        {
+          "age": 19,
+          "men": 46,
+          "women": 58,
+          "total": 104
+        },
+        {
+          "age": 20,
+          "men": 52,
+          "women": 57,
+          "total": 109
+        },
+        {
+          "age": 21,
+          "men": 55,
+          "women": 50,
+          "total": 105
+        },
+        {
+          "age": 22,
+          "men": 58,
+          "women": 44,
+          "total": 102
+        },
+        {
+          "age": 23,
+          "men": 43,
+          "women": 46,
+          "total": 89
+        },
+        {
+          "age": 24,
+          "men": 56,
+          "women": 53,
+          "total": 109
+        },
+        {
+          "age": 25,
+          "men": 57,
+          "women": 43,
+          "total": 100
+        },
+        {
+          "age": 26,
+          "men": 62,
+          "women": 55,
+          "total": 117
+        },
+        {
+          "age": 27,
+          "men": 48,
+          "women": 49,
+          "total": 97
+        },
+        {
+          "age": 28,
+          "men": 54,
+          "women": 45,
+          "total": 99
+        },
+        {
+          "age": 29,
+          "men": 61,
+          "women": 65,
+          "total": 126
+        },
+        {
+          "age": 30,
+          "men": 51,
+          "women": 48,
+          "total": 99
+        },
+        {
+          "age": 31,
+          "men": 69,
+          "women": 49,
+          "total": 118
+        },
+        {
+          "age": 32,
+          "men": 61,
+          "women": 59,
+          "total": 120
+        },
+        {
+          "age": 33,
+          "men": 45,
+          "women": 61,
+          "total": 106
+        },
+        {
+          "age": 34,
+          "men": 77,
+          "women": 52,
+          "total": 129
+        },
+        {
+          "age": 35,
+          "men": 76,
+          "women": 69,
+          "total": 145
+        },
+        {
+          "age": 36,
+          "men": 60,
+          "women": 59,
+          "total": 119
+        },
+        {
+          "age": 37,
+          "men": 67,
+          "women": 68,
+          "total": 135
+        },
+        {
+          "age": 38,
+          "men": 57,
+          "women": 62,
+          "total": 119
+        },
+        {
+          "age": 39,
+          "men": 64,
+          "women": 64,
+          "total": 128
+        },
+        {
+          "age": 40,
+          "men": 63,
+          "women": 72,
+          "total": 135
+        },
+        {
+          "age": 41,
+          "men": 72,
+          "women": 73,
+          "total": 145
+        },
+        {
+          "age": 42,
+          "men": 71,
+          "women": 71,
+          "total": 142
+        },
+        {
+          "age": 43,
+          "men": 74,
+          "women": 88,
+          "total": 162
+        },
+        {
+          "age": 44,
+          "men": 52,
+          "women": 71,
+          "total": 123
+        },
+        {
+          "age": 45,
+          "men": 75,
+          "women": 84,
+          "total": 159
+        },
+        {
+          "age": 46,
+          "men": 95,
+          "women": 65,
+          "total": 160
+        },
+        {
+          "age": 47,
+          "men": 72,
+          "women": 95,
+          "total": 167
+        },
+        {
+          "age": 48,
+          "men": 84,
+          "women": 82,
+          "total": 166
+        },
+        {
+          "age": 49,
+          "men": 71,
+          "women": 84,
+          "total": 155
+        },
+        {
+          "age": 50,
+          "men": 89,
+          "women": 108,
+          "total": 197
+        },
+        {
+          "age": 51,
+          "men": 87,
+          "women": 104,
+          "total": 191
+        },
+        {
+          "age": 52,
+          "men": 86,
+          "women": 99,
+          "total": 185
+        },
+        {
+          "age": 53,
+          "men": 82,
+          "women": 110,
+          "total": 192
+        },
+        {
+          "age": 54,
+          "men": 104,
+          "women": 108,
+          "total": 212
+        },
+        {
+          "age": 55,
+          "men": 114,
+          "women": 106,
+          "total": 220
+        },
+        {
+          "age": 56,
+          "men": 109,
+          "women": 103,
+          "total": 212
+        },
+        {
+          "age": 57,
+          "men": 112,
+          "women": 102,
+          "total": 214
+        },
+        {
+          "age": 58,
+          "men": 78,
+          "women": 117,
+          "total": 195
+        },
+        {
+          "age": 59,
+          "men": 104,
+          "women": 120,
+          "total": 224
+        },
+        {
+          "age": 60,
+          "men": 111,
+          "women": 134,
+          "total": 245
+        },
+        {
+          "age": 61,
+          "men": 110,
+          "women": 145,
+          "total": 255
+        },
+        {
+          "age": 62,
+          "men": 124,
+          "women": 103,
+          "total": 227
+        },
+        {
+          "age": 63,
+          "men": 104,
+          "women": 113,
+          "total": 217
+        },
+        {
+          "age": 64,
+          "men": 100,
+          "women": 116,
+          "total": 216
+        },
+        {
+          "age": 65,
+          "men": 97,
+          "women": 108,
+          "total": 205
+        },
+        {
+          "age": 66,
+          "men": 86,
+          "women": 87,
+          "total": 173
+        },
+        {
+          "age": 67,
+          "men": 77,
+          "women": 107,
+          "total": 184
+        },
+        {
+          "age": 68,
+          "men": 104,
+          "women": 122,
+          "total": 226
+        },
+        {
+          "age": 69,
+          "men": 89,
+          "women": 84,
+          "total": 173
+        },
+        {
+          "age": 70,
+          "men": 98,
+          "women": 70,
+          "total": 168
+        },
+        {
+          "age": 71,
+          "men": 100,
+          "women": 84,
+          "total": 184
+        },
+        {
+          "age": 72,
+          "men": 64,
+          "women": 79,
+          "total": 143
+        },
+        {
+          "age": 73,
+          "men": 65,
+          "women": 78,
+          "total": 143
+        },
+        {
+          "age": 74,
+          "men": 64,
+          "women": 75,
+          "total": 139
+        },
+        {
+          "age": 75,
+          "men": 91,
+          "women": 68,
+          "total": 159
+        },
+        {
+          "age": 76,
+          "men": 71,
+          "women": 79,
+          "total": 150
+        },
+        {
+          "age": 77,
+          "men": 63,
+          "women": 92,
+          "total": 155
+        },
+        {
+          "age": 78,
+          "men": 56,
+          "women": 82,
+          "total": 138
+        },
+        {
+          "age": 79,
+          "men": 59,
+          "women": 91,
+          "total": 150
+        },
+        {
+          "age": 80,
+          "men": 51,
+          "women": 58,
+          "total": 109
+        },
+        {
+          "age": 81,
+          "men": 61,
+          "women": 50,
+          "total": 111
+        },
+        {
+          "age": 82,
+          "men": 37,
+          "women": 57,
+          "total": 94
+        },
+        {
+          "age": 83,
+          "men": 36,
+          "women": 71,
+          "total": 107
+        },
+        {
+          "age": 84,
+          "men": 41,
+          "women": 55,
+          "total": 96
+        },
+        {
+          "age": 85,
+          "men": 25,
+          "women": 63,
+          "total": 88
+        },
+        {
+          "age": 86,
+          "men": 32,
+          "women": 60,
+          "total": 92
+        },
+        {
+          "age": 87,
+          "men": 29,
+          "women": 56,
+          "total": 85
+        },
+        {
+          "age": 88,
+          "men": 27,
+          "women": 31,
+          "total": 58
+        },
+        {
+          "age": 89,
+          "men": 16,
+          "women": 43,
+          "total": 59
+        },
+        {
+          "age": 90,
+          "men": 15,
+          "women": 37,
+          "total": 52
+        },
+        {
+          "age": 91,
+          "men": 8,
+          "women": 27,
+          "total": 35
+        },
+        {
+          "age": 92,
+          "men": 8,
+          "women": 32,
+          "total": 40
+        },
+        {
+          "age": 93,
+          "men": 3,
+          "women": 20,
+          "total": 23
+        },
+        {
+          "age": 94,
+          "men": 5,
+          "women": 21,
+          "total": 26
+        },
+        {
+          "age": 95,
+          "men": 6,
+          "women": 8,
+          "total": 14
+        },
+        {
+          "age": 96,
+          "men": 0,
+          "women": 10,
+          "total": 10
+        },
+        {
+          "age": 97,
+          "men": 2,
+          "women": 4,
+          "total": 6
+        },
+        {
+          "age": 98,
+          "men": 3,
+          "women": 1,
+          "total": 4
+        },
+        {
+          "age": 99,
+          "men": 2,
+          "women": 7,
+          "total": 9
+        },
+        {
+          "age": 100,
+          "men": 1,
+          "women": 5,
+          "total": 6
+        }
+      ],
+      "Stazzema": [
+        {
+          "age": 0,
+          "men": 4,
+          "women": 3,
+          "total": 7
+        },
+        {
+          "age": 1,
+          "men": 4,
+          "women": 1,
+          "total": 5
+        },
+        {
+          "age": 2,
+          "men": 6,
+          "women": 5,
+          "total": 11
+        },
+        {
+          "age": 3,
+          "men": 10,
+          "women": 7,
+          "total": 17
+        },
+        {
+          "age": 4,
+          "men": 6,
+          "women": 6,
+          "total": 12
+        },
+        {
+          "age": 5,
+          "men": 6,
+          "women": 10,
+          "total": 16
+        },
+        {
+          "age": 6,
+          "men": 5,
+          "women": 12,
+          "total": 17
+        },
+        {
+          "age": 7,
+          "men": 5,
+          "women": 2,
+          "total": 7
+        },
+        {
+          "age": 8,
+          "men": 8,
+          "women": 13,
+          "total": 21
+        },
+        {
+          "age": 9,
+          "men": 11,
+          "women": 9,
+          "total": 20
+        },
+        {
+          "age": 10,
+          "men": 7,
+          "women": 10,
+          "total": 17
+        },
+        {
+          "age": 11,
+          "men": 14,
+          "women": 4,
+          "total": 18
+        },
+        {
+          "age": 12,
+          "men": 8,
+          "women": 9,
+          "total": 17
+        },
+        {
+          "age": 13,
+          "men": 16,
+          "women": 7,
+          "total": 23
+        },
+        {
+          "age": 14,
+          "men": 11,
+          "women": 8,
+          "total": 19
+        },
+        {
+          "age": 15,
+          "men": 10,
+          "women": 11,
+          "total": 21
+        },
+        {
+          "age": 16,
+          "men": 19,
+          "women": 7,
+          "total": 26
+        },
+        {
+          "age": 17,
+          "men": 15,
+          "women": 11,
+          "total": 26
+        },
+        {
+          "age": 18,
+          "men": 12,
+          "women": 7,
+          "total": 19
+        },
+        {
+          "age": 19,
+          "men": 13,
+          "women": 5,
+          "total": 18
+        },
+        {
+          "age": 20,
+          "men": 9,
+          "women": 17,
+          "total": 26
+        },
+        {
+          "age": 21,
+          "men": 14,
+          "women": 9,
+          "total": 23
+        },
+        {
+          "age": 22,
+          "men": 14,
+          "women": 10,
+          "total": 24
+        },
+        {
+          "age": 23,
+          "men": 17,
+          "women": 11,
+          "total": 28
+        },
+        {
+          "age": 24,
+          "men": 15,
+          "women": 9,
+          "total": 24
+        },
+        {
+          "age": 25,
+          "men": 11,
+          "women": 10,
+          "total": 21
+        },
+        {
+          "age": 26,
+          "men": 16,
+          "women": 14,
+          "total": 30
+        },
+        {
+          "age": 27,
+          "men": 11,
+          "women": 8,
+          "total": 19
+        },
+        {
+          "age": 28,
+          "men": 17,
+          "women": 9,
+          "total": 26
+        },
+        {
+          "age": 29,
+          "men": 4,
+          "women": 13,
+          "total": 17
+        },
+        {
+          "age": 30,
+          "men": 23,
+          "women": 11,
+          "total": 34
+        },
+        {
+          "age": 31,
+          "men": 10,
+          "women": 12,
+          "total": 22
+        },
+        {
+          "age": 32,
+          "men": 5,
+          "women": 6,
+          "total": 11
+        },
+        {
+          "age": 33,
+          "men": 12,
+          "women": 9,
+          "total": 21
+        },
+        {
+          "age": 34,
+          "men": 13,
+          "women": 15,
+          "total": 28
+        },
+        {
+          "age": 35,
+          "men": 17,
+          "women": 12,
+          "total": 29
+        },
+        {
+          "age": 36,
+          "men": 15,
+          "women": 22,
+          "total": 37
+        },
+        {
+          "age": 37,
+          "men": 16,
+          "women": 14,
+          "total": 30
+        },
+        {
+          "age": 38,
+          "men": 20,
+          "women": 13,
+          "total": 33
+        },
+        {
+          "age": 39,
+          "men": 24,
+          "women": 17,
+          "total": 41
+        },
+        {
+          "age": 40,
+          "men": 21,
+          "women": 9,
+          "total": 30
+        },
+        {
+          "age": 41,
+          "men": 13,
+          "women": 17,
+          "total": 30
+        },
+        {
+          "age": 42,
+          "men": 17,
+          "women": 16,
+          "total": 33
+        },
+        {
+          "age": 43,
+          "men": 18,
+          "women": 19,
+          "total": 37
+        },
+        {
+          "age": 44,
+          "men": 20,
+          "women": 15,
+          "total": 35
+        },
+        {
+          "age": 45,
+          "men": 24,
+          "women": 22,
+          "total": 46
+        },
+        {
+          "age": 46,
+          "men": 9,
+          "women": 19,
+          "total": 28
+        },
+        {
+          "age": 47,
+          "men": 25,
+          "women": 13,
+          "total": 38
+        },
+        {
+          "age": 48,
+          "men": 18,
+          "women": 13,
+          "total": 31
+        },
+        {
+          "age": 49,
+          "men": 15,
+          "women": 29,
+          "total": 44
+        },
+        {
+          "age": 50,
+          "men": 17,
+          "women": 23,
+          "total": 40
+        },
+        {
+          "age": 51,
+          "men": 13,
+          "women": 24,
+          "total": 37
+        },
+        {
+          "age": 52,
+          "men": 26,
+          "women": 30,
+          "total": 56
+        },
+        {
+          "age": 53,
+          "men": 30,
+          "women": 19,
+          "total": 49
+        },
+        {
+          "age": 54,
+          "men": 28,
+          "women": 18,
+          "total": 46
+        },
+        {
+          "age": 55,
+          "men": 22,
+          "women": 36,
+          "total": 58
+        },
+        {
+          "age": 56,
+          "men": 23,
+          "women": 24,
+          "total": 47
+        },
+        {
+          "age": 57,
+          "men": 30,
+          "women": 23,
+          "total": 53
+        },
+        {
+          "age": 58,
+          "men": 31,
+          "women": 27,
+          "total": 58
+        },
+        {
+          "age": 59,
+          "men": 26,
+          "women": 24,
+          "total": 50
+        },
+        {
+          "age": 60,
+          "men": 33,
+          "women": 24,
+          "total": 57
+        },
+        {
+          "age": 61,
+          "men": 28,
+          "women": 23,
+          "total": 51
+        },
+        {
+          "age": 62,
+          "men": 25,
+          "women": 28,
+          "total": 53
+        },
+        {
+          "age": 63,
+          "men": 17,
+          "women": 27,
+          "total": 44
+        },
+        {
+          "age": 64,
+          "men": 22,
+          "women": 23,
+          "total": 45
+        },
+        {
+          "age": 65,
+          "men": 21,
+          "women": 24,
+          "total": 45
+        },
+        {
+          "age": 66,
+          "men": 30,
+          "women": 15,
+          "total": 45
+        },
+        {
+          "age": 67,
+          "men": 26,
+          "women": 18,
+          "total": 44
+        },
+        {
+          "age": 68,
+          "men": 16,
+          "women": 24,
+          "total": 40
+        },
+        {
+          "age": 69,
+          "men": 15,
+          "women": 25,
+          "total": 40
+        },
+        {
+          "age": 70,
+          "men": 19,
+          "women": 20,
+          "total": 39
+        },
+        {
+          "age": 71,
+          "men": 25,
+          "women": 17,
+          "total": 42
+        },
+        {
+          "age": 72,
+          "men": 19,
+          "women": 18,
+          "total": 37
+        },
+        {
+          "age": 73,
+          "men": 25,
+          "women": 27,
+          "total": 52
+        },
+        {
+          "age": 74,
+          "men": 23,
+          "women": 13,
+          "total": 36
+        },
+        {
+          "age": 75,
+          "men": 14,
+          "women": 14,
+          "total": 28
+        },
+        {
+          "age": 76,
+          "men": 13,
+          "women": 14,
+          "total": 27
+        },
+        {
+          "age": 77,
+          "men": 13,
+          "women": 13,
+          "total": 26
+        },
+        {
+          "age": 78,
+          "men": 18,
+          "women": 18,
+          "total": 36
+        },
+        {
+          "age": 79,
+          "men": 12,
+          "women": 21,
+          "total": 33
+        },
+        {
+          "age": 80,
+          "men": 8,
+          "women": 5,
+          "total": 13
+        },
+        {
+          "age": 81,
+          "men": 16,
+          "women": 15,
+          "total": 31
+        },
+        {
+          "age": 82,
+          "men": 7,
+          "women": 8,
+          "total": 15
+        },
+        {
+          "age": 83,
+          "men": 5,
+          "women": 16,
+          "total": 21
+        },
+        {
+          "age": 84,
+          "men": 17,
+          "women": 12,
+          "total": 29
+        },
+        {
+          "age": 85,
+          "men": 9,
+          "women": 14,
+          "total": 23
+        },
+        {
+          "age": 86,
+          "men": 8,
+          "women": 12,
+          "total": 20
+        },
+        {
+          "age": 87,
+          "men": 7,
+          "women": 14,
+          "total": 21
+        },
+        {
+          "age": 88,
+          "men": 2,
+          "women": 12,
+          "total": 14
+        },
+        {
+          "age": 89,
+          "men": 1,
+          "women": 8,
+          "total": 9
+        },
+        {
+          "age": 90,
+          "men": 1,
+          "women": 4,
+          "total": 5
+        },
+        {
+          "age": 91,
+          "men": 1,
+          "women": 9,
+          "total": 10
+        },
+        {
+          "age": 92,
+          "men": 4,
+          "women": 8,
+          "total": 12
+        },
+        {
+          "age": 93,
+          "men": 2,
+          "women": 4,
+          "total": 6
+        },
+        {
+          "age": 94,
+          "men": 3,
+          "women": 5,
+          "total": 8
+        },
+        {
+          "age": 95,
+          "men": 0,
+          "women": 6,
+          "total": 6
+        },
+        {
+          "age": 96,
+          "men": 1,
+          "women": 1,
+          "total": 2
+        },
+        {
+          "age": 97,
+          "men": 0,
+          "women": 5,
+          "total": 5
+        },
+        {
+          "age": 98,
+          "men": 0,
+          "women": 4,
+          "total": 4
+        },
+        {
+          "age": 99,
+          "men": 0,
+          "women": 1,
+          "total": 1
+        },
+        {
+          "age": 100,
+          "men": 0,
+          "women": 1,
+          "total": 1
+        }
+      ],
+      "Viareggio": [
+        {
+          "age": 0,
+          "men": 154,
+          "women": 151,
+          "total": 305
+        },
+        {
+          "age": 1,
+          "men": 190,
+          "women": 160,
+          "total": 350
+        },
+        {
+          "age": 2,
+          "men": 157,
+          "women": 174,
+          "total": 331
+        },
+        {
+          "age": 3,
+          "men": 177,
+          "women": 157,
+          "total": 334
+        },
+        {
+          "age": 4,
+          "men": 198,
+          "women": 178,
+          "total": 376
+        },
+        {
+          "age": 5,
+          "men": 168,
+          "women": 168,
+          "total": 336
+        },
+        {
+          "age": 6,
+          "men": 209,
+          "women": 206,
+          "total": 415
+        },
+        {
+          "age": 7,
+          "men": 194,
+          "women": 214,
+          "total": 408
+        },
+        {
+          "age": 8,
+          "men": 234,
+          "women": 183,
+          "total": 417
+        },
+        {
+          "age": 9,
+          "men": 239,
+          "women": 219,
+          "total": 458
+        },
+        {
+          "age": 10,
+          "men": 222,
+          "women": 202,
+          "total": 424
+        },
+        {
+          "age": 11,
+          "men": 221,
+          "women": 229,
+          "total": 450
+        },
+        {
+          "age": 12,
+          "men": 232,
+          "women": 223,
+          "total": 455
+        },
+        {
+          "age": 13,
+          "men": 248,
+          "women": 233,
+          "total": 481
+        },
+        {
+          "age": 14,
+          "men": 252,
+          "women": 264,
+          "total": 516
+        },
+        {
+          "age": 15,
+          "men": 271,
+          "women": 258,
+          "total": 529
+        },
+        {
+          "age": 16,
+          "men": 283,
+          "women": 222,
+          "total": 505
+        },
+        {
+          "age": 17,
+          "men": 292,
+          "women": 260,
+          "total": 552
+        },
+        {
+          "age": 18,
+          "men": 288,
+          "women": 262,
+          "total": 550
+        },
+        {
+          "age": 19,
+          "men": 315,
+          "women": 283,
+          "total": 598
+        },
+        {
+          "age": 20,
+          "men": 299,
+          "women": 254,
+          "total": 553
+        },
+        {
+          "age": 21,
+          "men": 285,
+          "women": 266,
+          "total": 551
+        },
+        {
+          "age": 22,
+          "men": 291,
+          "women": 255,
+          "total": 546
+        },
+        {
+          "age": 23,
+          "men": 293,
+          "women": 265,
+          "total": 558
+        },
+        {
+          "age": 24,
+          "men": 269,
+          "women": 299,
+          "total": 568
+        },
+        {
+          "age": 25,
+          "men": 300,
+          "women": 265,
+          "total": 565
+        },
+        {
+          "age": 26,
+          "men": 310,
+          "women": 238,
+          "total": 548
+        },
+        {
+          "age": 27,
+          "men": 311,
+          "women": 257,
+          "total": 568
+        },
+        {
+          "age": 28,
+          "men": 315,
+          "women": 276,
+          "total": 591
+        },
+        {
+          "age": 29,
+          "men": 316,
+          "women": 287,
+          "total": 603
+        },
+        {
+          "age": 30,
+          "men": 304,
+          "women": 290,
+          "total": 594
+        },
+        {
+          "age": 31,
+          "men": 293,
+          "women": 265,
+          "total": 558
+        },
+        {
+          "age": 32,
+          "men": 319,
+          "women": 299,
+          "total": 618
+        },
+        {
+          "age": 33,
+          "men": 311,
+          "women": 292,
+          "total": 603
+        },
+        {
+          "age": 34,
+          "men": 335,
+          "women": 316,
+          "total": 651
+        },
+        {
+          "age": 35,
+          "men": 320,
+          "women": 344,
+          "total": 664
+        },
+        {
+          "age": 36,
+          "men": 310,
+          "women": 313,
+          "total": 623
+        },
+        {
+          "age": 37,
+          "men": 341,
+          "women": 325,
+          "total": 666
+        },
+        {
+          "age": 38,
+          "men": 301,
+          "women": 291,
+          "total": 592
+        },
+        {
+          "age": 39,
+          "men": 330,
+          "women": 296,
+          "total": 626
+        },
+        {
+          "age": 40,
+          "men": 314,
+          "women": 327,
+          "total": 641
+        },
+        {
+          "age": 41,
+          "men": 320,
+          "women": 344,
+          "total": 664
+        },
+        {
+          "age": 42,
+          "men": 357,
+          "women": 307,
+          "total": 664
+        },
+        {
+          "age": 43,
+          "men": 376,
+          "women": 344,
+          "total": 720
+        },
+        {
+          "age": 44,
+          "men": 351,
+          "women": 338,
+          "total": 689
+        },
+        {
+          "age": 45,
+          "men": 378,
+          "women": 386,
+          "total": 764
+        },
+        {
+          "age": 46,
+          "men": 357,
+          "women": 423,
+          "total": 780
+        },
+        {
+          "age": 47,
+          "men": 397,
+          "women": 404,
+          "total": 801
+        },
+        {
+          "age": 48,
+          "men": 416,
+          "women": 411,
+          "total": 827
+        },
+        {
+          "age": 49,
+          "men": 457,
+          "women": 433,
+          "total": 890
+        },
+        {
+          "age": 50,
+          "men": 449,
+          "women": 480,
+          "total": 929
+        },
+        {
+          "age": 51,
+          "men": 511,
+          "women": 517,
+          "total": 1028
+        },
+        {
+          "age": 52,
+          "men": 479,
+          "women": 530,
+          "total": 1009
+        },
+        {
+          "age": 53,
+          "men": 489,
+          "women": 565,
+          "total": 1054
+        },
+        {
+          "age": 54,
+          "men": 492,
+          "women": 574,
+          "total": 1066
+        },
+        {
+          "age": 55,
+          "men": 476,
+          "women": 527,
+          "total": 1003
+        },
+        {
+          "age": 56,
+          "men": 510,
+          "women": 531,
+          "total": 1041
+        },
+        {
+          "age": 57,
+          "men": 491,
+          "women": 574,
+          "total": 1065
+        },
+        {
+          "age": 58,
+          "men": 495,
+          "women": 501,
+          "total": 996
+        },
+        {
+          "age": 59,
+          "men": 480,
+          "women": 510,
+          "total": 990
+        },
+        {
+          "age": 60,
+          "men": 543,
+          "women": 600,
+          "total": 1143
+        },
+        {
+          "age": 61,
+          "men": 506,
+          "women": 590,
+          "total": 1096
+        },
+        {
+          "age": 62,
+          "men": 485,
+          "women": 537,
+          "total": 1022
+        },
+        {
+          "age": 63,
+          "men": 472,
+          "women": 539,
+          "total": 1011
+        },
+        {
+          "age": 64,
+          "men": 452,
+          "women": 509,
+          "total": 961
+        },
+        {
+          "age": 65,
+          "men": 445,
+          "women": 506,
+          "total": 951
+        },
+        {
+          "age": 66,
+          "men": 433,
+          "women": 464,
+          "total": 897
+        },
+        {
+          "age": 67,
+          "men": 395,
+          "women": 450,
+          "total": 845
+        },
+        {
+          "age": 68,
+          "men": 387,
+          "women": 401,
+          "total": 788
+        },
+        {
+          "age": 69,
+          "men": 381,
+          "women": 452,
+          "total": 833
+        },
+        {
+          "age": 70,
+          "men": 323,
+          "women": 388,
+          "total": 711
+        },
+        {
+          "age": 71,
+          "men": 344,
+          "women": 425,
+          "total": 769
+        },
+        {
+          "age": 72,
+          "men": 314,
+          "women": 393,
+          "total": 707
+        },
+        {
+          "age": 73,
+          "men": 318,
+          "women": 429,
+          "total": 747
+        },
+        {
+          "age": 74,
+          "men": 310,
+          "women": 373,
+          "total": 683
+        },
+        {
+          "age": 75,
+          "men": 317,
+          "women": 383,
+          "total": 700
+        },
+        {
+          "age": 76,
+          "men": 317,
+          "women": 364,
+          "total": 681
+        },
+        {
+          "age": 77,
+          "men": 341,
+          "women": 429,
+          "total": 770
+        },
+        {
+          "age": 78,
+          "men": 323,
+          "women": 411,
+          "total": 734
+        },
+        {
+          "age": 79,
+          "men": 339,
+          "women": 423,
+          "total": 762
+        },
+        {
+          "age": 80,
+          "men": 244,
+          "women": 309,
+          "total": 553
+        },
+        {
+          "age": 81,
+          "men": 225,
+          "women": 323,
+          "total": 548
+        },
+        {
+          "age": 82,
+          "men": 213,
+          "women": 289,
+          "total": 502
+        },
+        {
+          "age": 83,
+          "men": 204,
+          "women": 321,
+          "total": 525
+        },
+        {
+          "age": 84,
+          "men": 231,
+          "women": 308,
+          "total": 539
+        },
+        {
+          "age": 85,
+          "men": 197,
+          "women": 284,
+          "total": 481
+        },
+        {
+          "age": 86,
+          "men": 142,
+          "women": 255,
+          "total": 397
+        },
+        {
+          "age": 87,
+          "men": 156,
+          "women": 260,
+          "total": 416
+        },
+        {
+          "age": 88,
+          "men": 114,
+          "women": 188,
+          "total": 302
+        },
+        {
+          "age": 89,
+          "men": 97,
+          "women": 177,
+          "total": 274
+        },
+        {
+          "age": 90,
+          "men": 83,
+          "women": 140,
+          "total": 223
+        },
+        {
+          "age": 91,
+          "men": 69,
+          "women": 141,
+          "total": 210
+        },
+        {
+          "age": 92,
+          "men": 53,
+          "women": 117,
+          "total": 170
+        },
+        {
+          "age": 93,
+          "men": 33,
+          "women": 99,
+          "total": 132
+        },
+        {
+          "age": 94,
+          "men": 28,
+          "women": 77,
+          "total": 105
+        },
+        {
+          "age": 95,
+          "men": 22,
+          "women": 51,
+          "total": 73
+        },
+        {
+          "age": 96,
+          "men": 13,
+          "women": 38,
+          "total": 51
+        },
+        {
+          "age": 97,
+          "men": 7,
+          "women": 31,
+          "total": 38
+        },
+        {
+          "age": 98,
+          "men": 3,
+          "women": 22,
+          "total": 25
+        },
+        {
+          "age": 99,
+          "men": 3,
+          "women": 8,
+          "total": 11
+        },
+        {
+          "age": 100,
+          "men": 6,
+          "women": 31,
+          "total": 37
+        }
+      ]
+    }
+  },
+  "formulas": {
+    "birthRatePer1000": "nati vivi / popolazione media annua × 1.000",
+    "deathRatePer1000": "morti / popolazione media annua × 1.000",
+    "naturalBalanceRatePer1000": "(nati vivi − morti) / popolazione media annua × 1.000",
+    "structuralDependencyIndex": "(0–14 + 65+) / 15–64 × 100",
+    "oldAgeDependencyIndex": "65+ / 15–64 × 100"
+  }
+}

@@ -1,0 +1,57 @@
+{
+  "schemaVersion": 2,
+  "publisher": "ISPRA — Costa protetta",
+  "profileId": "ispra-coast-irregular",
+  "scope": {
+    "coastalTownCodes": [
+      "046005",
+      "046013",
+      "046024",
+      "046033"
+    ],
+    "notApplicableTownCodes": [
+      "046018",
+      "046028",
+      "046030"
+    ],
+    "reconciled": "4 coastal + 3 n.a."
+  },
+  "status": "ACQUIRED_CANDIDATE",
+  "sourceUrl": "https://indicatoriambientali.isprambiente.it/it/coste/costa-protetta",
+  "dataUrl": "https://indicatoriambientali.isprambiente.it/sites/default/files/indicatori_ambientali/costa-protetta/01_TB1_CProtetta2020%20%28rev%29.xlsx",
+  "benchmarks": {
+    "rigidDefenceProtectedCoast": {
+      "year": "2020",
+      "unit": "percent",
+      "formula": "km di costa protetta da opere rigide / km di costa dell'universo ISPRA × 100",
+      "tuscany": 12.8343943672,
+      "italy": 18.20385170208589
+    }
+  },
+  "components": {
+    "toscana": {
+      "coastKm": 652.037,
+      "protectedKm": 83.685,
+      "percent": 12.8343943672
+    },
+    "italia": {
+      "coastKm": 8329.045000000002,
+      "protectedKm": 1516.2069999999999,
+      "percent": 18.20385170208589
+    }
+  },
+  "qualityGate": {
+    "status": "PASS",
+    "publicReconciliation": "1 metric × 4 coastal towns + 3 n.a. PASS",
+    "regionalNationalControl": "official 2020 km + percent rows PASS",
+    "errors": []
+  },
+  "blocked": {
+    "shorelineDynamics": "metrica composita erosione/stabile/avanzamento; benchmark scalare non sufficiente"
+  },
+  "acquisitionEvidence": {
+    "workflowRun": 36982743711,
+    "artifactId": 11216461886,
+    "headSha": "a1c4e43971df5055b25db0786f14916272d89ac2"
+  }
+}

@@ -1,0 +1,51 @@
+{
+  "schemaVersion": 1,
+  "created": "2026-08-15",
+  "status": "validated-draft",
+  "source": "ISTAT — Indice nazionale dei prezzi al consumo per l'intera collettività (NIC)",
+  "sourceUrl": "https://www.istat.it/tavole-di-dati/prezzi-al-consumo-dati/",
+  "indicator": "NIC nazionale, indice generale, variazione media annua",
+  "territory": {
+    "label": "Italia",
+    "level": "national"
+  },
+  "comparisonBase": "2016=100",
+  "years": [2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024],
+  "annualRatesPercent": {
+    "2017": 1.2,
+    "2018": 1.2,
+    "2019": 0.6,
+    "2020": -0.2,
+    "2021": 1.9,
+    "2022": 8.1,
+    "2023": 5.7,
+    "2024": 1.0
+  },
+  "comparisonIndex": [100.0, 101.2, 102.4144, 103.0289, 102.8228, 104.7765, 113.2634, 119.7194, 120.9166],
+  "coverage": "2016-2024 complete",
+  "method": "Indice concatenato a partire dalle variazioni medie annue NIC nazionali diffuse da ISTAT; 2016 posto uguale a 100.",
+  "sourceNotes": [
+    "2017: +1,2% dopo -0,1% nel 2016",
+    "2018: +1,2%",
+    "2019: +0,6%",
+    "2020: -0,2%",
+    "2021: +1,9%",
+    "2022: +8,1%",
+    "2023: +5,7%",
+    "2024: +1,0%"
+  ],
+  "incomeInflationContext": {
+    "years": [2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024],
+    "incomeIndex": [100.0, 102.2751, 104.3718, 105.3331, 102.8194, 109.4691, 117.0492, 121.3176, 127.2465],
+    "priceIndex": [100.0, 101.2, 102.4144, 103.0289, 102.8228, 104.7765, 113.2634, 119.7194, 120.9166],
+    "realIncomeIndex": [100.0, 101.0624, 101.9113, 102.2365, 99.9967, 104.4787, 103.3425, 101.335, 105.235],
+    "base": "2016=100",
+    "incomeLabel": "Imponibile medio Versilia",
+    "priceLabel": "NIC Italia",
+    "realLabel": "Imponibile medio a prezzi costanti",
+    "nominalGrowthPercent": 27.25,
+    "priceGrowthPercent": 20.92,
+    "realGrowthPercent": 5.23,
+    "note": "Confronto di contesto tra reddito imponibile medio dei sette Comuni della Versilia e indice nazionale NIC ISTAT. Non misura il reddito disponibile delle famiglie."
+  }
+}

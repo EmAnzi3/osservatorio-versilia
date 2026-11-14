@@ -1,0 +1,102 @@
+{
+  "schemaVersion": "1.0",
+  "auditDate": "2026-09-08",
+  "wave": 7,
+  "status": "open_not_saturated",
+  "implementationFrozen": true,
+  "referenceSnapshot": {
+    "path": "data/opportunity-daily-public.json",
+    "generatedAt": "2026-09-07T09:35:26+00:00",
+    "publicCount": 29,
+    "reviewInternalCount": 40
+  },
+  "saturation": {
+    "requiredConsecutiveCleanSweeps": 2,
+    "currentConsecutiveCleanSweeps": 0,
+    "reason": "Wave 7 resolves UMX as a live city-eligible call and identifies additional public-procurement participation gaps in Horizon Cluster 3; the sweep is therefore not clean."
+  },
+  "currentFindings": [
+    {
+      "id": "eit-urban-mobility-umx-2026-cutoff2",
+      "title": "Urban Mobility Explained (UMX) Open Call · second cut-off",
+      "opensAt": "2025-07-02",
+      "deadlineAt": "2026-09-29T17:00:00+02:00",
+      "radarStatus": "absent_from_reference_snapshot",
+      "auditClass": "current_conditional_applicant_false_negative",
+      "severity": "high",
+      "municipalityRole": "city_is_explicitly_eligible_as_applicant_in_mono_or_multi_participant_proposal",
+      "funding": "Indicative call allocation EUR 2-4 million; maximum EIT funding EUR 700,000 per proposal",
+      "eligibilityEvidence": "EIT Urban Mobility explicitly lists cities among eligible legal entities. Mono-participant and multi-participant proposals are both allowed. Fit remains conditional on the municipality being able to develop/deliver scalable professional urban-mobility training or support services.",
+      "officialSource": "https://www.eiturbanmobility.eu/call-for-proposals/urban-mobility-explained-umx-open-call-2/"
+    },
+    {
+      "id": "horizon-cl3-2026-01-ssri-02",
+      "title": "HORIZON-CL3-2026-01-SSRI-02 · Demand-led innovation in security",
+      "opensAt": "2026-05-06",
+      "deadlineAt": "2026-11-05",
+      "radarStatus": "absent_exact_topic",
+      "auditClass": "conditional_partner",
+      "severity": "high",
+      "municipalityRole": "public_procurer_and_or_civil_security_practitioner_in_pcp_buyer_group",
+      "funding": "Horizon Europe Pre-Commercial Procurement; indicative topic budget EUR 5.83 million",
+      "eligibilityEvidence": "The consortium must include at least 3 practitioners and 3 procurers from at least 3 countries; at least 2 procurers must be independent public procurers. A municipality can participate where it has the relevant civil-security procurement/practitioner role.",
+      "rootCauseFamily": "innovation_procurement_buyer_group_gap"
+    },
+    {
+      "id": "horizon-cl3-2026-01-ssri-03",
+      "title": "HORIZON-CL3-2026-01-SSRI-03 · Public procurement of innovation for security",
+      "opensAt": "2026-05-06",
+      "deadlineAt": "2026-11-05",
+      "radarStatus": "absent_exact_topic",
+      "auditClass": "conditional_partner",
+      "severity": "high",
+      "municipalityRole": "public_procurer_and_or_civil_security_practitioner_in_ppi_buyer_group",
+      "funding": "Horizon Europe Public Procurement of Innovative Solutions; indicative topic budget EUR 2 million",
+      "eligibilityEvidence": "The topic requires at least 3 practitioners and 3 public procurers from at least 3 countries, with at least 2 independent public procurers. Municipal participation is conditional on a relevant security procurement function.",
+      "rootCauseFamily": "innovation_procurement_buyer_group_gap"
+    }
+  ],
+  "scopeAndLifecycleControls": [
+    {
+      "id": "cef-energy-cb-res-status-2026",
+      "title": "6th Call for Cross-Border Renewable Energy projects to obtain CB RES status",
+      "opensAt": "2026-06-29",
+      "deadlineAt": "2026-10-06T17:00:00+02:00",
+      "auditClass": "scope_review",
+      "municipalityRole": "possible_project_promoter_only_with_cross_border_cooperation_and_member_state_support",
+      "note": "Current and absent from the reference snapshot, but not a generic municipal grant. The project must be based on a Renewable Energy Directive cooperation mechanism and supported by participating Member States. Do not auto-promote to the seven municipalities.",
+      "officialSource": "https://cinea.ec.europa.eu/news-events/news/cef-energy-6th-call-cross-border-renewable-energy-projects-obtain-status-launched-2026-06-29_en"
+    },
+    {
+      "id": "mission-ocean-associated-regions-directory-20260908",
+      "auditClass": "negative_current_control",
+      "note": "The Commission directory is the correct oracle for Mission Ocean Associated Regions. The listed Associated Regions calls checked in this sweep are closed; SUNDANSE Open Call 2 remains separately current and already captured by the audit corpus."
+    },
+    {
+      "id": "ldt4ssc-open-call-3",
+      "deadlineAt": "2026-07-13",
+      "auditClass": "historical_closed_control",
+      "note": "The LDT4SSC project now marks all three open calls closed. Do not count the family as a current actionable gap on 8 September 2026."
+    },
+    {
+      "id": "natura-2000-award-2027-deadline-update",
+      "auditClass": "captured_metadata_correction",
+      "note": "The official Commission application page now states an extended deadline of 16 October 2026 at 12:00 CEST. Earlier audit material using 30 September should be treated as stale deadline metadata, not a new opportunity gap.",
+      "officialSource": "https://environment.ec.europa.eu/topics/nature-and-biodiversity/natura-2000-award/application-process_en"
+    },
+    {
+      "id": "covenant-strategic-review-survey-2026",
+      "deadlineAt": "2026-09-30",
+      "auditClass": "scope_review_low_value_participation",
+      "municipalityRole": "all_municipalities_may_participate_in_consultation_survey",
+      "note": "A real city-facing participation opportunity, but not funding, technical assistance, an award or a structured capacity-building programme. Keep as a low-value participation control rather than automatic Radar promotion."
+    }
+  ],
+  "next": [
+    "finish remaining Cluster 3 infrastructure and procurement topics for mandatory practitioner/procurer composition",
+    "scan current Commission city-facing calls for non-grant participation and capacity-building opportunities without lowering public-signal quality",
+    "continue AMIF Italian Managing Authority route verification",
+    "re-audit reference snapshot and internal_review for the newly resolved UMX and procurement topic families",
+    "run another independent saturation sweep; the clean-sweep counter remains 0/2"
+  ]
+}

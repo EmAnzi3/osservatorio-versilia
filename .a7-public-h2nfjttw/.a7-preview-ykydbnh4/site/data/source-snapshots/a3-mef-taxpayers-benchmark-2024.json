@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "publisher": "MEF — Dipartimento Finanze / Istat POSAS",
+  "profileId": "mef-irpef-annual",
+  "referenceYear": "MEF a.i. 2024 · residenti 1.1.2026",
+  "source": {
+    "mef": "https://www1.finanze.gov.it/finanze/analisi_stat/public/index.php?opendata=yes",
+    "posas": "https://demo.istat.it/data/posas/POSAS_2026_it_Comuni.zip",
+    "municipalSnapshot": "data/source-snapshots/mef-income-lotto-a-2024.json"
+  },
+  "method": "Numero contribuenti MEF / residenti 18+ POSAS al 1 gennaio 2026 × 100. Numeratore e denominatore aggregati prima del rapporto.",
+  "qualityGate": {
+    "status": "PASS",
+    "publicReconciliation": "7/7 PASS",
+    "artifactRun": 36929739458,
+    "artifactId": 11194923717
+  },
+  "benchmarks": {
+    "taxpayersAdultPopulationRate": {
+      "year": "MEF a.i. 2024 · residenti 1.1.2026",
+      "unit": "per100",
+      "formula": "taxpayers / adultPopulation2026 × 100",
+      "tuscany": 89.35750687431118,
+      "italy": 85.07684720194473,
+      "raw": {
+        "tuscany": {
+          "taxpayers": 2825605,
+          "adultPopulation2026": 3162135
+        },
+        "italy": {
+          "taxpayers": 42837946,
+          "adultPopulation2026": 50352061
+        }
+      }
+    }
+  },
+  "blocked": {
+    "income": "contratto pubblico non riconciliato; non forzato",
+    "incomeDistribution": "mapping alle quattro fasce pubbliche non ancora certificato"
+  }
+}

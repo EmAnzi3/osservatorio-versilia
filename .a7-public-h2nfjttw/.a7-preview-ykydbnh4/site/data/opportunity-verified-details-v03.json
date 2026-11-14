@@ -1,0 +1,54 @@
+{
+  "schemaVersion": "0.3.2",
+  "entries": [
+    {
+      "rule_id": "rt-nidi-gratis-comuni-reopening-2026-2027",
+      "source_id": "regione-toscana",
+      "title": "Bando Nidi gratis 2026-2027 per i servizi educativi rivolto ai Comuni",
+      "url": "https://www.regione.toscana.it/it/-/bando-nidi-gratis-2026-2027-per-i-servizi-educativi-rivolto-ai-comuni",
+      "required_terms": [
+        "riaperte le adesioni alla misura Nidi Gratis",
+        "25 settembre 2026",
+        "6 ottobre 2026"
+      ],
+      "deadline_at": "2026-10-06",
+      "source_updated_at": "2026-09-03",
+      "summary": "Fino al 6 ottobre 2026 i Comuni già candidati alla misura Nidi gratis possono trasmettere via PEC la documentazione richiesta dalla procedura regionale.",
+      "canonical": true
+    },
+    {
+      "rule_id": "st-mercati-rionali-2026",
+      "source_id": "sviluppo-toscana",
+      "title": "Avviso Mercati Rionali",
+      "url": "https://www.sviluppo.toscana.it/bando/avviso-mercati-rionali/",
+      "landing_url": "https://www.regione.toscana.it/it/-/mercati-rionali-contributi-ai-comuni-per-ammodernamento-ampliamento-e-riqualificazione",
+      "required_terms": [
+        "Comuni della Regione Toscana",
+        "15 Ottobre 2026",
+        "80%"
+      ],
+      "deadline_at": "2026-10-15",
+      "deadline_time": "12:00",
+      "source_updated_at": "2026-09-11",
+      "summary": "Contributi in conto capitale fino all'80% per progetti comunali di ammodernamento, ampliamento e riqualificazione dei mercati rionali.",
+      "canonical": true
+    },
+    {
+      "rule_id": "mic-jazz-2027",
+      "source_id": "mic-spettacolo",
+      "title": "Bando per la promozione della musica Jazz 2027",
+      "url": "https://spettacolo.cultura.gov.it/wp-content/uploads/2026/07/D.D.G.-14-luglio-2026-rep.-n.-1285.pdf",
+      "landing_url": "https://spettacolo.cultura.gov.it/documenti/bando-per-la-promozione-della-musica-jazz-2027-avviso-pubblico-e-apertura-dei-termini-di-presentazione-delle-domande/",
+      "required_terms": [
+        "autonomie territoriali",
+        "10 settembre 2026",
+        "16:00",
+        "35.000,00"
+      ],
+      "deadline_at": "2026-09-10",
+      "deadline_time": "16:00",
+      "summary": "Contributi per progetti innovativi di promozione e valorizzazione della musica jazz, rivolti anche alle autonomie territoriali, con accordi di collaborazione già sottoscritti.",
+      "canonical": true
+    }
+  ]
+}

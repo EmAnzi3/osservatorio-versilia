@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="it"><head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Qualità delle aree di balneazione in Versilia · Osservatorio Versilia</title>
+  <meta name="description" content="Qualità delle aree di balneazione nei sette comuni della Versilia: valori 2025, serie storiche disponibili, metodo e fonte ufficiale.">
+  <meta property="og:title" content="Qualità delle aree di balneazione in Versilia · Osservatorio Versilia">
+  <meta property="og:description" content="Qualità delle aree di balneazione nei sette comuni della Versilia: valori 2025, serie storiche disponibili, metodo e fonte ufficiale.">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="it_IT">
+  <link rel="icon" href="../../favicon.svg?v=20260824-ov4" sizes="any">
+  <link rel="icon" href="../../favicon.svg?v=20260824-ov4" type="image/svg+xml">
+  <link rel="manifest" href="../../site.webmanifest?v=20260824-pwa9">
+  <link rel="stylesheet" href="../../assets/original.css">
+  <link rel="stylesheet" href="../../assets/static.css">
+  <link rel="stylesheet" href="../../assets/fidelity.css?v=20261025-ui-shell-consistency">
+  <link rel="stylesheet" href="../../assets/fonts.css">
+  <link rel="stylesheet" href="../../assets/ux-experiment.css?v=20261025-ui-shell-consistency">
+  <link rel="stylesheet" href="../../assets/ux-background-match.css?v=20261025-ui-shell-consistency">
+  <link rel="stylesheet" href="../../assets/export-v161.css?v=20261025-ui-shell-consistency">
+  <link rel="stylesheet" href="../../assets/visual-grammar.css?v=20261025-ui-shell-consistency">
+  <link rel="stylesheet" href="../../assets/indicator-pages.css?v=20261025-ui-shell-consistency">
+  <link rel="stylesheet" href="../../assets/social-presence.css?v=20261025-ui-shell-consistency">
+<style id="ov-invalsi-benchmark-history-style">
+.ux-history-chart .ux-series-group[data-history-town="toscana"] .ux-series-line{stroke-dasharray:10 5;stroke-width:3;opacity:.9}
+.ux-history-chart .ux-series-group[data-history-town="italia"] .ux-series-line{stroke-dasharray:2 5;stroke-width:3;opacity:.9}
+.ux-history-legend button[data-history-select="toscana"]::before,.ux-history-legend button[data-history-select="italia"]::before{width:20px;height:2px;border-radius:0}
+.ux-history-legend button[data-history-select="toscana"]::before{background:repeating-linear-gradient(90deg,var(--series-color) 0 8px,transparent 8px 12px)}
+.ux-history-legend button[data-history-select="italia"]::before{background:repeating-linear-gradient(90deg,var(--series-color) 0 2px,transparent 2px 6px)}
+</style><style id="ov-climate-current-grammar-style">
+      .ov-climate-current-legend{
+        display:flex;align-items:center;gap:18px;margin:0 0 14px;padding:0 2px;
+        color:var(--muted);font-size:9px;font-weight:700
+      }
+      .ov-climate-current-legend span{display:inline-flex;align-items:center;gap:7px}
+      .ov-climate-current-legend .ov-legend-dot{
+        width:9px;height:9px;border-radius:50%;background:var(--surface,#fffaf1);
+        border:2px solid var(--theme-color,#52785c)
+      }
+      .ov-climate-current-legend .ov-legend-mean{width:2px;height:16px;background:#607b88}
+      .ov-climate-current-list{
+        display:grid;gap:11px
+      }
+      .ov-climate-current-list .ov-climate-current-row{
+        border-radius:8px;grid-template-columns:24px minmax(110px,1.1fr) minmax(150px,3fr) minmax(70px,auto);
+        align-items:center;gap:12px;min-height:54px;padding:0;display:grid;position:relative;
+        color:inherit;text-decoration:none;transition:background .15s
+      }
+      .ov-climate-current-list .ov-climate-current-row:hover,
+      .ov-climate-current-list .ov-climate-current-row.selected{background:var(--blue-soft)}
+      .ov-climate-current-list .ov-climate-current-row .town{
+        grid-column:2;font-size:13px;font-weight:690
+      }
+      .ov-climate-current-list .ov-climate-current-row strong{
+        grid-column:4;font-family:var(--font-geist-mono),monospace;text-align:right;
+        white-space:nowrap;font-size:12px
+      }
+      .ov-climate-current-list .ov-climate-current-track{
+        grid-column:3;position:relative;height:9px;border-radius:999px;background:#e4e9e7;
+        overflow:visible
+      }
+      .ov-climate-current-list.uses-versilia-marker .ov-climate-current-track::after{
+        content:'';position:absolute;z-index:1;left:var(--ov-mean-position);top:-5px;width:2px;height:19px;
+        background:#607b88;transform:translateX(-1px)
+      }
+      .ov-climate-current-list.uses-versilia-marker .ov-climate-current-track>i{
+        position:absolute;z-index:2;top:50%;left:var(--ov-value-position)!important;
+        width:11px;height:11px;margin:-5.5px 0 0 -5.5px;border-radius:50%;
+        background:var(--surface,#fffaf1);border:3px solid var(--theme-color,#52785c);
+        box-shadow:0 1px 4px color-mix(in srgb,var(--ink) 18%,transparent)
+      }
+      .ov-climate-current-list .bar-hover-label{display:none}
+      @media(max-width:700px){
+        .ov-climate-current-list .ov-climate-current-row{
+          grid-template-columns:18px minmax(82px,1fr) minmax(70px,1.4fr) auto;gap:7px
+        }
+        .ov-climate-current-list .ov-climate-current-row .town{font-size:11px}
+        .ov-climate-current-list .ov-climate-current-row strong{font-size:10px}
+      }
+    </style>
+  <link rel="canonical" href="https://osservatorioversilia.it/indicatori/qualita-delle-aree-di-balneazione/">
+  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"url":"https://osservatorioversilia.it/indicatori/qualita-delle-aree-di-balneazione/","name":"Qualità delle aree di balneazione in Versilia · Osservatorio Versilia","description":"Qualità delle aree di balneazione nei sette comuni della Versilia: valori 2025, serie storiche disponibili, metodo e fonte ufficiale.","inLanguage":"it-IT","isAccessibleForFree":true,"creator":{"@type":"Person","name":"Emanuele Anzilotti"},"publisher":{"@type":"Person","name":"Emanuele Anzilotti"},"@type":"Dataset","identifier":"bathingWaterQuality","dateModified":"2026-09-14","spatialCoverage":{"@type":"Place","name":"Versilia, Toscana, Italia"},"temporalCoverage":"2025","variableMeasured":{"@type":"PropertyValue","name":"Qualità delle aree di balneazione","unitText":"percent"},"isBasedOn":"https://www.arpat.toscana.it/pubblicazione/il-controllo-delle-acque-di-balneazione-stagione-2025/","measurementTechnique":"Aree: aree eccellenti / aree classificate × 100. km: km in classe eccellente / km classificati × 100. Aggregati Versilia calcolati sulle somme elementari."},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Osservatorio Versilia","item":"https://osservatorioversilia.it/"},{"@type":"ListItem","position":2,"name":"Ambiente","item":"https://osservatorioversilia.it/confronta/ambiente/"},{"@type":"ListItem","position":3,"name":"Qualità delle aree di balneazione in Versilia · Osservatorio Versilia","item":"https://osservatorioversilia.it/indicatori/qualita-delle-aree-di-balneazione/"}]}]}</script>
+
+  <meta property="og:url" content="https://osservatorioversilia.it/indicatori/qualita-delle-aree-di-balneazione/">
+  <meta property="og:site_name" content="Osservatorio Versilia">
+  <meta property="og:image" content="https://osservatorioversilia.it/images/versilia-viareggio-apuane.jpg">
+  <meta property="og:image:alt" content="Viareggio e le Alpi Apuane, immagine di Osservatorio Versilia">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Qualità delle aree di balneazione in Versilia · Osservatorio Versilia">
+  <meta name="twitter:description" content="Qualità delle aree di balneazione nei sette comuni della Versilia: valori 2025, serie storiche disponibili, metodo e fonte ufficiale.">
+  <meta name="twitter:site" content="@OssVersilia">
+  <meta name="twitter:image" content="https://osservatorioversilia.it/images/versilia-viareggio-apuane.jpg">
+  <meta name="twitter:image:alt" content="Viareggio e le Alpi Apuane, immagine di Osservatorio Versilia">
+  <link rel="stylesheet" href="../../assets/brand.css?v=20260824-ov4">
+  <link rel="stylesheet" href="../../assets/mobile-accordion-fix.css?v=20260809-3">
+  <link rel="stylesheet" href="../../assets/chart-surfaces.css?v=20260826-v120">
+  <meta name="theme-color" content="#0F3654">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Osservatorio Versilia">
+  <link rel="apple-touch-icon" sizes="180x180" href="../../pwa/icon-180.png?v=20260824-pwa9">
+  <link rel="stylesheet" href="../../assets/pwa.css?v=20260824-pwa9">
+</head>
+<body class="antialiased" data-page="indicator" data-theme="ambiente" data-town="" data-metric="bathingWaterQuality" data-prerendered="true">
+  <div id="site-header-mount">
+      <a class="skip-link" href="#app">Vai al contenuto</a>
+      <header class="site-header">
+        <div class="site-header-inner">
+          <a href="../../" class="site-brand" aria-label="Osservatorio Versilia, torna alla home">
+            <span class="site-brand-mark" aria-hidden="true"><svg class="ov-mark-svg" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 76 64"><g fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="27" cy="32" r="22" stroke="#0F3654" stroke-width="6"/>
+    <path d="M43 28 53 48 71 15" stroke="#0F3654" stroke-width="6"/>
+    <path d="M57 27 70 9" stroke="#58A28F" stroke-width="3.2"/>
+  </g>
+  <g fill="#6F8FA3">
+    <rect x="16" y="34" width="5.5" height="9" rx="1"/>
+    <rect x="24" y="28" width="5.5" height="15" rx="1"/>
+    <rect x="32" y="20" width="5.5" height="23" rx="1"/>
+  </g>
+  <path d="M10 43c7-5.5 14-7.2 20-5.3 4.4 1.4 8 4.1 12 4.7v5.1c-4.6-.5-8.7-3-13.1-4.1-5.7-1.5-11.7-.1-18.9 4.1Z" fill="#58A28F"/>
+  <path d="M11.5 45.2c6.2-3.2 11.9-4.2 17.1-3 4.3 1 8.1 3.2 12.2 3.8" fill="none" stroke="#F7FAF8" stroke-width="1.8" stroke-linecap="round"/>
+</svg></span>
+            <span class="site-brand-copy"><strong>Osservatorio Versilia</strong><small>Versilia in numeri</small></span>
+          </a>
+          <div class="site-header-actions">
+            <nav aria-label="Navigazione principale">
+              <a href="../../#temi">Temi</a>
+              <a href="../../#comuni">Comuni</a>
+              <a href="../../dossier/">Dossier</a>
+              <a href="../../chiedi/">Chiedi</a>
+              <a href="../../opportunita/">Opportunità</a>
+              <a href="../../progetto/">Il progetto</a>
+              <a href="../../stato-dati/" data-data-status-nav="header">Stato dati</a>
+              <a href="../../segnala/">Segnala</a>
+            </nav>
+            <button class="global-search-trigger" type="button" aria-haspopup="dialog" aria-expanded="false">
+              <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg><span>Cerca</span><kbd>/</kbd>
+            </button>
+          </div>
+        </div>
+      </header></div>
+  <div id="app"><main class="inner-page indicator-page" data-theme="ambiente">
+      <nav class="breadcrumbs page-width" aria-label="Percorso"><a href="/">Home</a><span>›</span><a href="/confronta/ambiente/">Ambiente</a><span>›</span><strong data-financial-indicator-breadcrumb="">Qualità delle aree di balneazione</strong></nav>
+      <section class="indicator-hero page-width"><div><span class="overline">Indicatore · Ambiente</span><h1 data-financial-indicator-hero-title="">Qualità delle aree di balneazione</h1><p data-financial-indicator-hero-description="">Quota delle aree e dei chilometri di costa classificati eccellenti da ARPAT per il 2025, sulla base dei dati 2022–2025.</p></div>
+        <dl><div><dt>Anno</dt><dd>2025</dd></div><div><dt>Copertura</dt><dd>4/4 Comuni costieri + 3 n.a.</dd></div><div><dt>Serie storica</dt><dd>Non disponibile</dd></div></dl>
+        <div class="indicator-hero-actions"><a class="button-link" href="/confronta/ambiente/?indicatore=bathingWaterQuality">Confronta i 7 comuni <span>→</span></a><a class="source-pill" href="https://www.arpat.toscana.it/pubblicazione/il-controllo-delle-acque-di-balneazione-stagione-2025/" target="_blank" rel="noreferrer">Fonte originale ↗</a></div></section>
+      <section class="indicator-current page-width" aria-labelledby="indicator-current-title"><div class="section-heading"><div><span class="overline">Valori comunali</span><h2 id="indicator-current-title" data-financial-indicator-title="">Il dato nei sette comuni</h2></div><p data-financial-indicator-description="">Ordine alfabetico: nessuna graduatoria e nessun giudizio di merito.</p></div>
+        
+        <div class="indicator-current-layout"><div data-financial-indicator-comparison=""><div class="indicator-composite-table"><div class="comparison-bars"><a href="/comuni/forte-dei-marmi/?tema=ambiente&amp;indicatore=bathingWaterQuality" class="bar-row" aria-label="Forte dei Marmi: 100,0%"><span class="bar-rank">1</span><span class="bar-town">Forte dei Marmi</span><span class="bar-track"><span class="bar-fill" style="width:100%"></span><span class="bar-hover-label">Forte dei Marmi · 100,0%</span></span><strong>100,0%</strong></a><a href="/comuni/viareggio/?tema=ambiente&amp;indicatore=bathingWaterQuality" class="bar-row" aria-label="Viareggio: 83,3%"><span class="bar-rank">2</span><span class="bar-town">Viareggio</span><span class="bar-track"><span class="bar-fill" style="width:83.33333333333334%"></span><span class="bar-hover-label">Viareggio · 83,3%</span></span><strong>83,3%</strong></a><a href="/comuni/camaiore/?tema=ambiente&amp;indicatore=bathingWaterQuality" class="bar-row" aria-label="Camaiore: 66,7%"><span class="bar-rank">3</span><span class="bar-town">Camaiore</span><span class="bar-track"><span class="bar-fill" style="width:66.66666666666666%"></span><span class="bar-hover-label">Camaiore · 66,7%</span></span><strong>66,7%</strong></a><a href="/comuni/pietrasanta/?tema=ambiente&amp;indicatore=bathingWaterQuality" class="bar-row" aria-label="Pietrasanta: 44,4%"><span class="bar-rank">4</span><span class="bar-town">Pietrasanta</span><span class="bar-track"><span class="bar-fill" style="width:44.44444444444444%"></span><span class="bar-hover-label">Pietrasanta · 44,4%</span></span><strong>44,4%</strong></a><a href="/comuni/massarosa/?tema=ambiente&amp;indicatore=bathingWaterQuality" class="bar-row" aria-label="Massarosa: n.a."><span class="bar-rank">—</span><span class="bar-town">Massarosa</span><span class="bar-track"><span class="bar-fill" style="width:0%"></span><span class="bar-hover-label">Massarosa · n.a.</span></span><strong>n.a.</strong></a><a href="/comuni/seravezza/?tema=ambiente&amp;indicatore=bathingWaterQuality" class="bar-row" aria-label="Seravezza: n.a."><span class="bar-rank">—</span><span class="bar-town">Seravezza</span><span class="bar-track"><span class="bar-fill" style="width:0%"></span><span class="bar-hover-label">Seravezza · n.a.</span></span><strong>n.a.</strong></a><a href="/comuni/stazzema/?tema=ambiente&amp;indicatore=bathingWaterQuality" class="bar-row" aria-label="Stazzema: n.a."><span class="bar-rank">—</span><span class="bar-town">Stazzema</span><span class="bar-track"><span class="bar-fill" style="width:0%"></span><span class="bar-hover-label">Stazzema · n.a.</span></span><strong>n.a.</strong></a></div></div></div><aside data-financial-indicator-aggregate=""><span>Versilia costiera · aree eccellenti</span><strong>66,7%</strong><p>Rapporti tra le somme dei numeratori e dei denominatori dei quattro Comuni costieri; non medie semplici delle percentuali comunali.</p></aside></div></section>
+      <section class="indicator-benchmark page-width"><section class="benchmark-unavailable"><span class="overline">Confronto esterno</span><h2>Dato non perfettamente comparabile</h2><p>Per questo indicatore non è disponibile un confronto omogeneo con Toscana e Italia. Il sito evita di affiancare valori con perimetri o anni incompatibili.</p></section></section>
+      <section class="indicator-history page-width" aria-labelledby="indicator-history-title"><div class="section-heading"><div><span class="overline">Andamento</span><h2 id="indicator-history-title">Serie storica comunale</h2></div><p>I valori compaiono soltanto quando la definizione resta omogenea nel tempo.</p></div><div data-financial-indicator-history=""><div class="indicator-history-empty"><strong>Serie storica non ancora disponibile</strong><p>La fonte utilizzata non consente, al momento, di pubblicare una sequenza comunale omogenea. Il sito mantiene quindi soltanto l’ultima annualità verificata.</p></div></div></section>
+      <section class="indicator-method page-width" aria-labelledby="indicator-method-title"><div class="section-heading"><div><span class="overline">Trasparenza</span><h2 id="indicator-method-title">Fonte, aggiornamento e metodo</h2></div><p>Le informazioni necessarie per ricostruire e valutare il dato.</p></div>
+        <div class="indicator-governance-grid"><dl><div><dt>Produttore</dt><dd>ARPAT</dd></div><div><dt>Fonte utilizzata</dt><dd><a href="https://www.arpat.toscana.it/pubblicazione/il-controllo-delle-acque-di-balneazione-stagione-2025/" target="_blank" rel="noreferrer">ARPAT — classificazione delle acque di balneazione ↗</a></dd></div><div><dt>Frequenza</dt><dd>Annuale</dd></div><div><dt>Prossimo aggiornamento atteso</dt><dd>Dopo la conclusione e validazione della stagione balneare</dd></div><div><dt>Ultimo controllo della fonte</dt><dd>5 novembre 2026</dd></div><div><dt>Licenza o condizioni di riuso</dt><dd><a href="https://www.arpat.toscana.it/pubblicazione/il-controllo-delle-acque-di-balneazione-stagione-2025/" target="_blank" rel="noreferrer">Condizioni ARPAT ↗</a></dd></div></dl>
+          <div><h3>Acquisizione</h3><p>Download dei dati e del rapporto ufficiale ARPAT; deduplica dei campioni su Codice area + Data + Rout./Suppl.; classificazioni e chilometri conservati nello snapshot.</p><div data-financial-indicator-method=""><details class="method-disclosure"><summary><span>Metodo e comparabilità</span><small>Formula, natura del dato e criticità</small></summary><div class="method-disclosure-body"><dl><div><dt>Natura</dt><dd>Classificazione ufficiale ARPAT quadriennale</dd></div><div><dt>Formula</dt><dd>Aree: aree eccellenti / aree classificate × 100. km: km in classe eccellente / km classificati × 100. Aggregati Versilia calcolati sulle somme elementari.</dd></div><div><dt>Copertura</dt><dd>4/4 Comuni costieri + 3 n.a.</dd></div></dl><p><strong>Nota:</strong> La classificazione 2025 usa i dati 2022–2025 e non coincide con gli esiti dei soli campioni 2025. Nessuna lunghezza è stimata.</p></div></details></div></div></div>
+        <div class="data-actions indicator-data-actions"><button type="button" data-share="">Condividi</button><button type="button" data-download="">Scarica CSV</button><button type="button" data-print="">Stampa / PDF</button></div></section>
+      <section class="topic-town-links page-width"><div><span class="overline">Schede comunali</span><h2>Apri il territorio</h2></div><div><a href="/comuni/camaiore/?tema=ambiente&amp;indicatore=bathingWaterQuality"><span>Camaiore</span><b>→</b></a><a href="/comuni/forte-dei-marmi/?tema=ambiente&amp;indicatore=bathingWaterQuality"><span>Forte dei Marmi</span><b>→</b></a><a href="/comuni/massarosa/?tema=ambiente&amp;indicatore=bathingWaterQuality"><span>Massarosa</span><b>→</b></a><a href="/comuni/pietrasanta/?tema=ambiente&amp;indicatore=bathingWaterQuality"><span>Pietrasanta</span><b>→</b></a><a href="/comuni/seravezza/?tema=ambiente&amp;indicatore=bathingWaterQuality"><span>Seravezza</span><b>→</b></a><a href="/comuni/stazzema/?tema=ambiente&amp;indicatore=bathingWaterQuality"><span>Stazzema</span><b>→</b></a><a href="/comuni/viareggio/?tema=ambiente&amp;indicatore=bathingWaterQuality"><span>Viareggio</span><b>→</b></a></div></section>
+    </main></div>
+  <div id="site-footer-mount">
+      <footer class="site-footer">
+        <div class="footer-about"><strong>Osservatorio Versilia</strong>
+          <p>Un punto di accesso indipendente ai dati pubblici dei sette comuni della Versilia.</p>
+          <p class="footer-disclaimer">Non è un sito istituzionale e non rappresenta gli enti citati.</p>
+        </div>
+        <nav class="footer-links" aria-label="Informazioni sul progetto">
+          <a href="../../progetto/">Il progetto</a>
+          <a href="../../stato-dati/" data-data-status-nav="footer">Stato dei dati</a>
+          <a href="../../opportunita/">Opportunità</a>
+          <a href="../../progetto/#metodo">Metodo</a>
+          <a href="../../progetto/#licenza">Licenza</a>
+          <a href="../../progetto/#versioni">Versioni dei dati</a>
+          <a href="../../segnala/">Segnala un dato</a>
+          <a href="mailto:info@osservatorioversilia.it">Contatti</a>
+        </nav>
+        
+      <div class="footer-social" data-social-placement="footer" aria-label="Segui Osservatorio Versilia">
+        <strong>Segui Osservatorio Versilia</strong><div class="social-links">
+    <a class="social-profile-link" href="https://www.facebook.com/osservatorioversilia" target="_blank" rel="me noreferrer" aria-label="Segui Osservatorio Versilia su Facebook">
+      <span class="social-profile-mark" aria-hidden="true">f</span>
+      <span class="social-profile-copy"><strong>Facebook</strong><small>@osservatorioversilia</small></span>
+      <b aria-hidden="true">↗</b>
+    </a>
+    <a class="social-profile-link" href="https://www.instagram.com/osservatorioversilia/" target="_blank" rel="me noreferrer" aria-label="Segui Osservatorio Versilia su Instagram">
+      <span class="social-profile-mark" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="5" ry="5"></rect><circle cx="12" cy="12" r="4"></circle><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"></circle></svg></span>
+      <span class="social-profile-copy"><strong>Instagram</strong><small>@osservatorioversilia</small></span>
+      <b aria-hidden="true">↗</b>
+    </a>
+    <a class="social-profile-link" href="https://www.linkedin.com/company/osservatorioversilia" target="_blank" rel="me noreferrer" aria-label="Segui Osservatorio Versilia su LinkedIn">
+      <span class="social-profile-mark" aria-hidden="true">in</span>
+      <span class="social-profile-copy"><strong>LinkedIn</strong><small>Osservatorio Versilia</small></span>
+      <b aria-hidden="true">↗</b>
+    </a>
+    <a class="social-profile-link" href="https://x.com/OssVersilia" target="_blank" rel="me noreferrer" aria-label="Segui Osservatorio Versilia su X">
+      <span class="social-profile-mark" aria-hidden="true">X</span>
+      <span class="social-profile-copy"><strong>X</strong><small>@OssVersilia</small></span>
+      <b aria-hidden="true">↗</b>
+    </a></div>
+      </div><div class="footer-note">
+          <span>7 comuni · 11 temi</span><span>v. dati v1.40.0</span><span>catalogo dati aggiornato al 14 settembre 2026</span>
+        </div>
+      </footer></div>
+  <noscript><div class="app-error">Il sito richiede JavaScript per mostrare confronti, ricerca e schede comunali.</div></noscript>
+  <script src="../../assets/fidelity.js" defer=""></script>
+  <script src="../../assets/app-bundle.js?v=20261025-ui-shell-consistency" defer=""></script>
+  <script src="../../assets/economy-atlas.js" defer=""></script>
+  <script src="../../assets/ux-accordion.js?v=20261025-ui-shell-consistency" defer=""></script>
+  <script src="../../assets/ux-history-core.js?v=20261025-ui-shell-consistency" defer=""></script>
+  <script src="../../assets/ux-history.js?v=20261025-ui-shell-consistency" defer=""></script>
+  <script src="../../assets/export-v161.js?v=20261025-ui-shell-consistency" defer=""></script>
+  <script src="../../assets/visual-grammar.js?v=20261025-ui-shell-consistency" defer=""></script>
+  <script src="../../assets/social-presence.js?v=20261025-ui-shell-consistency" defer=""></script>
+
+
+  <script src="../../assets/pwa.js?v=20260824-pwa9&rev=catalog-v129" defer></script>
+</body></html>

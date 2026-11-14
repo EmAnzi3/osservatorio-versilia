@@ -1,0 +1,362 @@
+<!doctype html>
+<html lang="it"><head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Consumo di suolo annuale in Versilia · Osservatorio Versilia</title>
+  <meta name="description" content="Consumo di suolo annuale nei sette comuni della Versilia: valori 2012, 2015–2025, serie storiche disponibili, metodo e fonte ufficiale.">
+  <meta property="og:title" content="Consumo di suolo annuale in Versilia · Osservatorio Versilia">
+  <meta property="og:description" content="Consumo di suolo annuale nei sette comuni della Versilia: valori 2012, 2015–2025, serie storiche disponibili, metodo e fonte ufficiale.">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="it_IT">
+  <link rel="icon" href="../../favicon.svg?v=20260824-ov4" sizes="any">
+  <link rel="icon" href="../../favicon.svg?v=20260824-ov4" type="image/svg+xml">
+  <link rel="manifest" href="../../site.webmanifest?v=20260824-pwa9">
+  <link rel="stylesheet" href="../../assets/original.css">
+  <link rel="stylesheet" href="../../assets/static.css">
+  <link rel="stylesheet" href="../../assets/fidelity.css?v=20261025-ui-shell-consistency">
+  <link rel="stylesheet" href="../../assets/fonts.css">
+  <link rel="stylesheet" href="../../assets/ux-experiment.css?v=20261025-ui-shell-consistency">
+  <link rel="stylesheet" href="../../assets/ux-background-match.css?v=20261025-ui-shell-consistency">
+  <link rel="stylesheet" href="../../assets/export-v161.css?v=20261025-ui-shell-consistency">
+  <link rel="stylesheet" href="../../assets/visual-grammar.css?v=20261025-ui-shell-consistency">
+  <link rel="stylesheet" href="../../assets/indicator-pages.css?v=20261025-ui-shell-consistency">
+  <link rel="stylesheet" href="../../assets/social-presence.css?v=20261025-ui-shell-consistency">
+<style id="ov-invalsi-benchmark-history-style">
+.ux-history-chart .ux-series-group[data-history-town="toscana"] .ux-series-line{stroke-dasharray:10 5;stroke-width:3;opacity:.9}
+.ux-history-chart .ux-series-group[data-history-town="italia"] .ux-series-line{stroke-dasharray:2 5;stroke-width:3;opacity:.9}
+.ux-history-legend button[data-history-select="toscana"]::before,.ux-history-legend button[data-history-select="italia"]::before{width:20px;height:2px;border-radius:0}
+.ux-history-legend button[data-history-select="toscana"]::before{background:repeating-linear-gradient(90deg,var(--series-color) 0 8px,transparent 8px 12px)}
+.ux-history-legend button[data-history-select="italia"]::before{background:repeating-linear-gradient(90deg,var(--series-color) 0 2px,transparent 2px 6px)}
+</style><style id="ov-climate-current-grammar-style">
+      .ov-climate-current-legend{
+        display:flex;align-items:center;gap:18px;margin:0 0 14px;padding:0 2px;
+        color:var(--muted);font-size:9px;font-weight:700
+      }
+      .ov-climate-current-legend span{display:inline-flex;align-items:center;gap:7px}
+      .ov-climate-current-legend .ov-legend-dot{
+        width:9px;height:9px;border-radius:50%;background:var(--surface,#fffaf1);
+        border:2px solid var(--theme-color,#52785c)
+      }
+      .ov-climate-current-legend .ov-legend-mean{width:2px;height:16px;background:#607b88}
+      .ov-climate-current-list{
+        display:grid;gap:11px
+      }
+      .ov-climate-current-list .ov-climate-current-row{
+        border-radius:8px;grid-template-columns:24px minmax(110px,1.1fr) minmax(150px,3fr) minmax(70px,auto);
+        align-items:center;gap:12px;min-height:54px;padding:0;display:grid;position:relative;
+        color:inherit;text-decoration:none;transition:background .15s
+      }
+      .ov-climate-current-list .ov-climate-current-row:hover,
+      .ov-climate-current-list .ov-climate-current-row.selected{background:var(--blue-soft)}
+      .ov-climate-current-list .ov-climate-current-row .town{
+        grid-column:2;font-size:13px;font-weight:690
+      }
+      .ov-climate-current-list .ov-climate-current-row strong{
+        grid-column:4;font-family:var(--font-geist-mono),monospace;text-align:right;
+        white-space:nowrap;font-size:12px
+      }
+      .ov-climate-current-list .ov-climate-current-track{
+        grid-column:3;position:relative;height:9px;border-radius:999px;background:#e4e9e7;
+        overflow:visible
+      }
+      .ov-climate-current-list.uses-versilia-marker .ov-climate-current-track::after{
+        content:'';position:absolute;z-index:1;left:var(--ov-mean-position);top:-5px;width:2px;height:19px;
+        background:#607b88;transform:translateX(-1px)
+      }
+      .ov-climate-current-list.uses-versilia-marker .ov-climate-current-track>i{
+        position:absolute;z-index:2;top:50%;left:var(--ov-value-position)!important;
+        width:11px;height:11px;margin:-5.5px 0 0 -5.5px;border-radius:50%;
+        background:var(--surface,#fffaf1);border:3px solid var(--theme-color,#52785c);
+        box-shadow:0 1px 4px color-mix(in srgb,var(--ink) 18%,transparent)
+      }
+      .ov-climate-current-list .bar-hover-label{display:none}
+      @media(max-width:700px){
+        .ov-climate-current-list .ov-climate-current-row{
+          grid-template-columns:18px minmax(82px,1fr) minmax(70px,1.4fr) auto;gap:7px
+        }
+        .ov-climate-current-list .ov-climate-current-row .town{font-size:11px}
+        .ov-climate-current-list .ov-climate-current-row strong{font-size:10px}
+      }
+    </style>
+  <link rel="canonical" href="https://osservatorioversilia.it/indicatori/consumo-di-suolo-annuale/">
+  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"url":"https://osservatorioversilia.it/indicatori/consumo-di-suolo-annuale/","name":"Consumo di suolo annuale in Versilia · Osservatorio Versilia","description":"Consumo di suolo annuale nei sette comuni della Versilia: valori 2012, 2015–2025, serie storiche disponibili, metodo e fonte ufficiale.","inLanguage":"it-IT","isAccessibleForFree":true,"creator":{"@type":"Person","name":"Emanuele Anzilotti"},"publisher":{"@type":"Person","name":"Emanuele Anzilotti"},"@type":"Dataset","identifier":"landUseChange","dateModified":"2026-09-14","spatialCoverage":{"@type":"Place","name":"Versilia, Toscana, Italia"},"temporalCoverage":"2012, 2015–2025","variableMeasured":{"@type":"PropertyValue","name":"Consumo di suolo annuale","unitText":"hectares"},"isBasedOn":"https://www.isprambiente.gov.it/it/attivita/suolo-e-territorio/suolo/il-consumo-di-suolo/i-dati-sul-consumo-di-suolo","measurementTechnique":"Versilia = Σ ettari comunali per annualita' e vista (lordo/netto)."},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Osservatorio Versilia","item":"https://osservatorioversilia.it/"},{"@type":"ListItem","position":2,"name":"Ambiente","item":"https://osservatorioversilia.it/confronta/ambiente/"},{"@type":"ListItem","position":3,"name":"Consumo di suolo annuale in Versilia · Osservatorio Versilia","item":"https://osservatorioversilia.it/indicatori/consumo-di-suolo-annuale/"}]}]}</script>
+
+  <meta property="og:url" content="https://osservatorioversilia.it/indicatori/consumo-di-suolo-annuale/">
+  <meta property="og:site_name" content="Osservatorio Versilia">
+  <meta property="og:image" content="https://osservatorioversilia.it/images/versilia-viareggio-apuane.jpg">
+  <meta property="og:image:alt" content="Viareggio e le Alpi Apuane, immagine di Osservatorio Versilia">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Consumo di suolo annuale in Versilia · Osservatorio Versilia">
+  <meta name="twitter:description" content="Consumo di suolo annuale nei sette comuni della Versilia: valori 2012, 2015–2025, serie storiche disponibili, metodo e fonte ufficiale.">
+  <meta name="twitter:site" content="@OssVersilia">
+  <meta name="twitter:image" content="https://osservatorioversilia.it/images/versilia-viareggio-apuane.jpg">
+  <meta name="twitter:image:alt" content="Viareggio e le Alpi Apuane, immagine di Osservatorio Versilia">
+  <link rel="stylesheet" href="../../assets/brand.css?v=20260824-ov4">
+  <link rel="stylesheet" href="../../assets/mobile-accordion-fix.css?v=20260809-3">
+  <link rel="stylesheet" href="../../assets/chart-surfaces.css?v=20260826-v120">
+  <meta name="theme-color" content="#0F3654">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Osservatorio Versilia">
+  <link rel="apple-touch-icon" sizes="180x180" href="../../pwa/icon-180.png?v=20260824-pwa9">
+  <link rel="stylesheet" href="../../assets/pwa.css?v=20260824-pwa9">
+</head>
+<body class="antialiased" data-page="indicator" data-theme="ambiente" data-town="" data-metric="landUseChange" data-prerendered="true">
+  <div id="site-header-mount">
+      <a class="skip-link" href="#app">Vai al contenuto</a>
+      <header class="site-header">
+        <div class="site-header-inner">
+          <a href="../../" class="site-brand" aria-label="Osservatorio Versilia, torna alla home">
+            <span class="site-brand-mark" aria-hidden="true"><svg class="ov-mark-svg" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 76 64"><g fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="27" cy="32" r="22" stroke="#0F3654" stroke-width="6"/>
+    <path d="M43 28 53 48 71 15" stroke="#0F3654" stroke-width="6"/>
+    <path d="M57 27 70 9" stroke="#58A28F" stroke-width="3.2"/>
+  </g>
+  <g fill="#6F8FA3">
+    <rect x="16" y="34" width="5.5" height="9" rx="1"/>
+    <rect x="24" y="28" width="5.5" height="15" rx="1"/>
+    <rect x="32" y="20" width="5.5" height="23" rx="1"/>
+  </g>
+  <path d="M10 43c7-5.5 14-7.2 20-5.3 4.4 1.4 8 4.1 12 4.7v5.1c-4.6-.5-8.7-3-13.1-4.1-5.7-1.5-11.7-.1-18.9 4.1Z" fill="#58A28F"/>
+  <path d="M11.5 45.2c6.2-3.2 11.9-4.2 17.1-3 4.3 1 8.1 3.2 12.2 3.8" fill="none" stroke="#F7FAF8" stroke-width="1.8" stroke-linecap="round"/>
+</svg></span>
+            <span class="site-brand-copy"><strong>Osservatorio Versilia</strong><small>Versilia in numeri</small></span>
+          </a>
+          <div class="site-header-actions">
+            <nav aria-label="Navigazione principale">
+              <a href="../../#temi">Temi</a>
+              <a href="../../#comuni">Comuni</a>
+              <a href="../../dossier/">Dossier</a>
+              <a href="../../chiedi/">Chiedi</a>
+              <a href="../../opportunita/">Opportunità</a>
+              <a href="../../progetto/">Il progetto</a>
+              <a href="../../stato-dati/" data-data-status-nav="header">Stato dati</a>
+              <a href="../../segnala/">Segnala</a>
+            </nav>
+            <button class="global-search-trigger" type="button" aria-haspopup="dialog" aria-expanded="false">
+              <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg><span>Cerca</span><kbd>/</kbd>
+            </button>
+          </div>
+        </div>
+      </header></div>
+  <div id="app"><main class="inner-page indicator-page" data-theme="ambiente">
+      <nav class="breadcrumbs page-width" aria-label="Percorso"><a href="/">Home</a><span>›</span><a href="/confronta/ambiente/">Ambiente</a><span>›</span><strong data-financial-indicator-breadcrumb="">Consumo di suolo annuale</strong></nav>
+      <section class="indicator-hero page-width"><div><span class="overline">Indicatore · Ambiente</span><h1 data-financial-indicator-hero-title="">Consumo di suolo annuale</h1><p data-financial-indicator-hero-description="">Variazione annuale ISPRA distinta tra consumo di suolo lordo e netto. Il netto può essere negativo per ripristini o riclassificazioni.</p></div>
+        <dl><div><dt>Anno</dt><dd>2012, 2015–2025</dd></div><div><dt>Copertura</dt><dd>7/7</dd></div><div><dt>Serie storica</dt><dd>7/7 comuni</dd></div></dl>
+        <div class="indicator-hero-actions"><a class="button-link" href="/confronta/ambiente/?indicatore=landUseChange">Confronta i 7 comuni <span>→</span></a><a class="source-pill" href="https://www.isprambiente.gov.it/it/attivita/suolo-e-territorio/suolo/il-consumo-di-suolo/i-dati-sul-consumo-di-suolo" target="_blank" rel="noreferrer">Fonte originale ↗</a></div></section>
+      <section class="indicator-current page-width" aria-labelledby="indicator-current-title"><div class="section-heading"><div><span class="overline">Valori comunali</span><h2 id="indicator-current-title" data-financial-indicator-title="">Il dato nei sette comuni</h2></div><p data-financial-indicator-description="">Ordine alfabetico: nessuna graduatoria e nessun giudizio di merito.</p></div>
+        
+        <div class="indicator-current-layout"><div data-financial-indicator-comparison=""><div class="indicator-composite-table territory-indicator-comparison"><div class="compare-chart-toolbar"><div class="compare-view-controls territory-profile-controls"><label class="compare-choice-select"><span>Lettura</span><select data-composite-component=""><option value="gross">Consumo lordo</option><option value="net" selected="">Consumo netto</option></select></label></div></div><div class="comparison-bars" data-metric-key="landUseChange" data-composite-choice="net" data-composite-scale="value" data-visual-contract="canonical" data-visual-unit="hectares" data-visual-grammar-signature="landUseChange|r|net|value|5.31|hectares|1.53|1.43|1.11|0.77|0.66|0|-0.19" data-viz="signed-dotplot"><div class="comparison-legend"><span><i class="comparison-legend-dot" aria-hidden="true"></i>Comune</span><span><i class="comparison-legend-reference" aria-hidden="true"></i>Versilia · Consumo netto</span></div><a href="/comuni/forte-dei-marmi/?tema=ambiente&amp;indicatore=landUseChange" class="bar-row comparison-row" aria-label="Forte dei Marmi: 1,5 ha; Versilia · Consumo netto: 5,3 ha"><span class="bar-town">Forte dei Marmi</span><span class="bar-track">
+        <span class="comparison-axis-line" aria-hidden="true"></span>
+        <span class="comparison-zero" style="left:4%" aria-hidden="true"></span>
+        <span class="comparison-reference" style="left:88.96%" aria-hidden="true"></span>
+        <span class="comparison-stem" style="left:4%;width:24.48%" aria-hidden="true"></span>
+        <span class="comparison-dot" style="left:28.48%" aria-hidden="true"></span><span class="bar-hover-label">Forte dei Marmi · 1,5 ha</span></span><strong>1,53 ha</strong></a><a href="/comuni/viareggio/?tema=ambiente&amp;indicatore=landUseChange" class="bar-row comparison-row" aria-label="Viareggio: 1,4 ha; Versilia · Consumo netto: 5,3 ha"><span class="bar-town">Viareggio</span><span class="bar-track">
+        <span class="comparison-axis-line" aria-hidden="true"></span>
+        <span class="comparison-zero" style="left:4%" aria-hidden="true"></span>
+        <span class="comparison-reference" style="left:88.96%" aria-hidden="true"></span>
+        <span class="comparison-stem" style="left:4%;width:22.88%" aria-hidden="true"></span>
+        <span class="comparison-dot" style="left:26.88%" aria-hidden="true"></span><span class="bar-hover-label">Viareggio · 1,4 ha</span></span><strong>1,43 ha</strong></a><a href="/comuni/pietrasanta/?tema=ambiente&amp;indicatore=landUseChange" class="bar-row comparison-row" aria-label="Pietrasanta: 1,1 ha; Versilia · Consumo netto: 5,3 ha"><span class="bar-town">Pietrasanta</span><span class="bar-track">
+        <span class="comparison-axis-line" aria-hidden="true"></span>
+        <span class="comparison-zero" style="left:4%" aria-hidden="true"></span>
+        <span class="comparison-reference" style="left:88.96%" aria-hidden="true"></span>
+        <span class="comparison-stem" style="left:4%;width:17.76%" aria-hidden="true"></span>
+        <span class="comparison-dot" style="left:21.76%" aria-hidden="true"></span><span class="bar-hover-label">Pietrasanta · 1,1 ha</span></span><strong>1,11 ha</strong></a><a href="/comuni/seravezza/?tema=ambiente&amp;indicatore=landUseChange" class="bar-row comparison-row" aria-label="Seravezza: 0,8 ha; Versilia · Consumo netto: 5,3 ha"><span class="bar-town">Seravezza</span><span class="bar-track">
+        <span class="comparison-axis-line" aria-hidden="true"></span>
+        <span class="comparison-zero" style="left:4%" aria-hidden="true"></span>
+        <span class="comparison-reference" style="left:88.96%" aria-hidden="true"></span>
+        <span class="comparison-stem" style="left:4%;width:12.32%" aria-hidden="true"></span>
+        <span class="comparison-dot" style="left:16.32%" aria-hidden="true"></span><span class="bar-hover-label">Seravezza · 0,8 ha</span></span><strong>0,77 ha</strong></a><a href="/comuni/camaiore/?tema=ambiente&amp;indicatore=landUseChange" class="bar-row comparison-row" aria-label="Camaiore: 0,7 ha; Versilia · Consumo netto: 5,3 ha"><span class="bar-town">Camaiore</span><span class="bar-track">
+        <span class="comparison-axis-line" aria-hidden="true"></span>
+        <span class="comparison-zero" style="left:4%" aria-hidden="true"></span>
+        <span class="comparison-reference" style="left:88.96%" aria-hidden="true"></span>
+        <span class="comparison-stem" style="left:4%;width:10.56%" aria-hidden="true"></span>
+        <span class="comparison-dot" style="left:14.56%" aria-hidden="true"></span><span class="bar-hover-label">Camaiore · 0,7 ha</span></span><strong>0,66 ha</strong></a><a href="/comuni/stazzema/?tema=ambiente&amp;indicatore=landUseChange" class="bar-row comparison-row" aria-label="Stazzema: 0,0 ha; Versilia · Consumo netto: 5,3 ha"><span class="bar-town">Stazzema</span><span class="bar-track">
+        <span class="comparison-axis-line" aria-hidden="true"></span>
+        <span class="comparison-zero" style="left:4%" aria-hidden="true"></span>
+        <span class="comparison-reference" style="left:88.96%" aria-hidden="true"></span>
+        <span class="comparison-stem" style="left:4%;width:0%" aria-hidden="true"></span>
+        <span class="comparison-dot" style="left:4%" aria-hidden="true"></span><span class="bar-hover-label">Stazzema · 0,0 ha</span></span><strong>0,00 ha</strong></a><a href="/comuni/massarosa/?tema=ambiente&amp;indicatore=landUseChange" class="bar-row comparison-row" aria-label="Massarosa: -0,2 ha; Versilia · Consumo netto: 5,3 ha"><span class="bar-town">Massarosa</span><span class="bar-track">
+        <span class="comparison-axis-line" aria-hidden="true"></span>
+        <span class="comparison-zero" style="left:4%" aria-hidden="true"></span>
+        <span class="comparison-reference" style="left:88.96%" aria-hidden="true"></span>
+        <span class="comparison-stem" style="left:0.96%;width:3.04%" aria-hidden="true"></span>
+        <span class="comparison-dot" style="left:0.96%" aria-hidden="true"></span><span class="bar-hover-label">Massarosa · -0,2 ha</span></span><strong>-0,19 ha</strong></a><div class="comparison-axis"><span>-0,3 ha</span><span>lo zero è evidenziato</span><span>6,0 ha</span></div><p class="comparison-note">I comuni sono ordinati per valore per facilitare il confronto. L’ordine non esprime merito o qualità.</p></div></div></div><aside data-financial-indicator-aggregate=""><span>Versilia · Consumo netto</span><strong>5,31 ha</strong><p>Aggregato Versilia ottenuto sommando gli ettari dei sette Comuni per la stessa annualita' e la stessa definizione ISPRA.</p></aside></div></section>
+      <section class="indicator-benchmark page-width"></section>
+      <section class="indicator-history page-width" aria-labelledby="indicator-history-title"><div class="section-heading"><div><span class="overline">Andamento</span><h2 id="indicator-history-title">Serie storica comunale</h2></div><p>I valori compaiono soltanto quando la definizione resta omogenea nel tempo.</p></div><div data-financial-indicator-history=""><div class="territory-history-chart-shell"><div class="land-cover-controls territory-history-controls"><label><span>Territorio</span><select data-territory-history-town=""><option value="__versilia" selected="">Versilia</option><option value="046005">Camaiore</option><option value="046013">Forte dei Marmi</option><option value="046018">Massarosa</option><option value="046024">Pietrasanta</option><option value="046028">Seravezza</option><option value="046030">Stazzema</option><option value="046033">Viareggio</option></select></label></div><div class="chart-shell"><div class="trend-chart"><svg viewBox="0 0 760 260" role="img" aria-label="Consumo di suolo annuale · Consumo netto · Versilia">
+      <line class="chart-grid" x1="52" y1="24" x2="732" y2="24"></line><text class="chart-label chart-y-label" x="44" y="28" text-anchor="end">43,38 ha</text><line class="chart-grid" x1="52" y1="123" x2="732" y2="123"></line><text class="chart-label chart-y-label" x="44" y="127" text-anchor="end">20,00 ha</text><line class="chart-grid" x1="52" y1="222" x2="732" y2="222"></line><text class="chart-label chart-y-label" x="44" y="226" text-anchor="end">-3,37 ha</text><polygon class="chart-area" points="52,222 52,37.65517241379311 113.81818181818181,173.58020171258948 175.63636363636363,196.82719270481354 237.45454545454547,207.58263116023232 299.27272727272725,179.2543306615112 361.09090909090907,174.25770964678912 422.90909090909093,208.3448275862069 484.72727272727275,182.17608362774703 546.5454545454545,171.88643187709047 608.3636363636364,192.71980085372846 670.1818181818181,198.22455281910024 732,185.22486933164524 732,222"></polygon><polyline class="chart-line" points="52,37.65517241379311 113.81818181818181,173.58020171258948 175.63636363636363,196.82719270481354 237.45454545454547,207.58263116023232 299.27272727272725,179.2543306615112 361.09090909090907,174.25770964678912 422.90909090909093,208.3448275862069 484.72727272727275,182.17608362774703 546.5454545454545,171.88643187709047 608.3636363636364,192.71980085372846 670.1818181818181,198.22455281910024 732,185.22486933164524"></polyline><g class="chart-point" tabindex="0" role="button" aria-label="2012: 40,16 ha">
+        <circle class="chart-hit" cx="52" cy="37.65517241379311" r="17"></circle>
+        <circle class="chart-dot" cx="52" cy="37.65517241379311" r="5"></circle>
+        <g class="chart-tooltip" hidden="">
+          <line class="chart-guide" x1="52" y1="37.65517241379311" x2="52" y2="55.65517241379311"></line>
+          <rect x="44" y="55.65517241379311" width="198" height="38" rx="8"></rect>
+          <text class="chart-tooltip-year" x="56" y="69.65517241379311">2012</text>
+          <text class="chart-tooltip-value" x="56" y="84.65517241379311">40,16 ha</text>
+        </g>
+      </g><g class="chart-point" tabindex="0" role="button" aria-label="2015: 8,06 ha">
+        <circle class="chart-hit" cx="113.81818181818181" cy="173.58020171258948" r="17"></circle>
+        <circle class="chart-dot" cx="113.81818181818181" cy="173.58020171258948" r="5"></circle>
+        <g class="chart-tooltip" hidden="">
+          <line class="chart-guide" x1="113.81818181818181" y1="173.58020171258948" x2="113.81818181818181" y2="157.58020171258948"></line>
+          <rect x="44" y="119.58020171258948" width="198" height="38" rx="8"></rect>
+          <text class="chart-tooltip-year" x="56" y="133.58020171258948">2015</text>
+          <text class="chart-tooltip-value" x="56" y="148.58020171258948">8,06 ha</text>
+        </g>
+      </g><g class="chart-point" tabindex="0" role="button" aria-label="2016: 2,57 ha">
+        <circle class="chart-hit" cx="175.63636363636363" cy="196.82719270481354" r="17"></circle>
+        <circle class="chart-dot" cx="175.63636363636363" cy="196.82719270481354" r="5"></circle>
+        <g class="chart-tooltip" hidden="">
+          <line class="chart-guide" x1="175.63636363636363" y1="196.82719270481354" x2="175.63636363636363" y2="180.82719270481354"></line>
+          <rect x="76.63636363636363" y="142.82719270481354" width="198" height="38" rx="8"></rect>
+          <text class="chart-tooltip-year" x="88.63636363636363" y="156.82719270481354">2016</text>
+          <text class="chart-tooltip-value" x="88.63636363636363" y="171.82719270481354">2,57 ha</text>
+        </g>
+      </g><g class="chart-point" tabindex="0" role="button" aria-label="2017: 0,03 ha">
+        <circle class="chart-hit" cx="237.45454545454547" cy="207.58263116023232" r="17"></circle>
+        <circle class="chart-dot" cx="237.45454545454547" cy="207.58263116023232" r="5"></circle>
+        <g class="chart-tooltip" hidden="">
+          <line class="chart-guide" x1="237.45454545454547" y1="207.58263116023232" x2="237.45454545454547" y2="191.58263116023232"></line>
+          <rect x="138.45454545454547" y="153.58263116023232" width="198" height="38" rx="8"></rect>
+          <text class="chart-tooltip-year" x="150.45454545454547" y="167.58263116023232">2017</text>
+          <text class="chart-tooltip-value" x="150.45454545454547" y="182.58263116023232">0,03 ha</text>
+        </g>
+      </g><g class="chart-point" tabindex="0" role="button" aria-label="2018: 6,72 ha">
+        <circle class="chart-hit" cx="299.27272727272725" cy="179.2543306615112" r="17"></circle>
+        <circle class="chart-dot" cx="299.27272727272725" cy="179.2543306615112" r="5"></circle>
+        <g class="chart-tooltip" hidden="">
+          <line class="chart-guide" x1="299.27272727272725" y1="179.2543306615112" x2="299.27272727272725" y2="163.2543306615112"></line>
+          <rect x="200.27272727272725" y="125.2543306615112" width="198" height="38" rx="8"></rect>
+          <text class="chart-tooltip-year" x="212.27272727272725" y="139.2543306615112">2018</text>
+          <text class="chart-tooltip-value" x="212.27272727272725" y="154.2543306615112">6,72 ha</text>
+        </g>
+      </g><g class="chart-point" tabindex="0" role="button" aria-label="2019: 7,90 ha">
+        <circle class="chart-hit" cx="361.09090909090907" cy="174.25770964678912" r="17"></circle>
+        <circle class="chart-dot" cx="361.09090909090907" cy="174.25770964678912" r="5"></circle>
+        <g class="chart-tooltip" hidden="">
+          <line class="chart-guide" x1="361.09090909090907" y1="174.25770964678912" x2="361.09090909090907" y2="158.25770964678912"></line>
+          <rect x="262.09090909090907" y="120.25770964678912" width="198" height="38" rx="8"></rect>
+          <text class="chart-tooltip-year" x="274.09090909090907" y="134.25770964678912">2019</text>
+          <text class="chart-tooltip-value" x="274.09090909090907" y="149.25770964678912">7,90 ha</text>
+        </g>
+      </g><g class="chart-point" tabindex="0" role="button" aria-label="2020: -0,15 ha">
+        <circle class="chart-hit" cx="422.90909090909093" cy="208.3448275862069" r="17"></circle>
+        <circle class="chart-dot" cx="422.90909090909093" cy="208.3448275862069" r="5"></circle>
+        <g class="chart-tooltip" hidden="">
+          <line class="chart-guide" x1="422.90909090909093" y1="208.3448275862069" x2="422.90909090909093" y2="192.3448275862069"></line>
+          <rect x="323.90909090909093" y="154.3448275862069" width="198" height="38" rx="8"></rect>
+          <text class="chart-tooltip-year" x="335.90909090909093" y="168.3448275862069">2020</text>
+          <text class="chart-tooltip-value" x="335.90909090909093" y="183.3448275862069">-0,15 ha</text>
+        </g>
+      </g><g class="chart-point" tabindex="0" role="button" aria-label="2021: 6,03 ha">
+        <circle class="chart-hit" cx="484.72727272727275" cy="182.17608362774703" r="17"></circle>
+        <circle class="chart-dot" cx="484.72727272727275" cy="182.17608362774703" r="5"></circle>
+        <g class="chart-tooltip" hidden="">
+          <line class="chart-guide" x1="484.72727272727275" y1="182.17608362774703" x2="484.72727272727275" y2="166.17608362774703"></line>
+          <rect x="385.72727272727275" y="128.17608362774703" width="198" height="38" rx="8"></rect>
+          <text class="chart-tooltip-year" x="397.72727272727275" y="142.17608362774703">2021</text>
+          <text class="chart-tooltip-value" x="397.72727272727275" y="157.17608362774703">6,03 ha</text>
+        </g>
+      </g><g class="chart-point" tabindex="0" role="button" aria-label="2022: 8,46 ha">
+        <circle class="chart-hit" cx="546.5454545454545" cy="171.88643187709047" r="17"></circle>
+        <circle class="chart-dot" cx="546.5454545454545" cy="171.88643187709047" r="5"></circle>
+        <g class="chart-tooltip" hidden="">
+          <line class="chart-guide" x1="546.5454545454545" y1="171.88643187709047" x2="546.5454545454545" y2="155.88643187709047"></line>
+          <rect x="447.5454545454545" y="117.88643187709047" width="198" height="38" rx="8"></rect>
+          <text class="chart-tooltip-year" x="459.5454545454545" y="131.88643187709047">2022</text>
+          <text class="chart-tooltip-value" x="459.5454545454545" y="146.88643187709047">8,46 ha</text>
+        </g>
+      </g><g class="chart-point" tabindex="0" role="button" aria-label="2023: 3,54 ha">
+        <circle class="chart-hit" cx="608.3636363636364" cy="192.71980085372846" r="17"></circle>
+        <circle class="chart-dot" cx="608.3636363636364" cy="192.71980085372846" r="5"></circle>
+        <g class="chart-tooltip" hidden="">
+          <line class="chart-guide" x1="608.3636363636364" y1="192.71980085372846" x2="608.3636363636364" y2="176.71980085372846"></line>
+          <rect x="509.3636363636364" y="138.71980085372846" width="198" height="38" rx="8"></rect>
+          <text class="chart-tooltip-year" x="521.3636363636364" y="152.71980085372846">2023</text>
+          <text class="chart-tooltip-value" x="521.3636363636364" y="167.71980085372846">3,54 ha</text>
+        </g>
+      </g><g class="chart-point" tabindex="0" role="button" aria-label="2024: 2,24 ha">
+        <circle class="chart-hit" cx="670.1818181818181" cy="198.22455281910024" r="17"></circle>
+        <circle class="chart-dot" cx="670.1818181818181" cy="198.22455281910024" r="5"></circle>
+        <g class="chart-tooltip" hidden="">
+          <line class="chart-guide" x1="670.1818181818181" y1="198.22455281910024" x2="670.1818181818181" y2="182.22455281910024"></line>
+          <rect x="534" y="144.22455281910024" width="198" height="38" rx="8"></rect>
+          <text class="chart-tooltip-year" x="546" y="158.22455281910024">2024</text>
+          <text class="chart-tooltip-value" x="546" y="173.22455281910024">2,24 ha</text>
+        </g>
+      </g><g class="chart-point" tabindex="0" role="button" aria-label="2025: 5,31 ha">
+        <circle class="chart-hit" cx="732" cy="185.22486933164524" r="17"></circle>
+        <circle class="chart-dot" cx="732" cy="185.22486933164524" r="5"></circle>
+        <g class="chart-tooltip" hidden="">
+          <line class="chart-guide" x1="732" y1="185.22486933164524" x2="732" y2="169.22486933164524"></line>
+          <rect x="534" y="131.22486933164524" width="198" height="38" rx="8"></rect>
+          <text class="chart-tooltip-year" x="546" y="145.22486933164524">2025</text>
+          <text class="chart-tooltip-value" x="546" y="160.22486933164524">5,31 ha</text>
+        </g>
+      </g>
+      <text class="chart-label" x="52" y="250" text-anchor="middle">2012</text><text class="chart-label" x="113.81818181818181" y="250" text-anchor="middle">2015</text><text class="chart-label" x="175.63636363636363" y="250" text-anchor="middle">2016</text><text class="chart-label" x="237.45454545454547" y="250" text-anchor="middle">2017</text><text class="chart-label" x="299.27272727272725" y="250" text-anchor="middle">2018</text><text class="chart-label" x="361.09090909090907" y="250" text-anchor="middle">2019</text><text class="chart-label" x="422.90909090909093" y="250" text-anchor="middle">2020</text><text class="chart-label" x="484.72727272727275" y="250" text-anchor="middle">2021</text><text class="chart-label" x="546.5454545454545" y="250" text-anchor="middle">2022</text><text class="chart-label" x="608.3636363636364" y="250" text-anchor="middle">2023</text><text class="chart-label" x="670.1818181818181" y="250" text-anchor="middle">2024</text><text class="chart-label" x="732" y="250" text-anchor="middle">2025</text>
+      </svg></div></div>
+      <div class="chart-a11y-table"><strong>Consumo di suolo annuale · Consumo netto · Versilia</strong><span>2012: 40,16 ha</span><span>2015: 8,06 ha</span><span>2016: 2,57 ha</span><span>2017: 0,03 ha</span><span>2018: 6,72 ha</span><span>2019: 7,90 ha</span><span>2020: -0,15 ha</span><span>2021: 6,03 ha</span><span>2022: 8,46 ha</span><span>2023: 3,54 ha</span><span>2024: 2,24 ha</span><span>2025: 5,31 ha</span></div></div></div></section>
+      <section class="indicator-method page-width" aria-labelledby="indicator-method-title"><div class="section-heading"><div><span class="overline">Trasparenza</span><h2 id="indicator-method-title">Fonte, aggiornamento e metodo</h2></div><p>Le informazioni necessarie per ricostruire e valutare il dato.</p></div>
+        <div class="indicator-governance-grid"><dl><div><dt>Produttore</dt><dd>ISPRA</dd></div><div><dt>Fonte utilizzata</dt><dd><a href="https://www.isprambiente.gov.it/it/attivita/suolo-e-territorio/suolo/il-consumo-di-suolo/i-dati-sul-consumo-di-suolo" target="_blank" rel="noreferrer">ISPRA — Consumo di suolo ↗</a></dd></div><div><dt>Frequenza</dt><dd>Annuale</dd></div><div><dt>Prossimo aggiornamento atteso</dt><dd>Secondo la pubblicazione annuale ISPRA</dd></div><div><dt>Ultimo controllo della fonte</dt><dd>5 novembre 2026</dd></div><div><dt>Licenza o condizioni di riuso</dt><dd><a href="https://www.isprambiente.gov.it/it/attivita/suolo-e-territorio/suolo/il-consumo-di-suolo/i-dati-sul-consumo-di-suolo" target="_blank" rel="noreferrer">Condizioni di riuso ISPRA ↗</a></dd></div></dl>
+          <div><h3>Acquisizione</h3><p>Estratto comunale ufficiale ISPRA; snapshot versionato, nessuna interpolazione.</p><div data-financial-indicator-method=""><details class="method-disclosure"><summary><span>Metodo e comparabilità</span><small>Formula, natura del dato e criticità</small></summary><div class="method-disclosure-body"><dl><div><dt>Natura</dt><dd>Dato ufficiale ISPRA</dd></div><div><dt>Formula</dt><dd>Versilia = Σ ettari comunali per annualita' e vista (lordo/netto).</dd></div><div><dt>Copertura</dt><dd>7/7</dd></div></dl><p><strong>Nota:</strong> Lordo e netto sono grandezze diverse; i valori negativi del netto sono ammessi e non sono trasformati in zero. Il flusso 2025 è misurato da ISPRA sulla carta 2024 rivista e non coincide con la differenza tra gli stock pubblicati.</p></div></details></div></div></div>
+        <div class="data-actions indicator-data-actions"><button type="button" data-share="">Condividi</button><button type="button" data-download="">Scarica CSV</button><button type="button" data-print="">Stampa / PDF</button></div></section>
+      <section class="topic-town-links page-width"><div><span class="overline">Schede comunali</span><h2>Apri il territorio</h2></div><div><a href="/comuni/camaiore/?tema=ambiente&amp;indicatore=landUseChange"><span>Camaiore</span><b>→</b></a><a href="/comuni/forte-dei-marmi/?tema=ambiente&amp;indicatore=landUseChange"><span>Forte dei Marmi</span><b>→</b></a><a href="/comuni/massarosa/?tema=ambiente&amp;indicatore=landUseChange"><span>Massarosa</span><b>→</b></a><a href="/comuni/pietrasanta/?tema=ambiente&amp;indicatore=landUseChange"><span>Pietrasanta</span><b>→</b></a><a href="/comuni/seravezza/?tema=ambiente&amp;indicatore=landUseChange"><span>Seravezza</span><b>→</b></a><a href="/comuni/stazzema/?tema=ambiente&amp;indicatore=landUseChange"><span>Stazzema</span><b>→</b></a><a href="/comuni/viareggio/?tema=ambiente&amp;indicatore=landUseChange"><span>Viareggio</span><b>→</b></a></div></section>
+    </main></div>
+  <div id="site-footer-mount">
+      <footer class="site-footer">
+        <div class="footer-about"><strong>Osservatorio Versilia</strong>
+          <p>Un punto di accesso indipendente ai dati pubblici dei sette comuni della Versilia.</p>
+          <p class="footer-disclaimer">Non è un sito istituzionale e non rappresenta gli enti citati.</p>
+        </div>
+        <nav class="footer-links" aria-label="Informazioni sul progetto">
+          <a href="../../progetto/">Il progetto</a>
+          <a href="../../stato-dati/" data-data-status-nav="footer">Stato dei dati</a>
+          <a href="../../opportunita/">Opportunità</a>
+          <a href="../../progetto/#metodo">Metodo</a>
+          <a href="../../progetto/#licenza">Licenza</a>
+          <a href="../../progetto/#versioni">Versioni dei dati</a>
+          <a href="../../segnala/">Segnala un dato</a>
+          <a href="mailto:info@osservatorioversilia.it">Contatti</a>
+        </nav>
+        
+      <div class="footer-social" data-social-placement="footer" aria-label="Segui Osservatorio Versilia">
+        <strong>Segui Osservatorio Versilia</strong><div class="social-links">
+    <a class="social-profile-link" href="https://www.facebook.com/osservatorioversilia" target="_blank" rel="me noreferrer" aria-label="Segui Osservatorio Versilia su Facebook">
+      <span class="social-profile-mark" aria-hidden="true">f</span>
+      <span class="social-profile-copy"><strong>Facebook</strong><small>@osservatorioversilia</small></span>
+      <b aria-hidden="true">↗</b>
+    </a>
+    <a class="social-profile-link" href="https://www.instagram.com/osservatorioversilia/" target="_blank" rel="me noreferrer" aria-label="Segui Osservatorio Versilia su Instagram">
+      <span class="social-profile-mark" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="5" ry="5"></rect><circle cx="12" cy="12" r="4"></circle><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"></circle></svg></span>
+      <span class="social-profile-copy"><strong>Instagram</strong><small>@osservatorioversilia</small></span>
+      <b aria-hidden="true">↗</b>
+    </a>
+    <a class="social-profile-link" href="https://www.linkedin.com/company/osservatorioversilia" target="_blank" rel="me noreferrer" aria-label="Segui Osservatorio Versilia su LinkedIn">
+      <span class="social-profile-mark" aria-hidden="true">in</span>
+      <span class="social-profile-copy"><strong>LinkedIn</strong><small>Osservatorio Versilia</small></span>
+      <b aria-hidden="true">↗</b>
+    </a>
+    <a class="social-profile-link" href="https://x.com/OssVersilia" target="_blank" rel="me noreferrer" aria-label="Segui Osservatorio Versilia su X">
+      <span class="social-profile-mark" aria-hidden="true">X</span>
+      <span class="social-profile-copy"><strong>X</strong><small>@OssVersilia</small></span>
+      <b aria-hidden="true">↗</b>
+    </a></div>
+      </div><div class="footer-note">
+          <span>7 comuni · 11 temi</span><span>v. dati v1.40.0</span><span>catalogo dati aggiornato al 14 settembre 2026</span>
+        </div>
+      </footer></div>
+  <noscript><div class="app-error">Il sito richiede JavaScript per mostrare confronti, ricerca e schede comunali.</div></noscript>
+  <script src="../../assets/fidelity.js" defer=""></script>
+  <script src="../../assets/app-bundle.js?v=20261025-ui-shell-consistency" defer=""></script>
+  <script src="../../assets/economy-atlas.js" defer=""></script>
+  <script src="../../assets/ux-accordion.js?v=20261025-ui-shell-consistency" defer=""></script>
+  <script src="../../assets/ux-history-core.js?v=20261025-ui-shell-consistency" defer=""></script>
+  <script src="../../assets/ux-history.js?v=20261025-ui-shell-consistency" defer=""></script>
+  <script src="../../assets/export-v161.js?v=20261025-ui-shell-consistency" defer=""></script>
+  <script src="../../assets/visual-grammar.js?v=20261025-ui-shell-consistency" defer=""></script>
+  <script src="../../assets/social-presence.js?v=20261025-ui-shell-consistency" defer=""></script>
+
+
+  <script src="../../assets/pwa.js?v=20260824-pwa9&rev=catalog-v129" defer></script>
+</body></html>

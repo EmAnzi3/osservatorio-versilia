@@ -1,0 +1,360 @@
+{
+  "schemaVersion": 1,
+  "retrieved": "2026-08-30",
+  "publisher": "E.R.P. Lucca S.r.l.",
+  "sourcePageUrl": "https://at.erplucca.it/default?path=75&t=1",
+  "metric": {
+    "key": "erpArrears",
+    "label": "Morosità ERP",
+    "definition": "Rapporto percentuale tra somme non ancora incassate dagli assegnatari per fitti e spese accessorie e importi emessi cumulati per gli alloggi ERP gestiti da E.R.P. Lucca S.r.l.",
+    "formula": "morosita_cumulata / emesso_cumulato * 100"
+  },
+  "scope": {
+    "years": [
+      2020,
+      2021,
+      2022,
+      2023,
+      2024
+    ],
+    "coverage": "7/7",
+    "townCodes": [
+      "046005",
+      "046013",
+      "046018",
+      "046024",
+      "046028",
+      "046030",
+      "046033"
+    ]
+  },
+  "sourceDocuments": [
+    {
+      "year": 2020,
+      "file": "estratto assemblea Bilancio_2020(1).pdf",
+      "sha256": "0362d001246832bc66040c533a14b503ed9e6e3416d11a870638b56ccc3199bd"
+    },
+    {
+      "year": 2021,
+      "file": "estratto assemblea Soci Bilancio_2021.pdf",
+      "sha256": "52d476f097066a3807099202ca508e961c6c61c5efe452a9861df538c980f757"
+    },
+    {
+      "year": 2022,
+      "file": "estratto assemblea Soci Bilancio_2022.pdf",
+      "sha256": "831ba0712eb026ec955e45763831fe12ab6a941bc6f7940c585b888371ff872a"
+    },
+    {
+      "year": 2023,
+      "file": "estratto assemblea Soci Bilancio_2023.pdf",
+      "sha256": "de36675ef97245b818bee99caec598f334166884e61c300c2be28c5d13902983"
+    },
+    {
+      "year": 2024,
+      "file": "estratto assemblea Soci Bilancio_2024.pdf",
+      "sha256": "ca00f1a212d6fa29bdfa688ebc949ee5d9fb3c708342d36f07832add8b495422"
+    }
+  ],
+  "rows": {
+    "046005": {
+      "town": "Camaiore",
+      "values": [
+        {
+          "year": 2020,
+          "issued": 3582792.37,
+          "arrears": 247063.23,
+          "rate": 6.8958
+        },
+        {
+          "year": 2021,
+          "issued": 3854507.54,
+          "arrears": 267712.42,
+          "rate": 6.9454
+        },
+        {
+          "year": 2022,
+          "issued": 4132419.89,
+          "arrears": 296554.22,
+          "rate": 7.1763
+        },
+        {
+          "year": 2023,
+          "issued": 4402239.72,
+          "arrears": 308511.54,
+          "rate": 7.0081
+        },
+        {
+          "year": 2024,
+          "issued": 4721245.44,
+          "arrears": 348067.19,
+          "rate": 7.3724
+        }
+      ]
+    },
+    "046013": {
+      "town": "Forte dei Marmi",
+      "values": [
+        {
+          "year": 2020,
+          "issued": 2949206.99,
+          "arrears": 172475.09,
+          "rate": 5.8482
+        },
+        {
+          "year": 2021,
+          "issued": 3192864.58,
+          "arrears": 194717.67,
+          "rate": 6.0985
+        },
+        {
+          "year": 2022,
+          "issued": 3429308.68,
+          "arrears": 225193.13,
+          "rate": 6.5667
+        },
+        {
+          "year": 2023,
+          "issued": 3459825.27,
+          "arrears": 246056.52,
+          "rate": 7.1118
+        },
+        {
+          "year": 2024,
+          "issued": 3911358.57,
+          "arrears": 272869.37,
+          "rate": 6.9763
+        }
+      ]
+    },
+    "046018": {
+      "town": "Massarosa",
+      "values": [
+        {
+          "year": 2020,
+          "issued": 1656939.53,
+          "arrears": 62971.17,
+          "rate": 3.8005
+        },
+        {
+          "year": 2021,
+          "issued": 1755764.28,
+          "arrears": 61148.91,
+          "rate": 3.4828
+        },
+        {
+          "year": 2022,
+          "issued": 1860507.25,
+          "arrears": 64950.49,
+          "rate": 3.491
+        },
+        {
+          "year": 2023,
+          "issued": 3164988.55,
+          "arrears": 64990.36,
+          "rate": 2.0534
+        },
+        {
+          "year": 2024,
+          "issued": 2078965.36,
+          "arrears": 72398.09,
+          "rate": 3.4824
+        }
+      ]
+    },
+    "046024": {
+      "town": "Pietrasanta",
+      "values": [
+        {
+          "year": 2020,
+          "issued": 5363800.69,
+          "arrears": 412828.2,
+          "rate": 7.6966
+        },
+        {
+          "year": 2021,
+          "issued": 5709770.82,
+          "arrears": 417031.7,
+          "rate": 7.3038
+        },
+        {
+          "year": 2022,
+          "issued": 6081755.16,
+          "arrears": 447394.65,
+          "rate": 7.3563
+        },
+        {
+          "year": 2023,
+          "issued": 6136480.16,
+          "arrears": 463131.42,
+          "rate": 7.5472
+        },
+        {
+          "year": 2024,
+          "issued": 6812489.99,
+          "arrears": 478114.18,
+          "rate": 7.0182
+        }
+      ]
+    },
+    "046028": {
+      "town": "Seravezza",
+      "values": [
+        {
+          "year": 2020,
+          "issued": 4117358.99,
+          "arrears": 216108.44,
+          "rate": 5.2487
+        },
+        {
+          "year": 2021,
+          "issued": 4409130.0,
+          "arrears": 208201.92,
+          "rate": 4.7221
+        },
+        {
+          "year": 2022,
+          "issued": 4709525.63,
+          "arrears": 211210.84,
+          "rate": 4.4848
+        },
+        {
+          "year": 2023,
+          "issued": 4720359.45,
+          "arrears": 219836.25,
+          "rate": 4.6572
+        },
+        {
+          "year": 2024,
+          "issued": 5346600.17,
+          "arrears": 235874.51,
+          "rate": 4.4117
+        }
+      ]
+    },
+    "046030": {
+      "town": "Stazzema",
+      "values": [
+        {
+          "year": 2020,
+          "issued": 825116.56,
+          "arrears": 28883.37,
+          "rate": 3.5005
+        },
+        {
+          "year": 2021,
+          "issued": 887449.32,
+          "arrears": 28598.67,
+          "rate": 3.2226
+        },
+        {
+          "year": 2022,
+          "issued": 947137.77,
+          "arrears": 35187.95,
+          "rate": 3.7152
+        },
+        {
+          "year": 2023,
+          "issued": 1259681.08,
+          "arrears": 36132.36,
+          "rate": 2.8684
+        },
+        {
+          "year": 2024,
+          "issued": 1036145.57,
+          "arrears": 41967.92,
+          "rate": 4.0504
+        }
+      ]
+    },
+    "046033": {
+      "town": "Viareggio",
+      "values": [
+        {
+          "year": 2020,
+          "issued": 20275358.16,
+          "arrears": 2333819.91,
+          "rate": 11.5106
+        },
+        {
+          "year": 2021,
+          "issued": 21713625.62,
+          "arrears": 2401763.1,
+          "rate": 11.0611
+        },
+        {
+          "year": 2022,
+          "issued": 23257105.59,
+          "arrears": 2558637.44,
+          "rate": 11.0015
+        },
+        {
+          "year": 2023,
+          "issued": 23303630.28,
+          "arrears": 2712346.75,
+          "rate": 11.6392
+        },
+        {
+          "year": 2024,
+          "issued": 26379101.73,
+          "arrears": 2855639.38,
+          "rate": 10.8254
+        }
+      ]
+    }
+  },
+  "aggregate": {
+    "method": "sum_then_ratio",
+    "label": "Versilia · 7 Comuni",
+    "values": [
+      {
+        "year": 2020,
+        "issued": 38770573.29,
+        "arrears": 3474149.41,
+        "rate": 8.9608
+      },
+      {
+        "year": 2021,
+        "issued": 41523112.16,
+        "arrears": 3579174.39,
+        "rate": 8.6197
+      },
+      {
+        "year": 2022,
+        "issued": 44417759.97,
+        "arrears": 3839128.72,
+        "rate": 8.6432
+      },
+      {
+        "year": 2023,
+        "issued": 46447204.51,
+        "arrears": 4051005.2,
+        "rate": 8.7217
+      },
+      {
+        "year": 2024,
+        "issued": 50285906.83,
+        "arrears": 4304930.64,
+        "rate": 8.5609
+      }
+    ]
+  },
+  "anomalies": [
+    {
+      "year": 2022,
+      "type": "published_header_date_mismatch",
+      "note": "Intestazione tabella riportata come 31/12/2021 nel bilancio 2022; valori riferiti all’esercizio 2022."
+    },
+    {
+      "year": 2023,
+      "type": "published_percentage_inconsistency",
+      "note": "Nel prospetto 2023 la colonna percentuale stampata ripete i valori del 2022 e non riconcilia con gli importi elementari pubblicati. L'Osservatorio conserva gli importi pubblicati e ricalcola tutte le percentuali con la formula canonica."
+    },
+    {
+      "year": 2023,
+      "townCode": "046018",
+      "town": "Massarosa",
+      "type": "source_elementary_discontinuity",
+      "note": "Il prospetto 2023 pubblica emesso cumulato 3.164.988,55 € e morosità 64.990,36 €. Il denominatore è conservato senza correzioni, interpolazioni o ricostruzioni; il rapporto ricalcolato è circa 2,05%."
+    }
+  ]
+}

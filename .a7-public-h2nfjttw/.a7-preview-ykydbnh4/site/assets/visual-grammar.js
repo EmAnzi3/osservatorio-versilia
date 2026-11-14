@@ -1,0 +1,1266 @@
+(() => {
+  'use strict';
+
+  const scriptUrl = document.currentScript?.src || new URL('assets/visual-grammar.js', document.baseURI).href;
+  const dataUrl = new URL('../data/site-data.json', scriptUrl).href;
+  const projectSystemUrl = new URL('../progetto/#sistema-territoriale', scriptUrl).href;
+  function forceItalianGrouping(formatted, value) {
+    const numeric = Number(value);
+    if (!Number.isFinite(numeric) || Math.abs(numeric) < 1000) return formatted;
+    const text = String(formatted);
+    const match = text.match(/^([−-]?)(\d+)(.*)$/);
+    if (!match) return formatted;
+    const [, sign, integer, suffix] = match;
+    if (integer.length <= 3) return formatted;
+    return `${sign}${integer.replace(/\B(?=(\d{3})+(?!\d))/g, '.')}${suffix}`;
+  }
+  const groupedFormatter = options => {
+    const formatter = new Intl.NumberFormat('it-IT', { ...options, useGrouping: 'always' });
+    return { format: value => forceItalianGrouping(formatter.format(value), value) };
+  };
+  const number1 = groupedFormatter({ minimumFractionDigits: 1, maximumFractionDigits: 1 });
+  const number2 = groupedFormatter({ minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  const number3 = groupedFormatter({ minimumFractionDigits: 3, maximumFractionDigits: 3 });
+  const number0 = groupedFormatter({ maximumFractionDigits: 0 });
+  let data = null;
+  let scheduled = false;
+
+  const scopeProfiles = {
+    administrative: {
+      label: 'Amministrativo',
+      description: 'Il confine comunale è parte del fenomeno osservato: il dato misura attività, risorse o servizi attribuiti direttamente all’amministrazione o al perimetro comunale.'
+    },
+    territorial: {
+      label: 'Territoriale',
+      description: 'Il dato descrive residenti, stock o fenomeni localizzati nel Comune. Il confine è utile per leggere il territorio, ma non implica che il Comune sia un sistema autonomo.'
+    },
+    functional: {
+      label: 'Funzionale',
+      description: 'Il fenomeno supera strutturalmente i confini comunali. Il valore indica dove persone, imprese o servizi sono localizzati o censiti, non delimita un sistema economico-sociale autonomo.'
+    }
+  };
+
+  const themeScopeDefaults = {
+    demografia: 'territorial',
+    economia: 'functional',
+    lavoro: 'functional',
+    istruzione: 'territorial',
+    salute: 'functional',
+    mobilita: 'functional',
+    abitare: 'territorial',
+    ambiente: 'territorial',
+    bilanci: 'administrative',
+    comunita: 'administrative',
+    sicurezza: 'territorial'
+  };
+
+  const administrativeMetrics = new Set([
+    'currentRevenueAccruedPerResident',
+    'currentExpenditureCommittedPerResident',
+    'capitalExpenditureCommittedPerResident',
+    'ownRevenueShare',
+    'currentCollectionCapacity',
+    'currentPaymentCapacity',
+    'availableAdministrationResultPerResident',
+    'rigidExpenditureShare',
+    'currentPayments',
+    'capitalPayments',
+    'siopePayments',
+    'educationMissionExpenditurePerResident',
+    'socialMissionExpenditurePerResident',
+    'environmentMissionExpenditurePerResident',
+    'mobilityMissionExpenditurePerResident',
+    'cultureSportMissionExpenditurePerResident',
+    'tourismDevelopmentMissionExpenditurePerResident',
+    'securityMissionExpenditurePerResident',
+    'roadFinesPerResident',
+    'publicWorks',
+    'pnrrFunding',
+    'pnrrConcluded',
+    'recycling',
+    'wastePerResident',
+    'residualWaste'
+  ]);
+
+  const territorialMetrics = new Set([
+    'income',
+    'incomeDistribution',
+    'diplomaPlus',
+    'tertiary',
+    'lifeExpectancy',
+    'mortalityAll',
+    'chronicTotal',
+    'diabetes',
+    'dementia',
+    'disability064Per1000',
+    'motorization',
+    'pollutingCars',
+    'evPoints',
+    'ftthCoverageDesi',
+    'ftthReachedHouseholds',
+    'ftthUnreachedHouseholds',
+    'ftthCoverage20m',
+    'roadInjuries',
+    'roadSafety',
+    'thirdSector'
+  ]);
+
+  const functionalMetrics = new Set([
+    'schoolSites',
+    'schoolStudents',
+    'studentsPerClass',
+    'primaryFullTimeShare',
+    'invalsiResults',
+    'invalsiCompetence',
+    'invalsiImplicitDispersion',
+    'invalsiAcademicExcellence',
+    'emergencyAccess',
+    'emsResponseTimeP75',
+    'hospitalizedAll',
+    'elderlyHomeCare',
+    'pharmaciesPer1000',
+    'hospitals'
+  ]);
+
+  function unitKind(unit) {
+    const token = String(unit || '').trim().toLowerCase();
+    if(token==='invalsi_score') return 'invalsi-score';
+    if (token === 'sqm_per_resident') return 'sqm-per-resident';
+    if (token === 'km_per_km2') return 'km-per-km2';
+    if (token === 'number') return 'count';
+    if (token === 'percent' || token === 'percent2' || token === '%') return 'percent';
+    if (token === 'percentagepoints' || token === 'percentage-points' || token === 'p.p.') return 'percentage-points';
+    if (token === 'currency' || token === 'currency2' || token === 'eur' || token === '€') return 'currency';
+    if (token === 'eurliter' || token === '€/l') return 'eurliter';
+    if (token === 'eurperresident' || token === '€/ab' || token === '€/ab.') return 'eurperresident';
+    if (token === 'hectares' || token === 'ha') return 'hectares';
+    if (token === 'cubicmetres' || token === 'm3' || token === 'm³') return 'cubic-metres';
+    if (token === 'hectaresperfarm' || token === 'ha/azienda') return 'hectares-per-farm';
+    return token;
+  }
+
+  function metricKeyFor(root) {
+    const direct = root?.dataset?.metricKey;
+    if (direct) return direct;
+    const explicit = new URLSearchParams(location.search).get('indicatore');
+    if (explicit) return explicit;
+    const home = root.closest?.('#home-explorer');
+    const dashboard = root.closest?.('.topic-dashboard');
+    const townTopic = root.closest?.('#town-topic');
+    const local = home || dashboard || townTopic;
+    const active = local?.querySelector('[data-metric].active, [data-metric][aria-selected="true"]');
+    return active?.dataset.metric || null;
+  }
+
+  function normalizedFor(root) {
+    const dashboard = root.closest?.('.topic-dashboard');
+    return Boolean(dashboard?.querySelector('[data-scale="normalized"].active'));
+  }
+
+  function townRow(metric, townName) {
+    return metric?.rows?.find(row => row.town === townName) || null;
+  }
+
+  function valueFor(row, metric, normalized) {
+    if (!row) return null;
+    return normalized && row.normalized ? row.normalized.value : row.value;
+  }
+
+  function unitFor(row, metric, normalized) {
+    if (normalized && row?.normalized) return row.normalized.unit;
+    if (normalized && metric?.meta?.normalized) return metric.meta.normalized.unit;
+    return metric?.meta?.unit || '';
+  }
+
+  function aggregateFor(metric, normalized) {
+    if (metric?.meta?.comparisonReference === 'aggregate') {
+      const declared = normalized && metric?.normalizedAggregate ? metric.normalizedAggregate : metric?.aggregate;
+      if (finite(declared?.value) !== null) return declared;
+    }
+    const values = (metric?.rows || []).map(row => valueFor(row, metric, normalized)).map(finite).filter(value => value !== null);
+    if (!values.length) return normalized && metric.normalizedAggregate ? metric.normalizedAggregate : metric.aggregate;
+    const value = values.reduce((sum,item) => sum + item, 0) / values.length;
+    return { value, label:`Media semplice dei ${values.length} comuni`, note:'Ogni comune con dato disponibile pesa allo stesso modo.' };
+  }
+
+  function finite(value) {
+    if (value === null || value === undefined || value === '') return null;
+    const n = Number(value);
+    return Number.isFinite(n) ? n : null;
+  }
+
+  function metricScope(metricKey, metric) {
+    if (administrativeMetrics.has(metricKey)) return 'administrative';
+    if (territorialMetrics.has(metricKey)) return 'territorial';
+    if (functionalMetrics.has(metricKey)) return 'functional';
+    return themeScopeDefaults[metric?.meta?.theme] || 'territorial';
+  }
+
+  function readingScaleMarkup(metricKey, metric) {
+    const scope = metricScope(metricKey, metric);
+    const profile = scopeProfiles[scope];
+    return `<aside class="reading-scale" data-reading-scale="${scope}" data-reading-metric="${metricKey}">
+      <div><span class="overline">Scala di lettura</span><strong>${profile.label}</strong></div>
+      <p>${profile.description}</p>
+    </aside>`;
+  }
+
+  function formatAxis(value, unit) {
+    if (finite(value) === null) return 'n.d.';
+    const n = Number(value);
+    const kind = unitKind(unit);
+    if(kind==='invalsi-score') return number1.format(n);
+    if (kind === 'eurliter') return `${number3.format(n)} €/l`;
+    if (kind === 'eurperresident') return `${number2.format(n)} €/ab.`;
+    const formatted = kind === 'count' ? number0.format(n) : (Math.abs(n) >= 100 ? number0.format(n) : number1.format(n));
+    if (kind === 'percent') return `${formatted}%`;
+    if (kind === 'decile') return `${number0.format(n)}/10`;
+    if (kind === 'ventile') return `${number0.format(n)}/20`;
+    if (kind === 'percentage-points') return `${formatted}%`;
+    if (kind === 'currency') return `${formatted} €`;
+    if (kind === 'millioncurrency') return `${formatted} mln €`;
+    if (kind === 'years') return `${formatted} anni`;
+    if (kind === 'nights') return `${formatted} notti`;
+    if (kind === 'per1000') return `${formatted} ogni 1.000`;
+    if (kind === 'per100') return `${formatted} ogni 100`;
+    if (kind === 'per10k') return `${formatted} ogni 10.000`;
+    if (kind === 'eurm2') return `${formatted} €/m²`;
+    if (kind === 'rentm2') return `${formatted} €/m²/mese`;
+    if (kind === 'hectares') return `${formatted} ha`;
+    if (kind === 'cubic-metres') return `${formatted} m³`;
+    if (kind === 'hectares-per-farm') return `${formatted} ha/azienda`;
+    if (kind === 'sqm-per-resident') return `${formatted} m²/residente`;
+    if (kind === 'km-per-km2') return `${formatted} km/km²`;
+    return kind === 'count' ? formatted : (unit ? `${formatted} ${unit}` : formatted);
+  }
+
+  function niceOuterBound(value) {
+    const n = Math.abs(Number(value));
+    if (!Number.isFinite(n) || n === 0) return 1;
+    const magnitude = 10 ** Math.floor(Math.log10(n));
+    const normalized = n / magnitude;
+    const stops = [1, 1.2, 1.5, 2, 2.5, 3, 4, 5, 6, 8, 10];
+    const stop = stops.find(candidate => normalized <= candidate) || 10;
+    return stop * magnitude;
+  }
+
+  function scaleFor(values, aggregateValue, unit) {
+    const numeric = values.map(finite).filter(value => value !== null);
+    const reference = finite(aggregateValue);
+    if (reference !== null) numeric.push(reference);
+    if (!numeric.length) return { min: 0, max: 1, kind: 'absolute' };
+
+    const kind = unitKind(unit);
+    if (kind === 'eurliter') {
+      const rawMin = Math.min(...numeric);
+      const rawMax = Math.max(...numeric);
+      const spread = rawMax - rawMin;
+      const padding = Math.max(0.005, spread * 0.25);
+      const min = Math.floor((rawMin - padding) * 1000) / 1000;
+      const max = Math.ceil((rawMax + padding) * 1000) / 1000;
+      return { min, max: max > min ? max : min + 0.010, kind: 'focused' };
+    }
+
+    const allPercent = kind === 'percent' && numeric.every(value => value >= 0 && value <= 100);
+    if (allPercent) {
+      const observedMax = Math.max(...numeric);
+      if (observedMax <= 0) return { min: 0, max: 1, kind: 'percent' };
+      /*
+       * Percentuali non significa automaticamente 0–100. Una scala completa
+       * è utile solo quando i dati la occupano davvero; per quote piccole
+       * schiaccia differenze territoriali leggibili (es. 0,9–2,8%).
+       * Manteniamo lo zero per non deformare le proporzioni. Sopra il 60%
+       * conserviamo la scala naturale completa; sotto, aggiungiamo margine e
+       * arrotondiamo il massimo a un estremo leggibile.
+       */
+      if (observedMax >= 60) return { min: 0, max: 100, kind: 'percent' };
+      const target = observedMax + Math.max(0.5, observedMax * 0.08);
+      const magnitude = 10 ** Math.floor(Math.log10(target));
+      const normalized = target / magnitude;
+      const percentStops = [1, 1.2, 1.5, 2, 2.5, 3, 4, 5, 6, 7, 8, 10];
+      const stop = percentStops.find(candidate => normalized <= candidate) || 10;
+      const max = Math.min(100, stop * magnitude);
+      return { min: 0, max: Math.max(max, 0.1), kind: 'percent' };
+    }
+
+    let min = Math.min(...numeric);
+    let max = Math.max(...numeric);
+    if (min >= 0) {
+      min = 0;
+      max = max === 0 ? 1 : niceOuterBound(max * 1.06);
+      return { min, max, kind: 'absolute' };
+    }
+    if (max <= 0) {
+      max = 0;
+      min = min === 0 ? -1 : -niceOuterBound(Math.abs(min) * 1.06);
+      return { min, max, kind: 'signed' };
+    }
+    return {
+      min: -niceOuterBound(Math.abs(min) * 1.06),
+      max: niceOuterBound(max * 1.06),
+      kind: 'signed'
+    };
+  }
+
+  function position(value, scale) {
+    const n = finite(value);
+    if (n === null) return null;
+    const span = scale.max - scale.min || 1;
+    return Math.max(0, Math.min(100, ((n - scale.min) / span) * 100));
+  }
+
+  function deltaFor(metric, row, metricKey = '') {
+    if (row?.notApplicable) {
+      return {
+        headline: 'n.a.',
+        direction: 'Comune non costiero',
+        compact: 'indicatore non applicabile',
+        overline: 'Applicabilità territoriale',
+        note: row.applicabilityNote || 'Indicatore marino non applicabile a questo Comune.',
+      };
+    }
+    const distribution = metric?.meta?.compositeType === 'distribution';
+    const local = finite(distribution && row?.summaryValue !== undefined ? row.summaryValue : row?.value);
+    const meanReference = aggregateFor(metric, false);
+    const summaryValues = distribution ? (metric?.rows || []).map(item => finite(item?.summaryValue)).filter(value => value !== null) : [];
+    const aggregate = finite(distribution ? (summaryValues.length ? summaryValues.reduce((sum,value)=>sum+value,0)/summaryValues.length : null) : meanReference?.value);
+    if (local === null || aggregate === null) {
+      return { headline: 'n.d.', direction: 'confronto non disponibile', compact: 'confronto non disponibile' };
+    }
+
+    const key = metricKey || metric?.meta?.key || '';
+    if (key === 'statisticalCoastlineLength') {
+      const total=finite(metric?.aggregate?.value);
+      if (total === null || total <= 0) return { headline:'n.d.', direction:'quota non disponibile', compact:'quota non disponibile' };
+      const share=local/total*100;
+      const formattedShare=number1.format(share);
+      return {
+        headline:`${formattedShare}%`,
+        direction:'della linea litoranea statistica della Versilia',
+        compact:`${formattedShare}% della linea litoranea statistica della Versilia`,
+        overline:'Quota sulla linea litoranea statistica',
+        note:`Totale Versilia ${number2.format(total)} km`,
+      };
+    }
+    if (metric?.meta?.economicScopeSelector && metric?.meta?.comparisonDifference === 'shareOfAggregate') {
+      const total = finite(metric?.aggregate?.value);
+      if (total === null || total <= 0) {
+        return { headline: 'n.d.', direction: 'quota non disponibile', compact: 'quota non disponibile', overline: metric?.meta?.comparisonOverline, note: metric?.meta?.comparisonNote };
+      }
+      const share = local / total * 100;
+      const formattedShare = number1.format(share);
+      return {
+        headline: `${formattedShare}%`,
+        direction: 'del totale Versilia',
+        compact: `${formattedShare}% del totale Versilia`,
+        overline: metric?.meta?.comparisonOverline || 'Peso sulla Versilia',
+        note: metric?.meta?.comparisonNote || 'Quota del valore comunale sul totale dei sette Comuni nello stesso perimetro Frame SBS.',
+      };
+    }
+    if (metric?.meta?.comparisonDifference === 'shareOfAggregate') {
+      const total = finite(metric?.aggregate?.value);
+      if (total === null || total <= 0) {
+        return { headline: 'n.d.', direction: 'quota non disponibile', compact: 'quota non disponibile', overline: metric?.meta?.comparisonOverline, note: metric?.meta?.comparisonNote };
+      }
+      const share = local / total * 100;
+      const formattedShare = number1.format(share);
+      const extractive = key.startsWith('extractive');
+      const direction = key === 'extractiveProduction'
+        ? 'della somma dei Comuni con dato'
+        : key === 'extractiveSites'
+          ? 'del totale dei record RTCave'
+          : key === 'extractivePlanning'
+            ? 'del totale della categoria PRC'
+            : (metric?.meta?.comparisonShareDirection || 'del totale Versilia');
+      return {
+        headline: `${formattedShare}%`,
+        direction,
+        compact: `${formattedShare}% ${direction}`,
+        overline: metric?.meta?.comparisonOverline || (extractive ? 'Peso sulla Versilia' : 'Peso sulla Versilia costiera'),
+        note: metric?.meta?.comparisonNote || (extractive ? 'Quota del valore comunale sul totale della lettura selezionata.' : 'Quota del valore comunale sul totale dei quattro Comuni costieri.'),
+      };
+    }
+    /* OV BIOMETRIA SHARE-OF-AGGREGATE v1.35.0 */
+    if (metric?.meta?.comparisonDifference === 'shareOfAggregate' || key === 'municipalSurface') {
+      const total = finite(metric?.aggregate?.value);
+      if (total === null || total <= 0) {
+        return { headline:'n.d.', direction:'quota non disponibile', compact:'quota non disponibile', overline:metric?.meta?.comparisonOverline, note:metric?.meta?.comparisonNote };
+      }
+      const share = local / total * 100;
+      const formattedShare = number1.format(share);
+      const direction = metric?.meta?.comparisonDirection || 'della superficie dei 7 Comuni';
+      return {
+        headline: `${formattedShare}%`,
+        direction,
+        compact: `${formattedShare}% ${direction}`,
+        overline: metric?.meta?.comparisonOverline || 'Quota sulla Versilia',
+        note: metric?.meta?.comparisonNote || 'Quota della superficie comunale sul totale della superficie dei sette Comuni.',
+      };
+    }
+    if (key === 'population') {
+      const populationValues = (metric?.rows || [])
+        .map(item => finite(item?.value))
+        .filter(value => value !== null);
+      const populationTotal = populationValues.reduce((sum, value) => sum + value, 0);
+      if (populationTotal <= 0) {
+        return { headline: 'n.d.', direction: 'quota non disponibile', compact: 'quota non disponibile', overline: 'Quota sulla Versilia' };
+      }
+      const share = local / populationTotal * 100;
+      const formattedShare = number1.format(share);
+      return {
+        headline: `${formattedShare}%`,
+        direction: 'della popolazione versiliese',
+        compact: `${formattedShare}% della popolazione versiliese`,
+        overline: 'Quota sulla Versilia',
+        note: 'Quota dei residenti del comune sul totale della popolazione dei sette comuni.',
+      };
+    }
+
+    const kind = unitKind(distribution ? metric?.meta?.summaryUnit : metric?.meta?.unit);
+    const declaredAggregate = metric?.meta?.comparisonReference === 'aggregate';
+    const comparisonLabel = metric?.meta?.comparisonLabel || (declaredAggregate ? 'valore Versilia' : 'media Versilia');
+    const overline = metric?.meta?.comparisonOverline;
+    const note = metric?.meta?.comparisonNote;
+    if (kind === 'percent' || kind === 'percentage-points') {
+      const diff = local - aggregate;
+      if (Math.abs(diff) < 0.05) return { headline: '0,0%', direction: 'in linea', compact: `in linea con ${comparisonLabel}`, overline, note };
+      const sign = diff > 0 ? '+' : '−';
+      const abs = number1.format(Math.abs(diff));
+      return {
+        headline: `${sign}${abs}%`,
+        direction: diff > 0 ? `sopra la ${comparisonLabel}` : `sotto la ${comparisonLabel}`,
+        compact: `${sign}${abs}% vs ${comparisonLabel}`,
+        overline,
+        note,
+      };
+    }
+
+    if (metric?.meta?.comparisonDifference === 'absolute') {
+      const diff = local - aggregate;
+      const formatted = formatAxis(Math.abs(diff), metric.meta.unit);
+      if (Math.abs(diff) < 0.5) return { headline: formatAxis(0, metric.meta.unit), direction: 'in linea', compact: `in linea con ${comparisonLabel}`, overline, note };
+      const sign = diff > 0 ? '+' : '−';
+      return {
+        headline: `${sign}${formatted}`,
+        direction: diff > 0 ? `sopra il ${comparisonLabel}` : `sotto il ${comparisonLabel}`,
+        compact: `${sign}${formatted} vs ${comparisonLabel}`,
+        overline,
+        note,
+      };
+    }
+
+    const directionReference = metric?.meta?.comparisonDirectionLabel
+      || (/^(valore|riferimento|totale)/i.test(comparisonLabel) ? `il ${comparisonLabel}` : `la ${comparisonLabel}`);
+    if (aggregate === 0) {
+      const diff = local - aggregate;
+      return {
+        headline: formatAxis(diff, metric.meta.unit),
+        direction: diff === 0 ? 'in linea' : diff > 0 ? `sopra ${directionReference}` : `sotto ${directionReference}`,
+        compact: `confronto con ${comparisonLabel}`,
+        overline,
+        note,
+      };
+    }
+
+    const relative = ((local / aggregate) - 1) * 100;
+    if (Math.abs(relative) < 0.05) return {
+      headline: '0,0%',
+      direction: 'in linea',
+      compact: `in linea con ${comparisonLabel}`,
+      overline,
+      note,
+    };
+    const sign = relative > 0 ? '+' : '−';
+    const abs = number1.format(Math.abs(relative));
+    return {
+      headline: `${sign}${abs}%`,
+      direction: relative > 0 ? `sopra ${directionReference}` : `sotto ${directionReference}`,
+      compact: `${sign}${abs}% vs ${comparisonLabel}`,
+      overline,
+      note,
+    };
+  }
+
+  function compositeSelectionFor(container, metric, row) {
+    const choice = container?.dataset?.compositeChoice || '';
+    const scale = container?.dataset?.compositeScale || 'value';
+    const type = metric?.meta?.compositeType;
+    if (['soilStockProfile','soilChangeProfile','protectedAreasProfile','hydroNetworkProfile','roadNetworkProfile','invalsiProfile'].includes(type)) { const part=(row?.parts || []).find(item=>item.key===choice) || row?.parts?.[0] || {}; const hectares=type==='protectedAreasProfile' && scale==='hectares'; return {value:hectares?part.ha:part.value,unit:hectares?'hectares':(part.unit || metric?.meta?.unit || '')}; }
+    if (type === 'landCoverProfile') {
+      const mode=container?.dataset?.landCoverMode||'profile';
+      if (mode === 'transformation') return { value:row?.transformation?.changedPct, unit:'percent' };
+      const category=container?.dataset?.landCoverCategory||'artificialized';
+      const year=Number(container?.dataset?.landCoverYear)||2019;
+      const unit=container?.dataset?.landCoverUnit||'percent';
+      const index=(metric?.landCoverYears||[]).indexOf(year);
+      const series=row?.coverSeries?.[category]||{};
+      const values=unit==='hectares'?(series.ha||[]):(series.pct||[]);
+      return { value:index>=0?values[index]:null, unit };
+    }
+    if (type === 'forestCoverIndex') {
+      const unit=container?.dataset?.forestCoverUnit||'percent';
+      return { value:unit==='hectares'?row?.forestAreaHa:row?.forestCoverPct, unit };
+    }
+    if (!choice || !['stock','omi','mobility','securityMeasures','demographicBreakdown','agricultureProfile','ratioProfile','financialProfile','sexBreakdown','hydroRisk'].includes(type)) return null;
+    if (type === 'hydroRisk') { const part=(row?.parts || []).find(item=>item.key===choice)||row?.parts?.[0]||{}; return {value:scale==='areaPct'?part.areaPct:part.residentsPct,unit:'percent'}; }
+    if (type === 'sexBreakdown') {
+      const part = (row?.parts || []).find(item => item.key === choice) || row?.parts?.[0] || {};
+      return { value: part.value, unit: part.unit || metric?.meta?.unit || 'years' };
+    }
+    // demographicBreakdown visual selection: usa la cella selezionata, non il valore base 25–64 Totale.
+    if (type === 'demographicBreakdown') {
+      const part = (row?.parts || []).find(item => item.key === choice) || {};
+      return { value: part.value, unit: part.unit || metric?.meta?.unit || 'percent' };
+    }
+    if (type === 'securityMeasures' || type === 'agricultureProfile' || type === 'ratioProfile' || type === 'financialProfile') {
+      const index = Math.max(0, Number(String(choice).replace('part-','')) || 0);
+      const part = row?.parts?.[index] || {};
+      return { value: part.value, unit: part.unit || metric?.meta?.unit || '' };
+    }
+    if (type === 'stock') {
+      const count = choice === 'count';
+      return { value: count ? row?.count : row?.value, unit: count ? 'number' : 'percent' };
+    }
+    if (type === 'omi') {
+      const rent = choice === 'rent';
+      return { value: rent ? row?.rentMean : row?.saleMean, unit: rent ? 'rentm2' : 'eurm2' };
+    }
+    const index = Math.max(0,Math.min(2,Number(String(choice).replace('part-','')) || 0));
+    const part = row?.parts?.[index] || {};
+    return { value: scale === 'count' ? part.count : part.value, unit: scale === 'count' ? 'number' : 'per1000' };
+  }
+
+  function compositeAggregateFor(container, metric) {
+    const choice = container?.dataset?.compositeChoice || '';
+    const scale = container?.dataset?.compositeScale || 'value';
+    const type = metric?.meta?.compositeType;
+    if (['soilStockProfile','soilChangeProfile','protectedAreasProfile','hydroNetworkProfile','roadNetworkProfile','invalsiProfile'].includes(type)) { const part=(metric.aggregate?.parts || []).find(item=>item.key===choice) || metric.aggregate?.parts?.[0] || {}; const hectares=type==='protectedAreasProfile' && scale==='hectares'; return {value:hectares?part.ha:part.value,label:type==='invalsiProfile'?`${metric.aggregate?.label||'Toscana'} · ${part.label||metric.meta.label}`:`Versilia · ${part.label||metric.meta.label}`,unit:hectares?'hectares':(part.unit || metric?.meta?.unit || '')}; }
+    if (type === 'landCoverProfile') {
+      const mode=container?.dataset?.landCoverMode||'profile';
+      if (mode === 'transformation') return { value:metric?.aggregate?.transformation?.changedPct, label:'Versilia · trasformazione 2007→2019', unit:'percent' };
+      const category=container?.dataset?.landCoverCategory||'artificialized';
+      const year=Number(container?.dataset?.landCoverYear)||2019;
+      const unit=container?.dataset?.landCoverUnit||'percent';
+      const index=(metric?.landCoverYears||[]).indexOf(year);
+      const series=metric?.aggregate?.coverSeries?.[category]||{};
+      if (unit === 'hectares') return { value:null, label:'Versilia · totale mostrato separatamente', unit };
+      return { value:index>=0?(series.pct||[])[index]:null, label:'Versilia · quota ponderata', unit };
+    }
+    if (type === 'forestCoverIndex') {
+      const unit=container?.dataset?.forestCoverUnit||'percent';
+      if (unit === 'hectares') return { value:null, label:'Versilia · totale mostrato separatamente', unit };
+      return { value:metric?.aggregate?.forestCoverPct, label:'Versilia · Indice di Boscosità', unit };
+    }
+    if (!choice || !['stock','omi','mobility','securityMeasures','demographicBreakdown','agricultureProfile','ratioProfile','financialProfile','sexBreakdown','hydroRisk'].includes(type)) return null;
+    if (type === 'hydroRisk') { const part=(metric.aggregate?.parts || []).find(item=>item.key===choice)||metric.aggregate?.parts?.[0]||{}; const territory=scale==='areaPct'; return {value:territory?part.areaPct:part.residentsPct,label:`Versilia · ${territory?'territorio':'residenti'} · ${part.label||choice}`,unit:'percent'}; }
+    if (type === 'sexBreakdown') {
+      const part = (metric.aggregate?.parts || []).find(item => item.key === choice) || metric.aggregate?.parts?.[0] || {};
+      return { value: part.value, label:`Versilia (ARS) · ${part.label || ''}`, unit: part.unit || metric?.meta?.unit || 'years' };
+    }
+    if (type === 'demographicBreakdown') {
+      const part = (metric.aggregate?.parts || []).find(item => item.key === choice) || {};
+      return { value: part.value, label:`Versilia · ${part.ageLabel || ''} · ${part.genderLabel || ''}`, unit: part.unit || metric?.meta?.unit || 'percent' };
+    }
+    if (type === 'agricultureProfile') {
+      const index = Math.max(0, Number(String(choice).replace('part-','')) || 0);
+      const part = metric.aggregate?.parts?.[index] || {};
+      const values = (metric.rows || []).map(row => finite(row?.parts?.[index]?.value)).filter(value => value !== null);
+      return { value: values.length ? values.reduce((sum,value)=>sum+value,0)/values.length : null, label:`Media semplice dei ${values.length} comuni · ${part.label || metric.meta.label}`, unit:part.unit || metric?.meta?.unit || '' };
+    }
+    if (type === 'securityMeasures' || type === 'ratioProfile' || type === 'financialProfile') {
+      const index = Math.max(0, Number(String(choice).replace('part-','')) || 0);
+      const part = metric.aggregate?.parts?.[index] || {};
+      return { value: part.value, label:`Versilia · ${part.label || metric.meta.label}`, unit:part.unit || metric?.meta?.unit || '' };
+    }
+    if (type === 'stock') {
+      const count = choice === 'count';
+      if (count) {
+        const values = (metric.rows || []).map(row => finite(row?.count)).filter(value => value !== null);
+        return {
+          value: values.length ? values.reduce((sum,value) => sum + value, 0) / values.length : null,
+          label: `Media semplice dei ${values.length} comuni · residenti stranieri`
+        };
+      }
+      return { value: metric.aggregate?.value, label:'Versilia · quota residenti stranieri' };
+    }
+    if (type === 'omi') {
+      const rent = choice === 'rent';
+      return { value: rent ? metric.aggregate?.rentMean : metric.aggregate?.saleMean, label: rent ? 'Versilia · affitto medio comunale' : 'Versilia · vendita media comunale' };
+    }
+    const index = Math.max(0,Math.min(2,Number(String(choice).replace('part-','')) || 0));
+    const part = metric.aggregate?.parts?.[index] || {};
+    if (scale === 'count') {
+      const values = (metric.rows || []).map(row => finite(row?.parts?.[index]?.count)).filter(value => value !== null);
+      return {
+        value: values.length ? values.reduce((sum,value) => sum + value, 0) / values.length : null,
+        label:`Media semplice dei ${values.length} comuni · ${part.label || 'mobilità residenziale'}`
+      };
+    }
+    return { value: part.value, label:`Versilia · ${part.label || 'mobilità residenziale'}` };
+  }
+
+
+  const A5_LIBRARY_CURRENT_KEYS = new Set([
+    'libraryLoansPerResident',
+    'libraryActiveBorrowersPer100',
+    'libraryWeeklyOpeningHours'
+  ]);
+  const A5_CLIMATE_CURRENT_KEYS = new Set([
+    'climateTemperatureTrend50y',
+    'climatePrecipitationTrend50y',
+    'climateTminTrend',
+    'climateTmaxTrend'
+  ]);
+
+  const A5_MUNICIPAL_ROLLOUT_TOWNS = new Set(['camaiore','pietrasanta','seravezza','forte-dei-marmi','stazzema','viareggio','massarosa']);
+
+  function activeA5MunicipalTownSlug() {
+    const slug = document.body.dataset.town || '';
+    const rollout = Boolean(document.querySelector('main.a5-municipal-rollout'));
+    return document.body.dataset.page === 'town' && rollout && A5_MUNICIPAL_ROLLOUT_TOWNS.has(slug) ? slug : '';
+  }
+
+  function isA5MunicipalRolloutTownPage() {
+    return Boolean(activeA5MunicipalTownSlug());
+  }
+
+  function activeA5MunicipalMetricKey() {
+    if (!isA5MunicipalRolloutTownPage()) return '';
+    return document.querySelector('#town-topic .topic-controls [data-metric].active')?.dataset.metric
+      || new URLSearchParams(location.search).get('indicatore')
+      || '';
+  }
+
+  function a5MunicipalCompositeChoice(metric) {
+    if (!metric) return '';
+    if (metric.meta?.compositeType === 'demographicBreakdown') {
+      const age = document.querySelector('#town-topic .town-metric-primary [data-demographic-town-age]')?.value
+        || metric.meta.defaultAge || '';
+      const gender = document.querySelector('#town-topic .town-metric-primary [data-demographic-town-gender]')?.value
+        || metric.meta.defaultGender || '';
+      return age && gender ? `${age}|${gender}` : '';
+    }
+    return document.querySelector('#town-topic .town-metric-primary select[data-composite-choice]')?.value || '';
+  }
+
+  function syncA5MunicipalCurrentChoice(container, metric) {
+    if (!isA5MunicipalRolloutTownPage() || !container?.closest('[data-view-pane="current"]')) return '';
+    const choice = a5MunicipalCompositeChoice(metric);
+    if (choice) {
+      container.dataset.compositeChoice = choice;
+      if (!container.dataset.compositeScale) container.dataset.compositeScale = 'value';
+    }
+    return choice;
+  }
+
+  function deriveA5MunicipalSelectionMetric(metric, choice) {
+    if (!metric || !choice) return null;
+    const probe = { dataset:{ compositeChoice:choice, compositeScale:'value' } };
+    const rows = (metric.rows || []).map(row => {
+      const selected = compositeSelectionFor(probe, metric, row);
+      if (!selected) return { ...row };
+      return { ...row, value:selected.value, formatted:'', series:selected.part?.series || row.series };
+    });
+    const firstSource = (metric.rows || []).find(row => compositeSelectionFor(probe, metric, row));
+    const firstSelected = firstSource ? compositeSelectionFor(probe, metric, firstSource) : null;
+    const aggregate = compositeAggregateFor(probe, metric);
+    const unit = firstSelected?.unit || aggregate?.unit || metric.meta.unit;
+    return {
+      ...metric,
+      key:metric.meta?.key || metric.key,
+      meta:{ ...metric.meta, unit, compositeType:null },
+      rows,
+      aggregate:{
+        ...(metric.aggregate || {}),
+        value:aggregate?.value,
+        label:aggregate?.label || metric.aggregate?.label,
+        note:metric.aggregate?.note
+      }
+    };
+  }
+
+  function normalizeA5MunicipalSelectorCurrent() {
+    if (!isA5MunicipalRolloutTownPage()) return;
+    const metricKey = activeA5MunicipalMetricKey();
+    const metric = data?.metrics?.[metricKey];
+    if (!metric || !['demographicBreakdown','agricultureProfile'].includes(metric.meta?.compositeType)) return;
+    const pane = document.querySelector('#town-topic .history-panel.a5-shared-chart .ux-view-shell [data-view-pane="current"]');
+    const shared = window.OVSharedRenderers?.comparisonTopicMarkup;
+    if (!pane || typeof shared !== 'function') return;
+    const choice = a5MunicipalCompositeChoice(metric);
+    if (!choice || (pane.dataset.a5SelectorChoice === choice && pane.querySelector('.comparison-bars'))) return;
+    const derived = deriveA5MunicipalSelectionMetric(metric, choice);
+    if (!derived) return;
+    pane.innerHTML = shared(data, metricKey, { selectedTown:activeA5MunicipalTownSlug(), metric:derived });
+    pane.dataset.a5SelectorChoice = choice;
+    const bars = pane.querySelector('.comparison-bars');
+    if (bars) {
+      bars.dataset.compositeChoice = choice;
+      bars.dataset.compositeScale = 'value';
+    }
+  }
+
+
+  function parseItalianDisplayedNumber(text) {
+    const raw = String(text || '').replace(/\u00a0/g,' ').trim();
+    const match = raw.match(/-?[\d.]+(?:,\d+)?/);
+    if (!match) return null;
+    const value = Number(match[0].replaceAll('.','').replace(',','.'));
+    return Number.isFinite(value) ? value : null;
+  }
+
+  function normalizeA5MunicipalClimateCurrent() {
+    if (!isA5MunicipalRolloutTownPage()) return;
+    const metricKey = activeA5MunicipalMetricKey();
+    if (!A5_CLIMATE_CURRENT_KEYS.has(metricKey)) return;
+    const pane = document.querySelector('#town-topic .history-panel.a5-shared-chart [data-ov-climate-pane="current"]');
+    if (!pane) return;
+    if (pane.dataset.a5ClimateCurrent === 'lollipop' && pane.querySelector('.comparison-bars[data-a5-climate-current="true"]')) return;
+
+    const sourceRows = [...pane.querySelectorAll('.ov-climate-current-row')];
+    if (sourceRows.length !== 7) return;
+    const unit = metricKey === 'climatePrecipitationTrend50y' ? 'mm' : '°C';
+    const items = sourceRows.map(row => {
+      const town = row.querySelector('.town')?.textContent?.trim() || '';
+      const formatted = row.querySelector(':scope > strong')?.textContent?.trim() || '';
+      return {
+        town,
+        value:parseItalianDisplayedNumber(formatted),
+        formatted,
+        href:row.getAttribute('href') || '#',
+        selected:row.classList.contains('selected')
+      };
+    }).filter(item => item.town && item.value !== null);
+    if (items.length !== 7) return;
+    items.sort((a,b) => b.value - a.value || a.town.localeCompare(b.town,'it'));
+
+    const topic = document.createElement('div');
+    topic.className = 'topic-bars a5-climate-current-topic-bars';
+    const bars = document.createElement('div');
+    bars.className = 'comparison-bars';
+    bars.dataset.a5ClimateCurrent = 'true';
+    items.forEach((item,index) => {
+      const row = document.createElement('a');
+      row.className = `bar-row${item.selected ? ' selected' : ''}`;
+      row.href = item.href;
+      row.dataset.vizValue = String(item.value);
+      row.dataset.vizUnit = unit;
+      row.setAttribute('aria-label', `${item.town}: ${item.formatted}`);
+
+      const rank = document.createElement('span');
+      rank.className = 'bar-rank';
+      rank.textContent = String(index + 1);
+      const town = document.createElement('span');
+      town.className = 'bar-town';
+      town.textContent = item.town;
+      const track = document.createElement('span');
+      track.className = 'bar-track';
+      const fill = document.createElement('span');
+      fill.className = 'bar-fill';
+      fill.style.width = '1.5%';
+      track.append(fill);
+      const strong = document.createElement('strong');
+      strong.textContent = item.formatted;
+
+      row.append(rank,town,track,strong);
+      bars.append(row);
+    });
+    topic.append(bars);
+    pane.replaceChildren(topic);
+    pane.dataset.a5ClimateCurrent = 'lollipop';
+  }
+
+  function normalizeA5MunicipalLibraryCurrent() {
+    if (!isA5MunicipalRolloutTownPage()) return;
+    const metricKey = activeA5MunicipalMetricKey();
+    if (!A5_LIBRARY_CURRENT_KEYS.has(metricKey)) return;
+    const metric = data?.metrics?.[metricKey];
+    const pane = document.querySelector('#town-topic .history-panel.a5-shared-chart .ux-view-shell [data-view-pane="current"]');
+    const shared = window.OVSharedRenderers?.comparisonTopicMarkup;
+    if (!metric || !pane || typeof shared !== 'function' || !pane.querySelector('.ux-comparison-bars')) return;
+    const current = shared(data, metricKey, {
+      selectedTown:activeA5MunicipalTownSlug(),
+      metric:{ ...metric, meta:{ ...metric.meta, compositeType:null } }
+    });
+    /* Preserve the v1.21 browser contract (.ux-comparison-bars) while replacing
+       only its visual renderer with the canonical A5 lollipop. */
+    pane.innerHTML = `<div class="ux-comparison-bars a5-library-current-host">${current}</div>`;
+    pane.dataset.a5LibraryCurrent = 'lollipop';
+  }
+
+  function financialA5MunicipalMetric(metric, index) {
+    const aggregatePart = metric?.aggregate?.parts?.[index] || {};
+    const rawUnit = aggregatePart.unit || metric.meta.unit;
+    const unit = rawUnit === 'percent2' ? '%' : rawUnit;
+    const rows = (metric?.rows || []).map(row => {
+      const part = row.parts?.[index] || {};
+      return { ...row, value:part.value, formatted:'', series:part.series || null };
+    });
+    return {
+      ...metric,
+      key:metric.meta?.key || metric.key,
+      meta:{
+        ...metric.meta,
+        label:aggregatePart.label || metric.meta.label,
+        unit,
+        compositeType:null
+      },
+      rows,
+      aggregate:{
+        ...(metric.aggregate || {}),
+        value:aggregatePart.value,
+        label:`Versilia · ${aggregatePart.label || metric.meta.label}`,
+        series:aggregatePart.series || null
+      }
+    };
+  }
+
+  function financialA5MunicipalEvidenceMarkup(metric, index, townSlug, escape) {
+    const row=(metric?.rows || []).find(item => (item.slug || '') === townSlug);
+    const part=row?.parts?.[index] || {};
+    const provenance=part.provenance
+      ? `<p class="aggregate-note financial-provenance-note"><b>Origine del dato:</b> ${escape(part.provenance)}</p>`
+      : '';
+    const context=index === 0 && row?.contextNote
+      ? `<p class="aggregate-note financial-context-note"><b>Nota di lettura:</b> ${escape(row.contextNote)}</p>`
+      : '';
+    return provenance + context;
+  }
+
+  function normalizeA5MunicipalFinancialProfile() {
+    if (!isA5MunicipalRolloutTownPage()) return;
+    const metricKey = activeA5MunicipalMetricKey();
+    const metric = data?.metrics?.[metricKey];
+    if (!metric || metric.meta?.compositeType !== 'financialProfile') return;
+    const panel = document.querySelector('#town-topic > .history-panel.a5-shared-chart');
+    const shared = window.OVSharedRenderers?.comparisonTopicMarkup;
+    const toolkit = window.OVUXHistory;
+    if (!panel || typeof shared !== 'function' || !toolkit) return;
+
+    const choice = a5MunicipalCompositeChoice(metric) || 'part-0';
+    const index = Math.max(0, Number(String(choice).replace('part-','')) || 0);
+    const derived = financialA5MunicipalMetric(metric, index);
+    const townSlug = activeA5MunicipalTownSlug();
+    const currentMarkup = shared(data, metricKey, { selectedTown:townSlug, metric:derived });
+    const series = toolkit.comparableSeries(derived);
+    const historyMarkup = toolkit.historicalChartMarkup(derived, series, townSlug)
+      + financialA5MunicipalEvidenceMarkup(metric, index, townSlug, toolkit.escapeHtml);
+    const historyAvailable = Boolean(series);
+    let shell = panel.querySelector(':scope > .ux-view-shell');
+
+    if (!shell) {
+      const title = panel.querySelector(':scope > .panel-title')?.outerHTML || '';
+      panel.innerHTML = `${title}${toolkit.viewShellMarkup(
+        currentMarkup,
+        historyMarkup,
+        historyAvailable,
+        historyAvailable
+          ? 'Lo storico usa la stessa lettura selezionata e conserva i valori ufficiali annuali dei sette Comuni.'
+          : 'Per questa lettura non sono disponibili almeno due annualità omogenee per tutti i Comuni.'
+      )}`;
+      shell = panel.querySelector(':scope > .ux-view-shell');
+      if (!shell) return;
+      shell.dataset.a5FinancialChoice = choice;
+      toolkit.wireViewShell(shell, 'ov-town-view', historyAvailable);
+      toolkit.wireHistorySelection(shell, activeA5MunicipalTownSlug(), false);
+      const bars = shell.querySelector('[data-view-pane="current"] .comparison-bars');
+      if (bars) {
+        bars.dataset.compositeChoice = choice;
+        bars.dataset.compositeScale = 'value';
+      }
+      return;
+    }
+
+    if (shell.dataset.a5FinancialChoice === choice) return;
+    const currentPane = shell.querySelector('[data-view-pane="current"]');
+    const historyPane = shell.querySelector('[data-view-pane="history"]');
+    if (currentPane) currentPane.innerHTML = currentMarkup;
+    if (historyPane) historyPane.innerHTML = historyMarkup;
+    shell.dataset.a5FinancialChoice = choice;
+    const historyButton = shell.querySelector('[data-view-mode="history"]');
+    if (historyButton) historyButton.disabled = !historyAvailable;
+    const bars = currentPane?.querySelector('.comparison-bars');
+    if (bars) {
+      bars.dataset.compositeChoice = choice;
+      bars.dataset.compositeScale = 'value';
+    }
+    toolkit.wireHistorySelection(shell, activeA5MunicipalTownSlug(), false);
+  }
+
+
+  /* OV ECONOMIA PRODOTTA VISUAL SCOPE v1.34.0 */
+  function metricForEconomicScope(metric) {
+    if (!metric?.meta?.economicScopeSelector || !metric.rows?.some(row => row.economicScopes)) return metric;
+    const requested = new URLSearchParams(location.search).get('perimetro') || 'total';
+    const scope = ['total','industry','services'].includes(requested) ? requested : 'total';
+    const aggregateVariant = metric.aggregate?.economicScopes?.[scope] || metric.aggregate?.economicScopes?.total;
+    return {
+      ...metric,
+      meta: { ...metric.meta, activeEconomicScope: scope },
+      rows: metric.rows.map(row => {
+        const variant = row.economicScopes?.[scope] || row.economicScopes?.total;
+        return variant ? { ...row, value: variant.value, formatted: variant.formatted || row.formatted, series: variant.series || null, benchmarkValue: variant.value } : { ...row };
+      }),
+      aggregate: metric.aggregate ? {
+        ...metric.aggregate,
+        ...(aggregateVariant ? { value: aggregateVariant.value, formatted: aggregateVariant.formatted, series: aggregateVariant.series || null, label: `Versilia · ${aggregateVariant.label || scope}` } : {}),
+      } : metric.aggregate,
+    };
+  }
+
+  function enhanceComparison(container) {
+    if (!data || !container?.isConnected) return;
+    /* OV TERRITORIO UCS CANONICAL COMPARISONS v1.36.0 */
+    const metricKey = metricKeyFor(container);
+    const metric = metricForEconomicScope(data.metrics?.[metricKey]);
+    if (!metric) return;
+
+    const normalized = normalizedFor(container);
+    const rows = [...container.querySelectorAll(':scope > .bar-row')];
+    if (!rows.length) return;
+
+    const renderedTownCurrent = document.body.dataset.page === 'town'
+      && A5_MUNICIPAL_ROLLOUT_TOWNS.has(document.body.dataset.town || '')
+      && Boolean(container.closest('[data-view-pane="current"], [data-ov-climate-pane="current"]'))
+      && rows.every(rowEl => rowEl.hasAttribute('data-viz-value') && rowEl.hasAttribute('data-viz-unit'));
+
+    if (renderedTownCurrent) syncA5MunicipalCurrentChoice(container, metric);
+    const compositeAggregate = compositeAggregateFor(container, metric);
+    const aggregate = metricKey === 'statisticalCoastlineLength' ? {value:null,label:'Totale Versilia mostrato separatamente'} : (compositeAggregate || aggregateFor(metric, normalized));
+    const mapped = rows.map(rowEl => {
+      const townName = rowEl.querySelector('.bar-town')?.textContent?.trim();
+      const row = townRow(metric, townName);
+      if (renderedTownCurrent) {
+        const liveSelected = compositeSelectionFor(container, metric, row);
+        if (liveSelected) return { rowEl, row, value:liveSelected.value, unit:liveSelected.unit || null };
+        return { rowEl, row, value:finite(rowEl.dataset.vizValue), unit:rowEl.dataset.vizUnit || null };
+      }
+      const selected = compositeSelectionFor(container, metric, row);
+      return { rowEl, row, value: selected ? selected.value : valueFor(row, metric, normalized), unit:selected?.unit || null };
+    });
+    const first = mapped.find(item => item.row);
+    const firstRow = first?.row;
+    const renderedUnit = renderedTownCurrent ? (mapped.find(item => item.unit)?.unit || '') : '';
+    const renderedValues = renderedTownCurrent ? mapped.map(item => finite(item.value)).filter(value => value !== null) : [];
+    const effectiveAggregate = renderedTownCurrent
+      ? (compositeAggregate || { value:renderedValues.length ? renderedValues.reduce((sum,value)=>sum+value,0)/renderedValues.length : null, label:`Media semplice dei ${renderedValues.length} comuni`, unit:renderedUnit })
+      : aggregate;
+    const unit = renderedTownCurrent ? (renderedUnit || compositeAggregate?.unit || unitFor(firstRow, metric, normalized)) : (first?.unit || compositeAggregate?.unit || unitFor(firstRow, metric, normalized));
+    const ordinalScale = metric.meta?.ordinalScale;
+    const scale = ordinalScale ? { min:Number(ordinalScale.min), max:Number(ordinalScale.max), kind:'ordinal' } : scaleFor(mapped.map(item => item.value), aggregate?.value, unit);
+    const displayScale = renderedTownCurrent ? scaleFor(mapped.map(item => item.value), effectiveAggregate?.value, unit) : scale;
+    const referencePosition = position(effectiveAggregate?.value, displayScale);
+    const zeroPosition = position(0, displayScale) ?? 0;
+    container.dataset.visualContract = renderedTownCurrent ? 'rendered' : 'canonical';
+    container.dataset.visualUnit = unit || '';
+    const signature = [metricKey, normalized ? 'n' : 'r', container.dataset.compositeChoice || '', container.dataset.compositeScale || '', effectiveAggregate?.value, unit, ...mapped.map(item => item.value)].join('|');
+    const toolbarLegendHost = container.closest('.selectable-topic-bars')?.querySelector('.compare-chart-legend-host');
+    const existingLegend = toolbarLegendHost?.querySelector('.comparison-legend') || container.querySelector(':scope > .comparison-legend');
+    if (container.dataset.visualGrammarSignature === signature && existingLegend) return;
+    container.dataset.visualGrammarSignature = signature;
+    container.dataset.viz = displayScale.kind === 'percent' ? 'percent-dotplot' : displayScale.kind === 'signed' ? 'signed-dotplot' : 'lollipop';
+
+    container.querySelector(':scope > .comparison-legend')?.remove();
+    toolbarLegendHost?.querySelector('.comparison-legend')?.remove();
+    container.querySelector(':scope > .comparison-axis')?.remove();
+    container.querySelector(':scope > .comparison-note')?.remove();
+
+    const legend = document.createElement('div');
+    legend.className = 'comparison-legend';
+    legend.innerHTML = `<span><i class="comparison-legend-dot" aria-hidden="true"></i>Comune</span><span><i class="comparison-legend-reference" aria-hidden="true"></i>${effectiveAggregate?.label || 'Versilia'}</span>`;
+    if (toolbarLegendHost) toolbarLegendHost.append(legend);
+    else container.prepend(legend);
+
+    mapped.forEach(({ rowEl, row, value }) => {
+      rowEl.querySelector('.bar-rank')?.remove();
+      rowEl.classList.add('comparison-row');
+      const track = rowEl.querySelector('.bar-track');
+      if (!track) return;
+      const x = position(value, displayScale);
+      if (x === null) {
+        const missing = `<span class="comparison-missing">${row?.notApplicable ? 'Non applicabile' : 'Dato non disponibile'}</span>`;
+        if (track.innerHTML !== missing) track.innerHTML = missing;
+        rowEl.classList.add('missing');
+        return;
+      }
+      rowEl.classList.remove('missing');
+      const stemLeft = Math.min(zeroPosition, x);
+      const stemWidth = Math.abs(x - zeroPosition);
+      const markup = `
+        <span class="comparison-axis-line" aria-hidden="true"></span>
+        ${displayScale.kind === 'signed' ? `<span class="comparison-zero" style="left:${zeroPosition}%" aria-hidden="true"></span>` : ''}
+        ${referencePosition !== null ? `<span class="comparison-reference" style="left:${referencePosition}%" aria-hidden="true"></span>` : ''}
+        <span class="comparison-stem" style="left:${stemLeft}%;width:${stemWidth}%" aria-hidden="true"></span>
+        <span class="comparison-dot" style="left:${x}%" aria-hidden="true"></span>`;
+      track.innerHTML = markup;
+      const hoverLabel = document.createElement('span');
+      hoverLabel.className = 'bar-hover-label';
+      const townLabel = row?.town || rowEl.querySelector('.bar-town')?.textContent?.trim() || 'Comune';
+      const townValue = formatAxis(value, unit);
+      const sharedA5Chart = Boolean(container.closest('.a5-shared-chart'));
+      const showReferenceInTooltip = sharedA5Chart && effectiveAggregate?.value !== null && effectiveAggregate?.value !== undefined;
+      const referenceLabel = String(effectiveAggregate?.label || 'Versilia');
+      hoverLabel.textContent = showReferenceInTooltip
+        ? `${townLabel}: ${townValue} · ${referenceLabel}: ${formatAxis(effectiveAggregate.value, unit)}`
+        : `${townLabel} · ${townValue}`;
+      track.append(hoverLabel);
+      if (row || renderedTownCurrent) {
+        const ariaTown = row?.town || townLabel;
+        const ariaReferenceLabel = renderedTownCurrent ? (effectiveAggregate?.label || 'Versilia') : (aggregate?.label || 'Versilia');
+        const ariaReferenceValue = renderedTownCurrent ? formatAxis(effectiveAggregate?.value, unit) : formatAxis(aggregate?.value, unit);
+        rowEl.setAttribute('aria-label', `${ariaTown}: ${formatAxis(value, unit)}; ${ariaReferenceLabel}: ${ariaReferenceValue}`);
+      }
+    });
+
+    const axis = document.createElement('div');
+    axis.className = 'comparison-axis';
+    const scaleLabel = scale.kind === 'percent'
+      ? (scale.max === 100 ? 'scala 0–100%' : `scala 0–${formatAxis(scale.max, unit)}`)
+      : scale.kind === 'signed'
+        ? 'lo zero è evidenziato'
+        : scale.kind === 'focused'
+          ? 'scala adattata ai prezzi'
+          : scale.kind === 'ordinal'
+            ? `scala Istat fissa ${formatAxis(scale.min, unit)}–${formatAxis(scale.max, unit)}`
+            : 'scala con origine a zero';
+    const displayScaleLabel = renderedTownCurrent
+      ? (displayScale.kind === 'percent'
+          ? (displayScale.max === 100 ? 'scala 0–100%' : `scala 0–${formatAxis(displayScale.max, unit)}`)
+          : displayScale.kind === 'signed'
+            ? 'lo zero è evidenziato'
+            : displayScale.kind === 'focused'
+              ? 'scala adattata ai prezzi'
+              : 'scala con origine a zero')
+      : scaleLabel;
+    axis.innerHTML = `<span>${formatAxis(displayScale.min, unit)}</span><span>${displayScaleLabel}</span><span>${formatAxis(displayScale.max, unit)}</span>`;
+    container.append(axis);
+
+    const note = document.createElement('p');
+    note.className = 'comparison-note';
+    note.textContent = 'I comuni sono ordinati per valore per facilitare il confronto. L’ordine non esprime merito o qualità.';
+    container.append(note);
+  }
+
+  function enhanceReadingScales() {
+    if (!data) return;
+
+    const definition = document.querySelector('#compare-definition .indicator-definition');
+    if (definition) {
+      const metricKey = metricKeyFor(definition);
+      const metric = data.metrics?.[metricKey];
+      if (metric) {
+        const tools = document.getElementById('compare-tools') || definition;
+        const existing = tools.querySelector(':scope > .reading-scale');
+        if (!existing || existing.dataset.readingMetric !== metricKey) {
+          existing?.remove();
+          const actions = tools.querySelector(':scope > .data-actions');
+          const wrapper = document.createElement('div');
+          wrapper.innerHTML = readingScaleMarkup(metricKey, metric);
+          const block = wrapper.firstElementChild;
+          if (actions) tools.insertBefore(block, actions);
+          else tools.append(block);
+        }
+      }
+    }
+
+    const townLayout = document.querySelector('#town-topic .town-metric-layout');
+    if (townLayout) {
+      const metricKey = metricKeyFor(townLayout);
+      const metric = data.metrics?.[metricKey];
+      if (metric) {
+        const parent = townLayout.parentElement;
+        const sharedTools = parent?.querySelector(':scope > .town-post-benchmark-tools');
+        const existing = sharedTools?.querySelector(':scope > .reading-scale') || parent?.querySelector(':scope > .reading-scale');
+        if (!existing || existing.dataset.readingMetric !== metricKey) {
+          existing?.remove();
+          const wrapper = document.createElement('div');
+          wrapper.innerHTML = readingScaleMarkup(metricKey, metric);
+          const block = wrapper.firstElementChild;
+          if (sharedTools) {
+            sharedTools.append(block);
+          } else {
+            const actions = parent?.querySelector(':scope > .town-data-actions');
+            const method = parent?.querySelector(':scope > .method-disclosure');
+            const benchmark = parent?.querySelector(':scope > .town-benchmark');
+            if (actions) parent.insertBefore(block, actions);
+            else if (method) method.insertAdjacentElement('afterend', block);
+            else if (benchmark) benchmark.insertAdjacentElement('afterend', block);
+            else townLayout.insertAdjacentElement('afterend', block);
+          }
+        }
+      }
+    }
+  }
+
+  function enhanceTownPosition() {
+    if (!data) return;
+    const panel = document.querySelector('.versilia-position');
+    const townName = document.querySelector('.town-identity h1')?.textContent?.trim();
+    if (!panel || !townName) return;
+    const metricKey = metricKeyFor(panel);
+    if (metricKey === 'statisticalCoastlineLength') return;
+    const metric = metricForEconomicScope(data.metrics?.[metricKey]);
+    const row = townRow(metric, townName);
+    if (!metric || !row) return;
+    if (['maritimeConcessions','maritimeConcessionFeesDue','extractiveSites','extractivePlanning'].includes(metricKey)) return;
+    if (['distribution','agricultureProfile','ratioProfile','financialProfile','hydroRisk','territorialClassification','landCoverProfile','invalsiProfile'].includes(metric.meta?.compositeType) || metric.meta?.ordinalScale) return;
+    if (document.querySelector('main.a5-town-pilot') && ['stock','mobility','securityMeasures','demographicBreakdown','sexBreakdown'].includes(metric.meta?.compositeType)) return;
+
+    const delta = deltaFor(metric, row, metricKey);
+    const overlineText = delta.overline || 'Rispetto alla media Versilia';
+    const noteText = delta.note || 'Il confronto con la media dei Comuni della Versilia descrive soltanto lo scostamento numerico e non esprime un giudizio di qualità.';
+    const signature = `${metricKey}|${delta.headline}|${delta.direction}|${overlineText}|${noteText}`;
+    if (panel.dataset.visualGrammarSignature === signature) return;
+    panel.dataset.visualGrammarSignature = signature;
+    const overline = panel.querySelector('.overline');
+    const strong = panel.querySelector(':scope > strong');
+    const note = panel.querySelector(':scope > p');
+    if (overline && overline.textContent !== overlineText) overline.textContent = overlineText;
+    const strongMarkup = `${delta.headline}<small>${delta.direction}</small>`;
+    if (strong && strong.innerHTML !== strongMarkup) strong.innerHTML = strongMarkup;
+    if (note && note.textContent !== noteText) note.textContent = noteText;
+  }
+
+  function enhanceIndicatorCards() {
+    if (!data) return;
+    const townName = document.querySelector('.town-identity h1')?.textContent?.trim();
+    if (!townName) return;
+    document.querySelectorAll('.indicator-card-grid button[data-indicator]').forEach(button => {
+      const metricKey = button.dataset.indicator;
+      const metric = data.metrics?.[metricKey];
+      const row = townRow(metric, townName);
+      const small = button.querySelector('small');
+      if (!metric || !row || !small) return;
+      const delta = deltaFor(metric, row, metricKey);
+      const text = `${metric.meta.year} · ${delta.compact}`;
+      if (small.textContent !== text) small.textContent = text;
+    });
+  }
+
+  function enhanceHomeMethod() {
+    const method = document.querySelector('.method-section');
+    if (!method) return;
+    const articles = [...method.querySelectorAll('.method-list article')];
+    const scaleArticle = articles.find(article => article.querySelector('h3')?.textContent.trim() === 'La scala conta');
+    if (scaleArticle) {
+      const heading = scaleArticle.querySelector('h3');
+      const paragraph = scaleArticle.querySelector('p');
+      if (heading) heading.textContent = 'Il Comune non è sempre il sistema';
+      if (paragraph) paragraph.textContent = 'Ogni indicatore dichiara se il confine comunale è amministrativo, territoriale o soltanto una localizzazione dentro un fenomeno sovracomunale.';
+    }
+    if (!method.querySelector('.system-reading-link')) {
+      const link = document.createElement('a');
+      link.className = 'system-reading-link';
+      link.href = projectSystemUrl;
+      link.innerHTML = '<span>Comune e sistema territoriale</span><strong>Come cambia la lettura di lavoro, economia e mobilità →</strong>';
+      method.append(link);
+    }
+  }
+
+  function enhanceProjectMethod() {
+    const method = document.querySelector('.method-detail');
+    if (!method || method.dataset.territorialReadingEnhanced === 'true') return;
+    method.dataset.territorialReadingEnhanced = 'true';
+    const headingCopy = method.querySelector('.section-heading > p');
+    if (headingCopy) headingCopy.textContent = 'Sei regole per evitare confronti solo apparentemente precisi.';
+
+    const principles = method.querySelector('.principles-grid');
+    if (principles) {
+      const items = [...principles.querySelectorAll(':scope > li')];
+      const first = items[0];
+      if (first) {
+        const heading = first.querySelector('h3');
+        const paragraph = first.querySelector('p');
+        if (heading) heading.textContent = 'Scala esplicita';
+        if (paragraph) paragraph.textContent = 'Ogni indicatore dichiara se va letto come dato amministrativo, territoriale o funzionale: il Comune non viene trattato automaticamente come un sistema chiuso.';
+      }
+      if (!principles.querySelector('.base-size-principle')) {
+        const last = items.at(-1);
+        if (last?.querySelector('span')) last.querySelector('span').textContent = '06';
+        const item = document.createElement('li');
+        item.className = 'base-size-principle';
+        item.innerHTML = '<span>05</span><h3>Basi numeriche diverse</h3><p>Tassi e variazioni percentuali possono essere più instabili nei comuni piccoli: quando pochi casi spostano molto una percentuale, il dato va letto insieme ai valori assoluti e alla serie storica disponibili.</p>';
+        if (last) principles.insertBefore(item, last);
+        else principles.append(item);
+      }
+    }
+
+    if (!document.getElementById('sistema-territoriale')) {
+      const section = document.createElement('section');
+      section.id = 'sistema-territoriale';
+      section.className = 'system-reading page-width';
+      section.innerHTML = `<div class="system-reading-intro"><span class="section-number">03</span><div><span class="overline">Comune e sistema territoriale</span><h2>Sette amministrazioni, un territorio interdipendente.</h2><p>I confini comunali sono essenziali per bilanci, servizi e responsabilità amministrative. Lo sono molto meno per mercato del lavoro, sistema produttivo, mobilità, sanità e turismo, che funzionano su reti sovracomunali.</p></div></div>
+        <div class="system-reading-grid">
+          <article data-scope="administrative"><strong>Amministrativo</strong><p>Il confine comunale è parte del fenomeno. È il caso, per esempio, di bilanci, opere e risorse attribuite all’ente.</p></article>
+          <article data-scope="territorial"><strong>Territoriale</strong><p>Il Comune è una buona unità descrittiva per residenti, abitazioni o fenomeni localizzati, ma non è necessariamente un sistema autonomo.</p></article>
+          <article data-scope="functional"><strong>Funzionale</strong><p>Flussi di lavoro, imprese, servizi e mobilità superano i confini. Il valore comunale indica localizzazione o residenza, non il perimetro reale del sistema.</p></article>
+        </div>
+        <div class="system-reading-caution"><div><span class="overline">Comuni di dimensioni diverse</span><h3>Una percentuale non pesa sempre allo stesso modo.</h3></div><p>Viareggio e Stazzema hanno basi numeriche molto diverse. Normalizzare per abitante rende i valori confrontabili, ma non elimina la maggiore volatilità dei tassi nei territori piccoli: pochi casi possono produrre variazioni percentuali ampie.</p></div>
+        <div class="system-reading-links"><a href="${new URL('../confronta/lavoro/', scriptUrl).href}">Lavoro <span>→</span></a><a href="${new URL('../confronta/economia/', scriptUrl).href}">Economia <span>→</span></a><a href="${new URL('../confronta/mobilita/', scriptUrl).href}">Mobilità <span>→</span></a></div>`;
+      method.insertAdjacentElement('afterend', section);
+    }
+  }
+
+  function reviseCopy() {
+    document.querySelectorAll('.method-list h3').forEach(heading => {
+      if (heading.textContent.trim() === 'Posizione, non giudizio') {
+        heading.textContent = 'Differenze, non podi';
+        const paragraph = heading.nextElementSibling;
+        if (paragraph) paragraph.textContent = 'I comuni possono essere ordinati per valore per facilitare la lettura, ma il sito evidenzia distanze e contesto, non posizioni ordinali.';
+      }
+    });
+
+    document.querySelectorAll('.principles-grid h3').forEach(heading => {
+      if (heading.textContent.trim() === 'Nessun voto') {
+        const paragraph = heading.nextElementSibling;
+        const text = 'Distanze e confronti descrivono i valori: non diventano pagelle, podi o giudizi politici automatici.';
+        if (paragraph && paragraph.textContent !== text) paragraph.textContent = text;
+      }
+    });
+
+    const intro = document.querySelector('.hero-intro p');
+    if (intro?.textContent.includes('posizione rispetto alla Versilia')) intro.textContent = intro.textContent.replace('posizione rispetto alla Versilia', 'confronto con la Versilia');
+    const townsIntro = document.querySelector('.towns-section .section-heading > p');
+    if (townsIntro?.textContent.includes('posizione nel contesto')) townsIntro.textContent = townsIntro.textContent.replace('posizione nel contesto', 'confronto nel contesto');
+
+    enhanceHomeMethod();
+    enhanceProjectMethod();
+  }
+
+  function enhance() {
+    scheduled = false;
+    if (!data) return;
+    normalizeA5MunicipalFinancialProfile();
+    normalizeA5MunicipalSelectorCurrent();
+    normalizeA5MunicipalLibraryCurrent();
+    normalizeA5MunicipalClimateCurrent();
+    document.querySelectorAll('.comparison-bars').forEach(enhanceComparison);
+    enhanceReadingScales();
+    enhanceTownPosition();
+    enhanceIndicatorCards();
+    reviseCopy();
+  }
+
+  function scheduleEnhance() {
+    if (scheduled) return;
+    scheduled = true;
+    requestAnimationFrame(enhance);
+  }
+
+  const observer = new MutationObserver(scheduleEnhance);
+  observer.observe(document.documentElement, { childList: true, subtree: true, attributes: true, attributeFilter: ['class', 'aria-selected'] });
+  window.addEventListener('ov:ux-history-enhanced', scheduleEnhance);
+  window.addEventListener('ov:compare-rendered', scheduleEnhance);
+  window.addEventListener('ov:composite-choice', scheduleEnhance);
+
+  fetch(dataUrl, { cache: 'no-store' })
+    .then(response => {
+      if (!response.ok) throw new Error(`Dati non disponibili (${response.status})`);
+      return response.json();
+    })
+    .then(payload => {
+      data = payload;
+      enhance();
+    })
+    .catch(error => console.warn('Grammatica visuale non applicata:', error));
+})();

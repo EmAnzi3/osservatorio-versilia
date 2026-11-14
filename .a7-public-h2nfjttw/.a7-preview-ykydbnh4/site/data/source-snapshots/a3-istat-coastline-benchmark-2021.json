@@ -1,0 +1,3308 @@
+{
+  "schemaVersion": 2,
+  "profileId": "istat-geografie-funzionali-2021",
+  "publisher": "Istat — Linea litoranea statistica",
+  "sourceUrl": "https://www.istat.it/classificazione/principali-statistiche-geografiche-sui-comuni/",
+  "dataUrl": "https://www.istat.it/wp-content/uploads/2026/02/Linea_litoranea_al-31-12-2021.zip",
+  "sourceSha256": "d0d2a693dfefe78ac77a113b1a3358cd8aff6f5149f2850b5650a19df727467e",
+  "status": "ACQUIRED_CANDIDATE",
+  "scope": {
+    "municipalityRecords": 646,
+    "tuscanyRecords": 34,
+    "coverage": "all records in the complete official DBF; no deleted or duplicate records"
+  },
+  "benchmarks": {
+    "statisticalCoastlineLength": {
+      "year": "2021",
+      "unit": "km",
+      "tuscany": 722.930304708687,
+      "italy": 9333.025580745412,
+      "formula": "sum of official SHAPE_Leng / 1000"
+    }
+  },
+  "municipalReconciliation": {
+    "046005": {
+      "valueKm": 3.23894213322,
+      "publicValueKm": 3.238942133
+    },
+    "046013": {
+      "valueKm": 5.1955217139,
+      "publicValueKm": 5.195521714
+    },
+    "046018": {
+      "notApplicable": true
+    },
+    "046024": {
+      "valueKm": 4.73774779322,
+      "publicValueKm": 4.737747793
+    },
+    "046028": {
+      "notApplicable": true
+    },
+    "046030": {
+      "notApplicable": true
+    },
+    "046033": {
+      "valueKm": 13.5986045915,
+      "publicValueKm": 13.598604591
+    }
+  },
+  "regionalTotalsKm": {
+    "5": 196.23348225776,
+    "6": 176.41950901142,
+    "7": 611.916751928041,
+    "8": 182.122726276002,
+    "9": 722.930304708687,
+    "11": 226.28459540972,
+    "12": 444.172203325743,
+    "13": 160.5481225446,
+    "14": 46.056133732410004,
+    "15": 634.197825421903,
+    "16": 1102.51039731956,
+    "17": 68.5586010187,
+    "18": 819.491683609487,
+    "19": 1784.422842668359,
+    "20": 2157.16040151302
+  },
+  "records": [
+    {
+      "code": "008008",
+      "region": 7,
+      "lengthKm": 7.90506894306
+    },
+    {
+      "code": "008011",
+      "region": 7,
+      "lengthKm": 0.175069955054
+    },
+    {
+      "code": "008017",
+      "region": 7,
+      "lengthKm": 4.166812312889999
+    },
+    {
+      "code": "008021",
+      "region": 7,
+      "lengthKm": 3.26229662228
+    },
+    {
+      "code": "008024",
+      "region": 7,
+      "lengthKm": 0.7665700388269999
+    },
+    {
+      "code": "008027",
+      "region": 7,
+      "lengthKm": 6.76419947301
+    },
+    {
+      "code": "008031",
+      "region": 7,
+      "lengthKm": 23.0575177778
+    },
+    {
+      "code": "008039",
+      "region": 7,
+      "lengthKm": 5.43677795571
+    },
+    {
+      "code": "008050",
+      "region": 7,
+      "lengthKm": 3.0477130539700004
+    },
+    {
+      "code": "008052",
+      "region": 7,
+      "lengthKm": 2.5237450942199997
+    },
+    {
+      "code": "008054",
+      "region": 7,
+      "lengthKm": 5.38945494784
+    },
+    {
+      "code": "008055",
+      "region": 7,
+      "lengthKm": 22.2112444254
+    },
+    {
+      "code": "008056",
+      "region": 7,
+      "lengthKm": 9.682400927029999
+    },
+    {
+      "code": "008059",
+      "region": 7,
+      "lengthKm": 1.3810282950400001
+    },
+    {
+      "code": "008063",
+      "region": 7,
+      "lengthKm": 1.47321346783
+    },
+    {
+      "code": "008065",
+      "region": 7,
+      "lengthKm": 13.2797966336
+    },
+    {
+      "code": "009001",
+      "region": 7,
+      "lengthKm": 9.89664216175
+    },
+    {
+      "code": "009002",
+      "region": 7,
+      "lengthKm": 7.56150839946
+    },
+    {
+      "code": "009003",
+      "region": 7,
+      "lengthKm": 1.59219788285
+    },
+    {
+      "code": "009004",
+      "region": 7,
+      "lengthKm": 1.81822533761
+    },
+    {
+      "code": "009006",
+      "region": 7,
+      "lengthKm": 9.03542111973
+    },
+    {
+      "code": "009010",
+      "region": 7,
+      "lengthKm": 6.96939915881
+    },
+    {
+      "code": "009012",
+      "region": 7,
+      "lengthKm": 3.26223354241
+    },
+    {
+      "code": "009013",
+      "region": 7,
+      "lengthKm": 1.7010890933799998
+    },
+    {
+      "code": "009022",
+      "region": 7,
+      "lengthKm": 4.59957153884
+    },
+    {
+      "code": "009024",
+      "region": 7,
+      "lengthKm": 3.90948560713
+    },
+    {
+      "code": "009029",
+      "region": 7,
+      "lengthKm": 11.805532296199999
+    },
+    {
+      "code": "009033",
+      "region": 7,
+      "lengthKm": 4.63106553063
+    },
+    {
+      "code": "009034",
+      "region": 7,
+      "lengthKm": 10.874978361199998
+    },
+    {
+      "code": "009042",
+      "region": 7,
+      "lengthKm": 4.63252940545
+    },
+    {
+      "code": "009049",
+      "region": 7,
+      "lengthKm": 3.92996248277
+    },
+    {
+      "code": "009056",
+      "region": 7,
+      "lengthKm": 15.4252685297
+    },
+    {
+      "code": "009057",
+      "region": 7,
+      "lengthKm": 2.99750481249
+    },
+    {
+      "code": "009064",
+      "region": 7,
+      "lengthKm": 4.69489225222
+    },
+    {
+      "code": "009065",
+      "region": 7,
+      "lengthKm": 11.9597389632
+    },
+    {
+      "code": "010001",
+      "region": 7,
+      "lengthKm": 6.45195421725
+    },
+    {
+      "code": "010004",
+      "region": 7,
+      "lengthKm": 3.17550003482
+    },
+    {
+      "code": "010007",
+      "region": 7,
+      "lengthKm": 11.0695086125
+    },
+    {
+      "code": "010015",
+      "region": 7,
+      "lengthKm": 11.2035167816
+    },
+    {
+      "code": "010017",
+      "region": 7,
+      "lengthKm": 3.41421142376
+    },
+    {
+      "code": "010025",
+      "region": 7,
+      "lengthKm": 116.11076646800001
+    },
+    {
+      "code": "010028",
+      "region": 7,
+      "lengthKm": 14.9885207077
+    },
+    {
+      "code": "010037",
+      "region": 7,
+      "lengthKm": 9.04689379767
+    },
+    {
+      "code": "010043",
+      "region": 7,
+      "lengthKm": 2.67188380283
+    },
+    {
+      "code": "010044",
+      "region": 7,
+      "lengthKm": 6.72851275993
+    },
+    {
+      "code": "010046",
+      "region": 7,
+      "lengthKm": 10.188020077900001
+    },
+    {
+      "code": "010047",
+      "region": 7,
+      "lengthKm": 3.69492191485
+    },
+    {
+      "code": "010054",
+      "region": 7,
+      "lengthKm": 7.50295295523
+    },
+    {
+      "code": "010059",
+      "region": 7,
+      "lengthKm": 14.474899549
+    },
+    {
+      "code": "010060",
+      "region": 7,
+      "lengthKm": 2.64104424622
+    },
+    {
+      "code": "010067",
+      "region": 7,
+      "lengthKm": 4.53843100472
+    },
+    {
+      "code": "011001",
+      "region": 7,
+      "lengthKm": 6.72600552783
+    },
+    {
+      "code": "011005",
+      "region": 7,
+      "lengthKm": 10.0498168365
+    },
+    {
+      "code": "011012",
+      "region": 7,
+      "lengthKm": 0.5856187220100001
+    },
+    {
+      "code": "011014",
+      "region": 7,
+      "lengthKm": 6.128744697899999
+    },
+    {
+      "code": "011015",
+      "region": 7,
+      "lengthKm": 47.7977669121
+    },
+    {
+      "code": "011016",
+      "region": 7,
+      "lengthKm": 17.166571418
+    },
+    {
+      "code": "011017",
+      "region": 7,
+      "lengthKm": 8.93982458282
+    },
+    {
+      "code": "011019",
+      "region": 7,
+      "lengthKm": 4.36113724205
+    },
+    {
+      "code": "011022",
+      "region": 7,
+      "lengthKm": 30.731532454
+    },
+    {
+      "code": "011024",
+      "region": 7,
+      "lengthKm": 9.604732988719999
+    },
+    {
+      "code": "011027",
+      "region": 7,
+      "lengthKm": 2.3378027384699998
+    },
+    {
+      "code": "011030",
+      "region": 7,
+      "lengthKm": 7.76550305427
+    },
+    {
+      "code": "027005",
+      "region": 5,
+      "lengthKm": 23.0176672797
+    },
+    {
+      "code": "027008",
+      "region": 5,
+      "lengthKm": 12.3906611361
+    },
+    {
+      "code": "027013",
+      "region": 5,
+      "lengthKm": 4.86533164439
+    },
+    {
+      "code": "027019",
+      "region": 5,
+      "lengthKm": 17.661333400700002
+    },
+    {
+      "code": "027034",
+      "region": 5,
+      "lengthKm": 11.078077952
+    },
+    {
+      "code": "027042",
+      "region": 5,
+      "lengthKm": 44.5089662188
+    },
+    {
+      "code": "027044",
+      "region": 5,
+      "lengthKm": 18.1728947739
+    },
+    {
+      "code": "029002",
+      "region": 5,
+      "lengthKm": 1.10364029375
+    },
+    {
+      "code": "029039",
+      "region": 5,
+      "lengthKm": 42.5083796123
+    },
+    {
+      "code": "029040",
+      "region": 5,
+      "lengthKm": 12.9961178319
+    },
+    {
+      "code": "029052",
+      "region": 5,
+      "lengthKm": 7.93041211422
+    },
+    {
+      "code": "030049",
+      "region": 6,
+      "lengthKm": 8.057153719719999
+    },
+    {
+      "code": "030056",
+      "region": 6,
+      "lengthKm": 10.4852650879
+    },
+    {
+      "code": "031009",
+      "region": 6,
+      "lengthKm": 37.3733281175
+    },
+    {
+      "code": "031012",
+      "region": 6,
+      "lengthKm": 24.396755455999998
+    },
+    {
+      "code": "031023",
+      "region": 6,
+      "lengthKm": 10.2397477118
+    },
+    {
+      "code": "032001",
+      "region": 6,
+      "lengthKm": 12.136139466500001
+    },
+    {
+      "code": "032003",
+      "region": 6,
+      "lengthKm": 17.6053435597
+    },
+    {
+      "code": "032006",
+      "region": 6,
+      "lengthKm": 56.1257758923
+    },
+    {
+      "code": "038005",
+      "region": 8,
+      "lengthKm": 4.170909646559999
+    },
+    {
+      "code": "038006",
+      "region": 8,
+      "lengthKm": 26.1570055425
+    },
+    {
+      "code": "038025",
+      "region": 8,
+      "lengthKm": 34.82713245750001
+    },
+    {
+      "code": "039007",
+      "region": 8,
+      "lengthKm": 9.77409846307
+    },
+    {
+      "code": "039014",
+      "region": 8,
+      "lengthKm": 51.977136199200004
+    },
+    {
+      "code": "040008",
+      "region": 8,
+      "lengthKm": 7.960560742259999
+    },
+    {
+      "code": "040016",
+      "region": 8,
+      "lengthKm": 0.9356823950640001
+    },
+    {
+      "code": "040041",
+      "region": 8,
+      "lengthKm": 0.6943240175690001
+    },
+    {
+      "code": "040045",
+      "region": 8,
+      "lengthKm": 0.463688177479
+    },
+    {
+      "code": "041013",
+      "region": 11,
+      "lengthKm": 23.3374439547
+    },
+    {
+      "code": "041019",
+      "region": 11,
+      "lengthKm": 5.12756858234
+    },
+    {
+      "code": "041029",
+      "region": 11,
+      "lengthKm": 5.7263316699799995
+    },
+    {
+      "code": "041044",
+      "region": 11,
+      "lengthKm": 24.7675941283
+    },
+    {
+      "code": "042002",
+      "region": 11,
+      "lengthKm": 38.3115138468
+    },
+    {
+      "code": "042018",
+      "region": 11,
+      "lengthKm": 7.55421787671
+    },
+    {
+      "code": "042027",
+      "region": 11,
+      "lengthKm": 4.5212681967899995
+    },
+    {
+      "code": "042032",
+      "region": 11,
+      "lengthKm": 6.56643820212
+    },
+    {
+      "code": "042045",
+      "region": 11,
+      "lengthKm": 18.1765505548
+    },
+    {
+      "code": "042048",
+      "region": 11,
+      "lengthKm": 6.557503117
+    },
+    {
+      "code": "043013",
+      "region": 11,
+      "lengthKm": 11.0736532154
+    },
+    {
+      "code": "043042",
+      "region": 11,
+      "lengthKm": 8.88269202389
+    },
+    {
+      "code": "043043",
+      "region": 11,
+      "lengthKm": 6.551902137140001
+    },
+    {
+      "code": "044017",
+      "region": 11,
+      "lengthKm": 5.35982369364
+    },
+    {
+      "code": "044023",
+      "region": 11,
+      "lengthKm": 5.870941095989999
+    },
+    {
+      "code": "044029",
+      "region": 11,
+      "lengthKm": 1.3773574408699998
+    },
+    {
+      "code": "044066",
+      "region": 11,
+      "lengthKm": 12.8278050784
+    },
+    {
+      "code": "045003",
+      "region": 9,
+      "lengthKm": 9.62926475166
+    },
+    {
+      "code": "045010",
+      "region": 9,
+      "lengthKm": 9.60954843415
+    },
+    {
+      "code": "045011",
+      "region": 9,
+      "lengthKm": 0.9034072321469999
+    },
+    {
+      "code": "046005",
+      "region": 9,
+      "lengthKm": 3.23894213322
+    },
+    {
+      "code": "046013",
+      "region": 9,
+      "lengthKm": 5.1955217139
+    },
+    {
+      "code": "046024",
+      "region": 9,
+      "lengthKm": 4.73774779322
+    },
+    {
+      "code": "046033",
+      "region": 9,
+      "lengthKm": 13.5986045915
+    },
+    {
+      "code": "049001",
+      "region": 9,
+      "lengthKm": 4.89415989758
+    },
+    {
+      "code": "049003",
+      "region": 9,
+      "lengthKm": 48.6938563089
+    },
+    {
+      "code": "049004",
+      "region": 9,
+      "lengthKm": 48.5774533417
+    },
+    {
+      "code": "049005",
+      "region": 9,
+      "lengthKm": 29.788007766099998
+    },
+    {
+      "code": "049006",
+      "region": 9,
+      "lengthKm": 13.203060985399999
+    },
+    {
+      "code": "049007",
+      "region": 9,
+      "lengthKm": 8.66135272988
+    },
+    {
+      "code": "049009",
+      "region": 9,
+      "lengthKm": 55.0069875276
+    },
+    {
+      "code": "049010",
+      "region": 9,
+      "lengthKm": 20.5340265695
+    },
+    {
+      "code": "049011",
+      "region": 9,
+      "lengthKm": 9.27266393968
+    },
+    {
+      "code": "049012",
+      "region": 9,
+      "lengthKm": 49.8778823035
+    },
+    {
+      "code": "049013",
+      "region": 9,
+      "lengthKm": 4.92167420467
+    },
+    {
+      "code": "049014",
+      "region": 9,
+      "lengthKm": 48.2234894938
+    },
+    {
+      "code": "049017",
+      "region": 9,
+      "lengthKm": 27.2136648677
+    },
+    {
+      "code": "049018",
+      "region": 9,
+      "lengthKm": 12.1533845854
+    },
+    {
+      "code": "049021",
+      "region": 9,
+      "lengthKm": 35.8550615721
+    },
+    {
+      "code": "050026",
+      "region": 9,
+      "lengthKm": 21.8193803986
+    },
+    {
+      "code": "050031",
+      "region": 9,
+      "lengthKm": 3.8304481512
+    },
+    {
+      "code": "050037",
+      "region": 9,
+      "lengthKm": 3.5236850132499997
+    },
+    {
+      "code": "053003",
+      "region": 9,
+      "lengthKm": 11.5980466622
+    },
+    {
+      "code": "053006",
+      "region": 9,
+      "lengthKm": 28.1643570097
+    },
+    {
+      "code": "053009",
+      "region": 9,
+      "lengthKm": 7.22327689063
+    },
+    {
+      "code": "053011",
+      "region": 9,
+      "lengthKm": 23.2809807302
+    },
+    {
+      "code": "053012",
+      "region": 9,
+      "lengthKm": 49.2448108011
+    },
+    {
+      "code": "053013",
+      "region": 9,
+      "lengthKm": 5.8846188339
+    },
+    {
+      "code": "053016",
+      "region": 9,
+      "lengthKm": 51.692025833500004
+    },
+    {
+      "code": "053018",
+      "region": 9,
+      "lengthKm": 40.6547155168
+    },
+    {
+      "code": "053024",
+      "region": 9,
+      "lengthKm": 12.2241961243
+    },
+    {
+      "code": "056035",
+      "region": 12,
+      "lengthKm": 18.2332862425
+    },
+    {
+      "code": "056050",
+      "region": 12,
+      "lengthKm": 20.178331009900003
+    },
+    {
+      "code": "058007",
+      "region": 12,
+      "lengthKm": 18.7748127332
+    },
+    {
+      "code": "058029",
+      "region": 12,
+      "lengthKm": 4.92442316069
+    },
+    {
+      "code": "058032",
+      "region": 12,
+      "lengthKm": 39.4311912049
+    },
+    {
+      "code": "058072",
+      "region": 12,
+      "lengthKm": 23.848042178700002
+    },
+    {
+      "code": "058079",
+      "region": 12,
+      "lengthKm": 8.97167792031
+    },
+    {
+      "code": "058091",
+      "region": 12,
+      "lengthKm": 26.0277559895
+    },
+    {
+      "code": "058097",
+      "region": 12,
+      "lengthKm": 26.292808808999997
+    },
+    {
+      "code": "058116",
+      "region": 12,
+      "lengthKm": 10.244501811
+    },
+    {
+      "code": "058117",
+      "region": 12,
+      "lengthKm": 8.79642768771
+    },
+    {
+      "code": "058120",
+      "region": 12,
+      "lengthKm": 32.298121001700004
+    },
+    {
+      "code": "059007",
+      "region": 12,
+      "lengthKm": 10.6901969193
+    },
+    {
+      "code": "059008",
+      "region": 12,
+      "lengthKm": 20.235290685200003
+    },
+    {
+      "code": "059009",
+      "region": 12,
+      "lengthKm": 25.2630137319
+    },
+    {
+      "code": "059010",
+      "region": 12,
+      "lengthKm": 0.929492146093
+    },
+    {
+      "code": "059011",
+      "region": 12,
+      "lengthKm": 13.462274822
+    },
+    {
+      "code": "059014",
+      "region": 12,
+      "lengthKm": 8.72170408826
+    },
+    {
+      "code": "059018",
+      "region": 12,
+      "lengthKm": 52.682966511
+    },
+    {
+      "code": "059024",
+      "region": 12,
+      "lengthKm": 18.8928886484
+    },
+    {
+      "code": "059025",
+      "region": 12,
+      "lengthKm": 16.210258517
+    },
+    {
+      "code": "059030",
+      "region": 12,
+      "lengthKm": 9.72109737808
+    },
+    {
+      "code": "059032",
+      "region": 12,
+      "lengthKm": 15.9791490353
+    },
+    {
+      "code": "059033",
+      "region": 12,
+      "lengthKm": 13.3624910941
+    },
+    {
+      "code": "061027",
+      "region": 15,
+      "lengthKm": 28.1847303659
+    },
+    {
+      "code": "061052",
+      "region": 15,
+      "lengthKm": 8.30408412666
+    },
+    {
+      "code": "061088",
+      "region": 15,
+      "lengthKm": 8.31959915638
+    },
+    {
+      "code": "061102",
+      "region": 15,
+      "lengthKm": 3.82399674359
+    },
+    {
+      "code": "063004",
+      "region": 15,
+      "lengthKm": 10.6918543648
+    },
+    {
+      "code": "063006",
+      "region": 15,
+      "lengthKm": 27.648944549
+    },
+    {
+      "code": "063007",
+      "region": 15,
+      "lengthKm": 7.135929211720001
+    },
+    {
+      "code": "063014",
+      "region": 15,
+      "lengthKm": 13.9957277558
+    },
+    {
+      "code": "063019",
+      "region": 15,
+      "lengthKm": 6.29439766864
+    },
+    {
+      "code": "063024",
+      "region": 15,
+      "lengthKm": 21.379064894899997
+    },
+    {
+      "code": "063031",
+      "region": 15,
+      "lengthKm": 17.254555663999998
+    },
+    {
+      "code": "063034",
+      "region": 15,
+      "lengthKm": 2.43133350701
+    },
+    {
+      "code": "063037",
+      "region": 15,
+      "lengthKm": 12.3285872654
+    },
+    {
+      "code": "063038",
+      "region": 15,
+      "lengthKm": 5.62316590935
+    },
+    {
+      "code": "063044",
+      "region": 15,
+      "lengthKm": 22.7760471128
+    },
+    {
+      "code": "063046",
+      "region": 15,
+      "lengthKm": 1.59435390271
+    },
+    {
+      "code": "063047",
+      "region": 15,
+      "lengthKm": 8.92117147173
+    },
+    {
+      "code": "063049",
+      "region": 15,
+      "lengthKm": 66.770303811
+    },
+    {
+      "code": "063053",
+      "region": 15,
+      "lengthKm": 5.62311381928
+    },
+    {
+      "code": "063059",
+      "region": 15,
+      "lengthKm": 4.17204173921
+    },
+    {
+      "code": "063060",
+      "region": 15,
+      "lengthKm": 17.9422087212
+    },
+    {
+      "code": "063061",
+      "region": 15,
+      "lengthKm": 24.3389355217
+    },
+    {
+      "code": "063064",
+      "region": 15,
+      "lengthKm": 2.5772986078
+    },
+    {
+      "code": "063071",
+      "region": 15,
+      "lengthKm": 5.82233485951
+    },
+    {
+      "code": "063078",
+      "region": 15,
+      "lengthKm": 3.8792676043400003
+    },
+    {
+      "code": "063080",
+      "region": 15,
+      "lengthKm": 9.30594840753
+    },
+    {
+      "code": "063083",
+      "region": 15,
+      "lengthKm": 11.2969472067
+    },
+    {
+      "code": "063084",
+      "region": 15,
+      "lengthKm": 10.855407275
+    },
+    {
+      "code": "063086",
+      "region": 15,
+      "lengthKm": 9.26812582988
+    },
+    {
+      "code": "065002",
+      "region": 15,
+      "lengthKm": 12.469427297
+    },
+    {
+      "code": "065006",
+      "region": 15,
+      "lengthKm": 5.40713435969
+    },
+    {
+      "code": "065009",
+      "region": 15,
+      "lengthKm": 6.8589013926
+    },
+    {
+      "code": "065011",
+      "region": 15,
+      "lengthKm": 0.366816879284
+    },
+    {
+      "code": "065014",
+      "region": 15,
+      "lengthKm": 4.2111820573
+    },
+    {
+      "code": "065021",
+      "region": 15,
+      "lengthKm": 23.0954555993
+    },
+    {
+      "code": "065025",
+      "region": 15,
+      "lengthKm": 12.5765971775
+    },
+    {
+      "code": "065028",
+      "region": 15,
+      "lengthKm": 7.48966977372
+    },
+    {
+      "code": "065031",
+      "region": 15,
+      "lengthKm": 21.835633882499998
+    },
+    {
+      "code": "065039",
+      "region": 15,
+      "lengthKm": 13.968943719
+    },
+    {
+      "code": "065041",
+      "region": 15,
+      "lengthKm": 1.5837727697200001
+    },
+    {
+      "code": "065044",
+      "region": 15,
+      "lengthKm": 3.57535646137
+    },
+    {
+      "code": "065050",
+      "region": 15,
+      "lengthKm": 7.996569313279999
+    },
+    {
+      "code": "065053",
+      "region": 15,
+      "lengthKm": 1.6307206973
+    },
+    {
+      "code": "065059",
+      "region": 15,
+      "lengthKm": 4.3846503724
+    },
+    {
+      "code": "065066",
+      "region": 15,
+      "lengthKm": 11.8627312175
+    },
+    {
+      "code": "065068",
+      "region": 15,
+      "lengthKm": 0.959415954969
+    },
+    {
+      "code": "065071",
+      "region": 15,
+      "lengthKm": 7.267521305070001
+    },
+    {
+      "code": "065096",
+      "region": 15,
+      "lengthKm": 11.997426497500001
+    },
+    {
+      "code": "065098",
+      "region": 15,
+      "lengthKm": 10.462225285799999
+    },
+    {
+      "code": "065099",
+      "region": 15,
+      "lengthKm": 6.41461407013
+    },
+    {
+      "code": "065100",
+      "region": 15,
+      "lengthKm": 7.52676020789
+    },
+    {
+      "code": "065102",
+      "region": 15,
+      "lengthKm": 4.29901570656
+    },
+    {
+      "code": "065104",
+      "region": 15,
+      "lengthKm": 2.31314671272
+    },
+    {
+      "code": "065116",
+      "region": 15,
+      "lengthKm": 32.5111535444
+    },
+    {
+      "code": "065119",
+      "region": 15,
+      "lengthKm": 9.05610967765
+    },
+    {
+      "code": "065123",
+      "region": 15,
+      "lengthKm": 2.23199087126
+    },
+    {
+      "code": "065127",
+      "region": 15,
+      "lengthKm": 5.3969454722700005
+    },
+    {
+      "code": "065134",
+      "region": 15,
+      "lengthKm": 8.84941475089
+    },
+    {
+      "code": "065156",
+      "region": 15,
+      "lengthKm": 3.5825160349600003
+    },
+    {
+      "code": "065157",
+      "region": 15,
+      "lengthKm": 3.45652928683
+    },
+    {
+      "code": "067001",
+      "region": 13,
+      "lengthKm": 2.72710267097
+    },
+    {
+      "code": "067025",
+      "region": 13,
+      "lengthKm": 9.11487984625
+    },
+    {
+      "code": "067035",
+      "region": 13,
+      "lengthKm": 9.751787838750001
+    },
+    {
+      "code": "067037",
+      "region": 13,
+      "lengthKm": 11.848563800800001
+    },
+    {
+      "code": "067040",
+      "region": 13,
+      "lengthKm": 7.280593880530001
+    },
+    {
+      "code": "067044",
+      "region": 13,
+      "lengthKm": 3.8737426683
+    },
+    {
+      "code": "067047",
+      "region": 13,
+      "lengthKm": 8.47037292365
+    },
+    {
+      "code": "068012",
+      "region": 13,
+      "lengthKm": 1.31698591691
+    },
+    {
+      "code": "068024",
+      "region": 13,
+      "lengthKm": 5.27233338781
+    },
+    {
+      "code": "068028",
+      "region": 13,
+      "lengthKm": 15.732964325400001
+    },
+    {
+      "code": "069015",
+      "region": 13,
+      "lengthKm": 3.84277484923
+    },
+    {
+      "code": "069033",
+      "region": 13,
+      "lengthKm": 6.23283612178
+    },
+    {
+      "code": "069035",
+      "region": 13,
+      "lengthKm": 9.23372751248
+    },
+    {
+      "code": "069058",
+      "region": 13,
+      "lengthKm": 24.6994134966
+    },
+    {
+      "code": "069074",
+      "region": 13,
+      "lengthKm": 4.62612302834
+    },
+    {
+      "code": "069083",
+      "region": 13,
+      "lengthKm": 3.24884292074
+    },
+    {
+      "code": "069086",
+      "region": 13,
+      "lengthKm": 4.67325324836
+    },
+    {
+      "code": "069091",
+      "region": 13,
+      "lengthKm": 6.569325747
+    },
+    {
+      "code": "069099",
+      "region": 13,
+      "lengthKm": 22.0324983607
+    },
+    {
+      "code": "070010",
+      "region": 14,
+      "lengthKm": 14.128922665500001
+    },
+    {
+      "code": "070046",
+      "region": 14,
+      "lengthKm": 7.55850353387
+    },
+    {
+      "code": "070051",
+      "region": 14,
+      "lengthKm": 6.68063551624
+    },
+    {
+      "code": "070078",
+      "region": 14,
+      "lengthKm": 17.6880720168
+    },
+    {
+      "code": "071008",
+      "region": 16,
+      "lengthKm": 8.808224503990001
+    },
+    {
+      "code": "071021",
+      "region": 16,
+      "lengthKm": 7.88340695732
+    },
+    {
+      "code": "071025",
+      "region": 16,
+      "lengthKm": 7.629409534510001
+    },
+    {
+      "code": "071026",
+      "region": 16,
+      "lengthKm": 22.5727581543
+    },
+    {
+      "code": "071027",
+      "region": 16,
+      "lengthKm": 25.8231651652
+    },
+    {
+      "code": "071029",
+      "region": 16,
+      "lengthKm": 38.1297957199
+    },
+    {
+      "code": "071031",
+      "region": 16,
+      "lengthKm": 18.5475646892
+    },
+    {
+      "code": "071033",
+      "region": 16,
+      "lengthKm": 12.234577506199999
+    },
+    {
+      "code": "071038",
+      "region": 16,
+      "lengthKm": 16.720862359999998
+    },
+    {
+      "code": "071043",
+      "region": 16,
+      "lengthKm": 13.3766028566
+    },
+    {
+      "code": "071049",
+      "region": 16,
+      "lengthKm": 4.80777205429
+    },
+    {
+      "code": "071053",
+      "region": 16,
+      "lengthKm": 8.37837122304
+    },
+    {
+      "code": "071059",
+      "region": 16,
+      "lengthKm": 5.015960973039999
+    },
+    {
+      "code": "071060",
+      "region": 16,
+      "lengthKm": 46.2541418451
+    },
+    {
+      "code": "071064",
+      "region": 16,
+      "lengthKm": 12.272624583599999
+    },
+    {
+      "code": "072006",
+      "region": 16,
+      "lengthKm": 62.7060969537
+    },
+    {
+      "code": "072022",
+      "region": 16,
+      "lengthKm": 11.8701855944
+    },
+    {
+      "code": "072028",
+      "region": 16,
+      "lengthKm": 17.3861282866
+    },
+    {
+      "code": "072029",
+      "region": 16,
+      "lengthKm": 18.7617376642
+    },
+    {
+      "code": "072030",
+      "region": 16,
+      "lengthKm": 32.2078001449
+    },
+    {
+      "code": "072035",
+      "region": 16,
+      "lengthKm": 21.7424207651
+    },
+    {
+      "code": "073003",
+      "region": 16,
+      "lengthKm": 9.38172060163
+    },
+    {
+      "code": "073007",
+      "region": 16,
+      "lengthKm": 6.2231528459700005
+    },
+    {
+      "code": "073010",
+      "region": 16,
+      "lengthKm": 7.79826821777
+    },
+    {
+      "code": "073011",
+      "region": 16,
+      "lengthKm": 4.39108705327
+    },
+    {
+      "code": "073012",
+      "region": 16,
+      "lengthKm": 14.8647215018
+    },
+    {
+      "code": "073014",
+      "region": 16,
+      "lengthKm": 12.2164609357
+    },
+    {
+      "code": "073015",
+      "region": 16,
+      "lengthKm": 6.1507527125
+    },
+    {
+      "code": "073021",
+      "region": 16,
+      "lengthKm": 6.80361020507
+    },
+    {
+      "code": "073022",
+      "region": 16,
+      "lengthKm": 8.874843426510001
+    },
+    {
+      "code": "073027",
+      "region": 16,
+      "lengthKm": 73.71107207540001
+    },
+    {
+      "code": "073028",
+      "region": 16,
+      "lengthKm": 3.57351608394
+    },
+    {
+      "code": "074001",
+      "region": 16,
+      "lengthKm": 76.03821007570001
+    },
+    {
+      "code": "074002",
+      "region": 16,
+      "lengthKm": 21.4138462442
+    },
+    {
+      "code": "074007",
+      "region": 16,
+      "lengthKm": 20.2280180448
+    },
+    {
+      "code": "074012",
+      "region": 16,
+      "lengthKm": 28.931433652200003
+    },
+    {
+      "code": "074016",
+      "region": 16,
+      "lengthKm": 4.9896551926
+    },
+    {
+      "code": "074018",
+      "region": 16,
+      "lengthKm": 4.55445454989
+    },
+    {
+      "code": "075002",
+      "region": 16,
+      "lengthKm": 1.44203669556
+    },
+    {
+      "code": "075004",
+      "region": 16,
+      "lengthKm": 6.918583728110001
+    },
+    {
+      "code": "075005",
+      "region": 16,
+      "lengthKm": 2.3169357496500003
+    },
+    {
+      "code": "075019",
+      "region": 16,
+      "lengthKm": 11.9407828342
+    },
+    {
+      "code": "075024",
+      "region": 16,
+      "lengthKm": 4.03081422367
+    },
+    {
+      "code": "075027",
+      "region": 16,
+      "lengthKm": 2.7962508527599996
+    },
+    {
+      "code": "075028",
+      "region": 16,
+      "lengthKm": 10.5406193224
+    },
+    {
+      "code": "075030",
+      "region": 16,
+      "lengthKm": 1.7522025016
+    },
+    {
+      "code": "075031",
+      "region": 16,
+      "lengthKm": 40.5560434781
+    },
+    {
+      "code": "075035",
+      "region": 16,
+      "lengthKm": 21.831764614
+    },
+    {
+      "code": "075043",
+      "region": 16,
+      "lengthKm": 21.4843674559
+    },
+    {
+      "code": "075050",
+      "region": 16,
+      "lengthKm": 3.62734697358
+    },
+    {
+      "code": "075052",
+      "region": 16,
+      "lengthKm": 27.73239431
+    },
+    {
+      "code": "075057",
+      "region": 16,
+      "lengthKm": 37.6986850897
+    },
+    {
+      "code": "075060",
+      "region": 16,
+      "lengthKm": 4.0191190796
+    },
+    {
+      "code": "075063",
+      "region": 16,
+      "lengthKm": 4.9763666864200005
+    },
+    {
+      "code": "075066",
+      "region": 16,
+      "lengthKm": 7.57461811018
+    },
+    {
+      "code": "075072",
+      "region": 16,
+      "lengthKm": 12.3092129106
+    },
+    {
+      "code": "075079",
+      "region": 16,
+      "lengthKm": 3.47848901143
+    },
+    {
+      "code": "075085",
+      "region": 16,
+      "lengthKm": 1.34511095183
+    },
+    {
+      "code": "075086",
+      "region": 16,
+      "lengthKm": 0.9823683535300001
+    },
+    {
+      "code": "075087",
+      "region": 16,
+      "lengthKm": 2.46799314956
+    },
+    {
+      "code": "075088",
+      "region": 16,
+      "lengthKm": 8.9564140149
+    },
+    {
+      "code": "075090",
+      "region": 16,
+      "lengthKm": 15.3940400065
+    },
+    {
+      "code": "075093",
+      "region": 16,
+      "lengthKm": 9.25451646682
+    },
+    {
+      "code": "075096",
+      "region": 16,
+      "lengthKm": 6.89560277752
+    },
+    {
+      "code": "075097",
+      "region": 16,
+      "lengthKm": 36.7342527891
+    },
+    {
+      "code": "076044",
+      "region": 17,
+      "lengthKm": 28.7990543691
+    },
+    {
+      "code": "077003",
+      "region": 17,
+      "lengthKm": 7.41927782376
+    },
+    {
+      "code": "077018",
+      "region": 17,
+      "lengthKm": 2.3505141202499997
+    },
+    {
+      "code": "077020",
+      "region": 17,
+      "lengthKm": 8.98255203843
+    },
+    {
+      "code": "077021",
+      "region": 17,
+      "lengthKm": 8.75162415468
+    },
+    {
+      "code": "077023",
+      "region": 17,
+      "lengthKm": 2.53377401763
+    },
+    {
+      "code": "077031",
+      "region": 17,
+      "lengthKm": 9.72180449485
+    },
+    {
+      "code": "078002",
+      "region": 18,
+      "lengthKm": 4.74259881292
+    },
+    {
+      "code": "078006",
+      "region": 18,
+      "lengthKm": 0.104593763953
+    },
+    {
+      "code": "078010",
+      "region": 18,
+      "lengthKm": 14.7573903937
+    },
+    {
+      "code": "078011",
+      "region": 18,
+      "lengthKm": 8.385424552329999
+    },
+    {
+      "code": "078013",
+      "region": 18,
+      "lengthKm": 3.59306544483
+    },
+    {
+      "code": "078015",
+      "region": 18,
+      "lengthKm": 11.467790680599999
+    },
+    {
+      "code": "078019",
+      "region": 18,
+      "lengthKm": 5.46167433616
+    },
+    {
+      "code": "078021",
+      "region": 18,
+      "lengthKm": 3.37110939045
+    },
+    {
+      "code": "078025",
+      "region": 18,
+      "lengthKm": 15.1196507324
+    },
+    {
+      "code": "078029",
+      "region": 18,
+      "lengthKm": 7.3063712078
+    },
+    {
+      "code": "078040",
+      "region": 18,
+      "lengthKm": 11.0095317616
+    },
+    {
+      "code": "078047",
+      "region": 18,
+      "lengthKm": 5.59033029683
+    },
+    {
+      "code": "078048",
+      "region": 18,
+      "lengthKm": 10.909067520599999
+    },
+    {
+      "code": "078052",
+      "region": 18,
+      "lengthKm": 2.4592744137099998
+    },
+    {
+      "code": "078055",
+      "region": 18,
+      "lengthKm": 4.25373478804
+    },
+    {
+      "code": "078058",
+      "region": 18,
+      "lengthKm": 7.57045350816
+    },
+    {
+      "code": "078060",
+      "region": 18,
+      "lengthKm": 1.5190906321
+    },
+    {
+      "code": "078061",
+      "region": 18,
+      "lengthKm": 2.94360692384
+    },
+    {
+      "code": "078067",
+      "region": 18,
+      "lengthKm": 4.18114249235
+    },
+    {
+      "code": "078074",
+      "region": 18,
+      "lengthKm": 4.31212583857
+    },
+    {
+      "code": "078082",
+      "region": 18,
+      "lengthKm": 3.49757729904
+    },
+    {
+      "code": "078091",
+      "region": 18,
+      "lengthKm": 10.369503268399999
+    },
+    {
+      "code": "078099",
+      "region": 18,
+      "lengthKm": 3.1571712165099997
+    },
+    {
+      "code": "078101",
+      "region": 18,
+      "lengthKm": 8.14457368028
+    },
+    {
+      "code": "078103",
+      "region": 18,
+      "lengthKm": 8.568437279989999
+    },
+    {
+      "code": "078107",
+      "region": 18,
+      "lengthKm": 7.80934893517
+    },
+    {
+      "code": "078117",
+      "region": 18,
+      "lengthKm": 3.61039413719
+    },
+    {
+      "code": "078122",
+      "region": 18,
+      "lengthKm": 7.82558186022
+    },
+    {
+      "code": "078125",
+      "region": 18,
+      "lengthKm": 8.01832645871
+    },
+    {
+      "code": "078132",
+      "region": 18,
+      "lengthKm": 2.0540079821200004
+    },
+    {
+      "code": "078137",
+      "region": 18,
+      "lengthKm": 1.23113365679
+    },
+    {
+      "code": "078138",
+      "region": 18,
+      "lengthKm": 9.579850522540001
+    },
+    {
+      "code": "078149",
+      "region": 18,
+      "lengthKm": 2.06887546516
+    },
+    {
+      "code": "078150",
+      "region": 18,
+      "lengthKm": 8.80067024879
+    },
+    {
+      "code": "078154",
+      "region": 18,
+      "lengthKm": 8.673724396179999
+    },
+    {
+      "code": "078157",
+      "region": 18,
+      "lengthKm": 35.194876515800004
+    },
+    {
+      "code": "079008",
+      "region": 18,
+      "lengthKm": 4.349592693180001
+    },
+    {
+      "code": "079009",
+      "region": 18,
+      "lengthKm": 1.2846201987699999
+    },
+    {
+      "code": "079011",
+      "region": 18,
+      "lengthKm": 3.47784776969
+    },
+    {
+      "code": "079012",
+      "region": 18,
+      "lengthKm": 5.01314283501
+    },
+    {
+      "code": "079023",
+      "region": 18,
+      "lengthKm": 9.52122373447
+    },
+    {
+      "code": "079036",
+      "region": 18,
+      "lengthKm": 2.3193851072
+    },
+    {
+      "code": "079039",
+      "region": 18,
+      "lengthKm": 4.335067411
+    },
+    {
+      "code": "079042",
+      "region": 18,
+      "lengthKm": 1.52216824694
+    },
+    {
+      "code": "079047",
+      "region": 18,
+      "lengthKm": 4.54218225182
+    },
+    {
+      "code": "079060",
+      "region": 18,
+      "lengthKm": 8.42633091467
+    },
+    {
+      "code": "079061",
+      "region": 18,
+      "lengthKm": 4.01141230979
+    },
+    {
+      "code": "079063",
+      "region": 18,
+      "lengthKm": 1.83213847543
+    },
+    {
+      "code": "079080",
+      "region": 18,
+      "lengthKm": 1.5557799479499999
+    },
+    {
+      "code": "079081",
+      "region": 18,
+      "lengthKm": 2.9661392918500002
+    },
+    {
+      "code": "079087",
+      "region": 18,
+      "lengthKm": 5.908130358409999
+    },
+    {
+      "code": "079116",
+      "region": 18,
+      "lengthKm": 1.50757698804
+    },
+    {
+      "code": "079117",
+      "region": 18,
+      "lengthKm": 6.28365428637
+    },
+    {
+      "code": "079118",
+      "region": 18,
+      "lengthKm": 3.6778736200799997
+    },
+    {
+      "code": "079123",
+      "region": 18,
+      "lengthKm": 1.30733773548
+    },
+    {
+      "code": "079127",
+      "region": 18,
+      "lengthKm": 9.13093962428
+    },
+    {
+      "code": "079133",
+      "region": 18,
+      "lengthKm": 2.43447238768
+    },
+    {
+      "code": "079137",
+      "region": 18,
+      "lengthKm": 4.08593002028
+    },
+    {
+      "code": "079142",
+      "region": 18,
+      "lengthKm": 2.8631152505
+    },
+    {
+      "code": "079143",
+      "region": 18,
+      "lengthKm": 5.30766585749
+    },
+    {
+      "code": "079160",
+      "region": 18,
+      "lengthKm": 10.0731321782
+    },
+    {
+      "code": "080001",
+      "region": 18,
+      "lengthKm": 1.56963509811
+    },
+    {
+      "code": "080005",
+      "region": 18,
+      "lengthKm": 4.298762947389999
+    },
+    {
+      "code": "080007",
+      "region": 18,
+      "lengthKm": 9.80250381688
+    },
+    {
+      "code": "080009",
+      "region": 18,
+      "lengthKm": 8.77725674445
+    },
+    {
+      "code": "080012",
+      "region": 18,
+      "lengthKm": 4.43475904976
+    },
+    {
+      "code": "080013",
+      "region": 18,
+      "lengthKm": 7.39269001949
+    },
+    {
+      "code": "080014",
+      "region": 18,
+      "lengthKm": 8.746008088970001
+    },
+    {
+      "code": "080015",
+      "region": 18,
+      "lengthKm": 2.14447590347
+    },
+    {
+      "code": "080017",
+      "region": 18,
+      "lengthKm": 2.9037719114800002
+    },
+    {
+      "code": "080024",
+      "region": 18,
+      "lengthKm": 1.6031200472
+    },
+    {
+      "code": "080025",
+      "region": 18,
+      "lengthKm": 4.76955449356
+    },
+    {
+      "code": "080029",
+      "region": 18,
+      "lengthKm": 5.319532264059999
+    },
+    {
+      "code": "080033",
+      "region": 18,
+      "lengthKm": 3.19613931698
+    },
+    {
+      "code": "080038",
+      "region": 18,
+      "lengthKm": 17.1278235796
+    },
+    {
+      "code": "080040",
+      "region": 18,
+      "lengthKm": 0.6285071171759999
+    },
+    {
+      "code": "080043",
+      "region": 18,
+      "lengthKm": 6.4191527364
+    },
+    {
+      "code": "080045",
+      "region": 18,
+      "lengthKm": 2.82759315707
+    },
+    {
+      "code": "080050",
+      "region": 18,
+      "lengthKm": 6.06582402739
+    },
+    {
+      "code": "080052",
+      "region": 18,
+      "lengthKm": 5.04272870735
+    },
+    {
+      "code": "080053",
+      "region": 18,
+      "lengthKm": 6.02561640795
+    },
+    {
+      "code": "080054",
+      "region": 18,
+      "lengthKm": 7.50532172577
+    },
+    {
+      "code": "080056",
+      "region": 18,
+      "lengthKm": 8.55669265659
+    },
+    {
+      "code": "080057",
+      "region": 18,
+      "lengthKm": 15.4818055131
+    },
+    {
+      "code": "080062",
+      "region": 18,
+      "lengthKm": 0.7495237744
+    },
+    {
+      "code": "080063",
+      "region": 18,
+      "lengthKm": 35.078610175
+    },
+    {
+      "code": "080064",
+      "region": 18,
+      "lengthKm": 4.32208626979
+    },
+    {
+      "code": "080067",
+      "region": 18,
+      "lengthKm": 11.6636421135
+    },
+    {
+      "code": "080069",
+      "region": 18,
+      "lengthKm": 0.194399569679
+    },
+    {
+      "code": "080073",
+      "region": 18,
+      "lengthKm": 3.14853355613
+    },
+    {
+      "code": "080082",
+      "region": 18,
+      "lengthKm": 1.53277304011
+    },
+    {
+      "code": "080085",
+      "region": 18,
+      "lengthKm": 10.742776217700001
+    },
+    {
+      "code": "080086",
+      "region": 18,
+      "lengthKm": 4.312867170350001
+    },
+    {
+      "code": "080088",
+      "region": 18,
+      "lengthKm": 6.05219154814
+    },
+    {
+      "code": "080091",
+      "region": 18,
+      "lengthKm": 3.68611778479
+    },
+    {
+      "code": "080092",
+      "region": 18,
+      "lengthKm": 0.522173983459
+    },
+    {
+      "code": "080096",
+      "region": 18,
+      "lengthKm": 11.9422007598
+    },
+    {
+      "code": "080097",
+      "region": 18,
+      "lengthKm": 4.98568125916
+    },
+    {
+      "code": "081001",
+      "region": 19,
+      "lengthKm": 6.406520707089999
+    },
+    {
+      "code": "081004",
+      "region": 19,
+      "lengthKm": 12.4257825832
+    },
+    {
+      "code": "081005",
+      "region": 19,
+      "lengthKm": 20.109199279699997
+    },
+    {
+      "code": "081006",
+      "region": 19,
+      "lengthKm": 12.976997511699999
+    },
+    {
+      "code": "081007",
+      "region": 19,
+      "lengthKm": 11.165217516299998
+    },
+    {
+      "code": "081008",
+      "region": 19,
+      "lengthKm": 9.15768910259
+    },
+    {
+      "code": "081009",
+      "region": 19,
+      "lengthKm": 89.9376854116
+    },
+    {
+      "code": "081011",
+      "region": 19,
+      "lengthKm": 64.056612329
+    },
+    {
+      "code": "081012",
+      "region": 19,
+      "lengthKm": 27.0211782456
+    },
+    {
+      "code": "081013",
+      "region": 19,
+      "lengthKm": 4.9105955219899995
+    },
+    {
+      "code": "081014",
+      "region": 19,
+      "lengthKm": 59.330869610200004
+    },
+    {
+      "code": "081020",
+      "region": 19,
+      "lengthKm": 37.326579286699996
+    },
+    {
+      "code": "081021",
+      "region": 19,
+      "lengthKm": 21.1908512336
+    },
+    {
+      "code": "081022",
+      "region": 19,
+      "lengthKm": 7.1809727820400004
+    },
+    {
+      "code": "081024",
+      "region": 19,
+      "lengthKm": 14.2207276493
+    },
+    {
+      "code": "081025",
+      "region": 19,
+      "lengthKm": 4.96099159658
+    },
+    {
+      "code": "082004",
+      "region": 19,
+      "lengthKm": 7.40700428326
+    },
+    {
+      "code": "082006",
+      "region": 19,
+      "lengthKm": 7.68211021915
+    },
+    {
+      "code": "082007",
+      "region": 19,
+      "lengthKm": 7.35484615976
+    },
+    {
+      "code": "082017",
+      "region": 19,
+      "lengthKm": 8.74012229345
+    },
+    {
+      "code": "082020",
+      "region": 19,
+      "lengthKm": 1.52927184371
+    },
+    {
+      "code": "082021",
+      "region": 19,
+      "lengthKm": 9.74887767819
+    },
+    {
+      "code": "082023",
+      "region": 19,
+      "lengthKm": 2.09062299247
+    },
+    {
+      "code": "082027",
+      "region": 19,
+      "lengthKm": 22.809223179
+    },
+    {
+      "code": "082031",
+      "region": 19,
+      "lengthKm": 11.7775302742
+    },
+    {
+      "code": "082035",
+      "region": 19,
+      "lengthKm": 2.73339550037
+    },
+    {
+      "code": "082043",
+      "region": 19,
+      "lengthKm": 6.95859014699
+    },
+    {
+      "code": "082044",
+      "region": 19,
+      "lengthKm": 2.0861155528200004
+    },
+    {
+      "code": "082053",
+      "region": 19,
+      "lengthKm": 53.000196374
+    },
+    {
+      "code": "082059",
+      "region": 19,
+      "lengthKm": 8.79594172402
+    },
+    {
+      "code": "082065",
+      "region": 19,
+      "lengthKm": 0.26236912740999996
+    },
+    {
+      "code": "082067",
+      "region": 19,
+      "lengthKm": 10.8155776875
+    },
+    {
+      "code": "082070",
+      "region": 19,
+      "lengthKm": 30.3692991822
+    },
+    {
+      "code": "082071",
+      "region": 19,
+      "lengthKm": 15.606332872900001
+    },
+    {
+      "code": "082073",
+      "region": 19,
+      "lengthKm": 9.45333027291
+    },
+    {
+      "code": "082074",
+      "region": 19,
+      "lengthKm": 6.68384375883
+    },
+    {
+      "code": "082075",
+      "region": 19,
+      "lengthKm": 17.7052263527
+    },
+    {
+      "code": "083003",
+      "region": 19,
+      "lengthKm": 4.19500305722
+    },
+    {
+      "code": "083005",
+      "region": 19,
+      "lengthKm": 4.95879485923
+    },
+    {
+      "code": "083007",
+      "region": 19,
+      "lengthKm": 3.04570473671
+    },
+    {
+      "code": "083009",
+      "region": 19,
+      "lengthKm": 13.4858124898
+    },
+    {
+      "code": "083011",
+      "region": 19,
+      "lengthKm": 16.636848488299997
+    },
+    {
+      "code": "083019",
+      "region": 19,
+      "lengthKm": 2.08785518488
+    },
+    {
+      "code": "083024",
+      "region": 19,
+      "lengthKm": 0.8648529211799999
+    },
+    {
+      "code": "083027",
+      "region": 19,
+      "lengthKm": 0.941143555583
+    },
+    {
+      "code": "083028",
+      "region": 19,
+      "lengthKm": 3.8135651084299997
+    },
+    {
+      "code": "083032",
+      "region": 19,
+      "lengthKm": 6.6335253743
+    },
+    {
+      "code": "083033",
+      "region": 19,
+      "lengthKm": 9.90103846371
+    },
+    {
+      "code": "083036",
+      "region": 19,
+      "lengthKm": 1.92989784178
+    },
+    {
+      "code": "083037",
+      "region": 19,
+      "lengthKm": 6.64370108881
+    },
+    {
+      "code": "083038",
+      "region": 19,
+      "lengthKm": 4.41510977274
+    },
+    {
+      "code": "083041",
+      "region": 19,
+      "lengthKm": 123.150381811
+    },
+    {
+      "code": "083043",
+      "region": 19,
+      "lengthKm": 9.85012262451
+    },
+    {
+      "code": "083048",
+      "region": 19,
+      "lengthKm": 62.6840406434
+    },
+    {
+      "code": "083049",
+      "region": 19,
+      "lengthKm": 28.722049396
+    },
+    {
+      "code": "083054",
+      "region": 19,
+      "lengthKm": 1.24728160168
+    },
+    {
+      "code": "083059",
+      "region": 19,
+      "lengthKm": 5.12723342341
+    },
+    {
+      "code": "083060",
+      "region": 19,
+      "lengthKm": 2.06380221975
+    },
+    {
+      "code": "083061",
+      "region": 19,
+      "lengthKm": 1.78262218562
+    },
+    {
+      "code": "083063",
+      "region": 19,
+      "lengthKm": 1.35992108645
+    },
+    {
+      "code": "083064",
+      "region": 19,
+      "lengthKm": 2.3715199324199996
+    },
+    {
+      "code": "083066",
+      "region": 19,
+      "lengthKm": 12.6683855881
+    },
+    {
+      "code": "083068",
+      "region": 19,
+      "lengthKm": 5.83650358391
+    },
+    {
+      "code": "083070",
+      "region": 19,
+      "lengthKm": 1.41214032193
+    },
+    {
+      "code": "083072",
+      "region": 19,
+      "lengthKm": 2.68684084954
+    },
+    {
+      "code": "083076",
+      "region": 19,
+      "lengthKm": 2.9653513772599998
+    },
+    {
+      "code": "083077",
+      "region": 19,
+      "lengthKm": 1.80614844549
+    },
+    {
+      "code": "083080",
+      "region": 19,
+      "lengthKm": 0.850409131434
+    },
+    {
+      "code": "083084",
+      "region": 19,
+      "lengthKm": 7.80670542766
+    },
+    {
+      "code": "083085",
+      "region": 19,
+      "lengthKm": 3.2656118658
+    },
+    {
+      "code": "083087",
+      "region": 19,
+      "lengthKm": 8.894594436810001
+    },
+    {
+      "code": "083089",
+      "region": 19,
+      "lengthKm": 3.53175688219
+    },
+    {
+      "code": "083091",
+      "region": 19,
+      "lengthKm": 4.8491752386
+    },
+    {
+      "code": "083092",
+      "region": 19,
+      "lengthKm": 0.654814297129
+    },
+    {
+      "code": "083094",
+      "region": 19,
+      "lengthKm": 2.53936036753
+    },
+    {
+      "code": "083096",
+      "region": 19,
+      "lengthKm": 2.34869153708
+    },
+    {
+      "code": "083097",
+      "region": 19,
+      "lengthKm": 8.7589995845
+    },
+    {
+      "code": "083098",
+      "region": 19,
+      "lengthKm": 1.2294765433200001
+    },
+    {
+      "code": "083101",
+      "region": 19,
+      "lengthKm": 8.25424311755
+    },
+    {
+      "code": "083103",
+      "region": 19,
+      "lengthKm": 0.29949653895300005
+    },
+    {
+      "code": "083104",
+      "region": 19,
+      "lengthKm": 1.3836977365
+    },
+    {
+      "code": "083105",
+      "region": 19,
+      "lengthKm": 2.19382890949
+    },
+    {
+      "code": "083106",
+      "region": 19,
+      "lengthKm": 8.23003958296
+    },
+    {
+      "code": "083107",
+      "region": 19,
+      "lengthKm": 5.671758865949999
+    },
+    {
+      "code": "083108",
+      "region": 19,
+      "lengthKm": 6.29033638016
+    },
+    {
+      "code": "084001",
+      "region": 19,
+      "lengthKm": 20.4171541485
+    },
+    {
+      "code": "084014",
+      "region": 19,
+      "lengthKm": 2.88534588865
+    },
+    {
+      "code": "084020",
+      "region": 19,
+      "lengthKm": 57.9932341982
+    },
+    {
+      "code": "084021",
+      "region": 19,
+      "lengthKm": 34.3091141891
+    },
+    {
+      "code": "084023",
+      "region": 19,
+      "lengthKm": 11.8363577661
+    },
+    {
+      "code": "084024",
+      "region": 19,
+      "lengthKm": 2.0499195716600003
+    },
+    {
+      "code": "084027",
+      "region": 19,
+      "lengthKm": 22.2770116298
+    },
+    {
+      "code": "084028",
+      "region": 19,
+      "lengthKm": 12.7320026112
+    },
+    {
+      "code": "084032",
+      "region": 19,
+      "lengthKm": 10.950021141999999
+    },
+    {
+      "code": "084033",
+      "region": 19,
+      "lengthKm": 10.554977494500001
+    },
+    {
+      "code": "084041",
+      "region": 19,
+      "lengthKm": 30.8338299061
+    },
+    {
+      "code": "084042",
+      "region": 19,
+      "lengthKm": 12.6300705349
+    },
+    {
+      "code": "085003",
+      "region": 19,
+      "lengthKm": 7.52892835217
+    },
+    {
+      "code": "085007",
+      "region": 19,
+      "lengthKm": 33.0344807652
+    },
+    {
+      "code": "087002",
+      "region": 19,
+      "lengthKm": 10.7284834259
+    },
+    {
+      "code": "087004",
+      "region": 19,
+      "lengthKm": 16.0592585326
+    },
+    {
+      "code": "087010",
+      "region": 19,
+      "lengthKm": 2.7760197282099996
+    },
+    {
+      "code": "087015",
+      "region": 19,
+      "lengthKm": 34.626669036699994
+    },
+    {
+      "code": "087016",
+      "region": 19,
+      "lengthKm": 2.58212615899
+    },
+    {
+      "code": "087023",
+      "region": 19,
+      "lengthKm": 3.957068189
+    },
+    {
+      "code": "087039",
+      "region": 19,
+      "lengthKm": 11.6680669625
+    },
+    {
+      "code": "088001",
+      "region": 19,
+      "lengthKm": 7.307444987439999
+    },
+    {
+      "code": "088005",
+      "region": 19,
+      "lengthKm": 12.8637410739
+    },
+    {
+      "code": "088006",
+      "region": 19,
+      "lengthKm": 6.525253732
+    },
+    {
+      "code": "088008",
+      "region": 19,
+      "lengthKm": 13.2317459455
+    },
+    {
+      "code": "088009",
+      "region": 19,
+      "lengthKm": 19.1913052218
+    },
+    {
+      "code": "088010",
+      "region": 19,
+      "lengthKm": 9.07437151574
+    },
+    {
+      "code": "088011",
+      "region": 19,
+      "lengthKm": 22.2441832689
+    },
+    {
+      "code": "088012",
+      "region": 19,
+      "lengthKm": 14.6544993161
+    },
+    {
+      "code": "089001",
+      "region": 19,
+      "lengthKm": 79.9095447657
+    },
+    {
+      "code": "089002",
+      "region": 19,
+      "lengthKm": 12.6845300604
+    },
+    {
+      "code": "089006",
+      "region": 19,
+      "lengthKm": 1.5800902963999999
+    },
+    {
+      "code": "089012",
+      "region": 19,
+      "lengthKm": 8.39900379841
+    },
+    {
+      "code": "089013",
+      "region": 19,
+      "lengthKm": 21.9948849076
+    },
+    {
+      "code": "089014",
+      "region": 19,
+      "lengthKm": 21.6401996898
+    },
+    {
+      "code": "089017",
+      "region": 19,
+      "lengthKm": 73.771928902
+    },
+    {
+      "code": "089020",
+      "region": 19,
+      "lengthKm": 19.8266012355
+    },
+    {
+      "code": "089021",
+      "region": 19,
+      "lengthKm": 18.7648813994
+    },
+    {
+      "code": "090003",
+      "region": 20,
+      "lengthKm": 94.8977258065
+    },
+    {
+      "code": "090006",
+      "region": 20,
+      "lengthKm": 73.9276483318
+    },
+    {
+      "code": "090023",
+      "region": 20,
+      "lengthKm": 19.7537157482
+    },
+    {
+      "code": "090035",
+      "region": 20,
+      "lengthKm": 232.916166982
+    },
+    {
+      "code": "090047",
+      "region": 20,
+      "lengthKm": 130.697188324
+    },
+    {
+      "code": "090054",
+      "region": 20,
+      "lengthKm": 32.6044937601
+    },
+    {
+      "code": "090058",
+      "region": 20,
+      "lengthKm": 155.13294422
+    },
+    {
+      "code": "090062",
+      "region": 20,
+      "lengthKm": 28.3116524466
+    },
+    {
+      "code": "090063",
+      "region": 20,
+      "lengthKm": 72.506544708
+    },
+    {
+      "code": "090064",
+      "region": 20,
+      "lengthKm": 46.402697689
+    },
+    {
+      "code": "090069",
+      "region": 20,
+      "lengthKm": 16.425254938499997
+    },
+    {
+      "code": "090074",
+      "region": 20,
+      "lengthKm": 35.910782686699996
+    },
+    {
+      "code": "090078",
+      "region": 20,
+      "lengthKm": 11.5062745031
+    },
+    {
+      "code": "090079",
+      "region": 20,
+      "lengthKm": 3.08938507021
+    },
+    {
+      "code": "090081",
+      "region": 20,
+      "lengthKm": 8.305317661990001
+    },
+    {
+      "code": "090083",
+      "region": 20,
+      "lengthKm": 47.3723129546
+    },
+    {
+      "code": "090084",
+      "region": 20,
+      "lengthKm": 11.7989812877
+    },
+    {
+      "code": "090089",
+      "region": 20,
+      "lengthKm": 54.727117388699995
+    },
+    {
+      "code": "090091",
+      "region": 20,
+      "lengthKm": 17.864843101800002
+    },
+    {
+      "code": "090092",
+      "region": 20,
+      "lengthKm": 38.4009602944
+    },
+    {
+      "code": "091002",
+      "region": 20,
+      "lengthKm": 7.69614183928
+    },
+    {
+      "code": "091005",
+      "region": 20,
+      "lengthKm": 10.1440235546
+    },
+    {
+      "code": "091006",
+      "region": 20,
+      "lengthKm": 39.3069874973
+    },
+    {
+      "code": "091017",
+      "region": 20,
+      "lengthKm": 15.552380906
+    },
+    {
+      "code": "091026",
+      "region": 20,
+      "lengthKm": 3.90179970379
+    },
+    {
+      "code": "091037",
+      "region": 20,
+      "lengthKm": 2.70469074602
+    },
+    {
+      "code": "091039",
+      "region": 20,
+      "lengthKm": 1.24160762544
+    },
+    {
+      "code": "091042",
+      "region": 20,
+      "lengthKm": 6.2827384329400005
+    },
+    {
+      "code": "091063",
+      "region": 20,
+      "lengthKm": 25.264161079599997
+    },
+    {
+      "code": "091073",
+      "region": 20,
+      "lengthKm": 5.54779961842
+    },
+    {
+      "code": "091085",
+      "region": 20,
+      "lengthKm": 26.2916372359
+    },
+    {
+      "code": "091089",
+      "region": 20,
+      "lengthKm": 12.013724490500001
+    },
+    {
+      "code": "091095",
+      "region": 20,
+      "lengthKm": 21.9667095621
+    },
+    {
+      "code": "091103",
+      "region": 20,
+      "lengthKm": 4.90319381705
+    },
+    {
+      "code": "092009",
+      "region": 20,
+      "lengthKm": 52.974140229
+    },
+    {
+      "code": "092011",
+      "region": 20,
+      "lengthKm": 5.32023221485
+    },
+    {
+      "code": "092037",
+      "region": 20,
+      "lengthKm": 5.106481190929999
+    },
+    {
+      "code": "092050",
+      "region": 20,
+      "lengthKm": 23.7314562873
+    },
+    {
+      "code": "092051",
+      "region": 20,
+      "lengthKm": 24.601150942100002
+    },
+    {
+      "code": "092066",
+      "region": 20,
+      "lengthKm": 25.4609611489
+    },
+    {
+      "code": "092080",
+      "region": 20,
+      "lengthKm": 6.30732124612
+    },
+    {
+      "code": "095006",
+      "region": 20,
+      "lengthKm": 15.814370331800001
+    },
+    {
+      "code": "095018",
+      "region": 20,
+      "lengthKm": 39.3651168047
+    },
+    {
+      "code": "095019",
+      "region": 20,
+      "lengthKm": 18.076136619699998
+    },
+    {
+      "code": "095031",
+      "region": 20,
+      "lengthKm": 1.7979262060599999
+    },
+    {
+      "code": "095038",
+      "region": 20,
+      "lengthKm": 9.224381036319999
+    },
+    {
+      "code": "095043",
+      "region": 20,
+      "lengthKm": 1.65723999347
+    },
+    {
+      "code": "095047",
+      "region": 20,
+      "lengthKm": 16.142078692
+    },
+    {
+      "code": "095050",
+      "region": 20,
+      "lengthKm": 20.7599326238
+    },
+    {
+      "code": "095065",
+      "region": 20,
+      "lengthKm": 2.98435501921
+    },
+    {
+      "code": "095067",
+      "region": 20,
+      "lengthKm": 12.7877198911
+    },
+    {
+      "code": "095079",
+      "region": 20,
+      "lengthKm": 35.1879197405
+    },
+    {
+      "code": "095083",
+      "region": 20,
+      "lengthKm": 2.23059693565
+    },
+    {
+      "code": "099001",
+      "region": 8,
+      "lengthKm": 7.82176831008
+    },
+    {
+      "code": "099002",
+      "region": 8,
+      "lengthKm": 4.40656284715
+    },
+    {
+      "code": "099005",
+      "region": 8,
+      "lengthKm": 7.10049055176
+    },
+    {
+      "code": "099013",
+      "region": 8,
+      "lengthKm": 6.37550952631
+    },
+    {
+      "code": "099014",
+      "region": 8,
+      "lengthKm": 19.4578573995
+    },
+    {
+      "code": "101007",
+      "region": 18,
+      "lengthKm": 4.5405177838199995
+    },
+    {
+      "code": "101008",
+      "region": 18,
+      "lengthKm": 18.393192772
+    },
+    {
+      "code": "101010",
+      "region": 18,
+      "lengthKm": 45.5712937972
+    },
+    {
+      "code": "101011",
+      "region": 18,
+      "lengthKm": 5.62267811451
+    },
+    {
+      "code": "101012",
+      "region": 18,
+      "lengthKm": 8.22843240261
+    },
+    {
+      "code": "101013",
+      "region": 18,
+      "lengthKm": 37.3976400767
+    },
+    {
+      "code": "101014",
+      "region": 18,
+      "lengthKm": 3.84972964662
+    },
+    {
+      "code": "101025",
+      "region": 18,
+      "lengthKm": 9.61952205602
+    },
+    {
+      "code": "102003",
+      "region": 18,
+      "lengthKm": 9.02034753602
+    },
+    {
+      "code": "102018",
+      "region": 18,
+      "lengthKm": 8.24497959922
+    },
+    {
+      "code": "102025",
+      "region": 18,
+      "lengthKm": 7.41430217519
+    },
+    {
+      "code": "102026",
+      "region": 18,
+      "lengthKm": 6.52358534957
+    },
+    {
+      "code": "102027",
+      "region": 18,
+      "lengthKm": 14.2850947815
+    },
+    {
+      "code": "102030",
+      "region": 18,
+      "lengthKm": 13.5153955615
+    },
+    {
+      "code": "102044",
+      "region": 18,
+      "lengthKm": 6.94185302788
+    },
+    {
+      "code": "102047",
+      "region": 18,
+      "lengthKm": 11.191465154400001
+    },
+    {
+      "code": "102049",
+      "region": 18,
+      "lengthKm": 4.1598613141100005
+    },
+    {
+      "code": "109001",
+      "region": 11,
+      "lengthKm": 3.1422518991299997
+    },
+    {
+      "code": "109004",
+      "region": 11,
+      "lengthKm": 1.73481589072
+    },
+    {
+      "code": "109006",
+      "region": 11,
+      "lengthKm": 8.765035948500001
+    },
+    {
+      "code": "109030",
+      "region": 11,
+      "lengthKm": 4.06904803193
+    },
+    {
+      "code": "109033",
+      "region": 11,
+      "lengthKm": 8.49456115397
+    },
+    {
+      "code": "109034",
+      "region": 11,
+      "lengthKm": 7.4882776706000005
+    },
+    {
+      "code": "110002",
+      "region": 16,
+      "lengthKm": 20.942839318999997
+    },
+    {
+      "code": "110003",
+      "region": 16,
+      "lengthKm": 12.2694634536
+    },
+    {
+      "code": "110005",
+      "region": 16,
+      "lengthKm": 19.270423225200002
+    },
+    {
+      "code": "110009",
+      "region": 16,
+      "lengthKm": 17.696308230400003
+    },
+    {
+      "code": "111001",
+      "region": 20,
+      "lengthKm": 68.4967211255
+    },
+    {
+      "code": "111006",
+      "region": 20,
+      "lengthKm": 13.5682556779
+    },
+    {
+      "code": "111008",
+      "region": 20,
+      "lengthKm": 29.2602752872
+    },
+    {
+      "code": "111010",
+      "region": 20,
+      "lengthKm": 57.6464002081
+    },
+    {
+      "code": "111011",
+      "region": 20,
+      "lengthKm": 13.9325504327
+    },
+    {
+      "code": "111015",
+      "region": 20,
+      "lengthKm": 16.7945369728
+    },
+    {
+      "code": "111021",
+      "region": 20,
+      "lengthKm": 2.1054561141
+    },
+    {
+      "code": "111028",
+      "region": 20,
+      "lengthKm": 3.59223756921
+    },
+    {
+      "code": "111030",
+      "region": 20,
+      "lengthKm": 8.884768005809999
+    },
+    {
+      "code": "111035",
+      "region": 20,
+      "lengthKm": 18.5764621642
+    },
+    {
+      "code": "111040",
+      "region": 20,
+      "lengthKm": 2.59476479105
+    },
+    {
+      "code": "111042",
+      "region": 20,
+      "lengthKm": 30.5880361265
+    },
+    {
+      "code": "111057",
+      "region": 20,
+      "lengthKm": 29.5837459901
+    },
+    {
+      "code": "111063",
+      "region": 20,
+      "lengthKm": 21.9028730972
+    },
+    {
+      "code": "111070",
+      "region": 20,
+      "lengthKm": 12.6637371525
+    },
+    {
+      "code": "111071",
+      "region": 20,
+      "lengthKm": 56.875207646
+    },
+    {
+      "code": "111089",
+      "region": 20,
+      "lengthKm": 70.00401959700001
+    },
+    {
+      "code": "111103",
+      "region": 20,
+      "lengthKm": 23.2815661683
+    },
+    {
+      "code": "111105",
+      "region": 20,
+      "lengthKm": 41.9096662205
+    }
+  ],
+  "qualityGate": {
+    "status": "PASS",
+    "publicReconciliation": "4 coastal + 3 n.a. PASS",
+    "regionalNationalControl": "complete official DBF and regional sum PASS",
+    "errors": []
+  },
+  "blocked": {
+    "territorialClassification": "categorical littoral/coastal-zone/DEGURBA profile; scalar benchmark is not equivalent"
+  }
+}

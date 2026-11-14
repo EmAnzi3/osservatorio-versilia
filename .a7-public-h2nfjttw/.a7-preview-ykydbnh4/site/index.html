@@ -1,0 +1,434 @@
+<!doctype html>
+<html lang="it"><head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Osservatorio Versilia · Dati pubblici comunali</title>
+  <meta name="description" content="Un punto di accesso semplice ai dati pubblici dei sette comuni della Versilia: confronti, serie storiche, fonti e riferimenti regionali e nazionali.">
+  <meta property="og:title" content="Osservatorio Versilia · Dati pubblici comunali">
+  <meta property="og:description" content="Un punto di accesso semplice ai dati pubblici dei sette comuni della Versilia: confronti, serie storiche, fonti e riferimenti regionali e nazionali.">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="it_IT">
+  <link rel="icon" href="favicon.svg?v=20260824-ov4" sizes="any">
+  <link rel="icon" href="favicon.svg?v=20260824-ov4" type="image/svg+xml">
+  <link rel="manifest" href="site.webmanifest?v=20260824-pwa9">
+  <link rel="preload" as="image" href="images/versilia-viareggio-apuane.jpg?v=20260803-1658">
+  <link rel="stylesheet" href="assets/original.css">
+  <link rel="stylesheet" href="assets/static.css">
+  <link rel="stylesheet" href="assets/fidelity.css?v=20261025-ui-shell-consistency">
+  <link rel="stylesheet" href="assets/fonts.css">
+  <link rel="stylesheet" href="assets/ux-experiment.css?v=20261025-ui-shell-consistency">
+  <link rel="stylesheet" href="assets/ux-background-match.css?v=20261025-ui-shell-consistency">
+  <link rel="stylesheet" href="assets/export-v161.css?v=20261025-ui-shell-consistency">
+  <link rel="stylesheet" href="assets/visual-grammar.css?v=20261025-ui-shell-consistency">
+  <link rel="stylesheet" href="assets/indicator-pages.css?v=20261025-ui-shell-consistency">
+  <link rel="stylesheet" href="assets/social-presence.css?v=20261025-ui-shell-consistency">
+<style id="ov-invalsi-benchmark-history-style">
+.ux-history-chart .ux-series-group[data-history-town="toscana"] .ux-series-line{stroke-dasharray:10 5;stroke-width:3;opacity:.9}
+.ux-history-chart .ux-series-group[data-history-town="italia"] .ux-series-line{stroke-dasharray:2 5;stroke-width:3;opacity:.9}
+.ux-history-legend button[data-history-select="toscana"]::before,.ux-history-legend button[data-history-select="italia"]::before{width:20px;height:2px;border-radius:0}
+.ux-history-legend button[data-history-select="toscana"]::before{background:repeating-linear-gradient(90deg,var(--series-color) 0 8px,transparent 8px 12px)}
+.ux-history-legend button[data-history-select="italia"]::before{background:repeating-linear-gradient(90deg,var(--series-color) 0 2px,transparent 2px 6px)}
+</style><style id="ov-climate-current-grammar-style">
+      .ov-climate-current-legend{
+        display:flex;align-items:center;gap:18px;margin:0 0 14px;padding:0 2px;
+        color:var(--muted);font-size:9px;font-weight:700
+      }
+      .ov-climate-current-legend span{display:inline-flex;align-items:center;gap:7px}
+      .ov-climate-current-legend .ov-legend-dot{
+        width:9px;height:9px;border-radius:50%;background:var(--surface,#fffaf1);
+        border:2px solid var(--theme-color,#52785c)
+      }
+      .ov-climate-current-legend .ov-legend-mean{width:2px;height:16px;background:#607b88}
+      .ov-climate-current-list{
+        display:grid;gap:11px
+      }
+      .ov-climate-current-list .ov-climate-current-row{
+        border-radius:8px;grid-template-columns:24px minmax(110px,1.1fr) minmax(150px,3fr) minmax(70px,auto);
+        align-items:center;gap:12px;min-height:54px;padding:0;display:grid;position:relative;
+        color:inherit;text-decoration:none;transition:background .15s
+      }
+      .ov-climate-current-list .ov-climate-current-row:hover,
+      .ov-climate-current-list .ov-climate-current-row.selected{background:var(--blue-soft)}
+      .ov-climate-current-list .ov-climate-current-row .town{
+        grid-column:2;font-size:13px;font-weight:690
+      }
+      .ov-climate-current-list .ov-climate-current-row strong{
+        grid-column:4;font-family:var(--font-geist-mono),monospace;text-align:right;
+        white-space:nowrap;font-size:12px
+      }
+      .ov-climate-current-list .ov-climate-current-track{
+        grid-column:3;position:relative;height:9px;border-radius:999px;background:#e4e9e7;
+        overflow:visible
+      }
+      .ov-climate-current-list.uses-versilia-marker .ov-climate-current-track::after{
+        content:'';position:absolute;z-index:1;left:var(--ov-mean-position);top:-5px;width:2px;height:19px;
+        background:#607b88;transform:translateX(-1px)
+      }
+      .ov-climate-current-list.uses-versilia-marker .ov-climate-current-track>i{
+        position:absolute;z-index:2;top:50%;left:var(--ov-value-position)!important;
+        width:11px;height:11px;margin:-5.5px 0 0 -5.5px;border-radius:50%;
+        background:var(--surface,#fffaf1);border:3px solid var(--theme-color,#52785c);
+        box-shadow:0 1px 4px color-mix(in srgb,var(--ink) 18%,transparent)
+      }
+      .ov-climate-current-list .bar-hover-label{display:none}
+      @media(max-width:700px){
+        .ov-climate-current-list .ov-climate-current-row{
+          grid-template-columns:18px minmax(82px,1fr) minmax(70px,1.4fr) auto;gap:7px
+        }
+        .ov-climate-current-list .ov-climate-current-row .town{font-size:11px}
+        .ov-climate-current-list .ov-climate-current-row strong{font-size:10px}
+      }
+    </style>
+  <link rel="canonical" href="https://osservatorioversilia.it/">
+  <script type="application/ld+json">{"@context":"https://schema.org","url":"https://osservatorioversilia.it/","name":"Osservatorio Versilia · Dati pubblici comunali","description":"Un punto di accesso semplice ai dati pubblici dei sette comuni della Versilia: confronti, serie storiche, fonti e riferimenti regionali e nazionali.","inLanguage":"it-IT","isAccessibleForFree":true,"creator":{"@type":"Person","name":"Emanuele Anzilotti"},"publisher":{"@type":"Person","name":"Emanuele Anzilotti"},"@type":"DataCatalog","spatialCoverage":{"@type":"Place","name":"Versilia, Toscana, Italia"},"dataset":[{"@type":"Dataset","name":"Indicatori del Comune di Massarosa","url":"https://osservatorioversilia.it/comuni/massarosa/"},{"@type":"Dataset","name":"Indicatori del Comune di Viareggio","url":"https://osservatorioversilia.it/comuni/viareggio/"},{"@type":"Dataset","name":"Indicatori del Comune di Camaiore","url":"https://osservatorioversilia.it/comuni/camaiore/"},{"@type":"Dataset","name":"Indicatori del Comune di Pietrasanta","url":"https://osservatorioversilia.it/comuni/pietrasanta/"},{"@type":"Dataset","name":"Indicatori del Comune di Seravezza","url":"https://osservatorioversilia.it/comuni/seravezza/"},{"@type":"Dataset","name":"Indicatori del Comune di Forte dei Marmi","url":"https://osservatorioversilia.it/comuni/forte-dei-marmi/"},{"@type":"Dataset","name":"Indicatori del Comune di Stazzema","url":"https://osservatorioversilia.it/comuni/stazzema/"}]}</script>
+
+  <meta property="og:url" content="https://osservatorioversilia.it/">
+  <meta property="og:site_name" content="Osservatorio Versilia">
+  <meta property="og:image" content="https://osservatorioversilia.it/images/versilia-viareggio-apuane.jpg">
+  <meta property="og:image:alt" content="Viareggio e le Alpi Apuane, immagine di Osservatorio Versilia">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Osservatorio Versilia · Dati pubblici comunali">
+  <meta name="twitter:description" content="Un punto di accesso semplice ai dati pubblici dei sette comuni della Versilia: confronti, serie storiche, fonti e riferimenti regionali e nazionali.">
+  <meta name="twitter:site" content="@OssVersilia">
+  <meta name="twitter:image" content="https://osservatorioversilia.it/images/versilia-viareggio-apuane.jpg">
+  <meta name="twitter:image:alt" content="Viareggio e le Alpi Apuane, immagine di Osservatorio Versilia">
+  <link rel="stylesheet" href="assets/brand.css?v=20260824-ov4">
+  <link rel="stylesheet" href="assets/mobile-accordion-fix.css?v=20260809-3">
+  <link rel="stylesheet" href="assets/chart-surfaces.css?v=20260826-v120">
+  <meta name="theme-color" content="#0F3654">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Osservatorio Versilia">
+  <link rel="apple-touch-icon" sizes="180x180" href="pwa/icon-180.png?v=20260824-pwa9">
+  <link rel="stylesheet" href="assets/pwa.css?v=20260824-pwa9">
+</head>
+<body class="antialiased" data-page="home" data-theme="" data-town="" data-prerendered="true">
+  <div id="site-header-mount">
+      <a class="skip-link" href="#app">Vai al contenuto</a>
+      <header class="site-header">
+        <div class="site-header-inner">
+          <a href="" class="site-brand" aria-label="Osservatorio Versilia, torna alla home">
+            <span class="site-brand-mark" aria-hidden="true"><svg class="ov-mark-svg" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 76 64"><g fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="27" cy="32" r="22" stroke="#0F3654" stroke-width="6"/>
+    <path d="M43 28 53 48 71 15" stroke="#0F3654" stroke-width="6"/>
+    <path d="M57 27 70 9" stroke="#58A28F" stroke-width="3.2"/>
+  </g>
+  <g fill="#6F8FA3">
+    <rect x="16" y="34" width="5.5" height="9" rx="1"/>
+    <rect x="24" y="28" width="5.5" height="15" rx="1"/>
+    <rect x="32" y="20" width="5.5" height="23" rx="1"/>
+  </g>
+  <path d="M10 43c7-5.5 14-7.2 20-5.3 4.4 1.4 8 4.1 12 4.7v5.1c-4.6-.5-8.7-3-13.1-4.1-5.7-1.5-11.7-.1-18.9 4.1Z" fill="#58A28F"/>
+  <path d="M11.5 45.2c6.2-3.2 11.9-4.2 17.1-3 4.3 1 8.1 3.2 12.2 3.8" fill="none" stroke="#F7FAF8" stroke-width="1.8" stroke-linecap="round"/>
+</svg></span>
+            <span class="site-brand-copy"><strong>Osservatorio Versilia</strong><small>Versilia in numeri</small></span>
+          </a>
+          <div class="site-header-actions">
+            <nav aria-label="Navigazione principale">
+              <a href="#temi">Temi</a>
+              <a href="#comuni">Comuni</a>
+              <a href="dossier/">Dossier</a>
+              <a href="chiedi/">Chiedi</a>
+              <a href="opportunita/">Opportunità</a>
+              <a href="progetto/">Il progetto</a>
+              <a href="stato-dati/" data-data-status-nav="header">Stato dati</a>
+              <a href="segnala/">Segnala</a>
+            </nav>
+            <button class="global-search-trigger" type="button" aria-haspopup="dialog" aria-expanded="false">
+              <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg><span>Cerca</span><kbd>/</kbd>
+            </button>
+          </div>
+        </div>
+      </header></div>
+  <div id="app"><main>
+      <section class="home-hero page-width">
+        <div class="hero-copy"><span class="overline">Osservatorio civico · Versilia storica</span><h1>La Versilia,<br>comune per comune.</h1>
+          <p class="hero-deck">Dati pubblici per capire come cambiano popolazione, lavoro, servizi, ambiente e qualità della vita nei sette comuni del territorio.</p></div>
+        <div class="hero-intro"><span class="overline">Cosa puoi fare</span><p>Confronta i comuni su un tema oppure apri la scheda di un territorio per leggere numeri, andamento storico e confronto con la Versilia, alla Toscana e all’Italia.</p>
+          <div class="hero-facts"><span>7 comuni</span><span>11 temi</span><span>225 indicatori</span><span>Catalogo al 14 settembre 2026</span></div></div>
+        <figure class="hero-photo"><img alt="Il litorale di Viareggio con le Alpi Apuane sullo sfondo" src="images/versilia-viareggio-apuane.jpg">
+          <figcaption>Viareggio e Alpi Apuane · Foto di Carlo Pelagalli, <a href="https://commons.wikimedia.org/wiki/File:Wv_Versilia_banner.jpg" target="_blank" rel="noreferrer">CC BY-SA 3.0 ↗</a></figcaption></figure>
+      </section>
+      <section class="theme-section page-width" id="temi"><div class="section-heading"><div><span class="overline">Esplora per tema</span><h2>Da dove vuoi cominciare?</h2></div><p>La selezione aggiorna subito il confronto territoriale.</p></div>
+        <div class="theme-grid"><button type="button" data-theme="demografia" class="theme-card active" aria-pressed="true">
+      <span class="theme-number">01</span>
+      <span class="theme-icon"><svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 21a8 8 0 0 0-16 0"></path><circle cx="10" cy="8" r="5"></circle><path d="M22 20c0-3.37-2-6.5-4-8a5 5 0 0 0-.45-8.3"></path></svg></span>
+      <strong>Demografia</strong><span class="theme-question">Come sta cambiando la popolazione?</span>
+      <span class="theme-card-meta">3 sezioni · 10 indicatori</span><i aria-hidden="true">→</i>
+    </button><button type="button" data-theme="economia" class="theme-card" aria-pressed="false">
+      <span class="theme-number">02</span>
+      <span class="theme-icon"><svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z"></path><path d="M7 12h5"></path><path d="M15 9.4a4 4 0 1 0 0 5.2"></path></svg></span>
+      <strong>Economia</strong><span class="theme-question">Come è fatta l’economia del territorio?</span>
+      <span class="theme-card-meta">7 sezioni · 39 indicatori</span><i aria-hidden="true">→</i>
+    </button><button type="button" data-theme="lavoro" class="theme-card" aria-pressed="false">
+      <span class="theme-number">03</span>
+      <span class="theme-icon"><svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 12h.01"></path><path d="M16 6V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"></path><path d="M22 13a18.15 18.15 0 0 1-20 0"></path><rect width="20" height="14" x="2" y="6" rx="2"></rect></svg></span>
+      <strong>Lavoro</strong><span class="theme-question">Quante persone lavorano e quali divari emergono tra genere e generazioni?</span>
+      <span class="theme-card-meta">3 sezioni · 7 indicatori</span><i aria-hidden="true">→</i>
+    </button><button type="button" data-theme="istruzione" class="theme-card" aria-pressed="false">
+      <span class="theme-number">04</span>
+      <span class="theme-icon"><svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z"></path><path d="M22 10v6"></path><path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5"></path></svg></span>
+      <strong>Istruzione</strong><span class="theme-question">Qual è il livello di istruzione e come è organizzata la rete scolastica?</span>
+      <span class="theme-card-meta">6 sezioni · 16 indicatori</span><i aria-hidden="true">→</i>
+    </button><button type="button" data-theme="salute" class="theme-card" aria-pressed="false">
+      <span class="theme-number">05</span>
+      <span class="theme-icon"><svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 9.5a5.5 5.5 0 0 1 9.591-3.676.56.56 0 0 0 .818 0A5.49 5.49 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5l-5.492 5.313a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5"></path><path d="M3.22 13H9.5l.5-1 2 4.5 2-7 1.5 3.5h5.27"></path></svg></span>
+      <strong>Salute</strong><span class="theme-question">Come sta la popolazione e come usa i servizi sanitari?</span>
+      <span class="theme-card-meta">3 sezioni · 24 indicatori</span><i aria-hidden="true">→</i>
+    </button><button type="button" data-theme="mobilita" class="theme-card" aria-pressed="false">
+      <span class="theme-number">06</span>
+      <span class="theme-icon"><svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 8-2 2-1.5-3.7A2 2 0 0 0 15.646 5H8.4a2 2 0 0 0-1.903 1.257L5 10 3 8"></path><path d="M7 14h.01"></path><path d="M17 14h.01"></path><rect width="18" height="8" x="3" y="10" rx="2"></rect><path d="M5 18v2"></path><path d="M19 18v2"></path></svg></span>
+      <strong>Mobilità e infrastrutture</strong><span class="theme-question">Come si muove e quanto è connessa la Versilia?</span>
+      <span class="theme-card-meta">5 sezioni · 25 indicatori</span><i aria-hidden="true">→</i>
+    </button><button type="button" data-theme="sicurezza" class="theme-card" aria-pressed="false">
+      <span class="theme-number">07</span>
+      <span class="theme-icon"><svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-8 9-4.5-1.5-8-4-8-9V5l8-3 8 3z"></path><path d="m9 12 2 2 4-4"></path></svg></span>
+      <strong>Sicurezza e territorio</strong><span class="theme-question">Quanto è sicuro il territorio e quali risorse vengono dedicate alla sicurezza?</span>
+      <span class="theme-card-meta">2 sezioni · 3 indicatori</span><i aria-hidden="true">→</i>
+    </button><button type="button" data-theme="abitare" class="theme-card" aria-pressed="false">
+      <span class="theme-number">08</span>
+      <span class="theme-icon"><svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"></path><path d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg></span>
+      <strong>Abitare</strong><span class="theme-question">Come viene utilizzato il patrimonio abitativo e come vivono le famiglie?</span>
+      <span class="theme-card-meta">5 sezioni · 8 indicatori</span><i aria-hidden="true">→</i>
+    </button><button type="button" data-theme="ambiente" class="theme-card" aria-pressed="false">
+      <span class="theme-number">09</span>
+      <span class="theme-icon"><svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"></path><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"></path></svg></span>
+      <strong>Ambiente</strong><span class="theme-question">Quali pressioni insistono sul territorio?</span>
+      <span class="theme-card-meta">12 sezioni · 52 indicatori</span><i aria-hidden="true">→</i>
+    </button><button type="button" data-theme="bilanci" class="theme-card" aria-pressed="false">
+      <span class="theme-number">10</span>
+      <span class="theme-icon"><svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 22h18"></path><path d="M6 18v-7"></path><path d="M10 18v-7"></path><path d="M14 18v-7"></path><path d="M18 18v-7"></path><path d="M12 2 2 7h20Z"></path></svg></span>
+      <strong>Bilanci e amministrazione</strong><span class="theme-question">Come stanno i conti e la macchina amministrativa?</span>
+      <span class="theme-card-meta">5 sezioni · 31 indicatori</span><i aria-hidden="true">→</i>
+    </button><button type="button" data-theme="comunita" class="theme-card" aria-pressed="false">
+      <span class="theme-number">11</span>
+      <span class="theme-icon"><svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 12h4"></path><path d="M10 8h4"></path><path d="M14 21v-3a2 2 0 0 0-4 0v3"></path><path d="M6 10H4a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-2"></path><path d="M6 21V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v16"></path></svg></span>
+      <strong>Comunità e welfare</strong><span class="theme-question">Quali progetti e reti sostengono il territorio?</span>
+      <span class="theme-card-meta">5 sezioni · 10 indicatori</span><i aria-hidden="true">→</i>
+    </button></div></section>
+      <section id="home-explorer" class="explorer-panel page-width" aria-live="polite" data-theme="demografia"><div class="explorer-copy"><span class="overline">Confronto · Demografia</span><h2>Popolazione residente</h2><p>Residenti al 1° gennaio. La serie consente di leggere crescita o contrazione demografica.</p>
+      <div class="featured-metric-label">Indicatori chiave</div>
+      <div class="metric-switch featured-switch" role="tablist" aria-label="Indicatori chiave"><button type="button" role="tab" data-metric="population" class="active" aria-selected="true" tabindex="0">Residenti</button><button type="button" role="tab" data-metric="oldAgeIndex" class="" aria-selected="false" tabindex="-1">Indice di vecchiaia</button><button type="button" role="tab" data-metric="populationChange" class="" aria-selected="false" tabindex="-1">Variazione dal 2019</button></div>
+      <div class="explorer-stat"><span>Totale Versilia</span><strong>158.520</strong><small>Somma dei valori dei sette comuni.</small></div>
+      <a class="source-link" href="https://demo.istat.it/" target="_blank" rel="noreferrer">Apri la fonte originale <span aria-hidden="true">↗</span></a>
+      <a href="confronta/demografia/?indicatore=population" class="button-link">Esplora tutte le sezioni <span>→</span></a></div>
+      <div class="explorer-chart"><div class="comparison-bars" data-visual-contract="canonical" data-visual-unit="number" data-visual-grammar-signature="population|r|||22645.714285714286|number|60680|31763|22678|21782|12284|6550|2783" data-viz="lollipop"><div class="comparison-legend"><span><i class="comparison-legend-dot" aria-hidden="true"></i>Comune</span><span><i class="comparison-legend-reference" aria-hidden="true"></i>Media semplice dei 7 comuni</span></div><a href="comuni/viareggio/?tema=demografia&amp;indicatore=population" class="bar-row comparison-row" aria-label="Viareggio: 60.680; Media semplice dei 7 comuni: 22.646">
+        <span class="bar-town">Viareggio</span>
+        <span class="bar-track">
+        <span class="comparison-axis-line" aria-hidden="true"></span>
+        
+        <span class="comparison-reference" style="left:28.307142857142857%" aria-hidden="true"></span>
+        <span class="comparison-stem" style="left:0%;width:75.85%" aria-hidden="true"></span>
+        <span class="comparison-dot" style="left:75.85%" aria-hidden="true"></span><span class="bar-hover-label">Viareggio · 60.680</span></span>
+        <strong>60.680</strong>
+      </a><a href="comuni/camaiore/?tema=demografia&amp;indicatore=population" class="bar-row comparison-row" aria-label="Camaiore: 31.763; Media semplice dei 7 comuni: 22.646">
+        <span class="bar-town">Camaiore</span>
+        <span class="bar-track">
+        <span class="comparison-axis-line" aria-hidden="true"></span>
+        
+        <span class="comparison-reference" style="left:28.307142857142857%" aria-hidden="true"></span>
+        <span class="comparison-stem" style="left:0%;width:39.70375%" aria-hidden="true"></span>
+        <span class="comparison-dot" style="left:39.70375%" aria-hidden="true"></span><span class="bar-hover-label">Camaiore · 31.763</span></span>
+        <strong>31.763</strong>
+      </a><a href="comuni/pietrasanta/?tema=demografia&amp;indicatore=population" class="bar-row comparison-row" aria-label="Pietrasanta: 22.678; Media semplice dei 7 comuni: 22.646">
+        <span class="bar-town">Pietrasanta</span>
+        <span class="bar-track">
+        <span class="comparison-axis-line" aria-hidden="true"></span>
+        
+        <span class="comparison-reference" style="left:28.307142857142857%" aria-hidden="true"></span>
+        <span class="comparison-stem" style="left:0%;width:28.347499999999997%" aria-hidden="true"></span>
+        <span class="comparison-dot" style="left:28.347499999999997%" aria-hidden="true"></span><span class="bar-hover-label">Pietrasanta · 22.678</span></span>
+        <strong>22.678</strong>
+      </a><a href="comuni/massarosa/?tema=demografia&amp;indicatore=population" class="bar-row comparison-row" aria-label="Massarosa: 21.782; Media semplice dei 7 comuni: 22.646">
+        <span class="bar-town">Massarosa</span>
+        <span class="bar-track">
+        <span class="comparison-axis-line" aria-hidden="true"></span>
+        
+        <span class="comparison-reference" style="left:28.307142857142857%" aria-hidden="true"></span>
+        <span class="comparison-stem" style="left:0%;width:27.2275%" aria-hidden="true"></span>
+        <span class="comparison-dot" style="left:27.2275%" aria-hidden="true"></span><span class="bar-hover-label">Massarosa · 21.782</span></span>
+        <strong>21.782</strong>
+      </a><a href="comuni/seravezza/?tema=demografia&amp;indicatore=population" class="bar-row comparison-row" aria-label="Seravezza: 12.284; Media semplice dei 7 comuni: 22.646">
+        <span class="bar-town">Seravezza</span>
+        <span class="bar-track">
+        <span class="comparison-axis-line" aria-hidden="true"></span>
+        
+        <span class="comparison-reference" style="left:28.307142857142857%" aria-hidden="true"></span>
+        <span class="comparison-stem" style="left:0%;width:15.354999999999999%" aria-hidden="true"></span>
+        <span class="comparison-dot" style="left:15.354999999999999%" aria-hidden="true"></span><span class="bar-hover-label">Seravezza · 12.284</span></span>
+        <strong>12.284</strong>
+      </a><a href="comuni/forte-dei-marmi/?tema=demografia&amp;indicatore=population" class="bar-row comparison-row" aria-label="Forte dei Marmi: 6.550; Media semplice dei 7 comuni: 22.646">
+        <span class="bar-town">Forte dei Marmi</span>
+        <span class="bar-track">
+        <span class="comparison-axis-line" aria-hidden="true"></span>
+        
+        <span class="comparison-reference" style="left:28.307142857142857%" aria-hidden="true"></span>
+        <span class="comparison-stem" style="left:0%;width:8.1875%" aria-hidden="true"></span>
+        <span class="comparison-dot" style="left:8.1875%" aria-hidden="true"></span><span class="bar-hover-label">Forte dei Marmi · 6.550</span></span>
+        <strong>6.550</strong>
+      </a><a href="comuni/stazzema/?tema=demografia&amp;indicatore=population" class="bar-row comparison-row" aria-label="Stazzema: 2.783; Media semplice dei 7 comuni: 22.646">
+        <span class="bar-town">Stazzema</span>
+        <span class="bar-track">
+        <span class="comparison-axis-line" aria-hidden="true"></span>
+        
+        <span class="comparison-reference" style="left:28.307142857142857%" aria-hidden="true"></span>
+        <span class="comparison-stem" style="left:0%;width:3.47875%" aria-hidden="true"></span>
+        <span class="comparison-dot" style="left:3.47875%" aria-hidden="true"></span><span class="bar-hover-label">Stazzema · 2.783</span></span>
+        <strong>2.783</strong>
+      </a><div class="comparison-axis"><span>0</span><span>scala con origine a zero</span><span>80.000</span></div><p class="comparison-note">I comuni sono ordinati per valore per facilitare il confronto. L’ordine non esprime merito o qualità.</p></div></div></section>
+      <section class="project-callout page-width read-home-callout" aria-labelledby="leggi-home-title">
+        <div><span class="overline">Leggere e chiedere ai dati</span><h2 id="leggi-home-title">Dossier e Chiedi alla Versilia</h2></div>
+        <div><p>I dossier raccontano casa, lavoro, turismo, anziani e scuola con grafici e confronti, anche per il tuo Comune. Con Chiedi scegli un indicatore e un confronto e ottieni la risposta con periodo, fonte e limiti.</p><p class="read-home-links"><a class="text-link" href="dossier/">Leggi i dossier <b>→</b></a> <a class="text-link" href="chiedi/">Chiedi ai dati <b>→</b></a></p></div></section>
+      <section class="towns-section page-width" id="comuni"><div class="section-heading"><div><span class="overline">Esplora per territorio</span><h2>Un profilo per ogni comune</h2></div><p>Indicatori, andamento storico e confronto nel contesto.</p></div>
+        <div class="town-card-grid"><a href="comuni/camaiore/" class="town-card">
+      <div class="town-card-head"><img alt="Stemma di Camaiore" src="crests/camaiore.svg"><span>Codice Istat 046005</span></div>
+      <h3>Camaiore</h3><dl>
+        <div><dt>Residenti</dt><dd>31.763</dd></div>
+        <div><dt>Reddito medio</dt><dd>23.745&nbsp;€</dd></div>
+        <div><dt>Occupazione</dt><dd>72,0%</dd></div>
+      </dl><span class="text-link">Apri la scheda <b>→</b></span>
+    </a><a href="comuni/forte-dei-marmi/" class="town-card">
+      <div class="town-card-head"><img alt="Stemma di Forte dei Marmi" src="crests/forte-dei-marmi.svg"><span>Codice Istat 046013</span></div>
+      <h3>Forte dei Marmi</h3><dl>
+        <div><dt>Residenti</dt><dd>6.550</dd></div>
+        <div><dt>Reddito medio</dt><dd>40.249&nbsp;€</dd></div>
+        <div><dt>Occupazione</dt><dd>64,6%</dd></div>
+      </dl><span class="text-link">Apri la scheda <b>→</b></span>
+    </a><a href="comuni/massarosa/" class="town-card">
+      <div class="town-card-head"><img alt="Stemma di Massarosa" src="crests/massarosa.png"><span>Codice Istat 046018</span></div>
+      <h3>Massarosa</h3><dl>
+        <div><dt>Residenti</dt><dd>21.782</dd></div>
+        <div><dt>Reddito medio</dt><dd>22.351&nbsp;€</dd></div>
+        <div><dt>Occupazione</dt><dd>73,4%</dd></div>
+      </dl><span class="text-link">Apri la scheda <b>→</b></span>
+    </a><a href="comuni/pietrasanta/" class="town-card">
+      <div class="town-card-head"><img alt="Stemma di Pietrasanta" src="crests/pietrasanta.svg"><span>Codice Istat 046024</span></div>
+      <h3>Pietrasanta</h3><dl>
+        <div><dt>Residenti</dt><dd>22.678</dd></div>
+        <div><dt>Reddito medio</dt><dd>25.239&nbsp;€</dd></div>
+        <div><dt>Occupazione</dt><dd>69,9%</dd></div>
+      </dl><span class="text-link">Apri la scheda <b>→</b></span>
+    </a><a href="comuni/seravezza/" class="town-card">
+      <div class="town-card-head"><img alt="Stemma di Seravezza" src="crests/seravezza.png"><span>Codice Istat 046028</span></div>
+      <h3>Seravezza</h3><dl>
+        <div><dt>Residenti</dt><dd>12.284</dd></div>
+        <div><dt>Reddito medio</dt><dd>21.933&nbsp;€</dd></div>
+        <div><dt>Occupazione</dt><dd>69,3%</dd></div>
+      </dl><span class="text-link">Apri la scheda <b>→</b></span>
+    </a><a href="comuni/stazzema/" class="town-card">
+      <div class="town-card-head"><img alt="Stemma di Stazzema" src="crests/stazzema.webp"><span>Codice Istat 046030</span></div>
+      <h3>Stazzema</h3><dl>
+        <div><dt>Residenti</dt><dd>2.783</dd></div>
+        <div><dt>Reddito medio</dt><dd>19.689&nbsp;€</dd></div>
+        <div><dt>Occupazione</dt><dd>65,9%</dd></div>
+      </dl><span class="text-link">Apri la scheda <b>→</b></span>
+    </a><a href="comuni/viareggio/" class="town-card">
+      <div class="town-card-head"><img alt="Stemma di Viareggio" src="crests/viareggio.svg"><span>Codice Istat 046033</span></div>
+      <h3>Viareggio</h3><dl>
+        <div><dt>Residenti</dt><dd>60.680</dd></div>
+        <div><dt>Reddito medio</dt><dd>25.539&nbsp;€</dd></div>
+        <div><dt>Occupazione</dt><dd>71,9%</dd></div>
+      </dl><span class="text-link">Apri la scheda <b>→</b></span>
+    </a></div></section>
+      <section class="project-callout page-width opportunity-home-callout" aria-labelledby="opportunita-home-title">
+        <div><span class="overline">Opportunità per il territorio</span><h2 id="opportunita-home-title">Radar Opportunità</h2></div>
+        <div><p>Bandi, avvisi, incentivi e programmi utili ai Comuni della Versilia, raccolti da fonti pubbliche e accompagnati dal rimando alla fonte ufficiale.</p><a class="text-link" href="opportunita/">Esplora le opportunità <b>→</b></a></div></section>
+      <section class="method-section page-width" id="metodo"><div class="method-title"><span class="overline">Come leggere i dati</span><h2>Confronti trasparenti,<br>senza classifiche facili.</h2></div>
+        <div class="method-list">
+          <article><span>01</span><div><h3>Stesso perimetro</h3><p>Toscana e Italia compaiono solo quando anno, unità e definizione sono compatibili con il dato comunale.</p></div></article>
+          <article><span>02</span><div><h3>Differenze, non podi</h3><p>I comuni possono essere ordinati per valore per facilitare la lettura, ma il sito evidenzia distanze e contesto, non posizioni ordinali.</p></div></article>
+          <article><span>03</span><div><h3>Il Comune non è sempre il sistema</h3><p>Ogni indicatore dichiara se il confine comunale è amministrativo, territoriale o soltanto una localizzazione dentro un fenomeno sovracomunale.</p></div></article>
+          <article><span>04</span><div><h3>Versione dichiarata</h3><p>Ogni indicatore mostra anno e fonte; la raccolta dati è pubblicata come versione v1.40.0, aggiornata il 14 settembre 2026.</p></div></article>
+        </div><a class="system-reading-link" href="progetto/#sistema-territoriale"><span>Comune e sistema territoriale</span><strong>Come cambia la lettura di lavoro, economia e mobilità →</strong></a></section>
+      <section class="project-callout page-width" aria-labelledby="progetto-title"><div><span class="overline">Il progetto</span><h2 id="progetto-title">I dati pubblici, senza la caccia al tesoro.</h2></div>
+        <div><p>Osservatorio Versilia nasce per riunire informazioni disperse tra portali, fogli di calcolo e pubblicazioni, rendendole leggibili e confrontabili senza perdere anno, definizione e fonte.</p><a class="text-link" href="progetto/">Scopri chi lo cura e come lavoriamo <b>→</b></a></div></section>
+      
+    <section class="social-callout page-width" data-social-placement="home" aria-labelledby="social-home-title">
+      <div><span class="overline">Segui l’Osservatorio</span><h2 id="social-home-title">Dati e storie della Versilia, anche sui social.</h2></div>
+      <div><p>Grafici, confronti e approfondimenti dell’Osservatorio arrivano anche sui nostri canali social. Seguici per ritrovare i dati nel momento in cui diventano notizia o aiutano a leggere il territorio.</p><div class="social-links">
+    <a class="social-profile-link" href="https://www.facebook.com/osservatorioversilia" target="_blank" rel="me noreferrer" aria-label="Segui Osservatorio Versilia su Facebook">
+      <span class="social-profile-mark" aria-hidden="true">f</span>
+      <span class="social-profile-copy"><strong>Facebook</strong><small>@osservatorioversilia</small></span>
+      <b aria-hidden="true">↗</b>
+    </a>
+    <a class="social-profile-link" href="https://www.instagram.com/osservatorioversilia/" target="_blank" rel="me noreferrer" aria-label="Segui Osservatorio Versilia su Instagram">
+      <span class="social-profile-mark" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="5" ry="5"></rect><circle cx="12" cy="12" r="4"></circle><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"></circle></svg></span>
+      <span class="social-profile-copy"><strong>Instagram</strong><small>@osservatorioversilia</small></span>
+      <b aria-hidden="true">↗</b>
+    </a>
+    <a class="social-profile-link" href="https://www.linkedin.com/company/osservatorioversilia" target="_blank" rel="me noreferrer" aria-label="Segui Osservatorio Versilia su LinkedIn">
+      <span class="social-profile-mark" aria-hidden="true">in</span>
+      <span class="social-profile-copy"><strong>LinkedIn</strong><small>Osservatorio Versilia</small></span>
+      <b aria-hidden="true">↗</b>
+    </a>
+    <a class="social-profile-link" href="https://x.com/OssVersilia" target="_blank" rel="me noreferrer" aria-label="Segui Osservatorio Versilia su X">
+      <span class="social-profile-mark" aria-hidden="true">X</span>
+      <span class="social-profile-copy"><strong>X</strong><small>@OssVersilia</small></span>
+      <b aria-hidden="true">↗</b>
+    </a></div></div>
+    </section><section class="source-portals page-width" aria-label="Principali fonti istituzionali"><span class="overline">Principali fonti istituzionali</span><div>
+        <a href="https://www.istat.it/" target="_blank" rel="noreferrer">Istat <span>↗</span></a>
+        <a href="https://www1.finanze.gov.it/finanze/analisi_stat/public/index.php" target="_blank" rel="noreferrer">MEF <span>↗</span></a>
+        <a href="https://www.isprambiente.gov.it/" target="_blank" rel="noreferrer">ISPRA <span>↗</span></a>
+        <a href="https://www.regione.toscana.it/statistiche" target="_blank" rel="noreferrer">Regione Toscana <span>↗</span></a>
+        <a href="https://openbdap.rgs.mef.gov.it/" target="_blank" rel="noreferrer">BDAP <span>↗</span></a>
+      </div></section>
+    </main></div>
+  <div id="site-footer-mount">
+      <footer class="site-footer">
+        <div class="footer-about"><strong>Osservatorio Versilia</strong>
+          <p>Un punto di accesso indipendente ai dati pubblici dei sette comuni della Versilia.</p>
+          <p class="footer-disclaimer">Non è un sito istituzionale e non rappresenta gli enti citati.</p>
+        </div>
+        <nav class="footer-links" aria-label="Informazioni sul progetto">
+          <a href="progetto/">Il progetto</a>
+          <a href="stato-dati/" data-data-status-nav="footer">Stato dei dati</a>
+          <a href="opportunita/">Opportunità</a>
+          <a href="progetto/#metodo">Metodo</a>
+          <a href="progetto/#licenza">Licenza</a>
+          <a href="progetto/#versioni">Versioni dei dati</a>
+          <a href="segnala/">Segnala un dato</a>
+          <a href="mailto:info@osservatorioversilia.it">Contatti</a>
+        </nav>
+        
+      <div class="footer-social" data-social-placement="footer" aria-label="Segui Osservatorio Versilia">
+        <strong>Segui Osservatorio Versilia</strong><div class="social-links">
+    <a class="social-profile-link" href="https://www.facebook.com/osservatorioversilia" target="_blank" rel="me noreferrer" aria-label="Segui Osservatorio Versilia su Facebook">
+      <span class="social-profile-mark" aria-hidden="true">f</span>
+      <span class="social-profile-copy"><strong>Facebook</strong><small>@osservatorioversilia</small></span>
+      <b aria-hidden="true">↗</b>
+    </a>
+    <a class="social-profile-link" href="https://www.instagram.com/osservatorioversilia/" target="_blank" rel="me noreferrer" aria-label="Segui Osservatorio Versilia su Instagram">
+      <span class="social-profile-mark" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="5" ry="5"></rect><circle cx="12" cy="12" r="4"></circle><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"></circle></svg></span>
+      <span class="social-profile-copy"><strong>Instagram</strong><small>@osservatorioversilia</small></span>
+      <b aria-hidden="true">↗</b>
+    </a>
+    <a class="social-profile-link" href="https://www.linkedin.com/company/osservatorioversilia" target="_blank" rel="me noreferrer" aria-label="Segui Osservatorio Versilia su LinkedIn">
+      <span class="social-profile-mark" aria-hidden="true">in</span>
+      <span class="social-profile-copy"><strong>LinkedIn</strong><small>Osservatorio Versilia</small></span>
+      <b aria-hidden="true">↗</b>
+    </a>
+    <a class="social-profile-link" href="https://x.com/OssVersilia" target="_blank" rel="me noreferrer" aria-label="Segui Osservatorio Versilia su X">
+      <span class="social-profile-mark" aria-hidden="true">X</span>
+      <span class="social-profile-copy"><strong>X</strong><small>@OssVersilia</small></span>
+      <b aria-hidden="true">↗</b>
+    </a></div>
+      </div><div class="footer-note">
+          <span>7 comuni · 11 temi</span><span>v. dati v1.40.0</span><span>catalogo dati aggiornato al 14 settembre 2026</span>
+        </div>
+      </footer></div>
+  <noscript><div class="app-error">Il sito richiede JavaScript per mostrare confronti, ricerca e schede comunali.</div></noscript>
+  <script src="assets/app-bundle.js?v=20261025-ui-shell-consistency" defer=""></script>
+  <script src="assets/fidelity.js" defer=""></script>
+  <script src="assets/economy-atlas.js" defer=""></script>
+  <script src="assets/ux-accordion.js?v=20261025-ui-shell-consistency" defer=""></script>
+  <script src="assets/ux-history-core.js?v=20261025-ui-shell-consistency" defer=""></script>
+  <script src="assets/ux-history.js?v=20261025-ui-shell-consistency" defer=""></script>
+  <script src="assets/export-v161.js?v=20261025-ui-shell-consistency" defer=""></script>
+  <script src="assets/visual-grammar.js?v=20261025-ui-shell-consistency" defer=""></script>
+  <script src="assets/social-presence.js?v=20261025-ui-shell-consistency" defer=""></script>
+
+
+  <script src="assets/pwa.js?v=20260824-pwa9&rev=catalog-v129" defer></script>
+</body></html>

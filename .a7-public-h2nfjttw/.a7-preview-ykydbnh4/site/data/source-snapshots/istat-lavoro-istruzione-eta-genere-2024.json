@@ -1,0 +1,2269 @@
+{
+  "version": "istat-lavoro-istruzione-eta-genere-2024-v1",
+  "referenceYear": 2024,
+  "source": {
+    "publisher": "Istat — Censimento permanente della popolazione",
+    "labourDataflow": "DF_DCSS_ISTR_LAV_PEN_2_TV_3",
+    "educationDataflow": "DF_DCSS_ISTR_LAV_PEN_2_TV_1",
+    "api": "https://esploradati.istat.it/SDMXWS/rest"
+  },
+  "dimensions": {
+    "gender": {
+      "total": "T",
+      "men": "M",
+      "women": "F"
+    },
+    "labourAges": [
+      "25-64",
+      "15-24",
+      "25-49",
+      "50-64",
+      "65plus",
+      "15plus"
+    ],
+    "educationAges": [
+      "25-64",
+      "9-24",
+      "25-49",
+      "50-64",
+      "65plus",
+      "9plus"
+    ],
+    "note": "25-64 è ricostruita esattamente sommando le classi ufficiali 25-49 e 50-64; le altre classi sono pubblicate direttamente dal dataflow. Nella partizione istruzione NED include IL/LBNA e ML_RDD include ML/RDD; le celle omesse sono trattate come zero solo quando la partizione esclusiva si chiude esattamente."
+  },
+  "towns": {
+    "Camaiore": {
+      "code": "046005",
+      "labour": {
+        "15plus": {
+          "women": {
+            "population": 14916.0,
+            "employed": 6055.0,
+            "unemployed": 544.5165768834538,
+            "active": 6599.516576883454,
+            "employmentRate": 40.593993027621345,
+            "unemploymentRate": 8.25085550645886,
+            "activityRate": 44.24454664040932
+          },
+          "men": {
+            "population": 13787.0,
+            "employed": 7840.0,
+            "unemployed": 404.7683918769446,
+            "active": 8244.768391876945,
+            "employmentRate": 56.8651628345543,
+            "unemploymentRate": 4.909396754865032,
+            "activityRate": 59.80103279812102
+          },
+          "total": {
+            "population": 28703.0,
+            "employed": 13895.0,
+            "unemployed": 949.2849687603984,
+            "active": 14844.284968760398,
+            "employmentRate": 48.40957391213462,
+            "unemploymentRate": 6.394952473346854,
+            "activityRate": 51.716841336307695
+          }
+        },
+        "65plus": {
+          "women": {
+            "population": 4800.999999999999,
+            "employed": 279.0,
+            "unemployed": 9.574525729880243,
+            "active": 288.57452572988024,
+            "employmentRate": 5.8112893147261,
+            "unemploymentRate": 3.3178693461121593,
+            "activityRate": 6.010717053319731
+          },
+          "men": {
+            "population": 3815.0,
+            "employed": 631.0,
+            "unemployed": 3.9389906597497504,
+            "active": 634.9389906597497,
+            "employmentRate": 16.53997378768021,
+            "unemploymentRate": 0.6203730937450921,
+            "activityRate": 16.64322387050458
+          },
+          "total": {
+            "population": 8615.999999999998,
+            "employed": 910.0,
+            "unemployed": 13.513516389629993,
+            "active": 923.51351638963,
+            "employmentRate": 10.561745589600745,
+            "unemploymentRate": 1.4632721827894335,
+            "activityRate": 10.718587701829506
+          }
+        },
+        "15-24": {
+          "women": {
+            "population": 1361.0,
+            "employed": 221.0,
+            "unemployed": 83.16316171930686,
+            "active": 304.16316171930686,
+            "employmentRate": 16.23806024981631,
+            "unemploymentRate": 27.341628502682692,
+            "activityRate": 22.348505636980665
+          },
+          "men": {
+            "population": 1534.0,
+            "employed": 384.0,
+            "unemployed": 84.50446577396579,
+            "active": 468.5044657739658,
+            "employmentRate": 25.03259452411995,
+            "unemploymentRate": 18.037067295477122,
+            "activityRate": 30.541360219945616
+          },
+          "total": {
+            "population": 2895.0,
+            "employed": 605.0,
+            "unemployed": 167.66762749327265,
+            "active": 772.6676274932727,
+            "employmentRate": 20.898100172711572,
+            "unemploymentRate": 21.69983852400138,
+            "activityRate": 26.689728065398022
+          }
+        },
+        "25-49": {
+          "women": {
+            "population": 4408.0,
+            "employed": 3072.0,
+            "unemployed": 257.528162936382,
+            "active": 3329.528162936382,
+            "employmentRate": 69.69147005444646,
+            "unemploymentRate": 7.7346744143248936,
+            "activityRate": 75.53376050218652
+          },
+          "men": {
+            "population": 4368.0,
+            "employed": 3697.0,
+            "unemployed": 186.6232851267875,
+            "active": 3883.6232851267873,
+            "employmentRate": 84.6382783882784,
+            "unemploymentRate": 4.805391033715951,
+            "activityRate": 88.91078949466088
+          },
+          "total": {
+            "population": 8776.0,
+            "employed": 6769.0,
+            "unemployed": 444.1514480631695,
+            "active": 7213.1514480631695,
+            "employmentRate": 77.13081130355515,
+            "unemploymentRate": 6.1575228422859505,
+            "activityRate": 82.19178951758397
+          }
+        },
+        "50-64": {
+          "women": {
+            "population": 4346.0,
+            "employed": 2483.0,
+            "unemployed": 194.25072649788473,
+            "active": 2677.250726497885,
+            "employmentRate": 57.13299585826047,
+            "unemploymentRate": 7.255604586275875,
+            "activityRate": 61.602639818174985
+          },
+          "men": {
+            "population": 4070.0,
+            "employed": 3128.0,
+            "unemployed": 129.70165031644154,
+            "active": 3257.7016503164414,
+            "employmentRate": 76.85503685503686,
+            "unemploymentRate": 3.981385167786706,
+            "activityRate": 80.04180959008455
+          },
+          "total": {
+            "population": 8416.0,
+            "employed": 5611.0,
+            "unemployed": 323.95237681432627,
+            "active": 5934.952376814326,
+            "employmentRate": 66.67062737642586,
+            "unemploymentRate": 5.458382076996758,
+            "activityRate": 70.51987139750862
+          }
+        },
+        "25-64": {
+          "total": {
+            "population": 17192.0,
+            "employed": 12380.0,
+            "unemployed": 768.1038248774958,
+            "active": 13148.103824877497,
+            "employmentRate": 72.01023731968358,
+            "unemploymentRate": 5.841936108111409,
+            "activityRate": 76.47803527732373
+          },
+          "men": {
+            "population": 8438.0,
+            "employed": 6825.0,
+            "unemployed": 316.32493544322904,
+            "active": 7141.324935443228,
+            "employmentRate": 80.88409575728845,
+            "unemploymentRate": 4.429499263830882,
+            "activityRate": 84.63290987726036
+          },
+          "women": {
+            "population": 8754.0,
+            "employed": 5555.0,
+            "unemployed": 451.7788894342667,
+            "active": 6006.778889434267,
+            "employmentRate": 63.45670550605438,
+            "unemploymentRate": 7.521150649126297,
+            "activityRate": 68.61753357818445
+          }
+        }
+      },
+      "education": {
+        "65plus": {
+          "women": {
+            "population": 4800.999999999999,
+            "upperSecondaryPlus": 1423.0,
+            "tertiary": 373.0,
+            "diplomaPlus": 29.63965840449907,
+            "tertiaryRate": 7.769214746927725
+          },
+          "men": {
+            "population": 3815.0,
+            "upperSecondaryPlus": 1411.0,
+            "tertiary": 420.0,
+            "diplomaPlus": 36.98558322411533,
+            "tertiaryRate": 11.009174311926607
+          },
+          "total": {
+            "population": 8615.999999999998,
+            "upperSecondaryPlus": 2834.0,
+            "tertiary": 793.0,
+            "diplomaPlus": 32.89229340761375,
+            "tertiaryRate": 9.203806870937791
+          }
+        },
+        "9plus": {
+          "women": {
+            "population": 15636.0,
+            "upperSecondaryPlus": 8045.0,
+            "tertiary": 2532.0,
+            "diplomaPlus": 51.451777948324384,
+            "tertiaryRate": 16.193399846508058
+          },
+          "men": {
+            "population": 14552.0,
+            "upperSecondaryPlus": 7139.0,
+            "tertiary": 1983.0,
+            "diplomaPlus": 49.0585486531061,
+            "tertiaryRate": 13.626992853216052
+          },
+          "total": {
+            "population": 30188.0,
+            "upperSecondaryPlus": 15184.0,
+            "tertiary": 4515.0,
+            "diplomaPlus": 50.298131707963435,
+            "tertiaryRate": 14.956274016165363
+          }
+        },
+        "25-49": {
+          "women": {
+            "population": 4408.0,
+            "upperSecondaryPlus": 3447.0,
+            "tertiary": 1421.0,
+            "diplomaPlus": 78.19872958257713,
+            "tertiaryRate": 32.23684210526316
+          },
+          "men": {
+            "population": 4368.0,
+            "upperSecondaryPlus": 3017.0,
+            "tertiary": 943.0,
+            "diplomaPlus": 69.07051282051282,
+            "tertiaryRate": 21.58882783882784
+          },
+          "total": {
+            "population": 8776.0,
+            "upperSecondaryPlus": 6464.0,
+            "tertiary": 2364.0,
+            "diplomaPlus": 73.65542388331814,
+            "tertiaryRate": 26.93710118505014
+          }
+        },
+        "50-64": {
+          "women": {
+            "population": 4346.0,
+            "upperSecondaryPlus": 2451.0,
+            "tertiary": 661.0,
+            "diplomaPlus": 56.39668660837551,
+            "tertiaryRate": 15.209387942936035
+          },
+          "men": {
+            "population": 4070.0,
+            "upperSecondaryPlus": 2029.0,
+            "tertiary": 549.0,
+            "diplomaPlus": 49.85257985257985,
+            "tertiaryRate": 13.48894348894349
+          },
+          "total": {
+            "population": 8416.0,
+            "upperSecondaryPlus": 4480.0,
+            "tertiary": 1210.0,
+            "diplomaPlus": 53.2319391634981,
+            "tertiaryRate": 14.377376425855513
+          }
+        },
+        "9-24": {
+          "women": {
+            "population": 2081.0,
+            "upperSecondaryPlus": 724.0,
+            "tertiary": 77.0,
+            "diplomaPlus": 34.7909658817876,
+            "tertiaryRate": 3.700144161460836
+          },
+          "men": {
+            "population": 2299.0,
+            "upperSecondaryPlus": 682.0,
+            "tertiary": 71.0,
+            "diplomaPlus": 29.665071770334926,
+            "tertiaryRate": 3.088299260548064
+          },
+          "total": {
+            "population": 4380.0,
+            "upperSecondaryPlus": 1406.0,
+            "tertiary": 148.0,
+            "diplomaPlus": 32.10045662100456,
+            "tertiaryRate": 3.3789954337899544
+          }
+        },
+        "25-64": {
+          "total": {
+            "population": 17192.0,
+            "upperSecondaryPlus": 10944.0,
+            "tertiary": 3574.0,
+            "diplomaPlus": 63.65751512331317,
+            "tertiaryRate": 20.78873894834807
+          },
+          "men": {
+            "population": 8438.0,
+            "upperSecondaryPlus": 5046.0,
+            "tertiary": 1492.0,
+            "diplomaPlus": 59.80090068736668,
+            "tertiaryRate": 17.68191514576914
+          },
+          "women": {
+            "population": 8754.0,
+            "upperSecondaryPlus": 5898.0,
+            "tertiary": 2082.0,
+            "diplomaPlus": 67.37491432488005,
+            "tertiaryRate": 23.783413296778615
+          }
+        }
+      }
+    },
+    "Forte dei Marmi": {
+      "code": "046013",
+      "labour": {
+        "15plus": {
+          "women": {
+            "population": 3312.0,
+            "employed": 1108.0,
+            "unemployed": 121.11768236681587,
+            "active": 1229.1176823668159,
+            "employmentRate": 33.45410628019324,
+            "unemploymentRate": 9.854034654646657,
+            "activityRate": 37.111041134263765
+          },
+          "men": {
+            "population": 2796.0,
+            "employed": 1406.0,
+            "unemployed": 110.92812645549961,
+            "active": 1516.9281264554995,
+            "employmentRate": 50.28612303290415,
+            "unemploymentRate": 7.312681762628902,
+            "activityRate": 54.25350952988196
+          },
+          "total": {
+            "population": 6108.0,
+            "employed": 2514.0,
+            "unemployed": 232.04580882231548,
+            "active": 2746.0458088223154,
+            "employmentRate": 41.15913555992142,
+            "unemploymentRate": 8.450179821356729,
+            "activityRate": 44.958182855637126
+          }
+        },
+        "65plus": {
+          "women": {
+            "population": 1313.0000000000002,
+            "employed": 110.0,
+            "unemployed": 2.974031303203259,
+            "active": 112.97403130320326,
+            "employmentRate": 8.377760853008375,
+            "unemploymentRate": 2.632491085691596,
+            "activityRate": 8.604267425986539
+          },
+          "men": {
+            "population": 972.0,
+            "employed": 211.0,
+            "unemployed": 1.4242856099082837,
+            "active": 212.42428560990828,
+            "employmentRate": 21.707818930041153,
+            "unemploymentRate": 0.6704909496665619,
+            "activityRate": 21.854350371389742
+          },
+          "total": {
+            "population": 2285.0,
+            "employed": 321.0,
+            "unemployed": 4.398316913111543,
+            "active": 325.39831691311156,
+            "employmentRate": 14.048140043763677,
+            "unemploymentRate": 1.3516716849786257,
+            "activityRate": 14.240626560748865
+          }
+        },
+        "15-24": {
+          "women": {
+            "population": 261.0,
+            "employed": 23.0,
+            "unemployed": 19.206902646228833,
+            "active": 42.20690264622883,
+            "employmentRate": 8.812260536398467,
+            "unemploymentRate": 45.50654381634649,
+            "activityRate": 16.171227067520626
+          },
+          "men": {
+            "population": 284.0,
+            "employed": 51.0,
+            "unemployed": 25.414524876981524,
+            "active": 76.41452487698152,
+            "employmentRate": 17.95774647887324,
+            "unemploymentRate": 33.25876188839222,
+            "activityRate": 26.906522844007576
+          },
+          "total": {
+            "population": 545.0,
+            "employed": 74.0,
+            "unemployed": 44.62142752321036,
+            "active": 118.62142752321036,
+            "employmentRate": 13.577981651376147,
+            "unemploymentRate": 37.616667118998706,
+            "activityRate": 21.765399545543186
+          }
+        },
+        "25-49": {
+          "women": {
+            "population": 769.0,
+            "employed": 475.0,
+            "unemployed": 52.340046612772944,
+            "active": 527.340046612773,
+            "employmentRate": 61.76853055916776,
+            "unemploymentRate": 9.925293356528707,
+            "activityRate": 68.57477849320846
+          },
+          "men": {
+            "population": 733.0,
+            "employed": 562.0,
+            "unemployed": 48.153632830893,
+            "active": 610.153632830893,
+            "employmentRate": 76.67121418826738,
+            "unemploymentRate": 7.892050500048242,
+            "activityRate": 83.24060475182715
+          },
+          "total": {
+            "population": 1502.0,
+            "employed": 1037.0,
+            "unemployed": 100.49367944366595,
+            "active": 1137.493679443666,
+            "employmentRate": 69.04127829560586,
+            "unemploymentRate": 8.834658271931337,
+            "activityRate": 75.73193604818016
+          }
+        },
+        "50-64": {
+          "women": {
+            "population": 969.0,
+            "employed": 500.0,
+            "unemployed": 46.596701804610824,
+            "active": 546.5967018046108,
+            "employmentRate": 51.59958720330238,
+            "unemploymentRate": 8.524877967753913,
+            "activityRate": 56.40832835960896
+          },
+          "men": {
+            "population": 807.0,
+            "employed": 582.0,
+            "unemployed": 35.9356831377168,
+            "active": 617.9356831377168,
+            "employmentRate": 72.11895910780669,
+            "unemploymentRate": 5.815440687167432,
+            "activityRate": 76.57195577914706
+          },
+          "total": {
+            "population": 1776.0,
+            "employed": 1082.0,
+            "unemployed": 82.53238494232762,
+            "active": 1164.5323849423276,
+            "employmentRate": 60.92342342342343,
+            "unemploymentRate": 7.087169580639439,
+            "activityRate": 65.5705171701761
+          }
+        },
+        "25-64": {
+          "total": {
+            "population": 3278.0,
+            "employed": 2119.0,
+            "unemployed": 183.02606438599358,
+            "active": 2302.026064385994,
+            "employmentRate": 64.64307504575962,
+            "unemploymentRate": 7.950651264012125,
+            "activityRate": 70.22654253770573
+          },
+          "men": {
+            "population": 1540.0,
+            "employed": 1144.0,
+            "unemployed": 84.08931596860981,
+            "active": 1228.0893159686098,
+            "employmentRate": 74.28571428571429,
+            "unemploymentRate": 6.84716615275555,
+            "activityRate": 79.74605947848116
+          },
+          "women": {
+            "population": 1738.0,
+            "employed": 975.0,
+            "unemployed": 98.93674841738377,
+            "active": 1073.9367484173838,
+            "employmentRate": 56.09896432681243,
+            "unemploymentRate": 9.212530306201252,
+            "activityRate": 61.79152752689204
+          }
+        }
+      },
+      "education": {
+        "65plus": {
+          "women": {
+            "population": 1313.0000000000002,
+            "upperSecondaryPlus": 577.0,
+            "tertiary": 175.0,
+            "diplomaPlus": 43.94516374714394,
+            "tertiaryRate": 13.328255902513325
+          },
+          "men": {
+            "population": 972.0,
+            "upperSecondaryPlus": 554.0,
+            "tertiary": 207.0,
+            "diplomaPlus": 56.99588477366255,
+            "tertiaryRate": 21.296296296296298
+          },
+          "total": {
+            "population": 2285.0,
+            "upperSecondaryPlus": 1131.0,
+            "tertiary": 382.0,
+            "diplomaPlus": 49.49671772428884,
+            "tertiaryRate": 16.717724288840262
+          }
+        },
+        "9plus": {
+          "women": {
+            "population": 3460.0,
+            "upperSecondaryPlus": 2019.0,
+            "tertiary": 734.0,
+            "diplomaPlus": 58.35260115606936,
+            "tertiaryRate": 21.213872832369944
+          },
+          "men": {
+            "population": 2932.0,
+            "upperSecondaryPlus": 1795.0,
+            "tertiary": 652.0,
+            "diplomaPlus": 61.221009549795355,
+            "tertiaryRate": 22.237380627557982
+          },
+          "total": {
+            "population": 6392.0,
+            "upperSecondaryPlus": 3814.0,
+            "tertiary": 1386.0,
+            "diplomaPlus": 59.66833541927409,
+            "tertiaryRate": 21.683354192740925
+          }
+        },
+        "25-49": {
+          "women": {
+            "population": 769.0,
+            "upperSecondaryPlus": 649.0,
+            "tertiary": 311.0,
+            "diplomaPlus": 84.39531859557867,
+            "tertiaryRate": 40.442132639791936
+          },
+          "men": {
+            "population": 733.0,
+            "upperSecondaryPlus": 584.0,
+            "tertiary": 246.0,
+            "diplomaPlus": 79.67257844474761,
+            "tertiaryRate": 33.560709413369715
+          },
+          "total": {
+            "population": 1502.0,
+            "upperSecondaryPlus": 1233.0,
+            "tertiary": 557.0,
+            "diplomaPlus": 82.09054593874833,
+            "tertiaryRate": 37.08388814913449
+          }
+        },
+        "50-64": {
+          "women": {
+            "population": 969.0,
+            "upperSecondaryPlus": 669.0,
+            "tertiary": 225.0,
+            "diplomaPlus": 69.04024767801857,
+            "tertiaryRate": 23.219814241486066
+          },
+          "men": {
+            "population": 807.0,
+            "upperSecondaryPlus": 513.0,
+            "tertiary": 185.0,
+            "diplomaPlus": 63.56877323420075,
+            "tertiaryRate": 22.92441140024783
+          },
+          "total": {
+            "population": 1776.0,
+            "upperSecondaryPlus": 1182.0,
+            "tertiary": 410.0,
+            "diplomaPlus": 66.55405405405406,
+            "tertiaryRate": 23.085585585585587
+          }
+        },
+        "9-24": {
+          "women": {
+            "population": 409.0,
+            "upperSecondaryPlus": 124.0,
+            "tertiary": 23.0,
+            "diplomaPlus": 30.317848410757946,
+            "tertiaryRate": 5.623471882640587
+          },
+          "men": {
+            "population": 420.0,
+            "upperSecondaryPlus": 144.0,
+            "tertiary": 14.0,
+            "diplomaPlus": 34.285714285714285,
+            "tertiaryRate": 3.3333333333333335
+          },
+          "total": {
+            "population": 829.0,
+            "upperSecondaryPlus": 268.0,
+            "tertiary": 37.0,
+            "diplomaPlus": 32.32810615199035,
+            "tertiaryRate": 4.463208685162847
+          }
+        },
+        "25-64": {
+          "total": {
+            "population": 3278.0,
+            "upperSecondaryPlus": 2415.0,
+            "tertiary": 967.0,
+            "diplomaPlus": 73.67297132397803,
+            "tertiaryRate": 29.49969493593655
+          },
+          "men": {
+            "population": 1540.0,
+            "upperSecondaryPlus": 1097.0,
+            "tertiary": 431.0,
+            "diplomaPlus": 71.23376623376623,
+            "tertiaryRate": 27.98701298701299
+          },
+          "women": {
+            "population": 1738.0,
+            "upperSecondaryPlus": 1318.0,
+            "tertiary": 536.0,
+            "diplomaPlus": 75.8342922899885,
+            "tertiaryRate": 30.84004602991945
+          }
+        }
+      }
+    },
+    "Massarosa": {
+      "code": "046018",
+      "labour": {
+        "15plus": {
+          "women": {
+            "population": 9928.0,
+            "employed": 4202.0,
+            "unemployed": 364.1998564712437,
+            "active": 4566.199856471244,
+            "employmentRate": 42.32473811442385,
+            "unemploymentRate": 7.9759946546163025,
+            "activityRate": 45.99314923923493
+          },
+          "men": {
+            "population": 9572.0,
+            "employed": 5521.0,
+            "unemployed": 273.9891097358997,
+            "active": 5794.9891097359,
+            "employmentRate": 57.67864605098203,
+            "unemploymentRate": 4.728034937556362,
+            "activityRate": 60.54104794960195
+          },
+          "total": {
+            "population": 19500.0,
+            "employed": 9723.0,
+            "unemployed": 638.1889662071435,
+            "active": 10361.188966207143,
+            "employmentRate": 49.861538461538466,
+            "unemploymentRate": 6.159418270321939,
+            "activityRate": 53.13430239080586
+          }
+        },
+        "65plus": {
+          "women": {
+            "population": 3022.0,
+            "employed": 176.0,
+            "unemployed": 5.699177198803697,
+            "active": 181.6991771988037,
+            "employmentRate": 5.823957643944408,
+            "unemploymentRate": 3.136600444022935,
+            "activityRate": 6.0125472269624
+          },
+          "men": {
+            "population": 2501.0,
+            "employed": 335.0,
+            "unemployed": 2.2174379883070165,
+            "active": 337.21743798830704,
+            "employmentRate": 13.394642143142743,
+            "unemploymentRate": 0.6575691937923761,
+            "activityRate": 13.48330419785314
+          },
+          "total": {
+            "population": 5523.0,
+            "employed": 511.0,
+            "unemployed": 7.916615187110714,
+            "active": 518.9166151871107,
+            "employmentRate": 9.252217997465145,
+            "unemploymentRate": 1.5256044912449267,
+            "activityRate": 9.395557037608377
+          }
+        },
+        "15-24": {
+          "women": {
+            "population": 969.0000000000001,
+            "employed": 173.0,
+            "unemployed": 56.622856321947815,
+            "active": 229.6228563219478,
+            "employmentRate": 17.85345717234262,
+            "unemploymentRate": 24.659068016538598,
+            "activityRate": 23.69688919731143
+          },
+          "men": {
+            "population": 1122.0,
+            "employed": 318.0,
+            "unemployed": 65.70250033641076,
+            "active": 383.70250033641076,
+            "employmentRate": 28.342245989304814,
+            "unemploymentRate": 17.12329220654183,
+            "activityRate": 34.198083808949264
+          },
+          "total": {
+            "population": 2091.0,
+            "employed": 491.0,
+            "unemployed": 122.32535665835859,
+            "active": 613.3253566583586,
+            "employmentRate": 23.48158775705404,
+            "unemploymentRate": 19.944611017688224,
+            "activityRate": 29.33167654989759
+          }
+        },
+        "25-49": {
+          "women": {
+            "population": 3015.0,
+            "employed": 2138.0,
+            "unemployed": 172.1012510764308,
+            "active": 2310.101251076431,
+            "employmentRate": 70.91210613598673,
+            "unemploymentRate": 7.449944066141573,
+            "activityRate": 76.62027366754332
+          },
+          "men": {
+            "population": 3000.0,
+            "employed": 2586.0,
+            "unemployed": 117.98712625288279,
+            "active": 2703.9871262528827,
+            "employmentRate": 86.2,
+            "unemploymentRate": 4.363449999718984,
+            "activityRate": 90.13290420842942
+          },
+          "total": {
+            "population": 6015.0,
+            "employed": 4724.0,
+            "unemployed": 290.0883773293136,
+            "active": 5014.0883773293135,
+            "employmentRate": 78.53699085619286,
+            "unemploymentRate": 5.785465981032932,
+            "activityRate": 83.35974027147654
+          }
+        },
+        "50-64": {
+          "women": {
+            "population": 2922.0,
+            "employed": 1715.0,
+            "unemployed": 129.77657187406143,
+            "active": 1844.7765718740613,
+            "employmentRate": 58.69267624914443,
+            "unemploymentRate": 7.034812445727491,
+            "activityRate": 63.13403736735322
+          },
+          "men": {
+            "population": 2949.0,
+            "employed": 2282.0,
+            "unemployed": 88.08204515829912,
+            "active": 2370.082045158299,
+            "employmentRate": 77.38216344523568,
+            "unemploymentRate": 3.71641333422346,
+            "activityRate": 80.36900797417087
+          },
+          "total": {
+            "population": 5871.0,
+            "employed": 3997.0,
+            "unemployed": 217.85861703236057,
+            "active": 4214.858617032361,
+            "employmentRate": 68.08039516266395,
+            "unemploymentRate": 5.168823840306003,
+            "activityRate": 71.79115341564231
+          }
+        },
+        "25-64": {
+          "total": {
+            "population": 11886.0,
+            "employed": 8721.0,
+            "unemployed": 507.9469943616741,
+            "active": 9228.946994361675,
+            "employmentRate": 73.37203432609793,
+            "unemploymentRate": 5.503845613936225,
+            "activityRate": 77.64552409861749
+          },
+          "men": {
+            "population": 5949.0,
+            "employed": 4868.0,
+            "unemployed": 206.0691714111819,
+            "active": 5074.069171411182,
+            "employmentRate": 81.8288788031602,
+            "unemploymentRate": 4.061221170815665,
+            "activityRate": 85.29280839487615
+          },
+          "women": {
+            "population": 5937.0,
+            "employed": 3853.0,
+            "unemployed": 301.87782295049226,
+            "active": 4154.877822950492,
+            "employmentRate": 64.89809668182583,
+            "unemploymentRate": 7.265624545756692,
+            "activityRate": 69.98278293667664
+          }
+        }
+      },
+      "education": {
+        "65plus": {
+          "women": {
+            "population": 3022.0,
+            "upperSecondaryPlus": 715.0,
+            "tertiary": 145.0,
+            "diplomaPlus": 23.65982792852416,
+            "tertiaryRate": 4.7981469225678355
+          },
+          "men": {
+            "population": 2501.0,
+            "upperSecondaryPlus": 801.0,
+            "tertiary": 197.0,
+            "diplomaPlus": 32.02718912435026,
+            "tertiaryRate": 7.876849260295882
+          },
+          "total": {
+            "population": 5523.0,
+            "upperSecondaryPlus": 1516.0,
+            "tertiary": 342.0,
+            "diplomaPlus": 27.44885026253848,
+            "tertiaryRate": 6.19228680065182
+          }
+        },
+        "9plus": {
+          "women": {
+            "population": 10475.0,
+            "upperSecondaryPlus": 5175.0,
+            "tertiary": 1431.0,
+            "diplomaPlus": 49.40334128878281,
+            "tertiaryRate": 13.66109785202864
+          },
+          "men": {
+            "population": 10147.0,
+            "upperSecondaryPlus": 4598.0,
+            "tertiary": 1054.0,
+            "diplomaPlus": 45.31388587759929,
+            "tertiaryRate": 10.3873065930817
+          },
+          "total": {
+            "population": 20622.0,
+            "upperSecondaryPlus": 9773.0,
+            "tertiary": 2485.0,
+            "diplomaPlus": 47.391135680341385,
+            "tertiaryRate": 12.050237610319076
+          }
+        },
+        "25-49": {
+          "women": {
+            "population": 3015.0,
+            "upperSecondaryPlus": 2345.0,
+            "tertiary": 834.0,
+            "diplomaPlus": 77.77777777777779,
+            "tertiaryRate": 27.66169154228856
+          },
+          "men": {
+            "population": 3000.0,
+            "upperSecondaryPlus": 1986.0,
+            "tertiary": 541.0,
+            "diplomaPlus": 66.2,
+            "tertiaryRate": 18.033333333333335
+          },
+          "total": {
+            "population": 6015.0,
+            "upperSecondaryPlus": 4331.0,
+            "tertiary": 1375.0,
+            "diplomaPlus": 72.00332502078139,
+            "tertiaryRate": 22.8595178719867
+          }
+        },
+        "50-64": {
+          "women": {
+            "population": 2922.0,
+            "upperSecondaryPlus": 1639.0,
+            "tertiary": 407.0,
+            "diplomaPlus": 56.09171800136893,
+            "tertiaryRate": 13.928815879534564
+          },
+          "men": {
+            "population": 2949.0,
+            "upperSecondaryPlus": 1282.0,
+            "tertiary": 277.0,
+            "diplomaPlus": 43.47236351305527,
+            "tertiaryRate": 9.39301458121397
+          },
+          "total": {
+            "population": 5871.0,
+            "upperSecondaryPlus": 2921.0,
+            "tertiary": 684.0,
+            "diplomaPlus": 49.75302333503662,
+            "tertiaryRate": 11.650485436893204
+          }
+        },
+        "9-24": {
+          "women": {
+            "population": 1516.0,
+            "upperSecondaryPlus": 476.0,
+            "tertiary": 45.0,
+            "diplomaPlus": 31.398416886543533,
+            "tertiaryRate": 2.9683377308707124
+          },
+          "men": {
+            "population": 1697.0,
+            "upperSecondaryPlus": 529.0,
+            "tertiary": 39.0,
+            "diplomaPlus": 31.172657631113733,
+            "tertiaryRate": 2.2981732469063054
+          },
+          "total": {
+            "population": 3213.0,
+            "upperSecondaryPlus": 1005.0,
+            "tertiary": 84.0,
+            "diplomaPlus": 31.279178338001866,
+            "tertiaryRate": 2.6143790849673203
+          }
+        },
+        "25-64": {
+          "total": {
+            "population": 11886.0,
+            "upperSecondaryPlus": 7252.0,
+            "tertiary": 2059.0,
+            "diplomaPlus": 61.01295641931684,
+            "tertiaryRate": 17.322900891805485
+          },
+          "men": {
+            "population": 5949.0,
+            "upperSecondaryPlus": 3268.0,
+            "tertiary": 818.0,
+            "diplomaPlus": 54.933602286098505,
+            "tertiaryRate": 13.75021011934779
+          },
+          "women": {
+            "population": 5937.0,
+            "upperSecondaryPlus": 3984.0,
+            "tertiary": 1241.0,
+            "diplomaPlus": 67.10459828196058,
+            "tertiaryRate": 20.90281286845208
+          }
+        }
+      }
+    },
+    "Pietrasanta": {
+      "code": "046024",
+      "labour": {
+        "15plus": {
+          "women": {
+            "population": 10962.0,
+            "employed": 4178.0,
+            "unemployed": 407.0836780158811,
+            "active": 4585.083678015881,
+            "employmentRate": 38.11348294106915,
+            "unemploymentRate": 8.878435086533466,
+            "activityRate": 41.82707241393797
+          },
+          "men": {
+            "population": 9666.0,
+            "employed": 5154.0,
+            "unemployed": 313.99555559944133,
+            "active": 5467.995555599441,
+            "employmentRate": 53.32091868404718,
+            "unemploymentRate": 5.742425216090339,
+            "activityRate": 56.56937260086325
+          },
+          "total": {
+            "population": 20628.0,
+            "employed": 9332.0,
+            "unemployed": 721.0792336153224,
+            "active": 10053.079233615323,
+            "employmentRate": 45.239480318014344,
+            "unemploymentRate": 7.172720087634338,
+            "activityRate": 48.735113601005054
+          }
+        },
+        "65plus": {
+          "women": {
+            "population": 3884.0,
+            "employed": 274.0,
+            "unemployed": 7.8077330467249855,
+            "active": 281.807733046725,
+            "employmentRate": 7.054582904222451,
+            "unemploymentRate": 2.77058864294204,
+            "activityRate": 7.255605897186534
+          },
+          "men": {
+            "population": 2944.0000000000005,
+            "employed": 419.0,
+            "unemployed": 3.1678193858995205,
+            "active": 422.1678193858995,
+            "employmentRate": 14.232336956521738,
+            "unemploymentRate": 0.7503696967020235,
+            "activityRate": 14.339939517184085
+          },
+          "total": {
+            "population": 6828.0,
+            "employed": 693.0,
+            "unemployed": 10.975552432624506,
+            "active": 703.9755524326245,
+            "employmentRate": 10.1493848857645,
+            "unemploymentRate": 1.5590814758691418,
+            "activityRate": 10.310128184426251
+          }
+        },
+        "15-24": {
+          "women": {
+            "population": 999.0,
+            "employed": 154.0,
+            "unemployed": 61.983095767041,
+            "active": 215.983095767041,
+            "employmentRate": 15.415415415415415,
+            "unemploymentRate": 28.698123594772373,
+            "activityRate": 21.61992950621031
+          },
+          "men": {
+            "population": 981.0000000000001,
+            "employed": 224.0,
+            "unemployed": 67.76897989190923,
+            "active": 291.7689798919092,
+            "employmentRate": 22.833843017329254,
+            "unemploymentRate": 23.226931086716412,
+            "activityRate": 29.7419959115096
+          },
+          "total": {
+            "population": 1980.0,
+            "employed": 378.0,
+            "unemployed": 129.75207565895022,
+            "active": 507.7520756589502,
+            "employmentRate": 19.090909090909093,
+            "unemploymentRate": 25.55421865889187,
+            "activityRate": 25.644044225199508
+          }
+        },
+        "25-49": {
+          "women": {
+            "population": 2933.0,
+            "employed": 1989.0,
+            "unemployed": 190.89905571635566,
+            "active": 2179.8990557163556,
+            "employmentRate": 67.8145243777702,
+            "unemploymentRate": 8.757242919838903,
+            "activityRate": 74.3231863524158
+          },
+          "men": {
+            "population": 2845.0,
+            "employed": 2326.0,
+            "unemployed": 142.8482900494838,
+            "active": 2468.8482900494837,
+            "employmentRate": 81.75746924428823,
+            "unemploymentRate": 5.786029486915969,
+            "activityRate": 86.77849877151085
+          },
+          "total": {
+            "population": 5778.0,
+            "employed": 4315.0,
+            "unemployed": 333.74734576583944,
+            "active": 4648.74734576584,
+            "employmentRate": 74.67982000692281,
+            "unemploymentRate": 7.179296290856124,
+            "activityRate": 80.45599421540048
+          }
+        },
+        "50-64": {
+          "women": {
+            "population": 3146.0,
+            "employed": 1761.0,
+            "unemployed": 146.39379348575943,
+            "active": 1907.3937934857595,
+            "employmentRate": 55.975842339478696,
+            "unemploymentRate": 7.675069195765022,
+            "activityRate": 60.62917334665479
+          },
+          "men": {
+            "population": 2896.0,
+            "employed": 2185.0,
+            "unemployed": 100.2104662721488,
+            "active": 2285.210466272149,
+            "employmentRate": 75.4488950276243,
+            "unemploymentRate": 4.385174483977469,
+            "activityRate": 78.90920118343055
+          },
+          "total": {
+            "population": 6042.0,
+            "employed": 3946.0,
+            "unemployed": 246.60425975790824,
+            "active": 4192.604259757908,
+            "employmentRate": 65.30950016550811,
+            "unemploymentRate": 5.881887353998629,
+            "activityRate": 69.39100065802563
+          }
+        },
+        "25-64": {
+          "total": {
+            "population": 11820.0,
+            "employed": 8261.0,
+            "unemployed": 580.3516055237477,
+            "active": 8841.351605523749,
+            "employmentRate": 69.89001692047377,
+            "unemploymentRate": 6.564059788790274,
+            "activityRate": 74.79992898074237
+          },
+          "men": {
+            "population": 5741.0,
+            "employed": 4511.0,
+            "unemployed": 243.05875632163261,
+            "active": 4754.058756321632,
+            "employmentRate": 78.57516112175578,
+            "unemploymentRate": 5.112657810516733,
+            "activityRate": 82.80889664381871
+          },
+          "women": {
+            "population": 6079.0,
+            "employed": 3750.0,
+            "unemployed": 337.2928492021151,
+            "active": 4087.292849202115,
+            "employmentRate": 61.68777759499918,
+            "unemploymentRate": 8.25223104011151,
+            "activityRate": 67.2362699325895
+          }
+        }
+      },
+      "education": {
+        "65plus": {
+          "women": {
+            "population": 3884.0,
+            "upperSecondaryPlus": 1381.0,
+            "tertiary": 410.0,
+            "diplomaPlus": 35.55612770339856,
+            "tertiaryRate": 10.556127703398559
+          },
+          "men": {
+            "population": 2944.0000000000005,
+            "upperSecondaryPlus": 1350.0,
+            "tertiary": 430.0,
+            "diplomaPlus": 45.855978260869556,
+            "tertiaryRate": 14.605978260869563
+          },
+          "total": {
+            "population": 6828.0,
+            "upperSecondaryPlus": 2731.0,
+            "tertiary": 840.0,
+            "diplomaPlus": 39.99707088459285,
+            "tertiaryRate": 12.302284710017574
+          }
+        },
+        "9plus": {
+          "women": {
+            "population": 11452.0,
+            "upperSecondaryPlus": 6328.0,
+            "tertiary": 2016.0,
+            "diplomaPlus": 55.256723716381416,
+            "tertiaryRate": 17.6039119804401
+          },
+          "men": {
+            "population": 10196.0,
+            "upperSecondaryPlus": 5459.0,
+            "tertiary": 1600.0,
+            "diplomaPlus": 53.54060415849353,
+            "tertiaryRate": 15.69242840329541
+          },
+          "total": {
+            "population": 21648.0,
+            "upperSecondaryPlus": 11787.0,
+            "tertiary": 3616.0,
+            "diplomaPlus": 54.44844789356984,
+            "tertiaryRate": 16.70362158167036
+          }
+        },
+        "25-49": {
+          "women": {
+            "population": 2933.0,
+            "upperSecondaryPlus": 2392.0,
+            "tertiary": 966.0,
+            "diplomaPlus": 81.5547221275145,
+            "tertiaryRate": 32.93556085918855
+          },
+          "men": {
+            "population": 2845.0,
+            "upperSecondaryPlus": 2094.0,
+            "tertiary": 701.0,
+            "diplomaPlus": 73.60281195079085,
+            "tertiaryRate": 24.639718804920914
+          },
+          "total": {
+            "population": 5778.0,
+            "upperSecondaryPlus": 4486.0,
+            "tertiary": 1667.0,
+            "diplomaPlus": 77.6393215645552,
+            "tertiaryRate": 28.850813430252682
+          }
+        },
+        "50-64": {
+          "women": {
+            "population": 3146.0,
+            "upperSecondaryPlus": 2003.0,
+            "tertiary": 592.0,
+            "diplomaPlus": 63.668150031786396,
+            "tertiaryRate": 18.817546090273364
+          },
+          "men": {
+            "population": 2896.0,
+            "upperSecondaryPlus": 1558.0,
+            "tertiary": 441.0,
+            "diplomaPlus": 53.79834254143646,
+            "tertiaryRate": 15.227900552486187
+          },
+          "total": {
+            "population": 6042.0,
+            "upperSecondaryPlus": 3561.0,
+            "tertiary": 1033.0,
+            "diplomaPlus": 58.93743793445879,
+            "tertiaryRate": 17.096987752399865
+          }
+        },
+        "9-24": {
+          "women": {
+            "population": 1489.0,
+            "upperSecondaryPlus": 552.0,
+            "tertiary": 48.0,
+            "diplomaPlus": 37.07186030893217,
+            "tertiaryRate": 3.2236400268636665
+          },
+          "men": {
+            "population": 1511.0,
+            "upperSecondaryPlus": 457.0,
+            "tertiary": 28.0,
+            "diplomaPlus": 30.244870946393114,
+            "tertiaryRate": 1.8530774321641297
+          },
+          "total": {
+            "population": 3000.0,
+            "upperSecondaryPlus": 1009.0,
+            "tertiary": 76.0,
+            "diplomaPlus": 33.63333333333333,
+            "tertiaryRate": 2.533333333333333
+          }
+        },
+        "25-64": {
+          "total": {
+            "population": 11820.0,
+            "upperSecondaryPlus": 8047.0,
+            "tertiary": 2700.0,
+            "diplomaPlus": 68.07952622673434,
+            "tertiaryRate": 22.84263959390863
+          },
+          "men": {
+            "population": 5741.0,
+            "upperSecondaryPlus": 3652.0,
+            "tertiary": 1142.0,
+            "diplomaPlus": 63.61261104337223,
+            "tertiaryRate": 19.892004877199092
+          },
+          "women": {
+            "population": 6079.0,
+            "upperSecondaryPlus": 4395.0,
+            "tertiary": 1558.0,
+            "diplomaPlus": 72.29807534133904,
+            "tertiaryRate": 25.62921533146899
+          }
+        }
+      }
+    },
+    "Seravezza": {
+      "code": "046028",
+      "labour": {
+        "15plus": {
+          "women": {
+            "population": 5892.000000000001,
+            "employed": 2259.0,
+            "unemployed": 208.82888292378013,
+            "active": 2467.82888292378,
+            "employmentRate": 38.34012219959266,
+            "unemploymentRate": 8.462048741255042,
+            "activityRate": 41.88440059273218
+          },
+          "men": {
+            "population": 5291.0,
+            "employed": 2845.0,
+            "unemployed": 178.4892138951739,
+            "active": 3023.489213895174,
+            "employmentRate": 53.770553770553775,
+            "unemploymentRate": 5.903418245214293,
+            "activityRate": 57.14400328662208
+          },
+          "total": {
+            "population": 11183.0,
+            "employed": 5104.0,
+            "unemployed": 387.318096818954,
+            "active": 5491.318096818954,
+            "employmentRate": 45.640704640972906,
+            "unemploymentRate": 7.053281015414535,
+            "activityRate": 49.104158962880746
+          }
+        },
+        "65plus": {
+          "women": {
+            "population": 2021.0000000000007,
+            "employed": 115.0,
+            "unemployed": 4.054863315417501,
+            "active": 119.0548633154175,
+            "employmentRate": 5.690252350321621,
+            "unemploymentRate": 3.4058779309794054,
+            "activityRate": 5.89088883302412
+          },
+          "men": {
+            "population": 1576.0000000000002,
+            "employed": 203.0,
+            "unemployed": 1.630119815048824,
+            "active": 204.63011981504883,
+            "employmentRate": 12.880710659898476,
+            "unemploymentRate": 0.7966177298445497,
+            "activityRate": 12.98414465831528
+          },
+          "total": {
+            "population": 3597.000000000001,
+            "employed": 318.0,
+            "unemployed": 5.684983130466325,
+            "active": 323.6849831304663,
+            "employmentRate": 8.840700583819848,
+            "unemploymentRate": 1.756332059487265,
+            "activityRate": 8.998748488475568
+          }
+        },
+        "15-24": {
+          "women": {
+            "population": 492.0,
+            "employed": 70.0,
+            "unemployed": 28.453861321116275,
+            "active": 98.45386132111628,
+            "employmentRate": 14.227642276422763,
+            "unemploymentRate": 28.900706320000392,
+            "activityRate": 20.010947422991112
+          },
+          "men": {
+            "population": 514.0,
+            "employed": 153.0,
+            "unemployed": 30.844599637329125,
+            "active": 183.84459963732914,
+            "employmentRate": 29.766536964980546,
+            "unemploymentRate": 16.77753912716303,
+            "activityRate": 35.767431836056254
+          },
+          "total": {
+            "population": 1006.0,
+            "employed": 223.0,
+            "unemployed": 59.298460958445396,
+            "active": 282.2984609584454,
+            "employmentRate": 22.166998011928428,
+            "unemploymentRate": 21.00559130117758,
+            "activityRate": 28.06147723244984
+          }
+        },
+        "25-49": {
+          "women": {
+            "population": 1682.0,
+            "employed": 1156.0,
+            "unemployed": 100.78487654922147,
+            "active": 1256.7848765492215,
+            "employmentRate": 68.72770511296076,
+            "unemploymentRate": 8.019262359835873,
+            "activityRate": 74.71967161410353
+          },
+          "men": {
+            "population": 1662.0,
+            "employed": 1352.0,
+            "unemployed": 90.44548058370867,
+            "active": 1442.4454805837088,
+            "employmentRate": 81.34777376654633,
+            "unemploymentRate": 6.2702876331317885,
+            "activityRate": 86.78974010732303
+          },
+          "total": {
+            "population": 3344.0,
+            "employed": 2508.0,
+            "unemployed": 191.23035713293015,
+            "active": 2699.2303571329303,
+            "employmentRate": 75.0,
+            "unemploymentRate": 7.084625312826256,
+            "activityRate": 80.7186111582814
+          }
+        },
+        "50-64": {
+          "women": {
+            "population": 1697.0,
+            "employed": 918.0,
+            "unemployed": 75.53528173802488,
+            "active": 993.5352817380249,
+            "employmentRate": 54.095462581025345,
+            "unemploymentRate": 7.60267734084777,
+            "activityRate": 58.546569342252496
+          },
+          "men": {
+            "population": 1539.0,
+            "employed": 1137.0,
+            "unemployed": 55.569013859087256,
+            "active": 1192.5690138590874,
+            "employmentRate": 73.87914230019493,
+            "unemploymentRate": 4.6596057094648975,
+            "activityRate": 77.48986444828377
+          },
+          "total": {
+            "population": 3236.0,
+            "employed": 2055.0,
+            "unemployed": 131.10429559711216,
+            "active": 2186.104295597112,
+            "employmentRate": 63.504326328800985,
+            "unemploymentRate": 5.9971656366606405,
+            "activityRate": 67.55575697148059
+          }
+        },
+        "25-64": {
+          "total": {
+            "population": 6580.0,
+            "employed": 4563.0,
+            "unemployed": 322.3346527300423,
+            "active": 4885.334652730042,
+            "employmentRate": 69.34650455927051,
+            "unemploymentRate": 6.5980055747033415,
+            "activityRate": 74.2452074882985
+          },
+          "men": {
+            "population": 3201.0,
+            "employed": 2489.0,
+            "unemployed": 146.01449444279592,
+            "active": 2635.014494442796,
+            "employmentRate": 77.75695095282724,
+            "unemploymentRate": 5.541316556350569,
+            "activityRate": 82.318478426829
+          },
+          "women": {
+            "population": 3379.0,
+            "employed": 2074.0,
+            "unemployed": 176.32015828724633,
+            "active": 2250.320158287246,
+            "employmentRate": 61.37910624445102,
+            "unemploymentRate": 7.83533656923939,
+            "activityRate": 66.59722279630796
+          }
+        }
+      },
+      "education": {
+        "65plus": {
+          "women": {
+            "population": 2021.0000000000007,
+            "upperSecondaryPlus": 568.0,
+            "tertiary": 118.0,
+            "diplomaPlus": 28.104898565066787,
+            "tertiaryRate": 5.838693715982185
+          },
+          "men": {
+            "population": 1576.0000000000002,
+            "upperSecondaryPlus": 645.0,
+            "tertiary": 158.0,
+            "diplomaPlus": 40.92639593908629,
+            "tertiaryRate": 10.025380710659897
+          },
+          "total": {
+            "population": 3597.000000000001,
+            "upperSecondaryPlus": 1213.0,
+            "tertiary": 276.0,
+            "diplomaPlus": 33.722546566583254,
+            "tertiaryRate": 7.673060884070057
+          }
+        },
+        "9plus": {
+          "women": {
+            "population": 6174.0,
+            "upperSecondaryPlus": 3155.0,
+            "tertiary": 834.0,
+            "diplomaPlus": 51.10139293812763,
+            "tertiaryRate": 13.508260447035958
+          },
+          "men": {
+            "population": 5572.0,
+            "upperSecondaryPlus": 2779.0,
+            "tertiary": 660.0,
+            "diplomaPlus": 49.87437185929649,
+            "tertiaryRate": 11.844938980617373
+          },
+          "total": {
+            "population": 11746.0,
+            "upperSecondaryPlus": 5934.0,
+            "tertiary": 1494.0,
+            "diplomaPlus": 50.51932572790737,
+            "tertiaryRate": 12.719223565469095
+          }
+        },
+        "25-49": {
+          "women": {
+            "population": 1682.0,
+            "upperSecondaryPlus": 1335.0,
+            "tertiary": 471.0,
+            "diplomaPlus": 79.36979785969085,
+            "tertiaryRate": 28.00237812128419
+          },
+          "men": {
+            "population": 1662.0,
+            "upperSecondaryPlus": 1174.0,
+            "tertiary": 341.0,
+            "diplomaPlus": 70.63778580024066,
+            "tertiaryRate": 20.517448856799035
+          },
+          "total": {
+            "population": 3344.0,
+            "upperSecondaryPlus": 2509.0,
+            "tertiary": 812.0,
+            "diplomaPlus": 75.02990430622009,
+            "tertiaryRate": 24.2822966507177
+          }
+        },
+        "50-64": {
+          "women": {
+            "population": 1697.0,
+            "upperSecondaryPlus": 997.0,
+            "tertiary": 221.0,
+            "diplomaPlus": 58.750736593989394,
+            "tertiaryRate": 13.022981732469063
+          },
+          "men": {
+            "population": 1539.0,
+            "upperSecondaryPlus": 712.0,
+            "tertiary": 139.0,
+            "diplomaPlus": 46.263807667316435,
+            "tertiaryRate": 9.03183885640026
+          },
+          "total": {
+            "population": 3236.0,
+            "upperSecondaryPlus": 1709.0,
+            "tertiary": 360.0,
+            "diplomaPlus": 52.81211372064277,
+            "tertiaryRate": 11.124845488257108
+          }
+        },
+        "9-24": {
+          "women": {
+            "population": 774.0,
+            "upperSecondaryPlus": 255.0,
+            "tertiary": 24.0,
+            "diplomaPlus": 32.945736434108525,
+            "tertiaryRate": 3.10077519379845
+          },
+          "men": {
+            "population": 795.0,
+            "upperSecondaryPlus": 248.0,
+            "tertiary": 22.0,
+            "diplomaPlus": 31.19496855345912,
+            "tertiaryRate": 2.767295597484277
+          },
+          "total": {
+            "population": 1569.0,
+            "upperSecondaryPlus": 503.0,
+            "tertiary": 46.0,
+            "diplomaPlus": 32.05863607393244,
+            "tertiaryRate": 2.9318036966220524
+          }
+        },
+        "25-64": {
+          "total": {
+            "population": 6580.0,
+            "upperSecondaryPlus": 4218.0,
+            "tertiary": 1172.0,
+            "diplomaPlus": 64.1033434650456,
+            "tertiaryRate": 17.811550151975684
+          },
+          "men": {
+            "population": 3201.0,
+            "upperSecondaryPlus": 1886.0,
+            "tertiary": 480.0,
+            "diplomaPlus": 58.91908778506717,
+            "tertiaryRate": 14.995313964386128
+          },
+          "women": {
+            "population": 3379.0,
+            "upperSecondaryPlus": 2332.0,
+            "tertiary": 692.0,
+            "diplomaPlus": 69.01450133175496,
+            "tertiaryRate": 20.479431784551643
+          }
+        }
+      }
+    },
+    "Stazzema": {
+      "code": "046030",
+      "labour": {
+        "15plus": {
+          "women": {
+            "population": 1316.0,
+            "employed": 465.0,
+            "unemployed": 44.148080404777275,
+            "active": 509.14808040477726,
+            "employmentRate": 35.33434650455927,
+            "unemploymentRate": 8.670970608330519,
+            "activityRate": 38.68906386054539
+          },
+          "men": {
+            "population": 1336.0,
+            "employed": 697.0,
+            "unemployed": 37.56070413542752,
+            "active": 734.5607041354275,
+            "employmentRate": 52.17065868263473,
+            "unemploymentRate": 5.113356040415501,
+            "activityRate": 54.982088632891276
+          },
+          "total": {
+            "population": 2652.0,
+            "employed": 1162.0,
+            "unemployed": 81.7087845402048,
+            "active": 1243.7087845402048,
+            "employmentRate": 43.81598793363499,
+            "unemploymentRate": 6.569768225156686,
+            "activityRate": 46.897012991712096
+          }
+        },
+        "65plus": {
+          "women": {
+            "population": 443.0,
+            "employed": 27.0,
+            "unemployed": 0.752857784777624,
+            "active": 27.752857784777625,
+            "employmentRate": 6.094808126410835,
+            "unemploymentRate": 2.712721661372706,
+            "activityRate": 6.264753450288403
+          },
+          "men": {
+            "population": 390.99999999999994,
+            "employed": 33.0,
+            "unemployed": 0.24942222754560817,
+            "active": 33.24942222754561,
+            "employmentRate": 8.43989769820972,
+            "unemploymentRate": 0.7501550728871715,
+            "activityRate": 8.503688549244401
+          },
+          "total": {
+            "population": 834.0,
+            "employed": 60.0,
+            "unemployed": 1.002280012323232,
+            "active": 61.00228001232323,
+            "employmentRate": 7.194244604316546,
+            "unemploymentRate": 1.6430205758223442,
+            "activityRate": 7.314422063827726
+          }
+        },
+        "15-24": {
+          "women": {
+            "population": 98.0,
+            "employed": 24.0,
+            "unemployed": 5.9303499707659135,
+            "active": 29.930349970765914,
+            "employmentRate": 24.489795918367346,
+            "unemploymentRate": 19.813834373999324,
+            "activityRate": 30.541173439557056
+          },
+          "men": {
+            "population": 146.0,
+            "employed": 40.0,
+            "unemployed": 8.455781417378208,
+            "active": 48.45578141737821,
+            "employmentRate": 27.397260273972602,
+            "unemploymentRate": 17.45051089888238,
+            "activityRate": 33.1888913817659
+          },
+          "total": {
+            "population": 244.0,
+            "employed": 64.0,
+            "unemployed": 14.386131388144122,
+            "active": 78.38613138814412,
+            "employmentRate": 26.229508196721312,
+            "unemploymentRate": 18.352903930043958,
+            "activityRate": 32.12546368366562
+          }
+        },
+        "25-49": {
+          "women": {
+            "population": 390.0,
+            "employed": 237.0,
+            "unemployed": 21.27242028217917,
+            "active": 258.27242028217916,
+            "employmentRate": 60.76923076923077,
+            "unemploymentRate": 8.23642735795703,
+            "activityRate": 66.22369750825106
+          },
+          "men": {
+            "population": 411.0,
+            "employed": 350.0,
+            "unemployed": 17.138809268552777,
+            "active": 367.1388092685528,
+            "employmentRate": 85.15815085158151,
+            "unemploymentRate": 4.668209635123638,
+            "activityRate": 89.32817743760408
+          },
+          "total": {
+            "population": 801.0,
+            "employed": 587.0,
+            "unemployed": 38.411229550731946,
+            "active": 625.411229550732,
+            "employmentRate": 73.28339575530588,
+            "unemploymentRate": 6.141755653847931,
+            "activityRate": 78.07880518735729
+          }
+        },
+        "50-64": {
+          "women": {
+            "population": 385.0,
+            "employed": 177.0,
+            "unemployed": 16.19245236705457,
+            "active": 193.19245236705456,
+            "employmentRate": 45.97402597402597,
+            "unemploymentRate": 8.3815139611613,
+            "activityRate": 50.1798577576765
+          },
+          "men": {
+            "population": 388.0,
+            "employed": 274.0,
+            "unemployed": 11.716691221950924,
+            "active": 285.7166912219509,
+            "employmentRate": 70.61855670103093,
+            "unemploymentRate": 4.100807401850089,
+            "activityRate": 73.63832247988425
+          },
+          "total": {
+            "population": 773.0,
+            "employed": 451.0,
+            "unemployed": 27.909143589005495,
+            "active": 478.9091435890055,
+            "employmentRate": 58.34411384217335,
+            "unemploymentRate": 5.827648931455109,
+            "activityRate": 61.95461107231637
+          }
+        },
+        "25-64": {
+          "total": {
+            "population": 1574.0,
+            "employed": 1038.0,
+            "unemployed": 66.32037313973744,
+            "active": 1104.3203731397375,
+            "employmentRate": 65.94663278271918,
+            "unemploymentRate": 6.005537410414636,
+            "activityRate": 70.16012535830608
+          },
+          "men": {
+            "population": 799.0,
+            "employed": 624.0,
+            "unemployed": 28.8555004905037,
+            "active": 652.8555004905037,
+            "employmentRate": 78.09762202753441,
+            "unemploymentRate": 4.419890843965314,
+            "activityRate": 81.70907390369257
+          },
+          "women": {
+            "population": 775.0,
+            "employed": 414.0,
+            "unemployed": 37.46487264923374,
+            "active": 451.4648726492337,
+            "employmentRate": 53.41935483870968,
+            "unemploymentRate": 8.298513332695572,
+            "activityRate": 58.253531954739834
+          }
+        }
+      },
+      "education": {
+        "65plus": {
+          "women": {
+            "population": 443.0,
+            "upperSecondaryPlus": 82.0,
+            "tertiary": 16.0,
+            "diplomaPlus": 18.510158013544018,
+            "tertiaryRate": 3.611738148984198
+          },
+          "men": {
+            "population": 390.99999999999994,
+            "upperSecondaryPlus": 102.0,
+            "tertiary": 10.0,
+            "diplomaPlus": 26.086956521739136,
+            "tertiaryRate": 2.5575447570332486
+          },
+          "total": {
+            "population": 834.0,
+            "upperSecondaryPlus": 184.0,
+            "tertiary": 26.0,
+            "diplomaPlus": 22.062350119904075,
+            "tertiaryRate": 3.117505995203837
+          }
+        },
+        "9plus": {
+          "women": {
+            "population": 1365.0,
+            "upperSecondaryPlus": 588.0,
+            "tertiary": 147.0,
+            "diplomaPlus": 43.07692307692308,
+            "tertiaryRate": 10.76923076923077
+          },
+          "men": {
+            "population": 1401.0,
+            "upperSecondaryPlus": 549.0,
+            "tertiary": 96.0,
+            "diplomaPlus": 39.186295503211994,
+            "tertiaryRate": 6.852248394004283
+          },
+          "total": {
+            "population": 2766.0,
+            "upperSecondaryPlus": 1137.0,
+            "tertiary": 243.0,
+            "diplomaPlus": 41.106290672451195,
+            "tertiaryRate": 8.785249457700651
+          }
+        },
+        "25-49": {
+          "women": {
+            "population": 390.0,
+            "upperSecondaryPlus": 283.0,
+            "tertiary": 97.0,
+            "diplomaPlus": 72.56410256410255,
+            "tertiaryRate": 24.871794871794872
+          },
+          "men": {
+            "population": 411.0,
+            "upperSecondaryPlus": 243.0,
+            "tertiary": 56.0,
+            "diplomaPlus": 59.12408759124088,
+            "tertiaryRate": 13.62530413625304
+          },
+          "total": {
+            "population": 801.0,
+            "upperSecondaryPlus": 526.0,
+            "tertiary": 153.0,
+            "diplomaPlus": 65.66791510611736,
+            "tertiaryRate": 19.101123595505616
+          }
+        },
+        "50-64": {
+          "women": {
+            "population": 385.0,
+            "upperSecondaryPlus": 171.0,
+            "tertiary": 29.0,
+            "diplomaPlus": 44.41558441558441,
+            "tertiaryRate": 7.532467532467532
+          },
+          "men": {
+            "population": 388.0,
+            "upperSecondaryPlus": 138.0,
+            "tertiary": 24.0,
+            "diplomaPlus": 35.56701030927835,
+            "tertiaryRate": 6.185567010309279
+          },
+          "total": {
+            "population": 773.0,
+            "upperSecondaryPlus": 309.0,
+            "tertiary": 53.0,
+            "diplomaPlus": 39.974126778783955,
+            "tertiaryRate": 6.85640362225097
+          }
+        },
+        "9-24": {
+          "women": {
+            "population": 147.0,
+            "upperSecondaryPlus": 52.0,
+            "tertiary": 5.0,
+            "diplomaPlus": 35.374149659863946,
+            "tertiaryRate": 3.4013605442176873
+          },
+          "men": {
+            "population": 211.0,
+            "upperSecondaryPlus": 66.0,
+            "tertiary": 6.0,
+            "diplomaPlus": 31.27962085308057,
+            "tertiaryRate": 2.843601895734597
+          },
+          "total": {
+            "population": 358.0,
+            "upperSecondaryPlus": 118.0,
+            "tertiary": 11.0,
+            "diplomaPlus": 32.960893854748605,
+            "tertiaryRate": 3.072625698324022
+          }
+        },
+        "25-64": {
+          "total": {
+            "population": 1574.0,
+            "upperSecondaryPlus": 835.0,
+            "tertiary": 206.0,
+            "diplomaPlus": 53.04955527318933,
+            "tertiaryRate": 13.087674714104194
+          },
+          "men": {
+            "population": 799.0,
+            "upperSecondaryPlus": 381.0,
+            "tertiary": 80.0,
+            "diplomaPlus": 47.68460575719649,
+            "tertiaryRate": 10.012515644555695
+          },
+          "women": {
+            "population": 775.0,
+            "upperSecondaryPlus": 454.0,
+            "tertiary": 126.0,
+            "diplomaPlus": 58.58064516129032,
+            "tertiaryRate": 16.258064516129032
+          }
+        }
+      }
+    },
+    "Viareggio": {
+      "code": "046033",
+      "labour": {
+        "15plus": {
+          "women": {
+            "population": 28472.0,
+            "employed": 11518.0,
+            "unemployed": 1047.9844044060721,
+            "active": 12565.984404406072,
+            "employmentRate": 40.45377915144704,
+            "unemploymentRate": 8.339851225970106,
+            "activityRate": 44.13453359232253
+          },
+          "men": {
+            "population": 25953.0,
+            "employed": 14339.0,
+            "unemployed": 867.556022840208,
+            "active": 15206.556022840208,
+            "employmentRate": 55.24987477362925,
+            "unemploymentRate": 5.705144685865367,
+            "activityRate": 58.592671455478005
+          },
+          "total": {
+            "population": 54425.0,
+            "employed": 25857.0,
+            "unemployed": 1915.5404272462802,
+            "active": 27772.54042724628,
+            "employmentRate": 47.50941662838769,
+            "unemploymentRate": 6.897245976702358,
+            "activityRate": 51.02901318740704
+          }
+        },
+        "65plus": {
+          "women": {
+            "population": 9602.0,
+            "employed": 598.0,
+            "unemployed": 18.311558678871986,
+            "active": 616.311558678872,
+            "employmentRate": 6.227869193917933,
+            "unemploymentRate": 2.9711528886663623,
+            "activityRate": 6.418574866474401
+          },
+          "men": {
+            "population": 7264.0,
+            "employed": 1088.0,
+            "unemployed": 7.911944487237409,
+            "active": 1095.9119444872374,
+            "employmentRate": 14.977973568281937,
+            "unemploymentRate": 0.721950748601367,
+            "activityRate": 15.086893508910206
+          },
+          "total": {
+            "population": 16866.0,
+            "employed": 1686.0,
+            "unemployed": 26.223503166109396,
+            "active": 1712.2235031661094,
+            "employmentRate": 9.99644254713625,
+            "unemploymentRate": 1.5315467354360544,
+            "activityRate": 10.15192400786262
+          }
+        },
+        "15-24": {
+          "women": {
+            "population": 2583.0,
+            "employed": 415.0,
+            "unemployed": 150.88685117775717,
+            "active": 565.8868511777572,
+            "employmentRate": 16.066589237320944,
+            "unemploymentRate": 26.66378461767092,
+            "activityRate": 21.908124319696366
+          },
+          "men": {
+            "population": 2860.0,
+            "employed": 680.0,
+            "unemployed": 166.24876011760588,
+            "active": 846.2487601176059,
+            "employmentRate": 23.776223776223777,
+            "unemploymentRate": 19.64537709863253,
+            "activityRate": 29.58911748662958
+          },
+          "total": {
+            "population": 5443.0,
+            "employed": 1095.0,
+            "unemployed": 317.13561129536305,
+            "active": 1412.135611295363,
+            "employmentRate": 20.11758221568988,
+            "unemploymentRate": 22.45787222973947,
+            "activityRate": 25.94406781729493
+          }
+        },
+        "25-49": {
+          "women": {
+            "population": 8171.0,
+            "employed": 5631.0,
+            "unemployed": 510.03219905099803,
+            "active": 6141.032199050998,
+            "employmentRate": 68.9144535552564,
+            "unemploymentRate": 8.305317127791898,
+            "activityRate": 75.15643371742746
+          },
+          "men": {
+            "population": 8480.0,
+            "employed": 6880.0,
+            "unemployed": 442.53945921055356,
+            "active": 7322.539459210554,
+            "employmentRate": 81.13207547169812,
+            "unemploymentRate": 6.043524404008659,
+            "activityRate": 86.35070116993577
+          },
+          "total": {
+            "population": 16651.0,
+            "employed": 12511.0,
+            "unemployed": 952.5716582615516,
+            "active": 13463.571658261551,
+            "employmentRate": 75.13662843072488,
+            "unemploymentRate": 7.075177987239606,
+            "activityRate": 80.8574359393523
+          }
+        },
+        "50-64": {
+          "women": {
+            "population": 8116.0,
+            "employed": 4874.0,
+            "unemployed": 368.75379549844496,
+            "active": 5242.753795498445,
+            "employmentRate": 60.054213898472156,
+            "unemploymentRate": 7.033589786632093,
+            "activityRate": 64.59775499628442
+          },
+          "men": {
+            "population": 7349.0,
+            "employed": 5691.0,
+            "unemployed": 250.85585902481117,
+            "active": 5941.855859024811,
+            "employmentRate": 77.4391073615458,
+            "unemploymentRate": 4.221843561617163,
+            "activityRate": 80.85257666382924
+          },
+          "total": {
+            "population": 15465.0,
+            "employed": 10565.0,
+            "unemployed": 619.6096545232562,
+            "active": 11184.609654523256,
+            "employmentRate": 68.3155512447462,
+            "unemploymentRate": 5.539841564990826,
+            "activityRate": 72.32207988699163
+          }
+        },
+        "25-64": {
+          "total": {
+            "population": 32116.0,
+            "employed": 23076.0,
+            "unemployed": 1572.1813127848077,
+            "active": 24648.181312784807,
+            "employmentRate": 71.8520363681654,
+            "unemploymentRate": 6.3784881035800005,
+            "activityRate": 76.74735743176238
+          },
+          "men": {
+            "population": 15829.0,
+            "employed": 12571.0,
+            "unemployed": 693.3953182353647,
+            "active": 13264.395318235365,
+            "employmentRate": 79.41752479626003,
+            "unemploymentRate": 5.227492860395319,
+            "activityRate": 83.79806253228482
+          },
+          "women": {
+            "population": 16287.0,
+            "employed": 10505.0,
+            "unemployed": 878.785994549443,
+            "active": 11383.785994549442,
+            "employmentRate": 64.49929391539264,
+            "unemploymentRate": 7.719628557407929,
+            "activityRate": 69.8949222972275
+          }
+        }
+      },
+      "education": {
+        "65plus": {
+          "women": {
+            "population": 9602.0,
+            "upperSecondaryPlus": 3946.0,
+            "tertiary": 1169.0,
+            "diplomaPlus": 41.09560508227453,
+            "tertiaryRate": 12.17454696938138
+          },
+          "men": {
+            "population": 7264.0,
+            "upperSecondaryPlus": 3609.0,
+            "tertiary": 1223.0,
+            "diplomaPlus": 49.683370044052865,
+            "tertiaryRate": 16.836453744493394
+          },
+          "total": {
+            "population": 16866.0,
+            "upperSecondaryPlus": 7555.0,
+            "tertiary": 2392.0,
+            "diplomaPlus": 44.794260642713155,
+            "tertiaryRate": 14.182378750148228
+          }
+        },
+        "9plus": {
+          "women": {
+            "population": 29875.0,
+            "upperSecondaryPlus": 17132.0,
+            "tertiary": 5912.0,
+            "diplomaPlus": 57.34560669456067,
+            "tertiaryRate": 19.789121338912132
+          },
+          "men": {
+            "population": 27389.0,
+            "upperSecondaryPlus": 15142.0,
+            "tertiary": 4881.0,
+            "diplomaPlus": 55.28496841797802,
+            "tertiaryRate": 17.82102303844609
+          },
+          "total": {
+            "population": 57264.0,
+            "upperSecondaryPlus": 32274.0,
+            "tertiary": 10793.0,
+            "diplomaPlus": 56.360016764459345,
+            "tertiaryRate": 18.84779267951942
+          }
+        },
+        "25-49": {
+          "women": {
+            "population": 8171.0,
+            "upperSecondaryPlus": 6500.0,
+            "tertiary": 2879.0,
+            "diplomaPlus": 79.54962672867458,
+            "tertiaryRate": 35.23436543874679
+          },
+          "men": {
+            "population": 8480.0,
+            "upperSecondaryPlus": 6034.0,
+            "tertiary": 2199.0,
+            "diplomaPlus": 71.15566037735849,
+            "tertiaryRate": 25.931603773584904
+          },
+          "total": {
+            "population": 16651.0,
+            "upperSecondaryPlus": 12534.0,
+            "tertiary": 5078.0,
+            "diplomaPlus": 75.27475827277641,
+            "tertiaryRate": 30.496666866854845
+          }
+        },
+        "50-64": {
+          "women": {
+            "population": 8116.0,
+            "upperSecondaryPlus": 5332.0,
+            "tertiary": 1701.0,
+            "diplomaPlus": 65.69738787580089,
+            "tertiaryRate": 20.958600295712174
+          },
+          "men": {
+            "population": 7349.0,
+            "upperSecondaryPlus": 4173.0,
+            "tertiary": 1297.0,
+            "diplomaPlus": 56.78323581439651,
+            "tertiaryRate": 17.648659681589333
+          },
+          "total": {
+            "population": 15465.0,
+            "upperSecondaryPlus": 9505.0,
+            "tertiary": 2998.0,
+            "diplomaPlus": 61.461364371160684,
+            "tertiaryRate": 19.385709666989978
+          }
+        },
+        "9-24": {
+          "women": {
+            "population": 3986.0,
+            "upperSecondaryPlus": 1354.0,
+            "tertiary": 163.0,
+            "diplomaPlus": 33.968891118916204,
+            "tertiaryRate": 4.089312594079277
+          },
+          "men": {
+            "population": 4296.0,
+            "upperSecondaryPlus": 1326.0,
+            "tertiary": 162.0,
+            "diplomaPlus": 30.8659217877095,
+            "tertiaryRate": 3.7709497206703912
+          },
+          "total": {
+            "population": 8282.0,
+            "upperSecondaryPlus": 2680.0,
+            "tertiary": 325.0,
+            "diplomaPlus": 32.35933349432504,
+            "tertiaryRate": 3.9241729050953875
+          }
+        },
+        "25-64": {
+          "total": {
+            "population": 32116.0,
+            "upperSecondaryPlus": 22039.0,
+            "tertiary": 8076.0,
+            "diplomaPlus": 68.62311620376137,
+            "tertiaryRate": 25.14634450118321
+          },
+          "men": {
+            "population": 15829.0,
+            "upperSecondaryPlus": 10207.0,
+            "tertiary": 3496.0,
+            "diplomaPlus": 64.48291111251501,
+            "tertiaryRate": 22.08604460168046
+          },
+          "women": {
+            "population": 16287.0,
+            "upperSecondaryPlus": 11832.0,
+            "tertiary": 4580.0,
+            "diplomaPlus": 72.64689629766072,
+            "tertiaryRate": 28.120586971204027
+          }
+        }
+      }
+    }
+  }
+}

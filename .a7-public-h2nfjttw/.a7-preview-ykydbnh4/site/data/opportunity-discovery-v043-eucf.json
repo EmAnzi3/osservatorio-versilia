@@ -1,0 +1,32 @@
+{
+  "schemaVersion": "0.4.3",
+  "discoverySources": [
+    {
+      "id": "eu-eucf",
+      "label": "UE · European City Facility",
+      "publisher": "European City Facility · CINEA / ManagEnergy",
+      "territory": "Unione europea",
+      "family": "energy-climate-environment",
+      "urls": ["https://managenergy.ec.europa.eu/managenergy-discover/managenergy-news/get-ready-eucfs-8th-call-opens-october-2026-08-17_en"],
+      "fetchTimeoutSeconds": 18,
+      "includeTerms": ["EUCF", "call", "municipalities", "local authorities", "energy", "climate", "funding"],
+      "municipalTerms": ["cities", "municipalities", "local authorities", "local authority"]
+    }
+  ],
+  "coverageRegistry": {
+    "eu-eucf": {
+      "label": "UE · European City Facility",
+      "monitoringStatus": "active",
+      "role": "discovery",
+      "priority": 115,
+      "family": "energy-climate-environment",
+      "listingDiscovery": true,
+      "detailEnrichment": false,
+      "pdfFallback": false,
+      "archiveContinuity": false,
+      "historicalReplay": true,
+      "favicon": "",
+      "note": "Canale europeo dedicato a città, Comuni e autorità locali per preparare investimenti su energia e clima; presidia le call EUCF senza dipendere dal solo Funding & Tenders."
+    }
+  }
+}
