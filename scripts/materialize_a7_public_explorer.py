@@ -4,7 +4,7 @@ import tempfile
 from pathlib import Path
 
 from build_a7_query_runtime import build as build_runtime, DEFAULT_PROFILES
-from build_a7_explorer_preview import build as build_site
+from build_a7_explorer_preview import build as build_site, reviewed_association_plan
 
 
 def commit_site(dist, site, backup):
@@ -23,8 +23,9 @@ def materialize(dist):
     with tempfile.TemporaryDirectory(prefix='.a7-public-', dir=dist.parent) as temporary:
         temporary = Path(temporary)
         build_runtime(dist/'data/site-data.json', temporary/'runtime',
-                      profiles=(*DEFAULT_PROFILES, 'ranking', 'benchmark', 'aggregation', 'changes', 'trends', 'outliers'))
-        receipt = build_site(dist, temporary/'runtime', temporary/'site', public=True)
+                      profiles=(*DEFAULT_PROFILES, 'ranking', 'benchmark', 'aggregation', 'changes', 'trends', 'outliers'),
+                      association_plan=reviewed_association_plan())
+        receipt = build_site(dist, temporary/'runtime', temporary/'site', public=True, associations=True)
         from a7_explorer_release import validate_explorer
         validate_explorer(lambda path: (temporary/'site'/path).read_bytes(), full=True)
         backup = temporary/'previous'

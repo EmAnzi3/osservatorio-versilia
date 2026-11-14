@@ -87,6 +87,10 @@ def validate_explorer(read, *, full=False):
     root = decode(checked(manifest, ROOT_LIMIT));schema(root)
     require(root.get('kind') == 'a7-selective-query-runtime' and root.get('scope') == 'all_metrics', 'incomplete_public_explorer')
     require(len(root.get('metrics', [])) == receipt.get('metrics'), 'public_explorer_metric_count_mismatch')
+    # Incroci pubblici: solo il piano rivisto, con la sua interfaccia.
+    require(receipt.get('associationInterface') == 'reviewed_plan_public'
+            and any(path.endswith('associations.mjs') for path in files)
+            and isinstance(root.get('associationPlan'), dict), 'public_association_plan_missing')
     def artifact(ref):
         require(re.fullmatch(r'[a-f0-9]{64}\.json\.gz', ref['path']), 'invalid_explorer_block')
         path = manifest.rsplit('/',1)[0]+'/'+ref['path']

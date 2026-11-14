@@ -1,5 +1,22 @@
 # Consolidamento Osservatorio Versilia — handoff operativo
 
+## Chiedi: «Fai una domanda» in italiano (14 novembre 2026)
+
+- Nuovo riquadro in cima a Chiedi: domanda libera → interprete statico (`experiments/a7-guided-explorer/ask.mjs`, indice `scripts/a7_ask_index.py`) → selezione dell'esploratore esistente o incrocio rivisto. La risposta dice come è stata capita la domanda, dà il valore (solo dall'evidenza del motore), propone indicatori vicini e chiede il Comune se serve.
+- Domande fuori catalogo: risposta esplicita «Non ho trovato…», nessuna lettura forzata.
+- «Due variabili» non è più la vista iniziale: si parte da «Una misura»; i test dell'anteprima cliccano la modalità.
+- Test `scripts/test_chiedi_domande.py` (63 domande con attese scritte a mano + browser 1440/390) registrato in `ci/workflow-contract.json`.
+- Metodo e percorso verso un LLM: `docs/A7_CHIEDI_DOMANDE.md`.
+- Incroci da 6 a 17: undici coppie scelte per pertinenza fra quelle già calcolate dal motore, ciascuna con domanda verificata e coefficiente atteso indipendente; gate di costo ora per componente. Dettagli in `docs/A7_ASSOCIATION_PERIMETER.md`, «Perimetro allargato».
+
+## Chiedi: incroci pubblici del piano rivisto (14 novembre 2026)
+
+- «Chiedi» offre ora «Due variabili» accanto a «Una misura»: le sei associazioni riviste il 26 ottobre (`ci/a7-association-perimeter.json`), Spearman fra i sette Comuni, con coefficiente originale, coppie, grafico, tabella con periodi e fonti e limiti.
+- Il runtime pubblico include il piano (+≈40 KB gzip di risposte, +≈5 KB di manifest, entro i limiti del gate). Il sito pubblico accetta solo il piano rivisto identico; ogni altro piano resta rifiutato. `validate_explorer` rende obbligatori gli incroci nel sito pubblico.
+- Testi dell'interfaccia: tolto «Anteprima» e la dicitura tecnica «nessun consenso implicito». Coefficiente mostrato a due decimali (decisione di Ema), valore completo nell'evidenza; il test verifica entrambi.
+- Su schermi fino a 600 px la tabella delle coppie diventa una scheda per Comune, senza scorrimento orizzontale. Le tabelle a una misura restano scorribili (vincolo di test esistente).
+- Dettagli in `docs/A7_ASSOCIATION_PERIMETER.md`, sezione «Rollout pubblico».
+
 ## Stato dati: data dell'ultimo controllo ferma dopo i merge di dati (14 novembre 2026)
 
 - Sintomo: la pagina Stato dati mostrava come ultimo controllo il 5 novembre, nonostante i run giornalieri di «Controllo frequente fonti» riusciti dal 6 al 13 novembre.

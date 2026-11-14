@@ -1,0 +1,518 @@
+{
+ "schemaVersion": 1,
+ "note": "Domande di prova dell'interprete statico di Chiedi: attese scritte a mano, non generate dal coefficiente o dai valori. Una domanda fuori catalogo deve dare no_metric.",
+ "questions": [
+  {
+   "question": "Quanti abitanti ha Viareggio?",
+   "kind": "reading",
+   "metric": "population",
+   "operation": "observe",
+   "town": "046033",
+   "detail": "total"
+  },
+  {
+   "question": "Quanti residenti ci sono a Stazzema?",
+   "kind": "reading",
+   "metric": "population",
+   "operation": "observe",
+   "town": "046030",
+   "detail": "total"
+  },
+  {
+   "question": "Qual è il reddito medio a Forte dei Marmi?",
+   "kind": "reading",
+   "metric": "income",
+   "operation": "observe",
+   "town": "046013",
+   "detail": "total"
+  },
+  {
+   "question": "Quale Comune ha il reddito più alto?",
+   "kind": "reading",
+   "metric": "income",
+   "operation": "rank",
+   "town": null,
+   "detail": "total"
+  },
+  {
+   "question": "Classifica dei comuni per reddito",
+   "kind": "reading",
+   "metric": "income",
+   "operation": "rank",
+   "town": null,
+   "detail": "total"
+  },
+  {
+   "question": "Com'è cambiata la popolazione di Massarosa negli anni?",
+   "kind": "reading",
+   "metric": "population",
+   "operation": "series",
+   "town": "046018",
+   "detail": "total"
+  },
+  {
+   "question": "Quanto è cresciuta la popolazione di Camaiore?",
+   "kind": "reading",
+   "metric": "population",
+   "operation": "relative_change",
+   "town": "046005",
+   "detail": "total"
+  },
+  {
+   "question": "Confronta la raccolta differenziata fra i comuni",
+   "kind": "reading",
+   "metric": "recycling",
+   "operation": "compare",
+   "town": null,
+   "detail": "total"
+  },
+  {
+   "question": "Percentuale di raccolta differenziata a Pietrasanta",
+   "kind": "reading",
+   "metric": "recycling",
+   "operation": "observe",
+   "town": "046024",
+   "detail": "total"
+  },
+  {
+   "question": "Quanto costa la benzina a Camaiore?",
+   "kind": "reading",
+   "metric": "fuelPrices",
+   "operation": "observe",
+   "town": "046005",
+   "detail": "fuel:benzina"
+  },
+  {
+   "question": "Prezzo del gasolio a Viareggio",
+   "kind": "reading",
+   "metric": "fuelPrices",
+   "operation": "observe",
+   "town": "046033",
+   "detail": "fuel:gasolio"
+  },
+  {
+   "question": "Indice di vecchiaia a Stazzema",
+   "kind": "reading",
+   "metric": "oldAgeIndex",
+   "operation": "observe",
+   "town": "046030",
+   "detail": "total"
+  },
+  {
+   "question": "Dove ci sono più anziani?",
+   "kind": "reading",
+   "metric": "oldAgeIndex",
+   "operation": "rank",
+   "town": null,
+   "detail": "total"
+  },
+  {
+   "question": "Quanti turisti arrivano a Pietrasanta?",
+   "kind": "reading",
+   "metric": "tourismArrivals",
+   "operation": "observe",
+   "town": "046024",
+   "detail": "total"
+  },
+  {
+   "question": "Presenze turistiche a Forte dei Marmi",
+   "kind": "reading",
+   "metric": "tourismPresences",
+   "operation": "observe",
+   "town": "046013",
+   "detail": "total"
+  },
+  {
+   "question": "Posti letto turistici a Camaiore",
+   "kind": "reading",
+   "metric": "tourismBeds",
+   "operation": "observe",
+   "town": "046005",
+   "detail": "total"
+  },
+  {
+   "question": "Disoccupazione giovanile a Seravezza",
+   "kind": "reading",
+   "metric": "unemploymentRate",
+   "operation": "observe",
+   "town": "046028",
+   "detail": "age:15-24|sex:total"
+  },
+  {
+   "question": "Tasso di disoccupazione a Massarosa",
+   "kind": "reading",
+   "metric": "unemploymentRate",
+   "operation": "observe",
+   "town": "046018",
+   "detail": "total"
+  },
+  {
+   "question": "Tasso di occupazione femminile",
+   "kind": "reading",
+   "metric": "femaleEmploymentRate",
+   "operation": "compare",
+   "town": null,
+   "detail": "total"
+  },
+  {
+   "question": "Prezzi delle case a Forte dei Marmi",
+   "kind": "reading",
+   "metric": "omiResidential",
+   "operation": "observe",
+   "town": "046013",
+   "detail": "total"
+  },
+  {
+   "question": "Quante farmacie ci sono a Massarosa?",
+   "kind": "reading",
+   "metric": "pharmaciesPer1000",
+   "operation": "observe",
+   "town": "046018",
+   "detail": "total"
+  },
+  {
+   "question": "Consumo di suolo in Versilia",
+   "kind": "reading",
+   "metric": "landUse",
+   "operation": "weighted_ratio",
+   "town": null,
+   "detail": "total"
+  },
+  {
+   "question": "Quanta TARI paga una famiglia a Viareggio?",
+   "kind": "reading",
+   "metric": "tariStandardHousehold",
+   "operation": "observe",
+   "town": "046033",
+   "detail": "total"
+  },
+  {
+   "question": "Addizionale Irpef di Pietrasanta",
+   "kind": "reading",
+   "metric": "municipalIrpef",
+   "operation": "observe",
+   "town": "046024",
+   "detail": "total"
+  },
+  {
+   "question": "IMU a Camaiore",
+   "kind": "reading",
+   "metric": "municipalImuStandard",
+   "operation": "observe",
+   "town": "046005",
+   "detail": "total"
+  },
+  {
+   "question": "Copertura fibra FTTH a Stazzema",
+   "kind": "reading",
+   "metric": "ftthCoverageDesi",
+   "operation": "observe",
+   "town": "046030",
+   "detail": "total"
+  },
+  {
+   "question": "Rischio frane a Seravezza",
+   "kind": "reading",
+   "metric": "landslideExposure",
+   "operation": "observe",
+   "town": "046028",
+   "detail": "total"
+  },
+  {
+   "question": "Popolazione esposta ad alluvioni a Viareggio",
+   "kind": "reading",
+   "metric": "floodExposure",
+   "operation": "observe",
+   "town": "046033",
+   "detail": "residentsPct:P3"
+  },
+  {
+   "question": "Spesa per cultura e sport per abitante",
+   "kind": "reading",
+   "metric": "cultureSportMissionExpenditurePerResident",
+   "operation": "compare",
+   "town": null,
+   "detail": "total"
+  },
+  {
+   "question": "Quanto spende Viareggio per il sociale?",
+   "kind": "reading",
+   "metric": "socialSpendingByUserArea",
+   "operation": "observe",
+   "town": "046033",
+   "detail": "total"
+  },
+  {
+   "question": "Quanti stranieri vivono a Viareggio?",
+   "kind": "reading",
+   "metric": "foreignResidents",
+   "operation": "observe",
+   "town": "046033",
+   "detail": "total"
+  },
+  {
+   "question": "Quante imprese ci sono a Viareggio?",
+   "kind": "reading",
+   "metric": "localUnits",
+   "operation": "observe",
+   "town": "046033",
+   "detail": "total"
+  },
+  {
+   "question": "Addetti nelle unità locali a Pietrasanta",
+   "kind": "reading",
+   "metric": "localEmployees",
+   "operation": "observe",
+   "town": "046024",
+   "detail": "total"
+  },
+  {
+   "question": "Qualità dell'acqua di balneazione a Viareggio",
+   "kind": "reading",
+   "metric": "bathingWaterQuality",
+   "operation": "observe",
+   "town": "046033",
+   "detail": "total"
+  },
+  {
+   "question": "Qualità dell'acqua potabile a Massarosa",
+   "kind": "reading",
+   "metric": "drinkingWaterQuality",
+   "operation": "lookup",
+   "town": "046018",
+   "detail": "parameter:0"
+  },
+  {
+   "question": "Quante auto ci sono ogni mille abitanti?",
+   "kind": "reading",
+   "metric": "motorization",
+   "operation": "compare",
+   "town": null,
+   "detail": "total"
+  },
+  {
+   "question": "Temperatura media a Stazzema nel tempo",
+   "kind": "reading",
+   "metric": "climateTemperatureTrend50y",
+   "operation": "series",
+   "town": "046030",
+   "detail": "total"
+  },
+  {
+   "question": "Quanti bambini nascono a Camaiore?",
+   "kind": "reading",
+   "metric": "naturalDemographicDynamics",
+   "operation": "observe",
+   "town": "046005",
+   "detail": "part:births"
+  },
+  {
+   "question": "Quanti giovani tra 20 e 34 anni a Massarosa?",
+   "kind": "reading",
+   "metric": "ageDistribution",
+   "operation": "observe",
+   "town": "046018",
+   "detail": "age:20-34"
+  },
+  {
+   "question": "Popolazione femminile di Camaiore",
+   "kind": "reading",
+   "metric": "population",
+   "operation": "observe",
+   "town": "046005",
+   "detail": "sex:women"
+  },
+  {
+   "question": "Reddito di Massarosa rispetto alla Toscana",
+   "kind": "reading",
+   "metric": "income",
+   "operation": "benchmark_gap",
+   "town": "046018",
+   "detail": "total",
+   "benchmark": "tuscany"
+  },
+  {
+   "question": "Reddito di Massarosa rispetto all'Italia",
+   "kind": "reading",
+   "metric": "income",
+   "operation": "benchmark_gap",
+   "town": "046018",
+   "detail": "total",
+   "benchmark": "italy"
+  },
+  {
+   "question": "Valori fuori scala del reddito",
+   "kind": "reading",
+   "metric": "income",
+   "operation": "anomaly",
+   "town": null,
+   "detail": "total"
+  },
+  {
+   "question": "Quante concessioni balneari a Forte dei Marmi?",
+   "kind": "reading",
+   "metric": "maritimeConcessions",
+   "operation": "observe",
+   "town": "046013",
+   "detail": "total"
+  },
+  {
+   "question": "Debito del Comune di Camaiore",
+   "kind": "reading",
+   "metric": "financialDebtProfile",
+   "operation": "observe",
+   "town": "046005",
+   "detail": "total"
+  },
+  {
+   "question": "Speranza di vita a Viareggio",
+   "kind": "reading",
+   "metric": "lifeExpectancy",
+   "operation": "observe",
+   "town": "046033",
+   "detail": "total"
+  },
+  {
+   "question": "Quanti medici di base a Seravezza?",
+   "kind": "no_metric"
+  },
+  {
+   "question": "Alunni per classe a Pietrasanta",
+   "kind": "reading",
+   "metric": "studentsPerClass",
+   "operation": "observe",
+   "town": "046024",
+   "detail": "total"
+  },
+  {
+   "question": "Risultati INVALSI a Camaiore",
+   "kind": "reading",
+   "metric": "invalsiResults",
+   "operation": "observe",
+   "town": "046005",
+   "detail": "total"
+  },
+  {
+   "question": "Diplomati a Massarosa",
+   "kind": "reading",
+   "metric": "diplomaPlus",
+   "operation": "observe",
+   "town": "046018",
+   "detail": "total"
+  },
+  {
+   "question": "C'è relazione tra reddito e popolazione?",
+   "kind": "association",
+   "association": "aligned_association"
+  },
+  {
+   "question": "Relazione tra pendolari in entrata e in uscita",
+   "kind": "association",
+   "association": "commuting_gross_pair"
+  },
+  {
+   "question": "Legame tra tempo pieno e mense scolastiche",
+   "kind": "association",
+   "association": "school_fulltime_canteen"
+  },
+  {
+   "question": "Relazione tra reddito e turismo",
+   "kind": "association_unavailable"
+  },
+  {
+   "question": "Raccolta differenziata nella Versilia nel suo insieme",
+   "kind": "reading",
+   "metric": "recycling",
+   "operation": "compare",
+   "town": null,
+   "detail": "total"
+  },
+  {
+   "question": "Andamento delle presenze turistiche a Viareggio",
+   "kind": "reading",
+   "metric": "tourismPresences",
+   "operation": "series",
+   "town": "046033",
+   "detail": "total"
+  },
+  {
+   "question": "Tendenza del reddito a Forte dei Marmi",
+   "kind": "reading",
+   "metric": "income",
+   "operation": "trend",
+   "town": "046013",
+   "detail": "total"
+  },
+  {
+   "question": "Quanto è cambiato il reddito a Seravezza?",
+   "kind": "reading",
+   "metric": "income",
+   "operation": "relative_change",
+   "town": "046028",
+   "detail": "total"
+  },
+  {
+   "question": "Posti negli asili nido a Massarosa",
+   "kind": "reading",
+   "metric": "earlyChildhoodPotentialCapacityRate",
+   "operation": "observe",
+   "town": "046018",
+   "detail": "total"
+  },
+  {
+   "question": "Prestiti delle biblioteche a Camaiore",
+   "kind": "reading",
+   "metric": "libraryLoansPerResident",
+   "operation": "observe",
+   "town": "046005",
+   "detail": "total"
+  },
+  {
+   "question": "Chi vincerà le elezioni?",
+   "kind": "no_metric"
+  },
+  {
+   "question": "Che tempo farà domani a Viareggio?",
+   "kind": "no_metric"
+  },
+  {
+   "question": "Quanto costa una pizza?",
+   "kind": "no_metric"
+  },
+  {
+   "question": "C'è relazione tra reddito e istruzione?",
+   "kind": "association",
+   "association": "income_education_association"
+  },
+  {
+   "question": "Relazione tra reddito e disoccupazione",
+   "kind": "association",
+   "association": "income_unemployment_association"
+  },
+  {
+   "question": "Legame tra raccolta differenziata e costo dei rifiuti",
+   "kind": "association",
+   "association": "recycling_cost_association"
+  },
+  {
+   "question": "Relazione tra turismo e spesa per la sicurezza",
+   "kind": "association",
+   "association": "tourism_security_spending_association"
+  },
+  {
+   "question": "Relazione tra case vuote e numero di abitazioni",
+   "kind": "association",
+   "association": "vacant_housing_association"
+  },
+  {
+   "question": "Relazione tra popolazione e invecchiamento",
+   "kind": "association",
+   "association": "population_ageing_association"
+  },
+  {
+   "question": "Relazione tra reddito e rifiuti",
+   "kind": "association",
+   "association": "income_waste_association"
+  }
+ ]
+}
