@@ -273,9 +273,9 @@ def build_prc_metric(site):
         'meta':{
             'key':'extractivePlanning','theme':'ambiente','label':'Quadro estrattivo PRC','shortLabel':'Quadro estrattivo PRC',
             'description':'Superficie del territorio comunale ricadente nelle geometrie ufficiali del Piano Regionale Cave. Giacimenti, Giacimenti Potenziali e Aree Contigue di Cava restano categorie separate.',
-            'unit':'hectares','year':'PRC vigente · variante 2025','source':'Regione Toscana — Piano Regionale Cave / GeoScopio','polarity':'neutral','detailGroup':'extractive',
+            'unit':'hectares','year':'PRC vigente · variante 2026','source':'Regione Toscana — Piano Regionale Cave / GeoScopio','polarity':'neutral','detailGroup':'extractive',
             'searchTerms':['giacimenti','giacimenti potenziali','aree contigue di cava','acc','piano regionale cave','prc','marmo','cave'],
-            'sourceMeta':{'snapshot':'data/source-snapshots/attivita-estrattive-v128.json','note':'Geometrie PRC EPSG:3003 intersecate con Ambiti Amministrativi Regione Toscana. MOS, pMOS e SED sono conservati nel dettaglio.'},
+            'sourceMeta':{'snapshot':'data/source-snapshots/attivita-estrattive-v128.json','note':'Geometrie PRC EPSG:3003 intersecate con Ambiti Amministrativi Regione Toscana. MOS, pMOS e SED sono conservati nel dettaglio. La variante 2026 (deliberazione del Consiglio regionale n. 81 del 6 ottobre 2026) riguarda solo due giacimenti potenziali a Castagneto Carducci (LI): in Versilia le geometrie sono quelle della variante 2025.'},
             'compositeType':'securityMeasures','selectorLabel':'Lettura','comparisonReference':'aggregate','comparisonDifference':'shareOfAggregate','comparisonLabel':'Versilia','comparisonOverline':'Peso sulla Versilia','comparisonNote':'Per superfici e numeri il peso è calcolato sul totale della stessa categoria PRC. Per la % di territorio si confrontano direttamente quota comunale e quota territoriale Versilia, senza dividere una percentuale per l’altra.'
         },
         'sourceUrl':PRC_URL,
