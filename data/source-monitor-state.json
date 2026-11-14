@@ -7426,7 +7426,7 @@
       "periodVerifiedAt": ""
     },
     "internalResidentialMobility": {
-      "publishedPeriod": "2024",
+      "publishedPeriod": "2025",
       "checkedAt": "2026-11-05T13:17:29+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked",
@@ -7503,21 +7503,21 @@
       "periodVerifiedAt": ""
     },
     "tourismBeds": {
-      "publishedPeriod": "2024",
+      "publishedPeriod": "2025",
       "checkedAt": "2026-11-05T13:17:29+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked",
       "periodVerifiedAt": ""
     },
     "localUnits": {
-      "publishedPeriod": "2023",
+      "publishedPeriod": "2024",
       "checkedAt": "2026-11-05T13:17:29+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked",
       "periodVerifiedAt": ""
     },
     "microUnits": {
-      "publishedPeriod": "2023",
+      "publishedPeriod": "2024",
       "checkedAt": "2026-11-05T13:17:29+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked",
@@ -7601,7 +7601,7 @@
       "periodVerifiedAt": ""
     },
     "schoolSites": {
-      "publishedPeriod": "2025",
+      "publishedPeriod": "2026",
       "checkedAt": "2026-11-05T13:17:29+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked",
@@ -7758,14 +7758,14 @@
       "periodVerifiedAt": ""
     },
     "motorization": {
-      "publishedPeriod": "2024",
+      "publishedPeriod": "2025",
       "checkedAt": "2026-11-05T13:17:29+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked",
       "periodVerifiedAt": ""
     },
     "pollutingCars": {
-      "publishedPeriod": "2024",
+      "publishedPeriod": "2025",
       "checkedAt": "2026-11-05T13:17:29+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked",
@@ -7821,28 +7821,28 @@
       "periodVerifiedAt": ""
     },
     "landUse": {
-      "publishedPeriod": "2006, 2012, 2015–2024",
+      "publishedPeriod": "2025",
       "checkedAt": "2026-11-05T13:17:29+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked",
       "periodVerifiedAt": ""
     },
     "landUseChange": {
-      "publishedPeriod": "2012, 2015–2024",
+      "publishedPeriod": "2025",
       "checkedAt": "2026-11-05T13:17:29+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked",
       "periodVerifiedAt": ""
     },
     "floodExposure": {
-      "publishedPeriod": "2020",
+      "publishedPeriod": "2021",
       "checkedAt": "2026-11-05T13:17:29+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked",
       "periodVerifiedAt": ""
     },
     "landslideExposure": {
-      "publishedPeriod": "2024",
+      "publishedPeriod": "2021",
       "checkedAt": "2026-11-05T13:17:29+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked",
@@ -7940,9 +7940,9 @@
       "periodVerifiedAt": "2026-08-29T12:22:42+00:00"
     },
     "drinkingWaterQuality": {
-      "publishedPeriod": "2° semestre 2025",
+      "publishedPeriod": "1° semestre 2026",
       "checkedAt": "2026-11-05T13:17:29+00:00",
-      "observedLatestPeriod": "2° semestre 2025",
+      "observedLatestPeriod": "1° semestre 2026",
       "status": "current",
       "periodVerifiedAt": "2026-08-29T12:22:42+00:00"
     },
@@ -8157,14 +8157,14 @@
       "periodVerifiedAt": ""
     },
     "tourismBedsPer1000": {
-      "publishedPeriod": "2024",
+      "publishedPeriod": "2025",
       "checkedAt": "2026-11-05T13:17:29+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked",
       "periodVerifiedAt": ""
     },
     "tourismStructuresPer1000": {
-      "publishedPeriod": "2024",
+      "publishedPeriod": "2025",
       "checkedAt": "2026-11-05T13:17:29+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked",
@@ -8346,56 +8346,56 @@
       "periodVerifiedAt": ""
     },
     "localEmployees": {
-      "publishedPeriod": "2023",
+      "publishedPeriod": "2024",
       "checkedAt": "2026-11-05T13:17:29+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked",
       "periodVerifiedAt": ""
     },
     "employeesPerLocalUnit": {
-      "publishedPeriod": "2023",
+      "publishedPeriod": "2024",
       "checkedAt": "2026-11-05T13:17:29+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked",
       "periodVerifiedAt": ""
     },
     "localUnitsChange": {
-      "publishedPeriod": "2018–2023",
+      "publishedPeriod": "2018–2024",
       "checkedAt": "2026-11-05T13:17:29+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked",
       "periodVerifiedAt": ""
     },
     "localEmployeesChange": {
-      "publishedPeriod": "2018–2023",
+      "publishedPeriod": "2018–2024",
       "checkedAt": "2026-11-05T13:17:29+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked",
       "periodVerifiedAt": ""
     },
     "ftthCoverageDesi": {
-      "publishedPeriod": "6 luglio 2026",
+      "publishedPeriod": "5 ottobre 2026",
       "checkedAt": "2026-11-05T13:17:29+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked",
       "periodVerifiedAt": ""
     },
     "ftthReachedHouseholds": {
-      "publishedPeriod": "6 luglio 2026",
+      "publishedPeriod": "5 ottobre 2026",
       "checkedAt": "2026-11-05T13:17:29+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked",
       "periodVerifiedAt": ""
     },
     "ftthUnreachedHouseholds": {
-      "publishedPeriod": "6 luglio 2026",
+      "publishedPeriod": "5 ottobre 2026",
       "checkedAt": "2026-11-05T13:17:29+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked",
       "periodVerifiedAt": ""
     },
     "ftthCoverage20m": {
-      "publishedPeriod": "6 luglio 2026",
+      "publishedPeriod": "5 ottobre 2026",
       "checkedAt": "2026-11-05T13:17:29+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked",
@@ -8472,14 +8472,14 @@
       "periodVerifiedAt": ""
     },
     "foreignResidentialMobility": {
-      "publishedPeriod": "2024",
+      "publishedPeriod": "2025",
       "checkedAt": "2026-11-05T13:17:29+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked",
       "periodVerifiedAt": ""
     },
     "totalResidentialMobility": {
-      "publishedPeriod": "2024",
+      "publishedPeriod": "2025",
       "checkedAt": "2026-11-05T13:17:29+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked",
@@ -8493,16 +8493,16 @@
       "periodVerifiedAt": ""
     },
     "omiResidential": {
-      "publishedPeriod": "2° semestre 2025",
+      "publishedPeriod": "1° semestre 2026",
       "checkedAt": "2026-11-05T13:17:29+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked",
       "periodVerifiedAt": ""
     },
     "erpArrears": {
-      "publishedPeriod": "2024",
+      "publishedPeriod": "2025",
       "checkedAt": "2026-11-05T13:17:29+00:00",
-      "observedLatestPeriod": "2024",
+      "observedLatestPeriod": "2025",
       "status": "current",
       "periodVerifiedAt": "2026-08-29T12:22:42+00:00"
     },
@@ -8535,14 +8535,14 @@
       "periodVerifiedAt": ""
     },
     "tariStandardHousehold": {
-      "publishedPeriod": "2025",
+      "publishedPeriod": "2026",
       "checkedAt": "2026-11-05T13:17:29+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked",
       "periodVerifiedAt": ""
     },
     "municipalImuStandard": {
-      "publishedPeriod": "2025",
+      "publishedPeriod": "2026",
       "checkedAt": "2026-11-05T13:17:29+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked",
@@ -8755,7 +8755,7 @@
       "periodVerifiedAt": "2026-08-30T23:42:08+00:00"
     },
     "managedReticulumLength": {
-      "publishedPeriod": "DCRT 24/2025 · confini Istat 1 gennaio 2026",
+      "publishedPeriod": "2025",
       "checkedAt": "2026-11-05T13:17:29+00:00",
       "observedLatestPeriod": "2025",
       "status": "source_checked",
