@@ -478,6 +478,41 @@
   {
    "question": "Quanto costa una pizza?",
    "kind": "no_metric"
+  },
+  {
+   "question": "C'è relazione tra reddito e istruzione?",
+   "kind": "association",
+   "association": "income_education_association"
+  },
+  {
+   "question": "Relazione tra reddito e disoccupazione",
+   "kind": "association",
+   "association": "income_unemployment_association"
+  },
+  {
+   "question": "Legame tra raccolta differenziata e costo dei rifiuti",
+   "kind": "association",
+   "association": "recycling_cost_association"
+  },
+  {
+   "question": "Relazione tra turismo e spesa per la sicurezza",
+   "kind": "association",
+   "association": "tourism_security_spending_association"
+  },
+  {
+   "question": "Relazione tra case vuote e numero di abitazioni",
+   "kind": "association",
+   "association": "vacant_housing_association"
+  },
+  {
+   "question": "Relazione tra popolazione e invecchiamento",
+   "kind": "association",
+   "association": "population_ageing_association"
+  },
+  {
+   "question": "Relazione tra reddito e rifiuti",
+   "kind": "association",
+   "association": "income_waste_association"
   }
  ]
 }

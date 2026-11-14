@@ -83,3 +83,32 @@ altro piano resta rifiutato con `association_interface_preview_only`.
 `associationInterface = reviewed_plan_public`, l'interfaccia degli incroci e il
 piano nel manifest. Nuove coppie entrano solo dopo una revisione congiunta A6,
 mai scelte dal coefficiente.
+
+## Perimetro allargato (14 novembre 2026)
+
+Su richiesta di Ema («valuta se c'è altro oltre ai 6») ho cercato, fra gli
+indicatori principali dei temi e altri d'uso frequente (44 con un solo periodo
+fra i sette Comuni), le coppie che il motore A6 già calcola: 65. Ne ho scelte 11
+per pertinenza alle domande dei cittadini, **senza guardare il coefficiente**,
+escludendo coppie con componenti condivise ovvie (per esempio divario di genere
+e occupazione femminile) o puramente contabili:
+
+- reddito × diploma; reddito × disoccupazione; reddito × occupazione;
+  diploma × disoccupazione (2024);
+- reddito × rifiuti per residente; differenziata × costo del servizio rifiuti;
+  rifiuti per residente × costo del servizio (2024);
+- popolazione × indice di vecchiaia (2026);
+- intensità turistica × spesa corrente per residente; intensità turistica ×
+  spesa per ordine pubblico e sicurezza (2025);
+- abitazioni non occupate × patrimonio abitativo per 1.000 residenti (2023).
+
+Ogni coppia ha una domanda verificata in `ci/semantic-verified-questions.json`
+con coefficiente atteso calcolato a parte dai ranghi (frazione esatta, o
+Pearson sui ranghi medi quando ci sono pari merito) e un motivo italiano con il
+limite causale. Il piano passa da 6 a 17 componenti (+≈109 KB gzip di risposte,
++≈14 KB di manifest); il gate ora limita il costo per componente con lo stesso
+margine di prima.
+
+Coppie oggi rifiutate dal motore (`*_pair_not_jointly_reviewed`, periodi
+diversi) restano fuori: aggiungerle richiede una revisione dell'adapter, non
+del solo piano.

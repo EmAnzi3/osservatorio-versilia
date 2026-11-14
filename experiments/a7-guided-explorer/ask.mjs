@@ -34,7 +34,7 @@ const SYNONYMS = {
   spazzatura: 'rifiuti', immondizia: 'rifiuti', raccolta: 'differenziata rifiuti', riciclo: 'differenziata',
 mare: 'balneazione costa', spiagge: 'balneazione spiagge concessioni', balneari: 'concessioni demaniali',
   tasse: 'tributi imposte irpef imu tari', imu: 'imu', tari: 'tari rifiuti', irpef: 'irpef addizionale',
-  scuole: 'scuola scolastici istruzione', scuola: 'scolastici istruzione', studenti: 'alunni', alunni: 'alunni', mensa: 'mense', diploma: 'diploma titolo',
+  istruzione: 'diploma titolo', studio: 'diploma titolo', scuole: 'scuola scolastici istruzione', scuola: 'scolastici istruzione', studenti: 'alunni', alunni: 'alunni', mensa: 'mense', diploma: 'diploma titolo',
   ospedale: 'ospedalieri ricoveri', medici: 'medici sanita', farmacie: 'farmacie', salute: 'sanitari salute',
   auto: 'autovetture motorizzazione', macchine: 'autovetture motorizzazione', traffico: 'veicoli', autobus: 'tpl trasporto pubblico', bus: 'tpl', treni: 'ferroviario',
   internet: 'banda ultralarga ftth', fibra: 'ftth fibra', connessione: 'ftth',
@@ -330,6 +330,26 @@ export function startAsk(index, presentation) {
     if (location.hash === hash) location.hash = '';
     location.hash = hash;
   }
+  // Incrocio rivisto: stessa logica, la frase riporta il coefficiente del motore.
+  function pair(id, answer) {
+    const out = document.getElementById('association-result');
+    document.getElementById('association-mode-pair')?.click();
+    if (out) {
+      const watch = new MutationObserver(() => {
+        const pre = out.querySelector('[data-association-evidence]');
+        if (out.hidden || !pre) return;
+        let evidence = null; try { evidence = JSON.parse(pre.textContent); } catch {}
+        if (evidence?.plan?.steps?.[0]?.id !== id) return;
+        watch.disconnect();
+        const r = evidence.steps[0].response;
+        if (r.status === 'computed') answer.append(make('p', 'Coefficiente di Spearman ' + new Intl.NumberFormat('it-IT', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(r.result.coefficient) + ' su ' + r.result.n + ' Comuni (scala da −1 a +1). Descrive se gli ordini dei Comuni coincidono, non una causa.', 'ask-reply'));
+        answer.append(make('p', 'Grafico, coppie, fonti e limiti qui sotto.', 'ask-note'));
+        out.scrollIntoView({ block: 'start' });
+      });
+      watch.observe(out, { childList: true, subtree: true, attributes: true, attributeFilter: ['hidden'] });
+    }
+    document.dispatchEvent(new CustomEvent('chiedi-association', { detail: { id } }));
+  }
   function describe(r) {
     const parts = ['«' + (r.viewLabel && r.metric.short ? r.metric.short : r.metric.label) + '»'];
     if (r.viewLabel) parts.push(r.viewLabel);
@@ -350,14 +370,13 @@ export function startAsk(index, presentation) {
     if (r.kind === 'association') {
       const a = r.association;
       answer.append(make('p', 'Ho capito: la relazione fra «' + metricLabel(a.left) + '» e «' + metricLabel(a.right) + '» nei sette Comuni. È una lettura descrittiva: non dimostra una causa.'));
-      document.getElementById('association-mode-pair')?.click();
-      document.dispatchEvent(new CustomEvent('chiedi-association', { detail: { id: a.id } }));
+      pair(a.id, answer);
       return;
     }
     if (r.kind === 'association_unavailable') {
       answer.append(make('p', 'Questo incrocio non è ancora stato rivisto, quindi non lo mostro. Gli incroci disponibili sono:'));
       const list = make('div', undefined, 'ask-options');
-      for (const a of index.associations) list.append(button(metricLabel(a.left) + ' e ' + metricLabel(a.right), () => { document.getElementById('association-mode-pair')?.click(); document.dispatchEvent(new CustomEvent('chiedi-association', { detail: { id: a.id } })); }));
+      for (const a of index.associations) list.append(button(metricLabel(a.left) + ' e ' + metricLabel(a.right), () => pair(a.id, answer)));
       answer.append(list); return;
     }
     if (r.kind === 'no_reading') { answer.append(make('p', 'Ho trovato «' + r.metric.label + '», ma per questo indicatore non ci sono ancora letture consultabili qui.')); return; }

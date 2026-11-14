@@ -115259,6 +115259,545 @@
         ]
       },
       "reference": "Riferimenti fissi trascritti in test_semantic_economy_atlas_adapters.py; Registro Imprese compatto congelato ATECO2007/2022, non ASIA/addetti. Totali territoriali 20.325 riconciliati al carrier; 292 resta soltanto la somma delle righe dirette di divisione. Null non zero; nessun originale o gerarchia ricostruita."
+    },
+    {
+      "id": "income_education_association",
+      "question": "Qual è l’associazione fra reddito imponibile medio e quota di adulti con almeno il diploma nel 2024?",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "income",
+            "periods": [
+              "2024"
+            ]
+          },
+          {
+            "metric": "diplomaPlus",
+            "periods": [
+              "2024"
+            ]
+          }
+        ],
+        "method": "spearman",
+        "axis": "municipalities",
+        "purpose": "Lettura descrittiva fra i sette Comuni nel 2024: reddito imponibile medio dei dichiaranti e quota di adulti diplomati, universi diversi; nessuna interpretazione causale"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/coefficient",
+            "fraction": [
+              25,
+              28
+            ],
+            "tolerance": 1e-08
+          },
+          {
+            "path": "/result/n",
+            "fraction": [
+              7,
+              1
+            ],
+            "tolerance": 1e-08
+          }
+        ],
+        "warnings": [
+          "association_not_causation"
+        ]
+      },
+      "reference": "Ranghi sui sette Comuni calcolati a parte dai valori 2024/2024: Spearman 25/28; n=7. Coppia rivista il 14/11/2026 per pertinenza, non per coefficiente."
+    },
+    {
+      "id": "income_unemployment_association",
+      "question": "Qual è l’associazione fra reddito imponibile medio e tasso di disoccupazione nel 2024?",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "income",
+            "periods": [
+              "2024"
+            ]
+          },
+          {
+            "metric": "unemploymentRate",
+            "periods": [
+              "2024"
+            ]
+          }
+        ],
+        "method": "spearman",
+        "axis": "municipalities",
+        "purpose": "Lettura descrittiva fra i sette Comuni nel 2024: reddito dei dichiaranti e disoccupazione dei residenti 25–64 anni; nessuna interpretazione causale"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/coefficient",
+            "fraction": [
+              295839855,
+              608090579
+            ],
+            "tolerance": 1e-08
+          },
+          {
+            "path": "/result/n",
+            "fraction": [
+              7,
+              1
+            ],
+            "tolerance": 1e-08
+          }
+        ],
+        "warnings": [
+          "association_not_causation"
+        ]
+      },
+      "reference": "Ranghi sui sette Comuni calcolati a parte dai valori 2024/2024: Spearman 295839855/608090579 (ranghi con pari merito, Pearson sui ranghi medi); n=7. Coppia rivista il 14/11/2026 per pertinenza, non per coefficiente."
+    },
+    {
+      "id": "income_employment_association",
+      "question": "Qual è l’associazione fra reddito imponibile medio e tasso di occupazione nel 2024?",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "income",
+            "periods": [
+              "2024"
+            ]
+          },
+          {
+            "metric": "employmentRate",
+            "periods": [
+              "2024"
+            ]
+          }
+        ],
+        "method": "spearman",
+        "axis": "municipalities",
+        "purpose": "Lettura descrittiva fra i sette Comuni nel 2024: reddito dei dichiaranti e occupazione dei residenti; nessuna interpretazione causale"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/coefficient",
+            "fraction": [
+              -1,
+              14
+            ],
+            "tolerance": 1e-08
+          },
+          {
+            "path": "/result/n",
+            "fraction": [
+              7,
+              1
+            ],
+            "tolerance": 1e-08
+          }
+        ],
+        "warnings": [
+          "association_not_causation"
+        ]
+      },
+      "reference": "Ranghi sui sette Comuni calcolati a parte dai valori 2024/2024: Spearman -1/14; n=7. Coppia rivista il 14/11/2026 per pertinenza, non per coefficiente."
+    },
+    {
+      "id": "education_unemployment_association",
+      "question": "Qual è l’associazione fra quota di diplomati e tasso di disoccupazione nel 2024?",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "diplomaPlus",
+            "periods": [
+              "2024"
+            ]
+          },
+          {
+            "metric": "unemploymentRate",
+            "periods": [
+              "2024"
+            ]
+          }
+        ],
+        "method": "spearman",
+        "axis": "municipalities",
+        "purpose": "Lettura descrittiva fra i sette Comuni nel 2024: istruzione degli adulti e disoccupazione dei residenti; nessuna interpretazione causale"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/coefficient",
+            "fraction": [
+              382477593,
+              493642906
+            ],
+            "tolerance": 1e-08
+          },
+          {
+            "path": "/result/n",
+            "fraction": [
+              7,
+              1
+            ],
+            "tolerance": 1e-08
+          }
+        ],
+        "warnings": [
+          "association_not_causation"
+        ]
+      },
+      "reference": "Ranghi sui sette Comuni calcolati a parte dai valori 2024/2024: Spearman 382477593/493642906 (ranghi con pari merito, Pearson sui ranghi medi); n=7. Coppia rivista il 14/11/2026 per pertinenza, non per coefficiente."
+    },
+    {
+      "id": "income_waste_association",
+      "question": "Qual è l’associazione fra reddito imponibile medio e rifiuti urbani per residente nel 2024?",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "income",
+            "periods": [
+              "2024"
+            ]
+          },
+          {
+            "metric": "wastePerResident",
+            "periods": [
+              "2024"
+            ]
+          }
+        ],
+        "method": "spearman",
+        "axis": "municipalities",
+        "purpose": "Lettura descrittiva fra i sette Comuni nel 2024: i rifiuti per residente includono anche turisti e attività; nessuna interpretazione causale"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/coefficient",
+            "fraction": [
+              6,
+              7
+            ],
+            "tolerance": 1e-08
+          },
+          {
+            "path": "/result/n",
+            "fraction": [
+              7,
+              1
+            ],
+            "tolerance": 1e-08
+          }
+        ],
+        "warnings": [
+          "association_not_causation"
+        ]
+      },
+      "reference": "Ranghi sui sette Comuni calcolati a parte dai valori 2024/2024: Spearman 6/7; n=7. Coppia rivista il 14/11/2026 per pertinenza, non per coefficiente."
+    },
+    {
+      "id": "recycling_cost_association",
+      "question": "Qual è l’associazione fra raccolta differenziata e costo del servizio rifiuti per residente nel 2024?",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "recycling",
+            "periods": [
+              "2024"
+            ]
+          },
+          {
+            "metric": "wasteServiceCost",
+            "periods": [
+              "2024"
+            ]
+          }
+        ],
+        "method": "spearman",
+        "axis": "municipalities",
+        "purpose": "Lettura descrittiva fra i sette Comuni nel 2024: quota di differenziata e costo del servizio per residente; nessuna valutazione di efficienza o causa"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/coefficient",
+            "fraction": [
+              -5,
+              14
+            ],
+            "tolerance": 1e-08
+          },
+          {
+            "path": "/result/n",
+            "fraction": [
+              7,
+              1
+            ],
+            "tolerance": 1e-08
+          }
+        ],
+        "warnings": [
+          "association_not_causation"
+        ]
+      },
+      "reference": "Ranghi sui sette Comuni calcolati a parte dai valori 2024/2024: Spearman -5/14; n=7. Coppia rivista il 14/11/2026 per pertinenza, non per coefficiente."
+    },
+    {
+      "id": "waste_cost_association",
+      "question": "Qual è l’associazione fra rifiuti urbani per residente e costo del servizio per residente nel 2024?",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "wastePerResident",
+            "periods": [
+              "2024"
+            ]
+          },
+          {
+            "metric": "wasteServiceCost",
+            "periods": [
+              "2024"
+            ]
+          }
+        ],
+        "method": "spearman",
+        "axis": "municipalities",
+        "purpose": "Lettura descrittiva fra i sette Comuni nel 2024: quantità e costo condividono il denominatore dei residenti; nessuna interpretazione causale"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/coefficient",
+            "fraction": [
+              6,
+              7
+            ],
+            "tolerance": 1e-08
+          },
+          {
+            "path": "/result/n",
+            "fraction": [
+              7,
+              1
+            ],
+            "tolerance": 1e-08
+          }
+        ],
+        "warnings": [
+          "association_not_causation"
+        ]
+      },
+      "reference": "Ranghi sui sette Comuni calcolati a parte dai valori 2024/2024: Spearman 6/7; n=7. Coppia rivista il 14/11/2026 per pertinenza, non per coefficiente."
+    },
+    {
+      "id": "population_ageing_association",
+      "question": "Qual è l’associazione fra popolazione residente e indice di vecchiaia nel 2026?",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "population",
+            "periods": [
+              "2026"
+            ]
+          },
+          {
+            "metric": "oldAgeIndex",
+            "periods": [
+              "2026"
+            ]
+          }
+        ],
+        "method": "spearman",
+        "axis": "municipalities",
+        "purpose": "Lettura descrittiva fra i sette Comuni nel 2026: dimensione demografica e struttura per età; nessuna interpretazione causale"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/coefficient",
+            "fraction": [
+              -19,
+              28
+            ],
+            "tolerance": 1e-08
+          },
+          {
+            "path": "/result/n",
+            "fraction": [
+              7,
+              1
+            ],
+            "tolerance": 1e-08
+          }
+        ],
+        "warnings": [
+          "association_not_causation"
+        ]
+      },
+      "reference": "Ranghi sui sette Comuni calcolati a parte dai valori 2026/2026: Spearman -19/28; n=7. Coppia rivista il 14/11/2026 per pertinenza, non per coefficiente."
+    },
+    {
+      "id": "tourism_current_spending_association",
+      "question": "Qual è l’associazione fra intensità turistica e spesa corrente comunale per residente nel 2025?",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "tourismIntensity",
+            "periods": [
+              "2025"
+            ]
+          },
+          {
+            "metric": "currentExpenditureCommittedPerResident",
+            "periods": [
+              "2025"
+            ]
+          }
+        ],
+        "method": "spearman",
+        "axis": "municipalities",
+        "purpose": "Lettura descrittiva fra i sette Comuni nel 2025: pressione turistica e spesa corrente impegnata per residente; nessuna valutazione di efficienza o causa"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/coefficient",
+            "fraction": [
+              13,
+              14
+            ],
+            "tolerance": 1e-08
+          },
+          {
+            "path": "/result/n",
+            "fraction": [
+              7,
+              1
+            ],
+            "tolerance": 1e-08
+          }
+        ],
+        "warnings": [
+          "association_not_causation"
+        ]
+      },
+      "reference": "Ranghi sui sette Comuni calcolati a parte dai valori 2025/2025: Spearman 13/14; n=7. Coppia rivista il 14/11/2026 per pertinenza, non per coefficiente."
+    },
+    {
+      "id": "tourism_security_spending_association",
+      "question": "Qual è l’associazione fra intensità turistica e spesa per ordine pubblico e sicurezza per residente nel 2025?",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "tourismIntensity",
+            "periods": [
+              "2025"
+            ]
+          },
+          {
+            "metric": "securityMissionExpenditurePerResident",
+            "periods": [
+              "2025"
+            ]
+          }
+        ],
+        "method": "spearman",
+        "axis": "municipalities",
+        "purpose": "Lettura descrittiva fra i sette Comuni nel 2025: pressione turistica e spesa per polizia locale per residente; nessuna valutazione di efficienza o causa"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/coefficient",
+            "fraction": [
+              5,
+              7
+            ],
+            "tolerance": 1e-08
+          },
+          {
+            "path": "/result/n",
+            "fraction": [
+              7,
+              1
+            ],
+            "tolerance": 1e-08
+          }
+        ],
+        "warnings": [
+          "association_not_causation"
+        ]
+      },
+      "reference": "Ranghi sui sette Comuni calcolati a parte dai valori 2025/2025: Spearman 5/7; n=7. Coppia rivista il 14/11/2026 per pertinenza, non per coefficiente."
+    },
+    {
+      "id": "vacant_housing_association",
+      "question": "Qual è l’associazione fra abitazioni non occupate e patrimonio abitativo per 1.000 residenti nel 2023?",
+      "query": {
+        "operation": "correlation",
+        "selectors": [
+          {
+            "metric": "vacantHomes",
+            "periods": [
+              "2023"
+            ]
+          },
+          {
+            "metric": "housingStockPer1000",
+            "periods": [
+              "2023"
+            ]
+          }
+        ],
+        "method": "spearman",
+        "axis": "municipalities",
+        "purpose": "Lettura descrittiva fra i sette Comuni nel 2023: le seconde case pesano su entrambe le misure; nessuna interpretazione causale"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/coefficient",
+            "fraction": [
+              13,
+              14
+            ],
+            "tolerance": 1e-08
+          },
+          {
+            "path": "/result/n",
+            "fraction": [
+              7,
+              1
+            ],
+            "tolerance": 1e-08
+          }
+        ],
+        "warnings": [
+          "association_not_causation"
+        ]
+      },
+      "reference": "Ranghi sui sette Comuni calcolati a parte dai valori 2023/2023: Spearman 13/14; n=7. Coppia rivista il 14/11/2026 per pertinenza, non per coefficiente."
     }
   ]
 }

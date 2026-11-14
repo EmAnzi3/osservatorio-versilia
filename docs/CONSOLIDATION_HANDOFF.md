@@ -7,6 +7,7 @@
 - «Due variabili» non è più la vista iniziale: si parte da «Una misura»; i test dell'anteprima cliccano la modalità.
 - Test `scripts/test_chiedi_domande.py` (63 domande con attese scritte a mano + browser 1440/390) registrato in `ci/workflow-contract.json`.
 - Metodo e percorso verso un LLM: `docs/A7_CHIEDI_DOMANDE.md`.
+- Incroci da 6 a 17: undici coppie scelte per pertinenza fra quelle già calcolate dal motore, ciascuna con domanda verificata e coefficiente atteso indipendente; gate di costo ora per componente. Dettagli in `docs/A7_ASSOCIATION_PERIMETER.md`, «Perimetro allargato».
 
 ## Chiedi: incroci pubblici del piano rivisto (14 novembre 2026)
 
