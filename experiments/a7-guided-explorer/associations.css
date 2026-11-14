@@ -13,3 +13,14 @@
 .a7-explorer .association-explorer figcaption{line-height:1.6;font-size:.94rem;overflow-wrap:anywhere}
 .a7-explorer #association-consent,.a7-explorer #association-result{border-top:1px solid #cbd5dc;margin-top:1rem;padding-top:1rem}
 .a7-explorer .association-explorer td>p:first-child{white-space:nowrap;font-variant-numeric:tabular-nums}
+/* Su schermi stretti le coppie diventano schede per Comune: niente scorrimento orizzontale. */
+@media(max-width:600px){
+#a7-explorer .association-pairs{overflow:visible;border:0}
+#a7-explorer .association-pairs table{min-width:0}
+#a7-explorer .association-pairs thead{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+#a7-explorer .association-pairs tr{display:block;border:1px solid #e6edf2;border-radius:12px;margin:0 0 .75rem;padding:.4rem .2rem;background:#fff}
+#a7-explorer .association-pairs td{display:grid;grid-template-columns:minmax(6.5rem,38%) minmax(0,1fr);gap:.5rem;border:0;padding:.35rem .6rem}
+#a7-explorer .association-pairs td::before{content:attr(data-label);font-weight:600;color:#45606f;font-size:.8rem}
+#a7-explorer .association-pairs td>*{grid-column:2}
+#a7-explorer .association-pairs td>p:first-child{white-space:normal}
+}

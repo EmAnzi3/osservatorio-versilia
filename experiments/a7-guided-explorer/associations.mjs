@@ -3,7 +3,8 @@ const el=(tag,text)=>{const n=document.createElement(tag);if(text!==undefined)n.
 const copy=x=>JSON.parse(JSON.stringify(x));
 const key=x=>JSON.stringify(x);
 const number=x=>new Intl.NumberFormat('it-IT',{maximumSignificantDigits:21}).format(x);
-const coefficient=x=>(Object.is(x,-0)?'-0':String(x)).replace('.',',');
+// Due decimali in pagina (decisione del proprietario); il valore completo resta nell'evidenza.
+const coefficient=x=>new Intl.NumberFormat('it-IT',{minimumFractionDigits:2,maximumFractionDigits:2}).format(x).replace(/^-0,00$/,'0,00');
 const tick=x=>'≈ '+new Intl.NumberFormat('it-IT',{maximumSignificantDigits:3,notation:x!==0&&Math.abs(x)<.0001?'scientific':'compact'}).format(x);
 const fold=(title,content)=>{const n=el('details');n.append(el('summary',title),content);return n;};
 const option=(value,text)=>{const n=el('option',text);n.value=value;return n;};
@@ -120,15 +121,15 @@ export async function startAssociations(openRuntime,presentation){
    if(response.status==='computed'){
      const r=response.result;if(!r||!Number.isFinite(r.coefficient)||!['pearson','spearman'].includes(r.method)||!axes[r.axis])throw Error('incompatible_native_association');
      const cards=el('dl');cards.className='explorer-benchmark-values';
-     for(const [label,value,name] of [['Coefficiente originale',coefficient(r.coefficient),'coefficient'],['Coppie utilizzate',String(r.n),'n'],['Metodo',methods[r.method],'method']]){
+     for(const [label,value,name] of [['Coefficiente',coefficient(r.coefficient),'coefficient'],['Coppie utilizzate',String(r.n),'n'],['Metodo',methods[r.method],'method']]){
        const card=el('div'),valueNode=el('dd',value);valueNode.dataset.associationValue=name;card.append(el('dt',label),valueNode);cards.append(card);
      }
      out.append(cards,el('p','Nessun test di significatività o intervallo di confidenza fornito dal motore. '+(r.axis==='municipalities'?'I sette Comuni non sono automaticamente un campione indipendente.':'')),graph(r));
      const table=el('table');table.append(el('caption','Coppie originali · periodi, unità e fonti distinti per variabile'));
      const head=el('thead'),tr=el('tr');for(const label of ['Punto','Territorio o periodo','Prima variabile','Seconda variabile']){const th=el('th',label);th.scope='col';tr.append(th);}head.append(tr);table.append(head);
      const body=el('tbody');let pageIndex=0;
-     const rows=()=>{body.replaceChildren();r.pairs.slice(pageIndex*20,(pageIndex+1)*20).forEach((p,i)=>{const row=el('tr');row.dataset.pairKey=p.key;row.append(el('td',String(pageIndex*20+i+1)),el('td',r.axis==='municipalities'?town(p.key):p.key));for(const o of [p.x,p.y]){const cell=el('td');cell.append(el('p',number(o.value)+' '+unit(o)),el('p','Periodo: '+String(o.period)));sources(o,cell);row.append(cell);}body.append(row);});};rows();table.append(body);
-     const wrap=el('div');wrap.className='explorer-table-wrap';wrap.tabIndex=0;wrap.setAttribute('role','region');wrap.setAttribute('aria-label','Coppie originali, tabella scorribile');wrap.append(table);out.append(el('p','Puoi scorrere la tabella in orizzontale per leggere periodi e fonti.'),wrap);
+     const rows=()=>{body.replaceChildren();r.pairs.slice(pageIndex*20,(pageIndex+1)*20).forEach((p,i)=>{const row=el('tr');row.dataset.pairKey=p.key;const labels=['Punto','Territorio o periodo','Prima variabile','Seconda variabile'];const labelled=(cell,i)=>{cell.dataset.label=labels[i];return cell;};row.append(labelled(el('td',String(pageIndex*20+i+1)),0),labelled(el('td',r.axis==='municipalities'?town(p.key):p.key),1));for(const [j,o] of [p.x,p.y].entries()){const cell=labelled(el('td'),2+j);cell.append(el('p',number(o.value)+' '+unit(o)),el('p','Periodo: '+String(o.period)));sources(o,cell);row.append(cell);}body.append(row);});};rows();table.append(body);
+     const wrap=el('div');wrap.className='explorer-table-wrap association-pairs';wrap.tabIndex=0;wrap.setAttribute('role','region');wrap.setAttribute('aria-label','Coppie originali');wrap.append(table);out.append(wrap);
      if(r.pairs.length>20){const nav=el('nav');nav.setAttribute('aria-label','Pagine delle coppie originali');const previous=el('button','Precedenti'),next=el('button','Successive'),label=el('span');previous.type=next.type='button';previous.id='association-previous';next.id='association-next';const update=()=>{previous.disabled=pageIndex===0;next.disabled=(pageIndex+1)*20>=r.pairs.length;label.textContent=`Pagina ${pageIndex+1} di ${Math.ceil(r.pairs.length/20)} `;};previous.onclick=()=>{pageIndex--;rows();update();};next.onclick=()=>{pageIndex++;rows();update();};update();nav.append(previous,label,next);out.append(nav);}
    }else{
      out.append(el('p','Le eventuali osservazioni conservate nel rifiuto non costituiscono un coefficiente valido. Nessun grafico o numero sostitutivo viene calcolato.'));

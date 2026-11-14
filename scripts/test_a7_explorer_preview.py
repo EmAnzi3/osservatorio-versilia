@@ -109,7 +109,8 @@ def verify_association_interface(catalog, runtime, expected, output, *, dist=Non
                         assert original['steps'][0]['response']==response
                         assert original['plan']['steps']==[step]
                         if response['status']=='computed':
-                            assert float(page.locator('[data-association-value="coefficient"]').text_content().replace(',','.'))==response['result']['coefficient'],'association_coefficient_precision_changed'
+                            assert page.locator('[data-association-value="coefficient"]').text_content()==f"{response['result']['coefficient']:.2f}".replace('.',',').replace('-0,00','0,00'),'association_coefficient_two_decimals'
+                            assert str(response['result']['coefficient']) in page.locator('[data-association-evidence]').text_content(),'association_full_coefficient_in_evidence'
                             assert page.locator('[data-association-value="coefficient"]').evaluate('cell=>{const r=document.createRange();r.selectNodeContents(cell);return r.getClientRects().length===1}'),'association_coefficient_split'
                             assert page.locator('#association-result svg').evaluate('svg=>Array.from(svg.querySelectorAll("text")).every(t=>{const b=t.getBBox(),v=svg.viewBox.baseVal;return b.x>=0&&b.y>=0&&b.x+b.width<=v.width&&b.y+b.height<=v.height})'),'association_chart_label_clipped'
                             # Native extrema must sit exactly at the corresponding labeled scale endpoints.
