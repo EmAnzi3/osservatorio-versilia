@@ -1,5 +1,12 @@
 # Consolidamento Osservatorio Versilia — handoff operativo
 
+## Stato dati: data dell'ultimo controllo ferma dopo i merge di dati (14 novembre 2026)
+
+- Sintomo: la pagina Stato dati mostrava come ultimo controllo il 5 novembre, nonostante i run giornalieri di «Controllo frequente fonti» riusciti dal 6 al 13 novembre.
+- Causa: `scripts/source_monitor_runtime_snapshot.py` scartava ogni artifact se anche un solo `publishedPeriod` o il `catalogSha256` differivano dal catalogo al momento del deploy. Con merge di dati quasi quotidiani, ogni run risultava superato dal merge successivo e il deploy ripiegava sullo stato versionato nel repository.
+- Correzione definitiva: un run con catalogo precedente resta valido per il controllo delle fonti (insieme di metriche e fonti, modalità, schema, errori e date restano vincolanti). Gli stati per metrica sono ricalcolati da `reconcile`/`build_metric_state` sul catalogo attuale, quindi una release acquisita dopo il run non resta un allarme. Le prove semantiche sui valori (`fuelMimitVerification`, `pnrrToscanaVerification`) decadono se il catalogo non è quello certificato. Il report porta `staleCatalog` con le metriche cambiate dopo il run. Un report senza `catalogSha256` è ancora rifiutato.
+- Test: `scripts/test_source_monitor_runtime_snapshot.py` ora verifica l'accettazione con catalogo precedente, la data che avanza, lo stato ricalcolato e il decadimento delle prove sui valori.
+
 ## Carburanti al 12 novembre 2026 (14 novembre 2026)
 
 `fuelPrices` era fermo al 10 ottobre: il sito MIMIT non risponde ai runner GitHub né dal container.

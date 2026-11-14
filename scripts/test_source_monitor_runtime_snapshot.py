@@ -106,7 +106,7 @@ def main():
     for key, value in (("mode", "offline"), ("depth", "deep"), ("checkedAt", "2026-10-05T10:00:00Z"), ("metrics", {}), ("sources", {})):
         invalid.append(archive({**state, key: value}))
     invalid.append(archive(state, {**report, "findings": [{"level": "error"}]}))
-    invalid.append(archive(state, {**report, "catalogSha256": "old-catalog"}))
+    invalid.append(archive(state, {**report, "catalogSha256": ""}))
     for raw in invalid:
         try:
             read_artifact(raw, run, "light", catalog, registry, now)
@@ -114,6 +114,21 @@ def main():
             pass
         else:
             raise AssertionError("Artifact non verificato accettato")
+    # Catalogo cambiato dopo il run (merge di dati): le fonti controllate restano
+    # valide, ma solo le metriche col periodo invariato ereditano lo stato del run;
+    # le altre si ricalcolano sul catalogo attuale e le prove sui valori decadono.
+    key = next(iter(catalog["metrics"]))
+    stale_state = copy.deepcopy(state)
+    stale_state["sources"] = {url: {"ok": True} for url in sources}
+    stale_state["metrics"][key] = {"publishedPeriod": "periodo-precedente", "observedLatestPeriod": published_period(catalog["metrics"][key]), "status": "release_detected", "releaseEvidence": {"verdict": "new_period"}}
+    stale_report = {**report, "catalogSha256": "old-catalog", "fuelMimitVerification": {"verdict": "same_period"}}
+    _, accepted = read_artifact(archive(stale_state, stale_report), run, "light", catalog, registry, now)
+    assert accepted["staleCatalog"] == [key], "Solo le metriche cambiate dopo il run sono marcate"
+    assert "fuelMimitVerification" not in accepted, "Prove sui valori di un catalogo precedente non valgono"
+    reconciled = reconcile(catalog, {"checkedAt": "2026-10-01T00:00:00+00:00", "metrics": {}}, stale_state, accepted)
+    assert reconciled["checkedAt"] == state["checkedAt"], "La data del controllo fonti avanza anche dopo un merge di dati"
+    assert reconciled["metrics"][key]["publishedPeriod"] == published_period(catalog["metrics"][key])
+    assert reconciled["metrics"][key]["status"] == "current", "Release acquisita dopo il run: nessun falso allarme"
     pages = (root / ".github/workflows/pages.yml").read_text()
     radar = (root / ".github/workflows/opportunity-radar-daily.yml").read_text()
     assert 'workflows: ["Controllo mensile dati", "Controllo frequente fonti"]' in pages
