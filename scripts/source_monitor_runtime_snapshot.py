@@ -14,6 +14,12 @@ from monthly_data_check_status import build_metric_state
 from data_status_model import canonical_url, catalog_digest, published_period
 import monthly_data_check_coverage as coverage
 
+# Prove semantiche sui valori pubblicati: valgono solo per il catalogo certificato.
+SEMANTIC_VERIFICATIONS = {
+    "fuelMimitVerification": ("fuelPrices",),
+    "pnrrToscanaVerification": ("pnrrFunding", "pnrrConcluded"),
+}
+
 WORKFLOWS = {
     "monthly-data-refresh.yml": "deep",
     "source-monitor-light.yml": "light",
@@ -58,8 +64,6 @@ def read_artifact(raw, run, depth, data, registry, now):
         raise ValueError("Errori strutturali nel report")
     if set(state.get("metrics", {})) != set(data["metrics"]):
         raise ValueError("Il run non copre il catalogo pubblico attuale")
-    if any(state["metrics"][key].get("publishedPeriod") != published_period(metric) for key, metric in data["metrics"].items()):
-        raise ValueError("I periodi del run non corrispondono al catalogo pubblicato")
     # Derivato dal catalogo effettivo, non da un conteggio fissato a mano.
     findings, source_map, _ = coverage.validate_dataset(data, registry)
     if any(item.get("level") == "error" for item in findings):
@@ -68,8 +72,17 @@ def read_artifact(raw, run, depth, data, registry, now):
     actual = {canonical_url(url) for url in state.get("sources", {})}
     if actual != expected:
         raise ValueError("Le fonti del run non coincidono con il catalogo")
-    if report.get("catalogSha256") != catalog_digest(data):
-        raise ValueError("Il report non certifica la versione attuale dei dati pubblicati")
+    if not report.get("catalogSha256"):
+        raise ValueError("Il report non certifica alcuna versione del catalogo")
+    if report["catalogSha256"] != catalog_digest(data):
+        # Il catalogo è cambiato dopo il run (merge di dati): il controllo delle
+        # fonti resta valido, ma gli stati per metrica vanno ricalcolati sul
+        # catalogo attuale e le prove sui valori del run non valgono più.
+        report = {key: value for key, value in report.items() if key not in SEMANTIC_VERIFICATIONS}
+        report["staleCatalog"] = sorted(
+            key for key, metric in data["metrics"].items()
+            if state["metrics"][key].get("publishedPeriod") != published_period(metric)
+        )
     return state, report
 
 
@@ -88,7 +101,7 @@ def reconcile(data, previous, current, report):
             observation["metrics"][key] = old
     # Il report deep contiene prove semantiche fresche soltanto per questi casi.
     if current.get("depth") == "deep":
-        for report_key, keys in (("fuelMimitVerification", ("fuelPrices",)), ("pnrrToscanaVerification", ("pnrrFunding", "pnrrConcluded"))):
+        for report_key, keys in SEMANTIC_VERIFICATIONS.items():
             if isinstance(report.get(report_key), dict):
                 for key in keys:
                     if key in observation["metrics"]:
@@ -103,7 +116,7 @@ def reconcile(data, previous, current, report):
             item.setdefault("lastSuccessfulReleaseCatalogue", old_source["releaseCatalogue"])
     result["metrics"] = build_metric_state(data, observation, result, report)
     if current.get("depth") == "deep":
-        for report_key, keys in (("fuelMimitVerification", ("fuelPrices",)), ("pnrrToscanaVerification", ("pnrrFunding", "pnrrConcluded"))):
+        for report_key, keys in SEMANTIC_VERIFICATIONS.items():
             if isinstance(report.get(report_key), dict):
                 for key in keys:
                     if key in result["metrics"]:
