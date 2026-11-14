@@ -5,8 +5,8 @@ import math
 from semantic_operations import finite
 KEYS=('extractiveSites','extractiveProduction','extractivePlanning')
 NATIVE='data/source-snapshots/attivita-estrattive-v128.json'
-LABELS=('5 novembre 2026','2025','PRC vigente · variante 2025')
-PERIODS=('2026-11-05','2025','PRC-2025')
+LABELS=('5 novembre 2026','2025','PRC vigente · variante 2026')
+PERIODS=('2026-11-05','2025','PRC-2026')
 URLS=('https://cave.regione.toscana.it/api/v1/cave_public','https://www.regione.toscana.it/it/-/monitoraggio-del-piano-regionale-cave','https://www.regione.toscana.it/piano-regionale-cave')
 PRODUCERS=('046028','046030')
 SITE={'state_active':('stato','Attiva'),'state_inactive':('stato','Inattiva'),'state_suspended':('stato','Sospesa'),'state_expired':('stato','Scaduta'),'state_restoration':('stato','In ripristino'),'state_closed':('stato','Chiusa'),'state_nd':('stato',None),'type_ordinary':('tipologia','Cava Ordinaria'),'type_restoreworks':('tipologia','Opere di ripristino'),'type_recovery':('tipologia','Piano di recupero'),'prod_ornamental':('tipo_produzione','ORNAMENTALE'),'prod_industrial':('tipo_produzione','INDUSTRIALE'),'prod_construction':('tipo_produzione','COSTRUZIONE')}
@@ -32,7 +32,7 @@ def context(metric,key,dim):
  if str(meta.get('year'))!=LABELS[i] or meta.get('unit')!=('number','cubicMetres','hectares')[i] or metric.get('sourceUrl')!=URLS[i] or meta.get('sourceMeta',{}).get('snapshot')!=NATIVE:raise ValueError('extractive_definition_or_reference_changed')
  unit='percent' if field(key,dim).endswith('_pct') else 'number' if i==0 or f.endswith('_n') or f in ('mos','pmos','sed') else ('cubicMetres' if i==1 else 'hectares')
  populations=('distinct codice_rt RTCave records, not independent physical quarries','reported PRC information-obligation extraction, only reviewed basin-to-municipality correspondence','PRC union and intersection per separate planning category, not excavated or authorized surface')
- return dict(unit=unit,population=populations[i],definition=populations[i]+'; '+f+('; reconstructed ratio from rounded native area components' if weighted(key,dim) else '; published GIS percentage' if f.endswith('_pct') else ''),method='frozen RTCave records / PRC monitoring components / EPSG:3003 planning intersections, never interchangeable universes',frequency='annual' if i==1 else 'irregular_snapshot',periodBasis=('RTCave acquisition 2 September 2026','annual reported extraction 2019-2025; OPS 2019-2038 is planning, not extraction','PRC in force, variant 2025; acquisition 2 September 2026')[i],adapter='extractive/'+key+'/'+f+'/v1')
+ return dict(unit=unit,population=populations[i],definition=populations[i]+'; '+f+('; reconstructed ratio from rounded native area components' if weighted(key,dim) else '; published GIS percentage' if f.endswith('_pct') else ''),method='frozen RTCave records / PRC monitoring components / EPSG:3003 planning intersections, never interchangeable universes',frequency='annual' if i==1 else 'irregular_snapshot',periodBasis=('RTCave acquisition 2 September 2026','annual reported extraction 2019-2025; OPS 2019-2038 is planning, not extraction','PRC in force, variant 2026 (Versilia geometries unchanged since variant 2025); acquisition 2 September 2026')[i],adapter='extractive/'+key+'/'+f+'/v1')
 def available_periods(engine,key,dim,row):return [str(y) for y in engine.file(NATIVE)[0]['production'].get(row['code'],{}).get('years',[2025])]
 
 def native(engine,key,row):
