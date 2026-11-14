@@ -51,7 +51,9 @@ def coverage_contract() -> None:
         mode = check.get("mode", "latest")
         assert mode in {"latest", "next", "absent", "snapshot", "values"}, name
         assert check["url"].split(" ")[-1].startswith("https://") and check.get("hint"), name
-        assert check.get("kind", "year") in {"year", "month", "semester", "date"}, name
+        assert check.get("kind", "year") in {"year", "month", "semester", "date", "yearend"}, name
+        if check.get("link") and mode == "absent":
+            assert re.compile(check["link"]).groups == 2 and check.get("expect"), name
         if mode in {"latest", "absent"}:
             assert re.compile(check["pattern"]).groups >= 1, name
         if mode == "next":
@@ -152,6 +154,9 @@ def period_cases() -> None:
         "daily": {"url": "https://x.test/d", "kind": "date", "graceDays": 30, "pattern": r"Elenco del (\d\d/\d\d/20\d\d)", "hint": "h"},
         "semester": {"url": "https://x.test/s", "kind": "semester", "pattern": r"(\d\d/\d\d/20\d\d)", "hint": "h"},
         "absent": {"mode": "absent", "url": "https://x.test/sdmx?startPeriod={next}", "pattern": r'TIME_PERIOD="(20\d\d)', "text": "raw", "hint": "h"},
+        "archives": {"mode": "absent", "url": "https://x.test/imu?anno={next}", "pattern": r"datizip/(20\d\d)/", "text": "raw",
+                     "link": r'href="([^"]*datizip/(20\d\d)/toscana\.zip)"', "expect": "PK", "hint": "h"},
+        "yearend": {"url": "https://x.test/farmacie/", "kind": "yearend", "pattern": r"FRM_FARMA_\d+_(20\d{6})", "text": "raw", "hint": "h"},
         "values": {"mode": "values", "url": "https://x.test/ind/", "link": r'href="([^"]+)"[^>]*>\s*Indicatori (20\d\d)\s*</a>',
                    "column": "ind18", "geography": "codice_istat_num", "hint": "h"},
     })
@@ -197,6 +202,18 @@ def period_cases() -> None:
     assert run("semester", "2° semestre 2025", {"https://x.test/s": page("prelievo del 03/02/2026")})["status"] == "release_detected"
     assert run("absent", "2018", {})["status"] == "current", "nessun dato dopo il periodo pubblicato"
     assert run("absent", "2018", {"https://x.test/sdmx?startPeriod=2019": b'<Obs TIME_PERIOD="2020"/>'})["status"] == "release_detected"
+    # `absent` con `link`: il MEF elenca gli archivi dell'anno successivo prima dei dati (zip vuoti).
+    imu = {"https://x.test/imu?anno=2027": b'<a href="/z/datizip/2027/abruzzo.zip"></a><a href="/z/datizip/2027/toscana.zip"></a>'}
+    empty = run("archives", "2026", {**imu, "https://x.test/z/datizip/2027/toscana.zip": b""})
+    assert empty["status"] == "current" and "senza dati" in empty["checks"][0]["detail"], empty
+    assert run("archives", "2026", imu)["status"] == "current", "archivio non raggiungibile = nessun dato"
+    assert run("archives", "2026", {**imu, "https://x.test/z/datizip/2027/toscana.zip": b"PK\x03\x04dati"})["status"] == "release_detected"
+    # `yearend`: il file continuo chiude l'anno solo con la data del 31/12.
+    pharmacy = lambda day: {"https://x.test/farmacie/": f'<a href="/f/FRM_FARMA_5_{day}.csv">'.encode()}
+    assert run("yearend", "2025", pharmacy("20261113"))["status"] == "current", "file mensile 2026 = fotografia 2025"
+    assert run("yearend", "2025", pharmacy("20261231"))["status"] == "release_detected"
+    assert run("yearend", "2025", pharmacy("20270115"))["status"] == "release_detected"
+    assert run("yearend", "2025", pharmacy("20251231"))["status"] == "current"
     # `values`: l'anno del file cambia, il dato no (ind18 resta al 31/12/2022 nel file 2024).
     listing = page('<a href="/f/ind-2023">Indicatori 2023</a>&nbsp;(file.csv) <a href="/f/ind-2024-1">Indicatori 2024</a>&nbsp;(file.csv)')
     csv_file = lambda a, b: f"Comune;codice_istat_num;ind17;ind18\nCamaiore;46005;1;{a}\nMassarosa;46018;nd;{b}\n".encode("cp1252")
