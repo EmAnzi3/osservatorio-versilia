@@ -111,6 +111,20 @@ def browser(dist: Path) -> None:
             phone.wait_for_timeout(3500)
             assert phone.locator("#vm-bubble").is_hidden(), "mascot_autoopens_on_phone"
             phone.tap(".vm-avatar")
+            # Il primo tocco non deve aprire la tastiera (coprirebbe campo ed esempi).
+            assert phone.evaluate("document.activeElement?.id") != "vm-input", "mascot_opens_keyboard_on_phone"
+            for selector in ("#vm-input", ".vm-example", ".vm-hide"):
+                item = phone.locator(selector).first.bounding_box()
+                assert item and item["y"] >= 0 and item["y"] + item["height"] <= 844, f"mascot_item_off_phone:{selector}:{item}"
+            # Tastiera simulata: viewport visibile ridotto, il fumetto risale sopra di essa.
+            phone.evaluate("""() => {
+                const vv = window.visualViewport;
+                Object.defineProperty(vv, 'height', { configurable: true, get: () => innerHeight - 320 });
+                vv.dispatchEvent(new Event('resize'));
+            }""")
+            bottom = phone.evaluate("document.getElementById('vm-bubble').getBoundingClientRect().bottom")
+            assert bottom <= 844 - 320, f"mascot_under_keyboard:{bottom}"
+            phone.evaluate("""() => { const vv = window.visualViewport; delete vv.height; vv.dispatchEvent(new Event('resize')); }""")
             box = phone.locator("#vm-bubble").bounding_box()
             assert box and box["x"] >= 0 and box["x"] + box["width"] <= 390, f"mascot_bubble_off_phone:{box}"
             assert phone.evaluate("document.documentElement.scrollWidth <= innerWidth"), "mascot_horizontal_scroll"

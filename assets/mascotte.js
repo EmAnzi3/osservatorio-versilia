@@ -30,7 +30,7 @@
     if (document.getElementById('versilia-mascot')) return;
     const box = el('aside', { id: 'versilia-mascot', class: 'vm', 'aria-label': 'Versilia, la guida dell’Osservatorio' });
 
-    const bubble = el('div', { id: 'vm-bubble', class: 'vm-bubble', role: 'dialog', 'aria-labelledby': 'vm-title' });
+    const bubble = el('div', { id: 'vm-bubble', class: 'vm-bubble', role: 'dialog', 'aria-labelledby': 'vm-title', tabindex: '-1' });
     bubble.hidden = true;
     const close = el('button', { type: 'button', class: 'vm-close', 'aria-label': 'Chiudi il fumetto' }, '×');
     const title = el('p', { id: 'vm-title', class: 'vm-title' }, 'Ciao, sono Versilia!');
@@ -55,12 +55,15 @@
     box.append(bubble, avatar);
     document.body.append(box);
 
+    // Su schermi stretti (telefono) aprire il fumetto non apre la tastiera: coprirebbe
+    // domanda ed esempi. La tastiera compare solo toccando il campo.
+    const wide = window.matchMedia('(min-width: 720px)').matches;
     const open = (focus = true) => {
       bubble.hidden = false;
       avatar.setAttribute('aria-expanded', 'true');
       box.classList.add('vm-open');
       write('sessionStorage', GREETED, '1');
-      if (focus) input.focus({ preventScroll: true });
+      if (focus) (wide ? input : bubble).focus({ preventScroll: true });
     };
     const shut = (focus = true) => {
       bubble.hidden = true;
@@ -74,8 +77,19 @@
     bubble.addEventListener('keydown', event => { if (event.key === 'Escape') { event.stopPropagation(); shut(); } });
     hide.addEventListener('click', () => { write('localStorage', HIDDEN, '1'); box.remove(); });
 
+    // Con la tastiera aperta il fumetto resta sopra di essa (viewport visibile ridotto).
+    const viewport = window.visualViewport;
+    if (viewport) {
+      const follow = () => {
+        const hidden = Math.max(0, window.innerHeight - (viewport.offsetTop + viewport.height));
+        box.classList.toggle('vm-keyboard', hidden > 80);
+        box.style.bottom = hidden > 80 ? `${Math.round(hidden + 8)}px` : '';
+      };
+      viewport.addEventListener('resize', follow);
+      viewport.addEventListener('scroll', follow);
+    }
+
     // Saluto automatico: una volta per visita, solo su schermi larghi, senza rubare il fuoco.
-    const wide = window.matchMedia('(min-width: 720px)').matches;
     if (wide && read('sessionStorage', GREETED) !== '1') {
       window.setTimeout(() => { if (bubble.hidden && document.body.contains(box)) open(false); }, 2500);
     }
