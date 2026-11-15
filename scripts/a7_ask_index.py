@@ -19,13 +19,23 @@ def indicator_slug(label):
 
 
 def indicator_pages(catalog, site):
-    """{metrica: percorso relativo a /chiedi/} per le sole pagine indicatore presenti nel sito."""
+    """{metrica: percorso relativo a /chiedi/} per le sole pagine presenti nel sito: pagina
+    indicatore, rotta dedicata (special-route) o pagina Meteo e clima, come nel resto del sito."""
     data = json.loads(Path(catalog).read_text(encoding='utf-8'))
     pages = {}
     for key, metric in data['metrics'].items():
-        slug = indicator_slug(metric.get('meta', {}).get('label'))
-        if slug and (Path(site)/'indicatori'/slug/'index.html').is_file():
-            pages[key] = f'../indicatori/{slug}/'
+        meta = metric.get('meta', {})
+        kind = metric.get('dataStorage', {}).get('type')
+        if kind == 'special-route':
+            route, suffix = str(meta.get('detailRoute') or '').strip('/'), ''
+        elif kind == 'external-climate':
+            detail = meta.get('climateDetail') or {'indicator': 'temperature', 'hash': ''}
+            route = 'confronta/meteo-clima'
+            suffix = f"?indicatore={detail.get('indicator') or 'temperature'}{detail.get('hash') or ''}"
+        else:
+            route, suffix = f"indicatori/{indicator_slug(meta.get('label'))}", ''
+        if route and route != 'indicatori/' and (Path(site)/route/'index.html').is_file():
+            pages[key] = f'../{route}/{suffix}'
     return pages
 
 
