@@ -22,6 +22,9 @@
 .vm-example:hover,.vm-example:focus-visible{border-color:#0d425c}
 .vm-hide{display:block;margin:10px 0 0 auto;padding:4px 2px;border:0;background:none;font:inherit;font-size:.78rem;color:#61717b;text-decoration:underline;cursor:pointer}
 .vm-hide:hover,.vm-hide:focus-visible{color:#102f45}
+.vm-bubble:focus{outline:none}
+.vm-keyboard .vm-avatar{display:none}
+.vm-keyboard .vm-bubble::after{display:none}
 .vm-sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 @keyframes vm-enter{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
 @keyframes vm-float{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
