@@ -662,5 +662,12 @@ export function startAsk(index, presentation) {
     else if (event.key === 'Enter' && active >= 0 && !list.hidden) { event.preventDefault(); choose(options[active]); }
   });
   form.onsubmit = event => { event.preventDefault(); close(); const q = input.value.trim(); if (q) { input.value = ''; ask(q); } };
+  // Domanda arrivata da un'altra pagina (mascotte Versilia): ?q=… viene posta subito e tolta dall'indirizzo.
+  const incoming = new URLSearchParams(location.search).get('q')?.trim().slice(0, 200);
+  if (incoming) {
+    try { const url = new URL(location.href); url.searchParams.delete('q'); history.replaceState(null, '', url.pathname + url.search + url.hash); } catch {}
+    box.scrollIntoView({ block: 'start' });
+    ask(incoming);
+  }
   return { ask };
 }

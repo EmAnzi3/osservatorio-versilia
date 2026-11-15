@@ -21,7 +21,8 @@ PNRR_MARKERS = {
     "/confronta/comunita/": ("pnrr-town-detail.js", "Investimenti e comunità"),
     "/comuni/massarosa/": ("pnrr-town-detail.js",),
 }
-REQUIRED_ASSETS = ("assets/pnrr-town-detail.js", "assets/pnrr-town-detail.css", "assets/pnrr-deep-dive.css")
+REQUIRED_ASSETS = ("assets/pnrr-town-detail.js", "assets/pnrr-town-detail.css", "assets/pnrr-deep-dive.css",
+                   "assets/mascotte.js", "assets/mascotte.css", "assets/mascotte/versilia-160.webp")
 
 
 def validate_a7(read, failures: list[str], *, explorer=False) -> None:
@@ -59,6 +60,8 @@ def validate_dist(root: Path) -> list[str]:
             require("pnrr-town-detail.js" in content, f"dettaglio PNRR assente in /comuni/{slug}/", failures)
     for asset in REQUIRED_ASSETS:
         require((root / asset).is_file(), f"asset richiesto non generato: {asset}", failures)
+    home = root / "index.html"
+    require(home.is_file() and "assets/mascotte.js" in home.read_text(encoding="utf-8"), "mascotte Versilia assente in home", failures)
     if (root / "pnrr" / "index.html").is_file():
         content = (root / "pnrr" / "index.html").read_text(encoding="utf-8")
         require("pnrr-deep-dive.css" in content, "stile PNRR assente", failures)

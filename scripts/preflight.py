@@ -246,6 +246,7 @@ def quick(*, plan: bool = False) -> None:
         "assets/pnrr-town-detail.js",
         "assets/data-status.js",
         "assets/pwa.js",
+        "assets/mascotte.js",
         "service-worker.js",
         "assets/ux-accordion.js",
         "assets/ux-history.js",
@@ -288,6 +289,9 @@ def quick(*, plan: bool = False) -> None:
     run_python("Percorsi draft contract", "scripts/test_percorsi_draft.py", plan=plan)
     run_python("Percorsi accordion overlap", "scripts/test_accordion_no_overlap.py", plan=plan)
     run_python("Percorsi refinements", "scripts/test_percorsi_refinements.py", plan=plan)
+
+    run_python("inject site mascot", "scripts/inject_site_mascot.py", plan=plan)
+    run_python("site mascot: presence, restraint and question to Chiedi", "scripts/test_site_mascot.py", plan=plan)
 
     run_python("site-wide consistency", "scripts/test_site_consistency.py", plan=plan)
     verify_crests(plan=plan)

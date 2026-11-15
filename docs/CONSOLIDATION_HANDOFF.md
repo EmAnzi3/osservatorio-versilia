@@ -1,5 +1,13 @@
 # Consolidamento Osservatorio Versilia — handoff operativo
 
+## Mascotte Versilia: invito a Chiedi da tutte le pagine (15 novembre 2026)
+
+- `assets/mascotte.js` + `assets/mascotte.css` + `assets/mascotte/versilia-{160,320}.webp` (immagine di Ema, ripulita dai residui del ritaglio). In basso a destra, `z-index:70` (sopra intestazione 60 e barra comunale 42, sotto la ricerca 100).
+- Fumetto «Ciao, sono Versilia! Cosa vuoi sapere sul nostro territorio?» con campo e due esempi; si apre da solo una volta per visita (`sessionStorage`) solo da 720 px in su e senza prendere il fuoco. ✕ ed Esc chiudono; «Non mostrare più» la nasconde (`localStorage`). Movimento ridotto: nessuna animazione; in stampa non compare.
+- La domanda va a `chiedi/?q=…`: `ask.mjs` la pone subito e toglie `q` dall'indirizzo.
+- `scripts/inject_site_mascot.py` (idempotente) la inserisce in tutte le pagine del dist, tranne Chiedi, `offline.html` e le pagine noindex: ultimo passo di `build_public_site.py` e del preflight quick dopo Percorsi. `validate_public_site.py` richiede asset e presenza in home.
+- `scripts/test_site_mascot.py`: presenza unica in ogni pagina, esclusioni, peso immagini, saluto una sola volta, nessuna copertura da barre fisse (griglia di punti a più scorrimenti), Esc, domanda risposta su Chiedi, telefono senza saluto automatico e senza scorrimento orizzontale, «Non mostrare più» persistente, movimento ridotto.
+
 ## Chiedi: «Fonte» dell'Osservatorio anche per clima, affluenza e atlante (14 novembre 2026)
 
 - I 6 indicatori senza pagina `indicatori/<slug>/` (4 andamenti del clima, atlante delle attività economiche, affluenza) avevano ancora la fonte esterna. Ora `indicator_pages` usa la stessa regola del sito: `meta.detailRoute` per le rotte dedicate, `confronta/meteo-clima/?indicatore=…` più la sezione di `meta.climateDetail` per il clima.
