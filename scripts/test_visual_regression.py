@@ -97,6 +97,8 @@ def stable_page(page: Page) -> None:
             transition: none !important;
             caret-color: transparent !important;
           }
+          /* La mascotte Versilia è un livello fisso sopra la pagina, non parte del grafico. */
+          #versilia-mascot { display: none !important; }
         """
     )
     page.wait_for_timeout(80)

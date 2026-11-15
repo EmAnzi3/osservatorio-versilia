@@ -17,6 +17,7 @@ STEPS = (
     "inject_pnrr_town_experience.py",
     "copy_percorsi_dist.py",
     "apply_secondary_pages_ui.py",
+    "inject_site_mascot.py",
 )
 
 
