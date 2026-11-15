@@ -53,8 +53,8 @@ export async function startAssociations(openRuntime,presentation){
  const safe=fn=>async(...args)=>{try{await fn(...args);}catch{fail();}};
  const town=code=>root.towns.find(t=>t.code===code)?.name||String(code);
  const metric=id=>root.metrics.find(m=>m.metric===id)?.label||id;
- const unit=o=>({percent:'%',currency:'€',number:'unità',years:'anni',celsius:'°C',percentage_points:'punti percentuali'})[o.unit]||
-   (presentation.metrics[o.metric]?.unit===o.unit?presentation.metrics[o.metric]?.unitLabel:null)||o.unit;
+ const unit=o=>{const m=presentation.metrics[o.metric];return m?.unit===o.unit&&typeof m.unitLabel==='string'?m.unitLabel:
+   (({percent:'%',currency:'€',number:'unità',years:'anni',celsius:'°C',percentage_points:'punti percentuali'})[o.unit]||o.unit);};
  const selectorLabel=s=>metric(s.metric)+' · '+(presentation.metrics[s.metric]?.views?.[s.dimension]||({total:'Vista principale'})[s.dimension]||s.dimension||'Vista principale')+' · '+(s.periods?.length>4?String(s.periods.length)+' periodi espliciti':s.periods?.join(', ')||'riferimento nativo')+(s.towns?' · '+s.towns.map(town).join(', '):' · ambito nativo');
  function candidates(until){
    return steps.filter(s=>{

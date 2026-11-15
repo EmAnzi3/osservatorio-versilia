@@ -431,7 +431,7 @@ export function summarize(evidence, townName, unitLabel) {
     if (typeof value !== 'number' || !Number.isFinite(value)) return null;
     const digits = Math.abs(value) >= 100 ? 0 : 2;
     const text = new Intl.NumberFormat('it-IT', { maximumFractionDigits: digits }).format(value);
-    const label = unitLabel(unit);
+    const label = unitLabel(unit, request.selectors?.[0]?.metric);
     return label ? text + (['%', '€', '°C'].includes(label) ? (label === '€' ? ' €' : label) : ' ' + label) : text;
   };
   const period = p => (p === null || p === undefined) ? '' : ' (' + p + ')';
@@ -504,7 +504,8 @@ export function startAsk(index, presentation) {
     return answer;
   }
   function measureMode() { document.getElementById('association-mode-measure')?.click(); }
-  const unitLabel = unit => units[unit] ?? '';
+  // Il nome proprio della misura (abitanti, posti letto…) prevale sull'unità generica.
+  const unitLabel = (unit, metric) => { const m = presentation?.metrics?.[metric]; return m?.unit === unit && typeof m.unitLabel === 'string' ? m.unitLabel : (units[unit] ?? ''); };
   const townLabel = code => ({ tuscany: 'Toscana', italy: 'Italia' })[code] || townName(code);
   let waiting = null;
   // Quando l'esploratore mostra il risultato, la risposta riceve la frase e la pagina scorre fino ai dati.

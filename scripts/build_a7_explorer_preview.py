@@ -29,6 +29,34 @@ class PreserveAttributeOrder(HTMLFormatter):
         return tag.attrs.items()
 
 
+# Conteggi: il catalogo dichiara solo l'unità generica ("number"/"count"), che nelle
+# risposte diventerebbe «unità». Qui il nome di ciò che si conta, solo per la
+# visualizzazione; stringa vuota dove la misura raccoglie grandezze diverse.
+COUNT_NOUNS = {
+    'population': 'abitanti', 'accreditedRsaCount': 'RSA', 'activeTplAccessPoints': 'punti di accesso',
+    'agriculturalFarms': 'aziende agricole', 'blueFlagBeaches': 'località', 'drinkingWaterQuality': '',
+    'economyActivityAtlas': '', 'extractiveSites': 'siti', 'ftthReachedHouseholds': 'famiglie',
+    'ftthUnreachedHouseholds': 'famiglie', 'hospitals': 'presidi', 'hydraulicWorksCensusElements': 'opere',
+    'inboundCommuters': 'persone', 'localUnits': 'unità locali', 'maritimeConcessions': 'concessioni',
+    'pabInterventionsCompleted': 'interventi', 'pabInterventionsInProgress': 'interventi',
+    'pabProgrammedInterventions': 'interventi', 'remediationProceedings': 'procedimenti',
+    'scheduledTplTripsPer1000': 'corse ogni 1.000 abitanti', 'schoolSites': 'scuole',
+    'slowMobilityBici': 'percorsi', 'slowMobilityCammini': 'cammini', 'slowMobilityMtb': 'percorsi',
+    'slowMobilityRoutes': 'percorsi', 'slowMobilityTrekking': 'percorsi', 'territorialClassification': '',
+    'tourismArrivals': 'arrivi', 'tourismBeds': 'posti letto', 'tourismPresences': 'presenze',
+}
+COUNT_UNITS = {'number', 'count'}
+
+
+def unit_label(key, meta):
+    """Etichetta da mostrare accanto ai valori: quella del catalogo, altrimenti il nome del conteggio."""
+    if meta.get('unitLabel') is not None or meta.get('unit') not in COUNT_UNITS:
+        return meta.get('unitLabel')
+    if key not in COUNT_NOUNS:
+        raise SystemExit(f'Conteggio senza nome per le risposte di Chiedi: {key} (aggiungilo a COUNT_NOUNS)')
+    return COUNT_NOUNS[key]
+
+
 def presentation(catalog):
     """Only derived display metadata, never operation permissions or observations."""
     body = Path(catalog).read_bytes()
@@ -44,7 +72,7 @@ def presentation(catalog):
             if isinstance(parameter, dict) and (parameter.get('label') or parameter.get('name')):
                 labels['parameter:'+str(index)] = parameter.get('label') or parameter['name']
         metrics[key] = dict(description=metric['meta'].get('description', ''),
-                            unit=metric['meta'].get('unit'), unitLabel=metric['meta'].get('unitLabel'), views=labels)
+                            unit=metric['meta'].get('unit'), unitLabel=unit_label(key, metric['meta']), views=labels)
     return dict(catalogSha256=hashlib.sha256(body).hexdigest(),
                 themes={k:v['label'] for k,v in data['themes'].items()}, metrics=metrics)
 

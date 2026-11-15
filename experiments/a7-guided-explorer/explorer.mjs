@@ -31,7 +31,8 @@ export async function startExplorer(openRuntime,presentation){
  periodNames=presentation.periods||{};
  const $=id=>document.getElementById('explorer-'+id);
  const fields=$('form').querySelector('fieldset');
- const unitLabel=o=>units[o.unit]??((presentation.metrics[$('metric').value]?.unit===o.unit?presentation.metrics[$('metric').value]?.unitLabel:null)||o.unit);
+ // Il nome proprio della misura (abitanti, posti letto…) prevale sull'unità generica.
+ const unitLabel=o=>{const m=presentation.metrics[$('metric').value];return m?.unit===o.unit&&typeof m.unitLabel==='string'?m.unitLabel:(units[o.unit]??o.unit);};
  let runtime,root,detail,generation=0,pending=null,current=null,pageIndex=0;
  const status=text=>{$('status').textContent=text;};
  const revoke=()=>{generation++;pending=null;current=null;$('result').hidden=true;$('result').replaceChildren();$('consent').hidden=true;};
