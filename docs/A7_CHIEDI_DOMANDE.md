@@ -73,6 +73,10 @@ indicatori vicini e chiede il Comune quando la lettura riguarda un Comune solo.
 
 Domande come «Cos'è l'indice di vecchiaia?», «Come si calcola il reddito imponibile medio?» o «Cosa si intende per pendolari in uscita» ricevono la descrizione dell'indicatore scritta nel catalogo, con fonte, anno del dato più recente e link alla pagina «Fonte e metodo». Non compare alcun numero: due pulsanti portano al dato del Comune nominato o dei sette Comuni. Se la domanda chiede anche una lettura («cosa è cambiato…», «più alto»), vince la lettura. «Cosa significa?» subito dopo una risposta riguarda l'indicatore di quella risposta.
 
+## Domande senza risposta (16 novembre 2026)
+
+Quando Chiedi non trova un indicatore, un incrocio rivisto o letture consultabili, sotto la risposta compare «Segnala questa domanda». Il link apre l'app di posta con un'email a info@osservatorioversilia.it che contiene solo il testo della domanda e il motivo per cui Chiedi non ha risposto. Il sito non registra nulla da solo: la segnalazione parte solo se chi scrive la invia.
+
 ## Verifica
 
 `scripts/test_chiedi_domande.py --dist dist` (nei controlli sul sito costruito)

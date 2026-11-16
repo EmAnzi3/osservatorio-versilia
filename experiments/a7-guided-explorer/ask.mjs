@@ -505,6 +505,7 @@ const NOTES = {
   requested_reading_unavailable: 'La lettura che chiedi non è disponibile per questo indicatore: mostro quella più vicina.',
   one_town_only: 'Questa lettura riguarda un Comune alla volta: uso il primo che hai nominato.',
 };
+const REPORT_TO = 'info@osservatorioversilia.it';
 const EXAMPLES = ['Quanti abitanti ha Viareggio?', 'Quale Comune ha il reddito più alto?', 'Com’è cambiata la popolazione di Massarosa negli anni?', 'Disoccupazione giovanile a Seravezza', 'C’è relazione tra reddito e popolazione?'];
 
 // Interfaccia a messaggi sopra l'esploratore: ogni risposta è una selezione
@@ -620,6 +621,16 @@ export function startAsk(index, presentation) {
     a.href = metric.page; a.target = '_blank'; a.rel = 'noopener';
     line.append(a); answer.append(line);
   }
+  // Domanda senza risposta: email già compilata con il solo testo della domanda.
+  // Il sito è statico e non registra nulla da solo; parte solo se chi scrive la invia.
+  function report(question, reason, answer) {
+    const body = 'Domanda posta a Chiedi:\n«' + question + '»\n\nRisposta di Chiedi: ' + reason + '\n\n(Se vuoi, aggiungi qui che cosa cercavi.)';
+    const line = make('p', undefined, 'ask-report');
+    const a = make('a', 'Segnala questa domanda');
+    a.href = 'mailto:' + REPORT_TO + '?subject=' + encodeURIComponent('Chiedi: domanda senza risposta') + '&body=' + encodeURIComponent(body);
+    line.append(a, document.createTextNode(' — si apre la tua app di posta con il solo testo della domanda; parte solo se la invii.'));
+    answer.append(line);
+  }
   function describe(r) {
     const parts = ['«' + (r.viewLabel && r.metric.short ? r.metric.short : r.metric.label) + '»'];
     if (r.viewLabel) parts.push(r.viewLabel);
@@ -646,6 +657,7 @@ export function startAsk(index, presentation) {
     }
     if (r.kind === 'no_metric') {
       answer.append(make('p', 'Non ho trovato un indicatore che risponda a questa domanda nel catalogo. Prova con altre parole (per esempio reddito, turismo, rifiuti, scuola) oppure scegli un tema qui sotto.'));
+      report(question, 'nessun indicatore trovato nel catalogo.', answer);
       return;
     }
     if (r.kind === 'association') {
@@ -658,7 +670,7 @@ export function startAsk(index, presentation) {
       answer.append(make('p', 'Questo incrocio non è ancora stato rivisto, quindi non lo mostro. Gli incroci disponibili sono:'));
       const list = make('div', undefined, 'ask-options');
       for (const a of index.associations) list.append(button(metricLabel(a.left) + ' e ' + metricLabel(a.right), () => pair(a.id, answer)));
-      answer.append(list); return;
+      answer.append(list); report(question, 'incrocio non ancora rivisto.', answer); return;
     }
     if (r.kind === 'definition') {
       // Definizione dal catalogo: nessun numero, solo che cosa misura l'indicatore e da dove viene.
@@ -682,7 +694,7 @@ export function startAsk(index, presentation) {
       }
       return;
     }
-    if (r.kind === 'no_reading') { answer.append(make('p', 'Ho trovato «' + r.metric.label + '», ma per questo indicatore non ci sono ancora letture consultabili qui.')); return; }
+    if (r.kind === 'no_reading') { answer.append(make('p', 'Ho trovato «' + r.metric.label + '», ma per questo indicatore non ci sono ancora letture consultabili qui.')); report(question, 'indicatore «' + r.metric.label + '» senza letture consultabili.', answer); return; }
     const notes = r.notes.filter(n => NOTES[n]).map(n => NOTES[n]);
     if (r.notes.includes('town_needed')) {
       answer.append(make('p', describe(r).replace(/\.$/, '') + ' — in quale Comune?'));
