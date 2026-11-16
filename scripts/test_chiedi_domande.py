@@ -43,6 +43,15 @@ def graph_dir(dist):
     return graph
 
 
+def check_units(graph):
+    """I conteggi pubblicati hanno il nome di ciò che contano: mai la parola generica «unità»."""
+    text = (graph/'presentation.mjs').read_text(encoding='utf-8')
+    metrics = json.loads(text[text.index('{'):text.rindex('}')+1])['metrics']
+    missing = [k for k, m in metrics.items() if m.get('unit') in ('number', 'count') and m.get('unitLabel') is None]
+    assert not missing, f'chiedi_count_without_noun:{missing}'
+    assert metrics['population']['unitLabel'] == 'abitanti', metrics['population']
+
+
 def check_interpreter(graph, dist):
     cases = json.loads(QUESTIONS.read_text(encoding='utf-8'))['questions']
     script = RUNNER % {'ask': json.dumps((graph/'ask.mjs').as_uri()), 'index': json.dumps((graph/'ask-index.mjs').as_uri())}
@@ -126,6 +135,10 @@ def check_browser(dist):
                 # La frase riporta il valore esatto del motore, arrotondato solo per la lettura.
                 value = evidence['steps'][0]['response']['observations'][0]['value']
                 assert f'{round(value):,}'.replace(',', '.') in reply, 'chiedi_reply_not_from_engine'
+                # I residenti si contano in abitanti, non nell'unità generica del conteggio.
+                assert f"{round(value):,} abitanti".replace(',', '.') in reply and 'unità' not in reply, f'chiedi_reply_unit:{reply}'
+                cells = page.locator('#explorer-result [data-observation-value]').all_text_contents()
+                assert cells and all('abitanti' in c and 'unità' not in c for c in cells), f'chiedi_table_unit:{cells[:3]}'
                 source = page.locator('#ask-log .ask-source a').first.get_attribute('href')
                 assert source.startswith('../indicatori/') and (dist/'chiedi'/source/'index.html').resolve().is_file(), source
                 table_source = page.locator('#explorer-result td a').first.get_attribute('href')
@@ -161,6 +174,7 @@ def main():
     parser.add_argument('--dist', type=Path, required=True)
     args = parser.parse_args()
     dist = args.dist.resolve()
+    check_units(graph_dir(dist))
     count = check_interpreter(graph_dir(dist), dist)
     check_browser(dist)
     print(f'Chiedi domande PASS: {count} domande di prova (con seguiti), suggeritore, fonti dell’Osservatorio per tutti gli indicatori, risposta e dati nel browser a 1440 e 390 px')

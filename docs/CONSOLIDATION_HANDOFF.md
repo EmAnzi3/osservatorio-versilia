@@ -1,5 +1,12 @@
 # Consolidamento Osservatorio Versilia — handoff operativo
 
+## Chiedi: i conteggi hanno il loro nome, non «unità» (15 novembre 2026)
+
+- Segnalato da Ema sul sito: «Quanti abitanti ha Viareggio?» rispondeva «… unità». Il catalogo dichiara per i conteggi solo `unit: number|count`, che `units` traduce in «unità».
+- `scripts/build_a7_explorer_preview.py`: `COUNT_NOUNS` dà il nome di ciò che si conta (abitanti, posti letto, arrivi, presenze, interventi…) ai 30 conteggi senza `unitLabel`, solo nella presentazione di Chiedi; stringa vuota per le misure che raccolgono grandezze diverse (qualità dell'acqua, atlante ATECO, classificazione territoriale). Un nuovo conteggio senza voce ferma la build. `site-data.json` non cambia.
+- `explorer.mjs`, `associations.mjs`, `ask.mjs`: l'etichetta propria della misura prevale sull'unità generica (prima valeva solo se l'unità generica mancava).
+- `scripts/test_chiedi_domande.py`: nessun conteggio pubblicato senza nome; risposta e tabella di «Popolazione residente a Viareggio» in «abitanti», senza «unità».
+
 ## Mascotte Versilia: invito a Chiedi da tutte le pagine (15 novembre 2026)
 
 - `assets/mascotte.js` + `assets/mascotte.css` + `assets/mascotte/versilia-{160,320}.webp` (immagine di Ema, ripulita dai residui del ritaglio). In basso a destra, `z-index:70` (sopra intestazione 60 e barra comunale 42, sotto la ricerca 100).
