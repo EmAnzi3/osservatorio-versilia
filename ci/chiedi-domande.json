@@ -1608,6 +1608,178 @@
    "town": "046024",
    "detail": "total",
    "benchmark": "italy"
+  },
+  {
+   "question": "Quale comune ha più abitanti?",
+   "kind": "reading",
+   "metric": "population",
+   "operation": "rank",
+   "town": null,
+   "detail": "total"
+  },
+  {
+   "question": "Comune con meno disoccupati",
+   "kind": "reading",
+   "metric": "unemploymentRate",
+   "operation": "rank",
+   "town": null,
+   "detail": "total"
+  },
+  {
+   "question": "Viareggio o Camaiore: chi ha più abitanti?",
+   "kind": "reading",
+   "metric": "population",
+   "operation": "rank",
+   "town": null,
+   "detail": "total"
+  },
+  {
+   "question": "Pietrasanta ha più abitanti di Camaiore?",
+   "kind": "reading",
+   "metric": "population",
+   "operation": "rank",
+   "town": null,
+   "detail": "total"
+  },
+  {
+   "question": "Il comune con più posti letto",
+   "kind": "reading",
+   "metric": "tourismBeds",
+   "operation": "rank",
+   "town": null,
+   "detail": "total"
+  },
+  {
+   "question": "Quale comune produce più rifiuti?",
+   "kind": "reading",
+   "metric": "wastePerResident",
+   "operation": "rank",
+   "town": null,
+   "detail": "total"
+  },
+  {
+   "question": "Raccolta differenziata: chi fa meglio?",
+   "kind": "reading",
+   "metric": "recycling",
+   "operation": "rank",
+   "town": null,
+   "detail": "total"
+  },
+  {
+   "question": "Il più popoloso della Versilia",
+   "kind": "reading",
+   "metric": "population",
+   "operation": "rank",
+   "town": null,
+   "detail": "total"
+  },
+  {
+   "question": "Il comune più piccolo",
+   "kind": "reading",
+   "metric": "population",
+   "operation": "rank",
+   "town": null,
+   "detail": "total"
+  },
+  {
+   "question": "Il comune più grande per superficie",
+   "kind": "reading",
+   "metric": "municipalSurface",
+   "operation": "rank",
+   "town": null,
+   "detail": "total"
+  },
+  {
+   "question": "Comune più esteso",
+   "kind": "reading",
+   "metric": "municipalSurface",
+   "operation": "rank",
+   "town": null,
+   "detail": "total"
+  },
+  {
+   "question": "Comune più anziano",
+   "kind": "reading",
+   "metric": "oldAgeIndex",
+   "operation": "rank",
+   "town": null,
+   "detail": "total"
+  },
+  {
+   "question": "In quale comune si vive di più?",
+   "kind": "reading",
+   "metric": "lifeExpectancy",
+   "operation": "rank",
+   "town": null,
+   "detail": "total"
+  },
+  {
+   "question": "Dove costano di più le case?",
+   "kind": "reading",
+   "metric": "omiResidential",
+   "operation": "rank",
+   "town": null,
+   "detail": "total"
+  },
+  {
+   "question": "Graduatoria dei comuni per presenze turistiche",
+   "kind": "reading",
+   "metric": "tourismPresences",
+   "operation": "rank",
+   "town": null,
+   "detail": "total"
+  },
+  {
+   "question": "Top comuni per stranieri",
+   "kind": "reading",
+   "metric": "foreignResidents",
+   "operation": "rank",
+   "town": null,
+   "detail": "total"
+  },
+  {
+   "question": "Ultimo comune per reddito",
+   "kind": "reading",
+   "metric": "income",
+   "operation": "rank",
+   "town": null,
+   "detail": "total"
+  },
+  {
+   "question": "Differenza di reddito tra Viareggio e Forte dei Marmi",
+   "kind": "reading",
+   "metric": "income",
+   "operation": "compare",
+   "town": null,
+   "detail": "total"
+  },
+  {
+   "question": "Massarosa vs Seravezza popolazione",
+   "kind": "reading",
+   "metric": "population",
+   "operation": "compare",
+   "town": null,
+   "detail": "total"
+  },
+  {
+   "question": "Viareggio contro Camaiore",
+   "kind": "no_metric"
+  },
+  {
+   "question": "Prezzo delle case a Forte dei Marmi",
+   "kind": "reading",
+   "metric": "omiResidential",
+   "operation": "observe",
+   "town": "046013",
+   "detail": "total"
+  },
+  {
+   "question": "A Viareggio ci sono più turisti?",
+   "kind": "reading",
+   "metric": "tourismPresences",
+   "operation": "observe",
+   "town": "046033",
+   "detail": "total"
   }
  ]
 }

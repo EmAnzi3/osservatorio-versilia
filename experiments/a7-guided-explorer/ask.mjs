@@ -15,8 +15,8 @@ const OPERATIONS = [
   ['percentage_points', /\bpunti percentuali\b/],
   ['series', /\b(nel tempo|negli anni|andamento|evoluzion\w*|stori\w*|serie|anno per anno|dal \d{4}|com e cambiat\w*|anni fa|in passato)\b/],
   ['relative_change', /\b(in percentuale|percentualmente|di quanto (?:e )?(?:cresciut|aumentat|calat|diminuit)\w*|variazione percentuale|quanto (?:e )?(?:cresciut|aumentat|calat|diminuit|cambiat|variat)\w*|crescit\w*|aument\w*|cal\w* |diminu\w*|variazion\w*|cambiat\w*)\b/],
-  ['rank', /\b(classifica|ordin\w*|piu alt\w*|piu bass\w*|il piu|la piu|i piu|le piu|maggior\w*|minor\w*|primo|prima posizione|ultimo posto|chi ha (?:piu|meno)|dove (?:e|sono|ci sono) (?:piu|meno)|di (?:piu|meno)|piu (?:vecch|giovan|ricc|pover|car|economic|popolos|grand|piccol)\w*|in testa)\b/],
-  ['compare', /\b(confront\w*|paragon\w*|rispetto agli altri|fra i comuni|tra i comuni|tutti i comuni|gli altri comuni|altri comuni|sette comuni|differenz\w* fra|ogni comune|ciascun comune)\b/],
+  ['rank', /\b(classifica|ordin\w*|piu alt\w*|piu bass\w*|il piu|la piu|i piu|le piu|maggior\w*|minor\w*|primo|prima posizione|ultimo posto|chi ha (?:piu|meno)|dove (?:e|sono|ci sono) (?:piu|meno)|di (?:piu|meno)|piu (?:vecch|giovan|ricc|pover|car|economic|popolos|grand|piccol)\w*|in testa|graduatori\w*|top|podio|(?:primo|ultimo|ultima|prima) (?:comune|posto|in classifica)|chi (?:fa|va) (?:meglio|peggio))\b/],
+  ['compare', /\b(confront\w*|paragon\w*|rispetto agli altri|fra i comuni|tra i comuni|tutti i comuni|gli altri comuni|altri comuni|sette comuni|differenz[ae]|ogni comune|ciascun comune|contro|vs|versus)\b/],
   ['weighted_ratio', /\b(versilia nel suo insieme|intera versilia|tutta la versilia|complessivo della versilia|totale della versilia|in versilia)\b/],
 ];
 const ASSOCIATION = /\b(relazion\w*|legat\w*|legame|correlaz\w*|associazione (?:tra|fra)|incroci\w*|dipend\w* da|influenz\w*|va di pari passo|quando .* (?:anche|allora))\b/;
@@ -60,6 +60,12 @@ const PHRASES = [
   [/\b(?:spend\w*|spesa) (?:\w+ )?per (?:la |le )?scuol\w*\b/g, 'spesa istruzione diritto studio'],
   [/\b(?:piu|meno) vecch\w*\b/g, m => 'indice di vecchiaia ' + (m.startsWith('piu') ? 'piu alto' : 'piu basso')],
   [/\b(?:piu|meno) giovan\w*\b/g, m => 'indice di vecchiaia ' + (m.startsWith('piu') ? 'piu basso' : 'piu alto')],
+  [/\b(?:piu|meno) anzian[oa]\b/g, m => 'indice di vecchiaia ' + (m.startsWith('piu') ? 'piu alto' : 'piu basso')],
+  [/\b(?:piu|meno) popolos\w*\b/g, m => 'popolazione ' + (m.startsWith('piu') ? 'piu alto' : 'piu basso')],
+  [/\b(?:piu|meno) (?:estes|vast)\w*\b|\b(?:piu|meno) (?:grand|piccol)\w* per (?:superficie|estensione|territorio)\b/g, m => 'superficie comunale ' + (/^piu (?:estes|vast|grand)|^meno piccol/.test(m) ? 'piu alto' : 'piu basso')],
+  [/\b(?:piu|meno) (?:grand|piccol)\w*\b/g, m => 'popolazione ' + (/^piu grand|^meno piccol/.test(m) ? 'piu alto' : 'piu basso')],
+  [/\b(?:si vive|vivono|campano) (?:di )?(?:piu|meno)\b|\b(?:vita media|longevit\w*)\b/g, m => 'speranza di vita ' + (/meno/.test(m) ? 'piu basso' : 'piu alto')],
+  [/\b(?:prezz\w*|cost\w*|quotazion\w*|valor\w*) (?:delle |della |di )?(?:case|casa|abitazion\w*)\b|\bcase cost\w*|\bcostano (?:di )?(?:piu|meno) (?:le )?case\b/g, m => 'quotazioni immobiliari ' + (/meno/.test(m) ? 'piu basso' : (/piu/.test(m) ? 'piu alto' : ''))],
   [/\bescono (?:dal comune )?per lavor\w*\b/g, 'pendolari in uscita'],
   [/\bentrano (?:nel comune )?per lavor\w*\b/g, 'pendolari in entrata'],
 ];
@@ -263,7 +269,9 @@ export function interpret(question, prepared, { metric: forced = null, previous 
   const prev = previous && previous.kind === 'reading' && previous.selection ? previous : null;
   const towns = findTowns(base, prepared);
   const words = tokens(stripQuestion(text)).map(w => correct(w, prepared));
-  const wanted = detectOperation(text);
+  let wanted = detectOperation(text);
+  // «Quale Comune ha più…», «Pietrasanta ha più abitanti di Camaiore?»: senza un solo Comune è un ordine.
+  if ((!wanted || wanted === 'compare') && towns.length !== 1 && /\b(piu|meno|meglio|peggio)\b/.test(text) && !/\bdifferenz[ae]\b/.test(text)) wanted = 'rank';
   const cue = FOLLOW.test(text);
   const ranked = scoreMetrics(words, prepared);
   const content = words.filter(w => !GENERIC.has(stem(w)) && !/^\d+$/.test(w));
@@ -423,14 +431,15 @@ export function suggest(input, prepared, { previous = null, limit = 6 } = {}) {
 export const READINGS = { observe: 'il valore in un Comune', lookup: 'il dettaglio per località', compare: 'il confronto fra i sette Comuni', series: 'com’è cambiato nel tempo', rank: 'l’ordine dal valore più alto al più basso', benchmark_gap: 'il confronto con Toscana o Italia', absolute_change: 'quanto è cambiato (differenza)', relative_change: 'quanto è cambiato (in percentuale)', percentage_points: 'quanto è cambiato (in punti percentuali)', weighted_ratio: 'il valore della Versilia nel suo insieme', trend: 'la tendenza nel tempo', anomaly: 'i valori fuori scala fra i sette Comuni' };
 
 // Frase di risposta costruita solo dall'evidenza del motore mostrata sotto.
-export function summarize(evidence, townName, unitLabel) {
+// focus: Comuni nominati nella domanda («Viareggio contro Camaiore»), messi in primo piano.
+export function summarize(evidence, townName, unitLabel, focus = []) {
   const step = evidence?.steps?.[0], request = evidence?.plan?.steps?.[0]?.request;
   const response = step?.response;
   if (!response || !request || response.status !== 'computed') return null;
   const fmt = (value, unit) => {
     if (typeof value !== 'number' || !Number.isFinite(value)) return null;
     const digits = Math.abs(value) >= 100 ? 0 : 2;
-    const text = new Intl.NumberFormat('it-IT', { maximumFractionDigits: digits }).format(value);
+    const text = new Intl.NumberFormat('it-IT', { maximumFractionDigits: digits, useGrouping: 'always' }).format(value);
     const label = unitLabel(unit, request.selectors?.[0]?.metric);
     return label ? text + (['%', '€', '°C'].includes(label) ? (label === '€' ? ' €' : label) : ' ' + label) : text;
   };
@@ -441,6 +450,12 @@ export function summarize(evidence, townName, unitLabel) {
     case 'observe': { const o = obs[0]; const v = o && fmt(o.value, o.unit); return v ? townName(o.geography) + ': ' + v + period(o.period) + '.' : null; }
     case 'rank': case 'compare': {
       if (obs.length < 2) return null;
+      const named = focus.map(code => obs.find(o => o.geography === code)).filter(Boolean);
+      if (named.length >= 2 && named.length === focus.length) {
+        const order = [...named].sort((a, b) => b.value - a.value);
+        const list = order.map(o => townName(o.geography) + ' ' + fmt(o.value, o.unit)).join(', ') + period(order[0].period) + '.';
+        return list + (order[0].value === order[1].value ? ' Stesso valore.' : ' Valore più alto: ' + townName(order[0].geography) + '.') + ' Sotto, tutti e sette i Comuni.';
+      }
       const sorted = [...obs].sort((a, b) => b.value - a.value), hi = sorted[0], lo = sorted[sorted.length - 1];
       if (hi.value === lo.value) return null;
       return 'Valore più alto: ' + townName(hi.geography) + ' con ' + fmt(hi.value, hi.unit) + '; più basso: ' + townName(lo.geography) + ' con ' + fmt(lo.value, lo.unit) + period(hi.period) + '. Un ordine numerico non è un giudizio.';
@@ -518,8 +533,8 @@ export function startAsk(index, presentation) {
     const matches = req && req.operation === sel.domanda && req.selectors?.[0]?.metric === sel.indicatore && req.selectors[0].dimension === sel.dettaglio
       && (!sel.comune || req.selectors[0].towns?.includes(sel.comune));
     if (!result.hidden && matches) {
-      const target = waiting.answer; waiting = null;
-      const sentence = summarize(evidence, townLabel, unitLabel);
+      const { answer: target, focus } = waiting; waiting = null;
+      const sentence = summarize(evidence, townLabel, unitLabel, focus);
       if (sentence) target.append(make('p', sentence, 'ask-reply'));
       target.append(make('p', 'Dati, fonti e limiti qui sotto.', 'ask-note'));
       sourceLink(index.metrics.find(m => m.key === sel.indicatore), target);
@@ -531,8 +546,8 @@ export function startAsk(index, presentation) {
       consent.scrollIntoView({ block: 'center' });
     }
   }).observe(document.getElementById('a7-explorer'), { subtree: true, childList: true, attributes: true, attributeFilter: ['hidden'] });
-  function apply(selection, answer) {
-    measureMode(); waiting = answer ? { answer, selection } : null;
+  function apply(selection, answer, focus = []) {
+    measureMode(); waiting = answer ? { answer, selection, focus } : null;
     const params = new URLSearchParams();
     for (const key of ['indicatore', 'dettaglio', 'domanda', 'comune', 'riferimento']) if (selection[key]) params.set(key, selection[key]);
     const hash = '#esplora&' + params.toString();
@@ -584,6 +599,7 @@ export function startAsk(index, presentation) {
     if (r.viewLabel) parts.push(r.viewLabel);
     parts.push(READINGS[r.selection.domanda] || r.selection.domanda);
     if (r.selection.comune) parts.push(townName(r.selection.comune));
+    else if (r.towns?.length >= 2 && ['rank', 'compare'].includes(r.selection.domanda)) parts.push('in evidenza ' + r.towns.map(t => t.name).join(' e '));
     if (r.selection.riferimento) parts.push(r.selection.riferimento === 'italy' ? 'rispetto all’Italia' : 'rispetto alla Toscana');
     return (r.followUp ? 'Continuo dalla domanda precedente. ' : '') + 'Ho capito: ' + parts.join(' · ') + '.';
   }
@@ -592,6 +608,16 @@ export function startAsk(index, presentation) {
     const answer = reuse || say(question);
     answer.replaceChildren();
     if (r.kind === 'empty') { answer.append(make('p', 'Scrivi una domanda, per esempio sul reddito o sulla popolazione di un Comune.')); return; }
+    if (r.kind === 'no_metric' && r.towns.length >= 2) {
+      // «Viareggio contro Camaiore»: i Comuni ci sono, manca su che cosa confrontarli.
+      const names = r.towns.map(t => t.name).join(' e ');
+      answer.append(make('p', 'Su quale indicatore vuoi confrontare ' + names + '?'));
+      const list = make('div', undefined, 'ask-options');
+      const common = ['population', 'income', 'unemploymentRate', 'oldAgeIndex', 'tourismPresences', 'recycling', 'omiResidential', 'foreignResidents'];
+      for (const m of common.map(k => index.metrics.find(m => m.key === k)).filter(m => m?.operations.includes('rank')))
+        list.append(button(m.label, () => ask(m.label + ': ' + names, {}, answer)));
+      answer.append(list); return;
+    }
     if (r.kind === 'no_metric') {
       answer.append(make('p', 'Non ho trovato un indicatore che risponda a questa domanda nel catalogo. Prova con altre parole (per esempio reddito, turismo, rifiuti, scuola) oppure scegli un tema qui sotto.'));
       return;
@@ -619,7 +645,8 @@ export function startAsk(index, presentation) {
     } else {
       answer.append(make('p', describe(r)));
       remember(r);
-      apply(r.selection, answer);
+      const both = ['rank', 'compare'].includes(r.selection.domanda) && r.towns.length >= 2 ? r.towns.map(t => t.code) : [];
+      apply(r.selection, answer, both);
     }
     for (const note of notes) answer.append(make('p', note, 'ask-note'));
     if (r.alternatives.length) {
