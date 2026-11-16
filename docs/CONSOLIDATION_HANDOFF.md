@@ -1,5 +1,14 @@
 # Consolidamento Osservatorio Versilia — handoff operativo
 
+## Chiedi: definizioni come risposta (16 novembre 2026)
+
+- «Cos'è…», «cosa significa/misura/indica…», «come si calcola…», «definizione di…», «cosa si intende per…», «spiegami…» → `kind: 'definition'`: la risposta è la descrizione dell'indicatore nel catalogo, con fonte, anno del dato più recente e link «Fonte e metodo». Nessun numero.
+- Sotto, «Vedi il dato a <Comune>» (se nominato) e «Vedi i sette Comuni» portano al dato con l'indicatore già fissato. «Cosa significa?» dopo una risposta spiega l'indicatore precedente; da solo resta senza risposta.
+- Una lettura esplicita vince sulla definizione («Cosa è cambiato nella popolazione di Viareggio?» resta una variazione); «come si calcola» non conta più come «calo».
+- `presentation()` passa anche `source` e `year` del catalogo (solo presentazione).
+- Il nome breve di un indicatore scritto per intero, se nessun altro indicatore lo condivide, pesa di più: «unità locali» ora trova «Unità locali attive» e non «Addetti nelle unità locali».
+- `ci/chiedi-domande.json`: 19 domande nuove (241 in tutto); `scripts/test_chiedi_domande.py` verifica nel browser testo, fonte e passaggio al dato. Ramo sopra #611 (classifiche).
+
 ## Chiedi: classifiche e confronti fra Comuni (16 novembre 2026)
 
 - Superlativi senza un solo Comune («Quale Comune ha più abitanti?», «Comune con meno disoccupati», «chi fa meglio», «graduatoria», «top», «ultimo comune») → classifica (`rank`). Con un solo Comune («A Viareggio ci sono più turisti?») resta il valore del Comune.

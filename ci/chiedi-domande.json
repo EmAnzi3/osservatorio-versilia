@@ -1780,6 +1780,110 @@
    "operation": "observe",
    "town": "046033",
    "detail": "total"
+  },
+  {
+   "question": "Cos'è l'indice di vecchiaia?",
+   "kind": "definition",
+   "metric": "oldAgeIndex"
+  },
+  {
+   "question": "Cosa significa tasso di disoccupazione?",
+   "kind": "definition",
+   "metric": "unemploymentRate"
+  },
+  {
+   "question": "Come si calcola il reddito imponibile medio?",
+   "kind": "definition",
+   "metric": "income"
+  },
+  {
+   "question": "Come viene calcolato il tasso di disoccupazione?",
+   "kind": "definition",
+   "metric": "unemploymentRate"
+  },
+  {
+   "question": "Che cosa misura la raccolta differenziata?",
+   "kind": "definition",
+   "metric": "recycling"
+  },
+  {
+   "question": "Definizione di quotazioni OMI",
+   "kind": "definition",
+   "metric": "omiResidential"
+  },
+  {
+   "question": "Cosa vuol dire autocontenimento?",
+   "kind": "definition",
+   "metric": "selfContainment"
+  },
+  {
+   "question": "Cosa sono le unità locali?",
+   "kind": "definition",
+   "metric": "localUnits"
+  },
+  {
+   "question": "Che cos'è il tasso di motorizzazione",
+   "kind": "definition",
+   "metric": "motorization"
+  },
+  {
+   "question": "Spiegami la permanenza media dei turisti",
+   "kind": "definition",
+   "metric": "tourismAverageStay"
+  },
+  {
+   "question": "Che significa indice di dipendenza?",
+   "kind": "definition",
+   "metric": "dependencyIndices"
+  },
+  {
+   "question": "Cosa si intende per pendolari in uscita",
+   "kind": "definition",
+   "metric": "outboundCommuters"
+  },
+  {
+   "question": "Cos'è l'indice di vecchiaia a Viareggio?",
+   "kind": "definition",
+   "metric": "oldAgeIndex"
+  },
+  {
+   "question": "Cosa significa?",
+   "after": [
+    "Indice di vecchiaia a Viareggio"
+   ],
+   "kind": "definition",
+   "metric": "oldAgeIndex"
+  },
+  {
+   "question": "Cosa significa?",
+   "kind": "no_metric"
+  },
+  {
+   "question": "Cos'è l'Osservatorio?",
+   "kind": "no_metric"
+  },
+  {
+   "question": "Cosa è cambiato nella popolazione di Viareggio?",
+   "kind": "reading",
+   "metric": "population",
+   "operation": "relative_change",
+   "town": "046033"
+  },
+  {
+   "question": "Unità locali a Viareggio",
+   "kind": "reading",
+   "metric": "localUnits",
+   "operation": "observe",
+   "town": "046033",
+   "detail": "total"
+  },
+  {
+   "question": "Addetti nelle unità locali a Camaiore",
+   "kind": "reading",
+   "metric": "localEmployees",
+   "operation": "observe",
+   "town": "046005",
+   "detail": "total"
   }
  ]
 }

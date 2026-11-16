@@ -98,6 +98,8 @@ const range=document.createRange();range.selectNodeContents(t);const tr=range.ge
 
 
 def check_browser(dist):
+    text = (graph_dir(dist)/'presentation.mjs').read_text(encoding='utf-8')
+    described = json.loads(text[text.index('{'):text.rindex('}')+1])['metrics']
     from playwright.sync_api import sync_playwright
 
     class Quiet(http.server.SimpleHTTPRequestHandler):
@@ -168,6 +170,15 @@ def check_browser(dist):
                 page.wait_for_selector('#ask-log .ask-turn:first-child .ask-reply', state='attached')
                 chip_reply = page.locator('#ask-log .ask-turn').first.locator('.ask-reply').text_content()
                 assert 'Viareggio' in chip_reply and 'Camaiore' in chip_reply and 'Sotto, tutti e sette i Comuni.' in chip_reply, f'chiedi_pair_chip:{chip_reply}'
+                # Definizione: la descrizione del catalogo, la fonte e il passaggio al dato.
+                page.fill('#ask-input', "Cos'è l'indice di vecchiaia?")
+                page.press('#ask-input', 'Enter')
+                turn = page.locator('#ask-log .ask-turn').first
+                assert turn.locator('.ask-reply').text_content() == described['oldAgeIndex']['description'].strip(), turn.text_content()
+                assert 'Fonte: ' in turn.text_content() and turn.locator('.ask-source a').count() == 1, turn.text_content()
+                turn.locator('.ask-options button', has_text='Vedi i sette Comuni').focus(); page.keyboard.press('Enter')
+                page.wait_for_selector('#ask-log .ask-turn:first-child .ask-reply', state='attached')
+                assert 'Indice di vecchiaia' in page.locator('#ask-log .ask-turn').first.text_content(), 'chiedi_definition_to_data'
                 # Testi dentro i box: mai attaccati al bordo (almeno 8 px).
                 tight = page.evaluate(TIGHT_TEXT)
                 assert not tight, f'chiedi_text_touches_box_edge:{tight}'
