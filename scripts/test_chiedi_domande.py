@@ -15,6 +15,7 @@ import http.server
 import json
 import subprocess
 import threading
+import urllib.parse
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -189,6 +190,13 @@ def check_browser(dist):
                 page.fill('#ask-input', 'Chi vincerà le elezioni?')
                 page.click('#ask-send')
                 assert 'Non ho trovato' in page.locator('#ask-log li').first.text_content(), 'chiedi_out_of_scope_answered'
+                # Domanda senza risposta: email già compilata con il solo testo della domanda, nessun altro dato.
+                href = page.locator('#ask-log li').first.locator('.ask-report a').get_attribute('href')
+                mail = urllib.parse.urlsplit(href)
+                fields = urllib.parse.parse_qs(mail.query)
+                assert mail.scheme == 'mailto' and mail.path == 'info@osservatorioversilia.it', href
+                assert fields['subject'] == ['Chiedi: domanda senza risposta'] and '«Chi vincerà le elezioni?»' in fields['body'][0], fields
+                assert 'http' not in fields['body'][0] and set(fields) == {'subject', 'body'}, fields
                 assert page.evaluate('document.documentElement.scrollWidth<=innerWidth'), 'chiedi_horizontal_scroll'
                 assert not errors, errors
                 page.close()

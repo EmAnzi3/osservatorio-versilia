@@ -24,4 +24,6 @@
 #a7-explorer .ask-context .ask-reset{margin:0;padding:.3rem .7rem;font-size:.82rem}
 #a7-explorer .ask-answer .ask-source{font-size:.9rem}
 #a7-explorer .ask-answer .ask-source a{color:#0b4a6e}
+#a7-explorer .ask-answer .ask-report{font-size:.9rem;color:#4a4a4a}
+#a7-explorer .ask-answer .ask-report a{color:#0b4a6e;font-weight:600}
 @media(max-width:600px){#a7-explorer .ask-box{padding:.9rem}#a7-explorer #ask-send{width:100%}#a7-explorer .ask-examples .ask-chip:nth-child(n+4){display:none}}

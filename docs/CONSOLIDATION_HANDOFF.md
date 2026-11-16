@@ -1,5 +1,13 @@
 # Consolidamento Osservatorio Versilia — handoff operativo
 
+## Chiedi: «Segnala questa domanda» per le domande senza risposta (16 novembre 2026)
+
+- Il sito è statico (GitHub Pages, CSP `connect-src 'self'`): niente registro automatico. Scelta di Ema: un link email.
+- Sotto le risposte senza esito («Non ho trovato…», incrocio non rivisto, indicatore senza letture) compare «Segnala questa domanda»: `mailto:info@osservatorioversilia.it` con oggetto «Chiedi: domanda senza risposta» e nel corpo solo il testo della domanda e il motivo. Nessun indirizzo di pagina, nessun altro dato; parte solo se chi scrive la invia.
+- Non compare quando Chiedi propone comunque una strada (due Comuni senza indicatore, scelta del Comune).
+- `scripts/test_chiedi_domande.py` verifica destinatario, oggetto e corpo del link. Ramo sopra #612 (definizioni).
+- Più avanti, se serve una raccolta automatica: un piccolo servizio esterno (es. Cloudflare Worker), CSP aggiornata e nota sulla privacy.
+
 ## Chiedi: definizioni come risposta (16 novembre 2026)
 
 - «Cos'è…», «cosa significa/misura/indica…», «come si calcola…», «definizione di…», «cosa si intende per…», «spiegami…» → `kind: 'definition'`: la risposta è la descrizione dell'indicatore nel catalogo, con fonte, anno del dato più recente e link «Fonte e metodo». Nessun numero.
