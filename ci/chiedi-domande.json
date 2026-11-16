@@ -1679,7 +1679,8 @@
    "metric": "population",
    "operation": "rank",
    "town": null,
-   "detail": "total"
+   "detail": "total",
+   "size": "piccolo"
   },
   {
    "question": "Il comune più grande per superficie",
@@ -1687,7 +1688,8 @@
    "metric": "municipalSurface",
    "operation": "rank",
    "town": null,
-   "detail": "total"
+   "detail": "total",
+   "size": null
   },
   {
    "question": "Comune più esteso",
@@ -1884,6 +1886,38 @@
    "operation": "observe",
    "town": "046005",
    "detail": "total"
+  },
+  {
+   "question": "Qual è il comune più grande?",
+   "kind": "reading",
+   "metric": "population",
+   "operation": "rank",
+   "town": null,
+   "size": "grande"
+  },
+  {
+   "question": "Il comune più grande per abitanti",
+   "kind": "reading",
+   "metric": "population",
+   "operation": "rank",
+   "town": null,
+   "size": null
+  },
+  {
+   "question": "Il comune più popoloso",
+   "kind": "reading",
+   "metric": "population",
+   "operation": "rank",
+   "town": null,
+   "size": null
+  },
+  {
+   "question": "Il comune più grande della Versilia per superficie",
+   "kind": "reading",
+   "metric": "municipalSurface",
+   "operation": "rank",
+   "town": null,
+   "size": null
   }
  ]
 }

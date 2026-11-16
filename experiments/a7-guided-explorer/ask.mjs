@@ -64,7 +64,7 @@ const PHRASES = [
   [/\b(?:piu|meno) giovan\w*\b/g, m => 'indice di vecchiaia ' + (m.startsWith('piu') ? 'piu basso' : 'piu alto')],
   [/\b(?:piu|meno) anzian[oa]\b/g, m => 'indice di vecchiaia ' + (m.startsWith('piu') ? 'piu alto' : 'piu basso')],
   [/\b(?:piu|meno) popolos\w*\b/g, m => 'popolazione ' + (m.startsWith('piu') ? 'piu alto' : 'piu basso')],
-  [/\b(?:piu|meno) (?:estes|vast)\w*\b|\b(?:piu|meno) (?:grand|piccol)\w* per (?:superficie|estensione|territorio)\b/g, m => 'superficie comunale ' + (/^piu (?:estes|vast|grand)|^meno piccol/.test(m) ? 'piu alto' : 'piu basso')],
+  [/\b(?:piu|meno) (?:estes|vast)\w*\b|\b(?:piu|meno) (?:grand|piccol)\w*(?: \w+){0,3} per (?:superficie|estensione|territorio)\b/g, m => 'superficie comunale ' + (/^piu (?:estes|vast|grand)|^meno piccol/.test(m) ? 'piu alto' : 'piu basso')],
   [/\b(?:piu|meno) (?:grand|piccol)\w*\b/g, m => 'popolazione ' + (/^piu grand|^meno piccol/.test(m) ? 'piu alto' : 'piu basso')],
   [/\b(?:si vive|vivono|campano) (?:di )?(?:piu|meno)\b|\b(?:vita media|longevit\w*)\b/g, m => 'speranza di vita ' + (/meno/.test(m) ? 'piu basso' : 'piu alto')],
   [/\b(?:prezz\w*|cost\w*|quotazion\w*|valor\w*) (?:delle |della |di )?(?:case|casa|abitazion\w*)\b|\bcase cost\w*|\bcostano (?:di )?(?:piu|meno) (?:le )?case\b/g, m => 'quotazioni immobiliari ' + (/meno/.test(m) ? 'piu basso' : (/piu/.test(m) ? 'piu alto' : ''))],
@@ -346,7 +346,10 @@ export function interpret(question, prepared, { metric: forced = null, previous 
   // «e il reddito?» dopo una domanda su un Comune: nuovo indicatore, stesso Comune e stessa lettura.
   const carry = prev && cue && !towns.length ? prev : null;
   if (carry) { result.followUp = true; }
-  return { ...reading(result, top.metric, view, wanted, towns, text, carry), alternatives };
+  // «Il comune più grande», senza dire come: si legge per abitanti, con la strada per superficie a un clic.
+  const size = /\b(?:piu|meno) (grand|piccol)\w*/.exec(base);
+  const bare = size && top.metric.key === 'population' && !/\b(abitant|popolazion|popolos|residenti|superfic|estes|estension|territor|kmq|km2)\w*/.test(base);
+  return { ...reading(result, top.metric, view, wanted, towns, text, carry), alternatives, size: bare ? (size[1] === 'grand' ? 'grande' : 'piccolo') : null };
 }
 
 // Suggeritore: mentre si scrive propone domande complete che l'interprete capisce
@@ -694,6 +697,12 @@ export function startAsk(index, presentation) {
       apply(r.selection, answer, both);
     }
     for (const note of notes) answer.append(make('p', note, 'ask-note'));
+    if (r.size) {
+      const other = make('div', undefined, 'ask-options');
+      other.append(make('span', 'Ho inteso «' + r.size + '» come numero di abitanti. '));
+      other.append(button('Per superficie', () => ask(question.replace(/(grand|piccol)\w*/i, w => w + ' per superficie'), {}, answer)));
+      answer.append(other);
+    }
     if (r.alternatives.length) {
       const other = make('div', undefined, 'ask-options'); other.append(make('span', 'Intendevi un altro indicatore? '));
       for (const m of r.alternatives) other.append(button(m.label, () => ask(question, { metric: m.key }, answer)));
