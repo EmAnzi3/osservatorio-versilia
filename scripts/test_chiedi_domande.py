@@ -26,7 +26,7 @@ import {prepare,interpret,suggest} from %(ask)s;
 import index from %(index)s;
 const {cases,inputs}=JSON.parse(process.argv[1]);
 const p=prepare(index);
-const view=r=>({kind:r.kind,metric:r.metric?.key??null,association:r.association?.id??null,operation:r.selection?.domanda??null,town:r.selection?.comune??null,detail:r.selection?.dettaglio??null,benchmark:r.selection?.riferimento??null});
+const view=r=>({kind:r.kind,metric:r.metric?.key??null,association:r.association?.id??null,operation:r.selection?.domanda??null,town:r.selection?.comune??null,detail:r.selection?.dettaglio??null,benchmark:r.selection?.riferimento??null,size:r.size??null});
 // Conversazione: ogni domanda precedente aggiorna l'ultima lettura riuscita.
 const answers=cases.map(c=>{let prev=null;for(const q of [].concat(c.after||[])){const r=interpret(q,p,{previous:prev});if(r.kind==='reading')prev=r;}return view(interpret(c.question,p,{previous:prev}));});
 const suggestions=inputs.map(i=>suggest(i,p).map(s=>({text:s.text,kind:s.kind,reading:s.reading,association:s.association??null,got:s.kind==='question'?view(interpret(s.text,p)):null})));
@@ -61,7 +61,7 @@ def check_interpreter(graph, dist):
                                     check=True, capture_output=True, text=True, timeout=180).stdout)
     failures = []
     for case, got in zip(cases, out['answers']):
-        for field in ('kind', 'metric', 'association', 'operation', 'town', 'detail', 'benchmark'):
+        for field in ('kind', 'metric', 'association', 'operation', 'town', 'detail', 'benchmark', 'size'):
             if field in case and case[field] != got[field]:
                 failures.append(f"{' → '.join([*([] if not case.get('after') else case['after']), case['question']])}: {field} atteso {case[field]!r}, ottenuto {got[field]!r}")
     assert not failures, 'Interprete Chiedi:\n' + '\n'.join(failures)
@@ -171,6 +171,13 @@ def check_browser(dist):
                 page.wait_for_selector('#ask-log .ask-turn:first-child .ask-reply', state='attached')
                 chip_reply = page.locator('#ask-log .ask-turn').first.locator('.ask-reply').text_content()
                 assert 'Viareggio' in chip_reply and 'Camaiore' in chip_reply and 'Sotto, tutti e sette i Comuni.' in chip_reply, f'chiedi_pair_chip:{chip_reply}'
+                # «Il comune più grande»: per abitanti, con «Per superficie» a un clic.
+                page.fill('#ask-input', 'Qual è il comune più grande?')
+                page.press('#ask-input', 'Enter')
+                turn = page.locator('#ask-log .ask-turn').first
+                assert 'Ho inteso «grande» come numero di abitanti.' in turn.text_content(), turn.text_content()
+                turn.locator('.ask-options button', has_text='Per superficie').focus(); page.keyboard.press('Enter')
+                page.wait_for_function("() => /superficie/i.test(document.querySelector('#ask-log .ask-turn').textContent) && !/Ho inteso/.test(document.querySelector('#ask-log .ask-turn').textContent)")
                 # Definizione: la descrizione del catalogo, la fonte e il passaggio al dato.
                 page.fill('#ask-input', "Cos'è l'indice di vecchiaia?")
                 page.press('#ask-input', 'Enter')

@@ -1,5 +1,12 @@
 # Consolidamento Osservatorio Versilia — handoff operativo
 
+## Chiedi: «il comune più grande» per abitanti, con «Per superficie» a un clic (16 novembre 2026)
+
+- Ema: «più grande/piccolo» senza altro dipende dal contesto, può voler dire anche superficie. Chiedi continua a leggerlo per abitanti, ma lo dice («Ho inteso «grande» come numero di abitanti.») e offre il pulsante «Per superficie», che rifà la domanda aggiungendo «per superficie».
+- La nota non compare se la domanda nomina già abitanti, popolazione, superficie o territorio.
+- «Il comune più grande della Versilia per superficie»: «per superficie» può stare fino a tre parole dopo «più grande» (prima non trovava nulla).
+- Campo `size` nelle risposte dell'interprete, controllato da `scripts/test_chiedi_domande.py`; 4 domande nuove (245) e una verifica nel browser.
+
 ## Chiedi: «Segnala questa domanda» per le domande senza risposta (16 novembre 2026)
 
 - Il sito è statico (GitHub Pages, CSP `connect-src 'self'`): niente registro automatico. Scelta di Ema: un link email.
