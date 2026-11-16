@@ -153,18 +153,18 @@ def check_browser(dist):
                 assert 'Camaiore' in page.locator('#ask-context').text_content()
                 # Due Comuni nominati: la frase li mette in primo piano, nell'ordine dei valori del motore.
                 page.fill('#ask-input', 'Viareggio o Camaiore: chi ha più abitanti?')
-                page.click('#ask-send')
+                page.press('#ask-input', 'Enter')  # invio da tastiera: il suggeritore aperto copre il pulsante
                 page.wait_for_selector('#ask-log .ask-turn:first-child .ask-reply', state='attached')
                 pair_reply = page.locator('#ask-log .ask-turn').first.locator('.ask-reply').text_content()
                 assert pair_reply.startswith('Viareggio ') and ', Camaiore ' in pair_reply and 'Valore più alto: Viareggio.' in pair_reply, f'chiedi_two_towns:{pair_reply}'
                 assert 'in evidenza Viareggio e Camaiore' in page.locator('#ask-log .ask-turn').first.text_content()
                 # Due Comuni senza indicatore: si chiede su che cosa confrontarli.
-                page.click('.ask-reset')
+                page.focus('.ask-reset'); page.keyboard.press('Enter')  # da tastiera: l'intestazione fissa può coprirlo dopo lo scorrimento
                 page.fill('#ask-input', 'Viareggio contro Camaiore')
-                page.click('#ask-send')
+                page.press('#ask-input', 'Enter')  # invio da tastiera: il suggeritore aperto copre il pulsante
                 turn = page.locator('#ask-log .ask-turn').first
                 assert 'Su quale indicatore vuoi confrontare Viareggio e Camaiore?' in turn.text_content(), turn.text_content()
-                turn.locator('.ask-options button').first.click()
+                turn.locator('.ask-options button').first.focus(); page.keyboard.press('Enter')
                 page.wait_for_selector('#ask-log .ask-turn:first-child .ask-reply', state='attached')
                 chip_reply = page.locator('#ask-log .ask-turn').first.locator('.ask-reply').text_content()
                 assert 'Viareggio' in chip_reply and 'Camaiore' in chip_reply and 'Sotto, tutti e sette i Comuni.' in chip_reply, f'chiedi_pair_chip:{chip_reply}'
