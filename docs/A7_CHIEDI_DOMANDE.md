@@ -62,6 +62,13 @@ indicatori vicini e chiede il Comune quando la lettura riguarda un Comune solo.
   con l'indicatore e la sezione di `meta.climateDetail`. Il test richiede una
   pagina esistente per tutti gli indicatori.
 
+## Classifiche e confronti fra Comuni (16 novembre 2026)
+
+- Superlativi senza un solo Comune («Quale Comune ha più abitanti?», «Comune con meno disoccupati», «chi fa meglio», «graduatoria», «top», «ultimo comune») → classifica (`rank`). Con un solo Comune («A Viareggio ci sono più turisti?») resta il valore del Comune.
+- Espressioni riscritte: «più/meno anziano» → indice di vecchiaia; «più popoloso», «più grande/piccolo» → popolazione; «più esteso», «più grande per superficie» → superficie comunale; «si vive di più», «longevità» → speranza di vita; «prezzo/costo delle case», «costano di più le case» → quotazioni OMI. «Differenza/e» e «contro/vs» → confronto («differenziata» non conta).
+- Due o più Comuni nominati in un confronto o in una classifica: la frase li mette in primo piano nell'ordine dei valori del motore («Viareggio 60.680 abitanti, Camaiore … Valore più alto: Viareggio. Sotto, tutti e sette i Comuni.»); la conferma dice «in evidenza Viareggio e Camaiore». Senza indicatore («Viareggio contro Camaiore») Chiedi domanda su che cosa confrontarli, con otto indicatori d'uso comune.
+- Numeri della frase sempre con il separatore delle migliaia (3.000, non 3000).
+
 ## Verifica
 
 `scripts/test_chiedi_domande.py --dist dist` (nei controlli sul sito costruito)

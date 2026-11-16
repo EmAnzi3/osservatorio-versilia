@@ -151,6 +151,23 @@ def check_browser(dist):
                 assert follow.locator('.ask-reply').text_content().startswith('Camaiore: '), 'chiedi_follow_up_failed'
                 assert 'Continuo dalla domanda precedente' in follow.text_content()
                 assert 'Camaiore' in page.locator('#ask-context').text_content()
+                # Due Comuni nominati: la frase li mette in primo piano, nell'ordine dei valori del motore.
+                page.fill('#ask-input', 'Viareggio o Camaiore: chi ha più abitanti?')
+                page.click('#ask-send')
+                page.wait_for_selector('#ask-log .ask-turn:first-child .ask-reply', state='attached')
+                pair_reply = page.locator('#ask-log .ask-turn').first.locator('.ask-reply').text_content()
+                assert pair_reply.startswith('Viareggio ') and ', Camaiore ' in pair_reply and 'Valore più alto: Viareggio.' in pair_reply, f'chiedi_two_towns:{pair_reply}'
+                assert 'in evidenza Viareggio e Camaiore' in page.locator('#ask-log .ask-turn').first.text_content()
+                # Due Comuni senza indicatore: si chiede su che cosa confrontarli.
+                page.click('.ask-reset')
+                page.fill('#ask-input', 'Viareggio contro Camaiore')
+                page.click('#ask-send')
+                turn = page.locator('#ask-log .ask-turn').first
+                assert 'Su quale indicatore vuoi confrontare Viareggio e Camaiore?' in turn.text_content(), turn.text_content()
+                turn.locator('.ask-options button').first.click()
+                page.wait_for_selector('#ask-log .ask-turn:first-child .ask-reply', state='attached')
+                chip_reply = page.locator('#ask-log .ask-turn').first.locator('.ask-reply').text_content()
+                assert 'Viareggio' in chip_reply and 'Camaiore' in chip_reply and 'Sotto, tutti e sette i Comuni.' in chip_reply, f'chiedi_pair_chip:{chip_reply}'
                 # Testi dentro i box: mai attaccati al bordo (almeno 8 px).
                 tight = page.evaluate(TIGHT_TEXT)
                 assert not tight, f'chiedi_text_touches_box_edge:{tight}'
