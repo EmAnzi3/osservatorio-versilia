@@ -69,6 +69,10 @@ indicatori vicini e chiede il Comune quando la lettura riguarda un Comune solo.
 - Due o più Comuni nominati in un confronto o in una classifica: la frase li mette in primo piano nell'ordine dei valori del motore («Viareggio 60.680 abitanti, Camaiore … Valore più alto: Viareggio. Sotto, tutti e sette i Comuni.»); la conferma dice «in evidenza Viareggio e Camaiore». Senza indicatore («Viareggio contro Camaiore») Chiedi domanda su che cosa confrontarli, con otto indicatori d'uso comune.
 - Numeri della frase sempre con il separatore delle migliaia (3.000, non 3000).
 
+## Definizioni come risposta (16 novembre 2026)
+
+Domande come «Cos'è l'indice di vecchiaia?», «Come si calcola il reddito imponibile medio?» o «Cosa si intende per pendolari in uscita» ricevono la descrizione dell'indicatore scritta nel catalogo, con fonte, anno del dato più recente e link alla pagina «Fonte e metodo». Non compare alcun numero: due pulsanti portano al dato del Comune nominato o dei sette Comuni. Se la domanda chiede anche una lettura («cosa è cambiato…», «più alto»), vince la lettura. «Cosa significa?» subito dopo una risposta riguarda l'indicatore di quella risposta.
+
 ## Verifica
 
 `scripts/test_chiedi_domande.py --dist dist` (nei controlli sul sito costruito)

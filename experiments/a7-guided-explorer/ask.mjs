@@ -19,6 +19,8 @@ const OPERATIONS = [
   ['compare', /\b(confront\w*|paragon\w*|rispetto agli altri|fra i comuni|tra i comuni|tutti i comuni|gli altri comuni|altri comuni|sette comuni|differenz[ae]|ogni comune|ciascun comune|contro|vs|versus)\b/],
   ['weighted_ratio', /\b(versilia nel suo insieme|intera versilia|tutta la versilia|complessivo della versilia|totale della versilia|in versilia)\b/],
 ];
+// «Cos'è…», «cosa significa…», «come si calcola…»: si chiede la definizione, non il dato.
+const DEFINITION = /\b(cos e|cosa e|cosa sono|cos sono|che cosa sono|cosa si intende(?: per| con)?|cosa (?:significa|significano|vuol dire|vuole dire|indica|misura|rappresenta)|che (?:significa|vuol dire)|significato(?: di| del| della| dell| dei| delle| degli)?|definizion\w*(?: di| del| della| dell| dei| delle| degli)?|come si (?:calcola|misura)|come (?:e|viene) (?:calcolat|misurat)\w*|spiegami(?: cos e| cosa e| cosa)?)\b/;
 const ASSOCIATION = /\b(relazion\w*|legat\w*|legame|correlaz\w*|associazione (?:tra|fra)|incroci\w*|dipend\w* da|influenz\w*|va di pari passo|quando .* (?:anche|allora))\b/;
 
 // Sinonimi d'uso comune → parole che compaiono nelle etichette del catalogo.
@@ -103,6 +105,9 @@ export function prepare(index) {
       termStems: new Set(tokens([metric.label, metric.short, (metric.terms || []).join(' '), metric.section].join(' ')).map(stem)),
       viewStems: new Set(tokens((metric.views || []).map(v => v.label).join(' ')).map(stem)) };
   });
+  const shorts = new Map();
+  for (const doc of docs) { const k = normalize(doc.metric.short || ''); shorts.set(k, (shorts.get(k) || 0) + 1); }
+  for (const doc of docs) { const k = normalize(doc.metric.short || ''); doc.short = k.includes(' ') && shorts.get(k) === 1 ? k : ''; }
   const n = docs.length;
   for (const doc of docs) for (const [s, w] of doc.weights) doc.weights.set(s, w * Math.log(1 + n / df.get(s)));
   return { ...index, docs };
@@ -119,7 +124,7 @@ function findTowns(text, index) {
   return found;
 }
 
-function scoreMetrics(words, prepared) {
+function scoreMetrics(words, prepared, text = '') {
   const stems = [...new Set(expand(words).map(stem))];
   const concepts = new Set(words.map(w => CONCEPTS[w]).filter(Boolean));
   const numbers = words.filter(w => /^\d+$/.test(w) && w.length < 4);
@@ -133,6 +138,9 @@ function scoreMetrics(words, prepared) {
     // A parità di parole, gli indicatori principali di ciascun tema vengono prima.
     if (doc.metric.featured) score *= 1.35;
     if (concepts.has(doc.metric.key)) score *= 1.6;
+    // Il nome breve dell'indicatore scritto per intero («unità locali») vale più delle singole parole,
+    // se nessun altro indicatore ha lo stesso nome breve.
+    if (doc.short && (' ' + text + ' ').includes(' ' + doc.short + ' ')) score *= 1.5;
     // Età citate («20 e 34 anni») premiano gli indicatori con quel dettaglio.
     if (numbers.length && (doc.metric.views || []).some(v => numbers.every(n => (normalize(v.label).match(/\d+/g) || []).includes(n)))) score *= 1.5;
     return { metric: doc.metric, score, labelStems: doc.labelStems };
@@ -200,6 +208,8 @@ function stripQuestion(text) {
   let stripped = text;
   // I nomi dei Comuni non aiutano a scegliere l'indicatore.
   for (const alias of Object.keys(TOWN_ALIASES).sort((a, b) => b.length - a.length)) stripped = stripped.replace(new RegExp('\\b' + alias + '\\b', 'g'), ' ');
+  // Né le parole della definizione («come viene calcolato»), tolte per prime perché contengono «cal…».
+  stripped = stripped.replace(new RegExp(DEFINITION.source, 'g'), ' ');
   // Neppure le parole che indicano la lettura (es. «fuori scala», «più alto»).
   for (const [, pattern] of OPERATIONS) stripped = stripped.replace(new RegExp(pattern.source, 'g'), ' ');
   return stripped.replace(new RegExp(ASSOCIATION.source, 'g'), ' ');
@@ -269,11 +279,12 @@ export function interpret(question, prepared, { metric: forced = null, previous 
   const prev = previous && previous.kind === 'reading' && previous.selection ? previous : null;
   const towns = findTowns(base, prepared);
   const words = tokens(stripQuestion(text)).map(w => correct(w, prepared));
-  let wanted = detectOperation(text);
+  // «come si calcola» non è un «calo»: le parole della definizione non scelgono la lettura.
+  let wanted = detectOperation(text.replace(new RegExp(DEFINITION.source, 'g'), ' '));
   // «Quale Comune ha più…», «Pietrasanta ha più abitanti di Camaiore?»: senza un solo Comune è un ordine.
   if ((!wanted || wanted === 'compare') && towns.length !== 1 && /\b(piu|meno|meglio|peggio)\b/.test(text) && !/\bdifferenz[ae]\b/.test(text)) wanted = 'rank';
   const cue = FOLLOW.test(text);
-  const ranked = scoreMetrics(words, prepared);
+  const ranked = scoreMetrics(words, prepared, base);
   const content = words.filter(w => !GENERIC.has(stem(w)) && !/^\d+$/.test(w));
   // Copertura: quante parole specifiche della domanda trovano posto nell'indicatore.
   const coverage = r => {
@@ -294,6 +305,18 @@ export function interpret(question, prepared, { metric: forced = null, previous 
   // Seguito della domanda precedente: stesso indicatore, cambia Comune, lettura o dettaglio.
   const prevMetric = prev && (prepared.metrics.find(m => m.key === prev.selection.indicatore) || prev.metric);
   const prevDoc = prevMetric && prepared.docs.find(d => d.metric.key === prevMetric.key);
+  // Definizione: la descrizione dell'indicatore, con il dato a portata di un clic.
+  // «E questo cosa significa?» dopo una risposta riguarda l'indicatore precedente.
+  if (DEFINITION.test(text) && !wanted && !ASSOCIATION.test(text)) {
+    const own = top && !(prevMetric && !forced && content.length === 0);
+    const metric = own ? top.metric : (content.length === 0 ? prevMetric : null);
+    if (metric) {
+      const view = own ? chooseView(top, words, ageContext(text, metric.label)) : null;
+      const shown = reading({ ...result, notes: [], inherited: [] }, metric, view, null, towns, text, null);
+      const alternatives = own ? ranked.filter(r => r !== top).slice(0, 3).filter(r => r.score >= ranked[0].score * 0.6).map(r => r.metric) : [];
+      return { ...result, kind: 'definition', metric, towns, followUp: !own, reading: shown.kind === 'reading' ? shown : null, alternatives };
+    }
+  }
   // «e le donne?»: la parola nuova è un dettaglio dell'indicatore precedente.
   const newView = prevDoc && content.length === 1 ? chooseView({ metric: prevMetric, labelStems: prevDoc.labelStems }, words, ageContext(text, prev.viewLabel || prevMetric.label)) : null;
   if (prevDoc && !forced && (!top || (cue && newView))) {
@@ -633,6 +656,28 @@ export function startAsk(index, presentation) {
       const list = make('div', undefined, 'ask-options');
       for (const a of index.associations) list.append(button(metricLabel(a.left) + ' e ' + metricLabel(a.right), () => pair(a.id, answer)));
       answer.append(list); return;
+    }
+    if (r.kind === 'definition') {
+      // Definizione dal catalogo: nessun numero, solo che cosa misura l'indicatore e da dove viene.
+      const meta = presentation?.metrics?.[r.metric.key] || {};
+      const text = (meta.description || r.metric.description || '').trim();
+      answer.append(make('p', (r.followUp ? 'Continuo dalla domanda precedente. ' : '') + 'Ho capito: che cosa misura «' + r.metric.label + '».'));
+      answer.append(make('p', text || 'Il catalogo non ha ancora una descrizione per questo indicatore: la trovi nella pagina della fonte.', 'ask-reply'));
+      const facts = [meta.source && 'Fonte: ' + meta.source, meta.year && 'dato più recente: ' + meta.year].filter(Boolean);
+      if (facts.length) answer.append(make('p', facts.join(' · ') + '.', 'ask-note'));
+      sourceLink(r.metric, answer);
+      const next = make('div', undefined, 'ask-options');
+      const town = r.towns.length === 1 ? r.towns[0] : (r.followUp && current?.selection?.comune ? index.towns.find(t => t.code === current.selection.comune) : null);
+      if (town) next.append(button('Vedi il dato a ' + town.name, () => ask(r.metric.label + ' a ' + town.name, { metric: r.metric.key })));
+      if (r.metric.operations.some(op => ['rank', 'compare'].includes(op))) next.append(button('Vedi i sette Comuni', () => ask(r.metric.label + ' fra i sette Comuni', { metric: r.metric.key })));
+      if (next.children.length) answer.append(next);
+      if (r.reading && !r.followUp) remember(r.reading);
+      if (r.alternatives.length) {
+        const other = make('div', undefined, 'ask-options'); other.append(make('span', 'Intendevi un altro indicatore? '));
+        for (const m of r.alternatives) other.append(button(m.label, () => ask(question, { metric: m.key }, answer)));
+        answer.append(other);
+      }
+      return;
     }
     if (r.kind === 'no_reading') { answer.append(make('p', 'Ho trovato «' + r.metric.label + '», ma per questo indicatore non ci sono ancora letture consultabili qui.')); return; }
     const notes = r.notes.filter(n => NOTES[n]).map(n => NOTES[n]);

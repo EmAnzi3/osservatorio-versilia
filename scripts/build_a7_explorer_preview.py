@@ -71,8 +71,10 @@ def presentation(catalog):
         for index, parameter in enumerate(metric.get('parameterDefinitions', [])):
             if isinstance(parameter, dict) and (parameter.get('label') or parameter.get('name')):
                 labels['parameter:'+str(index)] = parameter.get('label') or parameter['name']
+        year = metric['meta'].get('year')
         metrics[key] = dict(description=metric['meta'].get('description', ''),
-                            unit=metric['meta'].get('unit'), unitLabel=unit_label(key, metric['meta']), views=labels)
+                            unit=metric['meta'].get('unit'), unitLabel=unit_label(key, metric['meta']), views=labels,
+                            source=metric['meta'].get('source') or '', year=year if isinstance(year, str) else str(year or ''))
     return dict(catalogSha256=hashlib.sha256(body).hexdigest(),
                 themes={k:v['label'] for k,v in data['themes'].items()}, metrics=metrics)
 
