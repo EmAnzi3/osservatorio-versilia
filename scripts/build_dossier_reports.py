@@ -4261,7 +4261,203 @@ def partecipazione(engine: Engine) -> dict:
              ('percorsi', 'Sentieri e percorsi')])
 
 
-DOSSIERS = {'casa': casa, 'lavoro': lavoro, 'turismo': turismo, 'anziani': anziani, 'scuola': scuola, 'mobilita': mobilita, 'bilanci': bilanci, 'ambiente': ambiente, 'demografia': demografia, 'investimenti': investimenti, 'salute': salute, 'redditi': redditi, 'welfare': welfare, 'suolo': suolo, 'energia': energia, 'capacita': capacita, 'partecipazione': partecipazione}
+# ---------------------------------------------------------------------------
+# Dossier «Essere giovani in Versilia».
+
+def giovani(engine: Engine) -> dict:
+    N = engine.names
+    codes = engine.codes
+    total = len(codes)
+    TI = ('tuscany', 'italy')
+    m = {
+        'teen': engine.measure('teen', 'ageDistribution', 'age:15-19', 'Residenti fra 15 e 19 anni, % della popolazione',
+                               'percent', 1, benchmarks=TI, versilia=True),
+        'young': engine.measure('young', 'ageDistribution', 'age:20-34',
+                                'Residenti fra 20 e 34 anni, % della popolazione', 'percent', 1, benchmarks=TI,
+                                versilia=True),
+        'emp': engine.measure('emp', 'employmentRate', 'age:15-24|sex:total', 'Occupati fra i giovani di 15-24 anni, %',
+                              'percent', 1),
+        'unemp': engine.measure('unemp', 'unemploymentRate', 'age:15-24|sex:total',
+                                'Disoccupati fra i giovani attivi di 15-24 anni, %', 'percent', 1),
+        'unemp_w': engine.measure('unemp_w', 'unemploymentRate', 'age:15-24|sex:women',
+                                  'Disoccupate fra le ragazze attive di 15-24 anni, %', 'percent', 1),
+        'unemp_m': engine.measure('unemp_m', 'unemploymentRate', 'age:15-24|sex:men',
+                                  'Disoccupati fra i ragazzi attivi di 15-24 anni, %', 'percent', 1),
+        'other': engine.measure('other', 'youthOtherStatus', 'total',
+                                'Giovani di 15-24 anni in altra condizione, né studenti né nelle forze di lavoro, %',
+                                'percent', 1, benchmarks=('tuscany',)),
+        'disp': engine.measure('disp', 'invalsiImplicitDispersion', 'view:g8',
+                               'Studenti di terza media in dispersione implicita, %', 'percent', 1, benchmarks=TI,
+                               partial=True),
+        'exc': engine.measure('exc', 'invalsiAcademicExcellence', 'view:g8',
+                              'Studenti di terza media nell’eccellenza accademica, %', 'percent', 1, benchmarks=TI,
+                              partial=True),
+        'culture': engine.measure('culture', 'cultureSportMissionExpenditurePerResident', 'total',
+                                  'Spesa comunale per cultura, sport e politiche giovanili, euro per abitante', 'eur', 0,
+                                  versilia=True),
+        'families': engine.measure('families', 'socialSpendingByUserArea', 'part:families-minors',
+                                   'Spesa sociale dei Comuni per famiglie e minori, % della spesa sociale', 'percent', 1),
+    }
+    hi = lambda k: m[k].ranking[0]
+    lo = lambda k: m[k].ranking[-1]
+    nm = lambda code: N[code]
+    eur = lambda v: num(v) + ' €'
+    cap = lambda text: text[:1].upper() + text[1:]
+    span = lambda k, f=pct: f'{dal(f(lo(k)[1]))} di {nm(lo(k)[0])} {al(f(hi(k)[1]))} di {nm(hi(k)[0])}'
+
+    # 01 — quanti sono
+    teen, young = m['teen'], m['young']
+    teen_text = (
+        f'Al 1° gennaio {teen.period} i ragazzi fra 15 e 19 anni sono <b>{il(pct(teen.versilia))} dei residenti</b> della '
+        f'Versilia, contro {il(pct(teen.benchmarks["tuscany"]))} in Toscana e {il(pct(teen.benchmarks["italy"]))} in Italia: '
+        f'{span("teen")}.')
+    young_text = (
+        f'I giovani adulti fra 20 e 34 anni sono {il(pct(young.versilia))} dei residenti, contro '
+        f'{il(pct(young.benchmarks["tuscany"]))} in Toscana e {il(pct(young.benchmarks["italy"]))} in Italia: '
+        f'{span("young")}.')
+    below = [c for c in codes if young.values[c] < young.benchmarks['tuscany']]
+    towns1 = {c: (f'<b>{esc(nm(c))}</b>: {il(pct(teen.values[c]))} dei residenti ha fra 15 e 19 anni, '
+                  f'{il(pct(young.values[c]))} fra 20 e 34 (Toscana {pct(teen.benchmarks["tuscany"])} e '
+                  f'{pct(young.benchmarks["tuscany"])}).') for c in codes}
+    ch1 = chapter(1, 'quanti', 'Quanti sono', 'Quanti giovani vivono in Versilia?',
+        f'<p>{teen_text}</p>{bar_chart(teen, N, "Residenti fra 15 e 19 anni")}'
+        f'<p>{young_text} {cap(count_words(len(below), total))} {"è" if len(below) == 1 else "sono"} sotto la media '
+        f'toscana.</p>{bar_chart(young, N, "Residenti fra 20 e 34 anni")}' + town_blocks(towns1),
+        'Sono gli anni dello studio, del primo lavoro e spesso della prima casa. Una quota bassa di giovani adulti '
+        'può dipendere da poche nascite vent’anni prima, da chi parte per studiare o lavorare altrove, o da chi non '
+        'trova casa nel Comune: il dato dice quanti sono, non perché.')
+
+    # 02 — lavoro
+    emp, un = m['emp'], m['unemp']
+    emp_text = (
+        f'Secondo il censimento permanente del {emp.period}, fra i giovani di 15-24 anni lavora {span("emp")}. '
+        f'In questa età la maggior parte studia ancora: la quota di occupati è bassa ovunque.')
+    un_text = (
+        f'Fra i giovani che lavorano o cercano lavoro, i disoccupati vanno {span("unemp")}.')
+    towns2 = {c: (f'<b>{esc(nm(c))}</b>: lavora {il(pct(emp.values[c]))} dei giovani di 15-24 anni; fra chi lavora o '
+                  f'cerca lavoro, è disoccupato {il(pct(un.values[c]))}.') for c in codes}
+    ch2 = chapter(2, 'lavoro', 'Il primo lavoro', 'Quanti ragazzi lavorano e quanti cercano lavoro?',
+        f'<p>{emp_text}</p>{bar_chart(emp, N, "Occupati fra i giovani di 15-24 anni")}'
+        f'<p>{un_text}</p>{bar_chart(un, N, "Disoccupati fra i giovani attivi di 15-24 anni")}' + town_blocks(towns2),
+        'Il tasso di disoccupazione giovanile si calcola solo su chi lavora o cerca lavoro, che a questa età sono '
+        'pochi: nei Comuni piccoli bastano poche persone per spostarlo di molti punti. Il dato non dice se il lavoro '
+        'è stabile, stagionale o adeguato agli studi.')
+
+    # 03 — ragazze e ragazzi
+    uw, um = m['unemp_w'], m['unemp_m']
+    higher = [c for c in codes if uw.values[c] > um.values[c]]
+    gender_text = (
+        f'In {count_words(len(higher), total)} la disoccupazione è più alta fra le ragazze che fra i ragazzi. Fra le '
+        f'ragazze va {span("unemp_w")}; fra i ragazzi {span("unemp_m")}.')
+    towns3 = {c: (f'<b>{esc(nm(c))}</b>: disoccupate {il(pct(uw.values[c]))} delle ragazze attive di 15-24 anni, '
+                  f'disoccupati {il(pct(um.values[c]))} dei ragazzi.') for c in codes}
+    ch3 = chapter(3, 'ragazze-ragazzi', 'Ragazze e ragazzi', 'La ricerca del lavoro è diversa per ragazze e ragazzi?',
+        f'<p>{gender_text}</p>{bar_chart(uw, N, "Disoccupate fra le ragazze attive di 15-24 anni")}'
+        f'{bar_chart(um, N, "Disoccupati fra i ragazzi attivi di 15-24 anni")}' + town_blocks(towns3),
+        'Le differenze fra ragazze e ragazzi all’ingresso nel lavoro anticipano spesso quelle fra donne e uomini '
+        'adulti. Anche qui i numeri assoluti sono piccoli: conta la direzione della differenza più dei singoli punti.')
+
+    # 04 — né a scuola né al lavoro
+    ot = m['other']
+    above = [c for c in codes if ot.values[c] > ot.benchmarks['tuscany']]
+    ot_text = (
+        f'Nel {ot.period} i giovani di 15-24 anni che la Regione classifica «in altra condizione», cioè che non lavorano, '
+        f'non cercano lavoro, non studiano e non si occupano della casa, vanno {span("other")}. In Toscana sono {il(pct(ot.benchmarks["tuscany"]))}: '
+        f'{count_words(len(above), total)} sono sopra la media regionale.')
+    towns4 = {c: (f'<b>{esc(nm(c))}</b>: {il(pct(ot.values[c]))} dei giovani di 15-24 anni è in altra condizione '
+                  f'(Toscana {pct(ot.benchmarks["tuscany"])}).') for c in codes}
+    ch4 = chapter(4, 'fuori', 'Né a scuola né al lavoro', 'Quanti giovani restano fuori da studio e lavoro?',
+        f'<p>{ot_text}</p>{bar_chart(ot, N, "Giovani di 15-24 anni in altra condizione")}' + town_blocks(towns4),
+        'È il segnale più vicino, a livello comunale, ai giovani che non studiano e non lavorano. Non coincide con '
+        'l’indicatore europeo dei giovani «NEET», che comprende anche chi cerca lavoro e arriva fino a 29 anni, e non '
+        'è il tasso di disoccupazione.')
+
+    # 05 — a scuola
+    dp, ex = m['disp'], m['exc']
+    missing = [c for c in codes if c not in dp.values]
+    dp_text = (
+        f'Nelle prove INVALSI dell’{period_label(dp.period)}, gli studenti di terza media in «dispersione implicita», '
+        f'cioè con risultati molto bassi in tutte le prove, vanno {span("disp")} (Toscana '
+        f'{pct(dp.benchmarks["tuscany"])}, Italia {pct(dp.benchmarks["italy"])}). Quelli nell’eccellenza accademica '
+        f'vanno {span("exc")} (Toscana {pct(ex.benchmarks["tuscany"])}).'
+        + (f' Per {join_names([nm(c) for c in missing])} il dato non è pubblicato.' if missing else ''))
+    towns5 = {c: (f'<b>{esc(nm(c))}</b>: in terza media {il(pct(dp.values[c]))} degli studenti è in dispersione '
+                  f'implicita e {il(pct(ex.values[c]))} nell’eccellenza accademica (Toscana '
+                  f'{pct(dp.benchmarks["tuscany"])} e {pct(ex.benchmarks["tuscany"])}).'
+                  if c in dp.values and c in ex.values else
+                  f'<b>{esc(nm(c))}</b>: per la terza media il dato INVALSI non è pubblicato.') for c in codes}
+    ch5 = chapter(5, 'scuola', 'Alla fine delle medie', 'Con quali competenze i ragazzi finiscono le medie?',
+        f'<p>{dp_text}</p>{bar_chart(dp, N, "Studenti di terza media in dispersione implicita")}'
+        f'{bar_chart(ex, N, "Studenti di terza media nell’eccellenza accademica")}' + town_blocks(towns5),
+        'La dispersione implicita indica ragazzi che arrivano alla fine della scuola senza le competenze di base, '
+        'anche se non l’hanno lasciata. I dati riguardano le scuole del Comune, non i ragazzi residenti, e dove le '
+        'classi sono poche INVALSI non li pubblica.')
+
+    # 06 — spesa
+    cu, fa = m['culture'], m['families']
+    cu_text = (
+        f'Nel {cu.period} i sette Comuni hanno impegnato per cultura, sport e politiche giovanili <b>{eur(cu.versilia)} '
+        f'per abitante</b> nel complesso: da {eur(lo("culture")[1])} a {nm(lo("culture")[0])} a '
+        f'{eur(hi("culture")[1])} a {nm(hi("culture")[0])}.')
+    fa_text = (
+        f'Della spesa sociale dei Comuni, nel {fa.period} la parte per famiglie e minori va {span("families")}.')
+    towns6 = {c: (f'<b>{esc(nm(c))}</b>: {eur(cu.values[c])} per abitante per cultura, sport e giovani nel {cu.period}; '
+                  f'{il(pct(fa.values[c]))} della spesa sociale va a famiglie e minori.') for c in codes}
+    ch6 = chapter(6, 'spesa', 'Quanto spendono i Comuni', 'Quanto investono le amministrazioni per i giovani?',
+        f'<p>{cu_text}</p>{bar_chart(cu, N, "Spesa comunale per cultura, sport e politiche giovanili per abitante")}'
+        f'<p>{fa_text}</p>{bar_chart(fa, N, "Spesa sociale per famiglie e minori")}' + town_blocks(towns6),
+        'I bilanci comunali non separano la spesa per i giovani da quella per cultura e sport: la voce comprende '
+        'biblioteche, musei, impianti sportivi, eventi e centri giovani, investimenti compresi. La spesa sociale '
+        'per famiglie e minori comprende nidi, sostegno alle famiglie e tutela dei minori.')
+
+    key_points = [
+        (pct(young.versilia), f'Residenti fra 20 e 34 anni in Versilia. In Toscana {il(pct(young.benchmarks["tuscany"]))}.',
+         'quanti'),
+        (pct(hi('unemp')[1]), f'La disoccupazione giovanile più alta, a {nm(hi("unemp")[0])}.', 'lavoro'),
+        (f'{len(higher)} su {total}', 'Comuni in cui la disoccupazione è più alta fra le ragazze.', 'ragazze-ragazzi'),
+        (f'{len(above)} su {total}', 'Comuni sopra la media toscana per giovani né a scuola né al lavoro.', 'fuori'),
+        (pct(hi('disp')[1]), f'Studenti di terza media in dispersione implicita a {nm(hi("disp")[0])}, il valore più alto '
+                             f'fra i Comuni con il dato. In Toscana {il(pct(dp.benchmarks["tuscany"]))}.', 'scuola'),
+        (eur(cu.versilia), 'Spesa dei Comuni per cultura, sport e giovani per abitante.', 'spesa'),
+    ]
+    towns_summary = {c: '<ul class="dr-town-list">' + ''.join([
+        summary_item('Residenti fra 20 e 34 anni', pct(young.values[c]), f'Toscana {pct(young.benchmarks["tuscany"])}'),
+        summary_item('Giovani di 15-24 anni occupati', pct(emp.values[c]), f'{ordinal(emp.rank(c))} su 7'),
+        summary_item('Disoccupazione 15-24 anni', pct(un.values[c]), f'{ordinal(un.rank(c))} su 7'),
+        summary_item('Giovani in altra condizione', pct(ot.values[c]), f'Toscana {pct(ot.benchmarks["tuscany"])}'),
+        summary_item('Dispersione implicita, terza media', pct(dp.values[c]) if c in dp.values else 'non pubblicato',
+                     f'Toscana {pct(dp.benchmarks["tuscany"])}'),
+        summary_item('Spesa per cultura, sport e giovani', eur(cu.values[c]), f'Versilia {eur(cu.versilia)}'),
+    ]) + '</ul>' for c in codes}
+    unknown = [
+        'Quanti giovani lasciano la Versilia per studiare o lavorare e quanti tornano: i trasferimenti per età non '
+        'sono pubblicati Comune per Comune.',
+        'Quanti giovani non studiano e non lavorano secondo la definizione europea, fino a 29 anni.',
+        'Che tipo di contratto hanno i giovani che lavorano e quanto è diffuso il lavoro stagionale.',
+        'Quanto costa per un giovane prendere casa in affitto da solo.',
+        'Quanto si usano centri giovani, impianti sportivi e spazi di studio.',
+    ]
+    return dict(
+        slug='giovani', title='Essere giovani in Versilia', eyebrow='Dossier · Giovani',
+        unknown_topic='sui giovani', theme='lavoro', theme_label='Tutti i dati sul lavoro',
+        lead='Quanti sono, quanti lavorano o cercano lavoro, quanti restano fuori da studio e lavoro, con quali '
+             'competenze finiscono le medie e quanto spendono i Comuni: una lettura dei dati pubblici sui giovani nei '
+             'sette Comuni della Versilia.',
+        description='Giovani residenti, occupazione e disoccupazione 15-24 anni, ragazze e ragazzi, giovani né a scuola '
+                    'né al lavoro, competenze in terza media e spesa dei Comuni nei sette Comuni della Versilia.',
+        periods=f'Popolazione al 1° gennaio {teen.period}; lavoro {emp.period}; altra condizione {ot.period}; INVALSI '
+                f'{period_label(dp.period).removeprefix("anno scolastico ")}; spesa {cu.period} e {fa.period}.',
+        method='La popolazione per età viene dall’Istat, il lavoro dei giovani dal censimento permanente Istat, i giovani '
+               'in altra condizione dagli indicatori comunali della Regione Toscana, le competenze dalle prove INVALSI, '
+               'la spesa dai rendiconti dei Comuni e dall’indagine Istat sulla spesa sociale.',
+        measures=m, chapters=[ch1, ch2, ch3, ch4, ch5, ch6], key_points=key_points, towns_summary=towns_summary,
+        unknown=unknown,
+        toc=[('quanti', 'Quanti sono'), ('lavoro', 'Il primo lavoro'), ('ragazze-ragazzi', 'Ragazze e ragazzi'),
+             ('fuori', 'Né a scuola né al lavoro'), ('scuola', 'Alla fine delle medie'),
+             ('spesa', 'Quanto spendono i Comuni')])
+
+
+DOSSIERS = {'casa': casa, 'lavoro': lavoro, 'turismo': turismo, 'anziani': anziani, 'scuola': scuola, 'mobilita': mobilita, 'bilanci': bilanci, 'ambiente': ambiente, 'demografia': demografia, 'investimenti': investimenti, 'salute': salute, 'redditi': redditi, 'welfare': welfare, 'suolo': suolo, 'energia': energia, 'capacita': capacita, 'partecipazione': partecipazione, 'giovani': giovani}
 
 
 # ---------------------------------------------------------------------------
@@ -4386,7 +4582,7 @@ def social(title: str, description: str, url: str) -> str:
 
 
 INDEX_LEAD = ('Relazioni sui grandi temi della Versilia: che cosa dicono i dati pubblici sulla casa, sul lavoro, sul '
-              'turismo, sugli anziani, sulla scuola, sulla mobilità, sui conti dei Comuni, sull’ambiente, sulla popolazione, sugli investimenti, sulla salute, sui redditi, sul welfare, sul territorio, sull’energia, sul personale dei Comuni e sulla partecipazione, per tutto il territorio e Comune per Comune.')
+              'turismo, sugli anziani, sulla scuola, sulla mobilità, sui conti dei Comuni, sull’ambiente, sulla popolazione, sugli investimenti, sulla salute, sui redditi, sul welfare, sul territorio, sull’energia, sul personale dei Comuni, sulla partecipazione e sui giovani, per tutto il territorio e Comune per Comune.')
 
 
 def index_card(d: dict) -> str:
@@ -4407,7 +4603,7 @@ def render_index(dossiers: list[dict], dist: Path, page: Path, built: str) -> st
     url = BASE_URL
     title = 'Dossier · Osservatorio Versilia'
     description = ('Relazioni divulgative sui dati pubblici dei sette Comuni della Versilia: casa, lavoro, turismo, '
-                   'anziani, scuola, mobilità, bilanci comunali, ambiente, popolazione, investimenti, salute, redditi, welfare, territorio, energia, personale dei Comuni e partecipazione.')
+                   'anziani, scuola, mobilità, bilanci comunali, ambiente, popolazione, investimenti, salute, redditi, welfare, territorio, energia, personale dei Comuni, partecipazione e giovani.')
     cards = ''.join(index_card(d) for d in dossiers)
     structured = json.dumps({'@context': 'https://schema.org', '@type': 'CollectionPage', 'name': 'Dossier',
                              'description': description, 'url': url, 'inLanguage': 'it',
