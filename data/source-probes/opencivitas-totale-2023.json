@@ -1,6 +1,6 @@
 {
  "schemaVersion": 1,
- "createdAt": "2026-11-17T15:07:10Z",
+ "createdAt": "2026-11-17T15:10:38Z",
  "note": "Sonda: struttura della fonte consultata; non è un dato pubblicato.",
  "follow": null,
  "result": {
@@ -77,16 +77,6 @@
      ]
     ],
     [
-     272327,
-     [
-      "LU005SIF11RN",
-      "COSTO_LAVORO_PROAB",
-      "232,8732943",
-      "",
-      ""
-     ]
-    ],
-    [
      272328,
      [
       "LU005SIF11RN",
@@ -122,16 +112,6 @@
       "LU005SIF11RN",
       "DIFF_OUT_PERC_TOT",
       "15,39143729",
-      "",
-      ""
-     ]
-    ],
-    [
-     272332,
-     [
-      "LU005SIF11RN",
-      "DIPENDENTI_X1000AB",
-      "5,962842079",
       "",
       ""
      ]
@@ -327,531 +307,551 @@
      ]
     ],
     [
-     272352,
+     272906,
      [
-      "LU005SIF11RN",
-      "F_ABIT_DISP_MEAN_C",
-      "9,796097447",
+      "LU013SIF11RV",
+      "COORD_OUT",
+      "5",
       "",
       ""
      ]
     ],
     [
-     272353,
+     272907,
      [
-      "LU005SIF11RN",
-      "F_ABIT_LOC_E_ALTRI_UTIL_MEAN_C",
-      "2,156963631",
+      "LU013SIF11RV",
+      "COORD_SPESA",
+      "5",
       "",
       ""
      ]
     ],
     [
-     272354,
+     272909,
      [
-      "LU005SIF11RN",
-      "F_ADDETTI_I_P_MEAN",
-      "130,4426559",
+      "LU013SIF11RV",
+      "D03",
+      "45244,43",
       "",
       ""
      ]
     ],
     [
-     272355,
+     272910,
      [
-      "LU005SIF11RN",
-      "F_ALUNNI_HANDICAP_MEAN",
-      "2,283889963",
+      "LU013SIF11RV",
+      "DESCR_NON_VALUTABILE_OUT_TOT",
+      "",
       "",
       ""
      ]
     ],
     [
-     272356,
+     272911,
      [
-      "LU005SIF11RN",
-      "F_ASILO_NIDO",
-      "41,38565461",
+      "LU013SIF11RV",
+      "DESCR_NON_VALUTABILE_SPESA_TOT",
+      "",
       "",
       ""
      ]
     ],
     [
-     272357,
+     272912,
      [
-      "LU005SIF11RN",
-      "F_CONTESTO",
-      "72,15789894",
+      "LU013SIF11RV",
+      "DIFF_OUT_PERC_TOT",
+      "254,897841",
       "",
       ""
      ]
     ],
     [
-     272358,
+     272914,
      [
-      "LU005SIF11RN",
-      "F_COSTO_LAV_SCOST_AMM",
-      "-0,515495814",
+      "LU013SIF11RV",
+      "FL_DIF_OUTPUT_MAG_0",
+      "1",
       "",
       ""
      ]
     ],
     [
-     272359,
+     272915,
      [
-      "LU005SIF11RN",
-      "F_COSTO_LAV_SCOST_IST",
-      "0,288942916",
-      "",
-      ""
-     ]
-    ],
-    [
-     272360,
-     [
-      "LU005SIF11RN",
-      "F_COSTO_LAV_SCOST_POL",
-      "2,477344824",
-      "",
-      ""
-     ]
-    ],
-    [
-     272361,
-     [
-      "LU005SIF11RN",
-      "F_COSTO_LAV_SCOST_TERR",
-      "0,107122744",
-      "",
-      ""
-     ]
-    ],
-    [
-     272362,
-     [
-      "LU005SIF11RN",
-      "F_COSTO_LAV_SCOST_VIAB",
-      "0,447954578",
-      "",
-      ""
-     ]
-    ],
-    [
-     272363,
-     [
-      "LU005SIF11RN",
-      "F_DENSITA_MEAN",
-      "4,067965824",
-      "",
-      ""
-     ]
-    ],
-    [
-     272364,
-     [
-      "LU005SIF11RN",
-      "F_DEPRIVAZIONE_MEAN",
-      "0,092222925",
-      "",
-      ""
-     ]
-    ],
-    [
-     272365,
-     [
-      "LU005SIF11RN",
-      "F_DIFFERENZIATA",
-      "64,77079058",
-      "",
-      ""
-     ]
-    ],
-    [
-     272366,
-     [
-      "LU005SIF11RN",
-      "F_DIFF_PENDOLARI_N_P",
+      "LU013SIF11RV",
+      "FL_DIF_OUTPUT_MIN_0",
       "0",
       "",
       ""
      ]
     ],
     [
-     272367,
+     272916,
      [
-      "LU005SIF11RN",
-      "F_DISECONOMIA_SCALA",
-      "6,485544672",
+      "LU013SIF11RV",
+      "FL_DIF_SPESA_MAG_0",
+      "1",
       "",
       ""
      ]
     ],
     [
-     272368,
+     272917,
      [
-      "LU005SIF11RN",
-      "F_DISTANZA",
-      "1,559188258",
-      "",
-      ""
-     ]
-    ],
-    [
-     272369,
-     [
-      "LU005SIF11RN",
-      "F_DUMMY_ARMATO",
-      "4,414673722",
-      "",
-      ""
-     ]
-    ],
-    [
-     272370,
-     [
-      "LU005SIF11RN",
-      "F_DUMMY_STRUTTURE",
-      "2,946441527",
-      "",
-      ""
-     ]
-    ],
-    [
-     272371,
-     [
-      "LU005SIF11RN",
-      "F_FASCIA_SON",
-      "8,487289158",
-      "",
-      ""
-     ]
-    ],
-    [
-     272372,
-     [
-      "LU005SIF11RN",
-      "F_GESTIONE",
+      "LU013SIF11RV",
+      "FL_DIF_SPESA_MIN_0",
       "0",
       "",
       ""
      ]
     ],
     [
-     272373,
+     272918,
      [
-      "LU005SIF11RN",
-      "F_IMMOBILI_TOTALI_P",
-      "98,23369435",
-      "",
-      ""
-     ]
-    ],
-    [
-     272374,
-     [
-      "LU005SIF11RN",
-      "F_INCID_15_64_MEAN",
-      "51,35775971",
-      "",
-      ""
-     ]
-    ],
-    [
-     272375,
-     [
-      "LU005SIF11RN",
-      "F_INCID_65_74_MEAN",
-      "14,24438381",
-      "",
-      ""
-     ]
-    ],
-    [
-     272376,
-     [
-      "LU005SIF11RN",
-      "F_INCID_OLTRE_75_MEAN",
-      "26,88044378",
-      "",
-      ""
-     ]
-    ],
-    [
-     272377,
-     [
-      "LU005SIF11RN",
-      "F_INCID_POP_STRA_MEAN",
-      "1,899410678",
-      "",
-      ""
-     ]
-    ],
-    [
-     272378,
-     [
-      "LU005SIF11RN",
-      "F_INFRASTRUTTURE",
-      "25,33247688",
-      "",
-      ""
-     ]
-    ],
-    [
-     272379,
-     [
-      "LU005SIF11RN",
-      "F_INTERCEPT_IMM_VET",
-      "26,16194166",
-      "",
-      ""
-     ]
-    ],
-    [
-     272380,
-     [
-      "LU005SIF11RN",
-      "F_INTERCEPT_POP_3_14",
-      "45,11285881",
-      "",
-      ""
-     ]
-    ],
-    [
-     272381,
-     [
-      "LU005SIF11RN",
-      "F_INTERCEPT_TONN_RIF",
-      "165,1443683",
-      "",
-      ""
-     ]
-    ],
-    [
-     272382,
-     [
-      "LU005SIF11RN",
-      "F_ISTAT_GENER_STRADE_KM_MEAN",
-      "11,38738965",
-      "",
-      ""
-     ]
-    ],
-    [
-     272383,
-     [
-      "LU005SIF11RN",
-      "F_ISTAT_SUPERF_TOTALE_KMQ_P",
-      "1,556670055",
-      "",
-      ""
-     ]
-    ],
-    [
-     272384,
-     [
-      "LU005SIF11RN",
-      "F_MERCATI_P_MEAN",
-      "3,628188389",
-      "",
-      ""
-     ]
-    ],
-    [
-     272385,
-     [
-      "LU005SIF11RN",
-      "F_M_AL_COMUNALI_P_MEAN",
+      "LU013SIF11RV",
+      "FL_NO_CONFRONTO_OUT",
       "0",
       "",
       ""
      ]
     ],
     [
-     272386,
+     272919,
      [
-      "LU005SIF11RN",
-      "F_M_AL_DISABILI_COMU_P_MEAN",
+      "LU013SIF11RV",
+      "FL_NO_CONFRONTO_SPESA",
       "0",
       "",
       ""
      ]
     ],
     [
-     272387,
+     272920,
      [
-      "LU005SIF11RN",
-      "F_M_AL_PRIVATE_P",
-      "0,811620934",
-      "",
-      ""
-     ]
-    ],
-    [
-     272388,
-     [
-      "LU005SIF11RN",
-      "F_M_INCIDENTI_P",
-      "3,952019959",
-      "",
-      ""
-     ]
-    ],
-    [
-     272389,
-     [
-      "LU005SIF11RN",
-      "F_M_PASTI_TOT_P_MEAN",
-      "18,56033151",
-      "",
-      ""
-     ]
-    ],
-    [
-     272390,
-     [
-      "LU005SIF11RN",
-      "F_M_PREPOST_ESTIVI_P",
-      "0,885220987",
-      "",
-      ""
-     ]
-    ],
-    [
-     272391,
-     [
-      "LU005SIF11RN",
-      "F_M_QUERELE_P",
-      "1,709901073",
-      "",
-      ""
-     ]
-    ],
-    [
-     272392,
-     [
-      "LU005SIF11RN",
-      "F_M_SCUOLE_STAT_COM_N_P",
-      "7,292087599",
-      "",
-      ""
-     ]
-    ],
-    [
-     272393,
-     [
-      "LU005SIF11RN",
-      "F_M_SPAZI_TOT_P",
-      "1,013556706",
-      "",
-      ""
-     ]
-    ],
-    [
-     272394,
-     [
-      "LU005SIF11RN",
-      "F_M_TRASPORTO_UTENTI_P",
-      "1,499846572",
-      "",
-      ""
-     ]
-    ],
-    [
-     272395,
-     [
-      "LU005SIF11RN",
-      "F_M_TRASP_DISABILI_P_MEAN",
-      "0,77276467",
-      "",
-      ""
-     ]
-    ],
-    [
-     272396,
-     [
-      "LU005SIF11RN",
-      "F_OUTPUT_ALTRI_ESOGENI_P",
-      "2,001967043",
-      "",
-      ""
-     ]
-    ],
-    [
-     272397,
-     [
-      "LU005SIF11RN",
-      "F_OUTPUT_ST_CON_P_LUCE_C",
-      "2,210621437",
-      "",
-      ""
-     ]
-    ],
-    [
-     272398,
-     [
-      "LU005SIF11RN",
-      "F_P4_P3_Q",
-      "9,553204789",
-      "",
-      ""
-     ]
-    ],
-    [
-     272399,
-     [
-      "LU005SIF11RN",
-      "F_POP_C",
-      "55,37160668",
-      "",
-      ""
-     ]
-    ],
-    [
-     272400,
-     [
-      "LU005SIF11RN",
-      "F_PRESENZE_COMUNE_MEAN",
-      "20,62617024",
-      "",
-      ""
-     ]
-    ],
-    [
-     272401,
-     [
-      "LU005SIF11RN",
-      "F_PREZZO_VEIC_FINALE_POL_SCOST",
-      "0,004342036",
-      "",
-      ""
-     ]
-    ],
-    [
-     272402,
-     [
-      "LU005SIF11RN",
-      "F_QUOTA_CLTP_PRIMSEC1",
-      "1,598445462",
-      "",
-      ""
-     ]
-    ],
-    [
-     272403,
-     [
-      "LU005SIF11RN",
-      "F_SISMICO_RISCHIO_ALTO",
+      "LU013SIF11RV",
+      "FL_NO_VALUTABILE",
       "0",
       "",
       ""
      ]
     ],
     [
-     272404,
+     272921,
      [
-      "LU005SIF11RN",
-      "F_STALLI_P_MEAN",
-      "18,91063124",
+      "LU013SIF11RV",
+      "FL_SPESA_MENO_OUT_MENO",
+      "0",
+      "",
+      ""
+     ]
+    ],
+    [
+     272922,
+     [
+      "LU013SIF11RV",
+      "FL_SPESA_MENO_OUT_PIU",
+      "0",
+      "",
+      ""
+     ]
+    ],
+    [
+     272923,
+     [
+      "LU013SIF11RV",
+      "FL_SPESA_PIU_OUT_MENO",
+      "0",
+      "",
+      ""
+     ]
+    ],
+    [
+     272924,
+     [
+      "LU013SIF11RV",
+      "FL_SPESA_PIU_OUT_PIU",
+      "1",
+      "",
+      ""
+     ]
+    ],
+    [
+     272925,
+     [
+      "LU013SIF11RV",
+      "FST_RIPROPORZIONATO_BI",
+      "10590362,97",
+      "",
+      ""
+     ]
+    ],
+    [
+     272926,
+     [
+      "LU013SIF11RV",
+      "FST_RIPROPORZIONATO_BI_PROAB",
+      "1562,691895",
+      "",
+      ""
+     ]
+    ],
+    [
+     272927,
+     [
+      "LU013SIF11RV",
+      "POSIZIONE_OUTPUT_PERC_TOT",
+      "10",
+      "",
+      ""
+     ]
+    ],
+    [
+     272928,
+     [
+      "LU013SIF11RV",
+      "POSIZIONE_SPESA_PERC_TOT",
+      "10",
+      "",
+      ""
+     ]
+    ],
+    [
+     272929,
+     [
+      "LU013SIF11RV",
+      "SERV_NO_VALUT_OUT_TOT",
+      "",
+      "",
+      ""
+     ]
+    ],
+    [
+     272930,
+     [
+      "LU013SIF11RV",
+      "SERV_NO_VALUT_SPESA_TOT",
+      "",
+      "",
+      ""
+     ]
+    ],
+    [
+     272931,
+     [
+      "LU013SIF11RV",
+      "SPESA_STORICA",
+      "23349412,38",
+      "",
+      ""
+     ]
+    ],
+    [
+     272932,
+     [
+      "LU013SIF11RV",
+      "SPESA_STORICA_PROAB",
+      "3445,390642",
+      "",
+      ""
+     ]
+    ],
+    [
+     273238,
+     [
+      "LU018SIF11SA",
+      "COORD_OUT",
+      "0",
+      "",
+      ""
+     ]
+    ],
+    [
+     273239,
+     [
+      "LU018SIF11SA",
+      "COORD_SPESA",
+      "0",
+      "",
+      ""
+     ]
+    ],
+    [
+     273241,
+     [
+      "LU018SIF11SA",
+      "D03",
+      "42690,52",
+      "",
+      ""
+     ]
+    ],
+    [
+     273242,
+     [
+      "LU018SIF11SA",
+      "DESCR_NON_VALUTABILE_OUT_TOT",
+      "",
+      "",
+      ""
+     ]
+    ],
+    [
+     273243,
+     [
+      "LU018SIF11SA",
+      "DESCR_NON_VALUTABILE_SPESA_TOT",
+      "",
+      "",
+      ""
+     ]
+    ],
+    [
+     273244,
+     [
+      "LU018SIF11SA",
+      "DIFF_OUT_PERC_TOT",
+      "-6,115557831",
+      "",
+      ""
+     ]
+    ],
+    [
+     273246,
+     [
+      "LU018SIF11SA",
+      "FL_DIF_OUTPUT_MAG_0",
+      "0",
+      "",
+      ""
+     ]
+    ],
+    [
+     273247,
+     [
+      "LU018SIF11SA",
+      "FL_DIF_OUTPUT_MIN_0",
+      "1",
+      "",
+      ""
+     ]
+    ],
+    [
+     273248,
+     [
+      "LU018SIF11SA",
+      "FL_DIF_SPESA_MAG_0",
+      "0",
+      "",
+      ""
+     ]
+    ],
+    [
+     273249,
+     [
+      "LU018SIF11SA",
+      "FL_DIF_SPESA_MIN_0",
+      "1",
+      "",
+      ""
+     ]
+    ],
+    [
+     273250,
+     [
+      "LU018SIF11SA",
+      "FL_NO_CONFRONTO_OUT",
+      "0",
+      "",
+      ""
+     ]
+    ],
+    [
+     273251,
+     [
+      "LU018SIF11SA",
+      "FL_NO_CONFRONTO_SPESA",
+      "0",
+      "",
+      ""
+     ]
+    ],
+    [
+     273252,
+     [
+      "LU018SIF11SA",
+      "FL_NO_VALUTABILE",
+      "0",
+      "",
+      ""
+     ]
+    ],
+    [
+     273253,
+     [
+      "LU018SIF11SA",
+      "FL_SPESA_MENO_OUT_MENO",
+      "1",
+      "",
+      ""
+     ]
+    ],
+    [
+     273254,
+     [
+      "LU018SIF11SA",
+      "FL_SPESA_MENO_OUT_PIU",
+      "0",
+      "",
+      ""
+     ]
+    ],
+    [
+     273255,
+     [
+      "LU018SIF11SA",
+      "FL_SPESA_PIU_OUT_MENO",
+      "0",
+      "",
+      ""
+     ]
+    ],
+    [
+     273256,
+     [
+      "LU018SIF11SA",
+      "FL_SPESA_PIU_OUT_PIU",
+      "0",
+      "",
+      ""
+     ]
+    ],
+    [
+     273257,
+     [
+      "LU018SIF11SA",
+      "FST_RIPROPORZIONATO_BI",
+      "15508425,97",
+      "",
+      ""
+     ]
+    ],
+    [
+     273258,
+     [
+      "LU018SIF11SA",
+      "FST_RIPROPORZIONATO_BI_PROAB",
+      "709,2808585",
+      "",
+      ""
+     ]
+    ],
+    [
+     273259,
+     [
+      "LU018SIF11SA",
+      "POSIZIONE_OUTPUT_PERC_TOT",
+      "5",
+      "",
+      ""
+     ]
+    ],
+    [
+     273260,
+     [
+      "LU018SIF11SA",
+      "POSIZIONE_SPESA_PERC_TOT",
+      "5",
+      "",
+      ""
+     ]
+    ],
+    [
+     273261,
+     [
+      "LU018SIF11SA",
+      "SERV_NO_VALUT_OUT_TOT",
+      "",
+      "",
+      ""
+     ]
+    ],
+    [
+     273262,
+     [
+      "LU018SIF11SA",
+      "SERV_NO_VALUT_SPESA_TOT",
+      "",
+      "",
+      ""
+     ]
+    ],
+    [
+     273263,
+     [
+      "LU018SIF11SA",
+      "SPESA_STORICA",
+      "14357945,62",
+      "",
+      ""
+     ]
+    ],
+    [
+     273264,
+     [
+      "LU018SIF11SA",
+      "SPESA_STORICA_PROAB",
+      "656,6634175",
+      "",
+      ""
+     ]
+    ],
+    [
+     273736,
+     [
+      "LU024SIF11SG",
+      "COORD_OUT",
+      "5",
+      "",
+      ""
+     ]
+    ],
+    [
+     273737,
+     [
+      "LU024SIF11SG",
+      "COORD_SPESA",
+      "4",
+      "",
+      ""
+     ]
+    ],
+    [
+     273739,
+     [
+      "LU024SIF11SG",
+      "D03",
+      "43266",
+      "",
+      ""
+     ]
+    ],
+    [
+     273740,
+     [
+      "LU024SIF11SG",
+      "DESCR_NON_VALUTABILE_OUT_TOT",
+      "",
+      "",
+      ""
+     ]
+    ],
+    [
+     273741,
+     [
+      "LU024SIF11SG",
+      "DESCR_NON_VALUTABILE_SPESA_TOT",
+      "",
       "",
       ""
      ]

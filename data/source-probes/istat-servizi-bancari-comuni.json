@@ -1,15 +1,1960 @@
 {
  "schemaVersion": 1,
- "createdAt": "2026-11-17T14:52:10Z",
+ "createdAt": "2026-11-17T15:09:37Z",
  "note": "Sonda SDMX: struttura e righe della Versilia; non è un dato pubblicato.",
- "flow": "117_1035_DF_DCAT_SERVBANC_COM",
+ "flow": "117_1035_DF_DCAT_SERVBANC_COM_1",
  "key": "all",
- "structureErrors": [
-  "https://esploradati.istat.it/SDMXWS/rest: tentativo 1: HTTPError: HTTP Error 404: Not Found | tentativo 2: HTTPError: HTTP Error 404: Not Found | tentativo 3: HTTPError: HTTP Error 404: Not Found",
-  "https://sdmx.istat.it/SDMXWS/rest: tentativo 1: HTTPError: HTTP Error 302: The HTTP server returned a redirect error that would lead to an infinite loop.\nThe last 30x error message was:\nFound | tentativo 2: HTTPError: HTTP Error 302: The HTTP server returned a redirect error that would lead to an infinite loop.\nThe last 30x error message was:\nFound | tentativo 3: HTTPError: HTTP Error 302: The HTTP server returned a redirect error that would lead to an infinite loop.\nThe last 30x error message was:\nFound"
+ "structureUrl": "https://esploradati.istat.it/SDMXWS/rest/dataflow/IT1/117_1035_DF_DCAT_SERVBANC_COM_1?references=all",
+ "dimensions": [
+  {
+   "id": "FREQ",
+   "position": "1",
+   "codelist": "CL_FREQ"
+  },
+  {
+   "id": "REF_AREA",
+   "position": "2",
+   "codelist": "CL_ITTER107"
+  },
+  {
+   "id": "DATA_TYPE",
+   "position": "3",
+   "codelist": "CL_TIPO_DATO_BANCA_ITA"
+  },
+  {
+   "id": "TIME_PERIOD",
+   "position": "4",
+   "codelist": null
+  },
+  {
+   "id": null,
+   "position": null,
+   "codelist": null
+  },
+  {
+   "id": null,
+   "position": null,
+   "codelist": null
+  },
+  {
+   "id": null,
+   "position": null,
+   "codelist": null
+  },
+  {
+   "id": null,
+   "position": null,
+   "codelist": null
+  },
+  {
+   "id": null,
+   "position": null,
+   "codelist": null
+  },
+  {
+   "id": null,
+   "position": null,
+   "codelist": null
+  }
  ],
- "dataErrors": [
-  "https://esploradati.istat.it/SDMXWS/rest/data/117_1035_DF_DCAT_SERVBANC_COM/all?startPeriod=2015: tentativo 1: HTTPError: HTTP Error 404: Not Found | tentativo 2: HTTPError: HTTP Error 404: Not Found | tentativo 3: HTTPError: HTTP Error 404: Not Found",
-  "https://sdmx.istat.it/SDMXWS/rest/data/117_1035_DF_DCAT_SERVBANC_COM/all?startPeriod=2015: tentativo 1: HTTPError: HTTP Error 302: The HTTP server returned a redirect error that would lead to an infinite loop.\nThe last 30x error message was:\nFound | tentativo 2: HTTPError: HTTP Error 302: The HTTP server returned a redirect error that would lead to an infinite loop.\nThe last 30x error message was:\nFound | tentativo 3: HTTPError: HTTP Error 302: The HTTP server returned a redirect error that would lead to an infinite loop.\nThe last 30x error message was:\nFound"
- ]
+ "columns": [
+  "DATAFLOW",
+  "FREQ",
+  "REF_AREA",
+  "DATA_TYPE",
+  "TIME_PERIOD",
+  "OBS_VALUE",
+  "OBS_STATUS",
+  "NOTE_DS",
+  "NOTE_REF_AREA",
+  "NOTE_DATA_TYPE",
+  "NOTE_TIME_PERIOD",
+  "BASE_PER",
+  "UNIT_MEAS",
+  "UNIT_MULT"
+ ],
+ "rows": 122504,
+ "distinct": {
+  "DATAFLOW": [
+   {
+    "code": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+    "rows": 122504
+   }
+  ],
+  "FREQ": [
+   {
+    "code": "A",
+    "rows": 122504,
+    "name": "annuale"
+   }
+  ],
+  "REF_AREA": [
+   {
+    "code": "001001",
+    "rows": 9,
+    "name": "Agliè"
+   },
+   {
+    "code": "001002",
+    "rows": 24,
+    "name": "Airasca"
+   },
+   {
+    "code": "001004",
+    "rows": 3,
+    "name": "Albiano d'Ivrea"
+   },
+   {
+    "code": "001006",
+    "rows": 24,
+    "name": "Almese"
+   },
+   {
+    "code": "001008",
+    "rows": 24,
+    "name": "Alpignano"
+   },
+   {
+    "code": "001009",
+    "rows": 24,
+    "name": "Andezeno"
+   },
+   {
+    "code": "001012",
+    "rows": 1,
+    "name": "Arignano"
+   },
+   {
+    "code": "001013",
+    "rows": 24,
+    "name": "Avigliana"
+   },
+   {
+    "code": "001014",
+    "rows": 24,
+    "name": "Azeglio"
+   },
+   {
+    "code": "001016",
+    "rows": 3,
+    "name": "Balangero"
+   },
+   {
+    "code": "001018",
+    "rows": 8,
+    "name": "Baldissero Torinese"
+   },
+   {
+    "code": "001020",
+    "rows": 24,
+    "name": "Banchette"
+   },
+   {
+    "code": "001021",
+    "rows": 24,
+    "name": "Barbania"
+   },
+   {
+    "code": "001022",
+    "rows": 24,
+    "name": "Bardonecchia"
+   },
+   {
+    "code": "001024",
+    "rows": 24,
+    "name": "Beinasco"
+   },
+   {
+    "code": "001025",
+    "rows": 12,
+    "name": "Bibiana"
+   },
+   {
+    "code": "001026",
+    "rows": 8,
+    "name": "Bobbio Pellice"
+   },
+   {
+    "code": "001027",
+    "rows": 21,
+    "name": "Bollengo"
+   },
+   {
+    "code": "001028",
+    "rows": 24,
+    "name": "Borgaro Torinese"
+   },
+   {
+    "code": "001030",
+    "rows": 23,
+    "name": "Borgofranco d'Ivrea"
+   },
+   {
+    "code": "001032",
+    "rows": 24,
+    "name": "Borgone Susa"
+   },
+   {
+    "code": "001033",
+    "rows": 12,
+    "name": "Bosconero"
+   },
+   {
+    "code": "001034",
+    "rows": 24,
+    "name": "Brandizzo"
+   },
+   {
+    "code": "001035",
+    "rows": 24,
+    "name": "Bricherasio"
+   },
+   {
+    "code": "001038",
+    "rows": 24,
+    "name": "Bruino"
+   },
+   {
+    "code": "001039",
+    "rows": 24,
+    "name": "Brusasco"
+   },
+   {
+    "code": "001041",
+    "rows": 4,
+    "name": "Buriasco"
+   },
+   {
+    "code": "001042",
+    "rows": 12,
+    "name": "Burolo"
+   },
+   {
+    "code": "001043",
+    "rows": 4,
+    "name": "Busano"
+   },
+   {
+    "code": "001044",
+    "rows": 24,
+    "name": "Bussoleno"
+   },
+   {
+    "code": "001045",
+    "rows": 6,
+    "name": "Buttigliera Alta"
+   },
+   {
+    "code": "001046",
+    "rows": 24,
+    "name": "Cafasse"
+   },
+   {
+    "code": "001047",
+    "rows": 24,
+    "name": "Caluso"
+   },
+   {
+    "code": "001048",
+    "rows": 24,
+    "name": "Cambiano"
+   },
+   {
+    "code": "001049",
+    "rows": 1,
+    "name": "Campiglione Fenile"
+   },
+   {
+    "code": "001050",
+    "rows": 1,
+    "name": "Candia Canavese"
+   },
+   {
+    "code": "001051",
+    "rows": 24,
+    "name": "Candiolo"
+   },
+   {
+    "code": "001053",
+    "rows": 3,
+    "name": "Cantalupa"
+   },
+   {
+    "code": "001054",
+    "rows": 8,
+    "name": "Cantoira"
+   },
+   {
+    "code": "001058",
+    "rows": 24,
+    "name": "Carignano"
+   },
+   {
+    "code": "001059",
+    "rows": 24,
+    "name": "Carmagnola"
+   },
+   {
+    "code": "001060",
+    "rows": 24,
+    "name": "Casalborgone"
+   },
+   {
+    "code": "001062",
+    "rows": 24,
+    "name": "Caselette"
+   },
+   {
+    "code": "001063",
+    "rows": 24,
+    "name": "Caselle Torinese"
+   },
+   {
+    "code": "001065",
+    "rows": 9,
+    "name": "Castagnole Piemonte"
+   },
+   {
+    "code": "001066",
+    "rows": 24,
+    "name": "Castellamonte"
+   },
+   {
+    "code": "001068",
+    "rows": 24,
+    "name": "Castiglione Torinese"
+   },
+   {
+    "code": "001069",
+    "rows": 24,
+    "name": "Cavagnolo"
+   },
+   {
+    "code": "001070",
+    "rows": 24,
+    "name": "Cavour"
+   },
+   {
+    "code": "001071",
+    "rows": 8,
+    "name": "Cercenasco"
+   },
+   {
+    "code": "001072",
+    "rows": 24,
+    "name": "Ceres"
+   },
+   {
+    "code": "001074",
+    "rows": 16,
+    "name": "Cesana Torinese"
+   },
+   {
+    "code": "001077",
+    "rows": 24,
+    "name": "Chiaverano"
+   },
+   {
+    "code": "001078",
+    "rows": 24,
+    "name": "Chieri"
+   },
+   {
+    "code": "001081",
+    "rows": 24,
+    "name": "Chiusa di San Michele"
+   },
+   {
+    "code": "001082",
+    "rows": 24,
+    "name": "Chivasso"
+   },
+   {
+    "code": "001086",
+    "rows": 24,
+    "name": "Ciriè"
+   },
+   {
+    "code": "001089",
+    "rows": 21,
+    "name": "Coazze"
+   },
+   {
+    "code": "001090",
+    "rows": 24,
+    "name": "Collegno"
+   },
+   {
+    "code": "001093",
+    "rows": 24,
+    "name": "Condove"
+   }
+  ],
+  "DATA_TYPE": [
+   {
+    "code": "BANK_BRN",
+    "rows": 42251,
+    "name": "sportelli bancari"
+   },
+   {
+    "code": "BANK_DEP",
+    "rows": 40162,
+    "name": "depositi (esclusi PCT) - euro"
+   },
+   {
+    "code": "BANK_LOANS",
+    "rows": 40091,
+    "name": "prestiti (esclusi PCT) - euro"
+   }
+  ],
+  "TIME_PERIOD": [
+   {
+    "code": "2015",
+    "rows": 16582
+   },
+   {
+    "code": "2016",
+    "rows": 16298
+   },
+   {
+    "code": "2017",
+    "rows": 15925
+   },
+   {
+    "code": "2018",
+    "rows": 15527
+   },
+   {
+    "code": "2019",
+    "rows": 15144
+   },
+   {
+    "code": "2020",
+    "rows": 14798
+   },
+   {
+    "code": "2021",
+    "rows": 14246
+   },
+   {
+    "code": "2022",
+    "rows": 13984
+   }
+  ],
+  "OBS_STATUS": [
+   {
+    "code": "",
+    "rows": 122504
+   }
+  ],
+  "NOTE_DS": [
+   {
+    "code": "",
+    "rows": 122504
+   }
+  ],
+  "NOTE_REF_AREA": [
+   {
+    "code": "",
+    "rows": 122504
+   }
+  ],
+  "NOTE_DATA_TYPE": [
+   {
+    "code": "",
+    "rows": 42263
+   },
+   {
+    "code": "TIPO_DATO_BANCA__BANK_DEP_N1",
+    "rows": 40157
+   },
+   {
+    "code": "TIPO_DATO_BANCA__BANK_LOANS_N1",
+    "rows": 40084
+   }
+  ],
+  "NOTE_TIME_PERIOD": [
+   {
+    "code": "",
+    "rows": 122504
+   }
+  ],
+  "BASE_PER": [
+   {
+    "code": "",
+    "rows": 122504
+   }
+  ],
+  "UNIT_MEAS": [
+   {
+    "code": "",
+    "rows": 122504
+   }
+  ],
+  "UNIT_MULT": [
+   {
+    "code": "",
+    "rows": 122504
+   }
+  ]
+ },
+ "versilia": [
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046005",
+   "DATA_TYPE": "BANK_BRN",
+   "TIME_PERIOD": "2015",
+   "OBS_VALUE": "16"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046005",
+   "DATA_TYPE": "BANK_BRN",
+   "TIME_PERIOD": "2016",
+   "OBS_VALUE": "15"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046005",
+   "DATA_TYPE": "BANK_BRN",
+   "TIME_PERIOD": "2017",
+   "OBS_VALUE": "15"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046005",
+   "DATA_TYPE": "BANK_BRN",
+   "TIME_PERIOD": "2018",
+   "OBS_VALUE": "14"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046005",
+   "DATA_TYPE": "BANK_BRN",
+   "TIME_PERIOD": "2019",
+   "OBS_VALUE": "13"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046005",
+   "DATA_TYPE": "BANK_BRN",
+   "TIME_PERIOD": "2020",
+   "OBS_VALUE": "13"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046005",
+   "DATA_TYPE": "BANK_BRN",
+   "TIME_PERIOD": "2021",
+   "OBS_VALUE": "11"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046005",
+   "DATA_TYPE": "BANK_BRN",
+   "TIME_PERIOD": "2022",
+   "OBS_VALUE": "11"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046005",
+   "DATA_TYPE": "BANK_DEP",
+   "TIME_PERIOD": "2015",
+   "OBS_VALUE": "303151",
+   "NOTE_DATA_TYPE": "TIPO_DATO_BANCA__BANK_DEP_N1"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046005",
+   "DATA_TYPE": "BANK_DEP",
+   "TIME_PERIOD": "2016",
+   "OBS_VALUE": "327110",
+   "NOTE_DATA_TYPE": "TIPO_DATO_BANCA__BANK_DEP_N1"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046005",
+   "DATA_TYPE": "BANK_DEP",
+   "TIME_PERIOD": "2017",
+   "OBS_VALUE": "356418",
+   "NOTE_DATA_TYPE": "TIPO_DATO_BANCA__BANK_DEP_N1"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046005",
+   "DATA_TYPE": "BANK_DEP",
+   "TIME_PERIOD": "2018",
+   "OBS_VALUE": "368765",
+   "NOTE_DATA_TYPE": "TIPO_DATO_BANCA__BANK_DEP_N1"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046005",
+   "DATA_TYPE": "BANK_DEP",
+   "TIME_PERIOD": "2019",
+   "OBS_VALUE": "375162",
+   "NOTE_DATA_TYPE": "TIPO_DATO_BANCA__BANK_DEP_N1"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046005",
+   "DATA_TYPE": "BANK_DEP",
+   "TIME_PERIOD": "2020",
+   "OBS_VALUE": "447314",
+   "NOTE_DATA_TYPE": "TIPO_DATO_BANCA__BANK_DEP_N1"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046005",
+   "DATA_TYPE": "BANK_DEP",
+   "TIME_PERIOD": "2021",
+   "OBS_VALUE": "481980",
+   "NOTE_DATA_TYPE": "TIPO_DATO_BANCA__BANK_DEP_N1"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046005",
+   "DATA_TYPE": "BANK_DEP",
+   "TIME_PERIOD": "2022",
+   "OBS_VALUE": "495735",
+   "NOTE_DATA_TYPE": "TIPO_DATO_BANCA__BANK_DEP_N1"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046005",
+   "DATA_TYPE": "BANK_LOANS",
+   "TIME_PERIOD": "2015",
+   "OBS_VALUE": "438144",
+   "NOTE_DATA_TYPE": "TIPO_DATO_BANCA__BANK_LOANS_N1"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046005",
+   "DATA_TYPE": "BANK_LOANS",
+   "TIME_PERIOD": "2016",
+   "OBS_VALUE": "392511",
+   "NOTE_DATA_TYPE": "TIPO_DATO_BANCA__BANK_LOANS_N1"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046005",
+   "DATA_TYPE": "BANK_LOANS",
+   "TIME_PERIOD": "2017",
+   "OBS_VALUE": "384701",
+   "NOTE_DATA_TYPE": "TIPO_DATO_BANCA__BANK_LOANS_N1"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046005",
+   "DATA_TYPE": "BANK_LOANS",
+   "TIME_PERIOD": "2018",
+   "OBS_VALUE": "342068",
+   "NOTE_DATA_TYPE": "TIPO_DATO_BANCA__BANK_LOANS_N1"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046005",
+   "DATA_TYPE": "BANK_LOANS",
+   "TIME_PERIOD": "2019",
+   "OBS_VALUE": "324676",
+   "NOTE_DATA_TYPE": "TIPO_DATO_BANCA__BANK_LOANS_N1"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046005",
+   "DATA_TYPE": "BANK_LOANS",
+   "TIME_PERIOD": "2020",
+   "OBS_VALUE": "342488",
+   "NOTE_DATA_TYPE": "TIPO_DATO_BANCA__BANK_LOANS_N1"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046005",
+   "DATA_TYPE": "BANK_LOANS",
+   "TIME_PERIOD": "2021",
+   "OBS_VALUE": "343676",
+   "NOTE_DATA_TYPE": "TIPO_DATO_BANCA__BANK_LOANS_N1"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046005",
+   "DATA_TYPE": "BANK_LOANS",
+   "TIME_PERIOD": "2022",
+   "OBS_VALUE": "339957",
+   "NOTE_DATA_TYPE": "TIPO_DATO_BANCA__BANK_LOANS_N1"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046013",
+   "DATA_TYPE": "BANK_BRN",
+   "TIME_PERIOD": "2015",
+   "OBS_VALUE": "8"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046013",
+   "DATA_TYPE": "BANK_BRN",
+   "TIME_PERIOD": "2016",
+   "OBS_VALUE": "8"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046013",
+   "DATA_TYPE": "BANK_BRN",
+   "TIME_PERIOD": "2017",
+   "OBS_VALUE": "8"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046013",
+   "DATA_TYPE": "BANK_BRN",
+   "TIME_PERIOD": "2018",
+   "OBS_VALUE": "7"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046013",
+   "DATA_TYPE": "BANK_BRN",
+   "TIME_PERIOD": "2019",
+   "OBS_VALUE": "7"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046013",
+   "DATA_TYPE": "BANK_BRN",
+   "TIME_PERIOD": "2020",
+   "OBS_VALUE": "7"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046013",
+   "DATA_TYPE": "BANK_BRN",
+   "TIME_PERIOD": "2021",
+   "OBS_VALUE": "7"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046013",
+   "DATA_TYPE": "BANK_BRN",
+   "TIME_PERIOD": "2022",
+   "OBS_VALUE": "7"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046013",
+   "DATA_TYPE": "BANK_DEP",
+   "TIME_PERIOD": "2015",
+   "OBS_VALUE": "225043",
+   "NOTE_DATA_TYPE": "TIPO_DATO_BANCA__BANK_DEP_N1"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046013",
+   "DATA_TYPE": "BANK_DEP",
+   "TIME_PERIOD": "2016",
+   "OBS_VALUE": "213477",
+   "NOTE_DATA_TYPE": "TIPO_DATO_BANCA__BANK_DEP_N1"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046013",
+   "DATA_TYPE": "BANK_DEP",
+   "TIME_PERIOD": "2017",
+   "OBS_VALUE": "225613",
+   "NOTE_DATA_TYPE": "TIPO_DATO_BANCA__BANK_DEP_N1"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046013",
+   "DATA_TYPE": "BANK_DEP",
+   "TIME_PERIOD": "2018",
+   "OBS_VALUE": "233306",
+   "NOTE_DATA_TYPE": "TIPO_DATO_BANCA__BANK_DEP_N1"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046013",
+   "DATA_TYPE": "BANK_DEP",
+   "TIME_PERIOD": "2019",
+   "OBS_VALUE": "250650",
+   "NOTE_DATA_TYPE": "TIPO_DATO_BANCA__BANK_DEP_N1"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046013",
+   "DATA_TYPE": "BANK_DEP",
+   "TIME_PERIOD": "2020",
+   "OBS_VALUE": "288604",
+   "NOTE_DATA_TYPE": "TIPO_DATO_BANCA__BANK_DEP_N1"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046013",
+   "DATA_TYPE": "BANK_DEP",
+   "TIME_PERIOD": "2021",
+   "OBS_VALUE": "365876",
+   "NOTE_DATA_TYPE": "TIPO_DATO_BANCA__BANK_DEP_N1"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046013",
+   "DATA_TYPE": "BANK_DEP",
+   "TIME_PERIOD": "2022",
+   "OBS_VALUE": "394486",
+   "NOTE_DATA_TYPE": "TIPO_DATO_BANCA__BANK_DEP_N1"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046013",
+   "DATA_TYPE": "BANK_LOANS",
+   "TIME_PERIOD": "2015",
+   "OBS_VALUE": "229769",
+   "NOTE_DATA_TYPE": "TIPO_DATO_BANCA__BANK_LOANS_N1"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046013",
+   "DATA_TYPE": "BANK_LOANS",
+   "TIME_PERIOD": "2016",
+   "OBS_VALUE": "226220",
+   "NOTE_DATA_TYPE": "TIPO_DATO_BANCA__BANK_LOANS_N1"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046013",
+   "DATA_TYPE": "BANK_LOANS",
+   "TIME_PERIOD": "2017",
+   "OBS_VALUE": "229186",
+   "NOTE_DATA_TYPE": "TIPO_DATO_BANCA__BANK_LOANS_N1"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046013",
+   "DATA_TYPE": "BANK_LOANS",
+   "TIME_PERIOD": "2018",
+   "OBS_VALUE": "216015",
+   "NOTE_DATA_TYPE": "TIPO_DATO_BANCA__BANK_LOANS_N1"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046013",
+   "DATA_TYPE": "BANK_LOANS",
+   "TIME_PERIOD": "2019",
+   "OBS_VALUE": "204333",
+   "NOTE_DATA_TYPE": "TIPO_DATO_BANCA__BANK_LOANS_N1"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046013",
+   "DATA_TYPE": "BANK_LOANS",
+   "TIME_PERIOD": "2020",
+   "OBS_VALUE": "220785",
+   "NOTE_DATA_TYPE": "TIPO_DATO_BANCA__BANK_LOANS_N1"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046013",
+   "DATA_TYPE": "BANK_LOANS",
+   "TIME_PERIOD": "2021",
+   "OBS_VALUE": "235145",
+   "NOTE_DATA_TYPE": "TIPO_DATO_BANCA__BANK_LOANS_N1"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046013",
+   "DATA_TYPE": "BANK_LOANS",
+   "TIME_PERIOD": "2022",
+   "OBS_VALUE": "229966",
+   "NOTE_DATA_TYPE": "TIPO_DATO_BANCA__BANK_LOANS_N1"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046018",
+   "DATA_TYPE": "BANK_BRN",
+   "TIME_PERIOD": "2015",
+   "OBS_VALUE": "6"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046018",
+   "DATA_TYPE": "BANK_BRN",
+   "TIME_PERIOD": "2016",
+   "OBS_VALUE": "6"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046018",
+   "DATA_TYPE": "BANK_BRN",
+   "TIME_PERIOD": "2017",
+   "OBS_VALUE": "6"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046018",
+   "DATA_TYPE": "BANK_BRN",
+   "TIME_PERIOD": "2018",
+   "OBS_VALUE": "6"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046018",
+   "DATA_TYPE": "BANK_BRN",
+   "TIME_PERIOD": "2019",
+   "OBS_VALUE": "6"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046018",
+   "DATA_TYPE": "BANK_BRN",
+   "TIME_PERIOD": "2020",
+   "OBS_VALUE": "6"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046018",
+   "DATA_TYPE": "BANK_BRN",
+   "TIME_PERIOD": "2021",
+   "OBS_VALUE": "5"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046018",
+   "DATA_TYPE": "BANK_BRN",
+   "TIME_PERIOD": "2022",
+   "OBS_VALUE": "5"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046018",
+   "DATA_TYPE": "BANK_DEP",
+   "TIME_PERIOD": "2015",
+   "OBS_VALUE": "90215",
+   "NOTE_DATA_TYPE": "TIPO_DATO_BANCA__BANK_DEP_N1"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046018",
+   "DATA_TYPE": "BANK_DEP",
+   "TIME_PERIOD": "2016",
+   "OBS_VALUE": "91128",
+   "NOTE_DATA_TYPE": "TIPO_DATO_BANCA__BANK_DEP_N1"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046018",
+   "DATA_TYPE": "BANK_DEP",
+   "TIME_PERIOD": "2017",
+   "OBS_VALUE": "99517",
+   "NOTE_DATA_TYPE": "TIPO_DATO_BANCA__BANK_DEP_N1"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046018",
+   "DATA_TYPE": "BANK_DEP",
+   "TIME_PERIOD": "2018",
+   "OBS_VALUE": "98841",
+   "NOTE_DATA_TYPE": "TIPO_DATO_BANCA__BANK_DEP_N1"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046018",
+   "DATA_TYPE": "BANK_DEP",
+   "TIME_PERIOD": "2019",
+   "OBS_VALUE": "115195",
+   "NOTE_DATA_TYPE": "TIPO_DATO_BANCA__BANK_DEP_N1"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046018",
+   "DATA_TYPE": "BANK_DEP",
+   "TIME_PERIOD": "2020",
+   "OBS_VALUE": "127480",
+   "NOTE_DATA_TYPE": "TIPO_DATO_BANCA__BANK_DEP_N1"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046018",
+   "DATA_TYPE": "BANK_DEP",
+   "TIME_PERIOD": "2021",
+   "OBS_VALUE": "143850",
+   "NOTE_DATA_TYPE": "TIPO_DATO_BANCA__BANK_DEP_N1"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046018",
+   "DATA_TYPE": "BANK_DEP",
+   "TIME_PERIOD": "2022",
+   "OBS_VALUE": "152579",
+   "NOTE_DATA_TYPE": "TIPO_DATO_BANCA__BANK_DEP_N1"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046018",
+   "DATA_TYPE": "BANK_LOANS",
+   "TIME_PERIOD": "2015",
+   "OBS_VALUE": "152289",
+   "NOTE_DATA_TYPE": "TIPO_DATO_BANCA__BANK_LOANS_N1"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046018",
+   "DATA_TYPE": "BANK_LOANS",
+   "TIME_PERIOD": "2016",
+   "OBS_VALUE": "152253",
+   "NOTE_DATA_TYPE": "TIPO_DATO_BANCA__BANK_LOANS_N1"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046018",
+   "DATA_TYPE": "BANK_LOANS",
+   "TIME_PERIOD": "2017",
+   "OBS_VALUE": "152977",
+   "NOTE_DATA_TYPE": "TIPO_DATO_BANCA__BANK_LOANS_N1"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046018",
+   "DATA_TYPE": "BANK_LOANS",
+   "TIME_PERIOD": "2018",
+   "OBS_VALUE": "132654",
+   "NOTE_DATA_TYPE": "TIPO_DATO_BANCA__BANK_LOANS_N1"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046018",
+   "DATA_TYPE": "BANK_LOANS",
+   "TIME_PERIOD": "2019",
+   "OBS_VALUE": "108188",
+   "NOTE_DATA_TYPE": "TIPO_DATO_BANCA__BANK_LOANS_N1"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046018",
+   "DATA_TYPE": "BANK_LOANS",
+   "TIME_PERIOD": "2020",
+   "OBS_VALUE": "103403",
+   "NOTE_DATA_TYPE": "TIPO_DATO_BANCA__BANK_LOANS_N1"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046018",
+   "DATA_TYPE": "BANK_LOANS",
+   "TIME_PERIOD": "2021",
+   "OBS_VALUE": "100883",
+   "NOTE_DATA_TYPE": "TIPO_DATO_BANCA__BANK_LOANS_N1"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046018",
+   "DATA_TYPE": "BANK_LOANS",
+   "TIME_PERIOD": "2022",
+   "OBS_VALUE": "98051",
+   "NOTE_DATA_TYPE": "TIPO_DATO_BANCA__BANK_LOANS_N1"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046024",
+   "DATA_TYPE": "BANK_BRN",
+   "TIME_PERIOD": "2015",
+   "OBS_VALUE": "13"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046024",
+   "DATA_TYPE": "BANK_BRN",
+   "TIME_PERIOD": "2016",
+   "OBS_VALUE": "14"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046024",
+   "DATA_TYPE": "BANK_BRN",
+   "TIME_PERIOD": "2017",
+   "OBS_VALUE": "13"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046024",
+   "DATA_TYPE": "BANK_BRN",
+   "TIME_PERIOD": "2018",
+   "OBS_VALUE": "12"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046024",
+   "DATA_TYPE": "BANK_BRN",
+   "TIME_PERIOD": "2019",
+   "OBS_VALUE": "11"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046024",
+   "DATA_TYPE": "BANK_BRN",
+   "TIME_PERIOD": "2020",
+   "OBS_VALUE": "10"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046024",
+   "DATA_TYPE": "BANK_BRN",
+   "TIME_PERIOD": "2021",
+   "OBS_VALUE": "10"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046024",
+   "DATA_TYPE": "BANK_BRN",
+   "TIME_PERIOD": "2022",
+   "OBS_VALUE": "10"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046024",
+   "DATA_TYPE": "BANK_DEP",
+   "TIME_PERIOD": "2015",
+   "OBS_VALUE": "392361",
+   "NOTE_DATA_TYPE": "TIPO_DATO_BANCA__BANK_DEP_N1"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046024",
+   "DATA_TYPE": "BANK_DEP",
+   "TIME_PERIOD": "2016",
+   "OBS_VALUE": "435990",
+   "NOTE_DATA_TYPE": "TIPO_DATO_BANCA__BANK_DEP_N1"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046024",
+   "DATA_TYPE": "BANK_DEP",
+   "TIME_PERIOD": "2017",
+   "OBS_VALUE": "472065",
+   "NOTE_DATA_TYPE": "TIPO_DATO_BANCA__BANK_DEP_N1"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046024",
+   "DATA_TYPE": "BANK_DEP",
+   "TIME_PERIOD": "2018",
+   "OBS_VALUE": "483353",
+   "NOTE_DATA_TYPE": "TIPO_DATO_BANCA__BANK_DEP_N1"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046024",
+   "DATA_TYPE": "BANK_DEP",
+   "TIME_PERIOD": "2019",
+   "OBS_VALUE": "516231",
+   "NOTE_DATA_TYPE": "TIPO_DATO_BANCA__BANK_DEP_N1"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046024",
+   "DATA_TYPE": "BANK_DEP",
+   "TIME_PERIOD": "2020",
+   "OBS_VALUE": "579707",
+   "NOTE_DATA_TYPE": "TIPO_DATO_BANCA__BANK_DEP_N1"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046024",
+   "DATA_TYPE": "BANK_DEP",
+   "TIME_PERIOD": "2021",
+   "OBS_VALUE": "648268",
+   "NOTE_DATA_TYPE": "TIPO_DATO_BANCA__BANK_DEP_N1"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046024",
+   "DATA_TYPE": "BANK_DEP",
+   "TIME_PERIOD": "2022",
+   "OBS_VALUE": "670150",
+   "NOTE_DATA_TYPE": "TIPO_DATO_BANCA__BANK_DEP_N1"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046024",
+   "DATA_TYPE": "BANK_LOANS",
+   "TIME_PERIOD": "2015",
+   "OBS_VALUE": "552866",
+   "NOTE_DATA_TYPE": "TIPO_DATO_BANCA__BANK_LOANS_N1"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046024",
+   "DATA_TYPE": "BANK_LOANS",
+   "TIME_PERIOD": "2016",
+   "OBS_VALUE": "543353",
+   "NOTE_DATA_TYPE": "TIPO_DATO_BANCA__BANK_LOANS_N1"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046024",
+   "DATA_TYPE": "BANK_LOANS",
+   "TIME_PERIOD": "2017",
+   "OBS_VALUE": "530051",
+   "NOTE_DATA_TYPE": "TIPO_DATO_BANCA__BANK_LOANS_N1"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046024",
+   "DATA_TYPE": "BANK_LOANS",
+   "TIME_PERIOD": "2018",
+   "OBS_VALUE": "506891",
+   "NOTE_DATA_TYPE": "TIPO_DATO_BANCA__BANK_LOANS_N1"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046024",
+   "DATA_TYPE": "BANK_LOANS",
+   "TIME_PERIOD": "2019",
+   "OBS_VALUE": "492755",
+   "NOTE_DATA_TYPE": "TIPO_DATO_BANCA__BANK_LOANS_N1"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046024",
+   "DATA_TYPE": "BANK_LOANS",
+   "TIME_PERIOD": "2020",
+   "OBS_VALUE": "486020",
+   "NOTE_DATA_TYPE": "TIPO_DATO_BANCA__BANK_LOANS_N1"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046024",
+   "DATA_TYPE": "BANK_LOANS",
+   "TIME_PERIOD": "2021",
+   "OBS_VALUE": "512372",
+   "NOTE_DATA_TYPE": "TIPO_DATO_BANCA__BANK_LOANS_N1"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046024",
+   "DATA_TYPE": "BANK_LOANS",
+   "TIME_PERIOD": "2022",
+   "OBS_VALUE": "456453",
+   "NOTE_DATA_TYPE": "TIPO_DATO_BANCA__BANK_LOANS_N1"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046028",
+   "DATA_TYPE": "BANK_BRN",
+   "TIME_PERIOD": "2015",
+   "OBS_VALUE": "9"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046028",
+   "DATA_TYPE": "BANK_BRN",
+   "TIME_PERIOD": "2016",
+   "OBS_VALUE": "9"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046028",
+   "DATA_TYPE": "BANK_BRN",
+   "TIME_PERIOD": "2017",
+   "OBS_VALUE": "9"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046028",
+   "DATA_TYPE": "BANK_BRN",
+   "TIME_PERIOD": "2018",
+   "OBS_VALUE": "9"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046028",
+   "DATA_TYPE": "BANK_BRN",
+   "TIME_PERIOD": "2019",
+   "OBS_VALUE": "8"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046028",
+   "DATA_TYPE": "BANK_BRN",
+   "TIME_PERIOD": "2020",
+   "OBS_VALUE": "8"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046028",
+   "DATA_TYPE": "BANK_BRN",
+   "TIME_PERIOD": "2021",
+   "OBS_VALUE": "7"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046028",
+   "DATA_TYPE": "BANK_BRN",
+   "TIME_PERIOD": "2022",
+   "OBS_VALUE": "7"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046028",
+   "DATA_TYPE": "BANK_DEP",
+   "TIME_PERIOD": "2015",
+   "OBS_VALUE": "150321",
+   "NOTE_DATA_TYPE": "TIPO_DATO_BANCA__BANK_DEP_N1"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046028",
+   "DATA_TYPE": "BANK_DEP",
+   "TIME_PERIOD": "2016",
+   "OBS_VALUE": "164407",
+   "NOTE_DATA_TYPE": "TIPO_DATO_BANCA__BANK_DEP_N1"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046028",
+   "DATA_TYPE": "BANK_DEP",
+   "TIME_PERIOD": "2017",
+   "OBS_VALUE": "168926",
+   "NOTE_DATA_TYPE": "TIPO_DATO_BANCA__BANK_DEP_N1"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046028",
+   "DATA_TYPE": "BANK_DEP",
+   "TIME_PERIOD": "2018",
+   "OBS_VALUE": "182805",
+   "NOTE_DATA_TYPE": "TIPO_DATO_BANCA__BANK_DEP_N1"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046028",
+   "DATA_TYPE": "BANK_DEP",
+   "TIME_PERIOD": "2019",
+   "OBS_VALUE": "204261",
+   "NOTE_DATA_TYPE": "TIPO_DATO_BANCA__BANK_DEP_N1"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046028",
+   "DATA_TYPE": "BANK_DEP",
+   "TIME_PERIOD": "2020",
+   "OBS_VALUE": "225702",
+   "NOTE_DATA_TYPE": "TIPO_DATO_BANCA__BANK_DEP_N1"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046028",
+   "DATA_TYPE": "BANK_DEP",
+   "TIME_PERIOD": "2021",
+   "OBS_VALUE": "236062",
+   "NOTE_DATA_TYPE": "TIPO_DATO_BANCA__BANK_DEP_N1"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046028",
+   "DATA_TYPE": "BANK_DEP",
+   "TIME_PERIOD": "2022",
+   "OBS_VALUE": "254252",
+   "NOTE_DATA_TYPE": "TIPO_DATO_BANCA__BANK_DEP_N1"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046028",
+   "DATA_TYPE": "BANK_LOANS",
+   "TIME_PERIOD": "2015",
+   "OBS_VALUE": "152586",
+   "NOTE_DATA_TYPE": "TIPO_DATO_BANCA__BANK_LOANS_N1"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046028",
+   "DATA_TYPE": "BANK_LOANS",
+   "TIME_PERIOD": "2016",
+   "OBS_VALUE": "153874",
+   "NOTE_DATA_TYPE": "TIPO_DATO_BANCA__BANK_LOANS_N1"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046028",
+   "DATA_TYPE": "BANK_LOANS",
+   "TIME_PERIOD": "2017",
+   "OBS_VALUE": "162342",
+   "NOTE_DATA_TYPE": "TIPO_DATO_BANCA__BANK_LOANS_N1"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046028",
+   "DATA_TYPE": "BANK_LOANS",
+   "TIME_PERIOD": "2018",
+   "OBS_VALUE": "151545",
+   "NOTE_DATA_TYPE": "TIPO_DATO_BANCA__BANK_LOANS_N1"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046028",
+   "DATA_TYPE": "BANK_LOANS",
+   "TIME_PERIOD": "2019",
+   "OBS_VALUE": "151259",
+   "NOTE_DATA_TYPE": "TIPO_DATO_BANCA__BANK_LOANS_N1"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046028",
+   "DATA_TYPE": "BANK_LOANS",
+   "TIME_PERIOD": "2020",
+   "OBS_VALUE": "153713",
+   "NOTE_DATA_TYPE": "TIPO_DATO_BANCA__BANK_LOANS_N1"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046028",
+   "DATA_TYPE": "BANK_LOANS",
+   "TIME_PERIOD": "2021",
+   "OBS_VALUE": "146318",
+   "NOTE_DATA_TYPE": "TIPO_DATO_BANCA__BANK_LOANS_N1"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046028",
+   "DATA_TYPE": "BANK_LOANS",
+   "TIME_PERIOD": "2022",
+   "OBS_VALUE": "145774",
+   "NOTE_DATA_TYPE": "TIPO_DATO_BANCA__BANK_LOANS_N1"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046030",
+   "DATA_TYPE": "BANK_BRN",
+   "TIME_PERIOD": "2015",
+   "OBS_VALUE": "2"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046030",
+   "DATA_TYPE": "BANK_BRN",
+   "TIME_PERIOD": "2016",
+   "OBS_VALUE": "2"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046030",
+   "DATA_TYPE": "BANK_BRN",
+   "TIME_PERIOD": "2017",
+   "OBS_VALUE": "2"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046030",
+   "DATA_TYPE": "BANK_BRN",
+   "TIME_PERIOD": "2018",
+   "OBS_VALUE": "1"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046030",
+   "DATA_TYPE": "BANK_BRN",
+   "TIME_PERIOD": "2019",
+   "OBS_VALUE": "1"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046030",
+   "DATA_TYPE": "BANK_BRN",
+   "TIME_PERIOD": "2020",
+   "OBS_VALUE": "1"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046030",
+   "DATA_TYPE": "BANK_BRN",
+   "TIME_PERIOD": "2021",
+   "OBS_VALUE": "1"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046030",
+   "DATA_TYPE": "BANK_BRN",
+   "TIME_PERIOD": "2022",
+   "OBS_VALUE": "1"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046030",
+   "DATA_TYPE": "BANK_DEP",
+   "TIME_PERIOD": "2015",
+   "OBS_VALUE": "0",
+   "NOTE_DATA_TYPE": "TIPO_DATO_BANCA__BANK_DEP_N1"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046030",
+   "DATA_TYPE": "BANK_DEP",
+   "TIME_PERIOD": "2016",
+   "OBS_VALUE": "0",
+   "NOTE_DATA_TYPE": "TIPO_DATO_BANCA__BANK_DEP_N1"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046030",
+   "DATA_TYPE": "BANK_DEP",
+   "TIME_PERIOD": "2017",
+   "OBS_VALUE": "0",
+   "NOTE_DATA_TYPE": "TIPO_DATO_BANCA__BANK_DEP_N1"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046030",
+   "DATA_TYPE": "BANK_DEP",
+   "TIME_PERIOD": "2018",
+   "OBS_VALUE": "0",
+   "NOTE_DATA_TYPE": "TIPO_DATO_BANCA__BANK_DEP_N1"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046030",
+   "DATA_TYPE": "BANK_DEP",
+   "TIME_PERIOD": "2019",
+   "OBS_VALUE": "0",
+   "NOTE_DATA_TYPE": "TIPO_DATO_BANCA__BANK_DEP_N1"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046030",
+   "DATA_TYPE": "BANK_DEP",
+   "TIME_PERIOD": "2020",
+   "OBS_VALUE": "0",
+   "NOTE_DATA_TYPE": "TIPO_DATO_BANCA__BANK_DEP_N1"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046030",
+   "DATA_TYPE": "BANK_DEP",
+   "TIME_PERIOD": "2021",
+   "OBS_VALUE": "0",
+   "NOTE_DATA_TYPE": "TIPO_DATO_BANCA__BANK_DEP_N1"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046030",
+   "DATA_TYPE": "BANK_DEP",
+   "TIME_PERIOD": "2022",
+   "OBS_VALUE": "0",
+   "NOTE_DATA_TYPE": "TIPO_DATO_BANCA__BANK_DEP_N1"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046030",
+   "DATA_TYPE": "BANK_LOANS",
+   "TIME_PERIOD": "2015",
+   "OBS_VALUE": "0",
+   "NOTE_DATA_TYPE": "TIPO_DATO_BANCA__BANK_LOANS_N1"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046030",
+   "DATA_TYPE": "BANK_LOANS",
+   "TIME_PERIOD": "2016",
+   "OBS_VALUE": "0",
+   "NOTE_DATA_TYPE": "TIPO_DATO_BANCA__BANK_LOANS_N1"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046030",
+   "DATA_TYPE": "BANK_LOANS",
+   "TIME_PERIOD": "2017",
+   "OBS_VALUE": "0",
+   "NOTE_DATA_TYPE": "TIPO_DATO_BANCA__BANK_LOANS_N1"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046030",
+   "DATA_TYPE": "BANK_LOANS",
+   "TIME_PERIOD": "2018",
+   "OBS_VALUE": "0",
+   "NOTE_DATA_TYPE": "TIPO_DATO_BANCA__BANK_LOANS_N1"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046030",
+   "DATA_TYPE": "BANK_LOANS",
+   "TIME_PERIOD": "2019",
+   "OBS_VALUE": "0",
+   "NOTE_DATA_TYPE": "TIPO_DATO_BANCA__BANK_LOANS_N1"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046030",
+   "DATA_TYPE": "BANK_LOANS",
+   "TIME_PERIOD": "2020",
+   "OBS_VALUE": "0",
+   "NOTE_DATA_TYPE": "TIPO_DATO_BANCA__BANK_LOANS_N1"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046030",
+   "DATA_TYPE": "BANK_LOANS",
+   "TIME_PERIOD": "2021",
+   "OBS_VALUE": "0",
+   "NOTE_DATA_TYPE": "TIPO_DATO_BANCA__BANK_LOANS_N1"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046030",
+   "DATA_TYPE": "BANK_LOANS",
+   "TIME_PERIOD": "2022",
+   "OBS_VALUE": "0",
+   "NOTE_DATA_TYPE": "TIPO_DATO_BANCA__BANK_LOANS_N1"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046033",
+   "DATA_TYPE": "BANK_BRN",
+   "TIME_PERIOD": "2015",
+   "OBS_VALUE": "37"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046033",
+   "DATA_TYPE": "BANK_BRN",
+   "TIME_PERIOD": "2016",
+   "OBS_VALUE": "35"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046033",
+   "DATA_TYPE": "BANK_BRN",
+   "TIME_PERIOD": "2017",
+   "OBS_VALUE": "33"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046033",
+   "DATA_TYPE": "BANK_BRN",
+   "TIME_PERIOD": "2018",
+   "OBS_VALUE": "31"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046033",
+   "DATA_TYPE": "BANK_BRN",
+   "TIME_PERIOD": "2019",
+   "OBS_VALUE": "27"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046033",
+   "DATA_TYPE": "BANK_BRN",
+   "TIME_PERIOD": "2020",
+   "OBS_VALUE": "26"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046033",
+   "DATA_TYPE": "BANK_BRN",
+   "TIME_PERIOD": "2021",
+   "OBS_VALUE": "24"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046033",
+   "DATA_TYPE": "BANK_BRN",
+   "TIME_PERIOD": "2022",
+   "OBS_VALUE": "24"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046033",
+   "DATA_TYPE": "BANK_DEP",
+   "TIME_PERIOD": "2015",
+   "OBS_VALUE": "975122",
+   "NOTE_DATA_TYPE": "TIPO_DATO_BANCA__BANK_DEP_N1"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046033",
+   "DATA_TYPE": "BANK_DEP",
+   "TIME_PERIOD": "2016",
+   "OBS_VALUE": "1023181",
+   "NOTE_DATA_TYPE": "TIPO_DATO_BANCA__BANK_DEP_N1"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046033",
+   "DATA_TYPE": "BANK_DEP",
+   "TIME_PERIOD": "2017",
+   "OBS_VALUE": "1082169",
+   "NOTE_DATA_TYPE": "TIPO_DATO_BANCA__BANK_DEP_N1"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046033",
+   "DATA_TYPE": "BANK_DEP",
+   "TIME_PERIOD": "2018",
+   "OBS_VALUE": "1175154",
+   "NOTE_DATA_TYPE": "TIPO_DATO_BANCA__BANK_DEP_N1"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046033",
+   "DATA_TYPE": "BANK_DEP",
+   "TIME_PERIOD": "2019",
+   "OBS_VALUE": "1255349",
+   "NOTE_DATA_TYPE": "TIPO_DATO_BANCA__BANK_DEP_N1"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046033",
+   "DATA_TYPE": "BANK_DEP",
+   "TIME_PERIOD": "2020",
+   "OBS_VALUE": "1431038",
+   "NOTE_DATA_TYPE": "TIPO_DATO_BANCA__BANK_DEP_N1"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046033",
+   "DATA_TYPE": "BANK_DEP",
+   "TIME_PERIOD": "2021",
+   "OBS_VALUE": "1575499",
+   "NOTE_DATA_TYPE": "TIPO_DATO_BANCA__BANK_DEP_N1"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046033",
+   "DATA_TYPE": "BANK_DEP",
+   "TIME_PERIOD": "2022",
+   "OBS_VALUE": "1533670",
+   "NOTE_DATA_TYPE": "TIPO_DATO_BANCA__BANK_DEP_N1"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046033",
+   "DATA_TYPE": "BANK_LOANS",
+   "TIME_PERIOD": "2015",
+   "OBS_VALUE": "1775162",
+   "NOTE_DATA_TYPE": "TIPO_DATO_BANCA__BANK_LOANS_N1"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046033",
+   "DATA_TYPE": "BANK_LOANS",
+   "TIME_PERIOD": "2016",
+   "OBS_VALUE": "1733888",
+   "NOTE_DATA_TYPE": "TIPO_DATO_BANCA__BANK_LOANS_N1"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046033",
+   "DATA_TYPE": "BANK_LOANS",
+   "TIME_PERIOD": "2017",
+   "OBS_VALUE": "1664987",
+   "NOTE_DATA_TYPE": "TIPO_DATO_BANCA__BANK_LOANS_N1"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046033",
+   "DATA_TYPE": "BANK_LOANS",
+   "TIME_PERIOD": "2018",
+   "OBS_VALUE": "1464708",
+   "NOTE_DATA_TYPE": "TIPO_DATO_BANCA__BANK_LOANS_N1"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046033",
+   "DATA_TYPE": "BANK_LOANS",
+   "TIME_PERIOD": "2019",
+   "OBS_VALUE": "1379283",
+   "NOTE_DATA_TYPE": "TIPO_DATO_BANCA__BANK_LOANS_N1"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046033",
+   "DATA_TYPE": "BANK_LOANS",
+   "TIME_PERIOD": "2020",
+   "OBS_VALUE": "1373927",
+   "NOTE_DATA_TYPE": "TIPO_DATO_BANCA__BANK_LOANS_N1"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046033",
+   "DATA_TYPE": "BANK_LOANS",
+   "TIME_PERIOD": "2021",
+   "OBS_VALUE": "1433253",
+   "NOTE_DATA_TYPE": "TIPO_DATO_BANCA__BANK_LOANS_N1"
+  },
+  {
+   "DATAFLOW": "IT1:117_1035_DF_DCAT_SERVBANC_COM_1(1.0)",
+   "FREQ": "A",
+   "REF_AREA": "046033",
+   "DATA_TYPE": "BANK_LOANS",
+   "TIME_PERIOD": "2022",
+   "OBS_VALUE": "1370538",
+   "NOTE_DATA_TYPE": "TIPO_DATO_BANCA__BANK_LOANS_N1"
+  }
+ ],
+ "dataUrl": "https://esploradati.istat.it/SDMXWS/rest/data/117_1035_DF_DCAT_SERVBANC_COM_1/all?startPeriod=2012"
 }
