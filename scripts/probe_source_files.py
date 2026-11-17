@@ -77,6 +77,18 @@ def workbook(data: bytes) -> dict[str, Any]:
     return {"sheets": sheets}
 
 
+def csv_table(data: bytes) -> dict[str, Any]:
+    """CSV: separatore, intestazione, prime righe e righe dei Comuni della Versilia, della Toscana e dell'Italia."""
+    import csv as _csv
+
+    text = data.decode("utf-8-sig", errors="replace")
+    first = text.splitlines()[0] if text else ""
+    sep = max(";,\t|", key=first.count)
+    rows = list(_csv.reader(io.StringIO(text), delimiter=sep))
+    hits = [[i + 1, [cell(v) for v in r]] for i, r in enumerate(rows[1:], 1) if hit(r)][:MAX_HITS]
+    return {"separator": sep, "rows": len(rows), "head": [[cell(v) for v in r] for r in rows[:HEAD_ROWS]], "hits": hits}
+
+
 def links(page: str, url: str) -> list[dict[str, str]]:
     out, seen = [], set()
     for m in re.finditer(r"<a\b[^>]*href=[\"']([^\"']+)[\"'][^>]*>(.*?)</a>", page, flags=re.I | re.S):
@@ -120,6 +132,8 @@ def analyse(url: str, follow: str | None, depth: int = 0, post: str | None = Non
             with zipfile.ZipFile(io.BytesIO(data)) as z:
                 item["members"] = [{"name": i.filename, "bytes": i.file_size} for i in z.infolist()]
                 item["memberWorkbooks"] = {n: workbook(z.read(n)) for n in z.namelist() if n.lower().endswith((".xlsx", ".xlsm"))}
+        elif "csv" in ctype.lower() or re.search(r"\.csv(?:[/?#]|$)", url, re.I):
+            item["csv"] = csv_table(data)
         else:
             page = data.decode("utf-8", errors="replace")
             ls = links(page, url)

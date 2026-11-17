@@ -21,7 +21,7 @@ from pathlib import Path
 from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
-BASE = "https://esploradati.istat.it/SDMXWS/rest"
+BASES = ("https://esploradati.istat.it/SDMXWS/rest", "https://sdmx.istat.it/SDMXWS/rest")
 UA = "Mozilla/5.0 (compatible; OsservatorioVersilia-data-audit/1.0)"
 SDMX_CSV = "application/vnd.sdmx.data+csv;version=1.0.0"
 AREAS = ("046005", "046013", "046018", "046024", "046028", "046030", "046033", "046", "ITE12", "ITI12", "ITE1", "ITI1", "IT")
@@ -92,18 +92,29 @@ def run(name: str, flow: str, key: str = "all", start: str | None = None) -> Pat
     probe: dict[str, Any] = {"schemaVersion": 1, "createdAt": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
                              "note": "Sonda SDMX: struttura e righe della Versilia; non è un dato pubblicato.",
                              "flow": flow, "key": key}
-    try:
-        st = structure(fetch(f"{BASE}/dataflow/IT1/{flow}/1.0?references=all", "application/xml"))
-        probe["dimensions"] = st["dimensions"]
-    except RuntimeError as exc:
-        st = {"dimensions": [], "codelists": {}}
-        probe["structureError"] = str(exc)
-    url = f"{BASE}/data/IT1,{flow},1.0/{key}" + (f"?startPeriod={start}" if start else "")
-    probe["dataUrl"] = url
-    try:
-        probe.update(summarise(fetch(url, SDMX_CSV), st["codelists"], st["dimensions"]))
-    except RuntimeError as exc:
-        probe["dataError"] = str(exc)
+    st: dict[str, Any] = {"dimensions": [], "codelists": {}}
+    attempts = []
+    for base in BASES:
+        try:
+            st = structure(fetch(f"{base}/dataflow/IT1/{flow}?references=all", "application/xml"))
+            probe["structureUrl"] = f"{base}/dataflow/IT1/{flow}?references=all"
+            probe["dimensions"] = st["dimensions"]
+            break
+        except (RuntimeError, ET.ParseError) as exc:
+            attempts.append(f"{base}: {exc}")
+    if attempts:
+        probe["structureErrors"] = attempts
+    errors = []
+    for base in BASES:
+        url = f"{base}/data/{flow}/{key}" + (f"?startPeriod={start}" if start else "")
+        try:
+            probe.update(summarise(fetch(url, SDMX_CSV), st["codelists"], st["dimensions"]))
+            probe["dataUrl"] = url
+            break
+        except RuntimeError as exc:
+            errors.append(f"{url}: {exc}")
+    if errors:
+        probe["dataErrors"] = errors
     path = ROOT / "data" / "source-probes" / f"{name}.json"
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(probe, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")

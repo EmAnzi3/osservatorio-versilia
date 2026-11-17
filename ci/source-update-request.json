@@ -8,9 +8,28 @@
   "mefFiscalProbe": [],
   "sourceProbe": [
     {
-      "name": "opencivitas-home",
-      "url": "https://www.opencivitas.it/",
-      "follow": "(?i)open.?data|download|dati"
+      "name": "opencivitas-rifiuti-2023",
+      "url": "https://www.opencivitas.it/portale/documents/20118/0/2023_Ind_RIFIUTI_01_IT.csv/34fd224a-5cac-7676-3016-7c55fe5d6450"
+    },
+    {
+      "name": "opencivitas-metadati-enti-2023",
+      "url": "https://www.opencivitas.it/portale/documents/20118/0/Metadati_Enti_2023_IT.xlsx/9af2749a-d3a5-cc6f-c78d-08593c7dbc32"
+    },
+    {
+      "name": "opencivitas-open-data-p2",
+      "url": "https://www.opencivitas.it/portale/open-data?xpage=2&xdelta=6"
+    },
+    {
+      "name": "opencivitas-open-data-p3",
+      "url": "https://www.opencivitas.it/portale/open-data?xpage=3&xdelta=6"
+    },
+    {
+      "name": "opencivitas-open-data-p4",
+      "url": "https://www.opencivitas.it/portale/open-data?xpage=4&xdelta=6"
+    },
+    {
+      "name": "opencivitas-open-data-p5",
+      "url": "https://www.opencivitas.it/portale/open-data?xpage=5&xdelta=6"
     }
   ],
   "ispraSoil": [],

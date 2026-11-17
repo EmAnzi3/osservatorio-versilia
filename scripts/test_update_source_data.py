@@ -490,6 +490,8 @@ def source_probe_cases(tmp: Path) -> None:
     buf = _io.BytesIO(); wb.save(buf)
     sheets = probe.workbook(buf.getvalue())["sheets"]
     assert sheets[0]["head"][2] == ["046018", "Massarosa"] and sheets[0]["rows"] == 3
+    table = probe.csv_table("COD;Comune;Val\n001001;Agliè;1\n46033;VIAREGGIO;2\n".encode())
+    assert table["separator"] == ";" and table["rows"] == 3 and table["hits"] == [[3, ["46033", "VIAREGGIO", "2"]]]
 
 
 def sdmx_probe_cases() -> None:
