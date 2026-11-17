@@ -74,6 +74,29 @@ def count(table: list[dict[str, str]], tuscany_cabs: set[str]) -> dict[str, Any]
     return out
 
 
+def variants(table: list[dict[str, str]], tuscany_cabs: set[str]) -> dict[str, Any]:
+    """Conteggi alternativi per capire gli scarti con i totali ufficiali: solo date operative
+    (senza la versione anagrafica), sedi distinte per intermediario, righe senza Stato."""
+    out: dict[str, Any] = {}
+    for day in ("2022-12-31", "2025-12-31"):
+        oper = [r for r in table if r["DATA_I_OPER"] <= day <= r["DATA_F_OPER"]]
+        both = [r for r in oper if r["DATA_I_VAL"] <= day <= r["DATA_F_VAL"]]
+        def n(rows, key=lambda r: r["ID_SEDE"], where=lambda r: True):
+            return len({key(r) for r in rows if where(r)})
+        out[day] = {
+            "operOnly": {"italy": n(oper), "tuscany": n(oper, where=lambda r: r.get("CAB_COM_ITA") in tuscany_cabs),
+                         **{t: n(oper, where=lambda r, t=t: r.get("DES_COM_ITA") == t) for t in TOWNS}},
+            "operAndValid": {"italy": n(both), "italyByIntermediary": n(both, key=lambda r: (r["ID_INT"], r["ID_SEDE"])),
+                             "italyStato86": n(both, where=lambda r: r.get("STATO") == "86"),
+                             "italyAnyStato": n(both, where=lambda r: True)},
+            "statoValues": sorted({r.get("STATO", "") for r in both})[:20],
+            "rowsOper": len(oper), "rowsBoth": len(both),
+            "sample": [{k: r.get(k) for k in ("ID_INT", "ID_SEDE", "DATA_I_OPER", "DATA_F_OPER", "DATA_I_VAL", "DATA_F_VAL", "STATO", "DES_COM_ITA", "TIPO_SEDE")}
+                       for r in oper if not (r["DATA_I_VAL"] <= day <= r["DATA_F_VAL"])][:15],
+        }
+    return out
+
+
 def run() -> Path:
     probe: dict[str, Any] = {"schemaVersion": 1, "createdAt": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
                              "note": "Sonda: sedi bancarie operative per Comune, Toscana e Italia; non è un dato pubblicato.",
@@ -88,6 +111,7 @@ def run() -> Path:
         probe["records"] = len(table)
         probe["types"] = sorted({f'{r.get("TIPO_SEDE")} {r.get("DES_TIPO_SEDE")}' for r in table})
         probe["counts"] = count(table, tuscany)
+        probe["variants"] = variants(table, tuscany)
     except Exception as exc:  # noqa: BLE001
         probe["error"] = f"{type(exc).__name__}: {exc}"
     path = ROOT / "data" / "source-probes" / "bdi-sportelli-conteggi.json"
