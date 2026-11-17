@@ -1,5 +1,27 @@
 # Consolidamento Osservatorio Versilia — handoff operativo
 
+## Dossier «Essere giovani in Versilia» (17 novembre 2026)
+
+Branch `feat/dossier-giovani`, diciottesimo dossier in forma di relazione (slug `giovani`, tema
+lavoro), fuori dal programma originario dei diciassette. Solo indicatori già pubblicati nel sito e
+disponibili per tutti e sette i Comuni, con un'eccezione dichiarata (INVALSI di terza media, 4
+Comuni su 7, `partial=True` come nel dossier scuola). Sei capitoli:
+
+1. quanti sono: `ageDistribution` `age:15-19` e `age:20-34`, Versilia, Toscana e Italia;
+2. il primo lavoro: `employmentRate` e `unemploymentRate` `age:15-24|sex:total` (censimento
+   permanente 2024, nessun benchmark nel motore per questa fascia);
+3. ragazze e ragazzi: `unemploymentRate` `age:15-24|sex:women` e `sex:men`;
+4. né a scuola né al lavoro: `youthOtherStatus` con Toscana (Regione Toscana; il testo dichiara
+   che non è il NEET europeo né la disoccupazione);
+5. alla fine delle medie: `invalsiImplicitDispersion` e `invalsiAcademicExcellence` `view:g8`;
+   la quinta superiore è esclusa (pochi istituti, studenti di altri Comuni);
+6. spesa: `cultureSportMissionExpenditurePerResident` (missioni 05 e 06) con Versilia e
+   `socialSpendingByUserArea` `part:families-minors`.
+
+Esclusi: mobilità dei laureati (solo provinciale), trasferimenti di residenza per età (non
+pubblicati per Comune), titoli di studio `age:9-24` (fascia non leggibile come «giovani»).
+`ci/content-contract.json` elenca la nuova pagina; l'indice dei dossier cita i giovani.
+
 ## Chiedi sul telefono: pulsante accanto al campo, tastiera chiusa, Comuni dopo «a …» (17 novembre 2026)
 
 - Dagli screenshot di Ema (telefono reale): sulla pagina Chiedi l'elenco dei suggerimenti copriva il pulsante «Chiedi» (che andava a capo sotto il campo) e le domande d'esempio.
