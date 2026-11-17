@@ -1,0 +1,10 @@
+{
+ "schemaVersion": 1,
+ "createdAt": "2026-11-17T14:45:39Z",
+ "note": "Sonda SDMX: struttura e righe della Versilia; non è un dato pubblicato.",
+ "flow": "117_1035_DF_DCAT_SERVBANC_COM",
+ "key": "all",
+ "structureError": "tentativo 1: HTTPError: HTTP Error 404: Not Found | tentativo 2: HTTPError: HTTP Error 404: Not Found | tentativo 3: HTTPError: HTTP Error 404: Not Found",
+ "dataUrl": "https://esploradati.istat.it/SDMXWS/rest/data/IT1,117_1035_DF_DCAT_SERVBANC_COM,1.0/all?startPeriod=2015",
+ "dataError": "tentativo 1: HTTPError: HTTP Error 404: Not Found | tentativo 2: HTTPError: HTTP Error 404: Not Found | tentativo 3: HTTPError: HTTP Error 404: Not Found"
+}
