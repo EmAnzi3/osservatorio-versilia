@@ -1,5 +1,14 @@
 # Consolidamento Osservatorio Versilia — handoff operativo
 
+## Chiedi sul telefono: pulsante accanto al campo, tastiera chiusa, Comuni dopo «a …» (17 novembre 2026)
+
+- Dagli screenshot di Ema (telefono reale): sulla pagina Chiedi l'elenco dei suggerimenti copriva il pulsante «Chiedi» (che andava a capo sotto il campo) e le domande d'esempio.
+- `#ask-form` non va più a capo: «Chiedi» sta sempre accanto al campo, l'elenco si apre sotto campo e pulsante, largo quanto entrambi.
+- Su schermi touch (`pointer: coarse`) il campo perde il fuoco all'invio o alla scelta di un suggerimento: la tastiera si chiude e non copre la risposta.
+- Dopo «Tasso di disoccupazione 25–64 anni a …» («scegli il Comune») il suggeritore riproponeva lo stesso invito; ora propone i sette Comuni.
+- `scripts/test_chiedi_domande.py`: a 1440 e 390 px «Chiedi» è sulla riga del campo e l'elenco non lo copre; dopo «… a » i suggerimenti sono i sette Comuni.
+- `scripts/test_salute_finanziaria_v129_browser.py` falliva a intermittenza in «full» (clic su «Valore attuale» intercettato dalla mascotte aperta da sola e dall'intestazione fissa): il test ora nasconde la mascotte con la sua preferenza «Non mostrare più» (`ov-mascotte-nascosta`, la mascotte ha il suo test) e porta i pulsanti al centro dello schermo prima del clic reale. Nessuna verifica tolta.
+
 ## Chiedi: «il comune più grande» per abitanti, con «Per superficie» a un clic (16 novembre 2026)
 
 - Ema: «più grande/piccolo» senza altro dipende dal contesto, può voler dire anche superficie. Chiedi continua a leggerlo per abitanti, ma lo dice («Ho inteso «grande» come numero di abitanti.») e offre il pulsante «Per superficie», che rifà la domanda aggiungendo «per superficie».

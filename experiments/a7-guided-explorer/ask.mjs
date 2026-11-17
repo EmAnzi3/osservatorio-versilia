@@ -410,6 +410,17 @@ export function suggest(input, prepared, { previous = null, limit = 6 } = {}) {
     const alias = Object.keys(TOWN_ALIASES).find(a => a.startsWith(partial));
     if (alias) towns = prepared.towns.filter(t => t.name === TOWN_ALIASES[alias]);
   }
+  // «Tasso di disoccupazione… a » (dopo «scegli il Comune»): i sette Comuni, non di nuovo l'invito.
+  const open = text.replace(/\s(?:a|ad)$/, '');
+  if (!towns.length && open !== text) {
+    const metric = prepared.metrics.find(m => normalize(m.label) === open);
+    if (metric?.operations.includes('observe')) {
+      const label = metric.label.charAt(0).toUpperCase() + metric.label.slice(1);
+      limit = Math.max(limit, prepared.towns.length);
+      for (const t of prepared.towns) push({ text: `${label} a ${t.name}`, kind: 'question' }, r => r.kind === 'reading' && r.metric.key === metric.key && r.selection.comune === t.code);
+      if (out.length) return out;
+    }
+  }
   const words = tokens(stripQuestion(text));
   const complete = partial && words.at(-1) === partial ? words.slice(0, -1) : words;
   // Completamenti dell'ultima parola, poi indicatori più vicini.
@@ -725,7 +736,7 @@ export function startAsk(index, presentation) {
   const close = () => { list.hidden = true; list.replaceChildren(); options = []; active = -1; input.setAttribute('aria-expanded', 'false'); input.removeAttribute('aria-activedescendant'); };
   function choose(item) {
     if (item.kind === 'complete') { input.value = item.fill; input.focus(); refresh(); return; }
-    input.value = ''; close(); ask(item.text);
+    input.value = ''; close(); dismiss(); ask(item.text);
   }
   function highlight(i) {
     active = i;
@@ -755,7 +766,9 @@ export function startAsk(index, presentation) {
     else if (event.key === 'Escape' && !list.hidden) { event.preventDefault(); close(); }
     else if (event.key === 'Enter' && active >= 0 && !list.hidden) { event.preventDefault(); choose(options[active]); }
   });
-  form.onsubmit = event => { event.preventDefault(); close(); const q = input.value.trim(); if (q) { input.value = ''; ask(q); } };
+  // Sul telefono la tastiera si chiude all'invio, altrimenti copre metà della risposta.
+  const dismiss = () => { if (window.matchMedia?.('(pointer: coarse)').matches) input.blur(); };
+  form.onsubmit = event => { event.preventDefault(); close(); const q = input.value.trim(); if (q) { input.value = ''; dismiss(); ask(q); } };
   // Domanda arrivata da un'altra pagina (mascotte Versilia): ?q=… viene posta subito e tolta dall'indirizzo.
   const incoming = new URLSearchParams(location.search).get('q')?.trim().slice(0, 200);
   if (incoming) {

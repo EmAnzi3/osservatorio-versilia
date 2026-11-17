@@ -47,6 +47,12 @@ def check_tooltip(page: Page, root: str, unit: str, label: str) -> None:
     assert unit in (tooltip.text_content() or ""), f"{label}: unità tooltip assente"
 
 
+def click(locator) -> None:
+    """Clic reale al centro dello schermo: l'intestazione fissa non copre il pulsante."""
+    locator.evaluate("e => e.scrollIntoView({block: 'center', inline: 'nearest'})")
+    locator.click()
+
+
 def check_compare(page: Page, base: str) -> None:
     page.goto(urljoin(base, "confronta/bilanci/?indicatore=financialDebtProfile"), wait_until="networkidle")
     selector = page.locator("#compare-bars select[data-composite-component]")
@@ -67,7 +73,7 @@ def check_compare(page: Page, base: str) -> None:
 
         history_button = page.locator('#compare-bars [data-view-mode="history"]')
         assert history_button.count() == 1 and not history_button.is_disabled()
-        history_button.click()
+        click(history_button)
         history = page.locator('#compare-bars [data-view-pane="history"] .ux-history-card')
         history.wait_for()
         history_text = history.inner_text()
@@ -77,7 +83,7 @@ def check_compare(page: Page, base: str) -> None:
         assert code in page.locator("#compare-tools .financial-method-disclosure").text_content()
 
         current_button = page.locator('#compare-bars [data-view-mode="current"]')
-        current_button.click()
+        click(current_button)
         current.wait_for()
 
     padded(page, "#compare-definition .financial-definition", "definizione confronto")
@@ -136,7 +142,7 @@ def check_town(page: Page, base: str, slug: str, expected: dict[str, str]) -> No
             '#town-topic .history-panel.a5-shared-chart [data-view-mode="history"]'
         )
         assert history_button.count() == 1 and not history_button.is_disabled()
-        history_button.click()
+        click(history_button)
         history_selector = (
             '#town-topic .history-panel.a5-shared-chart '
             '[data-view-pane="history"]'
@@ -153,7 +159,7 @@ def check_town(page: Page, base: str, slug: str, expected: dict[str, str]) -> No
         current_button = page.locator(
             '#town-topic .history-panel.a5-shared-chart [data-view-mode="current"]'
         )
-        current_button.click()
+        click(current_button)
         page.locator(
             '#town-topic .history-panel.a5-shared-chart [data-view-pane="current"]'
         ).wait_for()
@@ -190,6 +196,9 @@ def main() -> None:
         browser = playwright.chromium.launch(headless=True)
         for width, height, label in ((1440, 1000, "desktop"), (1024, 900, "desktop-1024"), (390, 844, "mobile")):
             page = browser.new_page(viewport={"width": width, "height": height})
+            # La mascotte si apre da sola su schermi larghi e copre i pulsanti: qui non è oggetto del test
+            # (ha il suo, test_site_mascot.py), quindi la nascondiamo con la sua preferenza «Non mostrare più».
+            page.add_init_script("try { localStorage.setItem('ov-mascotte-nascosta', '1') } catch (e) {}")
             page.on("pageerror", lambda error: errors.append(str(error)))
             check_compare(page, base)
             check_indicator(page, base)
