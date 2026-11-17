@@ -1918,6 +1918,60 @@
    "operation": "rank",
    "town": null,
    "size": null
+  },
+  {
+   "question": "Quanti sportelli bancari ci sono a Viareggio?",
+   "kind": "reading",
+   "metric": "bankBranchesPer1000",
+   "operation": "observe",
+   "town": "046033",
+   "detail": "total"
+  },
+  {
+   "question": "Banche a Stazzema",
+   "kind": "reading",
+   "metric": "bankBranchesPer1000",
+   "operation": "observe",
+   "town": "046030",
+   "detail": "total"
+  },
+  {
+   "question": "Quante filiali a Massarosa?",
+   "kind": "reading",
+   "metric": "bankBranchesPer1000",
+   "operation": "observe",
+   "town": "046018",
+   "detail": "total"
+  },
+  {
+   "question": "Dove ci sono più banche?",
+   "kind": "reading",
+   "metric": "bankBranchesPer1000",
+   "operation": "rank",
+   "detail": "total",
+   "town": null
+  },
+  {
+   "question": "Come sono cambiati gli sportelli bancari a Viareggio?",
+   "kind": "reading",
+   "metric": "bankBranchesPer1000",
+   "operation": "series",
+   "town": "046033",
+   "detail": "total"
+  },
+  {
+   "question": "Sportelli bancari a Camaiore rispetto alla Toscana",
+   "kind": "reading",
+   "metric": "bankBranchesPer1000",
+   "operation": "benchmark_gap",
+   "town": "046005",
+   "detail": "total",
+   "benchmark": "tuscany"
+  },
+  {
+   "question": "Cosa sono gli sportelli bancari?",
+   "kind": "definition",
+   "metric": "bankBranchesPer1000"
   }
  ]
 }

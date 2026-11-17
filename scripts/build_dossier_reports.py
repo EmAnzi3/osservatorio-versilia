@@ -74,6 +74,7 @@ SOURCE_NAMES = [
     ('demo.istat.it', 'Istat — Popolazione residente e bilancio demografico'),
     ('ars.toscana.it', 'Agenzia regionale di sanità della Toscana (ARS)'),
     ('dati.salute.gov.it', 'Ministero della Salute — Anagrafe delle farmacie'),
+    ('bancaditalia.it', 'Banca d’Italia — Lista delle succursali delle banche (open data GIAVA)'),
     ('dati.toscana.it', 'Regione Toscana — Servizi educativi per la prima infanzia'),
     ('dati.istruzione.it', 'Ministero dell’Istruzione e del Merito — Open data della scuola'),
     ('invalsi', 'INVALSI — Risultati delle prove nazionali'),
@@ -1128,11 +1129,21 @@ def anziani(engine: Engine) -> dict:
                                      'decimal', 2, benchmarks=TI),
         'social': engine.measure('social', 'socialSpendingPerResident', 'total',
                                  'Spesa dei Comuni per i servizi sociali, euro per abitante', 'eur', 0, benchmarks=TI),
+        'banks': engine.measure('banks', 'bankBranchesPer1000', 'total', 'Sportelli bancari ogni 1.000 abitanti',
+                                'decimal', 2, benchmarks=TI),
     }
     hi = lambda k: m[k].ranking[0]
     lo = lambda k: m[k].ranking[-1]
     nm = lambda code: N[code]
     old, chg, dep, very = m['old'], m['old_change'], m['dependency'], m['very_old']
+    # Sportelli: il motore restituisce anche il numero di sportelli (numeratore) dell'ultimo anno e della serie.
+    bank_now = {o['geography']: o['numerator'] for o in engine.ask({'operation': 'compare', 'selectors': [
+        {'metric': 'bankBranchesPer1000', 'dimension': 'total', 'towns': codes}]})['observations']}
+    bank_series = {c: engine.ask({'operation': 'series', 'selectors': [
+        {'metric': 'bankBranchesPer1000', 'dimension': 'total', 'towns': [c]}]})['observations'] for c in codes}
+    bank_first = bank_series[codes[0]][0]['period']
+    bank_then = {c: obs[0]['numerator'] for c, obs in bank_series.items()}
+    bank_zero = [c for c in codes if bank_now[c] == 0]
 
     # 01 — quanti anziani
     all_up = all(v > 0 for v in chg.values.values())
@@ -1206,7 +1217,7 @@ def anziani(engine: Engine) -> dict:
         'pochi decessi bastano a spostarla di molto, quindi le differenze vanno lette con prudenza e seguite nel tempo.')
 
     # 05 — assistenza
-    care, ph = m['home_care'], m['pharmacies']
+    care, ph, bk = m['home_care'], m['pharmacies'], m['banks']
     care_text = (
         f'Nel {care.period} gli anziani assistiti a domicilio erano {num(care.benchmarks["versilia"], 1)} ogni 1.000 nella '
         f'zona Versilia, contro <b>{num(care.benchmarks["tuscany"], 1)} in Toscana</b>: da {num(lo("home_care")[1], 1)} a '
@@ -1215,15 +1226,27 @@ def anziani(engine: Engine) -> dict:
         f'Le farmacie sono {num(ph.benchmarks["tuscany"], 2)} ogni 1.000 abitanti in Toscana; in Versilia vanno da '
         f'{num(lo("pharmacies")[1], 2)} a {nm(lo("pharmacies")[0])} a {num(hi("pharmacies")[1], 2)} a '
         f'{nm(hi("pharmacies")[0])} (si contano anche succursali e dispensari stagionali).')
+    bank_text = (
+        f'Anche la banca sotto casa si allontana: al 31 dicembre {bk.period} i sette Comuni avevano <b>{sum(bank_now.values())} '
+        f'sportelli bancari</b>, contro {sum(bank_then.values())} nel {bank_first}. In rapporto agli abitanti vanno da '
+        f'{num(lo("banks")[1], 2)} a {nm(lo("banks")[0])} a {num(hi("banks")[1], 2)} a {nm(hi("banks")[0])} ogni 1.000 '
+        f'(Toscana {num(bk.benchmarks["tuscany"], 2)}, Italia {num(bk.benchmarks["italy"], 2)}).'
+        + (f' A {join_names([nm(c) for c in bank_zero])} non c’è più nessuno sportello.' if bank_zero else ''))
     towns5 = {c: (f'<b>{esc(nm(c))}</b>: {num(care.values[c], 1)} anziani assistiti a domicilio ogni 1.000 '
-                  f'(Toscana {num(care.benchmarks["tuscany"], 1)}); {num(ph.values[c], 2)} farmacie ogni 1.000 abitanti.')
+                  f'(Toscana {num(care.benchmarks["tuscany"], 1)}); {num(ph.values[c], 2)} farmacie ogni 1.000 abitanti; '
+                  f'{"nessuno sportello bancario" if bank_now[c] == 0 else str(bank_now[c]) + (" sportello bancario" if bank_now[c] == 1 else " sportelli bancari")} '
+                  f'al 31 dicembre {bk.period} ({bank_then[c]} nel {bank_first}).')
               for c in codes}
-    ch5 = chapter(5, 'assistenza', 'Cure vicino a casa', 'Quanti anziani ricevono assistenza a domicilio?',
+    ch5 = chapter(5, 'assistenza', 'Cure e servizi vicino a casa',
+        'Quanti anziani ricevono assistenza a domicilio e quali servizi trovano vicino a casa?',
         f'<p>{care_text}</p>{bar_chart(care, N, "Anziani assistiti a domicilio", "Tasso standardizzato per età: permette di confrontare Comuni con popolazioni diverse.")}'
-        f'<p>{ph_text}</p>{bar_chart(ph, N, "Farmacie ogni 1.000 abitanti")}' + town_blocks(towns5),
+        f'<p>{ph_text}</p>{bar_chart(ph, N, "Farmacie ogni 1.000 abitanti")}'
+        f'<p>{bank_text}</p>{bar_chart(bk, N, "Sportelli bancari ogni 1.000 abitanti", "Filiali delle banche; esclusi bancomat e uffici postali.")}'
+        + town_blocks(towns5),
         'L’assistenza domiciliare permette agli anziani di restare a casa propria. Il dato conta le persone assistite, '
         'non quante ne avrebbero bisogno: un valore basso può indicare meno bisogno, meno offerta o altre forme di '
-        'aiuto, per esempio badanti pagate dalle famiglie.')
+        'aiuto, per esempio badanti pagate dalle famiglie. Farmacie e sportelli bancari dicono quali servizi ci sono '
+        'nel Comune, non quanto sono aperti né quanto sono facili da raggiungere.')
 
     # 06 — spesa sociale
     soc = m['social']
@@ -1263,6 +1286,7 @@ def anziani(engine: Engine) -> dict:
         summary_item('Anziani assistiti a domicilio ogni 1.000', num(care.values[c], 1),
                      f'Toscana {num(care.benchmarks["tuscany"], 1)}'),
         summary_item('Spesa sociale per abitante', num(soc.values[c]) + ' €', f'Toscana {num(soc.benchmarks["tuscany"])} €'),
+        summary_item('Sportelli bancari', str(bank_now[c]), f'{bank_then[c]} nel {bank_first}'),
     ]) + '</ul>' for c in codes}
     unknown = [
         'Quanti anziani vivono da soli: il dato sulle famiglie di una persona non distingue l’età.',
@@ -1276,14 +1300,14 @@ def anziani(engine: Engine) -> dict:
         unknown_topic='sulla terza età', theme='demografia', theme_label='Tutti i dati sulla popolazione',
         lead='Quanti anziani ci sono, quanto in fretta invecchia la popolazione, quanto si vive e quanta assistenza c’è: '
              'una lettura dei dati pubblici sui sette Comuni della Versilia.',
-        description='Indice di vecchiaia, grandi anziani, nascite e morti, speranza di vita, assistenza domiciliare e spesa '
-                    'sociale nei sette Comuni della Versilia, con confronti con Toscana e Italia.',
+        description='Indice di vecchiaia, grandi anziani, nascite e morti, speranza di vita, assistenza domiciliare, '
+                    'farmacie, sportelli bancari e spesa sociale nei sette Comuni della Versilia, con confronti con Toscana e Italia.',
         periods=f'Popolazione {old.period}, bilancio demografico {nat.period}, speranza di vita {life.period}, '
-                f'assistenza domiciliare {care.period}, spesa sociale {soc.period}.',
+                f'assistenza domiciliare {care.period}, sportelli bancari al 31 dicembre {bk.period}, spesa sociale {soc.period}.',
         measures=m, chapters=[ch1, ch2, ch3, ch4, ch5, ch6], key_points=key_points, towns_summary=towns_summary,
         unknown=unknown,
         toc=[('quanti', 'Quanti anziani'), ('grandi-anziani', 'I grandi anziani'), ('nascite-morti', 'Più morti che nati'),
-             ('salute', 'Quanto si vive'), ('assistenza', 'Cure vicino a casa'), ('spesa-sociale', 'Quanto spendono i Comuni')])
+             ('salute', 'Quanto si vive'), ('assistenza', 'Cure e servizi vicino a casa'), ('spesa-sociale', 'Quanto spendono i Comuni')])
 
 
 # ---------------------------------------------------------------------------
