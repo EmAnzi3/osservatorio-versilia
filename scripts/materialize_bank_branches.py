@@ -29,6 +29,15 @@ PROFILE_SPEC = {
                           "riconciliato con la serie Istat 2022."),
     "licenseName": "CC BY 4.0", "licenseUrl": "https://www.bancaditalia.it/footer/note-legali/index.html",
 }
+GIAVA = "https://infostat.bancaditalia.it/GIAVAInquiry-public/ng/"
+ENRICHMENT = {
+    "sesso": {"state": "NOT_APPLICABLE", "evidence": "Gli sportelli bancari sono sedi, non persone: la disaggregazione per sesso non ha significato.", "sourceReference": GIAVA},
+    "eta": {"state": "NOT_APPLICABLE", "evidence": "Gli sportelli bancari sono sedi, non persone: la disaggregazione per età non ha significato.", "sourceReference": GIAVA},
+    "assoluto_normalizzato": {"state": "AVAILABLE_MISSING", "evidence": "Lo snapshot riconciliato contiene il numero di sportelli per Comune e anno (Viareggio 22 al 31 dicembre 2025); la metrica pubblica la densità ogni 1.000 residenti e non espone ancora il conteggio assoluto come componente strutturata.", "sourceReference": GIAVA},
+    "numeratore_denominatore": {"state": "AVAILABLE_MISSING", "evidence": "Numeratore (sportelli al 31 dicembre) e denominatore (residenti al 1° gennaio successivo) sono nello snapshot e il motore delle domande li restituisce, ma non sono campi strutturati della metrica pubblicata.", "sourceReference": GIAVA},
+    "frequenza_infra_annuale": {"state": "AVAILABLE_MISSING", "evidence": "La Lista succursali banche è uno storico con date di apertura e chiusura: si possono ricostruire fotografie a qualsiasi data. La metrica pubblica solo la fotografia al 31 dicembre.", "sourceReference": GIAVA},
+    "categorie_specifiche": {"state": "AVAILABLE_MISSING", "evidence": "L'elenco distingue intermediario e tipo di sede (succursale, prima succursale di banca estera); la metrica pubblica il totale degli sportelli senza la ripartizione per banca o gruppo.", "sourceReference": GIAVA},
+}
 SECTION = {"key": "credito", "label": "Banche e credito",
            "description": "Sportelli bancari aperti nei Comuni secondo l'elenco delle succursali della Banca d'Italia."}
 
@@ -80,7 +89,7 @@ def apply(data: dict, registry: dict) -> dict:
     for url in (bb.PAGE, bb.URL):
         registry.setdefault("sourceProfileByUrl", {})[url] = PROFILE
         registry.setdefault("sourceUrlProfiles", {})[url] = PROFILE
-    registry.setdefault("metricOverrides", {})[bb.METRIC] = {"profile": PROFILE}
+    registry.setdefault("metricOverrides", {})[bb.METRIC] = {"profile": PROFILE, "enrichmentDimensions": ENRICHMENT}
     registry["expectedMetricCount"] = len(data["metrics"])
     registry["expectedExternalMetricCount"] = int(registry.get("expectedExternalMetricCount", 4))
     registry["expectedInlineMetricCount"] = registry["expectedMetricCount"] - registry["expectedExternalMetricCount"]

@@ -531,7 +531,7 @@ def bdi_branches_cases(tmp: Path) -> None:
         assert abs(via["value"] - 24 / pop * 1000) < 1e-12 and via["series"]["years"][-1] == 2025
         theme = site["themes"]["economia"]
         assert theme["metrics"].count(bb.METRIC) == 1 and next(s for s in theme["sections"] if s["key"] == "credito")["metrics"] == [bb.METRIC]
-        assert registry["metricOverrides"][bb.METRIC] == {"profile": mat.PROFILE} and registry["expectedMetricCount"] == len(site["metrics"])
+        assert registry["metricOverrides"][bb.METRIC]["profile"] == mat.PROFILE and registry["expectedMetricCount"] == len(site["metrics"])
         assert any("Viareggio" in line for line in changes.lines)
         assert not upd.update_bdi_branches(2025, folder, dry_run=True).lines, "rigiro identico: nessuna differenza"
         for bad, year in ((dict(istat, **{"046030": 2}), 2025), (istat, 2026)):
