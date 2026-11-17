@@ -71,6 +71,11 @@ def validated(engine, key):
     # Ricostruisce l'intera definizione pubblica (valori, serie, aggregato, benchmark) dallo snapshot.
     if fingerprint(metric) != fingerprint(build_metric(snap, population, path)):
         raise ValueError('bank_branches_catalog_native_reconciliation_changed')
+    years = snap['years']
+    for row in population:
+        series = dict(zip(row['series']['years'], row['series']['values']))
+        if [series.get(y + 1) for y in years] != snap['population']['towns'].get(row['code']):
+            raise ValueError('bank_branches_denominator_changed')
     for code in TOWNS:
         counts, residents = snap['branches'][code], snap['population']['towns'][code]
         if len(counts) != len(snap['years']) or len(residents) != len(snap['years']):
