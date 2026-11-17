@@ -6,22 +6,7 @@
   "agcomFtth": false,
   "istatTourism": [],
   "mefFiscalProbe": [],
-  "sourceProbe": [
-    {
-      "name": "bdi-succursali-banche",
-      "url": "https://infostat.bancaditalia.it/GIAVAInquiry-public/getAreaDownloadExport.do?referenceDate=&product=VFLUSSO_SEDE_BANCHE&language=IT&exportType=CSV&username=OBLIXANONYMOUS&isCompressed=S"
-    },
-    {
-      "name": "bdi-localita",
-      "url": "https://infostat.bancaditalia.it/GIAVAInquiry-public/getAreaDownloadExport.do?referenceDate=&product=VFLUSSO_LOCALITA&language=IT&exportType=CSV&username=OBLIXANONYMOUS&isCompressed=S",
-      "match": "(?i)VIAREGGIO|CAMAIORE|MASSAROSA|PIETRASANTA|SERAVEZZA|STAZZEMA|FORTE DEI MARMI"
-    },
-    {
-      "name": "opencivitas-totale-2023",
-      "url": "https://www.opencivitas.it/portale/documents/20118/0/2023_Ind_TOT_01_IT.csv/1086db31-bf42-8678-0520-c77eacce2a23",
-      "match": "^LU0(05|13|18|24|28|30|33)\\w*;(FST_RIPROPORZIONATO_BI_PROAB|SPESA_STORICA_PROAB|DIFF_OUT_PERC_TOT|POSIZIONE_OUTPUT_PERC_TOT|POSIZIONE_SPESA_PERC_TOT|FL_NO_VALUTABILE|COORD_OUT|COORD_SPESA|FST_RIPROPORZIONATO_BI|SPESA_STORICA|DESCR_NON_VALUTABILE_OUT_TOT|DESCR_NON_VALUTABILE_SPESA_TOT);"
-    }
-  ],
+  "sourceProbe": [],
   "ispraSoil": [],
   "aciVehicles": [],
   "omiResidential": [],
@@ -29,5 +14,6 @@
   "mimSchools": [],
   "gaiaWater": [],
   "erpArrears": [],
-  "sdmxProbe": []
+  "sdmxProbe": [],
+  "bdiBranchesProbe": true
 }

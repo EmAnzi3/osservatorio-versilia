@@ -1424,6 +1424,7 @@ def main() -> int:
     g.add_argument("--follow", help="espressione regolare dei collegamenti da analizzare")
     g.add_argument("--post", action="append", default=[], help="passo successivo URL::campi (POST, stessa sessione); ripetibile")
     g.add_argument("--match", help="CSV: espressione regolare delle righe da riportare (al posto dei Comuni della Versilia)")
+    sub.add_parser("bdi-branches-probe", help="sonda degli sportelli Banca d'Italia (non modifica il catalogo)")
     x = sub.add_parser("sdmx-probe", help="sonda di un flusso SDMX Istat (non modifica il catalogo)")
     x.add_argument("--name", required=True)
     x.add_argument("--flow", help="identificativo del flusso (oppure --find)")
@@ -1432,7 +1433,11 @@ def main() -> int:
     x.add_argument("--start")
     args = parser.parse_args()
     try:
-        if args.updater == "sdmx-probe":
+        if args.updater == "bdi-branches-probe":
+            import probe_bdi_branches
+
+            probe_bdi_branches.run()
+        elif args.updater == "sdmx-probe":
             import probe_sdmx
 
             if args.find:

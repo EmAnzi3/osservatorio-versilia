@@ -517,6 +517,21 @@ def sdmx_probe_cases() -> None:
     assert [f["id"] for f in probe.flows(listing, "bancar")] == ["117_1035_DF_DCAT_SERVBANC_COM_1"]
 
 
+def bdi_branches_probe_cases() -> None:
+    """Sportelli Banca d'Italia: conta le sedi operative nella versione valida al giorno, per Comune e tipo."""
+    import probe_bdi_branches as probe
+
+    def r(sede, town, cab, i_op, f_op, i_val="1900-01-01", f_val="9999-12-31", kind="SUCCURSALE"):
+        return {"ID_SEDE": sede, "DES_COM_ITA": town, "CAB_COM_ITA": cab, "STATO": "86", "DATA_I_OPER": i_op,
+                "DATA_F_OPER": f_op, "DATA_I_VAL": i_val, "DATA_F_VAL": f_val, "DES_TIPO_SEDE": kind}
+    table = [r("1", "VIAREGGIO", "24800", "2000-01-01", "9999-12-31", "2000-01-01", "2016-06-30"),
+             r("1", "VIAREGGIO", "24800", "2000-01-01", "9999-12-31", "2016-07-01", "9999-12-31"),
+             r("2", "VIAREGGIO", "24800", "2000-01-01", "2018-03-01"), r("3", "LUCCA", "13700", "2000-01-01", "9999-12-31")]
+    out = probe.count(table, {"24800", "13700"})
+    assert out["2017-12-31"]["VIAREGGIO"]["tutte"] == 2 and out["2018-12-31"]["VIAREGGIO"]["tutte"] == 1
+    assert out["2018-12-31"]["tuscany"]["tutte"] == 2 and out["2018-12-31"]["italy"]["SUCCURSALE"] == 2
+
+
 def mef_probe_cases() -> None:
     """Sonda MEF: solo atti comunali DIMUNIC, link con la riga della tabella, testo PDF separato."""
     import probe_mef_fiscal as probe
@@ -720,6 +735,7 @@ def main() -> None:
         agcom_cases(Path(tmp))
     mef_probe_cases()
     sdmx_probe_cases()
+    bdi_branches_probe_cases()
     with tempfile.TemporaryDirectory() as tmp:
         tourism_cases(Path(tmp))
     with tempfile.TemporaryDirectory() as tmp:
