@@ -458,6 +458,13 @@
       "pattern": "(?i)rapporto\\W+foreste in comune\\W[\\s\\S]{0,300}?\\b\\d{1,2}\\s+[a-z]+\\s+(20\\d\\d)",
       "baseline": "2026",
       "hint": "data dell'ultima presentazione del rapporto Foreste in Comune nella ricerca UNCEM (baseline: edizione di giugno 2026, dati comunali giu2026)"
+    },
+    "bdi_succursali": {
+      "url": "COOKIES https://infostat.bancaditalia.it/GIAVAInquiry-public/getAreaDownloadExport.do?referenceDate=&product=VFLUSSO_SEDE_BANCHE&language=IT&exportType=CSV&username=OBLIXANONYMOUS&isCompressed=S",
+      "kind": "yearend",
+      "pattern": "(20\\d\\d-\\d\\d-\\d\\d)_SUCCURSALI_BANCHE",
+      "text": "names",
+      "hint": "fotografia al 31/12 dall'elenco continuo delle succursali Banca d'Italia (file AAAA-MM-GG_SUCCURSALI_BANCHE.csv nell'archivio): l'elenco datato dopo il 31/12/AAAA chiude l'anno AAAA"
     }
   },
   "metrics": {
@@ -1775,6 +1782,12 @@
       "probe": "source_period",
       "checks": [
         "rt_indicatori_comunali"
+      ]
+    },
+    "bankBranchesPer1000": {
+      "probe": "source_period",
+      "checks": [
+        "bdi_succursali"
       ]
     }
   }

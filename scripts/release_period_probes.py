@@ -89,11 +89,14 @@ def parse_number(text: Any) -> float | None:
 
 def http_fetch(url: str, timeout: float = ARS_TIMEOUT, attempts: int = ARS_ATTEMPTS) -> bytes:
     """Scarica un URL. Prefissi: `PEEK ` legge solo l'inizio (esistenza di un file),
-    `LEGACYTLS ` accetta i server con cifrari TLS datati, `QUICK ` usa attese brevi."""
-    peek = legacy = False
+    `LEGACYTLS ` accetta i server con cifrari TLS datati, `QUICK ` usa attese brevi,
+    `COOKIES ` segue i reindirizzamenti che impostano un cookie di sessione (Banca d'Italia GIAVA)."""
+    peek = legacy = cookies = False
     while True:
         if url.startswith("PEEK "):
             peek, url = True, url[5:]
+        elif url.startswith("COOKIES "):
+            cookies, url = True, url[8:]
         elif url.startswith("LEGACYTLS "):
             legacy, url = True, url[10:]
         elif url.startswith("QUICK "):
@@ -113,6 +116,14 @@ def http_fetch(url: str, timeout: float = ARS_TIMEOUT, attempts: int = ARS_ATTEM
             headers["Range"] = f"bytes=0-{PEEK_BYTES - 1}"
         request = urllib.request.Request(url, headers=headers)
         try:
+            if cookies:
+                import http.cookiejar
+                handlers = [urllib.request.HTTPCookieProcessor(http.cookiejar.CookieJar())]
+                if context is not None:
+                    handlers.append(urllib.request.HTTPSHandler(context=context))
+                opener = urllib.request.build_opener(*handlers)
+                with opener.open(request, timeout=timeout) as response:
+                    return response.read(PEEK_BYTES) if peek else response.read()
             with urllib.request.urlopen(request, timeout=timeout, context=context) as response:
                 return response.read(PEEK_BYTES) if peek else response.read()
         except urllib.error.HTTPError as exc:

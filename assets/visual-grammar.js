@@ -115,7 +115,8 @@
     'hospitalizedAll',
     'elderlyHomeCare',
     'pharmaciesPer1000',
-    'hospitals'
+    'hospitals',
+    'bankBranchesPer1000'
   ]);
 
   function unitKind(unit) {

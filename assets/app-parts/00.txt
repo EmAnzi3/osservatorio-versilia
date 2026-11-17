@@ -49,6 +49,7 @@
     microUnits: ['pmi', 'piccole imprese', 'microimprese'],
     foreignBornSoleProprietorShare: ['imprenditori stranieri', 'titolari nati all estero', 'ditte individuali'],
     innovationBusinessShare: ['innovazione', 'imprese innovative', 'settori innovativi'],
+    bankBranchesPer1000: ['sportelli bancari', 'banche', 'filiali', 'sportelli', 'desertificazione bancaria', 'banca d’italia'],
     employmentRate: ['occupati', 'lavoratori', 'occupazione'],
     unemploymentRate: ['disoccupati', 'senza lavoro', 'disoccupazione'],
     activityRate: ['forza lavoro', 'attivi', 'partecipazione'],

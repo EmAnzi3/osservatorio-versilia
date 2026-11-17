@@ -16,7 +16,5 @@
   "erpArrears": [],
   "sdmxProbe": [],
   "bdiBranchesProbe": false,
-  "bdiBranches": [
-    2025
-  ]
+  "bdiBranches": []
 }
