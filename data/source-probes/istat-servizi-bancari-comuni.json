@@ -1,0 +1,15 @@
+{
+ "schemaVersion": 1,
+ "createdAt": "2026-11-17T14:52:10Z",
+ "note": "Sonda SDMX: struttura e righe della Versilia; non è un dato pubblicato.",
+ "flow": "117_1035_DF_DCAT_SERVBANC_COM",
+ "key": "all",
+ "structureErrors": [
+  "https://esploradati.istat.it/SDMXWS/rest: tentativo 1: HTTPError: HTTP Error 404: Not Found | tentativo 2: HTTPError: HTTP Error 404: Not Found | tentativo 3: HTTPError: HTTP Error 404: Not Found",
+  "https://sdmx.istat.it/SDMXWS/rest: tentativo 1: HTTPError: HTTP Error 302: The HTTP server returned a redirect error that would lead to an infinite loop.\nThe last 30x error message was:\nFound | tentativo 2: HTTPError: HTTP Error 302: The HTTP server returned a redirect error that would lead to an infinite loop.\nThe last 30x error message was:\nFound | tentativo 3: HTTPError: HTTP Error 302: The HTTP server returned a redirect error that would lead to an infinite loop.\nThe last 30x error message was:\nFound"
+ ],
+ "dataErrors": [
+  "https://esploradati.istat.it/SDMXWS/rest/data/117_1035_DF_DCAT_SERVBANC_COM/all?startPeriod=2015: tentativo 1: HTTPError: HTTP Error 404: Not Found | tentativo 2: HTTPError: HTTP Error 404: Not Found | tentativo 3: HTTPError: HTTP Error 404: Not Found",
+  "https://sdmx.istat.it/SDMXWS/rest/data/117_1035_DF_DCAT_SERVBANC_COM/all?startPeriod=2015: tentativo 1: HTTPError: HTTP Error 302: The HTTP server returned a redirect error that would lead to an infinite loop.\nThe last 30x error message was:\nFound | tentativo 2: HTTPError: HTTP Error 302: The HTTP server returned a redirect error that would lead to an infinite loop.\nThe last 30x error message was:\nFound | tentativo 3: HTTPError: HTTP Error 302: The HTTP server returned a redirect error that would lead to an infinite loop.\nThe last 30x error message was:\nFound"
+ ]
+}

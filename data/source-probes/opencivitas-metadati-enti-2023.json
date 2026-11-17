@@ -1,0 +1,26 @@
+{
+ "schemaVersion": 1,
+ "createdAt": "2026-11-17T15:01:08Z",
+ "note": "Sonda: struttura della fonte consultata; non è un dato pubblicato.",
+ "follow": null,
+ "result": {
+  "url": "https://www.opencivitas.it/portale/documents/20118/0/Metadati_Enti_2023_IT.xlsx/9af2749a-d3a5-cc6f-c78d-08593c7dbc32",
+  "contentType": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+  "bytes": 541519,
+  "sha256": "6376a370ae4e3c45532d00094b349833bc601bf8e28a81479f9e86ff2fd148c4",
+  "workbook": {
+   "sheets": [
+    {
+     "name": "anagrafica_enti_2023",
+     "rows": 1,
+     "head": [
+      [
+       "CODICE_MINISTERO_INTERNO"
+      ]
+     ],
+     "hits": []
+    }
+   ]
+  }
+ }
+}
