@@ -11,6 +11,7 @@ Non modifica il catalogo: serve a riconciliare il conteggio con la serie Istat
 from __future__ import annotations
 
 import csv
+import http.cookiejar
 import io
 import json
 import time
@@ -29,10 +30,12 @@ YEARS = range(2012, 2027)
 
 
 def fetch(url: str) -> bytes:
+    """Il servizio GIAVA reindirizza impostando un cookie di sessione: serve un opener con i cookie."""
+    opener = urllib.request.build_opener(urllib.request.HTTPCookieProcessor(http.cookiejar.CookieJar()))
     errors = []
     for attempt in range(1, 4):
         try:
-            with urllib.request.urlopen(urllib.request.Request(url, headers={"User-Agent": UA}), timeout=600) as r:
+            with opener.open(urllib.request.Request(url, headers={"User-Agent": UA}), timeout=600) as r:
                 return r.read()
         except Exception as error:  # noqa: BLE001
             errors.append(f"tentativo {attempt}: {type(error).__name__}: {error}")
