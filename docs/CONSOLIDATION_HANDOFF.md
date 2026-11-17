@@ -3,7 +3,7 @@
 ## Chiedi sul telefono: pulsante accanto al campo, tastiera chiusa, Comuni dopo «a …» (17 novembre 2026)
 
 - Dagli screenshot di Ema (telefono reale): sulla pagina Chiedi l'elenco dei suggerimenti copriva il pulsante «Chiedi» (che andava a capo sotto il campo) e le domande d'esempio.
-- `#ask-form` non va più a capo: «Chiedi» sta sempre accanto al campo, l'elenco si apre sotto il solo campo.
+- `#ask-form` non va più a capo: «Chiedi» sta sempre accanto al campo, l'elenco si apre sotto campo e pulsante, largo quanto entrambi.
 - Su schermi touch (`pointer: coarse`) il campo perde il fuoco all'invio o alla scelta di un suggerimento: la tastiera si chiude e non copre la risposta.
 - Dopo «Tasso di disoccupazione 25–64 anni a …» («scegli il Comune») il suggeritore riproponeva lo stesso invito; ora propone i sette Comuni.
 - `scripts/test_chiedi_domande.py`: a 1440 e 390 px «Chiedi» è sulla riga del campo e l'elenco non lo copre; dopo «… a » i suggerimenti sono i sette Comuni.
