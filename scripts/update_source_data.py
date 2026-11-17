@@ -1423,9 +1423,18 @@ def main() -> int:
     g.add_argument("--url", required=True)
     g.add_argument("--follow", help="espressione regolare dei collegamenti da analizzare")
     g.add_argument("--post", action="append", default=[], help="passo successivo URL::campi (POST, stessa sessione); ripetibile")
+    x = sub.add_parser("sdmx-probe", help="sonda di un flusso SDMX Istat (non modifica il catalogo)")
+    x.add_argument("--name", required=True)
+    x.add_argument("--flow", required=True)
+    x.add_argument("--key", default="all")
+    x.add_argument("--start")
     args = parser.parse_args()
     try:
-        if args.updater == "source-probe":
+        if args.updater == "sdmx-probe":
+            import probe_sdmx
+
+            probe_sdmx.run(args.name, args.flow, args.key, args.start)
+        elif args.updater == "source-probe":
             import probe_source_files
 
             probe_source_files.run(args.name, args.url, args.follow, args.post)

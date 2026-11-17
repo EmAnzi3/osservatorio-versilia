@@ -6,12 +6,26 @@
   "agcomFtth": false,
   "istatTourism": [],
   "mefFiscalProbe": [],
-  "sourceProbe": [],
+  "sourceProbe": [
+    {
+      "name": "opencivitas-home",
+      "url": "https://www.opencivitas.it/",
+      "follow": "(?i)open.?data|download|dati"
+    }
+  ],
   "ispraSoil": [],
   "aciVehicles": [],
   "omiResidential": [],
   "omiResidentialCorrections": [],
   "mimSchools": [],
   "gaiaWater": [],
-  "erpArrears": []
+  "erpArrears": [],
+  "sdmxProbe": [
+    {
+      "name": "istat-servizi-bancari-comuni",
+      "flow": "117_1035_DF_DCAT_SERVBANC_COM",
+      "key": "all",
+      "start": "2015"
+    }
+  ]
 }

@@ -492,6 +492,23 @@ def source_probe_cases(tmp: Path) -> None:
     assert sheets[0]["head"][2] == ["046018", "Massarosa"] and sheets[0]["rows"] == 3
 
 
+def sdmx_probe_cases() -> None:
+    """Sonda SDMX: dimensioni in ordine con i nomi dei codici, righe dei Comuni della Versilia separate."""
+    import probe_sdmx as probe
+
+    xml = (b'<m:Structure xmlns:m="m" xmlns:s="s" xmlns:c="c"><s:Codelists><s:Codelist id="CL_AREA">'
+           b'<s:Code id="046033"><c:Name xml:lang="it">Viareggio</c:Name></s:Code></s:Codelist></s:Codelists>'
+           b'<s:DataStructures><s:DimensionList><s:Dimension id="REF_AREA" position="1"><s:LocalRepresentation>'
+           b'<s:Enumeration><Ref id="CL_AREA" class="Codelist"/></s:Enumeration></s:LocalRepresentation></s:Dimension>'
+           b'<s:TimeDimension id="TIME_PERIOD" position="2"/></s:DimensionList></s:DataStructures></m:Structure>')
+    st = probe.structure(xml)
+    assert [d["id"] for d in st["dimensions"]] == ["REF_AREA", "TIME_PERIOD"] and st["codelists"]["CL_AREA"]["046033"] == "Viareggio"
+    raw = b"DATAFLOW,REF_AREA,TIME_PERIOD,OBS_VALUE\nX,001001,2024,3\nX,046033,2024,41\n"
+    out = probe.summarise(raw, st["codelists"], st["dimensions"])
+    assert out["rows"] == 2 and out["versilia"] == [{"DATAFLOW": "X", "REF_AREA": "046033", "TIME_PERIOD": "2024", "OBS_VALUE": "41"}]
+    assert {"code": "046033", "rows": 1, "name": "Viareggio"} in out["distinct"]["REF_AREA"]
+
+
 def mef_probe_cases() -> None:
     """Sonda MEF: solo atti comunali DIMUNIC, link con la riga della tabella, testo PDF separato."""
     import probe_mef_fiscal as probe
@@ -694,6 +711,7 @@ def main() -> None:
     with tempfile.TemporaryDirectory() as tmp:
         agcom_cases(Path(tmp))
     mef_probe_cases()
+    sdmx_probe_cases()
     with tempfile.TemporaryDirectory() as tmp:
         tourism_cases(Path(tmp))
     with tempfile.TemporaryDirectory() as tmp:
