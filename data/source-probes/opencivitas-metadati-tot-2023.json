@@ -1,0 +1,46 @@
+{
+ "schemaVersion": 1,
+ "createdAt": "2026-11-17T15:07:38Z",
+ "note": "Sonda: struttura della fonte consultata; non è un dato pubblicato.",
+ "follow": null,
+ "result": {
+  "url": "https://www.opencivitas.it/portale/documents/20118/0/2023_Metadati_Ind_FC90_TOT_01_IT.xlsx/979ac980-1a35-ca7c-9005-1045b5aebe1e",
+  "contentType": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+  "bytes": 14728,
+  "sha256": "1167d761f9ee9fb33b107d0977fff5dcb5e370b81f7f80224018356a777f062e",
+  "workbook": {
+   "sheets": [
+    {
+     "name": "Indicatori_FC90_TOT",
+     "rows": 1,
+     "head": [
+      [
+       "Codice Indicatore"
+      ]
+     ],
+     "hits": []
+    },
+    {
+     "name": "Det_FC90_TOT",
+     "rows": 1,
+     "head": [
+      [
+       "Codice Determinante"
+      ]
+     ],
+     "hits": []
+    },
+    {
+     "name": "Codici_FC90_TOT",
+     "rows": 1,
+     "head": [
+      [
+       "CODICE"
+      ]
+     ],
+     "hits": []
+    }
+   ]
+  }
+ }
+}
