@@ -610,7 +610,7 @@ jobs:
           matrix = json.load(open('/tmp/a3-enrichment-matrix.json', encoding='utf-8'))
           summary = matrix['summary']
           assert summary['publicMetricCount'] == 226, summary
-          assert summary['pairCount'] == 2025, summary
+          assert summary['pairCount'] == 2034, summary
 
           companion_expected = {
               ('population', 'eta'),
@@ -1196,7 +1196,7 @@ jobs:
               assert row['classificationOrigin'] == 'metric_override', (pair, row)
               assert row['evidence'], (pair, row)
 
-          assert summary['classifiedPairCount'] == 2025, summary
+          assert summary['classifiedPairCount'] == 2034, summary
           assert summary['unclassifiedPairCount'] == 0, summary
           print(
               'A3 effective matrix: '
