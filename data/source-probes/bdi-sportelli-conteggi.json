@@ -1,0 +1,7 @@
+{
+ "schemaVersion": 1,
+ "createdAt": "2026-11-17T15:16:39Z",
+ "note": "Sonda: sedi bancarie operative per Comune, Toscana e Italia; non è un dato pubblicato.",
+ "url": "https://infostat.bancaditalia.it/GIAVAInquiry-public/getAreaDownloadExport.do?referenceDate=&product=VFLUSSO_SEDE_BANCHE&language=IT&exportType=CSV&username=OBLIXANONYMOUS&isCompressed=S",
+ "error": "RuntimeError: tentativo 1: HTTPError: HTTP Error 302: The HTTP server returned a redirect error that would lead to an infinite loop.\nThe last 30x error message was:\nMoved Temporarily | tentativo 2: HTTPError: HTTP Error 302: The HTTP server returned a redirect error that would lead to an infinite loop.\nThe last 30x error message was:\nMoved Temporarily | tentativo 3: HTTPError: HTTP Error 302: The HTTP server returned a redirect error that would lead to an infinite loop.\nThe last 30x error message was:\nMoved Temporarily"
+}
