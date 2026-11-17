@@ -478,6 +478,67 @@ def omi_cases(tmp: Path) -> None:
         upd.SITE, upd.ROOT = real_site, real_root
 
 
+def bdi_branches_cases(tmp: Path) -> None:
+    """Sportelli Banca d'Italia: serie 2018–2025 ricostruita, riconciliazione Istat 2022 obbligatoria, anno aperto rifiutato."""
+    import bank_branches as bb
+
+    real_site, real_root = upd.SITE, upd.ROOT
+    (tmp / "data/source-snapshots").mkdir(parents=True, exist_ok=True)
+    upd.SITE, upd.ROOT = tmp / "data/site-data.json", tmp
+    upd.SITE.write_text(real_site.read_text(encoding="utf-8"), encoding="utf-8")
+    bench = "data/source-snapshots/a3-istat-demography-benchmark-2026.json"
+    (tmp / bench).write_text((real_root / bench).read_text(encoding="utf-8"), encoding="utf-8")
+    cabs = {"046005": "24600", "046013": "70150", "046018": "70170", "046024": "70220", "046028": "70240", "046030": "70250", "046033": "24800"}
+    head = "ID_INT;ID_SEDE;DATA_I_OPER;DATA_F_OPER;DATA_I_VAL;DATA_F_VAL;CAB_COM_ITA;DES_COM_ITA;STATO;TIPO_SEDE"
+
+    def archive(istat: dict[str, int], italy_extra: int = 20500) -> bytes:
+        lines = [head]
+        for code, n in istat.items():
+            for i in range(n + 1):  # una sede in più, chiusa a metà 2021: conta fino al 2020
+                close = "9999-12-31" if i < n else "2021-06-30"
+                lines.append(f"1;{code}{i};2000-01-01;{close};2000-01-01;9999-12-31;{cabs[code]};{bb.TOWNS[code]};86;001")
+        lines.append(f"1;rapp;2000-01-01;9999-12-31;2000-01-01;9999-12-31;24800;VIAREGGIO;86;005")  # ufficio di rappresentanza
+        lines.append(f"2;0460330;2000-01-01;9999-12-31;2000-01-01;9999-12-31;24800;VIAREGGIO;86;001")  # stesso ID_SEDE, altra banca
+        lines += [f"9;x{i};2000-01-01;9999-12-31;2000-01-01;9999-12-31;13700;LUCCA;86;001" for i in range(italy_extra)]
+        return zipped("2026-11-16_SUCCURSALI_BANCHE.csv", "\n".join(lines) + "\n")
+
+    loc_head = "CAB_COMUNE;DEN_COMUNE;DEN_PROVINCIA;DEN_REGIONE;STATO;DATA_I_VAL;DATA_F_VAL"
+    loc = [loc_head] + [f"{cabs[c]};{n};LUCCA;TOSCANA;86;1936-12-31;9999-12-31" for c, n in bb.TOWNS.items()]
+    loc += [f"{13700 + i};T{i};X;TOSCANA;86;1936-12-31;9999-12-31" for i in range(270)]
+    folder = tmp / "bdi"
+    folder.mkdir(exist_ok=True)
+    (folder / "localita.zip").write_bytes(zipped("LOCALITA.csv", "\n".join(loc) + "\n"))
+    istat = dict(bb.ISTAT_2022)
+    istat["046033"] -= 1  # la seconda banca con lo stesso ID_SEDE completa Viareggio: 24
+    try:
+        (folder / "succursali.zip").write_bytes(archive(istat))
+        changes = upd.update_bdi_branches(2025, folder, dry_run=False)
+        site = upd.load(upd.SITE)
+        metric = site["metrics"][bb.METRIC]
+        snap = upd.load(tmp / metric["meta"]["sourceMeta"]["snapshot"])
+        assert snap["branches"]["046033"] == [25, 25, 25, 24, 24, 24, 24, 24] and snap["years"][0] == 2018, snap["branches"]["046033"]
+        assert snap["qualityGate"]["istat2022"] == bb.ISTAT_2022 and snap["scopes"]["tuscany"] > 20000
+        via = next(r for r in metric["rows"] if r["code"] == "046033")
+        pop = next(r for r in site["metrics"]["population"]["rows"] if r["code"] == "046033")["value"]
+        assert abs(via["value"] - 24 / pop * 1000) < 1e-12 and via["series"]["years"][-1] == 2025
+        theme = site["themes"]["economia"]
+        assert bb.METRIC in theme["metrics"] and next(s for s in theme["sections"] if s["key"] == "credito")["metrics"] == [bb.METRIC]
+        assert any("Viareggio" in line for line in changes.lines)
+        upd.update_bdi_branches(2025, folder, dry_run=False)  # rigiro: nessuna sezione o voce duplicata
+        theme = upd.load(upd.SITE)["themes"]["economia"]
+        assert theme["metrics"].count(bb.METRIC) == 1 and [s["key"] for s in theme["sections"]].count("credito") == 1
+        for bad, year in ((dict(istat, **{"046030": 2}), 2025), (istat, 2026)):
+            (folder / "succursali.zip").write_bytes(archive(bad))
+            try:
+                upd.update_bdi_branches(year, folder, dry_run=True)
+            except upd.UpdateError:
+                pass
+            else:
+                raise AssertionError(f"sportelli accettati: {year}")
+    finally:
+        upd.SITE, upd.ROOT = real_site, real_root
+
+
 def source_probe_cases(tmp: Path) -> None:
     """Sonda generica: un foglio Excel riporta intestazioni e righe dei Comuni della Versilia."""
     import io as _io
@@ -750,8 +811,10 @@ def main() -> None:
         gaia_cases(Path(tmp))
     with tempfile.TemporaryDirectory() as tmp:
         erp_cases(Path(tmp))
+    with tempfile.TemporaryDirectory() as tmp:
+        bdi_branches_cases(Path(tmp))
     source_probe_cases(Path("."))
-    print("Aggiornatori dalla fonte: ARS stesso export invariato, revisione e Toscana rilevate, periodo nuovo rifiutato; mobilità P2 ricostruita 7/7 identica, rigiro senza modifiche; ASIA-UL ricostruita 7/7 identica, anno nuovo accettato, Comune incompleto rifiutato; AGCOM FTTH ricostruita 7/7 identica, edizione nuova accettata, edizione vecchia e Comune mancante rifiutati; sonda MEF limitata agli atti DIMUNIC; capacità ricettiva pubblicata ricostruita identica, anno nuovo accettato con perimetro dichiarato, anno precedente rifiutato; consumo di suolo anno nuovo accettato con benchmark ufficiali, anno precedente rifiutato; parco ACI ricostruito 7/7 identico da un anno nuovo, anno pubblicato rifiutato; OMI al punto medio con semestre pubblicato rigiocato, replay diverso e semestre vecchio rifiutati; sonda generica dei fogli; morosità ERP esercizio nuovo riconciliato e prospetti incoerenti rifiutati; acqua GAIA 70 località ricostruite identiche, semestre nuovo accettato, periodo vecchio, parametro cambiato e semestre precedente rifiutati; sedi scolastiche MIM ricostruite 7/7 identiche, a.s. nuovo accettato, a.s. precedente, Comune mancante e altro anno rifiutati PASS")
+    print("Aggiornatori dalla fonte: ARS stesso export invariato, revisione e Toscana rilevate, periodo nuovo rifiutato; mobilità P2 ricostruita 7/7 identica, rigiro senza modifiche; ASIA-UL ricostruita 7/7 identica, anno nuovo accettato, Comune incompleto rifiutato; AGCOM FTTH ricostruita 7/7 identica, edizione nuova accettata, edizione vecchia e Comune mancante rifiutati; sonda MEF limitata agli atti DIMUNIC; capacità ricettiva pubblicata ricostruita identica, anno nuovo accettato con perimetro dichiarato, anno precedente rifiutato; consumo di suolo anno nuovo accettato con benchmark ufficiali, anno precedente rifiutato; parco ACI ricostruito 7/7 identico da un anno nuovo, anno pubblicato rifiutato; OMI al punto medio con semestre pubblicato rigiocato, replay diverso e semestre vecchio rifiutati; sonda generica dei fogli; morosità ERP esercizio nuovo riconciliato e prospetti incoerenti rifiutati; acqua GAIA 70 località ricostruite identiche, semestre nuovo accettato, periodo vecchio, parametro cambiato e semestre precedente rifiutati; sedi scolastiche MIM ricostruite 7/7 identiche, a.s. nuovo accettato, a.s. precedente, Comune mancante e altro anno rifiutati; sportelli Banca d'Italia: serie 2018–2025 ricostruita con chiave banca + sede, riconciliazione Istat 2022 obbligatoria, anno aperto rifiutato PASS")
 
 
 if __name__ == "__main__":

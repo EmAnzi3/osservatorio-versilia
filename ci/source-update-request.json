@@ -15,5 +15,8 @@
   "gaiaWater": [],
   "erpArrears": [],
   "sdmxProbe": [],
-  "bdiBranchesProbe": true
+  "bdiBranchesProbe": false,
+  "bdiBranches": [
+    2025
+  ]
 }
