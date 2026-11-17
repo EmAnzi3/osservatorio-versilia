@@ -63,8 +63,8 @@ jobs:
           assert registry_path.is_file(), registry_path
           data = json.loads(data_path.read_text(encoding='utf-8'))
           metrics = data.get('metrics') or {}
-          assert len(metrics) == 225, f"Effective Public Catalog inatteso: {len(metrics)} indicatori"
-          print('Effective Public Catalog: 225 indicatori materializzati in dist/.')
+          assert len(metrics) == 226, f"Effective Public Catalog inatteso: {len(metrics)} indicatori"
+          print('Effective Public Catalog: 226 indicatori materializzati in dist/.')
           PY
 
       - name: Build effective A3 matrix
@@ -609,7 +609,7 @@ jobs:
 
           matrix = json.load(open('/tmp/a3-enrichment-matrix.json', encoding='utf-8'))
           summary = matrix['summary']
-          assert summary['publicMetricCount'] == 225, summary
+          assert summary['publicMetricCount'] == 226, summary
           assert summary['pairCount'] == 2025, summary
 
           companion_expected = {
