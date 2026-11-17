@@ -34,7 +34,7 @@ const pages=index.metrics.filter(m=>m.page).map(m=>m.page);
 console.log(JSON.stringify({answers,suggestions,pages,metrics:index.metrics.length}));
 """
 # Inizi di domanda come li scrive una persona: il suggeritore deve proporre qualcosa.
-SUGGEST_INPUTS = ['redd', 'reddito a viar', 'quanti abit', 'disocc', 'turis', 'benz', 'case a forte', 'relazione tra reddito', 'rifiuti a massarosa', 'scuol']
+SUGGEST_INPUTS = ['redd', 'reddito a viar', 'quanti abit', 'disocc', 'turis', 'benz', 'case a forte', 'relazione tra reddito', 'rifiuti a massarosa', 'scuol', 'Tasso di disoccupazione 25–64 anni a ']
 
 
 def graph_dir(dist):
@@ -78,6 +78,9 @@ def check_interpreter(graph, dist):
             else:
                 assert got['kind'] == 'reading' and got['operation'] == item['reading'], item
     assert any('Viareggio' in i['text'] for i in out['suggestions'][1]), 'chiedi_suggest_town_prefix'
+    # Dopo «… a » (scelta «scegli il Comune») si propongono i sette Comuni, non di nuovo l'invito.
+    towns = out['suggestions'][SUGGEST_INPUTS.index('Tasso di disoccupazione 25–64 anni a ')]
+    assert len(towns) == 7 and all(i['kind'] == 'question' and i['got']['town'] for i in towns), towns
     # «Fonte» porta alla pagina dell'indicatore dell'Osservatorio, che deve esistere.
     # Tutti: pagina indicatore, rotta dedicata (affluenza, atlante) o Meteo e clima.
     assert len(out['pages']) == out['metrics'], 'chiedi_source_pages_missing'
@@ -123,6 +126,10 @@ def check_browser(dist):
                 page.keyboard.type('quanti abitanti ha viar', delay=20)
                 page.wait_for_selector('#ask-suggest:not([hidden]) [role=option]')
                 assert page.get_attribute('#ask-input', 'aria-expanded') == 'true'
+                # «Chiedi» resta accanto al campo e l'elenco dei suggerimenti non lo copre.
+                field, send, menu = (page.locator(x).bounding_box() for x in ('#ask-input', '#ask-send', '#ask-suggest'))
+                assert abs(send['y'] - field['y']) < 4 and send['x'] >= field['x'] + field['width'], (width, field, send)
+                assert menu['x'] + menu['width'] <= send['x'] + 1 or menu['y'] >= send['y'] + send['height'], (width, menu, send)
                 first = page.locator('#ask-suggest [role=option] .ask-suggestion-text').first.text_content()
                 assert first == 'Popolazione residente a Viareggio', first
                 page.keyboard.press('ArrowDown')
