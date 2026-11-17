@@ -1,7 +1,630 @@
 {
  "schemaVersion": 1,
- "createdAt": "2026-11-17T15:16:39Z",
+ "createdAt": "2026-11-17T15:20:14Z",
  "note": "Sonda: sedi bancarie operative per Comune, Toscana e Italia; non è un dato pubblicato.",
  "url": "https://infostat.bancaditalia.it/GIAVAInquiry-public/getAreaDownloadExport.do?referenceDate=&product=VFLUSSO_SEDE_BANCHE&language=IT&exportType=CSV&username=OBLIXANONYMOUS&isCompressed=S",
- "error": "RuntimeError: tentativo 1: HTTPError: HTTP Error 302: The HTTP server returned a redirect error that would lead to an infinite loop.\nThe last 30x error message was:\nMoved Temporarily | tentativo 2: HTTPError: HTTP Error 302: The HTTP server returned a redirect error that would lead to an infinite loop.\nThe last 30x error message was:\nMoved Temporarily | tentativo 3: HTTPError: HTTP Error 302: The HTTP server returned a redirect error that would lead to an infinite loop.\nThe last 30x error message was:\nMoved Temporarily"
+ "tuscanyComuni": 322,
+ "versiliaCab": {
+  "CAMAIORE": "24600",
+  "VIAREGGIO": "24800",
+  "FORTE DEI MARMI": "70150",
+  "MASSAROSA": "70170",
+  "PIETRASANTA": "70220",
+  "SERAVEZZA": "70240",
+  "STAZZEMA": "70250"
+ },
+ "records": 227081,
+ "types": [
+  "001 SUCCURSALE",
+  "005 UFFICIO DI RAPPRESENTANZA",
+  "009 PRIMA SUCCURSALE IN ITALIA DI INTERMEDIARIO ESTERO"
+ ],
+ "counts": {
+  "2012-12-31": {
+   "italy": {
+    "SUCCURSALE": 16135,
+    "UFFICIO DI RAPPRESENTANZA": 56,
+    "PRIMA SUCCURSALE IN ITALIA DI INTERMEDIARIO ESTERO": 1,
+    "tutte": 16141
+   },
+   "tuscany": {
+    "SUCCURSALE": 2046,
+    "UFFICIO DI RAPPRESENTANZA": 1,
+    "tutte": 2046
+   },
+   "PIETRASANTA": {
+    "SUCCURSALE": 14,
+    "tutte": 14
+   },
+   "SERAVEZZA": {
+    "SUCCURSALE": 9,
+    "tutte": 9
+   },
+   "STAZZEMA": {
+    "SUCCURSALE": 2,
+    "tutte": 2
+   },
+   "CAMAIORE": {
+    "SUCCURSALE": 17,
+    "tutte": 17
+   },
+   "FORTE DEI MARMI": {
+    "SUCCURSALE": 8,
+    "tutte": 8
+   },
+   "VIAREGGIO": {
+    "SUCCURSALE": 40,
+    "tutte": 40
+   },
+   "MASSAROSA": {
+    "SUCCURSALE": 7,
+    "tutte": 7
+   }
+  },
+  "2013-12-31": {
+   "italy": {
+    "SUCCURSALE": 16196,
+    "UFFICIO DI RAPPRESENTANZA": 52,
+    "PRIMA SUCCURSALE IN ITALIA DI INTERMEDIARIO ESTERO": 1,
+    "tutte": 16202
+   },
+   "tuscany": {
+    "SUCCURSALE": 1907,
+    "UFFICIO DI RAPPRESENTANZA": 1,
+    "tutte": 1907
+   },
+   "PIETRASANTA": {
+    "SUCCURSALE": 13,
+    "tutte": 13
+   },
+   "SERAVEZZA": {
+    "SUCCURSALE": 9,
+    "tutte": 9
+   },
+   "STAZZEMA": {
+    "SUCCURSALE": 2,
+    "tutte": 2
+   },
+   "CAMAIORE": {
+    "SUCCURSALE": 17,
+    "tutte": 17
+   },
+   "FORTE DEI MARMI": {
+    "SUCCURSALE": 8,
+    "tutte": 8
+   },
+   "VIAREGGIO": {
+    "SUCCURSALE": 39,
+    "tutte": 39
+   },
+   "MASSAROSA": {
+    "SUCCURSALE": 7,
+    "tutte": 7
+   }
+  },
+  "2014-12-31": {
+   "italy": {
+    "SUCCURSALE": 16307,
+    "UFFICIO DI RAPPRESENTANZA": 58,
+    "PRIMA SUCCURSALE IN ITALIA DI INTERMEDIARIO ESTERO": 1,
+    "tutte": 16312
+   },
+   "tuscany": {
+    "SUCCURSALE": 1852,
+    "UFFICIO DI RAPPRESENTANZA": 1,
+    "tutte": 1852
+   },
+   "PIETRASANTA": {
+    "SUCCURSALE": 13,
+    "tutte": 13
+   },
+   "SERAVEZZA": {
+    "SUCCURSALE": 9,
+    "tutte": 9
+   },
+   "STAZZEMA": {
+    "SUCCURSALE": 2,
+    "tutte": 2
+   },
+   "CAMAIORE": {
+    "SUCCURSALE": 16,
+    "tutte": 16
+   },
+   "FORTE DEI MARMI": {
+    "SUCCURSALE": 8,
+    "tutte": 8
+   },
+   "VIAREGGIO": {
+    "SUCCURSALE": 37,
+    "tutte": 37
+   },
+   "MASSAROSA": {
+    "SUCCURSALE": 6,
+    "tutte": 6
+   }
+  },
+  "2015-12-31": {
+   "italy": {
+    "SUCCURSALE": 16409,
+    "UFFICIO DI RAPPRESENTANZA": 56,
+    "PRIMA SUCCURSALE IN ITALIA DI INTERMEDIARIO ESTERO": 2,
+    "tutte": 16415
+   },
+   "tuscany": {
+    "SUCCURSALE": 1880,
+    "tutte": 1880
+   },
+   "PIETRASANTA": {
+    "SUCCURSALE": 13,
+    "tutte": 13
+   },
+   "SERAVEZZA": {
+    "SUCCURSALE": 9,
+    "tutte": 9
+   },
+   "STAZZEMA": {
+    "SUCCURSALE": 2,
+    "tutte": 2
+   },
+   "CAMAIORE": {
+    "SUCCURSALE": 16,
+    "tutte": 16
+   },
+   "FORTE DEI MARMI": {
+    "SUCCURSALE": 8,
+    "tutte": 8
+   },
+   "VIAREGGIO": {
+    "SUCCURSALE": 36,
+    "tutte": 36
+   },
+   "MASSAROSA": {
+    "SUCCURSALE": 6,
+    "tutte": 6
+   }
+  },
+  "2016-12-31": {
+   "italy": {
+    "SUCCURSALE": 15703,
+    "UFFICIO DI RAPPRESENTANZA": 60,
+    "PRIMA SUCCURSALE IN ITALIA DI INTERMEDIARIO ESTERO": 3,
+    "tutte": 15710
+   },
+   "tuscany": {
+    "SUCCURSALE": 1813,
+    "UFFICIO DI RAPPRESENTANZA": 1,
+    "tutte": 1813
+   },
+   "PIETRASANTA": {
+    "SUCCURSALE": 14,
+    "tutte": 14
+   },
+   "SERAVEZZA": {
+    "SUCCURSALE": 9,
+    "tutte": 9
+   },
+   "STAZZEMA": {
+    "SUCCURSALE": 2,
+    "tutte": 2
+   },
+   "CAMAIORE": {
+    "SUCCURSALE": 15,
+    "tutte": 15
+   },
+   "FORTE DEI MARMI": {
+    "SUCCURSALE": 8,
+    "tutte": 8
+   },
+   "VIAREGGIO": {
+    "SUCCURSALE": 34,
+    "tutte": 34
+   },
+   "MASSAROSA": {
+    "SUCCURSALE": 6,
+    "tutte": 6
+   }
+  },
+  "2017-12-31": {
+   "italy": {
+    "SUCCURSALE": 14806,
+    "UFFICIO DI RAPPRESENTANZA": 53,
+    "PRIMA SUCCURSALE IN ITALIA DI INTERMEDIARIO ESTERO": 3,
+    "tutte": 14815
+   },
+   "tuscany": {
+    "SUCCURSALE": 1757,
+    "UFFICIO DI RAPPRESENTANZA": 1,
+    "tutte": 1757
+   },
+   "PIETRASANTA": {
+    "SUCCURSALE": 13,
+    "tutte": 13
+   },
+   "SERAVEZZA": {
+    "SUCCURSALE": 9,
+    "tutte": 9
+   },
+   "STAZZEMA": {
+    "SUCCURSALE": 2,
+    "tutte": 2
+   },
+   "CAMAIORE": {
+    "SUCCURSALE": 15,
+    "tutte": 15
+   },
+   "FORTE DEI MARMI": {
+    "SUCCURSALE": 8,
+    "tutte": 8
+   },
+   "VIAREGGIO": {
+    "SUCCURSALE": 32,
+    "tutte": 32
+   },
+   "MASSAROSA": {
+    "SUCCURSALE": 6,
+    "tutte": 6
+   }
+  },
+  "2018-12-31": {
+   "italy": {
+    "SUCCURSALE": 14684,
+    "UFFICIO DI RAPPRESENTANZA": 68,
+    "PRIMA SUCCURSALE IN ITALIA DI INTERMEDIARIO ESTERO": 3,
+    "tutte": 14693
+   },
+   "tuscany": {
+    "SUCCURSALE": 1641,
+    "UFFICIO DI RAPPRESENTANZA": 2,
+    "tutte": 1641
+   },
+   "PIETRASANTA": {
+    "SUCCURSALE": 12,
+    "tutte": 12
+   },
+   "SERAVEZZA": {
+    "SUCCURSALE": 9,
+    "tutte": 9
+   },
+   "STAZZEMA": {
+    "SUCCURSALE": 1,
+    "tutte": 1
+   },
+   "CAMAIORE": {
+    "SUCCURSALE": 14,
+    "tutte": 14
+   },
+   "FORTE DEI MARMI": {
+    "SUCCURSALE": 7,
+    "tutte": 7
+   },
+   "VIAREGGIO": {
+    "SUCCURSALE": 30,
+    "tutte": 30
+   },
+   "MASSAROSA": {
+    "SUCCURSALE": 6,
+    "tutte": 6
+   }
+  },
+  "2019-12-31": {
+   "italy": {
+    "SUCCURSALE": 14706,
+    "UFFICIO DI RAPPRESENTANZA": 67,
+    "PRIMA SUCCURSALE IN ITALIA DI INTERMEDIARIO ESTERO": 3,
+    "tutte": 14717
+   },
+   "tuscany": {
+    "SUCCURSALE": 1576,
+    "UFFICIO DI RAPPRESENTANZA": 2,
+    "tutte": 1577
+   },
+   "PIETRASANTA": {
+    "SUCCURSALE": 11,
+    "tutte": 11
+   },
+   "SERAVEZZA": {
+    "SUCCURSALE": 8,
+    "tutte": 8
+   },
+   "STAZZEMA": {
+    "SUCCURSALE": 1,
+    "tutte": 1
+   },
+   "CAMAIORE": {
+    "SUCCURSALE": 13,
+    "tutte": 13
+   },
+   "FORTE DEI MARMI": {
+    "SUCCURSALE": 7,
+    "tutte": 7
+   },
+   "VIAREGGIO": {
+    "SUCCURSALE": 26,
+    "tutte": 26
+   },
+   "MASSAROSA": {
+    "SUCCURSALE": 6,
+    "tutte": 6
+   }
+  },
+  "2020-12-31": {
+   "italy": {
+    "SUCCURSALE": 14220,
+    "UFFICIO DI RAPPRESENTANZA": 69,
+    "PRIMA SUCCURSALE IN ITALIA DI INTERMEDIARIO ESTERO": 3,
+    "tutte": 14230
+   },
+   "tuscany": {
+    "SUCCURSALE": 1547,
+    "UFFICIO DI RAPPRESENTANZA": 2,
+    "tutte": 1548
+   },
+   "PIETRASANTA": {
+    "SUCCURSALE": 10,
+    "tutte": 10
+   },
+   "SERAVEZZA": {
+    "SUCCURSALE": 8,
+    "tutte": 8
+   },
+   "STAZZEMA": {
+    "SUCCURSALE": 1,
+    "tutte": 1
+   },
+   "CAMAIORE": {
+    "SUCCURSALE": 13,
+    "tutte": 13
+   },
+   "FORTE DEI MARMI": {
+    "SUCCURSALE": 7,
+    "tutte": 7
+   },
+   "VIAREGGIO": {
+    "SUCCURSALE": 25,
+    "tutte": 25
+   },
+   "MASSAROSA": {
+    "SUCCURSALE": 6,
+    "tutte": 6
+   }
+  },
+  "2021-12-31": {
+   "italy": {
+    "SUCCURSALE": 13740,
+    "UFFICIO DI RAPPRESENTANZA": 67,
+    "PRIMA SUCCURSALE IN ITALIA DI INTERMEDIARIO ESTERO": 3,
+    "tutte": 13749
+   },
+   "tuscany": {
+    "SUCCURSALE": 1408,
+    "UFFICIO DI RAPPRESENTANZA": 2,
+    "tutte": 1409
+   },
+   "PIETRASANTA": {
+    "SUCCURSALE": 10,
+    "tutte": 10
+   },
+   "SERAVEZZA": {
+    "SUCCURSALE": 7,
+    "tutte": 7
+   },
+   "STAZZEMA": {
+    "SUCCURSALE": 1,
+    "tutte": 1
+   },
+   "CAMAIORE": {
+    "SUCCURSALE": 11,
+    "tutte": 11
+   },
+   "FORTE DEI MARMI": {
+    "SUCCURSALE": 7,
+    "tutte": 7
+   },
+   "VIAREGGIO": {
+    "SUCCURSALE": 23,
+    "tutte": 23
+   },
+   "MASSAROSA": {
+    "SUCCURSALE": 5,
+    "tutte": 5
+   }
+  },
+  "2022-12-31": {
+   "italy": {
+    "SUCCURSALE": 13546,
+    "UFFICIO DI RAPPRESENTANZA": 62,
+    "PRIMA SUCCURSALE IN ITALIA DI INTERMEDIARIO ESTERO": 3,
+    "tutte": 13555
+   },
+   "tuscany": {
+    "SUCCURSALE": 1377,
+    "UFFICIO DI RAPPRESENTANZA": 2,
+    "tutte": 1379
+   },
+   "PIETRASANTA": {
+    "SUCCURSALE": 10,
+    "tutte": 10
+   },
+   "SERAVEZZA": {
+    "SUCCURSALE": 7,
+    "tutte": 7
+   },
+   "STAZZEMA": {
+    "SUCCURSALE": 1,
+    "tutte": 1
+   },
+   "CAMAIORE": {
+    "SUCCURSALE": 11,
+    "tutte": 11
+   },
+   "FORTE DEI MARMI": {
+    "SUCCURSALE": 7,
+    "tutte": 7
+   },
+   "VIAREGGIO": {
+    "SUCCURSALE": 24,
+    "tutte": 24
+   },
+   "MASSAROSA": {
+    "SUCCURSALE": 5,
+    "tutte": 5
+   }
+  },
+  "2023-12-31": {
+   "italy": {
+    "SUCCURSALE": 12846,
+    "UFFICIO DI RAPPRESENTANZA": 61,
+    "PRIMA SUCCURSALE IN ITALIA DI INTERMEDIARIO ESTERO": 3,
+    "tutte": 12862
+   },
+   "tuscany": {
+    "SUCCURSALE": 1321,
+    "UFFICIO DI RAPPRESENTANZA": 2,
+    "tutte": 1323
+   },
+   "PIETRASANTA": {
+    "SUCCURSALE": 10,
+    "tutte": 10
+   },
+   "SERAVEZZA": {
+    "SUCCURSALE": 7,
+    "tutte": 7
+   },
+   "STAZZEMA": {
+    "SUCCURSALE": 1,
+    "tutte": 1
+   },
+   "CAMAIORE": {
+    "SUCCURSALE": 10,
+    "tutte": 10
+   },
+   "FORTE DEI MARMI": {
+    "SUCCURSALE": 7,
+    "tutte": 7
+   },
+   "VIAREGGIO": {
+    "SUCCURSALE": 22,
+    "tutte": 22
+   },
+   "MASSAROSA": {
+    "SUCCURSALE": 5,
+    "tutte": 5
+   }
+  },
+  "2024-12-31": {
+   "italy": {
+    "SUCCURSALE": 12360,
+    "UFFICIO DI RAPPRESENTANZA": 71,
+    "PRIMA SUCCURSALE IN ITALIA DI INTERMEDIARIO ESTERO": 4,
+    "tutte": 12377
+   },
+   "tuscany": {
+    "SUCCURSALE": 1282,
+    "UFFICIO DI RAPPRESENTANZA": 3,
+    "tutte": 1284
+   },
+   "PIETRASANTA": {
+    "SUCCURSALE": 10,
+    "tutte": 10
+   },
+   "SERAVEZZA": {
+    "SUCCURSALE": 6,
+    "tutte": 6
+   },
+   "STAZZEMA": {
+    "SUCCURSALE": 1,
+    "tutte": 1
+   },
+   "CAMAIORE": {
+    "SUCCURSALE": 10,
+    "tutte": 10
+   },
+   "FORTE DEI MARMI": {
+    "SUCCURSALE": 7,
+    "tutte": 7
+   },
+   "VIAREGGIO": {
+    "SUCCURSALE": 22,
+    "tutte": 22
+   },
+   "MASSAROSA": {
+    "SUCCURSALE": 4,
+    "tutte": 4
+   }
+  },
+  "2025-12-31": {
+   "italy": {
+    "SUCCURSALE": 11935,
+    "UFFICIO DI RAPPRESENTANZA": 70,
+    "PRIMA SUCCURSALE IN ITALIA DI INTERMEDIARIO ESTERO": 4,
+    "tutte": 11953
+   },
+   "tuscany": {
+    "SUCCURSALE": 1235,
+    "UFFICIO DI RAPPRESENTANZA": 3,
+    "tutte": 1237
+   },
+   "PIETRASANTA": {
+    "SUCCURSALE": 10,
+    "tutte": 10
+   },
+   "SERAVEZZA": {
+    "SUCCURSALE": 6,
+    "tutte": 6
+   },
+   "CAMAIORE": {
+    "SUCCURSALE": 10,
+    "tutte": 10
+   },
+   "FORTE DEI MARMI": {
+    "SUCCURSALE": 7,
+    "tutte": 7
+   },
+   "VIAREGGIO": {
+    "SUCCURSALE": 22,
+    "tutte": 22
+   },
+   "MASSAROSA": {
+    "SUCCURSALE": 4,
+    "tutte": 4
+   }
+  },
+  "2026-11-16": {
+   "italy": {
+    "SUCCURSALE": 12004,
+    "UFFICIO DI RAPPRESENTANZA": 70,
+    "PRIMA SUCCURSALE IN ITALIA DI INTERMEDIARIO ESTERO": 5,
+    "tutte": 12023
+   },
+   "tuscany": {
+    "SUCCURSALE": 1228,
+    "UFFICIO DI RAPPRESENTANZA": 3,
+    "tutte": 1230
+   },
+   "PIETRASANTA": {
+    "SUCCURSALE": 10,
+    "tutte": 10
+   },
+   "SERAVEZZA": {
+    "SUCCURSALE": 6,
+    "tutte": 6
+   },
+   "CAMAIORE": {
+    "SUCCURSALE": 10,
+    "tutte": 10
+   },
+   "FORTE DEI MARMI": {
+    "SUCCURSALE": 7,
+    "tutte": 7
+   },
+   "VIAREGGIO": {
+    "SUCCURSALE": 22,
+    "tutte": 22
+   },
+   "MASSAROSA": {
+    "SUCCURSALE": 4,
+    "tutte": 4
+   }
+  }
+ }
 }
