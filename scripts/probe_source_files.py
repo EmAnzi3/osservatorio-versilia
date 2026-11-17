@@ -32,6 +32,7 @@ MAX_FOLLOW = 8
 HEAD_ROWS = 6
 SMALL_SHEET = 300
 MAX_HITS = 80
+MAX_CSV_HITS = 1500
 
 
 OPENER = urllib.request.build_opener(urllib.request.HTTPCookieProcessor(http.cookiejar.CookieJar()))
@@ -90,7 +91,7 @@ def csv_table(data: bytes, match: str | None = None) -> dict[str, Any]:
     sep = max(";,\t|", key=first.count)
     rows = list(_csv.reader(io.StringIO(text), delimiter=sep))
     keep = (lambda r: bool(re.search(match, sep.join(r)))) if match else hit
-    hits = [[i + 1, [cell(v) for v in r]] for i, r in enumerate(rows[1:], 1) if keep(r)][:MAX_HITS]
+    hits = [[i + 1, [cell(v) for v in r]] for i, r in enumerate(rows[1:], 1) if keep(r)][:MAX_CSV_HITS]
     return {"separator": sep, "rows": len(rows), "head": [[cell(v) for v in r] for r in rows[:HEAD_ROWS]], "hits": hits}
 
 
@@ -137,6 +138,7 @@ def analyse(url: str, follow: str | None, depth: int = 0, post: str | None = Non
             with zipfile.ZipFile(io.BytesIO(data)) as z:
                 item["members"] = [{"name": i.filename, "bytes": i.file_size} for i in z.infolist()]
                 item["memberWorkbooks"] = {n: workbook(z.read(n)) for n in z.namelist() if n.lower().endswith((".xlsx", ".xlsm"))}
+                item["memberCsv"] = {n: csv_table(z.read(n), match) for n in z.namelist() if n.lower().endswith((".csv", ".txt"))}
         elif "csv" in ctype.lower() or re.search(r"\.csv(?:[/?#]|$)", url, re.I):
             item["csv"] = csv_table(data, match)
         else:
