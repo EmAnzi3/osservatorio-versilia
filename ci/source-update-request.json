@@ -8,28 +8,21 @@
   "mefFiscalProbe": [],
   "sourceProbe": [
     {
-      "name": "opencivitas-rifiuti-2023",
-      "url": "https://www.opencivitas.it/portale/documents/20118/0/2023_Ind_RIFIUTI_01_IT.csv/34fd224a-5cac-7676-3016-7c55fe5d6450"
+      "name": "opencivitas-totale-2023",
+      "url": "https://www.opencivitas.it/portale/documents/20118/0/2023_Ind_TOT_01_IT.csv/1086db31-bf42-8678-0520-c77eacce2a23",
+      "match": "^LU0(05|13|18|24|28|30|33)"
     },
     {
-      "name": "opencivitas-metadati-enti-2023",
-      "url": "https://www.opencivitas.it/portale/documents/20118/0/Metadati_Enti_2023_IT.xlsx/9af2749a-d3a5-cc6f-c78d-08593c7dbc32"
+      "name": "opencivitas-metadati-tot-2023",
+      "url": "https://www.opencivitas.it/portale/documents/20118/0/2023_Metadati_Ind_FC90_TOT_01_IT.xlsx/979ac980-1a35-ca7c-9005-1045b5aebe1e"
     },
     {
-      "name": "opencivitas-open-data-p2",
-      "url": "https://www.opencivitas.it/portale/open-data?xpage=2&xdelta=6"
+      "name": "opencivitas-open-data-p6",
+      "url": "https://www.opencivitas.it/portale/open-data?xpage=6&xdelta=6"
     },
     {
-      "name": "opencivitas-open-data-p3",
-      "url": "https://www.opencivitas.it/portale/open-data?xpage=3&xdelta=6"
-    },
-    {
-      "name": "opencivitas-open-data-p4",
-      "url": "https://www.opencivitas.it/portale/open-data?xpage=4&xdelta=6"
-    },
-    {
-      "name": "opencivitas-open-data-p5",
-      "url": "https://www.opencivitas.it/portale/open-data?xpage=5&xdelta=6"
+      "name": "opencivitas-open-data-p7",
+      "url": "https://www.opencivitas.it/portale/open-data?xpage=7&xdelta=6"
     }
   ],
   "ispraSoil": [],
@@ -41,10 +34,8 @@
   "erpArrears": [],
   "sdmxProbe": [
     {
-      "name": "istat-servizi-bancari-comuni",
-      "flow": "117_1035_DF_DCAT_SERVBANC_COM",
-      "key": "all",
-      "start": "2015"
+      "name": "istat-flussi-banche-commercio",
+      "find": "SERVBANC|bancar|sportell|commerc|esercizi"
     }
   ]
 }

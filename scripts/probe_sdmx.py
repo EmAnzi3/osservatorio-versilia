@@ -84,6 +84,35 @@ def summarise(raw: bytes, codelists: dict[str, dict[str, str]], dims: list[dict[
     return {"columns": columns, "rows": count, "distinct": labelled, "versilia": rows}
 
 
+def flows(xml: bytes, pattern: str) -> list[dict[str, str]]:
+    """Flussi dell'elenco Istat il cui identificativo o nome corrisponde all'espressione regolare."""
+    out = []
+    for df in (e for e in ET.fromstring(xml).iter() if local(e.tag) == "Dataflow"):
+        names = {n.get("{http://www.w3.org/XML/1998/namespace}lang"): (n.text or "") for n in df if local(n.tag) == "Name"}
+        item = {"id": df.get("id", ""), "agency": df.get("agencyID", ""), "version": df.get("version", ""), "name": names.get("it") or next(iter(names.values()), "")}
+        if re.search(pattern, item["id"] + " " + item["name"], re.I):
+            out.append(item)
+    return out
+
+
+def find(name: str, pattern: str) -> Path:
+    if not re.fullmatch(r"[a-z0-9][a-z0-9-]{2,60}", name):
+        raise RuntimeError("Nome della sonda non valido: minuscole, cifre e trattini")
+    probe: dict[str, Any] = {"schemaVersion": 1, "createdAt": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+                             "note": "Sonda SDMX: flussi Istat che corrispondono alla ricerca; non è un dato pubblicato.",
+                             "pattern": pattern, "results": {}}
+    for base in BASES:
+        try:
+            probe["results"][base] = flows(fetch(f"{base}/dataflow/IT1", "application/xml"), pattern)
+        except (RuntimeError, ET.ParseError) as exc:
+            probe["results"][base] = {"error": str(exc)}
+    path = ROOT / "data" / "source-probes" / f"{name}.json"
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(probe, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
+    print(f"Sonda {name} scritta in {path.relative_to(ROOT)}")
+    return path
+
+
 def run(name: str, flow: str, key: str = "all", start: str | None = None) -> Path:
     if not re.fullmatch(r"[a-z0-9][a-z0-9-]{2,60}", name):
         raise RuntimeError("Nome della sonda non valido: minuscole, cifre e trattini")

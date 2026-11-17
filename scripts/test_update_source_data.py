@@ -492,6 +492,7 @@ def source_probe_cases(tmp: Path) -> None:
     assert sheets[0]["head"][2] == ["046018", "Massarosa"] and sheets[0]["rows"] == 3
     table = probe.csv_table("COD;Comune;Val\n001001;Agliè;1\n46033;VIAREGGIO;2\n".encode())
     assert table["separator"] == ";" and table["rows"] == 3 and table["hits"] == [[3, ["46033", "VIAREGGIO", "2"]]]
+    assert probe.csv_table("U;V\nLU033X;1\nPE007Y;2\n".encode(), r"^LU0(05|13|18|24|28|30|33)")["hits"] == [[2, ["LU033X", "1"]]]
 
 
 def sdmx_probe_cases() -> None:
@@ -509,6 +510,11 @@ def sdmx_probe_cases() -> None:
     out = probe.summarise(raw, st["codelists"], st["dimensions"])
     assert out["rows"] == 2 and out["versilia"] == [{"DATAFLOW": "X", "REF_AREA": "046033", "TIME_PERIOD": "2024", "OBS_VALUE": "41"}]
     assert {"code": "046033", "rows": 1, "name": "Viareggio"} in out["distinct"]["REF_AREA"]
+    listing = (b'<m:Structure xmlns:m="m" xmlns:s="s" xmlns:c="c"><s:Dataflows>'
+               b'<s:Dataflow id="117_1035_DF_DCAT_SERVBANC_COM_1" agencyID="IT1" version="1.0"><c:Name xml:lang="it">Servizi bancari - comuni</c:Name></s:Dataflow>'
+               b'<s:Dataflow id="22_289_DF_DCIS_POPRES1_1" agencyID="IT1" version="1.0"><c:Name xml:lang="it">Popolazione</c:Name></s:Dataflow>'
+               b'</s:Dataflows></m:Structure>')
+    assert [f["id"] for f in probe.flows(listing, "bancar")] == ["117_1035_DF_DCAT_SERVBANC_COM_1"]
 
 
 def mef_probe_cases() -> None:

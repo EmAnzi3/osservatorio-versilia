@@ -1423,9 +1423,11 @@ def main() -> int:
     g.add_argument("--url", required=True)
     g.add_argument("--follow", help="espressione regolare dei collegamenti da analizzare")
     g.add_argument("--post", action="append", default=[], help="passo successivo URL::campi (POST, stessa sessione); ripetibile")
+    g.add_argument("--match", help="CSV: espressione regolare delle righe da riportare (al posto dei Comuni della Versilia)")
     x = sub.add_parser("sdmx-probe", help="sonda di un flusso SDMX Istat (non modifica il catalogo)")
     x.add_argument("--name", required=True)
-    x.add_argument("--flow", required=True)
+    x.add_argument("--flow", help="identificativo del flusso (oppure --find)")
+    x.add_argument("--find", help="espressione regolare: elenca i flussi Istat corrispondenti")
     x.add_argument("--key", default="all")
     x.add_argument("--start")
     args = parser.parse_args()
@@ -1433,11 +1435,14 @@ def main() -> int:
         if args.updater == "sdmx-probe":
             import probe_sdmx
 
-            probe_sdmx.run(args.name, args.flow, args.key, args.start)
+            if args.find:
+                probe_sdmx.find(args.name, args.find)
+            else:
+                probe_sdmx.run(args.name, args.flow, args.key, args.start)
         elif args.updater == "source-probe":
             import probe_source_files
 
-            probe_source_files.run(args.name, args.url, args.follow, args.post)
+            probe_source_files.run(args.name, args.url, args.follow, args.post, args.match)
         elif args.updater == "mef-fiscal-probe":
             import probe_mef_fiscal
 

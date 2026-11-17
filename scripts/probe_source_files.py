@@ -77,7 +77,7 @@ def workbook(data: bytes) -> dict[str, Any]:
     return {"sheets": sheets}
 
 
-def csv_table(data: bytes) -> dict[str, Any]:
+def csv_table(data: bytes, match: str | None = None) -> dict[str, Any]:
     """CSV: separatore, intestazione, prime righe e righe dei Comuni della Versilia, della Toscana e dell'Italia."""
     import csv as _csv
 
@@ -85,7 +85,8 @@ def csv_table(data: bytes) -> dict[str, Any]:
     first = text.splitlines()[0] if text else ""
     sep = max(";,\t|", key=first.count)
     rows = list(_csv.reader(io.StringIO(text), delimiter=sep))
-    hits = [[i + 1, [cell(v) for v in r]] for i, r in enumerate(rows[1:], 1) if hit(r)][:MAX_HITS]
+    keep = (lambda r: bool(re.search(match, sep.join(r)))) if match else hit
+    hits = [[i + 1, [cell(v) for v in r]] for i, r in enumerate(rows[1:], 1) if keep(r)][:MAX_HITS]
     return {"separator": sep, "rows": len(rows), "head": [[cell(v) for v in r] for r in rows[:HEAD_ROWS]], "hits": hits}
 
 
@@ -117,7 +118,7 @@ def forms(page: str, url: str) -> list[dict[str, Any]]:
     return out[:10]
 
 
-def analyse(url: str, follow: str | None, depth: int = 0, post: str | None = None) -> dict[str, Any]:
+def analyse(url: str, follow: str | None, depth: int = 0, post: str | None = None, match: str | None = None) -> dict[str, Any]:
     item: dict[str, Any] = {"url": url, **({"post": post} if post is not None else {})}
     try:
         data, ctype = fetch(url, data=post.encode() if post is not None else None)
@@ -133,7 +134,7 @@ def analyse(url: str, follow: str | None, depth: int = 0, post: str | None = Non
                 item["members"] = [{"name": i.filename, "bytes": i.file_size} for i in z.infolist()]
                 item["memberWorkbooks"] = {n: workbook(z.read(n)) for n in z.namelist() if n.lower().endswith((".xlsx", ".xlsm"))}
         elif "csv" in ctype.lower() or re.search(r"\.csv(?:[/?#]|$)", url, re.I):
-            item["csv"] = csv_table(data)
+            item["csv"] = csv_table(data, match)
         else:
             page = data.decode("utf-8", errors="replace")
             ls = links(page, url)
@@ -150,14 +151,14 @@ def analyse(url: str, follow: str | None, depth: int = 0, post: str | None = Non
     return item
 
 
-def run(name: str, url: str, follow: str | None = None, posts: list[str] | None = None) -> Path:
+def run(name: str, url: str, follow: str | None = None, posts: list[str] | None = None, match: str | None = None) -> Path:
     """`posts`: passi successivi «URL::campi urlencoded» inviati in POST nella stessa sessione."""
     if not re.fullmatch(r"[a-z0-9][a-z0-9-]{2,60}", name):
         raise RuntimeError("Nome della sonda non valido: minuscole, cifre e trattini")
     path = ROOT / "data" / "source-probes" / f"{name}.json"
     probe = {"schemaVersion": 1, "createdAt": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
              "note": "Sonda: struttura della fonte consultata; non è un dato pubblicato.", "follow": follow,
-             "result": analyse(url, follow)}
+             "result": analyse(url, follow, match=match)}
     if posts:
         probe["steps"] = [analyse(target, None, 0, fields) for target, _, fields in (step.partition("::") for step in posts)]
     path.parent.mkdir(parents=True, exist_ok=True)
