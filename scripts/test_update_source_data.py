@@ -514,19 +514,26 @@ def bdi_branches_cases(tmp: Path) -> None:
         (folder / "succursali.zip").write_bytes(archive(istat))
         changes = upd.update_bdi_branches(2025, folder, dry_run=False)
         site = upd.load(upd.SITE)
-        metric = site["metrics"][bb.METRIC]
-        snap = upd.load(tmp / metric["meta"]["sourceMeta"]["snapshot"])
+        assert bb.METRIC not in site["metrics"], "l'indicatore entra in build, non nel catalogo canonico"
+        snap = upd.load(tmp / f"{bb.SNAPSHOT_PREFIX}2025.json")
         assert snap["branches"]["046033"] == [25, 25, 25, 24, 24, 24, 24, 24] and snap["years"][0] == 2018, snap["branches"]["046033"]
         assert snap["qualityGate"]["istat2022"] == bb.ISTAT_2022 and snap["scopes"]["tuscany"] > 20000
+        import materialize_bank_branches as mat
+        real_mat_root = mat.ROOT
+        try:
+            mat.ROOT = tmp
+            registry = upd.load(real_root / "data/source-registry.json")
+            metric = mat.apply(site, registry)
+        finally:
+            mat.ROOT = real_mat_root
         via = next(r for r in metric["rows"] if r["code"] == "046033")
         pop = next(r for r in site["metrics"]["population"]["rows"] if r["code"] == "046033")["value"]
         assert abs(via["value"] - 24 / pop * 1000) < 1e-12 and via["series"]["years"][-1] == 2025
         theme = site["themes"]["economia"]
-        assert bb.METRIC in theme["metrics"] and next(s for s in theme["sections"] if s["key"] == "credito")["metrics"] == [bb.METRIC]
+        assert theme["metrics"].count(bb.METRIC) == 1 and next(s for s in theme["sections"] if s["key"] == "credito")["metrics"] == [bb.METRIC]
+        assert registry["metricOverrides"][bb.METRIC] == {"profile": mat.PROFILE} and registry["expectedMetricCount"] == len(site["metrics"])
         assert any("Viareggio" in line for line in changes.lines)
-        upd.update_bdi_branches(2025, folder, dry_run=False)  # rigiro: nessuna sezione o voce duplicata
-        theme = upd.load(upd.SITE)["themes"]["economia"]
-        assert theme["metrics"].count(bb.METRIC) == 1 and [s["key"] for s in theme["sections"]].count("credito") == 1
+        assert not upd.update_bdi_branches(2025, folder, dry_run=True).lines, "rigiro identico: nessuna differenza"
         for bad, year in ((dict(istat, **{"046030": 2}), 2025), (istat, 2026)):
             (folder / "succursali.zip").write_bytes(archive(bad))
             try:

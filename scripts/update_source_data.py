@@ -798,18 +798,24 @@ def update_istat_tourism(year: int, file: Path | None, dry_run: bool) -> Changes
 
 # ------------------------------------------------------------------ Banca d'Italia: sportelli bancari
 
-CREDIT_SECTION = {"key": "credito", "label": "Banche e credito",
-                  "description": "Sportelli bancari aperti nei Comuni secondo l'elenco delle succursali della Banca d'Italia."}
-
-
 def update_bdi_branches(year: int, folder: Path | None, dry_run: bool) -> Changes:
-    """Sportelli bancari ogni 1.000 residenti dalla Lista succursali banche (GIAVA), 7/7, serie dal 2018."""
+    """Sportelli bancari dalla Lista succursali banche (GIAVA): scrive lo snapshot riconciliato.
+
+    L'indicatore `bankBranchesPer1000` entra nel catalogo effettivo in build
+    (`materialize_bank_branches.py`), come gli altri indicatori nati dopo il catalogo canonico.
+    """
     import bank_branches as bb
+    import materialize_bank_branches as mat
 
     site = load(SITE)
-    metric_old = site["metrics"].get(bb.METRIC)
-    if metric_old and year < int(metric_old["meta"]["year"]):
-        raise UpdateError(f"Sportelli bancari: anno {year} precedente al pubblicato {metric_old['meta']['year']}")
+    old_path = None
+    try:
+        old_path = mat.latest_snapshot(ROOT)
+    except RuntimeError:
+        pass
+    old = load(ROOT / old_path) if old_path else None
+    if old and year < old["years"][-1]:
+        raise UpdateError(f"Sportelli bancari: anno {year} precedente al pubblicato {old['years'][-1]}")
     pop_rows = site["metrics"]["population"]["rows"]
     towns = {r["code"]: dict(zip(r["series"]["years"], r["series"]["values"])) for r in pop_rows}
     bench_path = ROOT / f"data/source-snapshots/a3-istat-demography-benchmark-{year + 1}.json"
@@ -821,28 +827,18 @@ def update_bdi_branches(year: int, folder: Path | None, dry_run: bool) -> Change
         localities = (folder / "localita.zip").read_bytes() if folder else bb.fetch(bb.LOC_URL)
         snapshot = bb.build_snapshot(year, archive, localities, {"towns": towns, "tuscany": scopes["tuscany"],
                                                                   "italy": scopes["italy"], "year": scopes["year"]})
-    except (bb.BranchError, KeyError, zipfile.BadZipFile) as error:
+        mat.validate(snapshot, pop_rows)
+    except (bb.BranchError, RuntimeError, KeyError, zipfile.BadZipFile) as error:
         raise UpdateError(f"Sportelli bancari {year}: {error}") from error
     path = f"{bb.SNAPSHOT_PREFIX}{year}.json"
     metric = bb.build_metric(snapshot, pop_rows, path)
+    previous = bb.build_metric(old, pop_rows, old_path) if old and old["years"][-1] == year else None
+    before = {r["code"]: round(r["value"], 4) for r in (previous or {}).get("rows", [])}
     changes = Changes()
-    old_rows = {r["code"]: r for r in (metric_old or {}).get("rows", [])}
     for row in metric["rows"]:
-        changes.note(f"{bb.METRIC} {row['town']}", round(old_rows[row["code"]]["value"], 4) if row["code"] in old_rows else None, round(row["value"], 4))
-    site["metrics"][bb.METRIC] = metric
-    theme = site["themes"]["economia"]
-    if bb.METRIC not in theme["metrics"]:
-        theme["metrics"].append(bb.METRIC)
-    sections = theme.setdefault("sections", [])
-    section = next((s for s in sections if s["key"] == CREDIT_SECTION["key"]), None)
-    if section is None:
-        at = next((i + 1 for i, s in enumerate(sections) if s["key"] == "imprenditorialita"), len(sections))
-        sections.insert(at, {**CREDIT_SECTION, "metrics": [bb.METRIC]})
-    elif bb.METRIC not in section["metrics"]:
-        section["metrics"].append(bb.METRIC)
+        changes.note(f"{bb.METRIC} {row['town']}", before.get(row["code"]), round(row["value"], 4))
     snapshot["acquisitionEvidence"] = {"script": f"scripts/update_source_data.py bdi-branches --year {year}"}
     if not dry_run:
-        save(SITE, site)
         save(ROOT / path, snapshot)
     return changes
 

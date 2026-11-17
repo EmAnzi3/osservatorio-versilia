@@ -1,7 +1,7 @@
 {
   "schemaVersion": 2,
-  "expectedMetricCount": 182,
-  "expectedInlineMetricCount": 178,
+  "expectedMetricCount": 181,
+  "expectedInlineMetricCount": 177,
   "expectedExternalMetricCount": 4,
   "expectedTowns": [
     {
@@ -529,15 +529,6 @@
       "acquisitionMethod": "Monitoraggio PRC per produzione; geometrie ufficiali GeoScopio/PRC + Ambiti Amministrativi per superfici.",
       "licenseName": "CC BY per i dataset geografici regionali",
       "licenseUrl": "https://www.regione.toscana.it/piano-regionale-cave"
-    },
-    "bdi-giava-continuous": {
-      "publisher": "Banca d'Italia",
-      "frequency": "annual",
-      "frequencyLabel": "Annuale (fotografia al 31 dicembre da elenco aggiornato di continuo)",
-      "expectedRelease": "Elenco delle succursali aggiornato di continuo; la fotografia dell'anno si chiude al 31 dicembre",
-      "acquisitionMethod": "Download dell'open data GIAVA «Lista succursali banche» e «Lista località geografiche»; conteggio delle sedi operative al 31 dicembre (chiave banca + sede, esclusi uffici di rappresentanza) riconciliato con la serie Istat 2022.",
-      "licenseName": "CC BY 4.0",
-      "licenseUrl": "https://www.bancaditalia.it/footer/note-legali/index.html"
     }
   },
   "sourceProfileByUrl": {
@@ -624,9 +615,7 @@
     "https://www.regione.toscana.it/it/-/monitoraggio-del-piano-regionale-cave": "regione-toscana-prc-annual",
     "https://aci.gov.it/attivita-e-progetti/studi-e-ricerche/autoritratto/": "aci-istat-annual",
     "https://sisbon.regione.toscana.it/api/v1/sisbon/map_public?format=csv": "sisbon-weekly",
-    "https://servizi.lavoro.gov.it/runts/it-it/Lista-enti": "runts-continuous",
-    "https://www.bancaditalia.it/statistiche/basi-dati/giava/index.html": "bdi-giava-continuous",
-    "https://infostat.bancaditalia.it/GIAVAInquiry-public/getAreaDownloadExport.do?referenceDate=&product=VFLUSSO_SEDE_BANCHE&language=IT&exportType=CSV&username=OBLIXANONYMOUS&isCompressed=S": "bdi-giava-continuous"
+    "https://servizi.lavoro.gov.it/runts/it-it/Lista-enti": "runts-continuous"
   },
   "metricOverrides": {
     "lifeExpectancy": {
@@ -841,9 +830,6 @@
     },
     "tourismStructuresPer1000": {
       "profile": "istat-tourism-annual"
-    },
-    "bankBranchesPer1000": {
-      "profile": "bdi-giava-continuous"
     }
   },
   "requestTimeoutSeconds": 20,
@@ -894,9 +880,7 @@
     "https://cave.regione.toscana.it/api/v1/cave_public": "regione-toscana-rtcave-continuous",
     "https://www.regione.toscana.it/piano-regionale-cave": "regione-toscana-prc-annual",
     "https://www.regione.toscana.it/it/-/monitoraggio-del-piano-regionale-cave": "regione-toscana-prc-annual",
-    "https://sisbon.regione.toscana.it/api/v1/sisbon/map_public?format=csv": "sisbon-weekly",
-    "https://www.bancaditalia.it/statistiche/basi-dati/giava/index.html": "bdi-giava-continuous",
-    "https://infostat.bancaditalia.it/GIAVAInquiry-public/getAreaDownloadExport.do?referenceDate=&product=VFLUSSO_SEDE_BANCHE&language=IT&exportType=CSV&username=OBLIXANONYMOUS&isCompressed=S": "bdi-giava-continuous"
+    "https://sisbon.regione.toscana.it/api/v1/sisbon/map_public?format=csv": "sisbon-weekly"
   },
   "sourceChangePolicies": {
     "https://regionetoscana.smartregion.toscana.it/mobility/artifacts/gtfs": {
