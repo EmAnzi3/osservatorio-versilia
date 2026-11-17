@@ -1,0 +1,209 @@
+{
+  "schemaVersion": 1,
+  "version": "bdi-sportelli-bancari-2025-v1",
+  "retrieved": "2026-11-17",
+  "publisher": "Banca d'Italia — Lista succursali banche (open data GIAVA)",
+  "sourceUrl": "https://www.bancaditalia.it/statistiche/basi-dati/giava/index.html",
+  "dataUrl": "https://infostat.bancaditalia.it/GIAVAInquiry-public/getAreaDownloadExport.do?referenceDate=&product=VFLUSSO_SEDE_BANCHE&language=IT&exportType=CSV&username=OBLIXANONYMOUS&isCompressed=S",
+  "localityUrl": "https://infostat.bancaditalia.it/GIAVAInquiry-public/getAreaDownloadExport.do?referenceDate=&product=VFLUSSO_LOCALITA&language=IT&exportType=CSV&username=OBLIXANONYMOUS&isCompressed=S",
+  "archive": {
+    "member": "2026-11-16_SUCCURSALI_BANCHE.csv",
+    "bytes": 5503694,
+    "sha256": "0cf3eeaafe8b1a9eead91c61224512c6fd136c3b51242aa1ffbb7475b103572c",
+    "records": 227081
+  },
+  "localityArchive": {
+    "bytes": 147289,
+    "sha256": "082fcb41cbf0402786617a6e660b26ee93868da98b0f7b16e71919514688059c"
+  },
+  "rule": "Sedi operative al 31 dicembre nella versione anagrafica valida quel giorno, chiave intermediario + sede, Stato Italia, esclusi gli uffici di rappresentanza.",
+  "cab": {
+    "046005": "24600",
+    "046013": "70150",
+    "046018": "70170",
+    "046024": "70220",
+    "046028": "70240",
+    "046030": "70250",
+    "046033": "24800"
+  },
+  "years": [
+    2018,
+    2019,
+    2020,
+    2021,
+    2022,
+    2023,
+    2024,
+    2025
+  ],
+  "branches": {
+    "046005": [
+      14,
+      13,
+      13,
+      11,
+      11,
+      10,
+      10,
+      10
+    ],
+    "046013": [
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7,
+      7
+    ],
+    "046018": [
+      6,
+      6,
+      6,
+      5,
+      5,
+      5,
+      4,
+      4
+    ],
+    "046024": [
+      12,
+      11,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10
+    ],
+    "046028": [
+      9,
+      8,
+      8,
+      7,
+      7,
+      7,
+      6,
+      6
+    ],
+    "046030": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      0
+    ],
+    "046033": [
+      31,
+      27,
+      26,
+      24,
+      24,
+      22,
+      22,
+      22
+    ]
+  },
+  "scopes": {
+    "tuscany": 1418,
+    "italy": 19141
+  },
+  "population": {
+    "year": 2026,
+    "tuscany": 3659222,
+    "italy": 58942828,
+    "towns": {
+      "046005": [
+        31670,
+        31543,
+        31761,
+        31821,
+        31914,
+        31864,
+        31832,
+        31763
+      ],
+      "046013": [
+        7156,
+        7111,
+        7217,
+        6943,
+        6879,
+        6777,
+        6666,
+        6550
+      ],
+      "046018": [
+        21696,
+        21615,
+        21951,
+        21823,
+        21822,
+        21865,
+        21806,
+        21782
+      ],
+      "046024": [
+        23073,
+        22997,
+        23121,
+        23066,
+        22933,
+        22788,
+        22743,
+        22678
+      ],
+      "046028": [
+        12845,
+        12774,
+        12556,
+        12441,
+        12395,
+        12435,
+        12381,
+        12284
+      ],
+      "046030": [
+        2971,
+        2958,
+        2898,
+        2890,
+        2877,
+        2903,
+        2892,
+        2783
+      ],
+      "046033": [
+        60602,
+        60512,
+        61251,
+        61045,
+        60890,
+        60755,
+        60618,
+        60680
+      ]
+    }
+  },
+  "qualityGate": {
+    "status": "PASS",
+    "istat2022": {
+      "046005": 11,
+      "046013": 7,
+      "046018": 5,
+      "046024": 10,
+      "046028": 7,
+      "046030": 1,
+      "046033": 24
+    },
+    "italy2022": 20979,
+    "note": "Conteggi dei sette Comuni al 31 dicembre 2022 identici alla serie Istat «Servizi bancari - dati comunali»."
+  },
+  "acquisitionEvidence": {
+    "script": "scripts/update_source_data.py bdi-branches --year 2025"
+  }
+}
