@@ -1,6 +1,6 @@
 {
  "schemaVersion": 1,
- "createdAt": "2026-11-17T15:20:14Z",
+ "createdAt": "2026-11-17T15:22:05Z",
  "note": "Sonda: sedi bancarie operative per Comune, Toscana e Italia; non è un dato pubblicato.",
  "url": "https://infostat.bancaditalia.it/GIAVAInquiry-public/getAreaDownloadExport.do?referenceDate=&product=VFLUSSO_SEDE_BANCHE&language=IT&exportType=CSV&username=OBLIXANONYMOUS&isCompressed=S",
  "tuscanyComuni": 322,
@@ -625,6 +625,428 @@
     "SUCCURSALE": 4,
     "tutte": 4
    }
+  }
+ },
+ "variants": {
+  "2022-12-31": {
+   "operOnly": {
+    "italy": 13589,
+    "tuscany": 1385,
+    "CAMAIORE": 11,
+    "FORTE DEI MARMI": 7,
+    "MASSAROSA": 5,
+    "PIETRASANTA": 10,
+    "SERAVEZZA": 7,
+    "STAZZEMA": 1,
+    "VIAREGGIO": 24
+   },
+   "operAndValid": {
+    "italy": 13588,
+    "italyByIntermediary": 21120,
+    "italyStato86": 13555,
+    "italyAnyStato": 13588
+   },
+   "statoValues": [
+    "103",
+    "107",
+    "114",
+    "129",
+    "147",
+    "16",
+    "168",
+    "23",
+    "238",
+    "240",
+    "262",
+    "29",
+    "3",
+    "31",
+    "32",
+    "39",
+    "40",
+    "45",
+    "50",
+    "54"
+   ],
+   "rowsOper": 40050,
+   "rowsBoth": 21120,
+   "sample": [
+    {
+     "ID_INT": "13591",
+     "ID_SEDE": "10119",
+     "DATA_I_OPER": "1998-10-07",
+     "DATA_F_OPER": "9999-12-31",
+     "DATA_I_VAL": "1998-10-07",
+     "DATA_F_VAL": "2005-07-06",
+     "STATO": "86",
+     "DES_COM_ITA": "CERESOLE ALBA",
+     "TIPO_SEDE": "001"
+    },
+    {
+     "ID_INT": "13591",
+     "ID_SEDE": "10119",
+     "DATA_I_OPER": "1998-10-07",
+     "DATA_F_OPER": "9999-12-31",
+     "DATA_I_VAL": "2005-07-07",
+     "DATA_F_VAL": "2012-06-30",
+     "STATO": "86",
+     "DES_COM_ITA": "CERESOLE ALBA",
+     "TIPO_SEDE": "001"
+    },
+    {
+     "ID_INT": "16478",
+     "ID_SEDE": "10547",
+     "DATA_I_OPER": "2004-02-02",
+     "DATA_F_OPER": "9999-12-31",
+     "DATA_I_VAL": "2004-02-02",
+     "DATA_F_VAL": "2012-03-29",
+     "STATO": "86",
+     "DES_COM_ITA": "PESCARA",
+     "TIPO_SEDE": "001"
+    },
+    {
+     "ID_INT": "16478",
+     "ID_SEDE": "10547",
+     "DATA_I_OPER": "2004-02-02",
+     "DATA_F_OPER": "9999-12-31",
+     "DATA_I_VAL": "2012-03-30",
+     "DATA_F_VAL": "2018-11-08",
+     "STATO": "86",
+     "DES_COM_ITA": "PESCARA",
+     "TIPO_SEDE": "001"
+    },
+    {
+     "ID_INT": "16756",
+     "ID_SEDE": "15229",
+     "DATA_I_OPER": "2007-10-01",
+     "DATA_F_OPER": "9999-12-31",
+     "DATA_I_VAL": "2007-10-01",
+     "DATA_F_VAL": "2014-06-08",
+     "STATO": "86",
+     "DES_COM_ITA": "PESCARA",
+     "TIPO_SEDE": "001"
+    },
+    {
+     "ID_INT": "16783",
+     "ID_SEDE": "10206",
+     "DATA_I_OPER": "2009-07-01",
+     "DATA_F_OPER": "2024-12-31",
+     "DATA_I_VAL": "2009-07-01",
+     "DATA_F_VAL": "2013-02-14",
+     "STATO": "86",
+     "DES_COM_ITA": "PESCARA",
+     "TIPO_SEDE": "001"
+    },
+    {
+     "ID_INT": "16783",
+     "ID_SEDE": "10206",
+     "DATA_I_OPER": "2009-07-01",
+     "DATA_F_OPER": "2024-12-31",
+     "DATA_I_VAL": "2024-04-29",
+     "DATA_F_VAL": "2024-12-31",
+     "STATO": "86",
+     "DES_COM_ITA": "PESCARA",
+     "TIPO_SEDE": "001"
+    },
+    {
+     "ID_INT": "16828",
+     "ID_SEDE": "10226",
+     "DATA_I_OPER": "2014-06-16",
+     "DATA_F_OPER": "9999-12-31",
+     "DATA_I_VAL": "2014-06-16",
+     "DATA_F_VAL": "2017-10-03",
+     "STATO": "86",
+     "DES_COM_ITA": "PESCARA",
+     "TIPO_SEDE": "005"
+    },
+    {
+     "ID_INT": "16828",
+     "ID_SEDE": "10226",
+     "DATA_I_OPER": "2014-06-16",
+     "DATA_F_OPER": "9999-12-31",
+     "DATA_I_VAL": "2017-10-04",
+     "DATA_F_VAL": "2020-01-31",
+     "STATO": "86",
+     "DES_COM_ITA": "PESCARA",
+     "TIPO_SEDE": "005"
+    },
+    {
+     "ID_INT": "16828",
+     "ID_SEDE": "10226",
+     "DATA_I_OPER": "2014-06-16",
+     "DATA_F_OPER": "9999-12-31",
+     "DATA_I_VAL": "2020-02-01",
+     "DATA_F_VAL": "2020-11-30",
+     "STATO": "86",
+     "DES_COM_ITA": "PESCARA",
+     "TIPO_SEDE": "005"
+    },
+    {
+     "ID_INT": "16828",
+     "ID_SEDE": "10226",
+     "DATA_I_OPER": "2014-06-16",
+     "DATA_F_OPER": "9999-12-31",
+     "DATA_I_VAL": "2020-12-01",
+     "DATA_F_VAL": "2021-03-09",
+     "STATO": "86",
+     "DES_COM_ITA": "PESCARA",
+     "TIPO_SEDE": "005"
+    },
+    {
+     "ID_INT": "16809",
+     "ID_SEDE": "48818",
+     "DATA_I_OPER": "2010-11-01",
+     "DATA_F_OPER": "9999-12-31",
+     "DATA_I_VAL": "2010-11-01",
+     "DATA_F_VAL": "2013-04-14",
+     "STATO": "86",
+     "DES_COM_ITA": "PESCARA",
+     "TIPO_SEDE": "001"
+    },
+    {
+     "ID_INT": "16809",
+     "ID_SEDE": "48818",
+     "DATA_I_OPER": "2010-11-01",
+     "DATA_F_OPER": "9999-12-31",
+     "DATA_I_VAL": "2013-04-15",
+     "DATA_F_VAL": "2013-05-06",
+     "STATO": "86",
+     "DES_COM_ITA": "PESCARA",
+     "TIPO_SEDE": "001"
+    },
+    {
+     "ID_INT": "16017",
+     "ID_SEDE": "63680",
+     "DATA_I_OPER": "2013-05-27",
+     "DATA_F_OPER": "9999-12-31",
+     "DATA_I_VAL": "2013-05-27",
+     "DATA_F_VAL": "2015-09-30",
+     "STATO": "86",
+     "DES_COM_ITA": "PESCARA",
+     "TIPO_SEDE": "001"
+    },
+    {
+     "ID_INT": "16017",
+     "ID_SEDE": "63680",
+     "DATA_I_OPER": "2013-05-27",
+     "DATA_F_OPER": "9999-12-31",
+     "DATA_I_VAL": "2015-10-01",
+     "DATA_F_VAL": "2016-11-27",
+     "STATO": "86",
+     "DES_COM_ITA": "PESCARA",
+     "TIPO_SEDE": "001"
+    }
+   ]
+  },
+  "2025-12-31": {
+   "operOnly": {
+    "italy": 11985,
+    "tuscany": 1242,
+    "CAMAIORE": 10,
+    "FORTE DEI MARMI": 7,
+    "MASSAROSA": 4,
+    "PIETRASANTA": 10,
+    "SERAVEZZA": 6,
+    "STAZZEMA": 0,
+    "VIAREGGIO": 22
+   },
+   "operAndValid": {
+    "italy": 11984,
+    "italyByIntermediary": 19292,
+    "italyStato86": 11953,
+    "italyAnyStato": 11984
+   },
+   "statoValues": [
+    "103",
+    "107",
+    "114",
+    "129",
+    "147",
+    "16",
+    "168",
+    "23",
+    "238",
+    "240",
+    "262",
+    "29",
+    "3",
+    "31",
+    "32",
+    "39",
+    "40",
+    "45",
+    "50",
+    "54"
+   ],
+   "rowsOper": 35829,
+   "rowsBoth": 19292,
+   "sample": [
+    {
+     "ID_INT": "13591",
+     "ID_SEDE": "10119",
+     "DATA_I_OPER": "1998-10-07",
+     "DATA_F_OPER": "9999-12-31",
+     "DATA_I_VAL": "1998-10-07",
+     "DATA_F_VAL": "2005-07-06",
+     "STATO": "86",
+     "DES_COM_ITA": "CERESOLE ALBA",
+     "TIPO_SEDE": "001"
+    },
+    {
+     "ID_INT": "13591",
+     "ID_SEDE": "10119",
+     "DATA_I_OPER": "1998-10-07",
+     "DATA_F_OPER": "9999-12-31",
+     "DATA_I_VAL": "2005-07-07",
+     "DATA_F_VAL": "2012-06-30",
+     "STATO": "86",
+     "DES_COM_ITA": "CERESOLE ALBA",
+     "TIPO_SEDE": "001"
+    },
+    {
+     "ID_INT": "16478",
+     "ID_SEDE": "10547",
+     "DATA_I_OPER": "2004-02-02",
+     "DATA_F_OPER": "9999-12-31",
+     "DATA_I_VAL": "2004-02-02",
+     "DATA_F_VAL": "2012-03-29",
+     "STATO": "86",
+     "DES_COM_ITA": "PESCARA",
+     "TIPO_SEDE": "001"
+    },
+    {
+     "ID_INT": "16478",
+     "ID_SEDE": "10547",
+     "DATA_I_OPER": "2004-02-02",
+     "DATA_F_OPER": "9999-12-31",
+     "DATA_I_VAL": "2012-03-30",
+     "DATA_F_VAL": "2018-11-08",
+     "STATO": "86",
+     "DES_COM_ITA": "PESCARA",
+     "TIPO_SEDE": "001"
+    },
+    {
+     "ID_INT": "16756",
+     "ID_SEDE": "15229",
+     "DATA_I_OPER": "2007-10-01",
+     "DATA_F_OPER": "9999-12-31",
+     "DATA_I_VAL": "2007-10-01",
+     "DATA_F_VAL": "2014-06-08",
+     "STATO": "86",
+     "DES_COM_ITA": "PESCARA",
+     "TIPO_SEDE": "001"
+    },
+    {
+     "ID_INT": "16828",
+     "ID_SEDE": "10226",
+     "DATA_I_OPER": "2014-06-16",
+     "DATA_F_OPER": "9999-12-31",
+     "DATA_I_VAL": "2014-06-16",
+     "DATA_F_VAL": "2017-10-03",
+     "STATO": "86",
+     "DES_COM_ITA": "PESCARA",
+     "TIPO_SEDE": "005"
+    },
+    {
+     "ID_INT": "16828",
+     "ID_SEDE": "10226",
+     "DATA_I_OPER": "2014-06-16",
+     "DATA_F_OPER": "9999-12-31",
+     "DATA_I_VAL": "2017-10-04",
+     "DATA_F_VAL": "2020-01-31",
+     "STATO": "86",
+     "DES_COM_ITA": "PESCARA",
+     "TIPO_SEDE": "005"
+    },
+    {
+     "ID_INT": "16828",
+     "ID_SEDE": "10226",
+     "DATA_I_OPER": "2014-06-16",
+     "DATA_F_OPER": "9999-12-31",
+     "DATA_I_VAL": "2020-02-01",
+     "DATA_F_VAL": "2020-11-30",
+     "STATO": "86",
+     "DES_COM_ITA": "PESCARA",
+     "TIPO_SEDE": "005"
+    },
+    {
+     "ID_INT": "16828",
+     "ID_SEDE": "10226",
+     "DATA_I_OPER": "2014-06-16",
+     "DATA_F_OPER": "9999-12-31",
+     "DATA_I_VAL": "2020-12-01",
+     "DATA_F_VAL": "2021-03-09",
+     "STATO": "86",
+     "DES_COM_ITA": "PESCARA",
+     "TIPO_SEDE": "005"
+    },
+    {
+     "ID_INT": "16809",
+     "ID_SEDE": "48818",
+     "DATA_I_OPER": "2010-11-01",
+     "DATA_F_OPER": "9999-12-31",
+     "DATA_I_VAL": "2010-11-01",
+     "DATA_F_VAL": "2013-04-14",
+     "STATO": "86",
+     "DES_COM_ITA": "PESCARA",
+     "TIPO_SEDE": "001"
+    },
+    {
+     "ID_INT": "16809",
+     "ID_SEDE": "48818",
+     "DATA_I_OPER": "2010-11-01",
+     "DATA_F_OPER": "9999-12-31",
+     "DATA_I_VAL": "2013-04-15",
+     "DATA_F_VAL": "2013-05-06",
+     "STATO": "86",
+     "DES_COM_ITA": "PESCARA",
+     "TIPO_SEDE": "001"
+    },
+    {
+     "ID_INT": "16017",
+     "ID_SEDE": "63680",
+     "DATA_I_OPER": "2013-05-27",
+     "DATA_F_OPER": "9999-12-31",
+     "DATA_I_VAL": "2013-05-27",
+     "DATA_F_VAL": "2015-09-30",
+     "STATO": "86",
+     "DES_COM_ITA": "PESCARA",
+     "TIPO_SEDE": "001"
+    },
+    {
+     "ID_INT": "16017",
+     "ID_SEDE": "63680",
+     "DATA_I_OPER": "2013-05-27",
+     "DATA_F_OPER": "9999-12-31",
+     "DATA_I_VAL": "2015-10-01",
+     "DATA_F_VAL": "2016-11-27",
+     "STATO": "86",
+     "DES_COM_ITA": "PESCARA",
+     "TIPO_SEDE": "001"
+    },
+    {
+     "ID_INT": "13502",
+     "ID_SEDE": "11019",
+     "DATA_I_OPER": "1983-12-12",
+     "DATA_F_OPER": "9999-12-31",
+     "DATA_I_VAL": "1983-12-12",
+     "DATA_F_VAL": "1994-09-30",
+     "STATO": "86",
+     "DES_COM_ITA": "PESCARA",
+     "TIPO_SEDE": "001"
+    },
+    {
+     "ID_INT": "13502",
+     "ID_SEDE": "11019",
+     "DATA_I_OPER": "1983-12-12",
+     "DATA_F_OPER": "9999-12-31",
+     "DATA_I_VAL": "1994-10-01",
+     "DATA_F_VAL": "2007-05-20",
+     "STATO": "86",
+     "DES_COM_ITA": "PESCARA",
+     "TIPO_SEDE": "001"
+    }
+   ]
   }
  }
 }
