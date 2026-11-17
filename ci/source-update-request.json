@@ -10,19 +10,19 @@
     {
       "name": "opencivitas-totale-2023",
       "url": "https://www.opencivitas.it/portale/documents/20118/0/2023_Ind_TOT_01_IT.csv/1086db31-bf42-8678-0520-c77eacce2a23",
-      "match": "^LU0(05|13|18|24|28|30|33)"
+      "match": "^LU0(05|13|18|24|28|30|33)\\w*;(FST_RIPROPORZIONATO_BI|FST_RIPROPORZIONATO_BI_PROAB|SPESA_STORICA|SPESA_STORICA_PROAB|DIFF_OUT_PERC_TOT|DIFF_SPESA_PERC_TOT|FL_\\w+|POSIZIONE_\\w+|DESCR_NON_VALUTABILE_\\w+|SERV_NO_VALUT_\\w+|COORD_\\w+|D03);"
     },
     {
       "name": "opencivitas-metadati-tot-2023",
       "url": "https://www.opencivitas.it/portale/documents/20118/0/2023_Metadati_Ind_FC90_TOT_01_IT.xlsx/979ac980-1a35-ca7c-9005-1045b5aebe1e"
     },
     {
-      "name": "opencivitas-open-data-p6",
-      "url": "https://www.opencivitas.it/portale/open-data?xpage=6&xdelta=6"
+      "name": "opencivitas-metadati-enti-2023",
+      "url": "https://www.opencivitas.it/portale/documents/20118/0/Metadati_Enti_2023_IT.xlsx/9af2749a-d3a5-cc6f-c78d-08593c7dbc32"
     },
     {
-      "name": "opencivitas-open-data-p7",
-      "url": "https://www.opencivitas.it/portale/open-data?xpage=7&xdelta=6"
+      "name": "opencivitas-open-data-p6",
+      "url": "https://www.opencivitas.it/portale/open-data?xpage=6&xdelta=6"
     }
   ],
   "ispraSoil": [],
@@ -34,8 +34,10 @@
   "erpArrears": [],
   "sdmxProbe": [
     {
-      "name": "istat-flussi-banche-commercio",
-      "find": "SERVBANC|bancar|sportell|commerc|esercizi"
+      "name": "istat-servizi-bancari-comuni",
+      "flow": "117_1035_DF_DCAT_SERVBANC_COM_1",
+      "key": "all",
+      "start": "2012"
     }
   ]
 }

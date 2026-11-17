@@ -30,6 +30,7 @@ CODES = ("046005", "046013", "046018", "046024", "046028", "046030", "046033")
 NAMES = ("CAMAIORE", "FORTE DEI MARMI", "MASSAROSA", "PIETRASANTA", "SERAVEZZA", "STAZZEMA", "VIAREGGIO", "TOSCANA", "ITALIA", "LUCCA")
 MAX_FOLLOW = 8
 HEAD_ROWS = 6
+SMALL_SHEET = 300
 MAX_HITS = 80
 
 
@@ -63,17 +64,20 @@ def workbook(data: bytes) -> dict[str, Any]:
     wb = load_workbook(io.BytesIO(data), read_only=True, data_only=True)
     sheets = []
     for ws in wb.worksheets:
+        if hasattr(ws, "reset_dimensions"):
+            ws.reset_dimensions()  # alcuni file dichiarano dimensioni sbagliate (una sola riga)
         head, hits, count = [], [], 0
         for i, row in enumerate(ws.iter_rows(values_only=True)):
             count += 1
             values = [cell(v) for v in row]
             while values and values[-1] is None:
                 values.pop()
-            if i < HEAD_ROWS:
+            if i < SMALL_SHEET:
                 head.append(values)
-            elif len(hits) < MAX_HITS and hit(values):
+            if i >= HEAD_ROWS and len(hits) < MAX_HITS and hit(values):
                 hits.append([i + 1, values])
-        sheets.append({"name": ws.title, "rows": count, "head": head, "hits": hits})
+        # i fogli piccoli (metadati, legende) si riportano interi; degli altri solo l'intestazione
+        sheets.append({"name": ws.title, "rows": count, "head": head if count <= SMALL_SHEET else head[:HEAD_ROWS], "hits": hits})
     return {"sheets": sheets}
 
 
