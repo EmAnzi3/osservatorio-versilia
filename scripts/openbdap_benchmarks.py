@@ -248,7 +248,9 @@ def build_snapshot(year: int, fetcher: Callable[[str], bytes], published: dict[s
                     pass
     region_of = {c: reg for reg, cs in reporting.items() for c in cs}
     unknown = sorted(c for c in region_of if c not in population)
-    if len(unknown) > 20:
+    # Codici OpenBDAP non presenti nel P2 dell'anno (nuove province sarde, fusioni): esclusi e dichiarati;
+    # contano come Comuni non coperti, mai come zeri.
+    if len(unknown) > 600:
         raise BenchmarkError(f"{len(unknown)} codici OpenBDAP assenti dal P2: {unknown[:10]}")
     # Riconciliazione 7/7: i valori comunali ricalcolati devono essere quelli pubblicati.
     errors = []
