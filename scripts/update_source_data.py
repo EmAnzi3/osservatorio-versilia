@@ -1525,6 +1525,7 @@ def main() -> int:
     bb_p.add_argument("--dir", type=Path, help="cartella con succursali.zip e localita.zip già scaricati")
     bb_p.add_argument("--dry-run", action="store_true")
     sub.add_parser("bdi-branches-probe", help="sonda degli sportelli Banca d'Italia (non modifica il catalogo)")
+    sub.add_parser("openbdap-benchmark-probe", help="sonda della copertura toscana dei rendiconti OpenBDAP (non modifica il catalogo)")
     oc_p = sub.add_parser("opencivitas-needs", help="fabbisogni standard dei Comuni (OpenCivitas)")
     oc_p.add_argument("--year", type=int, help="annualità OpenCivitas, es. 2023 (predefinita: l'ultima pubblicata)")
     oc_p.add_argument("--dir", type=Path, help="cartella con pages/*.html, totale.csv ed enti.xlsx già scaricati")
@@ -1539,6 +1540,10 @@ def main() -> int:
     try:
         if args.updater == "bdi-branches":
             update_bdi_branches(args.year, args.dir, args.dry_run).report(f"Sportelli bancari {args.year}{' (prova a secco)' if args.dry_run else ''}:")
+        elif args.updater == "openbdap-benchmark-probe":
+            import subprocess
+            out = ROOT / "data/source-probes/openbdap-benchmark-toscana-2025.json"
+            subprocess.run([sys.executable, str(ROOT / "scripts/acquire_a3_benchmark_openbdap_annual.py"), "--output", str(out)], check=True)
         elif args.updater == "opencivitas-needs":
             update_opencivitas_needs(args.year, args.dir, args.dry_run).report(f"Fabbisogni standard{' ' + str(args.year) if args.year else ''}{' (prova a secco)' if args.dry_run else ''}:")
         elif args.updater == "bdi-branches-probe":

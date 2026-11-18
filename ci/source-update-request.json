@@ -17,5 +17,6 @@
   "sdmxProbe": [],
   "bdiBranchesProbe": false,
   "bdiBranches": [],
-  "opencivitasNeeds": []
+  "opencivitasNeeds": [],
+  "openbdapBenchmarkProbe": true
 }
