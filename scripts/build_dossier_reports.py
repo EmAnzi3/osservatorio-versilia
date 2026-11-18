@@ -75,6 +75,7 @@ SOURCE_NAMES = [
     ('ars.toscana.it', 'Agenzia regionale di sanità della Toscana (ARS)'),
     ('dati.salute.gov.it', 'Ministero della Salute — Anagrafe delle farmacie'),
     ('bancaditalia.it', 'Banca d’Italia — Lista delle succursali delle banche (open data GIAVA)'),
+    ('opencivitas.it', 'OpenCivitas — Fabbisogni standard dei Comuni (SOSE, Ministero dell’Economia)'),
     ('dati.toscana.it', 'Regione Toscana — Servizi educativi per la prima infanzia'),
     ('dati.istruzione.it', 'Ministero dell’Istruzione e del Merito — Open data della scuola'),
     ('invalsi', 'INVALSI — Risultati delle prove nazionali'),
@@ -1720,6 +1721,12 @@ def bilanci(engine: Engine) -> dict:
                       'Spesa per istruzione e diritto allo studio, per residente'),
         'capital': eur('capital', 'capitalExpenditureCommittedPerResident',
                        'Spesa per investimenti impegnata per residente'),
+        'needspend': engine.measure('needspend', 'standardNeedsSpendingGap', 'total',
+                                    'Spesa storica rispetto alla spesa standard, %', 'change', 1,
+                                    benchmarks=('tuscany', 'italy')),
+        'needserv': engine.measure('needserv', 'standardNeedsServiceGap', 'total',
+                                   'Servizi svolti rispetto al livello standard, %', 'change', 1,
+                                   benchmarks=('tuscany', 'italy')),
         'capay': eur('capay', 'capitalPayments', 'Pagamenti per investimenti, per residente'),
         'result': eur('result', 'availableAdministrationResultPerResident',
                       'Parte disponibile del risultato di amministrazione, per residente'),
@@ -1801,7 +1808,45 @@ def bilanci(engine: Engine) -> dict:
         'un’unione dei Comuni o un’azienda sanitaria. I dati dicono quanto è stato impegnato, non che cosa hanno '
         'ricevuto i cittadini.')
 
-    # 03 — investimenti
+    # 03 — fabbisogni standard
+    ns, nv = m['needspend'], m['needserv']
+    native = {o['geography']: o['evidence'][1]['nativeComponents'] for o in engine.ask({'operation': 'compare', 'selectors': [
+        {'metric': 'standardNeedsSpendingGap', 'dimension': 'total', 'towns': codes}]})['observations']}
+    hist = {c: native[c]['historicalSpendingPerResident'] for c in codes}
+    std = {c: native[c]['standardSpendingPerResident'] for c in codes}
+    over = [c for c, v, _ in ns.ranking if v > 0]
+    under = [c for c, v, _ in ns.ranking if v < 0]
+    more = [c for c, v, _ in nv.ranking if v > 0]
+    top = hi('needspend')[0]
+    ns_text = (
+        f'Il fabbisogno standard è la stima, fatta da SOSE per il Ministero dell’Economia, di quanto dovrebbe spendere un '
+        f'Comune con le stesse caratteristiche (abitanti, territorio, turisti, seconde case) per le funzioni '
+        f'fondamentali. Nell’annualità {ns.period} '
+        + (f'{join_names([nm(c) for c in over])} {"spende" if len(over) == 1 else "spendono"} più della spesa standard'
+           if over else 'nessun Comune spende più della spesa standard')
+        + (f', {join_names([nm(c) for c in under])} meno. ' if under else '. ')
+        + f'Lo scarto più alto è a <b>{nm(top)}: {signed(hi("needspend")[1])}%</b>, cioè {euro(hist[top])} per residente '
+          f'contro {euro(std[top])}; il più basso a {nm(lo("needspend")[0])} ({signed(lo("needspend")[1])}%). Nei Comuni '
+          f'toscani, sommati, lo scarto è {signed(ns.benchmarks["tuscany"])}%; in Italia è praticamente zero per costruzione, '
+          f'perché la spesa standard è ripartita sul totale della spesa effettiva.')
+    nv_text = (
+        f'L’altra metà della lettura sono i servizi svolti. Rispetto al livello standard sono di più in '
+        f'{count_words(len(more), total)}: da {signed(lo("needserv")[1])}% di {nm(lo("needserv")[0])} a '
+        f'<b>{signed(hi("needserv")[1])}% di {nm(hi("needserv")[0])}</b>. Nei Comuni toscani la media, pesata sulla spesa '
+        f'standard, è {signed(nv.benchmarks["tuscany"])}%, in Italia {signed(nv.benchmarks["italy"])}%.')
+    towns3 = {c: (f'<b>{esc(nm(c))}</b>: spesa effettiva {euro(hist[c])} per residente contro una spesa standard di '
+                  f'{euro(std[c])} ({signed(ns.values[c])}%); servizi svolti {signed(nv.values[c])}% rispetto al livello '
+                  f'standard.') for c in codes}
+    ch_needs = chapter(3, 'fabbisogni', 'Rispetto al fabbisogno standard',
+        'Il Comune spende, e offre servizi, più o meno di quanto ci si aspetterebbe?',
+        f'<p>{ns_text}</p>{bar_chart(ns, N, "Spesa effettiva rispetto alla spesa standard")}'
+        f'<p>{nv_text}</p>{bar_chart(nv, N, "Servizi svolti rispetto al livello standard")}' + town_blocks(towns3),
+        'Il fabbisogno standard è una stima statistica, non un obiettivo di bilancio né un voto alla gestione. Spendere '
+        'più dello standard insieme a più servizi indica la scelta di offrire di più; spendere di più con servizi in '
+        'linea indica costi più alti. I valori per residente dividono per i soli residenti, anche dove il modello tiene '
+        'conto dei turisti, e i servizi sono contati in quantità, non in qualità.')
+
+    # 04 — investimenti
     cp, py = m['capital'], m['capay']
     cp_text = (
         f'Per opere e investimenti (strade, scuole, edifici, verde) i Comuni hanno impegnato in media '
@@ -1810,14 +1855,14 @@ def bilanci(engine: Engine) -> dict:
         f'registrati nell’anno sono stati {euro(py.versilia)} per residente.')
     towns3 = {c: (f'<b>{esc(nm(c))}</b>: {euro(cp.values[c])} per residente impegnati per investimenti, '
                   f'{euro(py.values[c])} pagati nell’anno.') for c in codes}
-    ch3 = chapter(3, 'investimenti', 'Gli investimenti', 'Quanto investono i Comuni in opere pubbliche?',
+    ch3 = chapter(4, 'investimenti', 'Gli investimenti', 'Quanto investono i Comuni in opere pubbliche?',
         f'<p>{cp_text}</p>{bar_chart(cp, N, "Investimenti impegnati per residente")}'
         f'{bar_chart(py, N, "Investimenti pagati per residente")}' + town_blocks(towns3),
         'Gli investimenti cambiano molto da un anno all’altro: basta una grande opera, o un finanziamento del PNRR, per '
         'far salire il valore di un Comune. Impegni e pagamenti non coincidono, perché un cantiere si paga a stati di '
         'avanzamento, anche negli anni successivi.')
 
-    # 04 — equilibrio dei conti
+    # 05 — equilibrio dei conti
     rs, rg, pc = m['result'], m['rigid'], m['paycap']
     deficit = [c for c, v, _ in rs.ranking if v < 0]
     rs_text = (
@@ -1834,14 +1879,14 @@ def bilanci(engine: Engine) -> dict:
     towns4 = {c: (f'<b>{esc(nm(c))}</b>: parte disponibile del risultato {euro(rs.values[c])} per residente; spese '
                   f'rigide {il(pct(rg.values[c]))} delle entrate correnti; pagato nell’anno {il(pct(pc.values[c]))} '
                   f'della spesa corrente.') for c in codes}
-    ch4 = chapter(4, 'equilibrio', 'I conti in ordine', 'Quanto margine hanno i bilanci comunali?',
+    ch4 = chapter(5, 'equilibrio', 'I conti in ordine', 'Quanto margine hanno i bilanci comunali?',
         f'<p>{rs_text}</p>{bar_chart(rs, N, "Parte disponibile del risultato di amministrazione")}'
         f'<p>{rg_text}</p>{bar_chart(rg, N, "Spese rigide sulle entrate correnti")}' + town_blocks(towns4),
         'Un risultato disponibile positivo può essere usato, con molte regole, per nuove spese; uno negativo obbliga a '
         'rientrare. Più alte sono le spese rigide, meno spazio resta per scegliere. Sono indicatori del bilancio, non '
         'un giudizio sulla gestione, e non dicono quanto il Comune potrà spendere davvero l’anno dopo.')
 
-    # 05 — debito
+    # 06 — debito
     db, it = m['debt'], m['interest']
     no_debt = [c for c in codes if db.values[c] == 0]
     db_text = (
@@ -1855,14 +1900,14 @@ def bilanci(engine: Engine) -> dict:
         f'{al(pct(hi("interest")[1]))} di {nm(hi("interest")[0])}.')
     towns5 = {c: (f'<b>{esc(nm(c))}</b>: debito per mutui e prestiti {euro(db.values[c])} per residente; interessi '
                   f'{il(pct(it.values[c]))} delle entrate correnti.') for c in codes}
-    ch5 = chapter(5, 'debito', 'Il debito', 'Quanto pesano mutui e prestiti?',
+    ch5 = chapter(6, 'debito', 'Il debito', 'Quanto pesano mutui e prestiti?',
         f'<p>{db_text}</p>{bar_chart(db, N, "Debito per mutui e prestiti, per residente")}'
         f'<p>{it_text}</p>{bar_chart(it, N, "Interessi sulle entrate correnti")}' + town_blocks(towns5),
         'I Comuni possono indebitarsi solo per investire, e ogni rata toglie risorse ai servizi degli anni successivi. '
         'Il dato conta i prestiti, non tutti gli altri debiti verso fornitori; per Massarosa non comprende le passività '
         'del dissesto del 2019, gestite fuori dal bilancio ordinario.')
 
-    # 06 — tasse e tariffe
+    # 07 — tasse e tariffe
     ir, ta, ws = m['irpef'], m['tari'], m['waste']
     ir_text = (
         f'Con un reddito imponibile di 30.000 euro, l’addizionale comunale IRPEF del {ir.period} va da '
@@ -1877,7 +1922,7 @@ def bilanci(engine: Engine) -> dict:
     towns6 = {c: (f'<b>{esc(nm(c))}</b>: addizionale IRPEF {cents(ir.values[c])} su 30.000 euro di reddito; TARI '
                   f'{euro(ta.values[c])} per 3 persone in 100 m²; servizio rifiuti {euro(ws.values[c])} per abitante.')
               for c in codes}
-    ch6 = chapter(6, 'tasse', 'Tasse e tariffe', 'Quanto chiede il Comune a una famiglia tipo?',
+    ch6 = chapter(7, 'tasse', 'Tasse e tariffe', 'Quanto chiede il Comune a una famiglia tipo?',
         f'<p>{ir_text}</p>{bar_chart(ir, N, "Addizionale comunale IRPEF su 30.000 € di reddito")}'
         f'<p>{ta_text}</p>{bar_chart(ta, N, "TARI di una famiglia di 3 persone in 100 m²")}'
         f'{bar_chart(ws, N, "Costo del servizio rifiuti per abitante")}' + town_blocks(towns6),
@@ -1886,7 +1931,7 @@ def bilanci(engine: Engine) -> dict:
         'dove ci sono molti turisti e seconde case, perché i rifiuti prodotti da chi non è residente vengono divisi '
         'per i soli residenti.')
 
-    # 07 — personale e servizi online
+    # 08 — personale e servizi online
     st, s55, on = m['staff'], m['staff55'], m['online']
     on_below = [c for c in codes if on.values[c] < on.benchmarks['tuscany']]
     st_text = (
@@ -1902,7 +1947,7 @@ def bilanci(engine: Engine) -> dict:
     towns7 = {c: (f'<b>{esc(nm(c))}</b>: {num(st.values[c], 1)} dipendenti comunali ogni 1.000 abitanti, '
                   f'{il(pct(s55.values[c]))} con 55 anni o più; servizi completamente online {il(pct(on.values[c]))}.')
               for c in codes}
-    ch7 = chapter(7, 'personale', 'Chi lavora in Comune', 'Quanto personale hanno i Comuni e quanti servizi sono online?',
+    ch7 = chapter(8, 'personale', 'Chi lavora in Comune', 'Quanto personale hanno i Comuni e quanti servizi sono online?',
         f'<p>{st_text}</p>{bar_chart(st, N, "Dipendenti comunali ogni 1.000 abitanti")}'
         f'{bar_chart(s55, N, "Dipendenti con 55 anni o più")}'
         f'<p>{on_text}</p>{bar_chart(on, N, "Servizi comunali completamente online")}' + town_blocks(towns7),
@@ -1915,6 +1960,9 @@ def bilanci(engine: Engine) -> dict:
         (euro(rev.versilia), f'Entrate correnti per residente nel {rev.period}, media dei Comuni della Versilia; da '
                              f'{euro(lo("revenue")[1])} a {nm(lo("revenue")[0])} a {euro(hi("revenue")[1])} a '
                              f'{nm(hi("revenue")[0])}.', 'entrate'),
+        (f'{signed(hi("needspend")[1])}%', f'Spesa effettiva di {nm(hi("needspend")[0])} rispetto al fabbisogno standard, '
+                                           f'lo scarto più alto; servizi svolti {signed(nv.values[hi("needspend")[0]])}% '
+                                           f'rispetto al livello standard.', 'fabbisogni'),
         (euro(cp.versilia), 'Investimenti impegnati per residente, media dei Comuni della Versilia.', 'investimenti'),
         (pct(hi('rigid')[1]), f'Entrate correnti assorbite da personale, prestiti e disavanzo a {nm(hi("rigid")[0])}, '
                               f'il valore più alto.', 'equilibrio'),
@@ -1927,6 +1975,8 @@ def bilanci(engine: Engine) -> dict:
     towns_summary = {c: '<ul class="dr-town-list">' + ''.join([
         summary_item('Entrate correnti per residente', euro(rev.values[c]), f'Versilia {euro(rev.versilia)}'),
         summary_item('Spesa corrente per residente', euro(sp.values[c]), f'Versilia {euro(sp.versilia)}'),
+        summary_item('Spesa rispetto al fabbisogno standard', f'{signed(ns.values[c])}%', f'Toscana {signed(ns.benchmarks["tuscany"])}%'),
+        summary_item('Servizi rispetto al livello standard', f'{signed(nv.values[c])}%', f'Toscana {signed(nv.benchmarks["tuscany"])}%'),
         summary_item('Investimenti impegnati per residente', euro(cp.values[c]), f'Versilia {euro(cp.versilia)}'),
         summary_item('Spese rigide sulle entrate correnti', pct(rg.values[c]), f'{ordinal(rg.rank(c))} su 7'),
         summary_item('Debito per residente', euro(db.values[c]), f'Versilia {euro(db.versilia)}'),
@@ -1937,7 +1987,8 @@ def bilanci(engine: Engine) -> dict:
         'Quanti cittadini usano ogni servizio e quanto costa ciascuna prestazione: i bilanci dicono quanto si spende, '
         'non per quante persone.',
         'Quanto i servizi sono di buona qualità: tempi di attesa, soddisfazione degli utenti, risultati.',
-        'Di quante risorse avrebbe bisogno ogni Comune per i servizi essenziali (i fabbisogni standard).',
+        'Se i servizi in più o in meno rispetto allo standard siano anche migliori o peggiori: il fabbisogno standard '
+        'conta le quantità.',
         'Quanto delle risorse disponibili è vincolato a scopi precisi e quanto può essere davvero speso liberamente.',
         'A che punto sono i cantieri finanziati: gli impegni non dicono quando un’opera sarà finita.',
         'Quanto pagano davvero le famiglie di tasse e tariffe comunali, tenendo conto di esenzioni e riduzioni.',
@@ -1945,15 +1996,17 @@ def bilanci(engine: Engine) -> dict:
     return dict(
         slug='bilanci', title='I conti dei Comuni', eyebrow='Dossier · Bilanci e servizi',
         unknown_topic='sui conti dei Comuni', theme='bilanci', theme_label='Tutti i dati su bilanci e amministrazione',
-        lead='Entrate, spesa per i servizi, investimenti, debito, tasse locali e personale: una lettura dei bilanci '
-             'pubblici dei sette Comuni della Versilia.',
-        description='Entrate e spese, investimenti, equilibrio dei conti, debito, addizionale IRPEF e TARI, personale e '
-                    'servizi online dei sette Comuni della Versilia, dai rendiconti ufficiali.',
-        periods=f'Rendiconti {rev.period}, tasse e tariffe {ir.period}, costo dei rifiuti {ws.period}, personale '
-                f'{st.period}, servizi online {on.period}.',
-        measures=m, chapters=[ch1, ch2, ch3, ch4, ch5, ch6, ch7], key_points=key_points,
+        lead='Entrate, spesa per i servizi, confronto con i fabbisogni standard, investimenti, debito, tasse locali e '
+             'personale: una lettura dei bilanci pubblici dei sette Comuni della Versilia.',
+        description='Entrate e spese, spesa e servizi rispetto ai fabbisogni standard, investimenti, equilibrio dei conti, '
+                    'debito, addizionale IRPEF e TARI, personale e servizi online dei sette Comuni della Versilia, dai '
+                    'rendiconti ufficiali e da OpenCivitas.',
+        periods=f'Rendiconti {rev.period}, fabbisogni standard {ns.period}, tasse e tariffe {ir.period}, costo dei rifiuti '
+                f'{ws.period}, personale {st.period}, servizi online {on.period}.',
+        measures=m, chapters=[ch1, ch2, ch_needs, ch3, ch4, ch5, ch6, ch7], key_points=key_points,
         towns_summary=towns_summary, unknown=unknown,
-        toc=[('entrate', 'Quanto entra'), ('spesa', 'Dove vanno i soldi'), ('investimenti', 'Gli investimenti'),
+        toc=[('entrate', 'Quanto entra'), ('spesa', 'Dove vanno i soldi'), ('fabbisogni', 'Rispetto al fabbisogno standard'),
+             ('investimenti', 'Gli investimenti'),
              ('equilibrio', 'I conti in ordine'), ('debito', 'Il debito'), ('tasse', 'Tasse e tariffe'),
              ('personale', 'Chi lavora in Comune')])
 

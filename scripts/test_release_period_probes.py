@@ -158,6 +158,7 @@ def period_cases() -> None:
                      "link": r'href="([^"]*datizip/(20\d\d)/toscana\.zip)"', "expect": "PK", "hint": "h"},
         "yearend": {"url": "https://x.test/farmacie/", "kind": "yearend", "pattern": r"FRM_FARMA_\d+_(20\d{6})", "text": "raw", "hint": "h"},
         "zipnames": {"url": "COOKIES https://x.test/succursali", "kind": "yearend", "pattern": r"(20\d\d-\d\d-\d\d)_SUCCURSALI_BANCHE", "text": "names", "hint": "h"},
+        "paged": {"url": "https://x.test/od?p=1", "also": ["https://x.test/od?p=2"], "pattern": r"(20\d\d)_Ind_TOT_01_IT\.csv", "hint": "h"},
         "values": {"mode": "values", "url": "https://x.test/ind/", "link": r'href="([^"]+)"[^>]*>\s*Indicatori (20\d\d)\s*</a>',
                    "column": "ind18", "geography": "codice_istat_num", "hint": "h"},
     })
@@ -223,6 +224,11 @@ def period_cases() -> None:
         return {"COOKIES https://x.test/succursali": buffer.getvalue()}
     assert run("zipnames", "2025", branches("2026-11-16"))["status"] == "current"
     assert run("zipnames", "2025", branches("2027-01-04"))["status"] == "release_detected"
+    # `also`: elenco paginato in ordine variabile, il file può stare in qualsiasi pagina.
+    od = lambda a, b: {"https://x.test/od?p=1": page(a), "https://x.test/od?p=2": page(b)}
+    assert run("paged", "2023", od("altro", '<a href="/d/2023_Ind_TOT_01_IT.csv/x">t</a>'))["status"] == "current"
+    assert run("paged", "2023", od('<a href="/d/2024_Ind_TOT_01_IT.csv/y">t</a>', '2023_Ind_TOT_01_IT.csv'))["status"] == "release_detected"
+    assert run("paged", "2023", od("altro", "altro"))["reason"] == "structure_changed"
     # `values`: l'anno del file cambia, il dato no (ind18 resta al 31/12/2022 nel file 2024).
     listing = page('<a href="/f/ind-2023">Indicatori 2023</a>&nbsp;(file.csv) <a href="/f/ind-2024-1">Indicatori 2024</a>&nbsp;(file.csv)')
     csv_file = lambda a, b: f"Comune;codice_istat_num;ind17;ind18\nCamaiore;46005;1;{a}\nMassarosa;46018;nd;{b}\n".encode("cp1252")

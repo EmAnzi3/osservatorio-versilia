@@ -16,5 +16,6 @@
   "erpArrears": [],
   "sdmxProbe": [],
   "bdiBranchesProbe": false,
-  "bdiBranches": []
+  "bdiBranches": [],
+  "opencivitasNeeds": []
 }

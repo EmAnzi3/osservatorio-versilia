@@ -1,0 +1,26 @@
+{
+  "home": {
+    "performance": 96,
+    "accessibility": 97,
+    "best-practices": 100,
+    "seo": 100
+  },
+  "tema-demografia": {
+    "performance": 79,
+    "accessibility": 93,
+    "best-practices": 96,
+    "seo": 100
+  },
+  "comune-massarosa": {
+    "performance": 97,
+    "accessibility": 93,
+    "best-practices": 96,
+    "seo": 100
+  },
+  "stato-dati": {
+    "performance": 100,
+    "accessibility": 97,
+    "best-practices": 100,
+    "seo": 100
+  }
+}

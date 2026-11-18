@@ -1,0 +1,752 @@
+{
+  "schemaVersion": 1,
+  "sampleCount": 40,
+  "baselineCount": 40,
+  "recordMode": false,
+  "failures": [
+    "generic--percent-dotplot--mobile: aHash=3.65%, dHash=11.59%, color=0.094, size=349x744 vs 349x744",
+    "generic--signed-dotplot--mobile: aHash=13.54%, dHash=19.93%, color=0.177, size=349x736 vs 349x748",
+    "composite--distribution--mobile: aHash=19.10%, dHash=23.55%, color=0.328, size=349x849 vs 349x870",
+    "composite--securitymeasures--mobile: aHash=2.60%, dHash=9.42%, color=0.052, size=349x615 vs 349x614",
+    "composite--stock--mobile: aHash=3.65%, dHash=11.59%, color=0.094, size=349x744 vs 349x744",
+    "composite--mobility--mobile: aHash=13.54%, dHash=19.93%, color=0.177, size=349x736 vs 349x748",
+    "composite--demographicbreakdown--mobile: aHash=3.30%, dHash=10.69%, color=0.115, size=349x677 vs 349x677",
+    "composite--invalsiprofile--mobile: aHash=6.08%, dHash=13.41%, color=0.094, size=349x667 vs 349x668",
+    "composite--roadnetworkprofile--mobile: aHash=4.51%, dHash=11.78%, color=0.094, size=349x668 vs 349x668",
+    "composite--omi--mobile: aHash=8.85%, dHash=13.22%, color=0.167, size=349x675 vs 349x675",
+    "composite--territorialclassification--mobile: aHash=5.03%, dHash=13.59%, color=0.068, size=349x1942 vs 349x1963",
+    "composite--landcoverprofile--mobile: aHash=5.56%, dHash=20.47%, color=0.068, size=349x1532 vs 349x1533",
+    "composite--forestcoverindex--mobile: aHash=5.73%, dHash=15.22%, color=0.073, size=349x784 vs 349x785",
+    "composite--hydrorisk--mobile: aHash=5.73%, dHash=8.15%, color=0.083, size=349x687 vs 349x688",
+    "composite--soilstockprofile--mobile: aHash=6.94%, dHash=15.76%, color=0.099, size=349x667 vs 349x668",
+    "composite--soilchangeprofile--mobile: aHash=4.34%, dHash=13.77%, color=0.083, size=349x667 vs 349x668",
+    "composite--hydronetworkprofile--mobile: aHash=4.86%, dHash=11.96%, color=0.099, size=349x667 vs 349x667",
+    "composite--drinkingwaterquality--mobile: aHash=4.51%, dHash=20.29%, color=0.057, size=349x1317 vs 349x1316",
+    "composite--remediationproceedings--mobile: aHash=5.38%, dHash=13.77%, color=0.062, size=349x1365 vs 349x1365",
+    "composite--financialprofile--mobile: aHash=2.78%, dHash=14.13%, color=0.052, size=349x630 vs 349x630"
+  ],
+  "results": [
+    {
+      "sample": "theme--demografia--desktop",
+      "status": "match",
+      "comparison": {
+        "dimensionsMatch": true,
+        "actualWidth": 927,
+        "actualHeight": 476,
+        "expectedWidth": 927,
+        "expectedHeight": 476,
+        "aHashHammingRatio": 0.017361111111111112,
+        "dHashHammingRatio": 0.03804347826086957,
+        "colorMeanAbsoluteDifference": 0.015625
+      },
+      "kind": "theme",
+      "theme": "demografia",
+      "metric": "population",
+      "viewport": "desktop"
+    },
+    {
+      "sample": "theme--economia--desktop",
+      "status": "match",
+      "comparison": {
+        "dimensionsMatch": true,
+        "actualWidth": 927,
+        "actualHeight": 476,
+        "expectedWidth": 927,
+        "expectedHeight": 476,
+        "aHashHammingRatio": 0.012152777777777778,
+        "dHashHammingRatio": 0.036231884057971016,
+        "colorMeanAbsoluteDifference": 0.03125
+      },
+      "kind": "theme",
+      "theme": "economia",
+      "metric": "income",
+      "viewport": "desktop"
+    },
+    {
+      "sample": "theme--lavoro--desktop",
+      "status": "match",
+      "comparison": {
+        "dimensionsMatch": true,
+        "actualWidth": 927,
+        "actualHeight": 560,
+        "expectedWidth": 927,
+        "expectedHeight": 560,
+        "aHashHammingRatio": 0.012152777777777778,
+        "dHashHammingRatio": 0.018115942028985508,
+        "colorMeanAbsoluteDifference": 0.026041666666666668
+      },
+      "kind": "theme",
+      "theme": "lavoro",
+      "metric": "employmentRate",
+      "viewport": "desktop"
+    },
+    {
+      "sample": "theme--istruzione--desktop",
+      "status": "match",
+      "comparison": {
+        "dimensionsMatch": true,
+        "actualWidth": 927,
+        "actualHeight": 560,
+        "expectedWidth": 927,
+        "expectedHeight": 560,
+        "aHashHammingRatio": 0.013888888888888888,
+        "dHashHammingRatio": 0.018115942028985508,
+        "colorMeanAbsoluteDifference": 0.015625
+      },
+      "kind": "theme",
+      "theme": "istruzione",
+      "metric": "diplomaPlus",
+      "viewport": "desktop"
+    },
+    {
+      "sample": "theme--salute--desktop",
+      "status": "match",
+      "comparison": {
+        "dimensionsMatch": true,
+        "actualWidth": 927,
+        "actualHeight": 560,
+        "expectedWidth": 927,
+        "expectedHeight": 560,
+        "aHashHammingRatio": 0.027777777777777776,
+        "dHashHammingRatio": 0.04891304347826087,
+        "colorMeanAbsoluteDifference": 0.005208333333333333
+      },
+      "kind": "theme",
+      "theme": "salute",
+      "metric": "lifeExpectancy",
+      "viewport": "desktop"
+    },
+    {
+      "sample": "theme--mobilita--desktop",
+      "status": "match",
+      "comparison": {
+        "dimensionsMatch": true,
+        "actualWidth": 927,
+        "actualHeight": 476,
+        "expectedWidth": 927,
+        "expectedHeight": 476,
+        "aHashHammingRatio": 0.010416666666666666,
+        "dHashHammingRatio": 0.034420289855072464,
+        "colorMeanAbsoluteDifference": 0.010416666666666666
+      },
+      "kind": "theme",
+      "theme": "mobilita",
+      "metric": "outsideMunicipality",
+      "viewport": "desktop"
+    },
+    {
+      "sample": "theme--sicurezza--desktop",
+      "status": "match",
+      "comparison": {
+        "dimensionsMatch": true,
+        "actualWidth": 927,
+        "actualHeight": 560,
+        "expectedWidth": 927,
+        "expectedHeight": 560,
+        "aHashHammingRatio": 0.012152777777777778,
+        "dHashHammingRatio": 0.014492753623188406,
+        "colorMeanAbsoluteDifference": 0.015625
+      },
+      "kind": "theme",
+      "theme": "sicurezza",
+      "metric": "roadSafety",
+      "viewport": "desktop"
+    },
+    {
+      "sample": "theme--abitare--desktop",
+      "status": "match",
+      "comparison": {
+        "dimensionsMatch": true,
+        "actualWidth": 927,
+        "actualHeight": 609,
+        "expectedWidth": 927,
+        "expectedHeight": 609,
+        "aHashHammingRatio": 0.013888888888888888,
+        "dHashHammingRatio": 0.02717391304347826,
+        "colorMeanAbsoluteDifference": 0.041666666666666664
+      },
+      "kind": "theme",
+      "theme": "abitare",
+      "metric": "omiResidential",
+      "viewport": "desktop"
+    },
+    {
+      "sample": "theme--ambiente--desktop",
+      "status": "match",
+      "comparison": {
+        "dimensionsMatch": true,
+        "actualWidth": 927,
+        "actualHeight": 476,
+        "expectedWidth": 927,
+        "expectedHeight": 476,
+        "aHashHammingRatio": 0.013888888888888888,
+        "dHashHammingRatio": 0.025362318840579712,
+        "colorMeanAbsoluteDifference": 0.005208333333333333
+      },
+      "kind": "theme",
+      "theme": "ambiente",
+      "metric": "municipalSurface",
+      "viewport": "desktop"
+    },
+    {
+      "sample": "theme--bilanci--desktop",
+      "status": "match",
+      "comparison": {
+        "dimensionsMatch": true,
+        "actualWidth": 927,
+        "actualHeight": 476,
+        "expectedWidth": 927,
+        "expectedHeight": 476,
+        "aHashHammingRatio": 0.013888888888888888,
+        "dHashHammingRatio": 0.030797101449275364,
+        "colorMeanAbsoluteDifference": 0.03125
+      },
+      "kind": "theme",
+      "theme": "bilanci",
+      "metric": "currentRevenueAccruedPerResident",
+      "viewport": "desktop"
+    },
+    {
+      "sample": "theme--comunita--desktop",
+      "status": "match",
+      "comparison": {
+        "dimensionsMatch": true,
+        "actualWidth": 927,
+        "actualHeight": 476,
+        "expectedWidth": 927,
+        "expectedHeight": 476,
+        "aHashHammingRatio": 0.013888888888888888,
+        "dHashHammingRatio": 0.030797101449275364,
+        "colorMeanAbsoluteDifference": 0.020833333333333332
+      },
+      "kind": "theme",
+      "theme": "comunita",
+      "metric": "publicWorks",
+      "viewport": "desktop"
+    },
+    {
+      "sample": "generic--lollipop--mobile",
+      "status": "match",
+      "comparison": {
+        "dimensionsMatch": true,
+        "actualWidth": 349,
+        "actualHeight": 485,
+        "expectedWidth": 349,
+        "expectedHeight": 485,
+        "aHashHammingRatio": 0.03993055555555555,
+        "dHashHammingRatio": 0.09239130434782608,
+        "colorMeanAbsoluteDifference": 0.08333333333333333
+      },
+      "kind": "generic-family",
+      "family": "lollipop",
+      "metric": "population",
+      "viewport": "mobile"
+    },
+    {
+      "sample": "generic--percent-dotplot--mobile",
+      "status": "mismatch",
+      "comparison": {
+        "dimensionsMatch": true,
+        "actualWidth": 349,
+        "actualHeight": 744,
+        "expectedWidth": 349,
+        "expectedHeight": 744,
+        "aHashHammingRatio": 0.036458333333333336,
+        "dHashHammingRatio": 0.11594202898550725,
+        "colorMeanAbsoluteDifference": 0.09375
+      },
+      "kind": "generic-family",
+      "family": "percent-dotplot",
+      "metric": "foreignResidents",
+      "viewport": "mobile"
+    },
+    {
+      "sample": "generic--signed-dotplot--mobile",
+      "status": "mismatch",
+      "comparison": {
+        "dimensionsMatch": false,
+        "actualWidth": 349,
+        "actualHeight": 736,
+        "expectedWidth": 349,
+        "expectedHeight": 748,
+        "aHashHammingRatio": 0.13541666666666666,
+        "dHashHammingRatio": 0.19927536231884058,
+        "colorMeanAbsoluteDifference": 0.17708333333333334
+      },
+      "kind": "generic-family",
+      "family": "signed-dotplot",
+      "metric": "internalResidentialMobility",
+      "viewport": "mobile"
+    },
+    {
+      "sample": "composite--distribution--mobile",
+      "status": "mismatch",
+      "comparison": {
+        "dimensionsMatch": false,
+        "actualWidth": 349,
+        "actualHeight": 849,
+        "expectedWidth": 349,
+        "expectedHeight": 870,
+        "aHashHammingRatio": 0.1909722222222222,
+        "dHashHammingRatio": 0.23550724637681159,
+        "colorMeanAbsoluteDifference": 0.328125
+      },
+      "kind": "composite-family",
+      "family": "distribution",
+      "metric": "ageDistribution",
+      "viewport": "mobile"
+    },
+    {
+      "sample": "composite--securitymeasures--mobile",
+      "status": "mismatch",
+      "comparison": {
+        "dimensionsMatch": false,
+        "actualWidth": 349,
+        "actualHeight": 615,
+        "expectedWidth": 349,
+        "expectedHeight": 614,
+        "aHashHammingRatio": 0.026041666666666668,
+        "dHashHammingRatio": 0.09420289855072464,
+        "colorMeanAbsoluteDifference": 0.052083333333333336
+      },
+      "kind": "composite-family",
+      "family": "securityMeasures",
+      "metric": "dependencyIndices",
+      "viewport": "mobile"
+    },
+    {
+      "sample": "composite--stock--mobile",
+      "status": "mismatch",
+      "comparison": {
+        "dimensionsMatch": true,
+        "actualWidth": 349,
+        "actualHeight": 744,
+        "expectedWidth": 349,
+        "expectedHeight": 744,
+        "aHashHammingRatio": 0.036458333333333336,
+        "dHashHammingRatio": 0.11594202898550725,
+        "colorMeanAbsoluteDifference": 0.09375
+      },
+      "kind": "composite-family",
+      "family": "stock",
+      "metric": "foreignResidents",
+      "viewport": "mobile"
+    },
+    {
+      "sample": "composite--mobility--mobile",
+      "status": "mismatch",
+      "comparison": {
+        "dimensionsMatch": false,
+        "actualWidth": 349,
+        "actualHeight": 736,
+        "expectedWidth": 349,
+        "expectedHeight": 748,
+        "aHashHammingRatio": 0.13541666666666666,
+        "dHashHammingRatio": 0.19927536231884058,
+        "colorMeanAbsoluteDifference": 0.17708333333333334
+      },
+      "kind": "composite-family",
+      "family": "mobility",
+      "metric": "internalResidentialMobility",
+      "viewport": "mobile"
+    },
+    {
+      "sample": "composite--demographicbreakdown--mobile",
+      "status": "mismatch",
+      "comparison": {
+        "dimensionsMatch": true,
+        "actualWidth": 349,
+        "actualHeight": 677,
+        "expectedWidth": 349,
+        "expectedHeight": 677,
+        "aHashHammingRatio": 0.03298611111111111,
+        "dHashHammingRatio": 0.1068840579710145,
+        "colorMeanAbsoluteDifference": 0.11458333333333333
+      },
+      "kind": "composite-family",
+      "family": "demographicBreakdown",
+      "metric": "employmentRate",
+      "viewport": "mobile"
+    },
+    {
+      "sample": "composite--invalsiprofile--mobile",
+      "status": "mismatch",
+      "comparison": {
+        "dimensionsMatch": false,
+        "actualWidth": 349,
+        "actualHeight": 667,
+        "expectedWidth": 349,
+        "expectedHeight": 668,
+        "aHashHammingRatio": 0.06076388888888889,
+        "dHashHammingRatio": 0.13405797101449277,
+        "colorMeanAbsoluteDifference": 0.09375
+      },
+      "kind": "composite-family",
+      "family": "invalsiProfile",
+      "metric": "invalsiResults",
+      "viewport": "mobile"
+    },
+    {
+      "sample": "composite--sexbreakdown--mobile",
+      "status": "match",
+      "comparison": {
+        "dimensionsMatch": true,
+        "actualWidth": 349,
+        "actualHeight": 615,
+        "expectedWidth": 349,
+        "expectedHeight": 615,
+        "aHashHammingRatio": 0.020833333333333332,
+        "dHashHammingRatio": 0.07065217391304347,
+        "colorMeanAbsoluteDifference": 0.08854166666666667
+      },
+      "kind": "composite-family",
+      "family": "sexBreakdown",
+      "metric": "lifeExpectancy",
+      "viewport": "mobile"
+    },
+    {
+      "sample": "composite--roadnetworkprofile--mobile",
+      "status": "mismatch",
+      "comparison": {
+        "dimensionsMatch": true,
+        "actualWidth": 349,
+        "actualHeight": 668,
+        "expectedWidth": 349,
+        "expectedHeight": 668,
+        "aHashHammingRatio": 0.04513888888888889,
+        "dHashHammingRatio": 0.11775362318840579,
+        "colorMeanAbsoluteDifference": 0.09375
+      },
+      "kind": "composite-family",
+      "family": "roadNetworkProfile",
+      "metric": "roadNetworkProfile",
+      "viewport": "mobile"
+    },
+    {
+      "sample": "composite--omi--mobile",
+      "status": "mismatch",
+      "comparison": {
+        "dimensionsMatch": true,
+        "actualWidth": 349,
+        "actualHeight": 675,
+        "expectedWidth": 349,
+        "expectedHeight": 675,
+        "aHashHammingRatio": 0.08854166666666667,
+        "dHashHammingRatio": 0.1322463768115942,
+        "colorMeanAbsoluteDifference": 0.16666666666666666
+      },
+      "kind": "composite-family",
+      "family": "omi",
+      "metric": "omiResidential",
+      "viewport": "mobile"
+    },
+    {
+      "sample": "composite--territorialclassification--mobile",
+      "status": "mismatch",
+      "comparison": {
+        "dimensionsMatch": false,
+        "actualWidth": 349,
+        "actualHeight": 1942,
+        "expectedWidth": 349,
+        "expectedHeight": 1963,
+        "aHashHammingRatio": 0.050347222222222224,
+        "dHashHammingRatio": 0.1358695652173913,
+        "colorMeanAbsoluteDifference": 0.06770833333333333
+      },
+      "kind": "composite-family",
+      "family": "territorialClassification",
+      "metric": "territorialClassification",
+      "viewport": "mobile"
+    },
+    {
+      "sample": "composite--landcoverprofile--mobile",
+      "status": "mismatch",
+      "comparison": {
+        "dimensionsMatch": false,
+        "actualWidth": 349,
+        "actualHeight": 1532,
+        "expectedWidth": 349,
+        "expectedHeight": 1533,
+        "aHashHammingRatio": 0.05555555555555555,
+        "dHashHammingRatio": 0.20471014492753623,
+        "colorMeanAbsoluteDifference": 0.06770833333333333
+      },
+      "kind": "composite-family",
+      "family": "landCoverProfile",
+      "metric": "landCoverProfile",
+      "viewport": "mobile"
+    },
+    {
+      "sample": "composite--forestcoverindex--mobile",
+      "status": "mismatch",
+      "comparison": {
+        "dimensionsMatch": false,
+        "actualWidth": 349,
+        "actualHeight": 784,
+        "expectedWidth": 349,
+        "expectedHeight": 785,
+        "aHashHammingRatio": 0.057291666666666664,
+        "dHashHammingRatio": 0.15217391304347827,
+        "colorMeanAbsoluteDifference": 0.07291666666666667
+      },
+      "kind": "composite-family",
+      "family": "forestCoverIndex",
+      "metric": "forestCoverIndex",
+      "viewport": "mobile"
+    },
+    {
+      "sample": "composite--hydrorisk--mobile",
+      "status": "mismatch",
+      "comparison": {
+        "dimensionsMatch": false,
+        "actualWidth": 349,
+        "actualHeight": 687,
+        "expectedWidth": 349,
+        "expectedHeight": 688,
+        "aHashHammingRatio": 0.057291666666666664,
+        "dHashHammingRatio": 0.08152173913043478,
+        "colorMeanAbsoluteDifference": 0.08333333333333333
+      },
+      "kind": "composite-family",
+      "family": "hydroRisk",
+      "metric": "landslideExposure",
+      "viewport": "mobile"
+    },
+    {
+      "sample": "composite--protectedareasprofile--mobile",
+      "status": "match",
+      "comparison": {
+        "dimensionsMatch": true,
+        "actualWidth": 349,
+        "actualHeight": 738,
+        "expectedWidth": 349,
+        "expectedHeight": 738,
+        "aHashHammingRatio": 0.05381944444444445,
+        "dHashHammingRatio": 0.09601449275362318,
+        "colorMeanAbsoluteDifference": 0.08333333333333333
+      },
+      "kind": "composite-family",
+      "family": "protectedAreasProfile",
+      "metric": "protectedNaturalAreas",
+      "viewport": "mobile"
+    },
+    {
+      "sample": "composite--soilstockprofile--mobile",
+      "status": "mismatch",
+      "comparison": {
+        "dimensionsMatch": false,
+        "actualWidth": 349,
+        "actualHeight": 667,
+        "expectedWidth": 349,
+        "expectedHeight": 668,
+        "aHashHammingRatio": 0.06944444444444445,
+        "dHashHammingRatio": 0.15760869565217392,
+        "colorMeanAbsoluteDifference": 0.09895833333333333
+      },
+      "kind": "composite-family",
+      "family": "soilStockProfile",
+      "metric": "landUse",
+      "viewport": "mobile"
+    },
+    {
+      "sample": "composite--soilchangeprofile--mobile",
+      "status": "mismatch",
+      "comparison": {
+        "dimensionsMatch": false,
+        "actualWidth": 349,
+        "actualHeight": 667,
+        "expectedWidth": 349,
+        "expectedHeight": 668,
+        "aHashHammingRatio": 0.043402777777777776,
+        "dHashHammingRatio": 0.13768115942028986,
+        "colorMeanAbsoluteDifference": 0.08333333333333333
+      },
+      "kind": "composite-family",
+      "family": "soilChangeProfile",
+      "metric": "landUseChange",
+      "viewport": "mobile"
+    },
+    {
+      "sample": "composite--hydronetworkprofile--mobile",
+      "status": "mismatch",
+      "comparison": {
+        "dimensionsMatch": true,
+        "actualWidth": 349,
+        "actualHeight": 667,
+        "expectedWidth": 349,
+        "expectedHeight": 667,
+        "aHashHammingRatio": 0.04861111111111111,
+        "dHashHammingRatio": 0.11956521739130435,
+        "colorMeanAbsoluteDifference": 0.09895833333333333
+      },
+      "kind": "composite-family",
+      "family": "hydroNetworkProfile",
+      "metric": "managedReticulumLength",
+      "viewport": "mobile"
+    },
+    {
+      "sample": "composite--drinkingwaterquality--mobile",
+      "status": "mismatch",
+      "comparison": {
+        "dimensionsMatch": false,
+        "actualWidth": 349,
+        "actualHeight": 1317,
+        "expectedWidth": 349,
+        "expectedHeight": 1316,
+        "aHashHammingRatio": 0.04513888888888889,
+        "dHashHammingRatio": 0.2028985507246377,
+        "colorMeanAbsoluteDifference": 0.057291666666666664
+      },
+      "kind": "composite-family",
+      "family": "drinkingWaterQuality",
+      "metric": "drinkingWaterQuality",
+      "viewport": "mobile"
+    },
+    {
+      "sample": "composite--remediationproceedings--mobile",
+      "status": "mismatch",
+      "comparison": {
+        "dimensionsMatch": true,
+        "actualWidth": 349,
+        "actualHeight": 1365,
+        "expectedWidth": 349,
+        "expectedHeight": 1365,
+        "aHashHammingRatio": 0.05381944444444445,
+        "dHashHammingRatio": 0.13768115942028986,
+        "colorMeanAbsoluteDifference": 0.0625
+      },
+      "kind": "composite-family",
+      "family": "remediationProceedings",
+      "metric": "remediationProceedings",
+      "viewport": "mobile"
+    },
+    {
+      "sample": "composite--agricultureprofile--mobile",
+      "status": "match",
+      "comparison": {
+        "dimensionsMatch": true,
+        "actualWidth": 349,
+        "actualHeight": 615,
+        "expectedWidth": 349,
+        "expectedHeight": 615,
+        "aHashHammingRatio": 0.027777777777777776,
+        "dHashHammingRatio": 0.09057971014492754,
+        "colorMeanAbsoluteDifference": 0.052083333333333336
+      },
+      "kind": "composite-family",
+      "family": "agricultureProfile",
+      "metric": "cropProfile",
+      "viewport": "mobile"
+    },
+    {
+      "sample": "composite--ratioprofile--mobile",
+      "status": "match",
+      "comparison": {
+        "dimensionsMatch": true,
+        "actualWidth": 349,
+        "actualHeight": 614,
+        "expectedWidth": 349,
+        "expectedHeight": 614,
+        "aHashHammingRatio": 0.024305555555555556,
+        "dHashHammingRatio": 0.07065217391304347,
+        "colorMeanAbsoluteDifference": 0.057291666666666664
+      },
+      "kind": "composite-family",
+      "family": "ratioProfile",
+      "metric": "agriculturalRenewalAndLeadership",
+      "viewport": "mobile"
+    },
+    {
+      "sample": "composite--financialprofile--mobile",
+      "status": "mismatch",
+      "comparison": {
+        "dimensionsMatch": true,
+        "actualWidth": 349,
+        "actualHeight": 630,
+        "expectedWidth": 349,
+        "expectedHeight": 630,
+        "aHashHammingRatio": 0.027777777777777776,
+        "dHashHammingRatio": 0.14130434782608695,
+        "colorMeanAbsoluteDifference": 0.052083333333333336
+      },
+      "kind": "composite-family",
+      "family": "financialProfile",
+      "metric": "financialDebtProfile",
+      "viewport": "mobile"
+    },
+    {
+      "sample": "history--two-point--desktop",
+      "status": "match",
+      "comparison": {
+        "dimensionsMatch": true,
+        "actualWidth": 899,
+        "actualHeight": 503,
+        "expectedWidth": 899,
+        "expectedHeight": 503,
+        "aHashHammingRatio": 0.013888888888888888,
+        "dHashHammingRatio": 0.03985507246376811,
+        "colorMeanAbsoluteDifference": 0.026041666666666668
+      },
+      "kind": "history-family",
+      "family": "two-point",
+      "metric": "tourismPresences",
+      "viewport": "desktop"
+    },
+    {
+      "sample": "history--long--desktop",
+      "status": "match",
+      "comparison": {
+        "dimensionsMatch": true,
+        "actualWidth": 899,
+        "actualHeight": 562,
+        "expectedWidth": 899,
+        "expectedHeight": 562,
+        "aHashHammingRatio": 0.024305555555555556,
+        "dHashHammingRatio": 0.036231884057971016,
+        "colorMeanAbsoluteDifference": 0.16145833333333334
+      },
+      "kind": "history-family",
+      "family": "long",
+      "metric": "population",
+      "viewport": "desktop"
+    },
+    {
+      "sample": "town--current--desktop",
+      "status": "match",
+      "comparison": {
+        "dimensionsMatch": true,
+        "actualWidth": 927,
+        "actualHeight": 590,
+        "expectedWidth": 927,
+        "expectedHeight": 590,
+        "aHashHammingRatio": 0.03125,
+        "dHashHammingRatio": 0.04528985507246377,
+        "colorMeanAbsoluteDifference": 0.057291666666666664
+      },
+      "kind": "town-history",
+      "state": "current",
+      "town": "massarosa",
+      "metric": "population",
+      "viewport": "desktop"
+    },
+    {
+      "sample": "town--history--desktop",
+      "status": "match",
+      "comparison": {
+        "dimensionsMatch": true,
+        "actualWidth": 927,
+        "actualHeight": 683,
+        "expectedWidth": 927,
+        "expectedHeight": 683,
+        "aHashHammingRatio": 0.03298611111111111,
+        "dHashHammingRatio": 0.03804347826086957,
+        "colorMeanAbsoluteDifference": 0.046875
+      },
+      "kind": "town-history",
+      "state": "history",
+      "town": "massarosa",
+      "metric": "population",
+      "viewport": "desktop"
+    }
+  ]
+}

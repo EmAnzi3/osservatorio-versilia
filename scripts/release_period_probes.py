@@ -906,7 +906,9 @@ def run_check(metric: dict[str, Any], check: dict[str, Any], fetch: Fetcher) -> 
     if mode == "values":
         return values_check(metric, check, out, fetch)
     try:
-        text = page_text(fetch(out["url"]), check.get("text", "auto"))
+        # `also`: altre pagine dello stesso elenco (portali paginati in ordine variabile), lette insieme.
+        text = "\n".join(page_text(fetch(u), check.get("text", "auto"))
+                         for u in [out["url"], *(check_url(a, published) for a in check.get("also", []))])
     except ProbeError as error:
         if mode == "absent" and error.reason == "not_found":
             out.update(observed=out["published"], verdict="period_match")

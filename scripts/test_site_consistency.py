@@ -154,6 +154,8 @@ def _build_assertions_from_dist_catalog(dist) -> None:
     facilities_regressions(catalog_path)
     from test_semantic_bank_branches_adapters import regressions as bank_branches_regressions
     bank_branches_regressions(catalog_path)
+    from test_semantic_standard_needs_adapters import regressions as standard_needs_regressions
+    standard_needs_regressions(catalog_path)
     from test_semantic_invalsi_adapters import regressions as invalsi_regressions
     invalsi_regressions(catalog_path)
     from test_semantic_regional_adapters import regressions as regional_regressions

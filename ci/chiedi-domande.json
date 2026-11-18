@@ -1972,6 +1972,60 @@
    "question": "Cosa sono gli sportelli bancari?",
    "kind": "definition",
    "metric": "bankBranchesPer1000"
+  },
+  {
+   "question": "Forte dei Marmi spende più del fabbisogno standard?",
+   "kind": "reading",
+   "metric": "standardNeedsSpendingGap",
+   "operation": "observe",
+   "town": "046013",
+   "detail": "total"
+  },
+  {
+   "question": "Massarosa rispetto al fabbisogno standard",
+   "kind": "reading",
+   "metric": "standardNeedsSpendingGap",
+   "operation": "observe",
+   "town": "046018",
+   "detail": "total"
+  },
+  {
+   "question": "Quale Comune spende di più rispetto al fabbisogno standard?",
+   "kind": "reading",
+   "metric": "standardNeedsSpendingGap",
+   "operation": "rank",
+   "detail": "total",
+   "town": null
+  },
+  {
+   "question": "Fabbisogni standard di Viareggio rispetto alla Toscana",
+   "kind": "reading",
+   "metric": "standardNeedsSpendingGap",
+   "operation": "benchmark_gap",
+   "town": "046033",
+   "detail": "total",
+   "benchmark": "tuscany"
+  },
+  {
+   "question": "Servizi svolti a Pietrasanta rispetto allo standard",
+   "kind": "reading",
+   "metric": "standardNeedsServiceGap",
+   "operation": "observe",
+   "town": "046024",
+   "detail": "total"
+  },
+  {
+   "question": "Dove i servizi svolti superano di più il livello standard?",
+   "kind": "reading",
+   "metric": "standardNeedsServiceGap",
+   "operation": "rank",
+   "detail": "total",
+   "town": null
+  },
+  {
+   "question": "Cos'è il fabbisogno standard?",
+   "kind": "definition",
+   "metric": "standardNeedsSpendingGap"
   }
  ]
 }

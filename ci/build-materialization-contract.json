@@ -59,6 +59,7 @@
     "scripts/materialize_a3_benchmark_fanin_pass.py",
     "scripts/materialize_a3_publication_adapter.py",
     "scripts/materialize_bank_branches.py",
+    "scripts/materialize_opencivitas_needs.py",
     "scripts/apply_per_capita_reference_contract.py",
     "scripts/patch_fragilita_runtime.py",
     "scripts/materialize_territorio_v137.py",

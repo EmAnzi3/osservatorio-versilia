@@ -546,6 +546,101 @@ def bdi_branches_cases(tmp: Path) -> None:
         upd.SITE, upd.ROOT = real_site, real_root
 
 
+def opencivitas_needs_cases(tmp: Path) -> None:
+    """Fabbisogni standard OpenCivitas: annualità 2023 riconciliata con la sonda, aggregati sui valutabili, valori diversi o annualità assente rifiutati."""
+    import io as _io
+    from openpyxl import Workbook
+    import opencivitas_needs as oc
+    import materialize_opencivitas_needs as mat
+
+    real_site, real_root = upd.SITE, upd.ROOT
+    (tmp / "data/source-snapshots").mkdir(parents=True, exist_ok=True)
+    upd.SITE, upd.ROOT = tmp / "data/site-data.json", tmp
+    upd.SITE.write_text(real_site.read_text(encoding="utf-8"), encoding="utf-8")
+    folder = tmp / "oc"
+    (folder / "pages").mkdir(parents=True, exist_ok=True)
+    (folder / "pages/3.html").write_text(
+        '<a href="/portale/documents/20118/0/2023_Ind_TOT_01_IT.csv/1086db31-bf42">t</a>'
+        '<a href="/portale/documents/20118/0/2022_Ind_TOT_01_IT.csv/aa11">v</a>'
+        '<a href="/portale/documents/20118/0/Metadati_Enti_2023_IT.xlsx/9af2749a">e</a>', encoding="utf-8")
+    wb = Workbook(); ws = wb.active
+    ws.append(["USERNAME", "TIPOLOGIA_ENTE", "ENTE", "REGIONE_DES", "COMUNE_ISTAT_COD"])
+    for code, user in oc.TOWNS.items():
+        ws.append([user, "COMUNE", f"C{code}", "TOSCANA", code])
+    for i in range(260):
+        ws.append([f"TS{i}", "COMUNE", f"T{i}", "TOSCANA", f"09{i:04d}"])
+    for i in range(6300):
+        ws.append([f"IT{i}", "COMUNE", f"I{i}", "VENETO", f"05{i:04d}"])
+    buf = _io.BytesIO(); wb.save(buf)
+    (folder / "enti.xlsx").write_bytes(buf.getvalue())
+
+    def it(x: float) -> str:
+        return repr(x).replace(".", ",")
+
+    def csv_bytes(probe: dict) -> bytes:
+        lines = ["USERNAME;Indicatore/Determinante;Valore;Anomalia;Privacy"]
+        for code, user in oc.TOWNS.items():
+            v = probe[code]
+            pop = 10000
+            for field, value in (("SPESA_STORICA", v["spesaStorica"]), ("FST_RIPROPORZIONATO_BI", v["spesaStandard"]),
+                                 ("SPESA_STORICA_PROAB", v["spesaStorica"] / pop), ("FST_RIPROPORZIONATO_BI_PROAB", v["spesaStandard"] / pop),
+                                 ("DIFF_OUT_PERC_TOT", v["serviceGapPct"]), ("POSIZIONE_SPESA_PERC_TOT", 5), ("POSIZIONE_OUTPUT_PERC_TOT", 5),
+                                 ("FL_NO_VALUTABILE", 0)):
+                lines.append(f"{user};{field};{it(value)};;")
+        for prefix, n, spesa in (("TS", 260, 110.0), ("IT", 6300, 100.0)):
+            for i in range(n):
+                lines += [f"{prefix}{i};SPESA_STORICA;{it(spesa)};;", f"{prefix}{i};FST_RIPROPORZIONATO_BI;100;;",
+                          f"{prefix}{i};DIFF_OUT_PERC_TOT;{'10' if prefix == 'TS' else '0'};;", f"{prefix}{i};FL_NO_VALUTABILE;{'1' if i == 0 else '0'};;"]
+        return ("\n".join(lines) + "\n").encode("utf-8")
+
+    try:
+        (folder / "totale.csv").write_bytes(csv_bytes(oc.PROBE_2023))
+        changes = upd.update_opencivitas_needs(None, folder, dry_run=False)
+        site = upd.load(upd.SITE)
+        assert not set(oc.METRICS) & set(site["metrics"]), "gli indicatori entrano in build, non nel catalogo canonico"
+        snap = upd.load(tmp / f"{oc.SNAPSHOT_PREFIX}2023.json")
+        assert snap["year"] == 2023 and snap["availableYears"] == [2022, 2023] and snap["towns"]["046018"]["population"] == 10000
+        assert snap["scopes"]["tuscany"]["evaluable"] == 266, snap["scopes"]["tuscany"]
+        real_mat_root = mat.ROOT
+        try:
+            mat.ROOT = tmp
+            registry = upd.load(real_root / "data/source-registry.json")
+            metrics = mat.apply(site, registry)
+        finally:
+            mat.ROOT = real_mat_root
+        spend, serv = metrics[oc.SPENDING], metrics[oc.SERVICE]
+        fdm = next(r for r in spend["rows"] if r["code"] == "046013")
+        assert abs(fdm["value"] - (23349412.38 / 10590362.97 - 1) * 100) < 1e-9 and fdm["formatted"].startswith("+120,")
+        mas = next(r for r in serv["rows"] if r["code"] == "046018")
+        assert mas["value"] == -6.115557831 and mas["formatted"] == "−6,1%"
+        towns = snap["towns"]
+        exp = sum(t["serviceGapPct"] * t["spesaStandard"] for t in towns.values()) / sum(t["spesaStandard"] for t in towns.values())
+        assert abs(serv["aggregate"]["value"] - exp) < 1e-9
+        tus = snap["scopes"]["tuscany"]
+        assert abs(spend["meta"]["benchmark"]["tuscany"] - spending_gap_check(tus)) < 1e-9
+        theme = site["themes"]["bilanci"]
+        assert next(s for s in theme["sections"] if s["key"] == "fabbisogni-standard")["metrics"] == list(oc.METRICS)
+        assert all(registry["metricOverrides"][k]["profile"] == mat.PROFILE for k in oc.METRICS) and registry["expectedMetricCount"] == len(site["metrics"])
+        assert any("Massarosa" in line for line in changes.lines)
+        assert not upd.update_opencivitas_needs(2023, folder, dry_run=True).lines, "rigiro identico: nessuna differenza"
+        bad = {k: dict(v) for k, v in oc.PROBE_2023.items()}
+        bad["046030"]["serviceGapPct"] = 3.0
+        for probe, year in ((bad, 2023), (oc.PROBE_2023, 2024)):
+            (folder / "totale.csv").write_bytes(csv_bytes(probe))
+            try:
+                upd.update_opencivitas_needs(year, folder, dry_run=True)
+            except upd.UpdateError:
+                pass
+            else:
+                raise AssertionError(f"fabbisogni accettati: {year}")
+    finally:
+        upd.SITE, upd.ROOT = real_site, real_root
+
+
+def spending_gap_check(scope: dict) -> float:
+    return (scope["spesaStorica"] / scope["spesaStandard"] - 1) * 100
+
+
 def source_probe_cases(tmp: Path) -> None:
     """Sonda generica: un foglio Excel riporta intestazioni e righe dei Comuni della Versilia."""
     import io as _io
@@ -820,8 +915,10 @@ def main() -> None:
         erp_cases(Path(tmp))
     with tempfile.TemporaryDirectory() as tmp:
         bdi_branches_cases(Path(tmp))
+    with tempfile.TemporaryDirectory() as tmp:
+        opencivitas_needs_cases(Path(tmp))
     source_probe_cases(Path("."))
-    print("Aggiornatori dalla fonte: ARS stesso export invariato, revisione e Toscana rilevate, periodo nuovo rifiutato; mobilità P2 ricostruita 7/7 identica, rigiro senza modifiche; ASIA-UL ricostruita 7/7 identica, anno nuovo accettato, Comune incompleto rifiutato; AGCOM FTTH ricostruita 7/7 identica, edizione nuova accettata, edizione vecchia e Comune mancante rifiutati; sonda MEF limitata agli atti DIMUNIC; capacità ricettiva pubblicata ricostruita identica, anno nuovo accettato con perimetro dichiarato, anno precedente rifiutato; consumo di suolo anno nuovo accettato con benchmark ufficiali, anno precedente rifiutato; parco ACI ricostruito 7/7 identico da un anno nuovo, anno pubblicato rifiutato; OMI al punto medio con semestre pubblicato rigiocato, replay diverso e semestre vecchio rifiutati; sonda generica dei fogli; morosità ERP esercizio nuovo riconciliato e prospetti incoerenti rifiutati; acqua GAIA 70 località ricostruite identiche, semestre nuovo accettato, periodo vecchio, parametro cambiato e semestre precedente rifiutati; sedi scolastiche MIM ricostruite 7/7 identiche, a.s. nuovo accettato, a.s. precedente, Comune mancante e altro anno rifiutati; sportelli Banca d'Italia: serie 2018–2025 ricostruita con chiave banca + sede, riconciliazione Istat 2022 obbligatoria, anno aperto rifiutato PASS")
+    print("Aggiornatori dalla fonte: ARS stesso export invariato, revisione e Toscana rilevate, periodo nuovo rifiutato; mobilità P2 ricostruita 7/7 identica, rigiro senza modifiche; ASIA-UL ricostruita 7/7 identica, anno nuovo accettato, Comune incompleto rifiutato; AGCOM FTTH ricostruita 7/7 identica, edizione nuova accettata, edizione vecchia e Comune mancante rifiutati; sonda MEF limitata agli atti DIMUNIC; capacità ricettiva pubblicata ricostruita identica, anno nuovo accettato con perimetro dichiarato, anno precedente rifiutato; consumo di suolo anno nuovo accettato con benchmark ufficiali, anno precedente rifiutato; parco ACI ricostruito 7/7 identico da un anno nuovo, anno pubblicato rifiutato; OMI al punto medio con semestre pubblicato rigiocato, replay diverso e semestre vecchio rifiutati; sonda generica dei fogli; morosità ERP esercizio nuovo riconciliato e prospetti incoerenti rifiutati; acqua GAIA 70 località ricostruite identiche, semestre nuovo accettato, periodo vecchio, parametro cambiato e semestre precedente rifiutati; sedi scolastiche MIM ricostruite 7/7 identiche, a.s. nuovo accettato, a.s. precedente, Comune mancante e altro anno rifiutati; sportelli Banca d'Italia: serie 2018–2025 ricostruita con chiave banca + sede, riconciliazione Istat 2022 obbligatoria, anno aperto rifiutato; fabbisogni standard OpenCivitas 2023 riconciliati con la sonda, aggregati sui Comuni valutabili, valori diversi e annualità assente rifiutati PASS")
 
 
 if __name__ == "__main__":

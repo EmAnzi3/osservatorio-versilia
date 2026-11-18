@@ -1,0 +1,142 @@
+{
+  "schemaVersion": 1,
+  "version": "opencivitas-fabbisogni-2023-v1",
+  "retrieved": "2026-11-18",
+  "publisher": "OpenCivitas (SOSE — MEF) — Fabbisogni standard dei Comuni",
+  "sourceUrl": "https://www.opencivitas.it/portale/open-data",
+  "dataUrl": "https://www.opencivitas.it/portale/documents/20118/0/2023_Ind_TOT_01_IT.csv/1086db31-bf42-8678-0520-c77eacce2a23",
+  "entiUrl": "https://www.opencivitas.it/portale/documents/20118/0/Metadati_Enti_2023_IT.xlsx/9af2749a-d3a5-cc6f-c78d-08593c7dbc32",
+  "listPage": 3,
+  "availableYears": [
+    2023
+  ],
+  "year": 2023,
+  "archive": {
+    "bytes": 24408491,
+    "sha256": "66572f6fb32f59a7f572c42c3b35e5aa060b56f0fb375d106a11f9a8ae263b98",
+    "entities": 6587
+  },
+  "entiArchive": {
+    "bytes": 541519,
+    "sha256": "6376a370ae4e3c45532d00094b349833bc601bf8e28a81479f9e86ff2fd148c4",
+    "municipalities": 6948
+  },
+  "rule": "Spesa storica e spesa standard (fabbisogno standard riproporzionato) del totale delle funzioni fondamentali; scostamento dei servizi svolti dal livello standard come pubblicato. Aggregati sui Comuni valutabili: Σ spesa storica / Σ spesa standard; servizi come media ponderata sulla spesa standard.",
+  "towns": {
+    "046005": {
+      "ente": "CAMAIORE",
+      "username": "LU005SIF11RN",
+      "spesaStorica": 29101909.98,
+      "spesaStandard": 31185682.46,
+      "spesaStoricaProAb": 913.3162811,
+      "spesaStandardProAb": 978.7121034,
+      "serviceGapPct": 15.39143729,
+      "spendingLevel": 5.0,
+      "serviceLevel": 8.0,
+      "notEvaluable": 0,
+      "population": 31864
+    },
+    "046013": {
+      "ente": "FORTE DEI MARMI",
+      "username": "LU013SIF11RV",
+      "spesaStorica": 23349412.38,
+      "spesaStandard": 10590362.97,
+      "spesaStoricaProAb": 3445.390642,
+      "spesaStandardProAb": 1562.691895,
+      "serviceGapPct": 254.897841,
+      "spendingLevel": 10.0,
+      "serviceLevel": 10.0,
+      "notEvaluable": 0,
+      "population": 6777
+    },
+    "046018": {
+      "ente": "MASSAROSA",
+      "username": "LU018SIF11SA",
+      "spesaStorica": 14357945.62,
+      "spesaStandard": 15508425.97,
+      "spesaStoricaProAb": 656.6634175,
+      "spesaStandardProAb": 709.2808585,
+      "serviceGapPct": -6.115557831,
+      "spendingLevel": 5.0,
+      "serviceLevel": 5.0,
+      "notEvaluable": 0,
+      "population": 21865
+    },
+    "046024": {
+      "ente": "PIETRASANTA",
+      "username": "LU024SIF11SG",
+      "spesaStorica": 29952245.92,
+      "spesaStandard": 24129575.89,
+      "spesaStoricaProAb": 1314.386779,
+      "spesaStandardProAb": 1058.872033,
+      "serviceGapPct": 99.50314734,
+      "spendingLevel": 9.0,
+      "serviceLevel": 10.0,
+      "notEvaluable": 0,
+      "population": 22788
+    },
+    "046028": {
+      "ente": "SERAVEZZA",
+      "username": "LU028SIF11SK",
+      "spesaStorica": 11551204.9,
+      "spesaStandard": 9647934.301,
+      "spesaStoricaProAb": 928.9268112,
+      "spesaStandardProAb": 775.8692643,
+      "serviceGapPct": 0.231967868,
+      "spendingLevel": 9.0,
+      "serviceLevel": 6.0,
+      "notEvaluable": 0,
+      "population": 12435
+    },
+    "046030": {
+      "ente": "STAZZEMA",
+      "username": "LU030SIF11SM",
+      "spesaStorica": 3623293.527,
+      "spesaStandard": 2409708.515,
+      "spesaStoricaProAb": 1248.120402,
+      "spesaStandardProAb": 830.0752721,
+      "serviceGapPct": -0.432686629,
+      "spendingLevel": 10.0,
+      "serviceLevel": 5.0,
+      "notEvaluable": 0,
+      "population": 2903
+    },
+    "046033": {
+      "ente": "VIAREGGIO",
+      "username": "LU033SIF11SP",
+      "spesaStorica": 67452176.99,
+      "spesaStandard": 58725210.89,
+      "spesaStoricaProAb": 1110.232524,
+      "spesaStandardProAb": 966.5905833,
+      "serviceGapPct": 16.17809167,
+      "spendingLevel": 8.0,
+      "serviceLevel": 8.0,
+      "notEvaluable": 0,
+      "population": 60755
+    }
+  },
+  "scopes": {
+    "tuscany": {
+      "municipalities": 273,
+      "evaluable": 273,
+      "spesaStorica": 3286293018.24,
+      "spesaStandard": 3089637938.43,
+      "serviceGapWeightedSum": 66440106331.7623
+    },
+    "italy": {
+      "municipalities": 6557,
+      "evaluable": 6548,
+      "spesaStorica": 40012688865.04,
+      "spesaStandard": 39996510178.37,
+      "serviceGapWeightedSum": 201884401695.6422
+    }
+  },
+  "qualityGate": {
+    "status": "PASS",
+    "probe2023": "7/7",
+    "note": "Valori dei sette Comuni identici alla sonda del file 2023; popolazione implicita coerente fra spesa storica e standard."
+  },
+  "acquisitionEvidence": {
+    "script": "scripts/update_source_data.py opencivitas-needs --year 2023"
+  }
+}

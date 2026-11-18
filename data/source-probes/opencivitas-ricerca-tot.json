@@ -1,0 +1,286 @@
+{
+ "schemaVersion": 1,
+ "createdAt": "2026-11-18T07:14:48Z",
+ "note": "Sonda: struttura della fonte consultata; non è un dato pubblicato.",
+ "follow": null,
+ "result": {
+  "url": "https://www.opencivitas.it/portale/open-data?r=Ind_TOT_01_IT",
+  "contentType": "text/html;charset=UTF-8",
+  "bytes": 153905,
+  "sha256": "4160f2d9f8d4b0b775a88881bdfa4a0f9cc7a7f867132f32aba65d1e79075fec",
+  "forms": [
+   {
+    "action": "https://www.opencivitas.it/portale/ricerca",
+    "method": "get",
+    "fields": [
+     {
+      "tag": "input",
+      "name": "start",
+      "type": "hidden",
+      "value": "0",
+      "options": []
+     },
+     {
+      "tag": "input",
+      "name": "_com_liferay_portal_search_web_search_bar_portlet_SearchBarPortlet_INSTANCE_sizdsearchbarheaderBase_emptySearchEnabled",
+      "type": "hidden",
+      "value": "true",
+      "options": []
+     },
+     {
+      "tag": "input",
+      "name": "q",
+      "type": "text",
+      "value": "",
+      "options": []
+     }
+    ]
+   },
+   {
+    "action": "https://www.opencivitas.it/portale/open-data",
+    "method": "get",
+    "fields": [
+     {
+      "tag": "input",
+      "name": "start",
+      "type": "hidden",
+      "value": "0",
+      "options": []
+     },
+     {
+      "tag": "input",
+      "name": "_com_liferay_portal_search_web_search_bar_portlet_SearchBarPortlet_INSTANCE_lfcq_emptySearchEnabled",
+      "type": "hidden",
+      "value": "true",
+      "options": []
+     },
+     {
+      "tag": "input",
+      "name": "r",
+      "type": "text",
+      "value": "Ind_TOT_01_IT",
+      "options": []
+     }
+    ]
+   },
+   {
+    "action": "https://www.opencivitas.it/portale/open-data?r=Ind_TOT_01_IT",
+    "method": "post",
+    "fields": [
+     {
+      "tag": "input",
+      "name": "_com_liferay_portal_search_web_category_facet_portlet_CategoryFacetPortlet_INSTANCE_snsm_formDate",
+      "type": "hidden",
+      "value": "1794986089270",
+      "options": []
+     },
+     {
+      "tag": "input",
+      "name": "_com_liferay_portal_search_web_category_facet_portlet_CategoryFacetPortlet_INSTANCE_snsm_function",
+      "type": "hidden",
+      "value": "",
+      "options": []
+     },
+     {
+      "tag": "input",
+      "name": "_com_liferay_portal_search_web_category_facet_portlet_CategoryFacetPortlet_INSTANCE_snsm_facet-parameter-name",
+      "type": "hidden",
+      "value": "function",
+      "options": []
+     },
+     {
+      "tag": "input",
+      "name": "_com_liferay_portal_search_web_category_facet_portlet_CategoryFacetPortlet_INSTANCE_snsm_start-parameter-name",
+      "type": "hidden",
+      "value": "start",
+      "options": []
+     },
+     {
+      "tag": "select",
+      "name": "select-tipologia%20ente",
+      "type": "",
+      "value": "",
+      "options": [
+       [
+        "/portale/open-data?r=Ind_TOT_01_IT",
+        "Tipologia Ente"
+       ],
+       [
+        "/portale/open-data?r=Ind_TOT_01_IT&amp;function=123673",
+        "Unioni / Comunità Montane"
+       ],
+       [
+        "/portale/open-data?r=Ind_TOT_01_IT&amp;function=62736",
+        "Enti di area vasta"
+       ],
+       [
+        "/portale/open-data?r=Ind_TOT_01_IT&amp;function=62733",
+        "Comuni"
+       ]
+      ]
+     }
+    ]
+   },
+   {
+    "action": "https://www.opencivitas.it/portale/open-data?r=Ind_TOT_01_IT",
+    "method": "post",
+    "fields": [
+     {
+      "tag": "input",
+      "name": "_com_liferay_portal_search_web_category_facet_portlet_CategoryFacetPortlet_INSTANCE_lfru_formDate",
+      "type": "hidden",
+      "value": "1794986089294",
+      "options": []
+     },
+     {
+      "tag": "input",
+      "name": "_com_liferay_portal_search_web_category_facet_portlet_CategoryFacetPortlet_INSTANCE_lfru_thematic",
+      "type": "hidden",
+      "value": "",
+      "options": []
+     },
+     {
+      "tag": "input",
+      "name": "_com_liferay_portal_search_web_category_facet_portlet_CategoryFacetPortlet_INSTANCE_lfru_facet-parameter-name",
+      "type": "hidden",
+      "value": "thematic",
+      "options": []
+     },
+     {
+      "tag": "input",
+      "name": "_com_liferay_portal_search_web_category_facet_portlet_CategoryFacetPortlet_INSTANCE_lfru_start-parameter-name",
+      "type": "hidden",
+      "value": "start",
+      "options": []
+     },
+     {
+      "tag": "select",
+      "name": "select-sezione%20tematica%20opendata",
+      "type": "",
+      "value": "",
+      "options": [
+       [
+        "/portale/open-data?r=Ind_TOT_01_IT",
+        "Tematica"
+       ],
+       [
+        "/portale/open-data?r=Ind_TOT_01_IT&amp;thematic=60071",
+        "Riparto fondi"
+       ],
+       [
+        "/portale/open-data?r=Ind_TOT_01_IT&amp;thematic=60062",
+        "Indicatori / Determinanti"
+       ],
+       [
+        "/portale/open-data?r=Ind_TOT_01_IT&amp;thematic=119472",
+        "Dati questionari"
+       ]
+      ]
+     }
+    ]
+   },
+   {
+    "action": "https://www.opencivitas.it/portale/open-data?r=Ind_TOT_01_IT",
+    "method": "post",
+    "fields": [
+     {
+      "tag": "input",
+      "name": "_com_liferay_portal_search_web_category_facet_portlet_CategoryFacetPortlet_INSTANCE_hamu_formDate",
+      "type": "hidden",
+      "value": "1794986089300",
+      "options": []
+     },
+     {
+      "tag": "input",
+      "name": "_com_liferay_portal_search_web_category_facet_portlet_CategoryFacetPortlet_INSTANCE_hamu_year",
+      "type": "hidden",
+      "value": "",
+      "options": []
+     },
+     {
+      "tag": "input",
+      "name": "_com_liferay_portal_search_web_category_facet_portlet_CategoryFacetPortlet_INSTANCE_hamu_facet-parameter-name",
+      "type": "hidden",
+      "value": "year",
+      "options": []
+     },
+     {
+      "tag": "input",
+      "name": "_com_liferay_portal_search_web_category_facet_portlet_CategoryFacetPortlet_INSTANCE_hamu_start-parameter-name",
+      "type": "hidden",
+      "value": "start",
+      "options": []
+     },
+     {
+      "tag": "select",
+      "name": "select-anno%20opendata",
+      "type": "",
+      "value": "",
+      "options": [
+       [
+        "/portale/open-data?r=Ind_TOT_01_IT",
+        "Anno"
+       ],
+       [
+        "/portale/open-data?r=Ind_TOT_01_IT&amp;year=75931",
+        "Altre annualità"
+       ],
+       [
+        "/portale/open-data?r=Ind_TOT_01_IT&amp;year=119456",
+        "2026"
+       ],
+       [
+        "/portale/open-data?r=Ind_TOT_01_IT&amp;year=119097",
+        "2025"
+       ],
+       [
+        "/portale/open-data?r=Ind_TOT_01_IT&amp;year=119100",
+        "2024"
+       ],
+       [
+        "/portale/open-data?r=Ind_TOT_01_IT&amp;year=119103",
+        "2023"
+       ],
+       [
+        "/portale/open-data?r=Ind_TOT_01_IT&amp;year=75919",
+        "2022"
+       ],
+       [
+        "/portale/open-data?r=Ind_TOT_01_IT&amp;year=119453",
+        "2021"
+       ],
+       [
+        "/portale/open-data?r=Ind_TOT_01_IT&amp;year=119450",
+        "2020"
+       ],
+       [
+        "/portale/open-data?r=Ind_TOT_01_IT&amp;year=119447",
+        "2019"
+       ],
+       [
+        "/portale/open-data?r=Ind_TOT_01_IT&amp;year=119444",
+        "2018"
+       ]
+      ]
+     }
+    ]
+   },
+   {
+    "action": "https://www.opencivitas.it/portale/open-data?r=Ind_TOT_01_IT",
+    "method": "post",
+    "fields": []
+   }
+  ],
+  "scripts": [
+   "https://www.opencivitas.it/portale/o/catalogs-theme/js/vendor.js?t=1794608168000",
+   "https://www.opencivitas.it/portale/o/catalogs-theme/js/custom.js?t=1794608168000",
+   "https://www.opencivitas.it/portale/o/frontend-js-loader-modules-extender/loader.js?&mac=9WaMmhziBCkScHZwrrVcOR7VZF4=&browserId=other&languageId=it_IT&minifierType=js",
+   "https://www.opencivitas.it/portale/combo?browserId=other&minifierType=js&languageId=it_IT&t=1794607914387&/portale/o/frontend-js-aui-web/aui/aui/aui-min.js&/portale/o/frontend-js-aui-web/liferay/modules.js&/portale/o/frontend-js-aui-web/liferay/aui_sandbox.js&/portale/o/frontend-js-aui-web/aui/attribute-base/attribute-base-min.js&/portale/o/frontend-js-aui-web/aui/attribute-complex/attribute-complex-min.js&/portale/o/frontend-js-aui-web/aui/attribute-core/attribute-core-min.js&/portale/o/frontend-js-aui-web/aui/attribute-observable/attribute-observable-min.js&/portale/o/frontend-js-aui-web/aui/attribute-extras/attribute-extras-min.js&/portale/o/frontend-js-aui-web/aui/event-custom-base/event-custom-base-min.js&/portale/o/frontend-js-aui-web/aui/event-custom-complex/event-custom-complex-min.js&/portale/o/frontend-js-aui-web/aui/oop/oop-min.js&/portale/o/frontend-js-aui-web/aui/aui-base-lang/aui-base-lang-min.js&/portale/o/frontend-js-aui-web/liferay/dependency.js&/portale/o/frontend-js-aui-web/liferay/util.js&/portale/o/frontend-js-web/liferay/dom_task_runner.js&/portale/o/frontend-js-web/liferay/events.js&/portale/o/frontend-js-web/liferay/lazy_load.js&/portale/o/frontend-js-web/liferay/liferay.js&/portale/o/frontend-js-web/liferay/global.bundle.js&/portale/o/frontend-js-web/liferay/portlet.js&/portale/o/frontend-js-web/liferay/workflow.js&/portale/o/oauth2-provider-web/js/liferay.js",
+   "https://www.opencivitas.it/portale/o/catalogs-theme/js/main.js?browserId=other&amp;minifierType=js&amp;languageId=it_IT&amp;t=1794608168000",
+   "https://www.opencivitas.it/portale/o/catalogs-theme/js/vendor/accessible-slick-1.0.1/slick.js"
+  ],
+  "inlineScript": "\n\n{\"imports\":{\"react-dom\":\"/portale/o/frontend-js-react-web/__liferay__/exports/react-dom.js\",\"@clayui/breadcrumb\":\"/portale/o/frontend-taglib-clay/__liferay__/exports/@clayui$breadcrumb.js\",\"@clayui/charts\":\"/portale/o/frontend-taglib-clay/__liferay__/exports/@clayui$charts.js\",\"@clayui/empty-state\":\"/portale/o/frontend-taglib-clay/__liferay__/exports/@clayui$empty-state.js\",\"react\":\"/portale/o/frontend-js-react-web/__liferay__/exports/react.js\",\"react-dom-16\":\"/portale/o/frontend-js-react-web/__liferay__/exports/react-dom-16.js\",\"@clayui/navigation-bar\":\"/portale/o/frontend-taglib-clay/__liferay__/exports/@clayui$navigation-bar.js\",\"@clayui/icon\":\"/portale/o/frontend-taglib-clay/__liferay__/exports/@clayui$icon.js\",\"@clayui/table\":\"/portale/o/frontend-taglib-clay/__liferay__/exports/@clayui$table.js\",\"@clayui/slider\":\"/portale/o/frontend-taglib-clay/__liferay__/exports/@clayui$slider.js\",\"@clayui/multi-select\":\"/portale/o/frontend-taglib-clay/__liferay__/exports/@clayui$multi-select.js\",\"@clayui/nav\":\"/portale/o/frontend-taglib-clay/__liferay__/exports/@clayui$nav.js\",\"@clayui/provider\":\"/portale/o/frontend-taglib-clay/__liferay__/exports/@clayui$provider.js\",\"@clayui/panel\":\"/portale/o/frontend-taglib-clay/__liferay__/exports/@clayui$panel.js\",\"@clayui/list\":\"/portale/o/frontend-taglib-clay/__liferay__/exports/@clayui$list.js\",\"@clayui/date-picker\":\"/portale/o/frontend-taglib-clay/__liferay__/exports/@clayui$date-picker.js\",\"@clayui/label\":\"/portale/o/frontend-taglib-clay/__liferay__/exports/@clayui$label.js\",\"@liferay/frontend-js-api/data-set\":\"/portale/o/frontend-js-dependencies-web/__liferay__/exports/@liferay$js-api$data-set.js\",\"@clayui/core\":\"/portale/o/frontend-taglib-clay/__liferay__/exports/@clayui$core.js\",\"@clayui/pagination-bar\":\"/portale/o/frontend-taglib-clay/__liferay__/exports/@clayui$pagination-bar.js\",\"@clayui/layout\":\"/portale/o/frontend-taglib-clay/__liferay__/exports/@clayui$layout.js\",\"@clayui/multi-step-nav\":\"/portale/o/frontend-taglib-clay/__liferay__/exports/@clayui$multi-step-nav.js\",\"@liferay/frontend-js-api\":\"/portale/o/frontend-js-dependencies-web/__liferay__/exports/@liferay$js-api.js\",\"@clayui/toolbar\":\"/portale/o/frontend-taglib-clay/__liferay__/exports/@clayui$toolbar.js\",\"@clayui/badge\":\"/portale/o/frontend-taglib-clay/__liferay__/exports/@clayui$badge.js\",\"react-dom-18\":\"/portale/o/frontend-js-react-web/__liferay__/exports/react-dom-18.js\",\"@clayui/link\":\"/portale/o/frontend-taglib-clay/__liferay__/exports/@clayui$link.js\",\"@clayui/card\":\"/portale/o/frontend-taglib-clay/__liferay__/exports/@clayui$card.js\",\"@clayui/tooltip\":\"/portale/o/frontend-taglib-clay/__liferay__/exports/@clayui$tooltip.js\",\"@clayui/button\":\"/portale/o/frontend-taglib-clay/__liferay__/exports/@clayui$button.js\",\"@clayui/tabs\":\"/portale/o/frontend-taglib-clay/__liferay__/exports/@clayui$tabs.js\",\"@clayui/sticker\":\"/portale/o/frontend-taglib-clay/__liferay__/exports/@clayui$sticker.js\",\"@clayui/form\":\"/portale/o/frontend-taglib-clay/__liferay__/exports/@clayui$form.js\",\"@clayui/popover\":\"/portale/o/frontend-taglib-clay/__liferay__/exports/@clayui$popover.js\",\"@clayui/shared\":\"/portale/o/frontend-taglib-clay/__liferay__/exports/@clayui$shared.js\",\"@clayui/localized-input\":\"/portale/o/frontend-taglib-clay/__liferay__/exports/@clayui$localized-input.js\",\"@clayui/modal\":\"/portale/o/frontend-taglib-clay/__liferay__/exports/@clayui$modal.js\",\"@clayui/color-picker\":\"/portale/o/frontend-taglib-clay/__liferay__/exports/@clayui$color-picker.js\",\"@clayui/pagination\":\"/portale/o/frontend-taglib-clay/__liferay__/exports/@clayui$pagination.js\",\"@clayui/autocomplete\":\"/portale/o/frontend-taglib-clay/__liferay__/exports/@clayui$autocomplete.js\",\"@clayui/management-toolbar\":\"/portale/o/frontend-taglib-clay/__liferay__/exports/@clayui$management-toolbar.js\",\"@clayui/time-picker\":\"/portale/o/frontend-taglib-clay/__liferay__/exports/@clayui$time-picker.js\",\"@clayui/upper-toolbar\":\"/portale/o/frontend-taglib-clay/__liferay__/exports/@clayui$upper-toolbar.js\",\"@clayui/loading-indicator\":\"/portale/o/frontend-taglib-clay/__liferay__/exports/@clayui$loading-indicator.js\",\"@clayui/drop-down\":\"/portale/o/frontend-taglib-clay/__liferay__/exports/@clayui$drop-down.js\",\"@clayui/data-provider\":\"/portale/o/frontend-taglib-clay/__liferay__/exports/@clayui$data-provider.js\",\"@liferay/language/\":\"/o/js/language/\",\"@clayui/css\":\"/portale/o/frontend-taglib-clay/__liferay__/exports/@clayui$css.js\",\"@clayui/alert\":\"/portale/o/frontend-taglib-clay/__liferay__/exports/@clayui$alert.js\",\"@clayui/progress-bar\":\"/portale/o/frontend-taglib-clay/__liferay__/exports/@clayui$progress-bar.js\",\"react-16\":\"/portale/o/frontend-js-react-web/__liferay__/exports/react-16.js\",\"react-18\":\"/portale/o/frontend-js-react-web/__liferay__/exports/react-18.js\"},\"scopes\":{}}\nvar Liferay = window.Liferay || {};Liferay.Icons = Liferay.Icons || {};Liferay.Icons.controlPanelSpritemap = 'https://www.opencivitas.it/portale/o/admin-theme/images/clay/icons.svg'; Liferay.Icons.spritemap = 'https://www.opencivitas.it/portale/o/catalogs-theme/images/clay/icons.svg';\nwindow.Liferay = window.Liferay || {}; window.Liferay.CSP = {nonce: ''};\n\n\t// <![CDATA[\n\t\tvar Liferay = Liferay || {};\n\n\t\tLiferay.Browser = {\n\t\t\tacceptsGzip: function () {\n\t\t\t\treturn false;\n\t\t\t},\n\n\t\t\t\n\n\t\t\tgetMajorVersion: function () {\n\t\t\t\treturn 1.0;\n\t\t\t},\n\n\t\t\tgetRevision: function () {\n\t\t\t\treturn '1.0';\n\t\t\t},\n\t\t\tgetVersion: function () {\n\t\t\t\treturn '1.0';\n\t\t\t},\n\n\t\t\t\n\n\t\t\tisAir: function () {\n\t\t\t\treturn false;\n\t\t\t},\n\t\t\tisChrome: function () {\n\t\t\t\treturn false;\n\t\t\t},\n\t\t\tisEdge: function () {\n\t\t\t\treturn false;\n\t\t\t},\n\t\t\tisFirefox: function () {\n\t\t\t\treturn false;\n\t\t\t},\n\t\t\tisGecko: function () {\n\t\t\t\treturn false;\n\t\t\t},\n\t\t\tisIe: function () {\n\t\t\t\treturn false;\n\t\t\t},\n\t\t\tisIphone: function () {\n\t\t\t\treturn false;\n\t\t\t},\n\t\t\tisLinux: function () {\n\t\t\t\treturn false;\n\t\t\t},\n\t\t\tisMac: function () {\n\t\t\t\treturn false;\n\t\t\t},\n\t\t\tisMobile: function () {\n\t\t\t\treturn false;\n\t\t\t},\n\t\t\tisMozilla: function () {\n\t\t\t\tretur",
+  "links": [],
+  "text": "Open Data - OpenCivitas Skip to Main Content Sogei S.p.a --> Lingue disponibili: ITA ENG ENG OpenCivitas Conosci, confronta e valuta gli Enti Locali Barra di ricerca Ricerca nel sito --> Menu principale Home Progetto Open Civitas Cosa puoi fare Fabbisogni Standard Per saperne di più Normativa Note metodologiche Documenti illustrativi Materiali Comuni Cerca Naviga Confronta Analisi delle performance Fondo di solidarietà Enti di area vasta Cerca Naviga Confronta Analisi qualità della spesa Riparto fondi Notizie Ricerca Open Data Raccolta dati Glossario Note legali Privacy Mappa del sito Apri Menù Menù Home Progetto Open Civitas Cosa puoi fare Fabbisogni Standard Per saperne di più Normativa Note metodologiche Documenti illustrativi Materiali Comuni Cerca Naviga Confronta Analisi delle performance Fondo di solidarietà Enti di area vasta Cerca Naviga Confronta Analisi qualità della spesa Riparto fondi Notizie Open Data Raccolta dati OpenCivitas Home Progetto Open Civitas Cosa puoi fare Fabbisogni Standard Per saperne di più Normativa Note metodologiche Documenti illustrativi Materiali Comuni Cerca Naviga Confronta Analisi delle performance Fondo di solidarietà Enti di area vasta Cerca Naviga Confronta Analisi qualità della spesa Riparto fondi Notizie Open Data Raccolta dati Home Open Data Open Data In questa sezione puoi accedere alle informazioni contenute nei questionari in modalità opendata ovvero puoi disporre di dati accessibili, fruibili e riutilizzabili in formato .csv e .rdf. Barra di ricerca Tipologia Ente Unioni / Comunità Montane Enti di area vasta Comuni Tematica Riparto fondi Indicatori / Determinanti Dati questionari Anno Altre annualità 2026 2025 2024 2023 2022 2021 2020 2019 2018 Nessun risultato trovato Informazioni su OpenCivitas Conosci, confronta e valuta gli Enti Locali Contatti e assistenza Per assistenza inviare una email all’indirizzo: assistenzaentilocali@sogei.it Link utili Commissione Tecnica per i Fabbisogni Standard (CTFS) Commissione Tecnica per i Fabbisogni Standard (CTFS) Accesso riservato agli Enti Locali Accesso riservato agli Enti Locali Amministrazione trasparente Amministrazione trasparente Seguici su Social Network Social Network Social Network Social Network Social Network Altre informazioni Glossario Glossario Dichiarazione di accessibilità Dichiarazione di accessibilità Note legali Note legali Privacy Privacy Mappa del sito Mappa del sito Nascosta"
+ }
+}

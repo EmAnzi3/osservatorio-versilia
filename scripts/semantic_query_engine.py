@@ -50,6 +50,7 @@ import semantic_query_connectivity_adapters as connectivity
 import semantic_query_road_adapters as road
 import semantic_query_erp_adapters as erp
 import semantic_query_bank_branches_adapters as bank
+import semantic_query_standard_needs_adapters as needs
 import semantic_query_real_income_adapters as real_income
 import semantic_query_road_network_adapters as road_network
 import semantic_query_energy_adapters as energy
@@ -141,6 +142,7 @@ def dimensions(key):
     if key in real_income.KEYS:return real_income.dimensions(key)
     if key in erp.KEYS:return erp.dimensions(key)
     if key in bank.KEYS:return bank.dimensions(key)
+    if key in needs.KEYS:return needs.dimensions(key)
     if key in tpl.KEYS:return tpl.dimensions(key)
     if key in taxes.KEYS:return taxes.dimensions(key)
     if key in vehicles.KEYS:return vehicles.dimensions(key)
@@ -196,6 +198,7 @@ def _existing_operations(key, dimension, unit):
     if key in real_income.KEYS:return real_income.operations(key,dimension)
     if key in erp.KEYS:return erp.operations(key,dimension)
     if key in bank.KEYS:return bank.operations(key,dimension)
+    if key in needs.KEYS:return needs.operations(key,dimension)
     if key in tpl.KEYS:return tpl.operations(key,dimension)
     if key in taxes.KEYS:return taxes.operations(key,dimension)
     if key in vehicles.KEYS:return vehicles.operations(key,dimension)
@@ -253,7 +256,7 @@ def _existing_operations(key, dimension, unit):
 
 def benchmark_scopes(key, dimension):
     """Scopes of this exact dimension; the primary view is not a fallback."""
-    return (atlas.scopes(key,dimension) if key in atlas.KEYS else outside.scopes(key,dimension) if key in outside.KEYS else omi.scopes(key,dimension) if key in omi.KEYS else energy.scopes(key,dimension) if key in energy.KEYS else pnrr.scopes(key,dimension) if key in pnrr.KEYS else turnout.scopes(key,dimension) if key in turnout.KEYS else third_sector.scopes(key,dimension) if key in third_sector.KEYS else slow_mobility.scopes(key,dimension) if key in slow_mobility.KEYS else road_network.scopes(key,dimension) if key in road_network.KEYS else seasonality.scopes(key,dimension) if key in seasonality.KEYS else hospital.scopes(key,dimension) if key in hospital.KEYS else real_income.scopes(key,dimension) if key in real_income.KEYS else erp.scopes(key,dimension) if key in erp.KEYS else bank.scopes(key,dimension) if key in bank.KEYS else tpl.scopes(key,dimension) if key in tpl.KEYS else taxes.scopes(key,dimension) if key in taxes.KEYS else vehicles.scopes(key,dimension) if key in vehicles.KEYS else road.scopes(key,dimension) if key in road.KEYS else connectivity.scopes(key,dimension) if key in connectivity.KEYS else facilities.scopes(key,dimension) if key in facilities.KEYS else social.scopes(key,dimension) if key in social.KEYS else invalsi.scopes(key,dimension) if key in invalsi.KEYS else library.scopes(key,dimension) if key in library.KEYS else regional.scopes(key,dimension) if key in regional.KEYS else tourism.scopes(key,dimension) if key in tourism.KEYS else rgs.scopes(key,dimension) if key in rgs.KEYS else mef.scopes(key,dimension) if key in mef.KEYS else profiles.scopes(key,dimension) if key in profiles.KEYS else [] if key in (*water_quality.KEYS,*classification.KEYS,*climate.KEYS,*bathing.KEYS,*maritime.KEYS,*extractive.KEYS,*remediation.KEYS,*pab.KEYS) else coast.scopes(key,dimension) if key in coast.KEYS else fragility.scopes(key) if key in fragility.KEYS else [] if key in hazard.KEYS else [] if key in territory.KEYS else soil.scopes(key,dimension) if key in soil.KEYS else geography.scopes(key,dimension) if key in geography.KEYS else agriculture.scopes(key,dimension) if key in agriculture.KEYS else ['tuscany','italy'] if key in (*environment.KEYS,*commuting.RATIOS) else demography.benchmark_scopes(key,dimension) if key in demography.KEYS else census.benchmark_scopes(key,dimension) if key in census.KEYS else business.benchmark_scopes(key,dimension) if key in business.KEYS else ['versilia'] if key in ars.LEGACY_ONLY else ['tuscany','versilia'] if key in ars.KEYS or key=='elderlyHomeCare' else ['tuscany'] if key in territorial.RATIOS else ['tuscany','italy'] if key in CENSUS or key in ('income','ageDistribution') else [])
+    return (atlas.scopes(key,dimension) if key in atlas.KEYS else outside.scopes(key,dimension) if key in outside.KEYS else omi.scopes(key,dimension) if key in omi.KEYS else energy.scopes(key,dimension) if key in energy.KEYS else pnrr.scopes(key,dimension) if key in pnrr.KEYS else turnout.scopes(key,dimension) if key in turnout.KEYS else third_sector.scopes(key,dimension) if key in third_sector.KEYS else slow_mobility.scopes(key,dimension) if key in slow_mobility.KEYS else road_network.scopes(key,dimension) if key in road_network.KEYS else seasonality.scopes(key,dimension) if key in seasonality.KEYS else hospital.scopes(key,dimension) if key in hospital.KEYS else real_income.scopes(key,dimension) if key in real_income.KEYS else erp.scopes(key,dimension) if key in erp.KEYS else bank.scopes(key,dimension) if key in bank.KEYS else needs.scopes(key,dimension) if key in needs.KEYS else tpl.scopes(key,dimension) if key in tpl.KEYS else taxes.scopes(key,dimension) if key in taxes.KEYS else vehicles.scopes(key,dimension) if key in vehicles.KEYS else road.scopes(key,dimension) if key in road.KEYS else connectivity.scopes(key,dimension) if key in connectivity.KEYS else facilities.scopes(key,dimension) if key in facilities.KEYS else social.scopes(key,dimension) if key in social.KEYS else invalsi.scopes(key,dimension) if key in invalsi.KEYS else library.scopes(key,dimension) if key in library.KEYS else regional.scopes(key,dimension) if key in regional.KEYS else tourism.scopes(key,dimension) if key in tourism.KEYS else rgs.scopes(key,dimension) if key in rgs.KEYS else mef.scopes(key,dimension) if key in mef.KEYS else profiles.scopes(key,dimension) if key in profiles.KEYS else [] if key in (*water_quality.KEYS,*classification.KEYS,*climate.KEYS,*bathing.KEYS,*maritime.KEYS,*extractive.KEYS,*remediation.KEYS,*pab.KEYS) else coast.scopes(key,dimension) if key in coast.KEYS else fragility.scopes(key) if key in fragility.KEYS else [] if key in hazard.KEYS else [] if key in territory.KEYS else soil.scopes(key,dimension) if key in soil.KEYS else geography.scopes(key,dimension) if key in geography.KEYS else agriculture.scopes(key,dimension) if key in agriculture.KEYS else ['tuscany','italy'] if key in (*environment.KEYS,*commuting.RATIOS) else demography.benchmark_scopes(key,dimension) if key in demography.KEYS else census.benchmark_scopes(key,dimension) if key in census.KEYS else business.benchmark_scopes(key,dimension) if key in business.KEYS else ['versilia'] if key in ars.LEGACY_ONLY else ['tuscany','versilia'] if key in ars.KEYS or key=='elderlyHomeCare' else ['tuscany'] if key in territorial.RATIOS else ['tuscany','italy'] if key in CENSUS or key in ('income','ageDistribution') else [])
 
 
 def operations(key, dimension, unit):
@@ -424,6 +427,7 @@ class QueryEngine:
         if key in real_income.KEYS:return real_income.context(metric,key,dimension)
         if key in erp.KEYS:return erp.context(metric,key,dimension)
         if key in bank.KEYS:return bank.context(metric,key,dimension)
+        if key in needs.KEYS:return needs.context(metric,key,dimension)
         if key in tpl.KEYS:return tpl.context(metric,key,dimension)
         if key in taxes.KEYS:return taxes.context(metric,key,dimension)
         if key in vehicles.KEYS:return vehicles.context(metric,key,dimension)
@@ -494,6 +498,7 @@ class QueryEngine:
         if key in real_income.KEYS:return real_income.observation(self,key,row_index,dimension,period,historical)
         if key in erp.KEYS:return erp.observation(self,key,row_index,dimension,period,historical)
         if key in bank.KEYS:return bank.observation(self,key,row_index,dimension,period,historical)
+        if key in needs.KEYS:return needs.observation(self,key,row_index,dimension,period,historical)
         if key in tpl.KEYS:return tpl.observation(self,key,row_index,dimension,period,historical)
         if key in taxes.KEYS:return taxes.observation(self,key,row_index,dimension,period,historical)
         if key in vehicles.KEYS:return vehicles.observation(self,key,row_index,dimension,period,historical)
@@ -667,6 +672,7 @@ class QueryEngine:
         if key in real_income.KEYS:real_income.selection_guard(key,dimension,operation)
         if key in erp.KEYS:erp.selection_guard(key,dimension,operation)
         if key in bank.KEYS:bank.selection_guard(key,dimension,operation)
+        if key in needs.KEYS:needs.selection_guard(key,dimension,operation)
         if key in tpl.KEYS:tpl.selection_guard(key,dimension,operation)
         if key in taxes.KEYS:taxes.selection_guard(key,dimension,operation)
         if key in vehicles.KEYS:vehicles.selection_guard(key,dimension,operation)
@@ -729,6 +735,7 @@ class QueryEngine:
             elif key in real_income.KEYS:periods=real_income.available_periods(self,key,dimension,rows[towns[0]][1])
             elif key in erp.KEYS:periods=erp.available_periods(self,key,dimension,rows[towns[0]][1])
             elif key in bank.KEYS:periods=bank.available_periods(self,key,dimension,rows[towns[0]][1])
+            elif key in needs.KEYS:periods=needs.available_periods(self,key,dimension,rows[towns[0]][1])
             elif key in road.KEYS:periods=road.available_periods(self,key,dimension,rows[towns[0]][1])
             elif key in social.KEYS:periods=social.available_periods(self,key,dimension,rows[towns[0]][1])
             elif key in invalsi.KEYS:periods=invalsi.available_periods(self,key,dimension,rows[towns[0]][1])
@@ -770,7 +777,7 @@ class QueryEngine:
             if code not in rows:
                 raise ValueError('municipal_row_not_available')
             for period in periods:
-                use_history=historical and not (key in (*atlas.KEYS,*outside.KEYS,*omi.KEYS,*energy.KEYS,*pnrr.KEYS,*turnout.KEYS,*third_sector.KEYS,*slow_mobility.KEYS,*road_network.KEYS,*seasonality.KEYS,*hospital.KEYS,*real_income.KEYS,*erp.KEYS,*bank.KEYS,*tpl.KEYS,*taxes.KEYS,*vehicles.KEYS,*road.KEYS,*connectivity.KEYS,*facilities.KEYS,*social.KEYS,*invalsi.KEYS,*library.KEYS,*regional.KEYS,*tourism.KEYS,*rgs.KEYS,*mef.KEYS,*ars.KEYS,*business.KEYS,*census.KEYS,*finance.KEYS,*distinct.KEYS,*demography.KEYS,*environment.KEYS,*agriculture.KEYS,*geography.KEYS,*soil.KEYS,*territory.KEYS,*hazard.KEYS,*fragility.KEYS,*coast.KEYS,*bathing.KEYS,*maritime.KEYS,*extractive.KEYS,*remediation.KEYS,*pab.KEYS) and operation not in TEMPORAL and period==period_token(key,self._catalog['metrics'][key]['meta']['year']))
+                use_history=historical and not (key in (*atlas.KEYS,*outside.KEYS,*omi.KEYS,*energy.KEYS,*pnrr.KEYS,*turnout.KEYS,*third_sector.KEYS,*slow_mobility.KEYS,*road_network.KEYS,*seasonality.KEYS,*hospital.KEYS,*real_income.KEYS,*erp.KEYS,*bank.KEYS,*needs.KEYS,*tpl.KEYS,*taxes.KEYS,*vehicles.KEYS,*road.KEYS,*connectivity.KEYS,*facilities.KEYS,*social.KEYS,*invalsi.KEYS,*library.KEYS,*regional.KEYS,*tourism.KEYS,*rgs.KEYS,*mef.KEYS,*ars.KEYS,*business.KEYS,*census.KEYS,*finance.KEYS,*distinct.KEYS,*demography.KEYS,*environment.KEYS,*agriculture.KEYS,*geography.KEYS,*soil.KEYS,*territory.KEYS,*hazard.KEYS,*fragility.KEYS,*coast.KEYS,*bathing.KEYS,*maritime.KEYS,*extractive.KEYS,*remediation.KEYS,*pab.KEYS) and operation not in TEMPORAL and period==period_token(key,self._catalog['metrics'][key]['meta']['year']))
                 observation,notes = self.observation(key,rows[code][0],period,historical=use_history,dimension=dimension)
                 result.append(observation);warnings.extend(notes)
         return result,warnings
@@ -797,6 +804,8 @@ class QueryEngine:
                   'erpMaterializerSha256':digest((ROOT/'scripts/materialize_erp_arrears_v125.py').read_bytes()),
                   'bankBranchesAdapterSha256':digest((ROOT/'scripts/semantic_query_bank_branches_adapters.py').read_bytes()),
                   'bankBranchesBuilderSha256':digest((ROOT/'scripts/bank_branches.py').read_bytes()),
+                  'standardNeedsAdapterSha256':digest((ROOT/'scripts/semantic_query_standard_needs_adapters.py').read_bytes()),
+                  'standardNeedsBuilderSha256':digest((ROOT/'scripts/opencivitas_needs.py').read_bytes()),
                   'tplAdapterSha256':digest((ROOT/'scripts/semantic_query_tpl_adapters.py').read_bytes()),
                   'tplMaterializerSha256':digest((ROOT/'scripts/materialize_mobilita_tpl_v119.py').read_bytes()),
                   'municipalTaxAdapterSha256':digest((ROOT/'scripts/semantic_query_municipal_tax_adapters.py').read_bytes()),
@@ -872,7 +881,7 @@ class QueryEngine:
                 if len(observations)!=1:
                     raise ValueError('benchmark_query_requires_one_municipality')
                 key=selectors[0]['metric']
-                adapter=seasonality.benchmark if key in seasonality.KEYS else bank.benchmark if key in bank.KEYS else real_income.benchmark if key in real_income.KEYS else vehicles.benchmark if key in vehicles.KEYS else road.benchmark if key in road.KEYS else connectivity.benchmark if key in connectivity.KEYS else facilities.benchmark if key in facilities.KEYS else social.benchmark if key in social.KEYS else invalsi.benchmark if key in invalsi.KEYS else library.benchmark if key in library.KEYS else regional.benchmark if key in regional.KEYS else tourism.benchmark if key in tourism.KEYS else rgs.benchmark if key in rgs.KEYS else mef.benchmark if key in mef.KEYS else profiles.benchmark if key in profiles.KEYS else coast.benchmark if key in coast.KEYS else fragility.benchmark if key in fragility.KEYS else hazard.benchmark if key in hazard.KEYS else territory.benchmark if key in territory.KEYS else soil.benchmark if key in soil.KEYS else geography.benchmark if key in geography.KEYS else agriculture.benchmark if key in agriculture.KEYS else environment.benchmark if key in environment.KEYS else commuting.benchmark if key in commuting.KEYS else demography.benchmark if key in demography.KEYS else distinct.benchmark if key in distinct.KEYS else finance.benchmark if key in finance.KEYS else census.benchmark if key in census.KEYS else business.benchmark if key in business.KEYS else ars.benchmark if key in ars.KEYS else territorial.benchmark if key=='ageDistribution' or key in territorial.NEW_KEYS else benchmark_observation
+                adapter=seasonality.benchmark if key in seasonality.KEYS else bank.benchmark if key in bank.KEYS else needs.benchmark if key in needs.KEYS else real_income.benchmark if key in real_income.KEYS else vehicles.benchmark if key in vehicles.KEYS else road.benchmark if key in road.KEYS else connectivity.benchmark if key in connectivity.KEYS else facilities.benchmark if key in facilities.KEYS else social.benchmark if key in social.KEYS else invalsi.benchmark if key in invalsi.KEYS else library.benchmark if key in library.KEYS else regional.benchmark if key in regional.KEYS else tourism.benchmark if key in tourism.KEYS else rgs.benchmark if key in rgs.KEYS else mef.benchmark if key in mef.KEYS else profiles.benchmark if key in profiles.KEYS else coast.benchmark if key in coast.KEYS else fragility.benchmark if key in fragility.KEYS else hazard.benchmark if key in hazard.KEYS else territory.benchmark if key in territory.KEYS else soil.benchmark if key in soil.KEYS else geography.benchmark if key in geography.KEYS else agriculture.benchmark if key in agriculture.KEYS else environment.benchmark if key in environment.KEYS else commuting.benchmark if key in commuting.KEYS else demography.benchmark if key in demography.KEYS else distinct.benchmark if key in distinct.KEYS else finance.benchmark if key in finance.KEYS else census.benchmark if key in census.KEYS else business.benchmark if key in business.KEYS else ars.benchmark if key in ars.KEYS else territorial.benchmark if key=='ageDistribution' or key in territorial.NEW_KEYS else benchmark_observation
                 observations.append(adapter(self,key,request.get('benchmark'),observations[0]))
                 notes.append('benchmark_gap_is_not_policy_priority')
             result['observations'] = observations

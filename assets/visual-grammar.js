@@ -63,6 +63,8 @@
     'currentPaymentCapacity',
     'availableAdministrationResultPerResident',
     'rigidExpenditureShare',
+    'standardNeedsSpendingGap',
+    'standardNeedsServiceGap',
     'currentPayments',
     'capitalPayments',
     'siopePayments',
