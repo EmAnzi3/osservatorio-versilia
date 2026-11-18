@@ -1,6 +1,9 @@
 """Frozen Rendiconto/SIOPE evidence; accounting flows and denominator dates explicit."""
 import math
+import re
 from urllib.parse import urlparse
+from a6_pins import Pin as _pin
+from openbdap_benchmarks import METRICS as BENCHMARKED, RATIOS as BENCHMARK_RATIOS
 from semantic_operations import finite
 from materialize_a3_5_openbdap_ratio_components import BILANCI_TARGETS, MISSION_CODES
 
@@ -107,5 +110,30 @@ def observation(engine,key,index,dimension,period,historical):
  return dict(ctx,**components,**dates,metric=key,dimension=dimension,geography=row['code'],period=period,value=value,source=source,evidence=evidence,provenance=evidence,notApplicable=bool(row.get('notApplicable')) if not historical else False,dataUnavailable=value is None or (bool(row.get('dataUnavailable')) if not historical else False)),warnings
 
 
+BENCHMARK_RE=re.compile(r'data/source-snapshots/openbdap-benchmark-(20[0-9]{2})[.]json')
+BENCHMARK_HASH=_pin('finance#1')
+
+
+def scopes(key,dimension):
+ return ['tuscany','italy'] if key in BENCHMARKED and dimension=='total' else []
+
+
 def benchmark(engine,key,scope,municipal):
- raise ValueError('finance_benchmark_components_or_complete_scope_not_frozen')
+ """Toscana/Italia sui Comuni che hanno trasmesso il rendiconto (≥90% dei residenti), componenti native nello snapshot."""
+ if key not in BENCHMARKED or scope not in ('tuscany','italy'):raise ValueError('finance_benchmark_components_or_complete_scope_not_frozen')
+ published=engine._catalog['metrics'][key]['meta'].get('benchmark') or {}
+ path=str(published.get('sourceSnapshot'))
+ if not BENCHMARK_RE.fullmatch(path):raise ValueError('finance_benchmark_components_or_complete_scope_not_frozen')
+ snap,ref=engine.file(path)
+ if ref.get('sha256')!=BENCHMARK_HASH or snap.get('qualityGate',{}).get('status')!='PASS':raise ValueError('finance_benchmark_frozen_input_changed')
+ if municipal['period']!=str(snap['year']) or str(published.get('year'))!=str(snap['year']):raise ValueError('finance_benchmark_period_not_frozen')
+ entry=snap['benchmarks'][key][scope]
+ if entry.get('value') is None or entry['populationShare']<snap['minCoverage']:raise ValueError('finance_benchmark_scope_below_coverage_threshold')
+ scale=100 if key in BENCHMARK_RATIOS else 1
+ value=entry['numerator']/entry['denominator']*scale
+ close(value,entry['value']);close(published.get(scope),value)
+ evidence=[dict(ref,kind='source_snapshot',recordPointer=f'/benchmarks/{key}/{scope}',nativeComponents=dict(numerator=entry['numerator'],denominator=entry['denominator'],scale=scale),
+               coverage=dict(municipalities=entry['municipalities'],municipalitiesTotal=entry['municipalitiesTotal'],populationShare=entry['populationShare'])),
+           dict(kind='catalog_snapshot',path=engine.catalog_path,sha256=engine.catalog_hash,valuePointer=f'/metrics/{key}/meta/benchmark/{scope}')]
+ return dict(municipal,geography=scope,value=value,evidence=evidence,provenance=evidence,
+             benchmarkAggregation='sum over municipalities that filed the Rendiconto with the required rows / their own denominators (residents 1 January for per-resident values); published only with ≥90% of residents covered')
