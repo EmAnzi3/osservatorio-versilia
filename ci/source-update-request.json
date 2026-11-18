@@ -6,28 +6,7 @@
   "agcomFtth": false,
   "istatTourism": [],
   "mefFiscalProbe": [],
-  "sourceProbe": [
-    {
-      "name": "serie-istat-famiglie-comuni",
-      "url": "https://www.istat.it/storage/misura-comune/3-Famiglie.xlsx",
-      "match": "Camaiore|Forte dei Marmi|Massarosa|Pietrasanta|Seravezza|Stazzema|Viareggio|Tav\\.|Anni"
-    },
-    {
-      "name": "serie-aci-autoritratto",
-      "url": "https://aci.gov.it/attivita-e-progetti/studi-e-ricerche/autoritratto/",
-      "match": "Autoritratto[-_ ]?20\\d\\d"
-    },
-    {
-      "name": "serie-mef-irpef-comunali",
-      "url": "https://www1.finanze.gov.it/finanze/analisi_stat/public/index.php?opendata=yes&search_class%5B0%5D=cCOMUNE",
-      "match": "20\\d\\d.{0,80}(zip|csv)|(zip|csv).{0,80}20\\d\\d"
-    },
-    {
-      "name": "serie-istat-sezioni-censimento",
-      "url": "https://www.istat.it/notizia/dati-per-sezioni-di-censimento/",
-      "match": "20\\d\\d.{0,60}(zip|xlsx|csv)|sezion"
-    }
-  ],
+  "sourceProbe": [],
   "ispraSoil": [],
   "aciVehicles": [],
   "omiResidential": [],
@@ -38,5 +17,6 @@
   "sdmxProbe": [],
   "bdiBranchesProbe": false,
   "bdiBranches": [],
-  "opencivitasNeeds": []
+  "opencivitasNeeds": [],
+  "istatFamiglie": true
 }
