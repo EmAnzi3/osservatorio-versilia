@@ -20,7 +20,7 @@ KEYS=(*DEMOGRAPHIC,*HOUSING,'employmentGenderGap','householdSize','oldAgeIndex')
 RATIOS=('cohabitingHouseholds',)
 LABOUR=('employmentRate','unemploymentRate','activityRate')
 FAMILIES_RE=re.compile(r'data/source-snapshots/istat-famiglie-serie-(20[0-9]{2})[.]json')
-FAMILIES_HASH=_pin('household_size#1')
+FAMILIES_HASH=_pin('census#1')
 
 
 def close(actual,expected,tolerance=1e-8):
