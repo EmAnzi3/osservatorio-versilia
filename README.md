@@ -11,8 +11,8 @@ Release corrente: **v1.40.0** — aggiornata **14 settembre 2026**.
 
 - **7 Comuni**: Camaiore, Forte dei Marmi, Massarosa, Pietrasanta, Seravezza, Stazzema e Viareggio;
 - **11 aree tematiche**;
-- **225 indicatori pubblicati**;
-- **221 indicatori incorporati**: 219 con scheda autonoma e 2 con route dedicata;
+- **226 indicatori pubblicati**;
+- **222 indicatori incorporati**: 220 con scheda autonoma e 2 con route dedicata;
 - **4 indicatori climatici esterni**, integrati nell'esperienza del sito con storici separati;
 - confronti territoriali, profili comunali, serie storiche e benchmark Versilia;
 - benchmark Toscana/Italia quando la comparabilità metodologica è adeguata;

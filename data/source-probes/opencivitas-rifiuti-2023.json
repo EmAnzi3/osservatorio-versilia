@@ -1,0 +1,65 @@
+{
+ "schemaVersion": 1,
+ "createdAt": "2026-11-17T15:00:51Z",
+ "note": "Sonda: struttura della fonte consultata; non è un dato pubblicato.",
+ "follow": null,
+ "result": {
+  "url": "https://www.opencivitas.it/portale/documents/20118/0/2023_Ind_RIFIUTI_01_IT.csv/34fd224a-5cac-7676-3016-7c55fe5d6450",
+  "contentType": "text/csv",
+  "bytes": 14635430,
+  "sha256": "4963a608db74aa923c8de7a1de6f43bcb32ee28d616c4d578a82a1945e336e12",
+  "csv": {
+   "separator": ";",
+   "rows": 296416,
+   "head": [
+    [
+     "USERNAME",
+     "Indicatore/Determinante",
+     "Valore",
+     "Anomalia"
+    ],
+    [
+     "AL001SIF11BR",
+     "AER_ANAER_REG_2023_N",
+     "24",
+     ""
+    ],
+    [
+     "AL001SIF11BR",
+     "CENTRI_RACCOLTA_2023",
+     "1",
+     ""
+    ],
+    [
+     "AL001SIF11BR",
+     "COEINCENERITORI_REG_2023_N",
+     "2",
+     ""
+    ],
+    [
+     "AL001SIF11BR",
+     "COORD_OUT",
+     "2",
+     ""
+    ],
+    [
+     "AL001SIF11BR",
+     "COORD_SPESA",
+     "4",
+     ""
+    ]
+   ],
+   "hits": [
+    [
+     182003,
+     [
+      "PE007SIF11JV",
+      "FST_RIPROPORZIONATO_BI_PROAB",
+      "158,04603004",
+      ""
+     ]
+    ]
+   ]
+  }
+ }
+}

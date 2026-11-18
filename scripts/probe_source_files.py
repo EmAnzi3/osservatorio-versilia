@@ -30,7 +30,9 @@ CODES = ("046005", "046013", "046018", "046024", "046028", "046030", "046033")
 NAMES = ("CAMAIORE", "FORTE DEI MARMI", "MASSAROSA", "PIETRASANTA", "SERAVEZZA", "STAZZEMA", "VIAREGGIO", "TOSCANA", "ITALIA", "LUCCA")
 MAX_FOLLOW = 8
 HEAD_ROWS = 6
+SMALL_SHEET = 300
 MAX_HITS = 80
+MAX_CSV_HITS = 1500
 
 
 OPENER = urllib.request.build_opener(urllib.request.HTTPCookieProcessor(http.cookiejar.CookieJar()))
@@ -63,18 +65,34 @@ def workbook(data: bytes) -> dict[str, Any]:
     wb = load_workbook(io.BytesIO(data), read_only=True, data_only=True)
     sheets = []
     for ws in wb.worksheets:
+        if hasattr(ws, "reset_dimensions"):
+            ws.reset_dimensions()  # alcuni file dichiarano dimensioni sbagliate (una sola riga)
         head, hits, count = [], [], 0
         for i, row in enumerate(ws.iter_rows(values_only=True)):
             count += 1
             values = [cell(v) for v in row]
             while values and values[-1] is None:
                 values.pop()
-            if i < HEAD_ROWS:
+            if i < SMALL_SHEET:
                 head.append(values)
-            elif len(hits) < MAX_HITS and hit(values):
+            if i >= HEAD_ROWS and len(hits) < MAX_HITS and hit(values):
                 hits.append([i + 1, values])
-        sheets.append({"name": ws.title, "rows": count, "head": head, "hits": hits})
+        # i fogli piccoli (metadati, legende) si riportano interi; degli altri solo l'intestazione
+        sheets.append({"name": ws.title, "rows": count, "head": head if count <= SMALL_SHEET else head[:HEAD_ROWS], "hits": hits})
     return {"sheets": sheets}
+
+
+def csv_table(data: bytes, match: str | None = None) -> dict[str, Any]:
+    """CSV: separatore, intestazione, prime righe e righe dei Comuni della Versilia, della Toscana e dell'Italia."""
+    import csv as _csv
+
+    text = data.decode("utf-8-sig", errors="replace")
+    first = text.splitlines()[0] if text else ""
+    sep = max(";,\t|", key=first.count)
+    rows = list(_csv.reader(io.StringIO(text), delimiter=sep))
+    keep = (lambda r: bool(re.search(match, sep.join(r)))) if match else hit
+    hits = [[i + 1, [cell(v) for v in r]] for i, r in enumerate(rows[1:], 1) if keep(r)][:MAX_CSV_HITS]
+    return {"separator": sep, "rows": len(rows), "head": [[cell(v) for v in r] for r in rows[:HEAD_ROWS]], "hits": hits}
 
 
 def links(page: str, url: str) -> list[dict[str, str]]:
@@ -105,7 +123,7 @@ def forms(page: str, url: str) -> list[dict[str, Any]]:
     return out[:10]
 
 
-def analyse(url: str, follow: str | None, depth: int = 0, post: str | None = None) -> dict[str, Any]:
+def analyse(url: str, follow: str | None, depth: int = 0, post: str | None = None, match: str | None = None) -> dict[str, Any]:
     item: dict[str, Any] = {"url": url, **({"post": post} if post is not None else {})}
     try:
         data, ctype = fetch(url, data=post.encode() if post is not None else None)
@@ -120,6 +138,9 @@ def analyse(url: str, follow: str | None, depth: int = 0, post: str | None = Non
             with zipfile.ZipFile(io.BytesIO(data)) as z:
                 item["members"] = [{"name": i.filename, "bytes": i.file_size} for i in z.infolist()]
                 item["memberWorkbooks"] = {n: workbook(z.read(n)) for n in z.namelist() if n.lower().endswith((".xlsx", ".xlsm"))}
+                item["memberCsv"] = {n: csv_table(z.read(n), match) for n in z.namelist() if n.lower().endswith((".csv", ".txt"))}
+        elif "csv" in ctype.lower() or re.search(r"\.csv(?:[/?#]|$)", url, re.I):
+            item["csv"] = csv_table(data, match)
         else:
             page = data.decode("utf-8", errors="replace")
             ls = links(page, url)
@@ -136,14 +157,14 @@ def analyse(url: str, follow: str | None, depth: int = 0, post: str | None = Non
     return item
 
 
-def run(name: str, url: str, follow: str | None = None, posts: list[str] | None = None) -> Path:
+def run(name: str, url: str, follow: str | None = None, posts: list[str] | None = None, match: str | None = None) -> Path:
     """`posts`: passi successivi «URL::campi urlencoded» inviati in POST nella stessa sessione."""
     if not re.fullmatch(r"[a-z0-9][a-z0-9-]{2,60}", name):
         raise RuntimeError("Nome della sonda non valido: minuscole, cifre e trattini")
     path = ROOT / "data" / "source-probes" / f"{name}.json"
     probe = {"schemaVersion": 1, "createdAt": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
              "note": "Sonda: struttura della fonte consultata; non è un dato pubblicato.", "follow": follow,
-             "result": analyse(url, follow)}
+             "result": analyse(url, follow, match=match)}
     if posts:
         probe["steps"] = [analyse(target, None, 0, fields) for target, _, fields in (step.partition("::") for step in posts)]
     path.parent.mkdir(parents=True, exist_ok=True)

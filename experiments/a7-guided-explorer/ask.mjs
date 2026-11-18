@@ -39,6 +39,7 @@ mare: 'balneazione costa', spiagge: 'balneazione spiagge concessioni', balneari:
   famiglia: 'famiglie persone', famiglie: 'persone', tasse: 'tributi imposte irpef imu tari', imu: 'imu', tari: 'tari rifiuti', irpef: 'irpef addizionale',
   istruzione: 'diploma titolo', studio: 'diploma titolo', scuole: 'scuola scolastici istruzione', scuola: 'scolastici istruzione', studenti: 'alunni', alunni: 'alunni', mensa: 'mense', diploma: 'diploma titolo',
   ospedale: 'ospedalieri ricoveri', medici: 'medici sanita', farmacie: 'farmacie', salute: 'sanitari salute',
+  banche: 'sportelli bancari', banca: 'sportelli bancari', filiali: 'sportelli bancari', filiale: 'sportelli bancari', bancarie: 'bancari', bancaria: 'bancari', desertificazione: 'sportelli',
   auto: 'autovetture motorizzazione', macchine: 'autovetture motorizzazione', traffico: 'veicoli', autobus: 'tpl trasporto pubblico', bus: 'tpl', treni: 'ferroviario',
   internet: 'banda ultralarga ftth', fibra: 'ftth fibra', connessione: 'ftth',
   benzina: 'carburanti benzina', gasolio: 'carburanti gasolio', diesel: 'gasolio', carburante: 'carburanti',

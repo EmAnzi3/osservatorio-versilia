@@ -1,5 +1,40 @@
 # Consolidamento Osservatorio Versilia — handoff operativo
 
+## Nuovo indicatore: sportelli bancari ogni 1.000 residenti (17 novembre 2026)
+
+Branch `feat/sportelli-bancari`. Primo indicatore aggiunto dopo il catalogo di ottobre; segue lo
+schema degli indicatori nati in build (RSA accreditate, atlante): il catalogo canonico
+`data/site-data.json` resta a 181, quello effettivo passa da 225 a 226.
+
+- Fonte: Banca d'Italia, open data GIAVA «Lista succursali banche» (storico delle sedi con date di
+  operatività e validità) e «Lista località geografiche». Il servizio vuole un cookie di sessione.
+- Regola (`scripts/bank_branches.py`): sede operativa al 31 dicembre nella versione valida quel giorno,
+  chiave **intermediario + sede** (`ID_SEDE` si ripete fra banche: con la sola sede l'Italia 2022
+  faceva 13.546 invece di ~21.000), esclusi gli uffici di rappresentanza, Stato Italia. Quality gate
+  obbligatorio: Versilia 2022 identica alla serie Istat «Servizi bancari - dati comunali»
+  (`117_1035_DF_DCAT_SERVBANC_COM_1`, ferma al 2022) e Italia 2022 fra 20.000 e 22.500 (20.979).
+- Aggiornatore `update_source_data.py bdi-branches --year AAAA` (richiesta `"bdiBranches"`): scrive
+  solo `data/source-snapshots/bdi-sportelli-bancari-AAAA.json` (serie 2018–AAAA, residenti al 1°
+  gennaio successivo dal catalogo, Toscana/Italia dal benchmark demografico).
+- Build: `scripts/materialize_bank_branches.py`, ultimo passo dell'overlay in `build_static_brand.py`:
+  metrica `bankBranchesPer1000` (per1000, serie, benchmark Toscana/Italia), sezione «Banche e credito»
+  nel tema Economia, profilo `bdi-giava-continuous` e classificazioni A3 nel registro dell'overlay.
+- Controllo mensile: `ci/release-probe-coverage.json` regola `bdi_succursali` (`yearend` sul nome
+  datato del CSV nell'archivio, `text: names`), con il nuovo prefisso `COOKIES ` in
+  `release_period_probes.http_fetch`; stato iniziale in `data/source-monitor-state.json`.
+- Motore A6: `semantic_query_bank_branches_adapters.py` (compare, rank, series, benchmark_gap; rifiuti
+  per variazioni, pooling, correlazioni, anomalie), pin `bank_branches#1/#2`, regressioni
+  `test_semantic_bank_branches_adapters.py` dentro `test_site_consistency.py`; letture italiane delle
+  avvertenze in `limits-it.mjs`.
+- Chiedi: sinonimi banche/filiali/desertificazione in `ask.mjs`; 7 domande nuove in
+  `ci/chiedi-domande.json`. Sito: sinonimi in `app-parts/00.txt`, fonte in `05.txt`,
+  `visual-grammar.js` (metrica funzionale).
+- Dossier «Invecchiare in Versilia», capitolo «Cure e servizi vicino a casa»: sportelli con i conteggi
+  dal motore (59 nel 2025, 80 nel 2018; Stazzema senza sportelli dal 2025).
+- Sonde: `probe_sdmx.py` (flussi Istat, ricerca con `find`), `probe_bdi_branches.py`, CSV filtrabili
+  con `match` e CSV dentro gli zip nella sonda generica. Le sonde OpenCivitas 2023 restano per il
+  prossimo indicatore (fabbisogni standard).
+
 ## Dossier «Essere giovani in Versilia» (17 novembre 2026)
 
 Branch `feat/dossier-giovani`, diciottesimo dossier in forma di relazione (slug `giovani`, tema

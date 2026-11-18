@@ -157,6 +157,7 @@ def period_cases() -> None:
         "archives": {"mode": "absent", "url": "https://x.test/imu?anno={next}", "pattern": r"datizip/(20\d\d)/", "text": "raw",
                      "link": r'href="([^"]*datizip/(20\d\d)/toscana\.zip)"', "expect": "PK", "hint": "h"},
         "yearend": {"url": "https://x.test/farmacie/", "kind": "yearend", "pattern": r"FRM_FARMA_\d+_(20\d{6})", "text": "raw", "hint": "h"},
+        "zipnames": {"url": "COOKIES https://x.test/succursali", "kind": "yearend", "pattern": r"(20\d\d-\d\d-\d\d)_SUCCURSALI_BANCHE", "text": "names", "hint": "h"},
         "values": {"mode": "values", "url": "https://x.test/ind/", "link": r'href="([^"]+)"[^>]*>\s*Indicatori (20\d\d)\s*</a>',
                    "column": "ind18", "geography": "codice_istat_num", "hint": "h"},
     })
@@ -214,6 +215,14 @@ def period_cases() -> None:
     assert run("yearend", "2025", pharmacy("20261231"))["status"] == "release_detected"
     assert run("yearend", "2025", pharmacy("20270115"))["status"] == "release_detected"
     assert run("yearend", "2025", pharmacy("20251231"))["status"] == "current"
+    # Archivio zip: conta il nome datato del file contenuto (sportelli Banca d'Italia), con il prefisso COOKIES.
+    def branches(day):
+        buffer = io.BytesIO()
+        with zipfile.ZipFile(buffer, "w") as archive:
+            archive.writestr(f"{day}_SUCCURSALI_BANCHE.csv", "ID_INT;ID_SEDE\n1;1\n")
+        return {"COOKIES https://x.test/succursali": buffer.getvalue()}
+    assert run("zipnames", "2025", branches("2026-11-16"))["status"] == "current"
+    assert run("zipnames", "2025", branches("2027-01-04"))["status"] == "release_detected"
     # `values`: l'anno del file cambia, il dato no (ind18 resta al 31/12/2022 nel file 2024).
     listing = page('<a href="/f/ind-2023">Indicatori 2023</a>&nbsp;(file.csv) <a href="/f/ind-2024-1">Indicatori 2024</a>&nbsp;(file.csv)')
     csv_file = lambda a, b: f"Comune;codice_istat_num;ind17;ind18\nCamaiore;46005;1;{a}\nMassarosa;46018;nd;{b}\n".encode("cp1252")

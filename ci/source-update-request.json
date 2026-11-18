@@ -13,5 +13,8 @@
   "omiResidentialCorrections": [],
   "mimSchools": [],
   "gaiaWater": [],
-  "erpArrears": []
+  "erpArrears": [],
+  "sdmxProbe": [],
+  "bdiBranchesProbe": false,
+  "bdiBranches": []
 }

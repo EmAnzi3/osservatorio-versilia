@@ -7394,6 +7394,31 @@
         "irregular"
       ],
       "lastSuccessfulCheck": "2026-11-05T13:17:29+00:00"
+    },
+    "https://www.bancaditalia.it/statistiche/basi-dati/giava/index.html": {
+      "url": "https://www.bancaditalia.it/statistiche/basi-dati/giava/index.html",
+      "ok": true,
+      "status": 200,
+      "finalUrl": "https://www.bancaditalia.it/statistiche/basi-dati/giava/index.html",
+      "contentType": "text/html",
+      "contentLength": null,
+      "etag": "",
+      "lastModified": "",
+      "contentSha256": "",
+      "hashTruncated": false,
+      "error": "",
+      "metrics": [
+        "bankBranchesPer1000"
+      ],
+      "roles": [
+        "primary"
+      ],
+      "profileIds": [
+        "bdi-giava-continuous"
+      ],
+      "frequencies": [
+        "annual"
+      ]
     }
   },
   "metrics": {
@@ -9146,6 +9171,13 @@
       "observedLatestPeriod": "",
       "status": "source_checked",
       "periodVerifiedAt": ""
+    },
+    "bankBranchesPer1000": {
+      "publishedPeriod": "2025",
+      "checkedAt": "2026-11-17T18:00:00+00:00",
+      "observedLatestPeriod": "2025",
+      "status": "current",
+      "periodVerifiedAt": "2026-11-17T18:00:00+00:00"
     }
   },
   "depth": "deep"

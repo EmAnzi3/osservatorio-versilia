@@ -478,6 +478,74 @@ def omi_cases(tmp: Path) -> None:
         upd.SITE, upd.ROOT = real_site, real_root
 
 
+def bdi_branches_cases(tmp: Path) -> None:
+    """Sportelli Banca d'Italia: serie 2018–2025 ricostruita, riconciliazione Istat 2022 obbligatoria, anno aperto rifiutato."""
+    import bank_branches as bb
+
+    real_site, real_root = upd.SITE, upd.ROOT
+    (tmp / "data/source-snapshots").mkdir(parents=True, exist_ok=True)
+    upd.SITE, upd.ROOT = tmp / "data/site-data.json", tmp
+    upd.SITE.write_text(real_site.read_text(encoding="utf-8"), encoding="utf-8")
+    bench = "data/source-snapshots/a3-istat-demography-benchmark-2026.json"
+    (tmp / bench).write_text((real_root / bench).read_text(encoding="utf-8"), encoding="utf-8")
+    cabs = {"046005": "24600", "046013": "70150", "046018": "70170", "046024": "70220", "046028": "70240", "046030": "70250", "046033": "24800"}
+    head = "ID_INT;ID_SEDE;DATA_I_OPER;DATA_F_OPER;DATA_I_VAL;DATA_F_VAL;CAB_COM_ITA;DES_COM_ITA;STATO;TIPO_SEDE"
+
+    def archive(istat: dict[str, int], italy_extra: int = 20500) -> bytes:
+        lines = [head]
+        for code, n in istat.items():
+            for i in range(n + 1):  # una sede in più, chiusa a metà 2021: conta fino al 2020
+                close = "9999-12-31" if i < n else "2021-06-30"
+                lines.append(f"1;{code}{i};2000-01-01;{close};2000-01-01;9999-12-31;{cabs[code]};{bb.TOWNS[code]};86;001")
+        lines.append(f"1;rapp;2000-01-01;9999-12-31;2000-01-01;9999-12-31;24800;VIAREGGIO;86;005")  # ufficio di rappresentanza
+        lines.append(f"2;0460330;2000-01-01;9999-12-31;2000-01-01;9999-12-31;24800;VIAREGGIO;86;001")  # stesso ID_SEDE, altra banca
+        lines += [f"9;x{i};2000-01-01;9999-12-31;2000-01-01;9999-12-31;13700;LUCCA;86;001" for i in range(italy_extra)]
+        return zipped("2026-11-16_SUCCURSALI_BANCHE.csv", "\n".join(lines) + "\n")
+
+    loc_head = "CAB_COMUNE;DEN_COMUNE;DEN_PROVINCIA;DEN_REGIONE;STATO;DATA_I_VAL;DATA_F_VAL"
+    loc = [loc_head] + [f"{cabs[c]};{n};LUCCA;TOSCANA;86;1936-12-31;9999-12-31" for c, n in bb.TOWNS.items()]
+    loc += [f"{13700 + i};T{i};X;TOSCANA;86;1936-12-31;9999-12-31" for i in range(270)]
+    folder = tmp / "bdi"
+    folder.mkdir(exist_ok=True)
+    (folder / "localita.zip").write_bytes(zipped("LOCALITA.csv", "\n".join(loc) + "\n"))
+    istat = dict(bb.ISTAT_2022)
+    istat["046033"] -= 1  # la seconda banca con lo stesso ID_SEDE completa Viareggio: 24
+    try:
+        (folder / "succursali.zip").write_bytes(archive(istat))
+        changes = upd.update_bdi_branches(2025, folder, dry_run=False)
+        site = upd.load(upd.SITE)
+        assert bb.METRIC not in site["metrics"], "l'indicatore entra in build, non nel catalogo canonico"
+        snap = upd.load(tmp / f"{bb.SNAPSHOT_PREFIX}2025.json")
+        assert snap["branches"]["046033"] == [25, 25, 25, 24, 24, 24, 24, 24] and snap["years"][0] == 2018, snap["branches"]["046033"]
+        assert snap["qualityGate"]["istat2022"] == bb.ISTAT_2022 and snap["scopes"]["tuscany"] > 20000
+        import materialize_bank_branches as mat
+        real_mat_root = mat.ROOT
+        try:
+            mat.ROOT = tmp
+            registry = upd.load(real_root / "data/source-registry.json")
+            metric = mat.apply(site, registry)
+        finally:
+            mat.ROOT = real_mat_root
+        via = next(r for r in metric["rows"] if r["code"] == "046033")
+        pop = next(r for r in site["metrics"]["population"]["rows"] if r["code"] == "046033")["value"]
+        assert abs(via["value"] - 24 / pop * 1000) < 1e-12 and via["series"]["years"][-1] == 2025
+        theme = site["themes"]["economia"]
+        assert theme["metrics"].count(bb.METRIC) == 1 and next(s for s in theme["sections"] if s["key"] == "credito")["metrics"] == [bb.METRIC]
+        assert registry["metricOverrides"][bb.METRIC]["profile"] == mat.PROFILE and registry["expectedMetricCount"] == len(site["metrics"])
+        assert any("Viareggio" in line for line in changes.lines)
+        assert not upd.update_bdi_branches(2025, folder, dry_run=True).lines, "rigiro identico: nessuna differenza"
+        for bad, year in ((dict(istat, **{"046030": 2}), 2025), (istat, 2026)):
+            (folder / "succursali.zip").write_bytes(archive(bad))
+            try:
+                upd.update_bdi_branches(year, folder, dry_run=True)
+            except upd.UpdateError:
+                pass
+            else:
+                raise AssertionError(f"sportelli accettati: {year}")
+    finally:
+        upd.SITE, upd.ROOT = real_site, real_root
+
+
 def source_probe_cases(tmp: Path) -> None:
     """Sonda generica: un foglio Excel riporta intestazioni e righe dei Comuni della Versilia."""
     import io as _io
@@ -490,6 +558,46 @@ def source_probe_cases(tmp: Path) -> None:
     buf = _io.BytesIO(); wb.save(buf)
     sheets = probe.workbook(buf.getvalue())["sheets"]
     assert sheets[0]["head"][2] == ["046018", "Massarosa"] and sheets[0]["rows"] == 3
+    table = probe.csv_table("COD;Comune;Val\n001001;Agliè;1\n46033;VIAREGGIO;2\n".encode())
+    assert table["separator"] == ";" and table["rows"] == 3 and table["hits"] == [[3, ["46033", "VIAREGGIO", "2"]]]
+    assert probe.csv_table("U;V\nLU033X;1\nPE007Y;2\n".encode(), r"^LU0(05|13|18|24|28|30|33)")["hits"] == [[2, ["LU033X", "1"]]]
+
+
+def sdmx_probe_cases() -> None:
+    """Sonda SDMX: dimensioni in ordine con i nomi dei codici, righe dei Comuni della Versilia separate."""
+    import probe_sdmx as probe
+
+    xml = (b'<m:Structure xmlns:m="m" xmlns:s="s" xmlns:c="c"><s:Codelists><s:Codelist id="CL_AREA">'
+           b'<s:Code id="046033"><c:Name xml:lang="it">Viareggio</c:Name></s:Code></s:Codelist></s:Codelists>'
+           b'<s:DataStructures><s:DimensionList><s:Dimension id="REF_AREA" position="1"><s:LocalRepresentation>'
+           b'<s:Enumeration><Ref id="CL_AREA" class="Codelist"/></s:Enumeration></s:LocalRepresentation></s:Dimension>'
+           b'<s:TimeDimension id="TIME_PERIOD" position="2"/></s:DimensionList></s:DataStructures></m:Structure>')
+    st = probe.structure(xml)
+    assert [d["id"] for d in st["dimensions"]] == ["REF_AREA", "TIME_PERIOD"] and st["codelists"]["CL_AREA"]["046033"] == "Viareggio"
+    raw = b"DATAFLOW,REF_AREA,TIME_PERIOD,OBS_VALUE\nX,001001,2024,3\nX,046033,2024,41\n"
+    out = probe.summarise(raw, st["codelists"], st["dimensions"])
+    assert out["rows"] == 2 and out["versilia"] == [{"DATAFLOW": "X", "REF_AREA": "046033", "TIME_PERIOD": "2024", "OBS_VALUE": "41"}]
+    assert {"code": "046033", "rows": 1, "name": "Viareggio"} in out["distinct"]["REF_AREA"]
+    listing = (b'<m:Structure xmlns:m="m" xmlns:s="s" xmlns:c="c"><s:Dataflows>'
+               b'<s:Dataflow id="117_1035_DF_DCAT_SERVBANC_COM_1" agencyID="IT1" version="1.0"><c:Name xml:lang="it">Servizi bancari - comuni</c:Name></s:Dataflow>'
+               b'<s:Dataflow id="22_289_DF_DCIS_POPRES1_1" agencyID="IT1" version="1.0"><c:Name xml:lang="it">Popolazione</c:Name></s:Dataflow>'
+               b'</s:Dataflows></m:Structure>')
+    assert [f["id"] for f in probe.flows(listing, "bancar")] == ["117_1035_DF_DCAT_SERVBANC_COM_1"]
+
+
+def bdi_branches_probe_cases() -> None:
+    """Sportelli Banca d'Italia: conta le sedi operative nella versione valida al giorno, per Comune e tipo."""
+    import probe_bdi_branches as probe
+
+    def r(sede, town, cab, i_op, f_op, i_val="1900-01-01", f_val="9999-12-31", kind="SUCCURSALE"):
+        return {"ID_SEDE": sede, "DES_COM_ITA": town, "CAB_COM_ITA": cab, "STATO": "86", "DATA_I_OPER": i_op,
+                "DATA_F_OPER": f_op, "DATA_I_VAL": i_val, "DATA_F_VAL": f_val, "DES_TIPO_SEDE": kind}
+    table = [r("1", "VIAREGGIO", "24800", "2000-01-01", "9999-12-31", "2000-01-01", "2016-06-30"),
+             r("1", "VIAREGGIO", "24800", "2000-01-01", "9999-12-31", "2016-07-01", "9999-12-31"),
+             r("2", "VIAREGGIO", "24800", "2000-01-01", "2018-03-01"), r("3", "LUCCA", "13700", "2000-01-01", "9999-12-31")]
+    out = probe.count(table, {"24800", "13700"})
+    assert out["2017-12-31"]["VIAREGGIO"]["tutte"] == 2 and out["2018-12-31"]["VIAREGGIO"]["tutte"] == 1
+    assert out["2018-12-31"]["tuscany"]["tutte"] == 2 and out["2018-12-31"]["italy"]["SUCCURSALE"] == 2
 
 
 def mef_probe_cases() -> None:
@@ -694,6 +802,8 @@ def main() -> None:
     with tempfile.TemporaryDirectory() as tmp:
         agcom_cases(Path(tmp))
     mef_probe_cases()
+    sdmx_probe_cases()
+    bdi_branches_probe_cases()
     with tempfile.TemporaryDirectory() as tmp:
         tourism_cases(Path(tmp))
     with tempfile.TemporaryDirectory() as tmp:
@@ -708,8 +818,10 @@ def main() -> None:
         gaia_cases(Path(tmp))
     with tempfile.TemporaryDirectory() as tmp:
         erp_cases(Path(tmp))
+    with tempfile.TemporaryDirectory() as tmp:
+        bdi_branches_cases(Path(tmp))
     source_probe_cases(Path("."))
-    print("Aggiornatori dalla fonte: ARS stesso export invariato, revisione e Toscana rilevate, periodo nuovo rifiutato; mobilità P2 ricostruita 7/7 identica, rigiro senza modifiche; ASIA-UL ricostruita 7/7 identica, anno nuovo accettato, Comune incompleto rifiutato; AGCOM FTTH ricostruita 7/7 identica, edizione nuova accettata, edizione vecchia e Comune mancante rifiutati; sonda MEF limitata agli atti DIMUNIC; capacità ricettiva pubblicata ricostruita identica, anno nuovo accettato con perimetro dichiarato, anno precedente rifiutato; consumo di suolo anno nuovo accettato con benchmark ufficiali, anno precedente rifiutato; parco ACI ricostruito 7/7 identico da un anno nuovo, anno pubblicato rifiutato; OMI al punto medio con semestre pubblicato rigiocato, replay diverso e semestre vecchio rifiutati; sonda generica dei fogli; morosità ERP esercizio nuovo riconciliato e prospetti incoerenti rifiutati; acqua GAIA 70 località ricostruite identiche, semestre nuovo accettato, periodo vecchio, parametro cambiato e semestre precedente rifiutati; sedi scolastiche MIM ricostruite 7/7 identiche, a.s. nuovo accettato, a.s. precedente, Comune mancante e altro anno rifiutati PASS")
+    print("Aggiornatori dalla fonte: ARS stesso export invariato, revisione e Toscana rilevate, periodo nuovo rifiutato; mobilità P2 ricostruita 7/7 identica, rigiro senza modifiche; ASIA-UL ricostruita 7/7 identica, anno nuovo accettato, Comune incompleto rifiutato; AGCOM FTTH ricostruita 7/7 identica, edizione nuova accettata, edizione vecchia e Comune mancante rifiutati; sonda MEF limitata agli atti DIMUNIC; capacità ricettiva pubblicata ricostruita identica, anno nuovo accettato con perimetro dichiarato, anno precedente rifiutato; consumo di suolo anno nuovo accettato con benchmark ufficiali, anno precedente rifiutato; parco ACI ricostruito 7/7 identico da un anno nuovo, anno pubblicato rifiutato; OMI al punto medio con semestre pubblicato rigiocato, replay diverso e semestre vecchio rifiutati; sonda generica dei fogli; morosità ERP esercizio nuovo riconciliato e prospetti incoerenti rifiutati; acqua GAIA 70 località ricostruite identiche, semestre nuovo accettato, periodo vecchio, parametro cambiato e semestre precedente rifiutati; sedi scolastiche MIM ricostruite 7/7 identiche, a.s. nuovo accettato, a.s. precedente, Comune mancante e altro anno rifiutati; sportelli Banca d'Italia: serie 2018–2025 ricostruita con chiave banca + sede, riconciliazione Istat 2022 obbligatoria, anno aperto rifiutato PASS")
 
 
 if __name__ == "__main__":

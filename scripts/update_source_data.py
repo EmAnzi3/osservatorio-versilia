@@ -796,6 +796,53 @@ def update_istat_tourism(year: int, file: Path | None, dry_run: bool) -> Changes
     return changes
 
 
+# ------------------------------------------------------------------ Banca d'Italia: sportelli bancari
+
+def update_bdi_branches(year: int, folder: Path | None, dry_run: bool) -> Changes:
+    """Sportelli bancari dalla Lista succursali banche (GIAVA): scrive lo snapshot riconciliato.
+
+    L'indicatore `bankBranchesPer1000` entra nel catalogo effettivo in build
+    (`materialize_bank_branches.py`), come gli altri indicatori nati dopo il catalogo canonico.
+    """
+    import bank_branches as bb
+    import materialize_bank_branches as mat
+
+    site = load(SITE)
+    old_path = None
+    try:
+        old_path = mat.latest_snapshot(ROOT)
+    except RuntimeError:
+        pass
+    old = load(ROOT / old_path) if old_path else None
+    if old and year < old["years"][-1]:
+        raise UpdateError(f"Sportelli bancari: anno {year} precedente al pubblicato {old['years'][-1]}")
+    pop_rows = site["metrics"]["population"]["rows"]
+    towns = {r["code"]: dict(zip(r["series"]["years"], r["series"]["values"])) for r in pop_rows}
+    bench_path = ROOT / f"data/source-snapshots/a3-istat-demography-benchmark-{year + 1}.json"
+    if not bench_path.exists():
+        raise UpdateError(f"Sportelli bancari: popolazione Toscana/Italia al 1° gennaio {year + 1} non disponibile")
+    scopes = load(bench_path)["benchmarks"]["population"]
+    try:
+        archive = (folder / "succursali.zip").read_bytes() if folder else bb.fetch(bb.URL)
+        localities = (folder / "localita.zip").read_bytes() if folder else bb.fetch(bb.LOC_URL)
+        snapshot = bb.build_snapshot(year, archive, localities, {"towns": towns, "tuscany": scopes["tuscany"],
+                                                                  "italy": scopes["italy"], "year": scopes["year"]})
+        mat.validate(snapshot, pop_rows)
+    except (bb.BranchError, RuntimeError, KeyError, zipfile.BadZipFile) as error:
+        raise UpdateError(f"Sportelli bancari {year}: {error}") from error
+    path = f"{bb.SNAPSHOT_PREFIX}{year}.json"
+    metric = bb.build_metric(snapshot, pop_rows, path)
+    previous = bb.build_metric(old, pop_rows, old_path) if old and old["years"][-1] == year else None
+    before = {r["code"]: round(r["value"], 4) for r in (previous or {}).get("rows", [])}
+    changes = Changes()
+    for row in metric["rows"]:
+        changes.note(f"{bb.METRIC} {row['town']}", before.get(row["code"]), round(row["value"], 4))
+    snapshot["acquisitionEvidence"] = {"script": f"scripts/update_source_data.py bdi-branches --year {year}"}
+    if not dry_run:
+        save(ROOT / path, snapshot)
+    return changes
+
+
 def aci_archive_url(year: int) -> str:
     page = probes.http_fetch("https://aci.gov.it/attivita-e-progetti/studi-e-ricerche/autoritratto/").decode("utf-8", errors="replace")
     found = sorted(set(re.findall(rf"href=[\"']([^\"']*Autoritratto[-_]?{year}[-_]Parco[-_]veicolare\.zip)[\"']", page, flags=re.I)))
@@ -1423,12 +1470,37 @@ def main() -> int:
     g.add_argument("--url", required=True)
     g.add_argument("--follow", help="espressione regolare dei collegamenti da analizzare")
     g.add_argument("--post", action="append", default=[], help="passo successivo URL::campi (POST, stessa sessione); ripetibile")
+    g.add_argument("--match", help="CSV: espressione regolare delle righe da riportare (al posto dei Comuni della Versilia)")
+    bb_p = sub.add_parser("bdi-branches", help="sportelli bancari Banca d'Italia (GIAVA)")
+    bb_p.add_argument("--year", type=int, required=True, help="anno concluso, es. 2025 (sportelli al 31 dicembre)")
+    bb_p.add_argument("--dir", type=Path, help="cartella con succursali.zip e localita.zip già scaricati")
+    bb_p.add_argument("--dry-run", action="store_true")
+    sub.add_parser("bdi-branches-probe", help="sonda degli sportelli Banca d'Italia (non modifica il catalogo)")
+    x = sub.add_parser("sdmx-probe", help="sonda di un flusso SDMX Istat (non modifica il catalogo)")
+    x.add_argument("--name", required=True)
+    x.add_argument("--flow", help="identificativo del flusso (oppure --find)")
+    x.add_argument("--find", help="espressione regolare: elenca i flussi Istat corrispondenti")
+    x.add_argument("--key", default="all")
+    x.add_argument("--start")
     args = parser.parse_args()
     try:
-        if args.updater == "source-probe":
+        if args.updater == "bdi-branches":
+            update_bdi_branches(args.year, args.dir, args.dry_run).report(f"Sportelli bancari {args.year}{' (prova a secco)' if args.dry_run else ''}:")
+        elif args.updater == "bdi-branches-probe":
+            import probe_bdi_branches
+
+            probe_bdi_branches.run()
+        elif args.updater == "sdmx-probe":
+            import probe_sdmx
+
+            if args.find:
+                probe_sdmx.find(args.name, args.find)
+            else:
+                probe_sdmx.run(args.name, args.flow, args.key, args.start)
+        elif args.updater == "source-probe":
             import probe_source_files
 
-            probe_source_files.run(args.name, args.url, args.follow, args.post)
+            probe_source_files.run(args.name, args.url, args.follow, args.post, args.match)
         elif args.updater == "mef-fiscal-probe":
             import probe_mef_fiscal
 

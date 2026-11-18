@@ -1,0 +1,804 @@
+{
+ "schemaVersion": 1,
+ "createdAt": "2026-11-17T15:11:00Z",
+ "note": "Sonda: struttura della fonte consultata; non è un dato pubblicato.",
+ "follow": null,
+ "result": {
+  "url": "https://www.opencivitas.it/portale/documents/20118/0/2023_Metadati_Ind_FC90_TOT_01_IT.xlsx/979ac980-1a35-ca7c-9005-1045b5aebe1e",
+  "contentType": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+  "bytes": 14728,
+  "sha256": "1167d761f9ee9fb33b107d0977fff5dcb5e370b81f7f80224018356a777f062e",
+  "workbook": {
+   "sheets": [
+    {
+     "name": "Indicatori_FC90_TOT",
+     "rows": 28,
+     "head": [
+      [
+       "Codice Indicatore",
+       "Descrizione",
+       "Tipo di indicatore",
+       "Lingua",
+       "Funzione",
+       "Var Ord"
+      ],
+      [
+       "FST_RIPROPORZIONATO_BI_PROAB",
+       "Spesa standard - Euro per abitante",
+       "FS",
+       "IT",
+       "TOTALE",
+       "1"
+      ],
+      [
+       "DESCR_NON_VALUTABILE_OUT_TOT",
+       null,
+       "LQP",
+       "IT",
+       "TOTALE",
+       "10"
+      ],
+      [
+       "COORD_SPESA",
+       "Coordinata di posizionamento performance - Spesa (Da -5 a +5)",
+       "LQP",
+       "IT",
+       "TOTALE",
+       "11"
+      ],
+      [
+       "COORD_OUT",
+       "Coordinata di posizionamento performance - Servizi svolti (Da -5 a +5)",
+       "LQP",
+       "IT",
+       "TOTALE",
+       "12"
+      ],
+      [
+       "FL_DIF_OUTPUT_MAG_0",
+       "Maggiori servizi",
+       "NAVIGA",
+       "IT",
+       "TOTALE",
+       "13"
+      ],
+      [
+       "FL_DIF_OUTPUT_MIN_0",
+       "Minori servizi",
+       "NAVIGA",
+       "IT",
+       "TOTALE",
+       "14"
+      ],
+      [
+       "FL_DIF_SPESA_MAG_0",
+       "Spesa storica maggiore della spesa standard",
+       "NAVIGA",
+       "IT",
+       "TOTALE",
+       "15"
+      ],
+      [
+       "FL_DIF_SPESA_MIN_0",
+       "Spesa storica minore della spesa standard",
+       "NAVIGA",
+       "IT",
+       "TOTALE",
+       "16"
+      ],
+      [
+       "FL_SPESA_PIU_OUT_PIU",
+       "Spesa storica maggiore della spesa standard e maggiori servizi",
+       "NAVIGA",
+       "IT",
+       "TOTALE",
+       "17"
+      ],
+      [
+       "FL_SPESA_PIU_OUT_MENO",
+       "Spesa storica maggiore della spesa standard e minori servizi",
+       "NAVIGA",
+       "IT",
+       "TOTALE",
+       "18"
+      ],
+      [
+       "FL_SPESA_MENO_OUT_MENO",
+       "Spesa storica minore della spesa standard e minori servizi",
+       "NAVIGA",
+       "IT",
+       "TOTALE",
+       "19"
+      ],
+      [
+       "FST_RIPROPORZIONATO_BI",
+       "Spesa standard - Euro",
+       "FS",
+       "IT",
+       "TOTALE",
+       "2"
+      ],
+      [
+       "FL_SPESA_MENO_OUT_PIU",
+       "Spesa storica minore della spesa standard e maggiori servizi",
+       "NAVIGA",
+       "IT",
+       "TOTALE",
+       "20"
+      ],
+      [
+       "FL_NO_VALUTABILE",
+       "Spesa e/o servizi offerti non valutabili",
+       "NAVIGA",
+       "IT",
+       "TOTALE",
+       "21"
+      ],
+      [
+       "FL_NO_CONFRONTO_SPESA",
+       "Spesa non valutabile",
+       "NAVIGA",
+       "IT",
+       "TOTALE",
+       "22"
+      ],
+      [
+       "FL_NO_CONFRONTO_OUT",
+       "Servizi offerti non valutabili",
+       "NAVIGA",
+       "IT",
+       "TOTALE",
+       "23"
+      ],
+      [
+       "SERV_NO_VALUT_SPESA_TOT",
+       "Funzione/servizio con Spesa non valutabile",
+       "LQP",
+       "IT",
+       "TOTALE",
+       "24"
+      ],
+      [
+       "SERV_NO_VALUT_OUT_TOT",
+       "Funzione/servizio con Servizi offerti non valutabili",
+       "LQP",
+       "IT",
+       "TOTALE",
+       "25"
+      ],
+      [
+       "D03",
+       "Costo medio del lavoro - Euro per addetto",
+       "INDICATORI",
+       "IT",
+       "TOTALE",
+       "26"
+      ],
+      [
+       "COSTO_LAVORO_PROAB",
+       "Costo medio del lavoro - Euro per abitante",
+       "INDICATORI",
+       "IT",
+       "TOTALE",
+       "27"
+      ],
+      [
+       "DIPENDENTI_X1000AB",
+       "Dipendenti - N. per 1.000 abitanti",
+       "INDICATORI",
+       "IT",
+       "TOTALE",
+       "28"
+      ],
+      [
+       "SPESA_STORICA_PROAB",
+       "Spesa storica - Euro per abitante",
+       "FS",
+       "IT",
+       "TOTALE",
+       "3"
+      ],
+      [
+       "SPESA_STORICA",
+       "Spesa storica - euro",
+       "FS",
+       "IT",
+       "TOTALE",
+       "4"
+      ],
+      [
+       "DIFF_OUT_PERC_TOT",
+       null,
+       "LQP",
+       "IT",
+       "TOTALE",
+       "6"
+      ],
+      [
+       "POSIZIONE_SPESA_PERC_TOT",
+       "Livello della spesa - Da 0 a 10",
+       "LQP",
+       "IT",
+       "TOTALE",
+       "7"
+      ],
+      [
+       "DESCR_NON_VALUTABILE_SPESA_TOT",
+       null,
+       "LQP",
+       "IT",
+       "TOTALE",
+       "8"
+      ],
+      [
+       "POSIZIONE_OUTPUT_PERC_TOT",
+       "Livello dei servizi erogati - Da 0 a 10",
+       "LQP",
+       "IT",
+       "TOTALE",
+       "9"
+      ]
+     ],
+     "hits": []
+    },
+    {
+     "name": "Det_FC90_TOT",
+     "rows": 57,
+     "head": [
+      [
+       "Codice Determinante",
+       "Descrizione",
+       "Categoria",
+       "Lingua",
+       "Funzione"
+      ],
+      [
+       "F_DENSITA_MEAN",
+       null,
+       "DEMOGRAFIA",
+       "IT",
+       "TOTALE"
+      ],
+      [
+       "F_INTERCEPT_POP_3_14",
+       "Popolazione residente tra 3 e 14 anni",
+       "DEMOGRAFIA",
+       "IT",
+       "TOTALE"
+      ],
+      [
+       "F_INCID_POP_STRA_MEAN",
+       "Popolazione straniera",
+       "DEMOGRAFIA",
+       "IT",
+       "TOTALE"
+      ],
+      [
+       "F_INCID_15_64_MEAN",
+       "Popolazione tra i 15 e i 64 anni",
+       "DEMOGRAFIA",
+       "IT",
+       "TOTALE"
+      ],
+      [
+       "F_INCID_65_74_MEAN",
+       "Popolazione tra i 65 e i 74 anni",
+       "DEMOGRAFIA",
+       "IT",
+       "TOTALE"
+      ],
+      [
+       "F_INCID_OLTRE_75_MEAN",
+       "Popolazione oltre i 75 anni",
+       "DEMOGRAFIA",
+       "IT",
+       "TOTALE"
+      ],
+      [
+       "F_FASCIA_SON",
+       "Fascia di popolazione",
+       "DEMOGRAFIA",
+       "IT",
+       "TOTALE"
+      ],
+      [
+       "F_POP_C",
+       "Abitanti per immobile",
+       "DEMOGRAFIA",
+       "IT",
+       "TOTALE"
+      ],
+      [
+       "F_DEPRIVAZIONE_MEAN",
+       "Indice di deprivazione socio-economica",
+       "DISAGIO SOCIALE",
+       "IT",
+       "TOTALE"
+      ],
+      [
+       "F_DISECONOMIA_SCALA",
+       "Diseconomie di scala",
+       "DISECONOMIE DI SCALA",
+       "IT",
+       "TOTALE"
+      ],
+      [
+       "F_MERCATI_P_MEAN",
+       "Mercati (giornate)",
+       "ECONOMIA LOCALE",
+       "IT",
+       "TOTALE"
+      ],
+      [
+       "F_OUTPUT_ALTRI_ESOGENI_P",
+       "Arresti, reati, sequestri penali, TSO",
+       "FATTORI ESOGENI DI CARICO",
+       "IT",
+       "TOTALE"
+      ],
+      [
+       "F_M_INCIDENTI_P",
+       "Incidenti stradali",
+       "FATTORI ESOGENI DI CARICO",
+       "IT",
+       "TOTALE"
+      ],
+      [
+       "F_M_SCUOLE_STAT_COM_N_P",
+       "Plessi comunali e statali",
+       "FATTORI ESOGENI DI CARICO",
+       "IT",
+       "TOTALE"
+      ],
+      [
+       "F_M_QUERELE_P",
+       "Querele e denunce",
+       "FATTORI ESOGENI DI CARICO",
+       "IT",
+       "TOTALE"
+      ],
+      [
+       "F_IMMOBILI_TOTALI_P",
+       "Immobili",
+       "IMMOBILI",
+       "IT",
+       "TOTALE"
+      ],
+      [
+       "F_SISMICO_RISCHIO_ALTO",
+       "Rischio sismico alto",
+       "MORFOLOGIA E TERRITORIO",
+       "IT",
+       "TOTALE"
+      ],
+      [
+       "F_ISTAT_SUPERF_TOTALE_KMQ_P",
+       "Superficie del comune",
+       "MORFOLOGIA E TERRITORIO",
+       "IT",
+       "TOTALE"
+      ],
+      [
+       "F_P4_P3_Q",
+       null,
+       "MORFOLOGIA E TERRITORIO",
+       "IT",
+       "TOTALE"
+      ],
+      [
+       "F_COSTO_LAV_SCOST_AMM",
+       "Costo medio del lavoro per addetto - Servizi generali",
+       "PREZZI DEI FATTORI PRODUTTIVI",
+       "IT",
+       "TOTALE"
+      ],
+      [
+       "F_COSTO_LAV_SCOST_POL",
+       "Costo medio del lavoro per addetto - Polizia locale",
+       "PREZZI DEI FATTORI PRODUTTIVI",
+       "IT",
+       "TOTALE"
+      ],
+      [
+       "F_COSTO_LAV_SCOST_IST",
+       "Costo medio del lavoro per addetto - Istruzione",
+       "PREZZI DEI FATTORI PRODUTTIVI",
+       "IT",
+       "TOTALE"
+      ],
+      [
+       "F_COSTO_LAV_SCOST_VIAB",
+       null,
+       "PREZZI DEI FATTORI PRODUTTIVI",
+       "IT",
+       "TOTALE"
+      ],
+      [
+       "F_COSTO_LAV_SCOST_TERR",
+       "Costo medio del lavoro per addetto - Territorio",
+       "PREZZI DEI FATTORI PRODUTTIVI",
+       "IT",
+       "TOTALE"
+      ],
+      [
+       "F_PREZZO_VEIC_FINALE_POL_SCOST",
+       "Costo uso dei veicoli (assicurazioni e carburante)",
+       "PREZZI DEI FATTORI PRODUTTIVI",
+       "IT",
+       "TOTALE"
+      ],
+      [
+       "F_M_AL_COMUNALI_P_MEAN",
+       "Alunni scuola comunale",
+       "SCELTE ORGANIZZATIVE",
+       "IT",
+       "TOTALE"
+      ],
+      [
+       "F_M_AL_PRIVATE_P",
+       "Alunni scuola privata",
+       "SCELTE ORGANIZZATIVE",
+       "IT",
+       "TOTALE"
+      ],
+      [
+       "F_QUOTA_CLTP_PRIMSEC1",
+       "Classi tempo pieno/prolungato",
+       "SCELTE ORGANIZZATIVE",
+       "IT",
+       "TOTALE"
+      ],
+      [
+       "F_DISTANZA",
+       "Distanza media dagli impianti di smaltimento",
+       "SCELTE ORGANIZZATIVE",
+       "IT",
+       "TOTALE"
+      ],
+      [
+       "F_TIPRACCOLTA",
+       null,
+       "SCELTE ORGANIZZATIVE",
+       "IT",
+       "TOTALE"
+      ],
+      [
+       "F_M_SPAZI_TOT_P",
+       "Mq plessi comunali e statali",
+       "SCELTE ORGANIZZATIVE",
+       "IT",
+       "TOTALE"
+      ],
+      [
+       "F_DUMMY_ARMATO",
+       "Servizio di Polizia locale armata",
+       "SCELTE ORGANIZZATIVE",
+       "IT",
+       "TOTALE"
+      ],
+      [
+       "F_M_PASTI_TOT_P_MEAN",
+       "Pasti forniti",
+       "SERVIZI OFFERTI",
+       "IT",
+       "TOTALE"
+      ],
+      [
+       "F_ALUNNI_HANDICAP_MEAN",
+       "Alunni disabili (infanzia, primaria, secondaria)",
+       "SERVIZI OFFERTI",
+       "IT",
+       "TOTALE"
+      ],
+      [
+       "F_M_AL_DISABILI_COMU_P_MEAN",
+       "Alunni disabili scuole comunali",
+       "SERVIZI OFFERTI",
+       "IT",
+       "TOTALE"
+      ],
+      [
+       "F_DUMMY_STRUTTURE",
+       "Macro-area di intervento \"Strutture\" - Servizi sociali",
+       "SERVIZI OFFERTI",
+       "IT",
+       "TOTALE"
+      ],
+      [
+       "F_VALORE_BENCHMARK_ORE",
+       "Totale ore relative alla macro-area di intervento \"Strutture\" - Servizi sociali",
+       "SERVIZI OFFERTI",
+       "IT",
+       "TOTALE"
+      ],
+      [
+       "F_VALORE_BENCHMARK_UT",
+       "Utenti della macro-area di \"Interventi e servizi\" e \"Contributi economici\"- Servizi sociali",
+       "SERVIZI OFFERTI",
+       "IT",
+       "TOTALE"
+      ],
+      [
+       "F_OUTPUT_ST_CON_P_LUCE_C",
+       null,
+       "SERVIZI OFFERTI",
+       "IT",
+       "TOTALE"
+      ],
+      [
+       "F_DIFFERENZIATA",
+       "Raccolta differenziata",
+       "SERVIZI OFFERTI",
+       "IT",
+       "TOTALE"
+      ],
+      [
+       "F_INTERCEPT_TONN_RIF",
+       "Tonnellate rifiuti prodotti",
+       "SERVIZI OFFERTI",
+       "IT",
+       "TOTALE"
+      ],
+      [
+       "F_INTERCEPT_IMM_VET",
+       null,
+       "SERVIZI OFFERTI",
+       "IT",
+       "TOTALE"
+      ],
+      [
+       "F_M_PREPOST_ESTIVI_P",
+       "Utenti centri estivi e alunni pre-post scuola",
+       "SERVIZI OFFERTI",
+       "IT",
+       "TOTALE"
+      ],
+      [
+       "F_M_TRASPORTO_UTENTI_P",
+       "Utenti trasportati - Istruzione",
+       "SERVIZI OFFERTI",
+       "IT",
+       "TOTALE"
+      ],
+      [
+       "F_M_TRASP_DISABILI_P_MEAN",
+       "Utenti disabili trasportati (infanzia, primaria e secondaria)",
+       "SERVIZI OFFERTI",
+       "IT",
+       "TOTALE"
+      ],
+      [
+       "F_ADDETTI_I_P_MEAN",
+       "Addetti servizi alloggio e ristorazione",
+       "TURISMO",
+       "IT",
+       "TOTALE"
+      ],
+      [
+       "F_PRESENZE_COMUNE_MEAN",
+       "Presenze turistiche",
+       "TURISMO",
+       "IT",
+       "TOTALE"
+      ],
+      [
+       "F_DIFF_PENDOLARI_N_P",
+       "Pendolari entranti al netto degli uscenti",
+       "VEICOLI TRAFFICO E STRADE",
+       "IT",
+       "TOTALE"
+      ],
+      [
+       "F_STALLI_P_MEAN",
+       "Stalli sosta a pagamento",
+       "VEICOLI TRAFFICO E STRADE",
+       "IT",
+       "TOTALE"
+      ],
+      [
+       "F_ISTAT_GENER_STRADE_KM_MEAN",
+       "Strade del comune",
+       "VEICOLI TRAFFICO E STRADE",
+       "IT",
+       "TOTALE"
+      ],
+      [
+       "F_INFRASTRUTTURE",
+       "Dotazione infrastrutturale regionale - Smaltimento rifiuti",
+       "DOTAZIONE INFRASTRUTTURALE",
+       "IT",
+       "TOTALE"
+      ],
+      [
+       "F_ASILO_NIDO",
+       "Asilo nido",
+       "SERVIZI OFFERTI",
+       "IT",
+       "TOTALE"
+      ],
+      [
+       "F_GESTIONE",
+       "Gestione associata del servizio - Smaltimento rifiuti",
+       "GESTIONE ASSOCIATA",
+       "IT",
+       "TOTALE"
+      ],
+      [
+       "F_CONTESTO",
+       "Fattori di contesto comunale - Smaltimento rifiuti",
+       "CONTESTO COMUNALE",
+       "IT",
+       "TOTALE"
+      ],
+      [
+       "F_ABIT_DISP_MEAN_C",
+       "Quota delle abitazioni a disposizione",
+       "CONTESTO COMUNALE",
+       "IT",
+       "TOTALE"
+      ],
+      [
+       "F_ABIT_LOC_E_ALTRI_UTIL_MEAN_C",
+       "Quota delle abitazioni locate e per altri utilizzi",
+       "CONTESTO COMUNALE",
+       "IT",
+       "TOTALE"
+      ]
+     ],
+     "hits": []
+    },
+    {
+     "name": "Codici_FC90_TOT",
+     "rows": 24,
+     "head": [
+      [
+       "CODICE",
+       "DESCRIZIONE CODICE",
+       "LINGUA",
+       "FUNZIONE"
+      ],
+      [
+       "COD_OUT_NOVAL_NOSPESA",
+       "Livello dei servizi non valutato in quanto spesa storica non misurabile",
+       "IT",
+       "TOTALE"
+      ],
+      [
+       "COD_OUT_NOVAL",
+       "Livello dei servizi non misurabile",
+       "IT",
+       "TOTALE"
+      ],
+      [
+       "COD_NO_QUEST_NO_CC",
+       "Questionario non compilato e mancata presentazione del Rendiconto al Bilancio alla data del 19 Febbraio 2026",
+       "IT",
+       "TOTALE"
+      ],
+      [
+       "COD_NO_QUEST",
+       "Questionario e/o scheda di rendicontazione (sociale) non disponibile alla data di elaborazione",
+       "IT",
+       "TOTALE"
+      ],
+      [
+       "COD_NO_SERVIZIO",
+       "Servizio non erogato dall'ente",
+       "IT",
+       "TOTALE"
+      ],
+      [
+       "COD_SPS_QUEST",
+       "Spesa storica da questionario",
+       "IT",
+       "TOTALE"
+      ],
+      [
+       "COD_SPS_QUEST_NO_CC",
+       "Spesa storica da questionario con anomalie e mancata presentazione del Rendiconto al Bilancio alla data del 19 Febbraio ",
+       "IT",
+       "TOTALE"
+      ],
+      [
+       "COD_SPS_CC_QUEST",
+       "Spesa storica da questionario e da Rendiconto al Bilancio",
+       "IT",
+       "TOTALE"
+      ],
+      [
+       "COD_SPS_NOVAL",
+       "Spesa storica non misurabile",
+       "IT",
+       "TOTALE"
+      ],
+      [
+       "COD_SPS_CC_NO_QUEST",
+       "Spesa storica recuperata dal Rendiconto al Bilancio in quanto il comune non ha compilato il questionario",
+       "IT",
+       "TOTALE"
+      ],
+      [
+       "COD_SPS_CC",
+       "Spesa storica recuperata dal Rendiconto al Bilancio in quanto quella da questionario presenta delle anomalie",
+       "IT",
+       "TOTALE"
+      ],
+      [
+       "COD_ANOMALO",
+       "Dato anomalo",
+       "IT",
+       "TOTALE"
+      ],
+      [
+       "COD_ANOM_MODIFICATO",
+       "Dato modificato per possibile anomalia",
+       "IT",
+       "TOTALE"
+      ],
+      [
+       "COD_NORM",
+       "Dato normalizzato",
+       "IT",
+       "TOTALE"
+      ],
+      [
+       "COD_PRIVACY",
+       "Dato oscurato per privacy",
+       "IT",
+       "TOTALE"
+      ],
+      [
+       "COD_SINO_BENCHMARK",
+       "Comuni",
+       "IT",
+       "TOTALE"
+      ],
+      [
+       "COD_NOME_SERVIZIO_01_2023",
+       "Amministrazione",
+       "IT",
+       "TOTALE"
+      ],
+      [
+       "COD_NOME_SERVIZIO_02_2023",
+       "Polizia Locale",
+       "IT",
+       "TOTALE"
+      ],
+      [
+       "COD_NOME_SERVIZIO_03_2023",
+       "Istruzione",
+       "IT",
+       "TOTALE"
+      ],
+      [
+       "COD_NOME_SERVIZIO_06_2023",
+       "Sociale e Nido",
+       "IT",
+       "TOTALE"
+      ],
+      [
+       "COD_NOME_SERVIZIO_05_2023",
+       null,
+       "IT",
+       "TOTALE"
+      ],
+      [
+       "COD_NOME_SERVIZIO_04_2023",
+       "Rifiuti",
+       "IT",
+       "TOTALE"
+      ],
+      [
+       "COD_NOME_SERVIZIO_99_2023",
+       "Totale Funzioni",
+       "IT",
+       "TOTALE"
+      ]
+     ],
+     "hits": []
+    }
+   ]
+  }
+ }
+}
