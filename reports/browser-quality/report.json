@@ -1,0 +1,205 @@
+{
+  "totalPublicRoutes": 267,
+  "coverageByViewport": {
+    "mobile": 267,
+    "tablet": 60,
+    "laptop": 60,
+    "desktop": 267
+  },
+  "auditedCombinations": 654,
+  "failures": [],
+  "warnings": [
+    {
+      "route": "comuni/camaiore/",
+      "viewport": "mobile",
+      "consoleErrors": [
+        "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED"
+      ]
+    },
+    {
+      "route": "comuni/forte-dei-marmi/",
+      "viewport": "mobile",
+      "consoleErrors": [
+        "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED"
+      ]
+    },
+    {
+      "route": "comuni/massarosa/",
+      "viewport": "mobile",
+      "consoleErrors": [
+        "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED"
+      ]
+    },
+    {
+      "route": "comuni/pietrasanta/",
+      "viewport": "mobile",
+      "consoleErrors": [
+        "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED"
+      ]
+    },
+    {
+      "route": "comuni/stazzema/",
+      "viewport": "mobile",
+      "consoleErrors": [
+        "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED"
+      ]
+    },
+    {
+      "route": "percorsi/",
+      "viewport": "mobile",
+      "consoleErrors": [
+        "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED",
+        "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED"
+      ]
+    },
+    {
+      "route": "comuni/camaiore/",
+      "viewport": "tablet",
+      "consoleErrors": [
+        "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED"
+      ]
+    },
+    {
+      "route": "comuni/massarosa/",
+      "viewport": "tablet",
+      "consoleErrors": [
+        "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED"
+      ]
+    },
+    {
+      "route": "comuni/pietrasanta/",
+      "viewport": "tablet",
+      "consoleErrors": [
+        "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED"
+      ]
+    },
+    {
+      "route": "comuni/seravezza/",
+      "viewport": "tablet",
+      "consoleErrors": [
+        "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED"
+      ]
+    },
+    {
+      "route": "comuni/stazzema/",
+      "viewport": "tablet",
+      "consoleErrors": [
+        "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED"
+      ]
+    },
+    {
+      "route": "comuni/viareggio/",
+      "viewport": "tablet",
+      "consoleErrors": [
+        "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED"
+      ]
+    },
+    {
+      "route": "percorsi/",
+      "viewport": "tablet",
+      "consoleErrors": [
+        "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED",
+        "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED"
+      ]
+    },
+    {
+      "route": "comuni/camaiore/",
+      "viewport": "laptop",
+      "consoleErrors": [
+        "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED"
+      ]
+    },
+    {
+      "route": "comuni/forte-dei-marmi/",
+      "viewport": "laptop",
+      "consoleErrors": [
+        "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED"
+      ]
+    },
+    {
+      "route": "comuni/massarosa/",
+      "viewport": "laptop",
+      "consoleErrors": [
+        "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED"
+      ]
+    },
+    {
+      "route": "comuni/pietrasanta/",
+      "viewport": "laptop",
+      "consoleErrors": [
+        "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED"
+      ]
+    },
+    {
+      "route": "comuni/seravezza/",
+      "viewport": "laptop",
+      "consoleErrors": [
+        "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED"
+      ]
+    },
+    {
+      "route": "comuni/stazzema/",
+      "viewport": "laptop",
+      "consoleErrors": [
+        "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED"
+      ]
+    },
+    {
+      "route": "comuni/viareggio/",
+      "viewport": "laptop",
+      "consoleErrors": [
+        "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED"
+      ]
+    },
+    {
+      "route": "percorsi/",
+      "viewport": "laptop",
+      "consoleErrors": [
+        "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED",
+        "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED"
+      ]
+    },
+    {
+      "route": "comuni/camaiore/",
+      "viewport": "desktop",
+      "consoleErrors": [
+        "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED"
+      ]
+    },
+    {
+      "route": "comuni/forte-dei-marmi/",
+      "viewport": "desktop",
+      "consoleErrors": [
+        "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED"
+      ]
+    },
+    {
+      "route": "comuni/pietrasanta/",
+      "viewport": "desktop",
+      "consoleErrors": [
+        "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED"
+      ]
+    },
+    {
+      "route": "comuni/seravezza/",
+      "viewport": "desktop",
+      "consoleErrors": [
+        "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED"
+      ]
+    },
+    {
+      "route": "comuni/stazzema/",
+      "viewport": "desktop",
+      "consoleErrors": [
+        "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED"
+      ]
+    },
+    {
+      "route": "comuni/viareggio/",
+      "viewport": "desktop",
+      "consoleErrors": [
+        "Failed to load resource: net::ERR_TUNNEL_CONNECTION_FAILED"
+      ]
+    }
+  ]
+}

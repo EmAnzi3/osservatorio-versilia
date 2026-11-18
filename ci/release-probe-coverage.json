@@ -465,6 +465,24 @@
       "pattern": "(20\\d\\d-\\d\\d-\\d\\d)_SUCCURSALI_BANCHE",
       "text": "names",
       "hint": "fotografia al 31/12 dall'elenco continuo delle succursali Banca d'Italia (file AAAA-MM-GG_SUCCURSALI_BANCHE.csv nell'archivio): l'elenco datato dopo il 31/12/AAAA chiude l'anno AAAA"
+    },
+    "opencivitas_tot": {
+      "url": "https://www.opencivitas.it/portale/open-data?xpage=1&xdelta=6",
+      "also": [
+        "https://www.opencivitas.it/portale/open-data?xpage=2&xdelta=6",
+        "https://www.opencivitas.it/portale/open-data?xpage=3&xdelta=6",
+        "https://www.opencivitas.it/portale/open-data?xpage=4&xdelta=6",
+        "https://www.opencivitas.it/portale/open-data?xpage=5&xdelta=6",
+        "https://www.opencivitas.it/portale/open-data?xpage=6&xdelta=6",
+        "https://www.opencivitas.it/portale/open-data?xpage=7&xdelta=6",
+        "https://www.opencivitas.it/portale/open-data?xpage=8&xdelta=6",
+        "https://www.opencivitas.it/portale/open-data?xpage=9&xdelta=6",
+        "https://www.opencivitas.it/portale/open-data?xpage=10&xdelta=6",
+        "https://www.opencivitas.it/portale/open-data?xpage=11&xdelta=6",
+        "https://www.opencivitas.it/portale/open-data?xpage=12&xdelta=6"
+      ],
+      "pattern": "(20\\d\\d)_Ind_TOT_01_IT\\.csv",
+      "hint": "annualità dei fabbisogni standard nel nome del file «Indicatori — Totale funzioni» (AAAA_Ind_TOT_01_IT.csv) fra le pagine dell'elenco open data OpenCivitas, il cui ordine cambia: si leggono tutte"
     }
   },
   "metrics": {
@@ -1788,6 +1806,18 @@
       "probe": "source_period",
       "checks": [
         "bdi_succursali"
+      ]
+    },
+    "standardNeedsSpendingGap": {
+      "probe": "source_period",
+      "checks": [
+        "opencivitas_tot"
+      ]
+    },
+    "standardNeedsServiceGap": {
+      "probe": "source_period",
+      "checks": [
+        "opencivitas_tot"
       ]
     }
   }

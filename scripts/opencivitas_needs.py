@@ -275,12 +275,14 @@ def build_metrics(snapshot: dict[str, Any], rows_meta: list[dict[str, Any]], pat
             "benchmark": {"year": year, "tuscany": spending_gap(sc["tuscany"]["spesaStorica"], sc["tuscany"]["spesaStandard"]),
                           "italy": spending_gap(sc["italy"]["spesaStorica"], sc["italy"]["spesaStandard"]),
                           "source": source, "url": snapshot["dataUrl"], "sourceSnapshot": path,
-                          "note": note + " Scostamento calcolato sui totali di spesa storica e spesa standard."},
+                          "note": note + (" Scostamento calcolato sui totali di spesa storica e spesa standard. In Italia è "
+                                          "vicino a zero per costruzione: la spesa standard è riproporzionata sul totale "
+                                          "della spesa storica dei Comuni.")},
             "sourceMeta": {"snapshot": path, "note": "Valori dei sette Comuni riconciliati con la sonda del file OpenCivitas."},
         },
         "sourceUrl": snapshot["sourceUrl"],
         "rows": spesa_rows,
-        "aggregate": {"value": spending_gap(tot_s, tot_f), "label": "Versilia sui totali",
+        "aggregate": {"value": spending_gap(tot_s, tot_f), "label": "Valore Versilia sui totali",
                       "note": (f"Spesa storica dei sette Comuni {euro(tot_s)} ({euro(tot_s / pop)} per residente) "
                                f"contro una spesa standard di {euro(tot_f)} ({euro(tot_f / pop)} per residente).")},
         "normalizedAggregate": None,
@@ -308,7 +310,7 @@ def build_metrics(snapshot: dict[str, Any], rows_meta: list[dict[str, Any]], pat
         },
         "sourceUrl": snapshot["sourceUrl"],
         "rows": service_rows,
-        "aggregate": {"value": service_agg, "label": "Versilia ponderata",
+        "aggregate": {"value": service_agg, "label": "Valore ponderato Versilia",
                       "note": "Media dei sette scostamenti ponderata sulla spesa standard di ciascun Comune."},
         "normalizedAggregate": None,
         "method": {

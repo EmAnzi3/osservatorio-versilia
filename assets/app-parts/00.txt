@@ -117,6 +117,8 @@
     currentPaymentCapacity: ['pagamenti competenza', 'capacita di pagamento', 'impegni pagati'],
     availableAdministrationResultPerResident: ['risultato di amministrazione', 'avanzo disponibile', 'disavanzo'],
     rigidExpenditureShare: ['spese rigide', 'personale e debito', 'rigidita bilancio'],
+    standardNeedsSpendingGap: ['fabbisogni standard', 'fabbisogno standard', 'spesa standard', 'spesa storica', 'opencivitas', 'sose'],
+    standardNeedsServiceGap: ['livello dei servizi', 'servizi svolti', 'servizi standard', 'livello standard dei servizi'],
     educationMissionExpenditurePerResident: ['spesa istruzione', 'bilancio scuola', 'missione 04'],
     socialMissionExpenditurePerResident: ['spesa sociale', 'famiglia', 'missione 12'],
     environmentMissionExpenditurePerResident: ['spesa ambiente', 'territorio', 'missione 09'],

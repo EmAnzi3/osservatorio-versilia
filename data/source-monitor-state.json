@@ -7419,6 +7419,32 @@
       "frequencies": [
         "annual"
       ]
+    },
+    "https://www.opencivitas.it/portale/open-data": {
+      "url": "https://www.opencivitas.it/portale/open-data",
+      "ok": true,
+      "status": 200,
+      "finalUrl": "https://www.opencivitas.it/portale/open-data",
+      "contentType": "text/html",
+      "contentLength": null,
+      "etag": "",
+      "lastModified": "",
+      "contentSha256": "",
+      "hashTruncated": false,
+      "error": "",
+      "metrics": [
+        "standardNeedsSpendingGap",
+        "standardNeedsServiceGap"
+      ],
+      "roles": [
+        "primary"
+      ],
+      "profileIds": [
+        "opencivitas-annual"
+      ],
+      "frequencies": [
+        "annual"
+      ]
     }
   },
   "metrics": {
@@ -9178,6 +9204,20 @@
       "observedLatestPeriod": "2025",
       "status": "current",
       "periodVerifiedAt": "2026-11-17T18:00:00+00:00"
+    },
+    "standardNeedsSpendingGap": {
+      "publishedPeriod": "2023",
+      "checkedAt": "2026-11-18T09:00:00+00:00",
+      "observedLatestPeriod": "2023",
+      "status": "current",
+      "periodVerifiedAt": "2026-11-18T09:00:00+00:00"
+    },
+    "standardNeedsServiceGap": {
+      "publishedPeriod": "2023",
+      "checkedAt": "2026-11-18T09:00:00+00:00",
+      "observedLatestPeriod": "2023",
+      "status": "current",
+      "periodVerifiedAt": "2026-11-18T09:00:00+00:00"
     }
   },
   "depth": "deep"
