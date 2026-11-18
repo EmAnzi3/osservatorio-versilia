@@ -1,0 +1,289 @@
+{
+ "schemaVersion": 1,
+ "createdAt": "2026-11-18T15:37:34Z",
+ "note": "Sonda: struttura della fonte consultata; non è un dato pubblicato.",
+ "follow": null,
+ "result": {
+  "url": "https://www.istat.it/notizia/dati-per-sezioni-di-censimento/",
+  "contentType": "text/html; charset=UTF-8",
+  "bytes": 128546,
+  "sha256": "0a88898a937a480bae82566adba35705b8f87446219e8bf619c4809975fe9a58",
+  "forms": [
+   {
+    "action": "https://www.istat.it/notizia/dati-per-sezioni-di-censimento/#wpcf7-f5-o1",
+    "method": "post",
+    "fields": [
+     {
+      "tag": "input",
+      "name": "_wpcf7",
+      "type": "hidden",
+      "value": "5",
+      "options": []
+     },
+     {
+      "tag": "input",
+      "name": "_wpcf7_version",
+      "type": "hidden",
+      "value": "6.1.7",
+      "options": []
+     },
+     {
+      "tag": "input",
+      "name": "_wpcf7_locale",
+      "type": "hidden",
+      "value": "it_IT",
+      "options": []
+     },
+     {
+      "tag": "input",
+      "name": "_wpcf7_unit_tag",
+      "type": "hidden",
+      "value": "wpcf7-f5-o1",
+      "options": []
+     },
+     {
+      "tag": "input",
+      "name": "_wpcf7_container_post",
+      "type": "hidden",
+      "value": "0",
+      "options": []
+     },
+     {
+      "tag": "input",
+      "name": "_wpcf7_posted_data_hash",
+      "type": "hidden",
+      "value": "",
+      "options": []
+     },
+     {
+      "tag": "input",
+      "name": "_wpcf7dtx_version",
+      "type": "hidden",
+      "value": "5.0.7",
+      "options": []
+     },
+     {
+      "tag": "input",
+      "name": "pagina_votata",
+      "type": "hidden",
+      "value": "/notizia/dati-per-sezioni-di-censimento/",
+      "options": []
+     },
+     {
+      "tag": "input",
+      "name": "data-feedback",
+      "type": "date",
+      "value": "2026-11-18",
+      "options": []
+     },
+     {
+      "tag": "input",
+      "name": "feedback_value",
+      "type": "checkbox",
+      "value": "O",
+      "options": []
+     },
+     {
+      "tag": "input",
+      "name": "feedback_value",
+      "type": "checkbox",
+      "value": "N",
+      "options": []
+     },
+     {
+      "tag": "input",
+      "name": "",
+      "type": "submit",
+      "value": "Invia",
+      "options": []
+     }
+    ]
+   },
+   {
+    "action": "https://www.istat.it/notizia/dati-per-sezioni-di-censimento/#wpcf7-f7032-o2",
+    "method": "post",
+    "fields": [
+     {
+      "tag": "input",
+      "name": "_wpcf7",
+      "type": "hidden",
+      "value": "7032",
+      "options": []
+     },
+     {
+      "tag": "input",
+      "name": "_wpcf7_version",
+      "type": "hidden",
+      "value": "6.1.7",
+      "options": []
+     },
+     {
+      "tag": "input",
+      "name": "_wpcf7_locale",
+      "type": "hidden",
+      "value": "it_IT",
+      "options": []
+     },
+     {
+      "tag": "input",
+      "name": "_wpcf7_unit_tag",
+      "type": "hidden",
+      "value": "wpcf7-f7032-o2",
+      "options": []
+     },
+     {
+      "tag": "input",
+      "name": "_wpcf7_container_post",
+      "type": "hidden",
+      "value": "0",
+      "options": []
+     },
+     {
+      "tag": "input",
+      "name": "_wpcf7_posted_data_hash",
+      "type": "hidden",
+      "value": "",
+      "options": []
+     },
+     {
+      "tag": "input",
+      "name": "_wpcf7dtx_version",
+      "type": "hidden",
+      "value": "5.0.7",
+      "options": []
+     },
+     {
+      "tag": "input",
+      "name": "pagina_votata",
+      "type": "hidden",
+      "value": "/notizia/dati-per-sezioni-di-censimento/",
+      "options": []
+     },
+     {
+      "tag": "select",
+      "name": "tipo_di_commento",
+      "type": "",
+      "value": "",
+      "options": [
+       [
+        "",
+        "Seleziona la tipologia della segnalazione"
+       ],
+       [
+        "O",
+        "Osservazioni e/o suggerimenti (O)"
+       ],
+       [
+        "A",
+        "Segnalazioni di anomalie (A)"
+       ]
+      ]
+     },
+     {
+      "tag": "textarea",
+      "name": "feedback_completo",
+      "type": "",
+      "value": "",
+      "options": []
+     },
+     {
+      "tag": "input",
+      "name": "cf7sr-turnstile",
+      "type": "hidden",
+      "value": "",
+      "options": []
+     },
+     {
+      "tag": "input",
+      "name": "",
+      "type": "submit",
+      "value": "Invia la tua opinione",
+      "options": []
+     }
+    ]
+   },
+   {
+    "action": "https://www.istat.it/iscriviti-a-istatnewsletter/",
+    "method": "get",
+    "fields": [
+     {
+      "tag": "input",
+      "name": "",
+      "type": "hidden",
+      "value": "",
+      "options": []
+     },
+     {
+      "tag": "input",
+      "name": "nmail",
+      "type": "email",
+      "value": "",
+      "options": []
+     }
+    ]
+   }
+  ],
+  "scripts": [
+   "https://www.istat.it/ruxitagentjs_ICA7NVfgqrux_10349261020121938.js",
+   "https://www.istat.it/wp-content/themes/EGPbs5-child/splide/splide.min.js",
+   "https://www.istat.it/wp-content/themes/EGPbs5-child/splide/splide-extension-auto-scroll.min.js",
+   "https://www.istat.it/wp-content/plugins/sitepress-multilingual-cms/res/js/cookies/language-cookie.js?ver=530000",
+   "https://www.istat.it/wp-content/plugins/acf-gblocks/lib/bootstrap/bootstrap.bundle.min.js?ver=6.9.11",
+   "https://www.istat.it/wp-includes/js/dist/hooks.min.js?ver=dd5603f07f9220ed27f1",
+   "https://www.istat.it/wp-includes/js/dist/i18n.min.js?ver=c26c3dc7bed366793375",
+   "https://www.istat.it/wp-includes/js/jquery/jquery.min.js?ver=3.7.1",
+   "https://www.istat.it/wp-includes/js/jquery/jquery-migrate.min.js?ver=3.4.1",
+   "https://www.istat.it/wp-content/plugins/mailup-email-and-newsletter-subscription-form/admin/js/jquery.validate.min.js?ver=1.19.5",
+   "https://www.istat.it/wp-content/plugins/mailup-email-and-newsletter-subscription-form/admin/js/localization/messages_it.js?ver=1.19.5",
+   "https://www.istat.it/wp-content/plugins/mailup-email-and-newsletter-subscription-form/public/js/mailup-public.js?ver=1.2.7",
+   "https://www.istat.it/wp-content/themes/EGPbs5-child/splide/splide.min.js?ver=6.9.11",
+   "https://www.istat.it/wp-content/themes/EGPbs5-child/splide/splide-extension-auto-scroll.min.js?ver=6.9.11",
+   "https://www.istat.it/wp-content/themes/EGPbs5-child/js/custom-select.js?ver=6.9.11",
+   "https://www.istat.it/wp-content/themes/EGPbs5-child/assets/mobileMenu/hc-offcanvas-nav.js?ver=6.9.11",
+   "https://www.istat.it/wp-content/themes/EGPbs5-child/js/functions.js?ver=6.9.11",
+   "https://www.istat.it/wp-includes/js/jquery/ui/core.min.js?ver=1.13.3",
+   "https://www.istat.it/wp-includes/js/jquery/ui/menu.min.js?ver=1.13.3",
+   "https://www.istat.it/wp-includes/js/dist/dom-ready.min.js?ver=f77871ff7694fffea381"
+  ],
+  "inlineScript": "\n\n\n\n/* <![CDATA[ */\nvar wpml_cookies = {\"wp-wpml_current_language\":{\"value\":\"it\",\"expires\":\"Thu, 19 Nov 2026 09:09:19 GMT\",\"maxAge\":86400,\"path\":\"/\"}};\n//# sourceURL=wpml-cookie-js-extra\n/* ]]> */\n\n\n\n\n\n\n/* <![CDATA[ */\nwp.i18n.setLocaleData( { 'text direction\\u0004ltr': [ 'ltr' ] } );\n//# sourceURL=wp-i18n-js-after\n/* ]]> */\n\n\n\n\n\n\n/* <![CDATA[ */\nvar mailup_params = {\"ajax_url\":\"https://www.istat.it/wp-admin/admin-ajax.php\",\"ajaxNonce\":\"75456665aa\"};\n//# sourceURL=mailup-js-extra\n/* ]]> */\n\n\n\n\n\n\n\n/* <![CDATA[ */\nvar egpAjax = {\"ajaxurl\":\"https://www.istat.it/wp-admin/admin-ajax.php\",\"suggestString\":\"Suggerimenti di ricerca\",\"enableAutocomplete\":\"\",\"popupDelay\":\"100000\",\"popupEnabled\":\"\",\"popupLater\":\"900000\",\"popupNo\":\"7776000000\",\"currentLang\":\"it\"};\n//# sourceURL=functions-js-extra\n/* ]]> */\n\n\n\n\n\n\n/* <![CDATA[ */\n( function( domain, translations ) {\n\tvar localeData = translations.locale_data[ domain ] || translations.locale_data.messages;\n\tlocaleData[\"\"].domain = domain;\n\twp.i18n.setLocaleData( localeData, domain );\n} )( \"default\", {\"translation-revision-date\":\"2024-05-31 12:01:00+0000\",\"generator\":\"GlotPress\\/4.0.1\",\"domain\":\"messages\",\"locale_data\":{\"messages\":{\"\":{\"domain\":\"messages\",\"plural-forms\":\"nplurals=2; plural=n != 1;\",\"lang\":\"it\"},\"Notifications\":[\"Notifiche\"]}},\"comment\":{\"reference\":\"wp-includes\\/js\\/dist\\/a11y.js\"}} );\n//# sourceURL=wp-a11y-js-translations\n/* ]]> */\n\n\n\n\n\n\n\r\n var _paq = window._paq || [];\r\n /* tracker methods like \"setCustomDimension\" should be called before \"trackPageView\" */\r\n _paq.push([\"setDomains\", [\"*.www.istat.it\",\"*.www.istat.it\"]]);\r\n _paq.push(['trackPageView']);\r\n _paq.push(['enableLinkTracking']);\r\n (function() {\r\n  var u=\"https://analytics.istat.it/\";\r\n  _paq.push(['setTrackerUrl', u+'matomo.php']);\r\n  _paq.push(['setSiteId', '40']);\r\n  var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];\r\n  g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'matomo.js'; s.parentNode.insertBefore(g,s);\r\n })();\r\n\n{\"@context\":\"https://schema.org\",\"@type\":\"BreadcrumbList\",\"itemListElement\":[{\"@type\":\"ListItem\",\"position\":1,\"name\":\"Home\",\"item\":\"https://www.istat.it\"},{\"@type\":\"ListItem\",\"position\":2,\"name\":\"Notizia\",\"item\":\"https://www.istat.it/documenti/notizia/\"},{\"@type\":\"ListItem\",\"position\":3,\"name\":\"Dati per sezioni di censimento\",\"item\":\"https://www.istat.it/notizia/dati-per-sezioni-di-censimento/\"}]}\n\r\n    function copyLink() {\r\n        navigator.clipboard\r\n        .writeText(\"https://www.istat.it/notizia/dati-per-sezioni-di-censimento\")\r\n        .then(() => {\r\n            alert(\"L'URL è stato copiato\");\r\n        })\r\n        .catch(() => {\r\n            alert(\"L'URL non è stato copiato\");\r\n        });\r\n    }\r\n\n\n\n{\"prefetch\":[{\"source\":\"document\",\"where\":{\"and\":[{\"href_matches\":\"/*\"},{\"not\":{\"href_matches\":[\"/wp-*.php\",\"/wp-admin/*\",\"/wp-content/uploads/*\",\"/wp-content/*\",\"/wp-content/plugins/*\",\"/wp-content/themes/EGPbs5-child/*\",\"/wp-content/themes/EGPbs5/*\",\"/*\\\\?(.+)\"]}},{\"not\":{\"selector_matches\":\"a[rel~=\\\"nofollow\\\"]\"}},{\"not\":{\"selector_matches\":\".no-prefetch, .no-prefetch a\"}}]},\"eagerness\":\"conservative\"}]}\n\n\n\n/* <![CDATA[ */\nvar wpcf7 = {\n    \"api\": {\n        \"root\": \"https:\\/\\/www.istat.it\\/wp-json\\/\",\n        \"namespace\": \"contact-form-7\\/v1\"\n    },\n    \"cached\": 1\n};\n//# sourceURL=contact-form-7-js-before\n/* ]]> */\n\n\n\n\n/* <![CDATA[ */\nvar inlineModalsData = {\"i18n\":{\"close\":\"Close\"}};\n//# sourceURL=inline-modals-fe-js-extra\n/* ]]> */\n\n\n\n\n/* <![CDATA[ */\njQuery(function(jQuery){jQuery.datepicker.setDefaults({\"closeText\":\"Chiudi\",\"currentText\":\"Oggi\",\"monthNames\":[\"Gennaio\",\"Febbraio\",\"Marzo\",\"Aprile\",\"Maggio\",\"Giugno\",\"Luglio\",\"Agosto\",\"Settembre\",\"Ottobre\",\"Novembre\",\"Dicembre\"],\"monthNamesShort\":[\"Gen\",\"Feb\",\"Mar\",\"Apr\",\"Mag\",\"Giu\",\"Lug\",\"Ago\",\"Set\",\"Ott\",\"Nov\",\"Dic\"],\"nextText\":\"Prossimo\",\"prevText\":\"Precedente\",\"dayNames\":[\"domenica\",\"luned\\u00ec\",\"marted\\u00ec\",\"mercoled\\u00ec\",\"gioved\\u00ec\",\"venerd\\u00ec\",\"sabato\"],\"dayNamesShort\":[\"Dom\",\"Lun\",\"Mar\",\"Mer\",\"Gio\",\"Ven\",\"Sab\"],\"dayNamesMin\":[\"D\",\"L\",\"M\",\"M\",\"G\",\"V\",\"S\"],\"dateFormat\":\"d MM yy\",\"firstDay\":1,\"isRTL\":false});});\n//# sourceURL=jquery-ui-datepicker-js-after\n/* ]]> */\n\n\n\n\n\n\n/* <![CDATA[ */\n        var turnstileIds = [];\n        \n        window.cf7srLoadTurnstile = function() {\n            var widgets = document.querySelectorAll('.cf7sr-g-turnstile');\n            for (var i = 0; i < widgets.length; ++i) {\n                var widget = widgets[i];\n                if (typeof turnstile !== 'undefined') {\n                    turnstileIds.push(\n                        turnstile.render('#' + widget.id, {\n                            'sitekey' : \"0x4AAAAAACHkorbnM803AFsd\"\n                        })\n                    );\n                }\n            }\n        };\n\n        window.cf7srResetTurnstile = function() {\n            for (var i = 0; i < turnstileIds.length; i++) {\n                if (typeof turnstile !== 'undefined') {\n                    turnstile.reset(turnstileIds[i]);\n                }\n            }\n        };\n\n        document.addEventListener('wpcf7invalid', cf7srResetTurnstile);\n        document.addEventListener('wpcf7mailsent', cf7srResetTurnstile);\n        document.addEventListener('invalid.wpcf7', cf7srResetTurnstile);\n        document.addEventListener('mailsent.wpcf7', cf7srResetTurnstile);\n    \n//# sourceURL=cf7sr-turnstile-api-js-before\n/* ]]> */\n\n\n\n{\"baseUrl\":\"https://s.w.org/images/core/emoji/17.0.2/72x72/\",\"ext\":\".png\",\"svgUrl\":\"https://s.w.org/images/core/emoji/17.0.2/svg/\",\"svgExt\":\".svg\",\"source\":{\"concatemoji\":\"https://www.istat.it/wp-includes/js/wp-emoji-release.min.js?ver=6.9.11\"}}\n\n\n/* <![CDATA[ */\n/*! This file is auto-generated */\nvar e=\"script#wp-emoji-settings\",t=document.querySelector(e);if(!(t instanceof HTMLScriptElement))throw new Error(\"Element missing: \"+e);const r=JSON.parse(t.text),s=(window._wpemojiSettings=r,\"wpEmojiSettingsSupports\"),o=[\"flag\",\"emoji\"];function i(e){try{var t={supportTests:e,timestamp:(n",
+  "links": [
+   {
+    "url": "https://www.istat.it/wp-content/uploads/2026/03/Nota-Informativa-sezioni-censimento-2023.pdf",
+    "text": "Nota informativa"
+   },
+   {
+    "url": "https://www.istat.it/wp-content/uploads/2025/12/Nota-Metodologica-sezioni-censimento-2023_6marzo2026.pdf",
+    "text": "Nota metodologica"
+   },
+   {
+    "url": "https://esploradati.istat.it/databrowser/DWL/PERMPOP/SUBCOM/Dati_regionali_2023.zip",
+    "text": "Sezioni di censimento per regione"
+   },
+   {
+    "url": "https://esploradati.istat.it/databrowser/DWL/PERMPOP/SUBCOM/Comuni_2023.zip",
+    "text": "Sezioni di censimento e Aree subcomunali per Capoluoghi delle Città Metropolitane"
+   },
+   {
+    "url": "https://esploradati.istat.it/databrowser/DWL/PERMPOP/SUBCOM/Dati_regionali_2021.zip",
+    "text": "Sezioni di censimento per regione"
+   },
+   {
+    "url": "https://esploradati.istat.it/databrowser/DWL/PERMPOP/SUBCOM/Comuni_2021.zip",
+    "text": "Sezioni di censimento e Aree subcomunali per Capoluoghi delle Città Metropolitane"
+   },
+   {
+    "url": "https://www.istat.it/storage/cartografia/variabili-censuarie/dati-cpa_2011.zip",
+    "text": "Dati per sezioni di censimento 2011"
+   },
+   {
+    "url": "https://www.istat.it/storage/cartografia/variabili-censuarie/dati-cpa_2001.zip",
+    "text": "Dati per sezioni di censimento 2001"
+   },
+   {
+    "url": "https://www.istat.it/storage/cartografia/variabili-censuarie/dati-cpa_1991.zip",
+    "text": "Dati per sezioni di censimento 1991"
+   }
+  ],
+  "text": "Dati per sezioni di censimento – Istat Vai al menù della testata Vai al menù principale Vai al contenuto principale Vai al menù laterale Vai al contenuto di pagina English Homepage Home Informazioni sulle rilevazioni Attività e servizi per tipo di utenti Per tutti Sportelli sul territorio European data support Biblioteca Archivio storico Giornalisti Appuntamenti Embargo Articoli e interviste Istat in breve Storia Rispondenti Informazioni sulle rilevazioni e questionari Elenco soggetti esterni trattamento dati Sanzioni amministrative Ricercatori Eventi segnalati dalle società scientifiche Laboratorio ADELE Promozione della ricerca Studenti e docenti Master EMOS Statistica e Cittadinanza Formazione per docenti Progetti per le scuole Pacchetti didattici Competizioni e premi Enti del Sistan English HomePage Imposta Lingua Language Settings Per favore conferma la tua preferenza. Please confirm your preference. SWITCH TO ENGLISH RIMANI SU ITALIANO Imposta Lingua Language Settings Per favore conferma la tua preferenza. Please confirm your preference. SWITCH TO ENGLISH RIMANI SU ITALIANO Statistiche per temi Popolazione Popolazione e Famiglie Condizioni economiche delle famiglie Vita quotidiana e opinioni dei cittadini Società e Istituzioni Cultura, comunicazione e viaggi Salute e Sanità Assistenza e previdenza Giustizia e sicurezza Pubbliche amministrazioni e istituzioni private Istruzione e Lavoro Istruzione e Formazione Lavoro e retribuzioni Economia Conti nazionali Imprese Industria e costruzioni Servizi Agricoltura Prezzi Commercio estero Ambiente e Territorio Ambiente ed energia Territorio e cartografia Censimenti Agricoltura Popolazione e abitazioni Imprese Istituzioni pubbliche Istituzioni non profit Censimenti storici Focus Violenza sulle donne Benessere e sostenibilità Dati alla mano Statistiche territoriali per le politiche di sviluppo Congiuntura Informazioni territoriali e cartografiche La povertà educativa Statistiche A-Z Dati Banche Dati Microdati Ad uso pubblico Standard Per la ricerca (MFR) Per il Sistan Laboratorio ADELE File integrati Normativa Tavole di dati Infografiche e grafici Infografiche Grafici interattivi Dashboard Rappresentazioni cartografiche Calcolatori Conta nomi Rivalutazioni Soglia di povertà Matrimoni in Italia Statistiche Smart da Big Data Open Data High value datasets Comunicati e Analisi Cerca comunicati e analisi Comunicati stampa Pubblicazioni Rivista di statistica ufficiale Istat working papers Audizioni e contributi al Parlamento Statistiche sperimentali Classificazioni non standard Nuovi indicatori Analisi e quadri interpretativi Sperimentazioni su big data Classificazioni e Strumenti Classificazioni Strumenti per la qualità Linee guida Sistema informativo per la qualità (SIQual) Schede standard di qualità Strumenti per la qualità nel Sistan Metodi e software del processo statistico Fase di progettazione Fase di raccolta Fase di elaborazione Fase di analisi Software di analisi online Ontologie Web Services SDMX Schema: il Catalogo nazionale della semantica dei dati L’Istituto Organizzazione Organigramma Normativa Comitato unico di garanzia Presidente Articoli e interviste Interventi e presentazioni Presidenti dal 1926 Uffici Territoriali Attività Intelligenza Artificiale e innovazione statistica Rilevazioni ed elaborazioni Ricerca Qualità Peer review 2021-2023 Istat 100 Eventi e incontri scientifici Relazioni internazionali L’Istat nella UE e nel mondo Cooperazione tecnica Sistema statistico nazionale Notizia Periodo di riferimento: Censimenti 1991, 2001, 2011, 2021 e 2023 Data pubblicazione: 9 Giugno 2023 Data aggiornamento: 9 Giugno 2026 Nota informativa (.pdf, 87 Kb) Nota metodologica (.pdf, 311 Kb) Tema: Istruzione e formazione , Lavoro e retribuzioni , Popolazione e famiglie Tag: censimenti comuni province regioni sezione di censimento territorio Tipo di documento: Notizia Id: 27854 Home / Notizia / Dati per sezioni di... Condividi: Dati per sezioni di censimento L’Istat rende disponibili i risultati del Censimento permanente della popolazione e delle abitazioni del 31-12-2023 per i seguenti livelli territoriali sub-comunali: sezioni di censimento aree sub-comunali amministrative (per i comuni dotati di tali partizioni territoriali) Le Basi Territoriali di riferimento sono quelle del 2021 e tengono conto degli aggiornamenti dovuti alla demografia comunale e alle variazioni territoriali verificatesi dal censimento del 2011. Nel presente rilascio, i primi digit del codice della sezione di censimento si riferiscono ai comuni presenti al 31 dicembre 2021. L’elenco delle sezioni di censimento presenta anche delle sezioni “fittizie”: le “888888x” contengono esclusivamente le persone “senza tetto” e “senza fissa dimora” iscritte in anagrafe; le “999999x” si riferiscono a zone in contestazione e contese tra due o più comuni. Il tracciato record dei file di dati è stato definito in modo coerente con quello delle passate tornate censuarie. Le informazioni diffuse riguardano variabili di popolazione (sesso, età, cittadinanza, paese di nascita, titoli di studio e occupazione) e alcuni dati sulle famiglie e le automobili di proprietà. Vengono anche rilasciate informazioni sulle abitazioni e gli altri tipi di alloggio. Tutti i dati per sezione di censimento sono disponibili su IstatData . Censimento permanente della popolazione e delle abitazioni 2023 Sezioni di censimento per regione (zip) Sezioni di censimento e Aree subcomunali per Capoluoghi delle Città Metropolitane (zip) Censimento permanente della popolazione e delle abitazioni 2021 Sezioni di censimento per regione (zip) Sezioni di censimento e Aree subcomunali per Capoluoghi delle Città Metropolitane (zip) Censimento della popolazione e delle abitazioni 2011 Dati per sezioni di censimento 2011 (zip) Censimento della popolazione e delle abitazioni 2001 Dati per sezioni di censimento 2001 (zip) Censimento della popolazione e delle abitazioni 1991 Dati per sezioni di censimento 1991 (zip) Per informazioni rivolgersi al contact@centre Dati relativi al Censimento della popolazione In data 9 giugno 2026, ore 11:11, la nota informativa è stata sostituita in seguito all’integrazione dei dati per sezione di censimento con ulteriori variabili di diffusione. In data 6 marzo 2026 alle ore 8.00 la Nota Informativa e la Nota Metodologica sono state integralmente sostituite a seguito dell’aggiornamento di dati e della correzioni di link non funzionanti A seguito dell’aggiornamento dei dati per Sezione di Censimento 2023 del 5 marzo 2026, sono state diffuse ulteriori variabili rispetto a quelle rilasciate il 18 dicembre 2025 e pubblicati i dati di 59 comuni inizialmente mancanti Ti è stata utile questa pagina? [honeypot nome id:nome timecheck_enabled:true] Sì No [honeypot email id:email timecheck_enabled:true][honeypot privacy id:privacy timecheck_enabled:true] Vuoi segnalare qualcosa su questa pagina? Che tipo di commento vuoi lasciare? * Seleziona la tipologia della segnalazione Osservazioni e/o suggerimenti (O) Segnalazioni di anomalie (A) Inserisci il tuo commento * * Tutti i campi sono obbligatori Si prega di non fornire dati di natura personale (ad esempio dati di contatto). Per ogni altra comunicazione e per richiedere dati, pubblicazioni, file di microdati, ricerche storiche e richieste personalizzate basta accedere a Contact centre Contatti Iscriviti a IstatNewsletter Privacy Dichiarazione di accessibilità Amministrazione Trasparente Whistleblowing Pubblicità legale Atti di notifica Note legali Sistan Eurostat Altri servizi Back to top Iscriviti alla nostra Newsletter Gli aggiornamenti di Istat ogni settimana Inserisci la tua email"
+ }
+}
