@@ -719,9 +719,14 @@ def openbdap_benchmarks_cases() -> None:
     # Senza il Piemonte l'Italia scende sotto il 90%: valore non pubblicato, copertura dichiarata.
     low = ob.build_snapshot(2025, fetcher_for({"TOSCANA": regions["TOSCANA"]}), published, towns)["benchmarks"]["fcdePerResident"]["italy"]
     assert low["value"] is None and "soglia" in low["reason"]
-    # Un valore pubblico diverso blocca tutto.
+    # Un valore pubblico diverso esclude quell'indicatore dal confronto (motivo dichiarato); se sono molti, si ferma tutto.
     bad = {k: dict(v) for k, v in published.items()}
     bad["fcdePerResident"]["046030"] += 0.01
+    one = ob.build_snapshot(2025, fetcher_for(regions), bad, towns)
+    assert one["benchmarks"]["fcdePerResident"]["tuscany"]["value"] is None and "Stazzema" in one["blocked"]["fcdePerResident"][0]
+    assert one["benchmarks"]["ownRevenueShare"]["tuscany"]["value"] is not None
+    for key in list(bad)[:12]:
+        bad[key]["046033"] += 1
     try:
         ob.build_snapshot(2025, fetcher_for(regions), bad, towns)
     except ob.BenchmarkError:

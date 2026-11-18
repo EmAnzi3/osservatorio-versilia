@@ -252,24 +252,30 @@ def build_snapshot(year: int, fetcher: Callable[[str], bytes], published: dict[s
     # contano come Comuni non coperti, mai come zeri.
     if len(unknown) > 600:
         raise BenchmarkError(f"{len(unknown)} codici OpenBDAP assenti dal P2: {unknown[:10]}")
-    # Riconciliazione 7/7: i valori comunali ricalcolati devono essere quelli pubblicati.
-    errors = []
+    # Riconciliazione 7/7 per indicatore: se un valore comunale ricalcolato non è quello pubblicato
+    # (rendiconto ritrasmesso, regola diversa), quell'indicatore resta senza confronto e il motivo è dichiarato.
+    blocked: dict[str, list[str]] = {}
     for metric, expected in published.items():
         for c, value in expected.items():
             if c not in per_metric[metric]:
-                errors.append(f"{metric} {towns[c]}: righe assenti")
+                blocked.setdefault(metric, []).append(f"{towns[c]}: righe assenti")
                 continue
             n, d = per_metric[metric][c]
             live = n / d * 100 if metric in RATIOS else n / population[c]
             if not math.isclose(live, value, rel_tol=0, abs_tol=1e-6):
-                errors.append(f"{metric} {towns[c]}: {live} ≠ {value}")
-    if errors:
-        raise BenchmarkError("riconciliazione 7/7 non superata: " + "; ".join(errors[:4]) + f" — Toscana: {missing_regions.get(TUSCANY, regions.get(TUSCANY))}")
+                blocked.setdefault(metric, []).append(f"{towns[c]}: fonte {live} ≠ pubblicato {value}")
+    if len(blocked) > len(published) // 2:
+        raise BenchmarkError("riconciliazione 7/7 non superata: " + json.dumps(blocked, ensure_ascii=False)[:1500]
+                             + f" — Toscana: {missing_regions.get(TUSCANY, regions.get(TUSCANY))}")
     tuscany_codes = {c for c in population if c.startswith(("045", "046", "047", "048", "049", "050", "051", "052", "053", "100"))}
     scopes = {"tuscany": tuscany_codes, "italy": set(population)}
     benchmarks: dict[str, Any] = {}
     for metric in METRICS:
         out = {}
+        if metric in blocked:
+            benchmarks[metric] = {scope: {"value": None, "reason": "riconciliazione 7/7 non superata: " + "; ".join(blocked[metric])}
+                                  for scope in scopes}
+            continue
         for scope, perimeter in scopes.items():
             values = {c: v for c, v in per_metric[metric].items() if c in perimeter and c in population}
             pop_all = sum(population[c] for c in perimeter)
@@ -297,5 +303,6 @@ def build_snapshot(year: int, fetcher: Callable[[str], bytes], published: dict[s
         "regions": regions, "missingRegions": missing_regions, "unknownCodes": unknown,
         "towns": {c: {m: list(per_metric[m][c]) for m in METRICS if c in per_metric[m]} | {"population": population[c]} for c in towns},
         "benchmarks": benchmarks,
-        "qualityGate": {"status": "PASS", "publicReconciliation": f"{len(published)} indicatori × 7/7"},
+        "blocked": blocked,
+        "qualityGate": {"status": "PASS", "publicReconciliation": f"{len(published) - len(blocked)} indicatori × 7/7; {len(blocked)} esclusi dal confronto"},
     }
