@@ -4,7 +4,9 @@ import csv
 import hashlib
 import io
 import math
+import re
 from urllib.parse import urlparse
+from a6_pins import Pin as _pin
 from semantic_operations import finite
 from semantic_query_adapters import ratio, CENSUS_PATH, CENSUS_BENCHMARK, AGE_SNAPSHOT
 
@@ -17,6 +19,8 @@ HOUSING={'vacantHomes':('A3','A8'),'singleHouseholds':('PF3','PF1'),'cohabitingH
 KEYS=(*DEMOGRAPHIC,*HOUSING,'employmentGenderGap','householdSize','oldAgeIndex')
 RATIOS=('cohabitingHouseholds',)
 LABOUR=('employmentRate','unemploymentRate','activityRate')
+FAMILIES_RE=re.compile(r'data/source-snapshots/istat-famiglie-serie-(20[0-9]{2})[.]json')
+FAMILIES_HASH=_pin('household_size#1')
 
 
 def close(actual,expected,tolerance=1e-8):
@@ -31,7 +35,7 @@ def dimensions(key):
 
 
 def benchmark_scopes(key,dimension='total'):
- return ['tuscany','italy'] if dimension=='total' and key in (*HOUSING,'employmentGenderGap',*LABOUR,'tertiary') else []
+ return ['tuscany','italy'] if dimension=='total' and key in (*HOUSING,'employmentGenderGap',*LABOUR,'tertiary','householdSize') else []
 
 
 def context(metric,key,dimension):
@@ -130,6 +134,14 @@ def historical(engine,key,row,dimension,period):
  return value,{},dict(ref,kind='source_snapshot',recordPointer=pointer,sourceUrl=source,transform=snap.get('componentHistories',{}).get(key,{}).get('transform','identity'),archiveHashes='declared frozen extraction; original workbook not reread'),source
 
 
+def families(engine,metric):
+ path=str(metric['meta'].get('sourceMeta',{}).get('snapshot'))
+ if not FAMILIES_RE.fullmatch(path):raise ValueError('census_household_series_snapshot_changed')
+ snap,ref=engine.file(path)
+ if ref.get('sha256')!=FAMILIES_HASH or snap.get('qualityGate',{}).get('status')!='PASS':raise ValueError('census_household_series_snapshot_changed')
+ return snap,ref
+
+
 def observation(engine,key,index,dimension,period,historical_selection):
  metric=engine._catalog['metrics'][key];row=metric['rows'][index];part,suffix,current=carrier(engine,key,row,dimension);pointer=f'/metrics/{key}/rows/{index}'+suffix
  if period==current and not historical_selection:
@@ -156,9 +168,13 @@ def observation(engine,key,index,dimension,period,historical_selection):
   if len(records)!=1 or len(sources)!=1:raise ValueError('census_posas_record_missing_or_duplicate')
   expected=ratio(records[0]['age65plus'],records[0]['age0to14'],100);close(value,expected,.0500001);source=sources[0]['url'];ref=dict(ref,kind='source_snapshot',record=f'posas.towns.{row["town"]}.year={period}',sourceUrl=source);notes.append('old_age_index_not_share_of_population')
  else:
-  if period!='2023':raise ValueError('census_historical_dimension_not_available')
-  source=metric['sourceUrl'];ref=dict(kind='published_method_note',path=engine.catalog_path,sha256=engine.catalog_hash,valuePointer=vp,text=metric.get('method'),limitation='municipal raw household members not frozen or not reconciled; no count reconstruction')
-  notes.append('household_size_raw_components_not_reconciled')
+  snap,ref=families(engine,metric);years=list(map(str,snap['years']))
+  if period not in years:raise ValueError('census_historical_dimension_not_available')
+  t=snap['towns'][row['code']];j=years.index(period)
+  if t['town']!=row['town']:raise ValueError('census_record_missing_or_duplicate')
+  close(value,t['size'][j],1e-12);source=snap['sourceUrl']
+  ref=dict(ref,kind='source_snapshot',recordPointer=f'/towns/{row["code"]}',sourceUrl=source,componentEvidence=dict(families=t['families'][j],averageMembers=t['size'][j]),componentCaution='published average; members = families × average, not a separate count')
+  notes.append('household_size_official_series_families_estimated_2018_2019' if period in ('2018','2019') else 'household_size_official_municipal_series')
  if key=='employmentGenderGap':notes.append('gender_gap_in_percentage_points_not_relative_percent')
  evidence=[dict(kind='catalog_snapshot',path=engine.catalog_path,sha256=engine.catalog_hash,valuePointer=vp,periodPointer=pp),ref]
  return dict(context(metric,key,dimension),**components,metric=key,dimension=dimension,geography=row['code'],period=period,value=value,source=source,evidence=evidence,provenance=evidence,notApplicable=bool(row.get('notApplicable')) if period==current else False,dataUnavailable=bool(row.get('dataUnavailable')) or value is None),notes
@@ -166,6 +182,15 @@ def observation(engine,key,index,dimension,period,historical_selection):
 
 def benchmark(engine,key,scope,municipal):
  if scope not in benchmark_scopes(key,municipal['dimension']):raise ValueError('census_benchmark_scope_dimension_or_method_not_reviewed')
+ if key=='householdSize':
+  metric=engine._catalog['metrics'][key];snap,ref=families(engine,metric);years=list(map(str,snap['years']))
+  if municipal['period']!=years[-1]:raise ValueError('census_benchmark_period_unit_or_quality_mismatch')
+  item=snap['scopes'][scope][-1];value=item['members']/item['families'];close(item['value'],value,1e-12)
+  published=metric['meta'].get('benchmark',{})
+  if str(published.get('year'))!=years[-1] or published.get('sourceSnapshot')!=metric['meta']['sourceMeta']['snapshot']:raise ValueError('census_published_benchmark_context_changed')
+  close(published.get(scope),value,1e-12)
+  evidence=[dict(ref,kind='benchmark_snapshot',valuePointer=f'/scopes/{scope}/{len(years)-1}',sourceUrl=snap['sourceUrl'],nativeComponents=dict(members=item['members'],families=item['families']),method=snap['rule']),dict(kind='published_benchmark',path=engine.catalog_path,sha256=engine.catalog_hash,valuePointer=f'/metrics/{key}/meta/benchmark/{scope}')]
+  return dict(context(metric,key,municipal['dimension']),metric=key,dimension=municipal['dimension'],geography=scope,period=municipal['period'],value=value,source=snap['sourceUrl'],evidence=evidence,provenance=evidence,notApplicable=False,dataUnavailable=False)
  path=BENCH24 if key in (*LABOUR,'tertiary') else CENSUS_BENCHMARK
  snap,ref=engine.file(path);spec=snap['benchmarks'][key]
  if snap['qualityGate']['status']!='PASS' or str(spec['year'])!=municipal['period'] or spec['unit']!=municipal['unit']:raise ValueError('census_benchmark_period_unit_or_quality_mismatch')
