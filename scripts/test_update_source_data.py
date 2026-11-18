@@ -658,7 +658,7 @@ def openbdap_benchmarks_cases() -> None:
     with zipfile.ZipFile(zp, "w") as z:
         z.writestr("P2_2025_it_Comuni.csv", "\n".join(p2))
 
-    def region_zip(codes: list[str], reg: str, skip: str | None = None) -> bytes:
+    def region_zip(codes: list[str], reg: str, skip: str | None = None, zone: str = "TOSCANA") -> bytes:
         hdr = "Codice Tipologia Soggetto;Codice Regione;Codice Provincia;Codice Comune"
         e, sp, m, r = ([hdr + ";Codice Titolo;Accertamenti;Riscossioni in C/Competenza"], [hdr + ";Codice Titolo;Impegni;Pagamenti in C/Competenza"],
                        [hdr + ";Codice Missione;Impegni"], [hdr + ";Cod Voce Ris Amm Rend;Totale di Gestione"])
@@ -676,7 +676,8 @@ def openbdap_benchmarks_cases() -> None:
         b = _io.BytesIO()
         with zipfile.ZipFile(b, "w") as z:
             for name, lines in ((ob.MEMBERS["entrate"], e), (ob.MEMBERS["spese"], sp), (ob.MEMBERS["missioni"], m), (ob.MEMBERS["risultato"], r)):
-                z.writestr(f"{name}_X.csv", "\n".join(lines))
+                z.writestr(f"Bilanci di {name}_{zone}.csv", "\n".join(lines))
+            z.writestr("Rendiconto SDB Entrate Riepilogo Titoli.pdf", "doc")
         return b.getvalue()
 
     def fetcher_for(regions: dict[str, bytes]):
@@ -690,7 +691,7 @@ def openbdap_benchmarks_cases() -> None:
         return fetch
 
     # Toscana senza un Comune (non trasmesso) e Piemonte+Lombardia con tutto il resto d'Italia: copertura alta.
-    regions = {"TOSCANA": region_zip([c for c in tus if c != "045001"], "09", skip="047002"), "PIEMONTE": region_zip(other, "01")}
+    regions = {"TOSCANA": region_zip([c for c in tus if c != "045001"], "09", skip="047002"), "PIEMONTE": region_zip(other, "01", zone="PIEMONTE")}
     tables = None
     published = {}
     for metric in ob.METRICS:

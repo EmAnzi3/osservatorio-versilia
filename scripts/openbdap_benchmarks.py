@@ -109,15 +109,15 @@ def num(value: Any) -> float | None:
     return x if math.isfinite(x) else None
 
 
-def read_members(raw: bytes) -> dict[str, list[dict[str, str]]]:
+def read_members(raw: bytes, region: str) -> dict[str, list[dict[str, str]]]:
     out = {}
     squash = lambda t: "".join(ch for ch in t.lower() if ch.isalnum())
     with zipfile.ZipFile(io.BytesIO(raw)) as z:
         names = z.namelist()
         for key, prefix in MEMBERS.items():
-            hits = [n for n in names if squash(n.rsplit("/", 1)[-1]).startswith(squash(prefix)) and n.lower().endswith(".csv")]
+            hits = [n for n in names if squash(n.rsplit("/", 1)[-1]).endswith(squash(f"{prefix}_{region}.csv"))]
             if len(hits) != 1:
-                raise BenchmarkError(f"{prefix}: atteso 1 CSV, trovati {hits} fra {names[:40]}")
+                raise BenchmarkError(f"{prefix}: atteso 1 CSV, trovati {hits} fra {[n for n in names if n.lower().endswith('.csv')][:60]}")
             reader = csv.DictReader(io.StringIO(decode(z.read(hits[0]))), delimiter=";")
             out[key] = [{k.strip(): v for k, v in row.items() if k and k.strip()} for row in reader]
     return out
@@ -230,7 +230,7 @@ def build_snapshot(year: int, fetcher: Callable[[str], bytes], published: dict[s
             missing_regions[reg] = tried
             continue
         try:
-            members = read_members(raw)
+            members = read_members(raw, name)
         except (BenchmarkError, zipfile.BadZipFile) as error:
             missing_regions[reg] = {"archive": url, "error": str(error)[:2000]}
             continue
