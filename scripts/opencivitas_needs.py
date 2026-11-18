@@ -272,6 +272,7 @@ def build_metrics(snapshot: dict[str, Any], rows_meta: list[dict[str, Any]], pat
             "description": (f"Di quanto la spesa storica del Comune per le funzioni fondamentali supera (+) o resta sotto (−) "
                             f"la spesa standard stimata per un Comune con le stesse caratteristiche ({period})."),
             "unit": "percent", "year": year, "source": source, "polarity": "neutral",
+            "searchTerms": ["fabbisogni standard", "fabbisogno standard", "spesa standard", "spesa storica", "opencivitas", "sose"],
             "benchmark": {"year": year, "tuscany": spending_gap(sc["tuscany"]["spesaStorica"], sc["tuscany"]["spesaStandard"]),
                           "italy": spending_gap(sc["italy"]["spesaStorica"], sc["italy"]["spesaStandard"]),
                           "source": source, "url": snapshot["dataUrl"], "sourceSnapshot": path,
@@ -301,6 +302,7 @@ def build_metrics(snapshot: dict[str, Any], rows_meta: list[dict[str, Any]], pat
             "description": (f"Di quanto i servizi svolti dal Comune nelle funzioni fondamentali superano (+) o restano sotto (−) "
                             f"il livello standard stimato per un Comune con le stesse caratteristiche ({period})."),
             "unit": "percent", "year": year, "source": source, "polarity": "neutral",
+            "searchTerms": ["livello dei servizi", "servizi svolti", "servizi standard", "livello standard", "opencivitas"],
             "benchmark": {"year": year,
                           "tuscany": sc["tuscany"]["serviceGapWeightedSum"] / sc["tuscany"]["spesaStandard"],
                           "italy": sc["italy"]["serviceGapWeightedSum"] / sc["italy"]["spesaStandard"],

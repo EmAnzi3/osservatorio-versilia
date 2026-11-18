@@ -1982,7 +1982,7 @@
    "detail": "total"
   },
   {
-   "question": "Spesa storica e spesa standard a Massarosa",
+   "question": "Massarosa rispetto al fabbisogno standard",
    "kind": "reading",
    "metric": "standardNeedsSpendingGap",
    "operation": "observe",

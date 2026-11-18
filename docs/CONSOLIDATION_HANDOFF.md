@@ -1,5 +1,27 @@
 # Consolidamento Osservatorio Versilia — handoff operativo
 
+## Nuovi indicatori: fabbisogni standard OpenCivitas (18 novembre 2026)
+
+Due indicatori comunali nel tema «Bilanci e amministrazione», nuova sezione «Fabbisogni standard» dopo «Autonomia, riscossione ed equilibri». Fonte: OpenCivitas (SOSE, MEF), file «Indicatori — Totale funzioni», annualità 2023.
+
+- `standardNeedsSpendingGap` — spesa effettiva rispetto al fabbisogno standard: (spesa storica / spesa standard − 1) × 100. Il valore Versilia e i benchmark sono calcolati sui totali in euro. In Italia lo scostamento è ≈ 0 per costruzione (+0,04%), perché la spesa standard è riproporzionata sul totale della spesa storica.
+- `standardNeedsServiceGap` — servizi svolti rispetto al livello standard: lo scostamento pubblicato (DIFF_OUT_PERC_TOT), non ricalcolato. Il valore Versilia e i benchmark sono medie ponderate sulla spesa standard.
+- Benchmark Toscana: 273 Comuni valutabili. Benchmark Italia: 6.548 Comuni valutabili delle regioni a statuto ordinario.
+
+Dove vive cosa:
+
+- `scripts/opencivitas_needs.py` contiene lettura, snapshot e definizione delle metriche. `scripts/materialize_opencivitas_needs.py` è l'ultimo passo dell'overlay di build: gli indicatori non sono nel catalogo canonico. Pubblicati 228, incorporati 224.
+- Snapshot: `data/source-snapshots/opencivitas-fabbisogni-2023.json`, scritto dal workflow «Aggiorna dati dalla fonte» (`opencivitasNeeds: [anno]` in `ci/source-update-request.json`; `0` = ultima annualità). L'annualità 2023 deve ritrovare 7/7 i valori della sonda (`PROBE_2023`).
+- A6: `scripts/semantic_query_standard_needs_adapters.py`, con i pin `standard_needs#1/#2` e la regressione `scripts/test_semantic_standard_needs_adapters.py`. Operazioni ammesse: confronto, graduatoria, scarto da Toscana/Italia. Serie e variazioni sono rifiutate (una sola annualità), così come la somma ponderata, la correlazione e le anomalie.
+- Controllo mensile: la regola `opencivitas_tot` legge le pagine 1–12 dell'elenco open data, il cui ordine cambia (nuova chiave `also` in `release_period_probes.py`). Una nuova annualità `AAAA_Ind_TOT_01_IT.csv` dà `release_detected`.
+- Dossier «I conti dei Comuni»: nuovo capitolo 3 «Rispetto al fabbisogno standard», con le componenti in euro per residente prese dalle evidenze del motore.
+
+Prossima annualità:
+
+1. Mettere `opencivitasNeeds: [0]` nella richiesta e aspettare il commit del bot.
+2. Fare la build, poi `a6_repin.py --allow standard_needs --write`.
+3. Rigenerare dossier e README, poi lanciare il preflight.
+
 ## Nuovo indicatore: sportelli bancari ogni 1.000 residenti (17 novembre 2026)
 
 Branch `feat/sportelli-bancari`. Primo indicatore aggiunto dopo il catalogo di ottobre; segue lo
