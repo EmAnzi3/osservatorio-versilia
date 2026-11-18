@@ -139,7 +139,7 @@ def apply(metric: dict[str, Any], snapshot: dict[str, Any], path: str) -> None:
         "note": ("Toscana e Italia: componenti totali divisi per famiglie totali, sommando le province del workbook "
                  "(per la Toscana uguale alla riga regionale pubblicata).")})
     metric["meta"]["sourceMeta"] = {"snapshot": path, "note": f"Serie comunale Istat {years[0]}–{last}, workbook «A misura di Comune · Famiglie»."}
-    metric["sourceUrl"] = snapshot["sourceUrl"]
+    metric["meta"]["source"] = snapshot["publisher"]
     metric["method"].update(
         type="Dato ufficiale",
         formula="Numero medio di componenti per famiglia pubblicato da Istat per Comune; Versilia, Toscana e Italia come componenti totali / famiglie totali.",

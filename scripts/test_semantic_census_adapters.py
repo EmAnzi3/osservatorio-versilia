@@ -32,10 +32,17 @@ def regressions(path):
     else:
      r=e.query(request('absolute_change',key,dimension=dimension,towns=[code],periods=[periods[0],periods[-1]]));assert r['status']=='computed',(key,dimension,r['reasons'])
   if key not in c.RATIOS:rejected(e,request('weighted_ratio',key),'verified_ratio_adapter_required')
- for key,dimension,value in [('employmentRate','total',73.4),('tertiary','total',17.3),('vacantHomes','total',17.9),('singleHouseholds','total',29.2),('householdSize','total',2.38),('oldAgeIndex','total',257.2),('employmentRate','age:15-24|sex:total',491/2091*100),('diplomaPlus','age:25-49|sex:total',4331/6015*100)]:
+ for key,dimension,value in [('employmentRate','total',73.4),('tertiary','total',17.3),('vacantHomes','total',17.9),('singleHouseholds','total',29.2),('householdSize','total',2.3953667105841),('oldAgeIndex','total',257.2),('employmentRate','age:15-24|sex:total',491/2091*100),('diplomaPlus','age:25-49|sex:total',4331/6015*100)]:
   r=e.query(request('compare',key,dimension=dimension,towns=['046018','046033']));assert math.isclose(r['observations'][0]['value'],value,abs_tol=1e-8)
  rejected(e,request('series','employmentRate',towns=['046018']),'census_historical_dimension_not_available')
- rejected(e,request('series','householdSize',towns=['046018']),'census_historical_dimension_not_available')
+ # Componenti per famiglia: serie Istat 2018–2023 (Tav. 4.1), Toscana e Italia come componenti / famiglie (Tav. 1.2 × 4.2).
+ r=e.query(request('series','householdSize',towns=['046018']));assert r['status']=='computed',r
+ assert [(o['period'],o['value']) for o in r['observations']]==list(zip(['2018','2019','2020','2021','2022','2023'],[2.48055489929376,2.472480210295,2.43381535038932,2.41129568106312,2.40510384445426,2.3953667105841]))
+ assert 'household_size_official_series_families_estimated_2018_2019' in r['warnings']
+ for scope,value in (('tuscany',2.16614307090404),('italy',2.2055753796093813)):
+  r=e.query(dict(request('benchmark_gap','householdSize',towns=['046018']),benchmark=scope));assert r['status']=='computed',r
+  assert math.isclose(r['observations'][1]['value'],value,abs_tol=5e-4 if scope=='tuscany' else 1e-9)
+ rejected(e,request('compare','householdSize',towns=['046018'],periods=['2017']),'census_historical_dimension_not_available')
  rejected(e,dict(request('benchmark_gap','diplomaPlus',towns=['046018']),benchmark='tuscany'),'census_benchmark_scope_dimension_or_method_not_reviewed')
  rejected(e,dict(request('benchmark_gap','tertiary',dimension='age:25-49|sex:total',towns=['046018']),benchmark='tuscany'),'census_benchmark_scope_dimension_or_method_not_reviewed')
  rejected(e,dict(request('benchmark_gap','oldAgeIndex',towns=['046018']),benchmark='tuscany'),'census_benchmark_scope_dimension_or_method_not_reviewed')
