@@ -262,9 +262,9 @@ def build_metrics(snapshot: dict[str, Any], rows_meta: list[dict[str, Any]], pat
     period = f"annualità {year} di OpenCivitas"
     source = "OpenCivitas — Fabbisogni standard dei Comuni (SOSE, MEF)"
     caveat_common = ("Il fabbisogno standard è una stima del Ministero dell'Economia e di SOSE, non un obiettivo di bilancio. "
-                     "Riguarda le funzioni fondamentali (amministrazione, polizia locale, istruzione, viabilità e territorio, "
-                     "ambiente e rifiuti, sociale, asili nido, trasporto pubblico) e usa i residenti: nei Comuni turistici "
-                     "una parte della spesa e dei servizi serve presenze che i residenti non misurano. ")
+                     "Riguarda le funzioni fondamentali (amministrazione generale, polizia locale, istruzione, viabilità e "
+                     "territorio, rifiuti, sociale e asili nido). Il modello tiene conto anche di presenze turistiche, "
+                     "seconde case e pendolari; i valori per abitante usano invece i soli residenti. ")
     spending = {
         "meta": {
             "key": SPENDING, "theme": "bilanci", "label": "Spesa effettiva rispetto al fabbisogno standard",
