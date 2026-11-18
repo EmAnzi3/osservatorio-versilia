@@ -5,7 +5,7 @@
   "publisher": "Ragioneria Generale dello Stato — OpenBDAP (rendiconti) · Istat (bilancio demografico P2)",
   "sourceUrl": "https://openbdap.rgs.mef.gov.it/it/FET/Analizza",
   "year": 2025,
-  "rule": "Aggregato sui Comuni che hanno trasmesso il rendiconto con le righe necessarie: somma dei numeratori / somma dei denominatori (popolazione al 1° gennaio per i valori per residente). Pubblicato solo con almeno il 90% dei residenti coperti; copertura dichiarata.",
+  "rule": "Aggregato sui Comuni che hanno trasmesso il rendiconto con le righe necessarie (una missione assente dal riepilogo di un Comune vale zero): somma dei numeratori / somma dei denominatori (popolazione al 1° gennaio per i valori per residente). Pubblicato solo con almeno il 90% dei residenti coperti; copertura dichiarata.",
   "minCoverage": 0.9,
   "population": {
     "url": "https://demo.istat.it/data/p2/P2_2025_it_Comuni.zip",
@@ -1246,66 +1246,66 @@
     },
     "civilProtectionMissionExpenditurePerResident": {
       "tuscany": {
-        "municipalities": 255,
+        "municipalities": 266,
         "municipalitiesTotal": 273,
-        "populationCovered": 3558127,
+        "populationCovered": 3606966,
         "populationTotal": 3657716,
-        "populationShare": 0.972772899809608,
-        "value": 7.853808500933217,
+        "populationShare": 0.9861252213129723,
+        "value": 7.747466452414578,
         "numerator": 27944848.080000002,
-        "denominator": 3558127
+        "denominator": 3606966
       },
       "italy": {
-        "municipalities": 5991,
+        "municipalities": 6706,
         "municipalitiesTotal": 7897,
-        "populationCovered": 51203738,
+        "populationCovered": 52895638,
         "populationTotal": 58943464,
-        "populationShare": 0.8686923795316814,
+        "populationShare": 0.8973961557468018,
         "value": null,
-        "reason": "copertura 86.9% sotto la soglia del 90%"
+        "reason": "copertura 89.7% sotto la soglia del 90%"
       }
     },
     "cultureSportMissionExpenditurePerResident": {
       "tuscany": {
-        "municipalities": 267,
+        "municipalities": 268,
         "municipalitiesTotal": 273,
-        "populationCovered": 3647575,
+        "populationCovered": 3649675,
         "populationTotal": 3657716,
-        "populationShare": 0.9972275048144799,
-        "value": 142.24343004050635,
-        "numerator": 518843579.33,
-        "denominator": 3647575
+        "populationShare": 0.9978016335877362,
+        "value": 142.17304005151144,
+        "numerator": 518885389.95,
+        "denominator": 3649675
       },
       "italy": {
-        "municipalities": 6401,
+        "municipalities": 6800,
         "municipalitiesTotal": 7897,
-        "populationCovered": 53244339,
+        "populationCovered": 53586059,
         "populationTotal": 58943464,
-        "populationShare": 0.9033120109805559,
-        "value": 100.62694267384933,
-        "numerator": 5357815048.26,
-        "denominator": 53244339
+        "populationShare": 0.9091094306910771,
+        "value": 100.45525986357758,
+        "numerator": 5383001481.91,
+        "denominator": 53586059
       }
     },
     "economicDevelopmentMissionExpenditurePerResident": {
       "tuscany": {
-        "municipalities": 259,
+        "municipalities": 266,
         "municipalitiesTotal": 273,
-        "populationCovered": 3603116,
+        "populationCovered": 3622767,
         "populationTotal": 3657716,
-        "populationShare": 0.9850726518953358,
-        "value": 23.348531126946785,
+        "populationShare": 0.9904451302397452,
+        "value": 23.221881528676835,
         "numerator": 84127466.08,
-        "denominator": 3603116
+        "denominator": 3622767
       },
       "italy": {
-        "municipalities": 5845,
+        "municipalities": 6608,
         "municipalitiesTotal": 7897,
-        "populationCovered": 51323055,
+        "populationCovered": 52993394,
         "populationTotal": 58943464,
-        "populationShare": 0.8707166412886762,
+        "populationShare": 0.8990546263110699,
         "value": null,
-        "reason": "copertura 87.1% sotto la soglia del 90%"
+        "reason": "copertura 89.9% sotto la soglia del 90%"
       }
     },
     "educationMissionExpenditurePerResident": {
@@ -1320,14 +1320,14 @@
         "denominator": 3652987
       },
       "italy": {
-        "municipalities": 6903,
+        "municipalities": 6931,
         "municipalitiesTotal": 7897,
-        "populationCovered": 53922868,
+        "populationCovered": 53930227,
         "populationTotal": 58943464,
-        "populationShare": 0.9148235332758862,
-        "value": 163.99178914648977,
+        "populationShare": 0.9149483817238837,
+        "value": 163.96941179628263,
         "numerator": 8842907599.23,
-        "denominator": 53922868
+        "denominator": 53930227
       }
     },
     "environmentMissionExpenditurePerResident": {
@@ -1342,14 +1342,14 @@
         "denominator": 3652987
       },
       "italy": {
-        "municipalities": 6932,
+        "municipalities": 6934,
         "municipalitiesTotal": 7897,
-        "populationCovered": 53922758,
+        "populationCovered": 53928765,
         "populationTotal": 58943464,
-        "populationShare": 0.9148216670808489,
-        "value": 265.60222349161,
+        "populationShare": 0.9149235782952967,
+        "value": 265.5726386762241,
         "numerator": 14322004421.6,
-        "denominator": 53922758
+        "denominator": 53928765
       }
     },
     "generalAdministrationMissionExpenditurePerResident": {
@@ -1386,14 +1386,14 @@
         "denominator": 3652987
       },
       "italy": {
-        "municipalities": 6872,
+        "municipalities": 6913,
         "municipalitiesTotal": 7897,
-        "populationCovered": 53718499,
+        "populationCovered": 53863985,
         "populationTotal": 58943464,
-        "populationShare": 0.9113563295160257,
-        "value": 224.96944313243006,
+        "populationShare": 0.913824559072402,
+        "value": 224.3618032705898,
         "numerator": 12085020805.94,
-        "denominator": 53718499
+        "denominator": 53863985
       }
     },
     "socialMissionExpenditurePerResident": {
@@ -1430,35 +1430,35 @@
         "denominator": 3652987
       },
       "italy": {
-        "municipalities": 6620,
+        "municipalities": 6796,
         "municipalitiesTotal": 7897,
-        "populationCovered": 53347710,
+        "populationCovered": 53594360,
         "populationTotal": 58943464,
-        "populationShare": 0.9050657423187751,
-        "value": 71.77897481241463,
+        "populationShare": 0.909250260554758,
+        "value": 71.44863624437347,
         "numerator": 3829243932.39,
-        "denominator": 53347710
+        "denominator": 53594360
       }
     },
     "tourismDevelopmentMissionExpenditurePerResident": {
       "tuscany": {
-        "municipalities": 249,
+        "municipalities": 263,
         "municipalitiesTotal": 273,
-        "populationCovered": 3471445,
+        "populationCovered": 3584330,
         "populationTotal": 3657716,
-        "populationShare": 0.9490745044175108,
-        "value": 44.59182490576691,
-        "numerator": 154798067.61,
-        "denominator": 3471445
+        "populationShare": 0.9799366599265771,
+        "value": 43.533704095326044,
+        "numerator": 156039161.6,
+        "denominator": 3584330
       },
       "italy": {
-        "municipalities": 4991,
+        "municipalities": 6478,
         "municipalitiesTotal": 7897,
-        "populationCovered": 44915194,
+        "populationCovered": 52085383,
         "populationTotal": 58943464,
-        "populationShare": 0.7620046558512408,
+        "populationShare": 0.883649847928856,
         "value": null,
-        "reason": "copertura 76.2% sotto la soglia del 90%"
+        "reason": "copertura 88.4% sotto la soglia del 90%"
       }
     }
   },
