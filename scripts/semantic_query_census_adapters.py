@@ -167,6 +167,11 @@ def observation(engine,key,index,dimension,period,historical_selection):
   snap,ref=engine.file(AGE_SNAPSHOT);records=[r for r in snap['posas']['towns'][row['town']] if str(r['year'])==period];sources=[s for s in snap['posas']['sources'] if str(s['year'])==period]
   if len(records)!=1 or len(sources)!=1:raise ValueError('census_posas_record_missing_or_duplicate')
   expected=ratio(records[0]['age65plus'],records[0]['age0to14'],100);close(value,expected,.0500001);source=sources[0]['url'];ref=dict(ref,kind='source_snapshot',record=f'posas.towns.{row["town"]}.year={period}',sourceUrl=source);notes.append('old_age_index_not_share_of_population')
+ elif not FAMILIES_RE.fullmatch(str(metric['meta'].get('sourceMeta',{}).get('snapshot'))):
+  # Catalogo canonico: senza la serie materializzata in build resta il solo valore 2023 pubblicato.
+  if period!='2023':raise ValueError('census_historical_dimension_not_available')
+  source=metric['sourceUrl'];ref=dict(kind='published_method_note',path=engine.catalog_path,sha256=engine.catalog_hash,valuePointer=vp,text=metric.get('method'),limitation='municipal raw household members not frozen or not reconciled; no count reconstruction')
+  notes.append('household_size_raw_components_not_reconciled')
  else:
   snap,ref=families(engine,metric);years=list(map(str,snap['years']))
   if period not in years:raise ValueError('census_historical_dimension_not_available')
