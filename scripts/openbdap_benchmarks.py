@@ -20,8 +20,8 @@ import io
 import json
 import math
 import time
+import urllib.error
 import urllib.parse
-import urllib.request
 import zipfile
 from collections import defaultdict
 from datetime import date
@@ -32,7 +32,7 @@ PORTAL = BASE + "/it/FET/Analizza"
 ARCHIVE = "/Datasets_FET/Rendiconto/{year}/{year}_Rendiconto - Schemi di bilancio_{region}.zip"
 P2_URL = "https://demo.istat.it/data/p2/P2_{year}_it_Comuni.zip"
 SNAPSHOT_PREFIX = "data/source-snapshots/openbdap-benchmark-"
-UA = "Mozilla/5.0 (compatible; OsservatorioVersilia-data-audit/1.0)"
+UA = "OsservatorioVersilia-A3-OpenBDAP-benchmark/1.0"
 MIN_COVERAGE = 0.90
 TUSCANY = "09"
 # Codice regione Istat → nomi possibili nel file OpenBDAP (si prova nell'ordine)
@@ -64,15 +64,19 @@ class BenchmarkError(RuntimeError):
 
 
 def fetch(url: str) -> bytes:
+    """Scarica con `requests` e lo stesso User-Agent dell'acquisizione toscana già verificata; 404 → HTTPError."""
+    import requests
+
     errors = []
     for attempt in range(1, 4):
         try:
-            with urllib.request.urlopen(urllib.request.Request(url, headers={"User-Agent": UA}), timeout=600) as r:
-                return r.read()
-        except urllib.error.HTTPError as error:
-            if error.code == 404:
-                raise
-            errors.append(f"{attempt}: {error}")
+            r = requests.get(url, headers={"User-Agent": UA}, timeout=600)
+            if r.status_code == 404:
+                raise urllib.error.HTTPError(url, 404, "Not Found", {}, None)
+            r.raise_for_status()
+            return r.content
+        except urllib.error.HTTPError:
+            raise
         except Exception as error:  # noqa: BLE001
             errors.append(f"{attempt}: {type(error).__name__}: {error}")
         time.sleep(10 * attempt)
@@ -219,7 +223,8 @@ def build_snapshot(year: int, fetcher: Callable[[str], bytes], published: dict[s
             try:
                 raw = fetcher(url)
                 break
-            except urllib.error.HTTPError:
+            except urllib.error.HTTPError as error:
+                tried[-1] = f"{url} → HTTP {error.code}"
                 continue
         if raw is None:
             missing_regions[reg] = tried
@@ -233,6 +238,7 @@ def build_snapshot(year: int, fetcher: Callable[[str], bytes], published: dict[s
                   "missioni": index(members["missioni"], "Codice Missione"), "risultato": index(members["risultato"], "Cod Voce Ris Amm Rend")}
         codes = sorted({code(r) for r in members["entrate"] if is_municipality(r) and code(r)})
         reporting[reg] = set(codes)
+        print(f"OpenBDAP {reg}: {len(codes)} Comuni", flush=True)
         regions[reg] = {"archive": url, "sha256": hashlib.sha256(raw).hexdigest(), "bytes": len(raw), "municipalities": len(codes)}
         for c in codes:
             for metric in METRICS:
@@ -256,7 +262,7 @@ def build_snapshot(year: int, fetcher: Callable[[str], bytes], published: dict[s
             if not math.isclose(live, value, rel_tol=0, abs_tol=1e-6):
                 errors.append(f"{metric} {towns[c]}: {live} ≠ {value}")
     if errors:
-        raise BenchmarkError("riconciliazione 7/7 non superata: " + "; ".join(errors[:12]))
+        raise BenchmarkError("riconciliazione 7/7 non superata: " + "; ".join(errors[:4]) + f" — Toscana: {missing_regions.get(TUSCANY, regions.get(TUSCANY))}")
     tuscany_codes = {c for c in population if c.startswith(("045", "046", "047", "048", "049", "050", "051", "052", "053", "100"))}
     scopes = {"tuscany": tuscany_codes, "italy": set(population)}
     benchmarks: dict[str, Any] = {}
