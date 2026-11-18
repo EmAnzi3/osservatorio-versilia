@@ -184,7 +184,7 @@ jobs:
           registry = json.loads((dist / 'data/source-registry.json').read_text(encoding='utf-8'))
           assert data['version'] == 'v1.40.0', data['version']
           assert data['release_version'] == '1.40.0', data['release_version']
-          assert len(data['metrics']) == 226, len(data['metrics'])
+          assert len(data['metrics']) == 228, len(data['metrics'])
 
           external = sum(
               isinstance(metric, dict)
@@ -192,12 +192,12 @@ jobs:
               for metric in data['metrics'].values()
           )
           assert external == 4, external
-          assert len(data['metrics']) - external == 222
+          assert len(data['metrics']) - external == 224
           assert (
               registry['expectedMetricCount'],
               registry['expectedInlineMetricCount'],
               registry['expectedExternalMetricCount'],
-          ) == (226, 222, 4)
+          ) == (228, 224, 4)
 
           expected_core = {
               'mortalityCancer','mortalityCirculatory','mortalityRespiratory',
@@ -277,7 +277,7 @@ jobs:
               return (dist / relative).read_text(encoding='utf-8')
 
           homepage = text('index.html')
-          assert '226 indicatori' in homepage
+          assert '228 indicatori' in homepage
           assert 'Catalogo al 14 settembre 2026' in homepage
 
           salute = text('confronta/salute/index.html')
@@ -303,11 +303,11 @@ jobs:
           assert 'Dettagli sanitari aggiuntivi' not in town
 
           status = text('stato-dati/index.html')
-          assert '226 indicatori' in status
+          assert '228 indicatori' in status
           assert 'Mortalità per tumori' in status
           assert 'RSA accreditate presenti nel Comune' in status
 
-          print('Salute v1.40 artifact contract: 226 indicatori (sportelli bancari aggiunti dopo v1.40); 17 metriche ARS arricchite; Toscana sì, Italia non inferita')
+          print('Salute v1.40 artifact contract: 228 indicatori (sportelli bancari e fabbisogni standard aggiunti dopo v1.40); 17 metriche ARS arricchite; Toscana sì, Italia non inferita')
           PY
       - name: Browser QA Salute v1.40 town pages
         run: |
