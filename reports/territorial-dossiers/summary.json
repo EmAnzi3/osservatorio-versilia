@@ -1,7 +1,7 @@
 {
   "schemaVersion": 3,
   "status": "PASS",
-  "catalogSha256": "ca5c9a0a4f631d3ed050ac64d454d00720ac79dd453aa08403eb7322a37e227a",
+  "catalogSha256": "d4bd49c7dc53876b64b030d43a0d260e510378136930edc9da46d0867b11ea82",
   "engineSha256": "e75fb581cf472fc07ea07a679225f7cf665733f89ca6eee9c3da1fdaee78bd22",
   "programSha256": "c37e0defcade0ebdcb768631ba0f99d4413e5718b869e4c3ca7c66b196a2a109",
   "limits": [
@@ -13,11 +13,11 @@
   "baselineCommit": "d09d8e2f695a859e555cae28db69655f7b6d7130",
   "dossiers": 17,
   "executedRequests": 295,
-  "computed": 201,
-  "expectedRefusals": 94,
+  "computed": 202,
+  "expectedRefusals": 93,
   "unexpectedFailures": 0,
   "baselineQuestions": 20,
-  "evidenceSha256": "70e1db5033dec3888d85f10260a16c9246aece837bc52afd1f426b2b05bd6565",
+  "evidenceSha256": "fb2c8f3d1f8ce872277e60907f559a9e836dddad093cda9c8f6f690057d9c489",
   "evidenceHashFormat": "UTF-8, sorted JSON keys, indent 2, trailing LF; declared catalog locations addressed by matching SHA256; distinct source paths and all pointers preserved",
   "baselineQuestionsSha256": "a90db8e808a49542860fe74cc3db2c92a6372d6e3354b61f8644decfebcc92ca",
   "questionPlans": 51,
