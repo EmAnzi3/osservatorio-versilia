@@ -6,7 +6,16 @@
   "agcomFtth": false,
   "istatTourism": [],
   "mefFiscalProbe": [],
-  "sourceProbe": [],
+  "sourceProbe": [
+    {
+      "name": "opencivitas-ricerca-tot",
+      "url": "https://www.opencivitas.it/portale/open-data?r=Ind_TOT_01_IT"
+    },
+    {
+      "name": "opencivitas-pagina-1",
+      "url": "https://www.opencivitas.it/portale/open-data?xpage=1&xdelta=6"
+    }
+  ],
   "ispraSoil": [],
   "aciVehicles": [],
   "omiResidential": [],
@@ -16,5 +25,8 @@
   "erpArrears": [],
   "sdmxProbe": [],
   "bdiBranchesProbe": false,
-  "bdiBranches": []
+  "bdiBranches": [],
+  "opencivitasNeeds": [
+    2023
+  ]
 }

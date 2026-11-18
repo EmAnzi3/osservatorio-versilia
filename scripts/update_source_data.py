@@ -843,6 +843,55 @@ def update_bdi_branches(year: int, folder: Path | None, dry_run: bool) -> Change
     return changes
 
 
+# ------------------------------------------------------------------ OpenCivitas: fabbisogni standard
+
+def update_opencivitas_needs(year: int | None, folder: Path | None, dry_run: bool) -> Changes:
+    """Fabbisogni standard (OpenCivitas): scrive lo snapshot dell'annualità indicata o dell'ultima pubblicata.
+
+    Con `--dir` legge `pages/*.html`, `totale.csv` ed `enti.xlsx` già scaricati (prove locali).
+    Gli indicatori entrano nel catalogo effettivo in build (`materialize_opencivitas_needs.py`).
+    """
+    import materialize_opencivitas_needs as mat
+    import opencivitas_needs as oc
+
+    site = load(SITE)
+    old_path = None
+    try:
+        old_path = mat.latest_snapshot(ROOT)
+    except RuntimeError:
+        pass
+    old = load(ROOT / old_path) if old_path else None
+    try:
+        if folder:
+            pages = {int(p.stem): p.read_text(encoding="utf-8") for p in sorted((folder / "pages").glob("*.html"))}
+        else:
+            pages = {0: oc.fetch(oc.PAGE).decode("utf-8", "replace")}
+            for n in range(1, oc.LIST_PAGES + 1):
+                pages[n] = oc.fetch(oc.LIST_URL.format(page=n)).decode("utf-8", "replace")
+        found = oc.discover(pages, year)
+        if old and found["year"] < old["year"]:
+            raise UpdateError(f"Fabbisogni standard: annualità {found['year']} precedente alla pubblicata {old['year']}")
+        raw = (folder / "totale.csv").read_bytes() if folder else oc.fetch(found["dataUrl"])
+        enti = (folder / "enti.xlsx").read_bytes() if folder else oc.fetch(found["entiUrl"])
+        snapshot = oc.build_snapshot(found, raw, enti)
+        pop_rows = site["metrics"]["population"]["rows"]
+        mat.validate(snapshot, pop_rows)
+    except (oc.NeedsError, RuntimeError, KeyError, ValueError, zipfile.BadZipFile) as error:
+        raise UpdateError(f"Fabbisogni standard: {error}") from error
+    path = f"{oc.SNAPSHOT_PREFIX}{found['year']}.json"
+    metrics = oc.build_metrics(snapshot, pop_rows, path)
+    previous = oc.build_metrics(old, pop_rows, old_path) if old and old["year"] == found["year"] else {}
+    changes = Changes()
+    for key, metric in metrics.items():
+        before = {r["code"]: round(r["value"], 4) for r in previous.get(key, {}).get("rows", [])}
+        for row in metric["rows"]:
+            changes.note(f"{key} {row['town']}", before.get(row["code"]), round(row["value"], 4))
+    snapshot["acquisitionEvidence"] = {"script": f"scripts/update_source_data.py opencivitas-needs --year {found['year']}"}
+    if not dry_run:
+        save(ROOT / path, snapshot)
+    return changes
+
+
 def aci_archive_url(year: int) -> str:
     page = probes.http_fetch("https://aci.gov.it/attivita-e-progetti/studi-e-ricerche/autoritratto/").decode("utf-8", errors="replace")
     found = sorted(set(re.findall(rf"href=[\"']([^\"']*Autoritratto[-_]?{year}[-_]Parco[-_]veicolare\.zip)[\"']", page, flags=re.I)))
@@ -1476,6 +1525,10 @@ def main() -> int:
     bb_p.add_argument("--dir", type=Path, help="cartella con succursali.zip e localita.zip già scaricati")
     bb_p.add_argument("--dry-run", action="store_true")
     sub.add_parser("bdi-branches-probe", help="sonda degli sportelli Banca d'Italia (non modifica il catalogo)")
+    oc_p = sub.add_parser("opencivitas-needs", help="fabbisogni standard dei Comuni (OpenCivitas)")
+    oc_p.add_argument("--year", type=int, help="annualità OpenCivitas, es. 2023 (predefinita: l'ultima pubblicata)")
+    oc_p.add_argument("--dir", type=Path, help="cartella con pages/*.html, totale.csv ed enti.xlsx già scaricati")
+    oc_p.add_argument("--dry-run", action="store_true")
     x = sub.add_parser("sdmx-probe", help="sonda di un flusso SDMX Istat (non modifica il catalogo)")
     x.add_argument("--name", required=True)
     x.add_argument("--flow", help="identificativo del flusso (oppure --find)")
@@ -1486,6 +1539,8 @@ def main() -> int:
     try:
         if args.updater == "bdi-branches":
             update_bdi_branches(args.year, args.dir, args.dry_run).report(f"Sportelli bancari {args.year}{' (prova a secco)' if args.dry_run else ''}:")
+        elif args.updater == "opencivitas-needs":
+            update_opencivitas_needs(args.year, args.dir, args.dry_run).report(f"Fabbisogni standard{' ' + str(args.year) if args.year else ''}{' (prova a secco)' if args.dry_run else ''}:")
         elif args.updater == "bdi-branches-probe":
             import probe_bdi_branches
 
