@@ -18,5 +18,7 @@
   "bdiBranchesProbe": false,
   "bdiBranches": [],
   "opencivitasNeeds": [],
-  "openbdapBenchmarkProbe": true
+  "openbdapBenchmarks": [
+    2025
+  ]
 }

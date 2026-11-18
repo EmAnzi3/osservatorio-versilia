@@ -1,0 +1,287 @@
+#!/usr/bin/env python3
+"""Confronto Toscana/Italia per gli indicatori di rendiconto dei Comuni (OpenBDAP, schemi di bilancio).
+
+Regola (decisa il 18 novembre 2026): l'aggregato di un territorio si calcola sui Comuni
+che hanno trasmesso il rendiconto con le righe necessarie, sommando numeratori e
+denominatori degli stessi Comuni (per i valori per residente, la loro popolazione al
+1° gennaio dell'anno, la stessa dei valori comunali). Il territorio è pubblicato solo
+se quei Comuni coprono almeno il 90% dei residenti; la copertura è dichiarata.
+
+Fonti: gli archivi regionali «AAAA_Rendiconto - Schemi di bilancio_REGIONE.zip» e il
+bilancio demografico Istat P2 dell'anno (colonna della popolazione di ogni Comune al
+1° gennaio). I valori dei sette Comuni ricalcolati qui devono coincidere con
+quelli pubblicati (riconciliazione 7/7) prima che un aggregato sia accettato.
+"""
+from __future__ import annotations
+
+import csv
+import hashlib
+import io
+import json
+import math
+import time
+import urllib.parse
+import urllib.request
+import zipfile
+from collections import defaultdict
+from datetime import date
+from typing import Any, Callable
+
+BASE = "https://openbdap.rgs.mef.gov.it"
+PORTAL = BASE + "/it/FET/Analizza"
+ARCHIVE = "/Datasets_FET/Rendiconto/{year}/{year}_Rendiconto - Schemi di bilancio_{region}.zip"
+P2_URL = "https://demo.istat.it/data/p2/P2_{year}_it_Comuni.zip"
+SNAPSHOT_PREFIX = "data/source-snapshots/openbdap-benchmark-"
+UA = "Mozilla/5.0 (compatible; OsservatorioVersilia-data-audit/1.0)"
+MIN_COVERAGE = 0.90
+TUSCANY = "09"
+# Codice regione Istat → nomi possibili nel file OpenBDAP (si prova nell'ordine)
+REGIONS = {
+    "01": ("PIEMONTE",), "02": ("VALLE D'AOSTA", "VALLE D AOSTA", "VALLE DAOSTA", "VALLE_D_AOSTA"),
+    "03": ("LOMBARDIA",), "04": ("TRENTINO-ALTO ADIGE", "TRENTINO ALTO ADIGE", "TRENTINO-ALTO ADIGE-SUDTIROL"),
+    "05": ("VENETO",), "06": ("FRIULI-VENEZIA GIULIA", "FRIULI VENEZIA GIULIA"), "07": ("LIGURIA",),
+    "08": ("EMILIA-ROMAGNA", "EMILIA ROMAGNA"), "09": ("TOSCANA",), "10": ("UMBRIA",), "11": ("MARCHE",),
+    "12": ("LAZIO",), "13": ("ABRUZZO",), "14": ("MOLISE",), "15": ("CAMPANIA",), "16": ("PUGLIA",),
+    "17": ("BASILICATA",), "18": ("CALABRIA",), "19": ("SICILIA",), "20": ("SARDEGNA",),
+}
+MEMBERS = {"entrate": "Rendiconto SDB Entrate Riepilogo Titoli", "spese": "Rendiconto SDB Spese Riepilogo Titoli",
+           "missioni": "Rendiconto SDB Spese Riepilogo Missioni", "risultato": "Rendiconto SDB Allegato A Risultato di Amministrazione"}
+MISSIONS = {
+    "educationMissionExpenditurePerResident": ("04",), "socialMissionExpenditurePerResident": ("12",),
+    "environmentMissionExpenditurePerResident": ("09",), "mobilityMissionExpenditurePerResident": ("10",),
+    "cultureSportMissionExpenditurePerResident": ("05", "06"), "tourismDevelopmentMissionExpenditurePerResident": ("07", "14"),
+    "generalAdministrationMissionExpenditurePerResident": ("01",), "territorialPlanningMissionExpenditurePerResident": ("08",),
+    "civilProtectionMissionExpenditurePerResident": ("11",), "economicDevelopmentMissionExpenditurePerResident": ("14",),
+}
+RESULTS = {"availableAdministrationResultPerResident": "0502", "fcdePerResident": "0491", "yearEndCashFundPerResident": "0495"}
+RATIOS = {"ownRevenueShare", "currentCollectionCapacity", "currentPaymentCapacity"}
+METRICS = ("currentRevenueAccruedPerResident", "currentExpenditureCommittedPerResident", "capitalExpenditureCommittedPerResident",
+           *sorted(RATIOS), *sorted(RESULTS), *sorted(MISSIONS))
+
+
+class BenchmarkError(RuntimeError):
+    pass
+
+
+def fetch(url: str) -> bytes:
+    errors = []
+    for attempt in range(1, 4):
+        try:
+            with urllib.request.urlopen(urllib.request.Request(url, headers={"User-Agent": UA}), timeout=600) as r:
+                return r.read()
+        except urllib.error.HTTPError as error:
+            if error.code == 404:
+                raise
+            errors.append(f"{attempt}: {error}")
+        except Exception as error:  # noqa: BLE001
+            errors.append(f"{attempt}: {type(error).__name__}: {error}")
+        time.sleep(10 * attempt)
+    raise BenchmarkError(f"{url}: " + " | ".join(errors))
+
+
+def archive_url(year: int, region: str) -> str:
+    return BASE + urllib.parse.quote(ARCHIVE.format(year=year, region=region), safe="/:_-.'")
+
+
+def decode(raw: bytes) -> str:
+    for enc in ("utf-8-sig", "utf-8", "cp1252"):
+        try:
+            return raw.decode(enc)
+        except UnicodeDecodeError:
+            pass
+    return raw.decode("latin-1", errors="replace")
+
+
+def num(value: Any) -> float | None:
+    text = str(value or "").strip()
+    if not text:
+        return None
+    if "," in text and "." not in text:
+        text = text.replace(",", ".")
+    try:
+        x = float(text)
+    except ValueError:
+        return None
+    return x if math.isfinite(x) else None
+
+
+def read_members(raw: bytes) -> dict[str, list[dict[str, str]]]:
+    out = {}
+    with zipfile.ZipFile(io.BytesIO(raw)) as z:
+        for key, prefix in MEMBERS.items():
+            hits = [n for n in z.namelist() if n.rsplit("/", 1)[-1].startswith(prefix) and n.lower().endswith(".csv")]
+            if len(hits) != 1:
+                raise BenchmarkError(f"{prefix}: atteso 1 CSV, trovati {hits}")
+            reader = csv.DictReader(io.StringIO(decode(z.read(hits[0]))), delimiter=";")
+            out[key] = [{k.strip(): v for k, v in row.items() if k and k.strip()} for row in reader]
+    return out
+
+
+def code(row: dict[str, str]) -> str:
+    prov = str(row.get("Codice Provincia") or "").strip().zfill(3)
+    com = str(row.get("Codice Comune") or "").strip().zfill(3)
+    return prov + com if prov.strip("0") and com.strip("0") else ""
+
+
+def is_municipality(row: dict[str, str]) -> bool:
+    return str(row.get("Codice Tipologia Soggetto") or "").strip() == "ELCOMU"
+
+
+def index(rows: list[dict[str, str]], key_field: str) -> dict[tuple[str, str], list[dict[str, str]]]:
+    out: dict[tuple[str, str], list[dict[str, str]]] = defaultdict(list)
+    for row in rows:
+        if is_municipality(row) and (c := code(row)) and (k := str(row.get(key_field) or "").strip()):
+            out[(c, k)].append(row)
+    return out
+
+
+def exact(idx: dict, c: str, k: str, field: str) -> float:
+    hits = idx.get((c, k), [])
+    if len(hits) != 1:
+        raise ValueError(f"{k}: righe {len(hits)}")
+    value = num(hits[0].get(field))
+    if value is None:
+        raise ValueError(f"{k}/{field}: non numerico")
+    return value
+
+
+def components(tables: dict[str, dict], c: str, metric: str) -> tuple[float, float | None]:
+    """(numeratore, denominatore) in euro per i rapporti; (totale, None) per i valori per residente."""
+    e, s, m, r = tables["entrate"], tables["spese"], tables["missioni"], tables["risultato"]
+    acc = lambda: sum(exact(e, c, k, "Accertamenti") for k in ("01", "02", "03"))
+    if metric == "currentRevenueAccruedPerResident":
+        return acc(), None
+    if metric == "currentExpenditureCommittedPerResident":
+        return exact(s, c, "01", "Impegni"), None
+    if metric == "capitalExpenditureCommittedPerResident":
+        return exact(s, c, "02", "Impegni"), None
+    if metric == "ownRevenueShare":
+        return sum(exact(e, c, k, "Accertamenti") for k in ("01", "03")), acc()
+    if metric == "currentCollectionCapacity":
+        return sum(exact(e, c, k, "Riscossioni in C/Competenza") for k in ("01", "02", "03")), acc()
+    if metric == "currentPaymentCapacity":
+        return exact(s, c, "01", "Pagamenti in C/Competenza"), exact(s, c, "01", "Impegni")
+    if metric in RESULTS:
+        return exact(r, c, RESULTS[metric], "Totale di Gestione"), None
+    if metric in MISSIONS:
+        return sum(exact(m, c, k, "Impegni") for k in MISSIONS[metric]), None
+    raise KeyError(metric)
+
+
+def p2_population(raw: bytes) -> dict[str, int]:
+    """Comune → popolazione al 1° gennaio (colonna «Popolazione al 1° gennaio - Totale» del bilancio P2)."""
+    from acquire_a3_benchmark_demography_candidates import code_of, num as p2num, pick_population_total
+
+    with zipfile.ZipFile(io.BytesIO(raw)) as z:
+        names = [n for n in z.namelist() if n.lower().endswith((".csv", ".txt"))]
+        if len(names) != 1:
+            raise BenchmarkError(f"P2: archivio inatteso {names}")
+        text = z.read(names[0]).decode("utf-8-sig")
+    parsed = list(csv.reader(io.StringIO(text), delimiter=";"))
+    headers = [h.strip() for h in parsed[1]]
+    jan1 = pick_population_total(headers, "gennaio")
+    out = {}
+    for cells in parsed[2:]:
+        if not cells:
+            continue
+        row = dict(zip(headers, cells))
+        c = code_of(row)
+        if len(c) == 6 and c.isdigit() and c != "000000":
+            out[c] = int(p2num(row.get(jan1)))
+    if not 7500 <= len(out) <= 8100:
+        raise BenchmarkError(f"P2: {len(out)} Comuni")
+    return out
+
+
+def aggregate(values: dict[str, tuple[float, float | None]], population: dict[str, int], metric: str) -> tuple[float, float, float]:
+    num_total = sum(v[0] for v in values.values())
+    den_total = sum(v[1] for v in values.values()) if metric in RATIOS else sum(population[c] for c in values)
+    value = num_total / den_total * 100 if metric in RATIOS else num_total / den_total
+    return value, num_total, den_total
+
+
+def build_snapshot(year: int, fetcher: Callable[[str], bytes], published: dict[str, dict[str, float]],
+                   towns: dict[str, str]) -> dict[str, Any]:
+    """`published`: metrica → {codice: valore pubblico anno `year`}; `towns`: codice → nome."""
+    p2_raw = fetcher(P2_URL.format(year=year))
+    population = p2_population(p2_raw)
+    regions: dict[str, Any] = {}
+    per_metric: dict[str, dict[str, dict[str, tuple[float, float | None]]]] = {m: {} for m in METRICS}
+    reporting: dict[str, set[str]] = {}
+    missing_regions = {}
+    for reg, names in REGIONS.items():
+        raw, tried = None, []
+        for name in names:
+            url = archive_url(year, name)
+            tried.append(url)
+            try:
+                raw = fetcher(url)
+                break
+            except urllib.error.HTTPError:
+                continue
+        if raw is None:
+            missing_regions[reg] = tried
+            continue
+        members = read_members(raw)
+        tables = {"entrate": index(members["entrate"], "Codice Titolo"), "spese": index(members["spese"], "Codice Titolo"),
+                  "missioni": index(members["missioni"], "Codice Missione"), "risultato": index(members["risultato"], "Cod Voce Ris Amm Rend")}
+        codes = sorted({code(r) for r in members["entrate"] if is_municipality(r) and code(r)})
+        reporting[reg] = set(codes)
+        regions[reg] = {"archive": url, "sha256": hashlib.sha256(raw).hexdigest(), "bytes": len(raw), "municipalities": len(codes)}
+        for c in codes:
+            for metric in METRICS:
+                try:
+                    per_metric[metric][c] = components(tables, c, metric)
+                except ValueError:
+                    pass
+    region_of = {c: reg for reg, cs in reporting.items() for c in cs}
+    unknown = sorted(c for c in region_of if c not in population)
+    if len(unknown) > 20:
+        raise BenchmarkError(f"{len(unknown)} codici OpenBDAP assenti dal P2: {unknown[:10]}")
+    # Riconciliazione 7/7: i valori comunali ricalcolati devono essere quelli pubblicati.
+    errors = []
+    for metric, expected in published.items():
+        for c, value in expected.items():
+            if c not in per_metric[metric]:
+                errors.append(f"{metric} {towns[c]}: righe assenti")
+                continue
+            n, d = per_metric[metric][c]
+            live = n / d * 100 if metric in RATIOS else n / population[c]
+            if not math.isclose(live, value, rel_tol=0, abs_tol=1e-6):
+                errors.append(f"{metric} {towns[c]}: {live} ≠ {value}")
+    if errors:
+        raise BenchmarkError("riconciliazione 7/7 non superata: " + "; ".join(errors[:12]))
+    tuscany_codes = {c for c in population if c.startswith(("045", "046", "047", "048", "049", "050", "051", "052", "053", "100"))}
+    scopes = {"tuscany": tuscany_codes, "italy": set(population)}
+    benchmarks: dict[str, Any] = {}
+    for metric in METRICS:
+        out = {}
+        for scope, perimeter in scopes.items():
+            values = {c: v for c, v in per_metric[metric].items() if c in perimeter and c in population}
+            pop_all = sum(population[c] for c in perimeter)
+            pop_cov = sum(population[c] for c in values)
+            share = pop_cov / pop_all
+            entry = {"municipalities": len(values), "municipalitiesTotal": len(perimeter), "populationCovered": pop_cov,
+                     "populationTotal": pop_all, "populationShare": share}
+            if share >= MIN_COVERAGE:
+                value, n, d = aggregate(values, population, metric)
+                entry.update(value=value, numerator=n, denominator=d)
+            else:
+                entry.update(value=None, reason=f"copertura {share:.1%} sotto la soglia del {MIN_COVERAGE:.0%}")
+            out[scope] = entry
+        benchmarks[metric] = out
+    return {
+        "schemaVersion": 1, "version": f"openbdap-benchmark-{year}-v1", "retrieved": date.today().isoformat(),
+        "publisher": "Ragioneria Generale dello Stato — OpenBDAP (rendiconti) · Istat (bilancio demografico P2)",
+        "sourceUrl": PORTAL, "year": year,
+        "rule": ("Aggregato sui Comuni che hanno trasmesso il rendiconto con le righe necessarie: somma dei numeratori / somma dei "
+                 "denominatori (popolazione al 1° gennaio per i valori per residente). Pubblicato solo con almeno il 90% dei "
+                 "residenti coperti; copertura dichiarata."),
+        "minCoverage": MIN_COVERAGE,
+        "population": {"url": P2_URL.format(year=year), "sha256": hashlib.sha256(p2_raw).hexdigest(), "municipalities": len(population),
+                       "date": f"{year}-01-01"},
+        "regions": regions, "missingRegions": missing_regions, "unknownCodes": unknown,
+        "towns": {c: {m: list(per_metric[m][c]) for m in METRICS if c in per_metric[m]} | {"population": population[c]} for c in towns},
+        "benchmarks": benchmarks,
+        "qualityGate": {"status": "PASS", "publicReconciliation": f"{len(published)} indicatori × 7/7"},
+    }

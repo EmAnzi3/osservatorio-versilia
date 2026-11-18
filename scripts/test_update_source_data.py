@@ -641,6 +641,94 @@ def spending_gap_check(scope: dict) -> float:
     return (scope["spesaStorica"] / scope["spesaStandard"] - 1) * 100
 
 
+def openbdap_benchmarks_cases() -> None:
+    """Confronto bilanci: aggregato sui Comuni che hanno trasmesso, soglia 90% dei residenti, riconciliazione 7/7 obbligatoria."""
+    import io as _io
+    import urllib.error
+    import openbdap_benchmarks as ob
+
+    towns = {"046005": "Camaiore", "046013": "Forte dei Marmi", "046018": "Massarosa", "046024": "Pietrasanta",
+             "046028": "Seravezza", "046030": "Stazzema", "046033": "Viareggio"}
+    tus = [f"0{p}{i:03d}" for p in (45, 47, 48, 49, 50) for i in range(1, 50)] + list(towns)          # 252 Comuni toscani
+    other = [f"0{p:02d}{i:03d}" for p in range(1, 25) for i in range(1, 310)]
+    pop = {c: 1000 + int(c[-3:]) for c in tus + other}
+    p2 = ["Bilancio demografico", "Codice comune;Comune;Popolazione al 1° gennaio - Totale;Popolazione al 31 dicembre - Totale"]
+    p2 += [f"{c};X;{pop[c]};{pop[c]}" for c in pop]
+    zp = _io.BytesIO()
+    with zipfile.ZipFile(zp, "w") as z:
+        z.writestr("P2_2025_it_Comuni.csv", "\n".join(p2))
+
+    def region_zip(codes: list[str], reg: str, skip: str | None = None) -> bytes:
+        hdr = "Codice Tipologia Soggetto;Codice Regione;Codice Provincia;Codice Comune"
+        e, sp, m, r = ([hdr + ";Codice Titolo;Accertamenti;Riscossioni in C/Competenza"], [hdr + ";Codice Titolo;Impegni;Pagamenti in C/Competenza"],
+                       [hdr + ";Codice Missione;Impegni"], [hdr + ";Cod Voce Ris Amm Rend;Totale di Gestione"])
+        for c in codes:
+            k = int(c[-3:]); pre = f"ELCOMU;{reg};{c[:3]};{c[3:]}"
+            for t in ("01", "02", "03"):
+                e.append(f"{pre};{t};{100 * k + int(t)};{80 * k}")
+            for t in ("01", "02"):
+                sp.append(f"{pre};{t};{90 * k + int(t)};{70 * k}")
+            for mi in ("01", "04", "05", "06", "07", "08", "09", "10", "11", "12", "14"):
+                if not (c == skip and mi == "04"):
+                    m.append(f"{pre};{mi};{k * int(mi)}")
+            for v in ("0491", "0495", "0502"):
+                r.append(f"{pre};{v};{k * 3}")
+        b = _io.BytesIO()
+        with zipfile.ZipFile(b, "w") as z:
+            for name, lines in ((ob.MEMBERS["entrate"], e), (ob.MEMBERS["spese"], sp), (ob.MEMBERS["missioni"], m), (ob.MEMBERS["risultato"], r)):
+                z.writestr(f"{name}_X.csv", "\n".join(lines))
+        return b.getvalue()
+
+    def fetcher_for(regions: dict[str, bytes]):
+        def fetch(url: str) -> bytes:
+            if "P2_2025" in url:
+                return zp.getvalue()
+            for name, raw in regions.items():
+                if url == ob.archive_url(2025, name):
+                    return raw
+            raise urllib.error.HTTPError(url, 404, "nf", {}, None)
+        return fetch
+
+    # Toscana senza un Comune (non trasmesso) e Piemonte+Lombardia con tutto il resto d'Italia: copertura alta.
+    regions = {"TOSCANA": region_zip([c for c in tus if c != "045001"], "09", skip="047002"), "PIEMONTE": region_zip(other, "01")}
+    tables = None
+    published = {}
+    for metric in ob.METRICS:
+        published[metric] = {}
+        for c in towns:
+            k = int(c[-3:])
+            n, d = {"currentRevenueAccruedPerResident": (300 * k + 6, None), "currentExpenditureCommittedPerResident": (90 * k + 1, None),
+                    "capitalExpenditureCommittedPerResident": (90 * k + 2, None), "ownRevenueShare": (200 * k + 4, 300 * k + 6),
+                    "currentCollectionCapacity": (240 * k, 300 * k + 6), "currentPaymentCapacity": (70 * k, 90 * k + 1)}.get(metric, (None, None))
+            if metric in ob.RESULTS:
+                n = 3 * k
+            if metric in ob.MISSIONS:
+                n = sum(k * int(mi) for mi in ob.MISSIONS[metric])
+            published[metric][c] = n / d * 100 if d else n / pop[c]
+    snap = ob.build_snapshot(2025, fetcher_for(regions), published, towns)
+    b = snap["benchmarks"]
+    t = b["currentRevenueAccruedPerResident"]["tuscany"]
+    assert t["municipalities"] == len(tus) - 1 and t["value"] is not None and 0.9 <= t["populationShare"] < 1
+    codes = [c for c in tus if c != "045001"]
+    assert abs(t["value"] - sum(300 * int(c[-3:]) + 6 for c in codes) / sum(pop[c] for c in codes)) < 1e-9
+    assert b["educationMissionExpenditurePerResident"]["tuscany"]["municipalities"] == len(tus) - 2, "riga mancante: Comune escluso, non zero"
+    own = b["ownRevenueShare"]["italy"]
+    assert own["value"] is not None and abs(own["value"] - own["numerator"] / own["denominator"] * 100) < 1e-12
+    assert set(snap["missingRegions"]) == set(ob.REGIONS) - {"01", "09"} and snap["towns"]["046018"]["population"] == pop["046018"]
+    # Senza il Piemonte l'Italia scende sotto il 90%: valore non pubblicato, copertura dichiarata.
+    low = ob.build_snapshot(2025, fetcher_for({"TOSCANA": regions["TOSCANA"]}), published, towns)["benchmarks"]["fcdePerResident"]["italy"]
+    assert low["value"] is None and "soglia" in low["reason"]
+    # Un valore pubblico diverso blocca tutto.
+    bad = {k: dict(v) for k, v in published.items()}
+    bad["fcdePerResident"]["046030"] += 0.01
+    try:
+        ob.build_snapshot(2025, fetcher_for(regions), bad, towns)
+    except ob.BenchmarkError:
+        pass
+    else:
+        raise AssertionError("riconciliazione 7/7 non applicata")
+
+
 def source_probe_cases(tmp: Path) -> None:
     """Sonda generica: un foglio Excel riporta intestazioni e righe dei Comuni della Versilia."""
     import io as _io
@@ -917,8 +1005,9 @@ def main() -> None:
         bdi_branches_cases(Path(tmp))
     with tempfile.TemporaryDirectory() as tmp:
         opencivitas_needs_cases(Path(tmp))
+    openbdap_benchmarks_cases()
     source_probe_cases(Path("."))
-    print("Aggiornatori dalla fonte: ARS stesso export invariato, revisione e Toscana rilevate, periodo nuovo rifiutato; mobilità P2 ricostruita 7/7 identica, rigiro senza modifiche; ASIA-UL ricostruita 7/7 identica, anno nuovo accettato, Comune incompleto rifiutato; AGCOM FTTH ricostruita 7/7 identica, edizione nuova accettata, edizione vecchia e Comune mancante rifiutati; sonda MEF limitata agli atti DIMUNIC; capacità ricettiva pubblicata ricostruita identica, anno nuovo accettato con perimetro dichiarato, anno precedente rifiutato; consumo di suolo anno nuovo accettato con benchmark ufficiali, anno precedente rifiutato; parco ACI ricostruito 7/7 identico da un anno nuovo, anno pubblicato rifiutato; OMI al punto medio con semestre pubblicato rigiocato, replay diverso e semestre vecchio rifiutati; sonda generica dei fogli; morosità ERP esercizio nuovo riconciliato e prospetti incoerenti rifiutati; acqua GAIA 70 località ricostruite identiche, semestre nuovo accettato, periodo vecchio, parametro cambiato e semestre precedente rifiutati; sedi scolastiche MIM ricostruite 7/7 identiche, a.s. nuovo accettato, a.s. precedente, Comune mancante e altro anno rifiutati; sportelli Banca d'Italia: serie 2018–2025 ricostruita con chiave banca + sede, riconciliazione Istat 2022 obbligatoria, anno aperto rifiutato; fabbisogni standard OpenCivitas 2023 riconciliati con la sonda, aggregati sui Comuni valutabili, valori diversi e annualità assente rifiutati PASS")
+    print("Aggiornatori dalla fonte: ARS stesso export invariato, revisione e Toscana rilevate, periodo nuovo rifiutato; mobilità P2 ricostruita 7/7 identica, rigiro senza modifiche; ASIA-UL ricostruita 7/7 identica, anno nuovo accettato, Comune incompleto rifiutato; AGCOM FTTH ricostruita 7/7 identica, edizione nuova accettata, edizione vecchia e Comune mancante rifiutati; sonda MEF limitata agli atti DIMUNIC; capacità ricettiva pubblicata ricostruita identica, anno nuovo accettato con perimetro dichiarato, anno precedente rifiutato; consumo di suolo anno nuovo accettato con benchmark ufficiali, anno precedente rifiutato; parco ACI ricostruito 7/7 identico da un anno nuovo, anno pubblicato rifiutato; OMI al punto medio con semestre pubblicato rigiocato, replay diverso e semestre vecchio rifiutati; sonda generica dei fogli; morosità ERP esercizio nuovo riconciliato e prospetti incoerenti rifiutati; acqua GAIA 70 località ricostruite identiche, semestre nuovo accettato, periodo vecchio, parametro cambiato e semestre precedente rifiutati; sedi scolastiche MIM ricostruite 7/7 identiche, a.s. nuovo accettato, a.s. precedente, Comune mancante e altro anno rifiutati; sportelli Banca d'Italia: serie 2018–2025 ricostruita con chiave banca + sede, riconciliazione Istat 2022 obbligatoria, anno aperto rifiutato; fabbisogni standard OpenCivitas 2023 riconciliati con la sonda, aggregati sui Comuni valutabili, valori diversi e annualità assente rifiutati; confronto bilanci sui Comuni che hanno trasmesso, soglia 90% e riconciliazione 7/7 PASS")
 
 
 if __name__ == "__main__":
