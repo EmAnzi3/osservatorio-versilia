@@ -36,6 +36,7 @@ def _enrichment(metric: str) -> dict:
     ref = oc.PAGE
     spend = metric == oc.SPENDING
     return {
+        "serie_storica": {"state": "SOURCE_UNAVAILABLE", "evidence": "L'elenco open data OpenCivitas (12 pagine lette il 18 novembre 2026) contiene solo l'annualità 2023 del file «Indicatori — Totale funzioni»: le annualità precedenti non sono scaricabili nello stesso formato. La serie si allungherà con le prossime annualità.", "sourceReference": ref},
         "sesso": {"state": "NOT_APPLICABLE", "evidence": "Spesa e servizi sono del Comune come ente: la disaggregazione per sesso non ha significato.", "sourceReference": ref},
         "eta": {"state": "NOT_APPLICABLE", "evidence": "Spesa e servizi sono del Comune come ente: la disaggregazione per età non ha significato.", "sourceReference": ref},
         "assoluto_normalizzato": {"state": "AVAILABLE_MISSING", "evidence": (
