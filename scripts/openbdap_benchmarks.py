@@ -141,6 +141,14 @@ def index(rows: list[dict[str, str]], key_field: str) -> dict[tuple[str, str], l
     return out
 
 
+class MissionIndex(dict):
+    """Indice delle missioni con l'elenco dei Comuni che hanno trasmesso il riepilogo (ricerca veloce)."""
+
+    def __init__(self, data: dict, towns: set[str]):
+        super().__init__(data)
+        self.towns = towns
+
+
 def exact(idx: dict, c: str, k: str, field: str) -> float:
     hits = idx.get((c, k), [])
     if len(hits) != 1:
@@ -170,7 +178,12 @@ def components(tables: dict[str, dict], c: str, metric: str) -> tuple[float, flo
     if metric in RESULTS:
         return exact(r, c, RESULTS[metric], "Totale di Gestione"), None
     if metric in MISSIONS:
-        return sum(exact(m, c, k, "Impegni") for k in MISSIONS[metric]), None
+        # Il riepilogo per missioni elenca solo le missioni con importi: un Comune che ha trasmesso il
+        # riepilogo senza la riga di una missione non ha impegni su quella missione (zero, non dato mancante).
+        towns = m.towns if isinstance(m, MissionIndex) else {cc for cc, _ in m}
+        if c not in towns:
+            raise ValueError("riepilogo missioni assente")
+        return sum(exact(m, c, k, "Impegni") if (c, k) in m else 0.0 for k in MISSIONS[metric]), None
     raise KeyError(metric)
 
 
@@ -236,6 +249,8 @@ def build_snapshot(year: int, fetcher: Callable[[str], bytes], published: dict[s
             continue
         tables = {"entrate": index(members["entrate"], "Codice Titolo"), "spese": index(members["spese"], "Codice Titolo"),
                   "missioni": index(members["missioni"], "Codice Missione"), "risultato": index(members["risultato"], "Cod Voce Ris Amm Rend")}
+        mission_towns = {c for c, _ in tables["missioni"]}
+        tables["missioni"] = MissionIndex(tables["missioni"], mission_towns)
         codes = sorted({code(r) for r in members["entrate"] if is_municipality(r) and code(r)})
         reporting[reg] = set(codes)
         print(f"OpenBDAP {reg}: {len(codes)} Comuni", flush=True)
@@ -294,7 +309,7 @@ def build_snapshot(year: int, fetcher: Callable[[str], bytes], published: dict[s
         "schemaVersion": 1, "version": f"openbdap-benchmark-{year}-v1", "retrieved": date.today().isoformat(),
         "publisher": "Ragioneria Generale dello Stato — OpenBDAP (rendiconti) · Istat (bilancio demografico P2)",
         "sourceUrl": PORTAL, "year": year,
-        "rule": ("Aggregato sui Comuni che hanno trasmesso il rendiconto con le righe necessarie: somma dei numeratori / somma dei "
+        "rule": ("Aggregato sui Comuni che hanno trasmesso il rendiconto con le righe necessarie (una missione assente dal riepilogo di un Comune vale zero): somma dei numeratori / somma dei "
                  "denominatori (popolazione al 1° gennaio per i valori per residente). Pubblicato solo con almeno il 90% dei "
                  "residenti coperti; copertura dichiarata."),
         "minCoverage": MIN_COVERAGE,

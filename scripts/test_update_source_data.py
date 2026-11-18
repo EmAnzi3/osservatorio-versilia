@@ -712,7 +712,9 @@ def openbdap_benchmarks_cases() -> None:
     assert t["municipalities"] == len(tus) - 1 and t["value"] is not None and 0.9 <= t["populationShare"] < 1
     codes = [c for c in tus if c != "045001"]
     assert abs(t["value"] - sum(300 * int(c[-3:]) + 6 for c in codes) / sum(pop[c] for c in codes)) < 1e-9
-    assert b["educationMissionExpenditurePerResident"]["tuscany"]["municipalities"] == len(tus) - 2, "riga mancante: Comune escluso, non zero"
+    edu = b["educationMissionExpenditurePerResident"]["tuscany"]
+    assert edu["municipalities"] == len(tus) - 1, "missione assente dal riepilogo: zero, Comune incluso"
+    assert abs(edu["numerator"] - sum(4 * int(c[-3:]) for c in codes if c != "047002")) < 1e-9
     own = b["ownRevenueShare"]["italy"]
     assert own["value"] is not None and abs(own["value"] - own["numerator"] / own["denominator"] * 100) < 1e-12
     assert set(snap["missingRegions"]) == set(ob.REGIONS) - {"01", "09"} and snap["towns"]["046018"]["population"] == pop["046018"]
