@@ -49074,8 +49074,8 @@
       "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
-      "id": "vehicles_motorization_total_series_refused",
-      "question": "Esiste uno storico ACI congelato che consenta questa operazione?",
+      "id": "vehicles_motorization_total_series_046018",
+      "question": "Come è cambiato il numero di auto ogni 1.000 abitanti a Massarosa dal 2018?",
       "query": {
         "operation": "series",
         "selectors": [
@@ -49089,16 +49089,30 @@
         ]
       },
       "expected": {
-        "status": "not_computable",
-        "reasons": [
-          "vehicles_single_snapshot_no_history"
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 714.6
+          },
+          {
+            "path": "/observations/6/value",
+            "value": 758.2
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2018"
+          }
+        ],
+        "warnings": [
+          "vehicles_history_2021_not_published_by_aci"
         ]
       },
-      "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+      "reference": "ACI Autoritratto 2018–2025 archives (2021 not published), frozen in data/source-snapshots/aci-autovetture-serie.json; Massarosa 2018: 15505 cars, Euro 0–3 4111, residents 1 January 2019 21696; 2025 fixed cells as current; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
-      "id": "vehicles_motorization_total_absolute_change_refused",
-      "question": "Esiste uno storico ACI congelato che consenta questa operazione?",
+      "id": "vehicles_motorization_total_absolute_change_046018",
+      "question": "Di quanto è cambiato il numero di auto ogni 1.000 abitanti a Massarosa tra il 2018 e il 2025?",
       "query": {
         "operation": "absolute_change",
         "selectors": [
@@ -49107,21 +49121,31 @@
             "dimension": "total",
             "towns": [
               "046018"
+            ],
+            "periods": [
+              "2018",
+              "2025"
             ]
           }
         ]
       },
       "expected": {
-        "status": "not_computable",
-        "reasons": [
-          "vehicles_single_snapshot_no_history"
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "value": 43.60000000000002
+          }
+        ],
+        "warnings": [
+          "vehicles_history_2021_not_published_by_aci"
         ]
       },
-      "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+      "reference": "ACI Autoritratto 2018–2025 archives (2021 not published), frozen in data/source-snapshots/aci-autovetture-serie.json; Massarosa 2018: 15505 cars, Euro 0–3 4111, residents 1 January 2019 21696; 2025 fixed cells as current; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
-      "id": "vehicles_motorization_total_relative_change_refused",
-      "question": "Esiste uno storico ACI congelato che consenta questa operazione?",
+      "id": "vehicles_motorization_total_relative_change_046018",
+      "question": "Di quanto è cambiato in percentuale il numero di auto ogni 1.000 abitanti a Massarosa tra il 2018 e il 2025?",
       "query": {
         "operation": "relative_change",
         "selectors": [
@@ -49130,21 +49154,31 @@
             "dimension": "total",
             "towns": [
               "046018"
+            ],
+            "periods": [
+              "2018",
+              "2025"
             ]
           }
         ]
       },
       "expected": {
-        "status": "not_computable",
-        "reasons": [
-          "vehicles_single_snapshot_no_history"
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "value": 6.101315421214668
+          }
+        ],
+        "warnings": [
+          "vehicles_history_2021_not_published_by_aci"
         ]
       },
-      "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+      "reference": "ACI Autoritratto 2018–2025 archives (2021 not published), frozen in data/source-snapshots/aci-autovetture-serie.json; Massarosa 2018: 15505 cars, Euro 0–3 4111, residents 1 January 2019 21696; 2025 fixed cells as current; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
       "id": "vehicles_motorization_total_percentage_points_refused",
-      "question": "Esiste uno storico ACI congelato che consenta questa operazione?",
+      "question": "Di quanti punti è cambiato il numero di auto ogni 1.000 abitanti a Massarosa tra il 2018 e il 2025?",
       "query": {
         "operation": "percentage_points",
         "selectors": [
@@ -49153,6 +49187,10 @@
             "dimension": "total",
             "towns": [
               "046018"
+            ],
+            "periods": [
+              "2018",
+              "2025"
             ]
           }
         ]
@@ -49160,14 +49198,14 @@
       "expected": {
         "status": "not_computable",
         "reasons": [
-          "vehicles_single_snapshot_no_history"
+          "percentage_unit_required"
         ]
       },
-      "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+      "reference": "ACI Autoritratto 2018–2025 archives (2021 not published), frozen in data/source-snapshots/aci-autovetture-serie.json; Massarosa 2018: 15505 cars, Euro 0–3 4111, residents 1 January 2019 21696; 2025 fixed cells as current; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
-      "id": "vehicles_motorization_total_trend_refused",
-      "question": "Esiste uno storico ACI congelato che consenta questa operazione?",
+      "id": "vehicles_motorization_total_trend_046018",
+      "question": "Qual è la tendenza di il numero di auto ogni 1.000 abitanti a Massarosa dal 2018?",
       "query": {
         "operation": "trend",
         "selectors": [
@@ -49181,12 +49219,22 @@
         ]
       },
       "expected": {
-        "status": "not_computable",
-        "reasons": [
-          "vehicles_single_snapshot_no_history"
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 714.6
+          },
+          {
+            "path": "/observations/6/value",
+            "value": 758.2
+          }
+        ],
+        "warnings": [
+          "vehicles_history_2021_not_published_by_aci"
         ]
       },
-      "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+      "reference": "ACI Autoritratto 2018–2025 archives (2021 not published), frozen in data/source-snapshots/aci-autovetture-serie.json; Massarosa 2018: 15505 cars, Euro 0–3 4111, residents 1 January 2019 21696; 2025 fixed cells as current; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
       "id": "vehicles_motorization_total_2026_refused",
@@ -51107,8 +51155,8 @@
       "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
-      "id": "vehicles_pollutingCars_total_series_refused",
-      "question": "Esiste uno storico ACI congelato che consenta questa operazione?",
+      "id": "vehicles_pollutingCars_total_series_046018",
+      "question": "Come è cambiato la quota di auto Euro 0–3 a Massarosa dal 2018?",
       "query": {
         "operation": "series",
         "selectors": [
@@ -51122,16 +51170,30 @@
         ]
       },
       "expected": {
-        "status": "not_computable",
-        "reasons": [
-          "vehicles_single_snapshot_no_history"
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 26.5
+          },
+          {
+            "path": "/observations/6/value",
+            "value": 18.1
+          },
+          {
+            "path": "/observations/0/period",
+            "value": "2018"
+          }
+        ],
+        "warnings": [
+          "vehicles_history_2021_not_published_by_aci"
         ]
       },
-      "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+      "reference": "ACI Autoritratto 2018–2025 archives (2021 not published), frozen in data/source-snapshots/aci-autovetture-serie.json; Massarosa 2018: 15505 cars, Euro 0–3 4111, residents 1 January 2019 21696; 2025 fixed cells as current; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
-      "id": "vehicles_pollutingCars_total_absolute_change_refused",
-      "question": "Esiste uno storico ACI congelato che consenta questa operazione?",
+      "id": "vehicles_pollutingCars_total_absolute_change_046018",
+      "question": "Di quanto è cambiato la quota di auto Euro 0–3 a Massarosa tra il 2018 e il 2025?",
       "query": {
         "operation": "absolute_change",
         "selectors": [
@@ -51140,21 +51202,31 @@
             "dimension": "total",
             "towns": [
               "046018"
+            ],
+            "periods": [
+              "2018",
+              "2025"
             ]
           }
         ]
       },
       "expected": {
-        "status": "not_computable",
-        "reasons": [
-          "vehicles_single_snapshot_no_history"
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "value": -8.399999999999999
+          }
+        ],
+        "warnings": [
+          "vehicles_history_2021_not_published_by_aci"
         ]
       },
-      "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+      "reference": "ACI Autoritratto 2018–2025 archives (2021 not published), frozen in data/source-snapshots/aci-autovetture-serie.json; Massarosa 2018: 15505 cars, Euro 0–3 4111, residents 1 January 2019 21696; 2025 fixed cells as current; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
-      "id": "vehicles_pollutingCars_total_relative_change_refused",
-      "question": "Esiste uno storico ACI congelato che consenta questa operazione?",
+      "id": "vehicles_pollutingCars_total_relative_change_046018",
+      "question": "Di quanto è cambiato in percentuale la quota di auto Euro 0–3 a Massarosa tra il 2018 e il 2025?",
       "query": {
         "operation": "relative_change",
         "selectors": [
@@ -51163,21 +51235,31 @@
             "dimension": "total",
             "towns": [
               "046018"
+            ],
+            "periods": [
+              "2018",
+              "2025"
             ]
           }
         ]
       },
       "expected": {
-        "status": "not_computable",
-        "reasons": [
-          "vehicles_single_snapshot_no_history"
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "value": -31.698113207547163
+          }
+        ],
+        "warnings": [
+          "vehicles_history_2021_not_published_by_aci"
         ]
       },
-      "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+      "reference": "ACI Autoritratto 2018–2025 archives (2021 not published), frozen in data/source-snapshots/aci-autovetture-serie.json; Massarosa 2018: 15505 cars, Euro 0–3 4111, residents 1 January 2019 21696; 2025 fixed cells as current; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
-      "id": "vehicles_pollutingCars_total_percentage_points_refused",
-      "question": "Esiste uno storico ACI congelato che consenta questa operazione?",
+      "id": "vehicles_pollutingCars_total_percentage_points_046018",
+      "question": "Di quanti punti è cambiato la quota di auto Euro 0–3 a Massarosa tra il 2018 e il 2025?",
       "query": {
         "operation": "percentage_points",
         "selectors": [
@@ -51186,21 +51268,31 @@
             "dimension": "total",
             "towns": [
               "046018"
+            ],
+            "periods": [
+              "2018",
+              "2025"
             ]
           }
         ]
       },
       "expected": {
-        "status": "not_computable",
-        "reasons": [
-          "vehicles_single_snapshot_no_history"
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "value": -8.399999999999999
+          }
+        ],
+        "warnings": [
+          "vehicles_history_2021_not_published_by_aci"
         ]
       },
-      "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+      "reference": "ACI Autoritratto 2018–2025 archives (2021 not published), frozen in data/source-snapshots/aci-autovetture-serie.json; Massarosa 2018: 15505 cars, Euro 0–3 4111, residents 1 January 2019 21696; 2025 fixed cells as current; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
-      "id": "vehicles_pollutingCars_total_trend_refused",
-      "question": "Esiste uno storico ACI congelato che consenta questa operazione?",
+      "id": "vehicles_pollutingCars_total_trend_046018",
+      "question": "Qual è la tendenza di la quota di auto Euro 0–3 a Massarosa dal 2018?",
       "query": {
         "operation": "trend",
         "selectors": [
@@ -51214,12 +51306,22 @@
         ]
       },
       "expected": {
-        "status": "not_computable",
-        "reasons": [
-          "vehicles_single_snapshot_no_history"
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 26.5
+          },
+          {
+            "path": "/observations/6/value",
+            "value": 18.1
+          }
+        ],
+        "warnings": [
+          "vehicles_history_2021_not_published_by_aci"
         ]
       },
-      "reference": "ACI Autoritratto 2025 frozen workbook and 7997 localization rows; POSAS residents 1 January 2026. Independent fixed car/Euro0–3/resident cells; docs/A6_VEHICLE_ADAPTERS.md."
+      "reference": "ACI Autoritratto 2018–2025 archives (2021 not published), frozen in data/source-snapshots/aci-autovetture-serie.json; Massarosa 2018: 15505 cars, Euro 0–3 4111, residents 1 January 2019 21696; 2025 fixed cells as current; docs/A6_VEHICLE_ADAPTERS.md."
     },
     {
       "id": "vehicles_pollutingCars_total_2026_refused",

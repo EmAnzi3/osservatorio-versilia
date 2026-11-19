@@ -21,6 +21,7 @@ HASHES = {
     POPULATION: (_pin('vehicle#3'), _pin('vehicle#4')),
     DEMO: (_pin('vehicle#5'), _pin('vehicle#6')),
     HISTORY: (_pin('vehicle#7'), _pin('vehicle#8'))}
+DEFINITIONS = {MOTOR: 'Autovetture ACI al 31 dicembre / popolazione residente al 1° gennaio successivo × 1.000', EURO: FORMULAS[EURO]}
 NOTES = ['vehicles_registered_stock_not_traffic_actual_use_or_resident_ownership',
          'vehicles_euro_classes_not_measured_air_quality_or_emissions',
          'vehicles_no_automatic_causal_or_policy_priority_claim']
@@ -61,8 +62,9 @@ def context(metric, key, dim):
             or metric.get('sourceUrl') != URL or metric.get('method', {}).get('formula') != FORMULAS[key]
             or metric['method'].get('coverage') != '7/7'):
         raise ValueError('vehicles_definition_changed')
-    return dict(unit=UNITS[key], population=f'ACI PRA registered municipal car stock {Y}; administrative location, not vehicle use',
-                definition=FORMULAS[key], method='published one-decimal rate retained' if dim == 'total' else 'native integer components; no reverse derivation from public rounded rates',
+    # Definizione e universo senza anno (uguali per tutta la serie); l'anno sta in periodBasis.
+    return dict(unit=UNITS[key], population='ACI PRA registered municipal car stock at 31 December; administrative location, not vehicle use',
+                definition=DEFINITIONS[key], method='published one-decimal rate retained' if dim == 'total' else 'native integer components; no reverse derivation from public rounded rates',
                 frequency='annual_snapshot', periodBasis=f'car stock {Y}; resident denominator 1 January 2026' if key == MOTOR else f'Euro 0–3 and all registered cars, both {Y}',
                 nativeComponentsAvailable=dim == 'nativeRatio', adapter='vehicles/'+key+'/'+dim+'/v1')
 
@@ -148,6 +150,7 @@ def observation(engine, key, index, dim, period, historical):
                     dict(href,kind='source_snapshot',recordPointer=f'/towns/{code}/{period}',nativeCounts=dict(euro0to3=t['euro0to3'],total=t['total']),archive=hist['archives'][period],sourceUrl=URL)]
         if key == MOTOR:
             evidence.append(dict(kind='catalog_snapshot',path=engine.catalog_path,sha256=engine.catalog_hash,valuePointer=f'/metrics/population/rows/{next(i for i,r in enumerate(engine._catalog["metrics"]["population"]["rows"]) if r["code"] == code)}/series',denominatorDate=f'{int(period)+1}-01-01',nativeDenominator=population[code][int(period)+1]))
+        ctx = dict(ctx, periodBasis=(f'car stock {period}; resident denominator 1 January {int(period)+1}' if key == MOTOR else f'Euro 0–3 and all registered cars, both {period}'))
         out = dict(ctx,metric=key,dimension=dim,geography=code,period=period,value=value,source=URL,evidence=evidence,provenance=evidence,notApplicable=False,dataUnavailable=False,missingReason=None)
         return out, NOTES + ['vehicles_history_one_decimal_published_rates', 'vehicles_history_2021_not_published_by_aci']
     if period != Y: raise ValueError('vehicles_period_not_frozen')
