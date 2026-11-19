@@ -21,5 +21,5 @@
   "aciVehiclesHistory": false,
   "istatFamiglie": false,
   "openbdapBenchmarks": [],
-  "mefTaxpayersHistory": true
+  "mefTaxpayersHistory": false
 }
