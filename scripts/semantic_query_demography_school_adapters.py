@@ -26,7 +26,6 @@ MOB_BENCH = 'data/source-snapshots/a3-istat-demography-mobility-benchmark-2025.j
 MIM_BENCH = 'data/source-snapshots/a3-mim-benchmark-2024-25.json'
 BUILDING_BENCH = 'data/source-snapshots/a3-mim-building-benchmark-2024-25.json'
 MIM_HISTORY = 'data/source-snapshots/mim-alunni-serie.json'
-MIM_HISTORY_PINS = (_pin('demography_school#1'), _pin('demography_school#2'))
 CANONICAL = 'data/site-data.json'
 SNAPSHOTS = (DEMO, RCS, RCS_HISTORY, INTERNAL, LIA, BUILDING, DEMO_BENCH, MOB_BENCH, MIM_BENCH, BUILDING_BENCH, CANONICAL)
 PERIODS = ('prima del 1800', 'tra il 1800 e il 1899', 'tra il 1900 e il 1933', 'tra il 1934 e il 1949', 'tra il 1950 e il 1970', 'tra il 1971 e il 1975', 'tra il 1976 e il 1992', 'tra il 1997 e il 2008', 'tra il 2009 e il 2017')
@@ -395,8 +394,10 @@ def observation(engine, key, index, dimension, period, historical):
 def school_history(engine, metric, row, key, period, current):
     """Anno scolastico storico: conteggi MIM dello snapshot, stessa regola dell'a.s. corrente."""
     import hashlib, json
+    try: pins = (_pin('demography_school#1'), _pin('demography_school#2'))
+    except KeyError: raise ValueError('demography_school_history_not_frozen') from None
     snap, ref = engine.file(MIM_HISTORY)
-    if ref.get('path') != MIM_HISTORY or ref.get('sha256') != MIM_HISTORY_PINS[0] or hashlib.sha256(json.dumps(snap, sort_keys=True, separators=(',', ':'), ensure_ascii=False).encode()).hexdigest() != MIM_HISTORY_PINS[1]:
+    if ref.get('path') != MIM_HISTORY or ref.get('sha256') != pins[0] or hashlib.sha256(json.dumps(snap, sort_keys=True, separators=(',', ':'), ensure_ascii=False).encode()).hexdigest() != pins[1]:
         raise ValueError('demography_school_frozen_input_changed')
     if snap.get('qualityGate', {}).get('status') != 'PASS' or metric['meta'].get('sourceMeta', {}).get('historySnapshot') != MIM_HISTORY: raise ValueError('demography_school_history_definition_changed')
     years = snap['schoolYears']
