@@ -1,0 +1,1045 @@
+{
+  "schemaVersion": 1,
+  "version": "mim-alunni-serie-2015-16-2024-25-v1",
+  "retrieved": "2026-11-19",
+  "publisher": "MIM — Portale unico dei dati della scuola",
+  "sourceUrl": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/?area=Studenti",
+  "schoolYears": [
+    "2015/16",
+    "2016/17",
+    "2017/18",
+    "2018/19",
+    "2019/20",
+    "2020/21",
+    "2021/22",
+    "2022/23",
+    "2023/24",
+    "2024/25"
+  ],
+  "rule": "Scuole statali e paritarie localizzate nel Comune secondo l'anagrafe MIM dell'anno; alunni maschi + femmine e classi delle scuole primarie e secondarie; quota della primaria a TEMPO PIENO sul totale della primaria.",
+  "archives": {
+    "2015/16": {
+      "registry_state": {
+        "url": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/SCUANAGRAFESTAT20151620160831.csv",
+        "sha256": "c03a43f9bd69959839e6c668a0b145cebf03a717a6ca7476160f747f88db7411",
+        "bytes": 13482294
+      },
+      "registry_private": {
+        "url": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/SCUANAGRAFEPAR20151620160831.csv",
+        "sha256": "e15d2b9264d6c2dc244519c5f00bab4b6a3fc5f31935e1b97a053d7141babf5b",
+        "bytes": 2767255
+      },
+      "classes_state": {
+        "url": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/ALUCORSOINDCLASTA20151620160831.csv",
+        "sha256": "00364871539454c3bc711d66ccb0be32d5672c6e41f9e2434a919d1c25693e67",
+        "bytes": 5843767
+      },
+      "classes_private": {
+        "url": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/ALUCORSOINDCLAPAR20151620160831.csv",
+        "sha256": "631a5f8ae2631ca28db63820a8fcf315cfded09efc50d86b4df9ce010b1eeee0",
+        "bytes": 778334
+      },
+      "time_state": {
+        "url": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/ALUTEMPOSCUOLASTA20151620160831.csv",
+        "sha256": "7e44ba1e8bd79c4ab209a437a7d0059b6b1edaf154fe6311c5e61756c2015983",
+        "bytes": 6530184
+      },
+      "time_private": {
+        "url": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/ALUTEMPOSCUOLAPAR20151620160831.csv",
+        "sha256": "be85343948f1ae7830ebe8ad37a8273d57a79cfd60c2ae18daf03169182bd94c",
+        "bytes": 524940
+      }
+    },
+    "2016/17": {
+      "registry_state": {
+        "url": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/SCUANAGRAFESTAT20161720170831.csv",
+        "sha256": "84dd542188ab65e9400e4210f60e06b947c0c00b0ff1bc028da75a5797322d8a",
+        "bytes": 13118754
+      },
+      "registry_private": {
+        "url": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/SCUANAGRAFEPAR20161720170831.csv",
+        "sha256": "58edb9c0702ce714eb2e3064131f4aa613dd2fa0423497c0a82c337901a7731f",
+        "bytes": 2740847
+      },
+      "classes_state": {
+        "url": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/ALUCORSOINDCLASTA20161720170831.csv",
+        "sha256": "032f1602fdae4c459334602e1d9b56da932dd40d3e5a0971d32684a962550781",
+        "bytes": 5867904
+      },
+      "classes_private": {
+        "url": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/ALUCORSOINDCLAPAR20161720170831.csv",
+        "sha256": "0fb423cdf7c1a44dff32239991008a21995462048a7a805d3c9490ddeec3fea4",
+        "bytes": 758238
+      },
+      "time_state": {
+        "url": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/ALUTEMPOSCUOLASTA20161720170831.csv",
+        "sha256": "37356d03742be6753d1687fd695cea433c3787c013eed1277bee24ef5806c1b2",
+        "bytes": 6547469
+      },
+      "time_private": {
+        "url": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/ALUTEMPOSCUOLAPAR20161720170831.csv",
+        "sha256": "b7369add5df1dad4eff1c16480f02e25d0842533d59b20d511a274b41aca2a1c",
+        "bytes": 514282
+      }
+    },
+    "2017/18": {
+      "registry_state": {
+        "url": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/SCUANAGRAFESTAT20171820170901.csv",
+        "sha256": "688b01836fde0e8ebb38c8759181dd778af4b4892f8f0b8fcaab49af5fbd0d5c",
+        "bytes": 13160993
+      },
+      "registry_private": {
+        "url": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/SCUANAGRAFEPAR20171820170901.csv",
+        "sha256": "61bbc1357c683f2229489aca1ad182cc1e7b8ede46a700380b238e99004b35b6",
+        "bytes": 2678883
+      },
+      "classes_state": {
+        "url": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/ALUCORSOINDCLASTA20171820180831.csv",
+        "sha256": "862c52c4e85fd7ca49df3c61795cbbb5aa0911bc7f813862fbb01700fe2ceea1",
+        "bytes": 5838971
+      },
+      "classes_private": {
+        "url": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/ALUCORSOINDCLAPAR20171820180831.csv",
+        "sha256": "7a6012cb72b0d1f7e0a652ffa3377ec7b5cdd1fa3fb357c2bc6404c4d217eb88",
+        "bytes": 743525
+      },
+      "time_state": {
+        "url": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/ALUTEMPOSCUOLASTA20171820180831.csv",
+        "sha256": "776c6f630b71630d98cbec6d879cc417bb233d01b00eb195e978aab189a5a7aa",
+        "bytes": 6549264
+      },
+      "time_private": {
+        "url": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/ALUTEMPOSCUOLAPAR20171820180831.csv",
+        "sha256": "2642186f0e35fc3a87153fd2ab617db45c1b046296dbde891631f5d77cb44054",
+        "bytes": 503999
+      }
+    },
+    "2018/19": {
+      "registry_state": {
+        "url": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/SCUANAGRAFESTAT20181920190831.csv",
+        "sha256": "795989900b674e6eaf4acba5ed8e3a8149e96c011c129c9abb3892db109af912",
+        "bytes": 13192404
+      },
+      "registry_private": {
+        "url": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/SCUANAGRAFEPAR20181920190831.csv",
+        "sha256": "f6035c3d7588a444068424cc22addd457a434b3df512231c6ef98ef8a061b788",
+        "bytes": 2653070
+      },
+      "classes_state": {
+        "url": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/ALUCORSOINDCLASTA20181920190831.csv",
+        "sha256": "676c0c8a1990f6d58b4c01d8f664e4161ef9ccf4b350059edffa337ccb79f8f6",
+        "bytes": 5825071
+      },
+      "classes_private": {
+        "url": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/ALUCORSOINDCLAPAR20181920190831.csv",
+        "sha256": "e72036f11fab3c1d4480f74fc2056f73aadd9846911e7849a57b5d7246ca999b",
+        "bytes": 746332
+      },
+      "time_state": {
+        "url": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/ALUTEMPOSCUOLASTA20181920190831.csv",
+        "sha256": "33e5e7a69c5b68d59c153c9094c3ae318828fc554d802042e9de36e5f139d2a2",
+        "bytes": 6543679
+      },
+      "time_private": {
+        "url": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/ALUTEMPOSCUOLAPAR20181920190831.csv",
+        "sha256": "86564c6c782f9efee62a24e3638a74a9e9a1f8b33ed043829a193d22da63c6f0",
+        "bytes": 500318
+      }
+    },
+    "2019/20": {
+      "registry_state": {
+        "url": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/SCUANAGRAFESTAT20192020200831.csv",
+        "sha256": "9f51065ddffc8e242c2960d561e20a86b3578b0b9a26f65ce1e5c16b41c373ab",
+        "bytes": 13215591
+      },
+      "registry_private": {
+        "url": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/SCUANAGRAFEPAR20192020200831.csv",
+        "sha256": "5f059c78b9a93cf6e8f2afefe89c3ce54624e419620ead3b3c721406f85db93a",
+        "bytes": 2634276
+      },
+      "classes_state": {
+        "url": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/ALUCORSOINDCLASTA20192020200831.csv",
+        "sha256": "64fb7ede98bb68d071d9ca6aad03858b40082498dce3ec8c86028d074eec652e",
+        "bytes": 5800251
+      },
+      "classes_private": {
+        "url": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/ALUCORSOINDCLAPAR20192020200831.csv",
+        "sha256": "a9008d59dda69caf728d8c31bfd980f8ca0f6ec9feee09cc238c89352fe86048",
+        "bytes": 743973
+      },
+      "time_state": {
+        "url": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/ALUTEMPOSCUOLASTA20192020200831.csv",
+        "sha256": "9c7a30dda112bf952800d6d51419828b5d919af04b9f3b22536c2787ff8a468d",
+        "bytes": 6530310
+      },
+      "time_private": {
+        "url": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/ALUTEMPOSCUOLAPAR20192020200831.csv",
+        "sha256": "3c6efa903dc1a6808bdbde06a05dcb922b785956e7ffe9e7aaf0ef70f544fd3e",
+        "bytes": 494974
+      }
+    },
+    "2020/21": {
+      "registry_state": {
+        "url": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/SCUANAGRAFESTAT20202120210831.csv",
+        "sha256": "e8593f41ed799a9114a095a0c9b3e5d3067ec2b3526b4209766cded977b36923",
+        "bytes": 13244950
+      },
+      "registry_private": {
+        "url": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/SCUANAGRAFEPAR20202120210831.csv",
+        "sha256": "2010dc01c6cf3f1b28a4fb64b82054feeedda32694a7509203809f5f2a96f5e4",
+        "bytes": 2614779
+      },
+      "classes_state": {
+        "url": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/ALUCORSOINDCLASTA20202120210831.csv",
+        "sha256": "bc437b28c71307697bf310f6806ab101a3411075f1f76b6169072e71ffafe035",
+        "bytes": 5808842
+      },
+      "classes_private": {
+        "url": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/ALUCORSOINDCLAPAR20202120210831.csv",
+        "sha256": "a6f99f9eb94fdf5a2e78ca556795de53a85755a059c980c55e2a987d6fd0ce95",
+        "bytes": 740844
+      },
+      "time_state": {
+        "url": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/ALUTEMPOSCUOLASTA20202120210831.csv",
+        "sha256": "25136390b62fb116173156fad55d8dafa85cebfcdc18e7f24d6aca38ee9a736c",
+        "bytes": 6531080
+      },
+      "time_private": {
+        "url": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/ALUTEMPOSCUOLAPAR20202120210831.csv",
+        "sha256": "cf27f5a39b4fca6c823fd02a505d54ee8a80722ba00c2551b6887b3c3cca4912",
+        "bytes": 493710
+      }
+    },
+    "2021/22": {
+      "registry_state": {
+        "url": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/SCUANAGRAFESTAT20212220220831.csv",
+        "sha256": "d8d6edbaa4e8e486c98d1097a7545aaedcc8164f38d3c38599f876534844f255",
+        "bytes": 13253356
+      },
+      "registry_private": {
+        "url": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/SCUANAGRAFEPAR20212220220831.csv",
+        "sha256": "b42edb0d70e2937bfdd79949fc1614188afb7eca887e8a6edd6a43b674e64480",
+        "bytes": 2586001
+      },
+      "classes_state": {
+        "url": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/ALUCORSOINDCLASTA20212220220831.csv",
+        "sha256": "31351444e50359e4cf669832bfb6533167e19dafa87b8c15ee53103319ab195c",
+        "bytes": 5803337
+      },
+      "classes_private": {
+        "url": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/ALUCORSOINDCLAPAR20212220220831.csv",
+        "sha256": "8ec03025086156f56f26d2b012769207ccf5561b43b97773c56d99a14f67df65",
+        "bytes": 752430
+      },
+      "time_state": {
+        "url": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/ALUTEMPOSCUOLASTA20212220220831.csv",
+        "sha256": "7109550ef325ad7865f6a2845c440b21723a70ec6c8329ea0ea71e1dc258e50f",
+        "bytes": 6521589
+      },
+      "time_private": {
+        "url": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/ALUTEMPOSCUOLAPAR20212220220831.csv",
+        "sha256": "59f9bf3c28a8771050f7ec53daf22cf9755ea5ae08cb34322687dec8266c1c66",
+        "bytes": 491675
+      }
+    },
+    "2022/23": {
+      "registry_state": {
+        "url": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/SCUANAGRAFESTAT20222320230831.csv",
+        "sha256": "85d463505bba9e3e98acd62a34efa10a32ac5aca9912db406b38738b1bba6569",
+        "bytes": 13249087
+      },
+      "registry_private": {
+        "url": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/SCUANAGRAFEPAR20222320230831.csv",
+        "sha256": "b8ccca14b8a43b28206eeec98ca9d8276d24b38cb6d5e8c462b076f35940f16d",
+        "bytes": 2557123
+      },
+      "classes_state": {
+        "url": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/ALUCORSOINDCLASTA20222320230831.csv",
+        "sha256": "9e7dbc0bc92d5fb13cc83eded1de20d202ed8d4be50c7619c9fb9e7a94d46aa4",
+        "bytes": 5785573
+      },
+      "classes_private": {
+        "url": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/ALUCORSOINDCLAPAR20222320230831.csv",
+        "sha256": "0d73b172e8cde5a5611749275613341b07663dd2e610b9895d6d0ea268a97637",
+        "bytes": 763346
+      },
+      "time_state": {
+        "url": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/ALUTEMPOSCUOLASTA20222320230831.csv",
+        "sha256": "6c15c459f2b2dfde0f496e5c0c60c7a2d666dd537a73714799baac59b58decd9",
+        "bytes": 6504444
+      },
+      "time_private": {
+        "url": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/ALUTEMPOSCUOLAPAR20222320230831.csv",
+        "sha256": "62e7896c233db6c6fa3a626c9f17ba4cc55e906c2f8f6b2515ce3e7f4e9a84d4",
+        "bytes": 490333
+      }
+    },
+    "2023/24": {
+      "registry_state": {
+        "url": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/SCUANAGRAFESTAT20232420240831.csv",
+        "sha256": "21455ecb7b7bb337da15ee7350802e27992635c92d06b894780ef5e5f926fc7d",
+        "bytes": 13235040
+      },
+      "registry_private": {
+        "url": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/SCUANAGRAFEPAR20232420240831.csv",
+        "sha256": "deb59392df8178d7fb6942e11d68632723433600cf7f093631b55a198d4487c1",
+        "bytes": 2524424
+      },
+      "classes_state": {
+        "url": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/ALUCORSOINDCLASTA20232420240831.csv",
+        "sha256": "900ece8505c7d27e324f5de9cd4bfade389202b153c48fb5ff614e731a89a88e",
+        "bytes": 5712778
+      },
+      "classes_private": {
+        "url": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/ALUCORSOINDCLAPAR20232420240831.csv",
+        "sha256": "11a33c8f1467ffc57cca710ccc1fc7670797933f3c854f23bc0446d74ced4292",
+        "bytes": 767703
+      },
+      "time_state": {
+        "url": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/ALUTEMPOSCUOLASTA20232420240831.csv",
+        "sha256": "e62b9d8d2b475fcb71989ad488b2595ce74d54dd612f844b4cdd41076063285a",
+        "bytes": 6493292
+      },
+      "time_private": {
+        "url": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/ALUTEMPOSCUOLAPAR20232420240831.csv",
+        "sha256": "e7e552d2b14314d2a5d16dea5a11839ba52091dbb7c2b5ba3c1fb08dc32d2ff1",
+        "bytes": 487909
+      }
+    },
+    "2024/25": {
+      "registry_state": {
+        "url": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/SCUANAGRAFESTAT20242520250831.csv",
+        "sha256": "91fac2ac891aa111ad448123e33a0118a854ce58237f985d21b1d7424f0be6fa",
+        "bytes": 13178615
+      },
+      "registry_private": {
+        "url": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/SCUANAGRAFEPAR20242520250831.csv",
+        "sha256": "fd8ec418966aea01537f0816f3e8fc911391eae2c34063e9ca411f14e7ec0c9b",
+        "bytes": 2493951
+      },
+      "classes_state": {
+        "url": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/ALUCORSOINDCLASTA20242520250831.csv",
+        "sha256": "9cfa5e077abcd7af99bfb833924c22efbadb51fb8ed6c7205f12dbd2bd222b26",
+        "bytes": 5708520
+      },
+      "classes_private": {
+        "url": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/ALUCORSOINDCLAPAR20242520250831.csv",
+        "sha256": "f4390e21ce5ed2267115e89e28230ba2a7d38b85d63006ea9f5dd7e2bd3b92dc",
+        "bytes": 751103
+      },
+      "time_state": {
+        "url": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/ALUTEMPOSCUOLASTA20242520250831.csv",
+        "sha256": "5cca549e0591d39ee1635be7ae859aaa50630e8c9336c500ba79202a5628fbf9",
+        "bytes": 6453321
+      },
+      "time_private": {
+        "url": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/ALUTEMPOSCUOLAPAR20242520250831.csv",
+        "sha256": "f2f3ab1279bd18100d6022823ef2d7fda03f9828d77f3fbf4515e55cd0ba2fbd",
+        "bytes": 483554
+      }
+    }
+  },
+  "towns": {
+    "046005": {
+      "2015/16": {
+        "students": 2924,
+        "classes": 141,
+        "primary_students": 1390,
+        "full_time_students": 401
+      },
+      "2016/17": {
+        "students": 3006,
+        "classes": 143,
+        "primary_students": 1403,
+        "full_time_students": 448
+      },
+      "2017/18": {
+        "students": 3002,
+        "classes": 144,
+        "primary_students": 1339,
+        "full_time_students": 470
+      },
+      "2018/19": {
+        "students": 3010,
+        "classes": 146,
+        "primary_students": 1272,
+        "full_time_students": 454
+      },
+      "2019/20": {
+        "students": 3023,
+        "classes": 158,
+        "primary_students": 1199,
+        "full_time_students": 448
+      },
+      "2020/21": {
+        "students": 2955,
+        "classes": 144,
+        "primary_students": 1160,
+        "full_time_students": 390
+      },
+      "2021/22": {
+        "students": 2831,
+        "classes": 143,
+        "primary_students": 1118,
+        "full_time_students": 378
+      },
+      "2022/23": {
+        "students": 2775,
+        "classes": 150,
+        "primary_students": 1095,
+        "full_time_students": 368
+      },
+      "2023/24": {
+        "students": 2743,
+        "classes": 147,
+        "primary_students": 1064,
+        "full_time_students": 376
+      },
+      "2024/25": {
+        "students": 2739,
+        "classes": 147,
+        "primary_students": 1046,
+        "full_time_students": 402
+      }
+    },
+    "046013": {
+      "2015/16": {
+        "students": 1230,
+        "classes": 53,
+        "primary_students": 579,
+        "full_time_students": 130
+      },
+      "2016/17": {
+        "students": 1232,
+        "classes": 54,
+        "primary_students": 564,
+        "full_time_students": 122
+      },
+      "2017/18": {
+        "students": 1242,
+        "classes": 55,
+        "primary_students": 604,
+        "full_time_students": 118
+      },
+      "2018/19": {
+        "students": 1282,
+        "classes": 58,
+        "primary_students": 631,
+        "full_time_students": 143
+      },
+      "2019/20": {
+        "students": 1275,
+        "classes": 60,
+        "primary_students": 590,
+        "full_time_students": 132
+      },
+      "2020/21": {
+        "students": 1254,
+        "classes": 62,
+        "primary_students": 557,
+        "full_time_students": 117
+      },
+      "2021/22": {
+        "students": 1220,
+        "classes": 61,
+        "primary_students": 539,
+        "full_time_students": 106
+      },
+      "2022/23": {
+        "students": 1203,
+        "classes": 61,
+        "primary_students": 513,
+        "full_time_students": 115
+      },
+      "2023/24": {
+        "students": 1128,
+        "classes": 57,
+        "primary_students": 472,
+        "full_time_students": 93
+      },
+      "2024/25": {
+        "students": 1065,
+        "classes": 54,
+        "primary_students": 463,
+        "full_time_students": 86
+      }
+    },
+    "046018": {
+      "2015/16": {
+        "students": 1580,
+        "classes": 86,
+        "primary_students": 1008,
+        "full_time_students": 581
+      },
+      "2016/17": {
+        "students": 1593,
+        "classes": 85,
+        "primary_students": 998,
+        "full_time_students": 582
+      },
+      "2017/18": {
+        "students": 1617,
+        "classes": 86,
+        "primary_students": 1011,
+        "full_time_students": 579
+      },
+      "2018/19": {
+        "students": 1594,
+        "classes": 83,
+        "primary_students": 996,
+        "full_time_students": 566
+      },
+      "2019/20": {
+        "students": 1544,
+        "classes": 82,
+        "primary_students": 947,
+        "full_time_students": 547
+      },
+      "2020/21": {
+        "students": 1481,
+        "classes": 80,
+        "primary_students": 893,
+        "full_time_students": 518
+      },
+      "2021/22": {
+        "students": 1434,
+        "classes": 78,
+        "primary_students": 855,
+        "full_time_students": 475
+      },
+      "2022/23": {
+        "students": 1355,
+        "classes": 75,
+        "primary_students": 802,
+        "full_time_students": 446
+      },
+      "2023/24": {
+        "students": 1319,
+        "classes": 71,
+        "primary_students": 765,
+        "full_time_students": 418
+      },
+      "2024/25": {
+        "students": 1282,
+        "classes": 72,
+        "primary_students": 747,
+        "full_time_students": 413
+      }
+    },
+    "046024": {
+      "2015/16": {
+        "students": 1919,
+        "classes": 98,
+        "primary_students": 818,
+        "full_time_students": 410
+      },
+      "2016/17": {
+        "students": 1854,
+        "classes": 95,
+        "primary_students": 802,
+        "full_time_students": 412
+      },
+      "2017/18": {
+        "students": 1748,
+        "classes": 90,
+        "primary_students": 744,
+        "full_time_students": 400
+      },
+      "2018/19": {
+        "students": 1684,
+        "classes": 86,
+        "primary_students": 733,
+        "full_time_students": 421
+      },
+      "2019/20": {
+        "students": 1607,
+        "classes": 84,
+        "primary_students": 710,
+        "full_time_students": 462
+      },
+      "2020/21": {
+        "students": 1550,
+        "classes": 83,
+        "primary_students": 679,
+        "full_time_students": 441
+      },
+      "2021/22": {
+        "students": 1554,
+        "classes": 82,
+        "primary_students": 672,
+        "full_time_students": 413
+      },
+      "2022/23": {
+        "students": 1556,
+        "classes": 85,
+        "primary_students": 645,
+        "full_time_students": 420
+      },
+      "2023/24": {
+        "students": 1528,
+        "classes": 83,
+        "primary_students": 629,
+        "full_time_students": 395
+      },
+      "2024/25": {
+        "students": 1490,
+        "classes": 82,
+        "primary_students": 596,
+        "full_time_students": 373
+      }
+    },
+    "046028": {
+      "2015/16": {
+        "students": 994,
+        "classes": 55,
+        "primary_students": 339,
+        "full_time_students": 52
+      },
+      "2016/17": {
+        "students": 1017,
+        "classes": 58,
+        "primary_students": 333,
+        "full_time_students": 38
+      },
+      "2017/18": {
+        "students": 1037,
+        "classes": 58,
+        "primary_students": 331,
+        "full_time_students": 49
+      },
+      "2018/19": {
+        "students": 1001,
+        "classes": 57,
+        "primary_students": 302,
+        "full_time_students": 35
+      },
+      "2019/20": {
+        "students": 1001,
+        "classes": 57,
+        "primary_students": 296,
+        "full_time_students": 46
+      },
+      "2020/21": {
+        "students": 1002,
+        "classes": 59,
+        "primary_students": 319,
+        "full_time_students": 66
+      },
+      "2021/22": {
+        "students": 1012,
+        "classes": 59,
+        "primary_students": 327,
+        "full_time_students": 82
+      },
+      "2022/23": {
+        "students": 1021,
+        "classes": 57,
+        "primary_students": 326,
+        "full_time_students": 71
+      },
+      "2023/24": {
+        "students": 1028,
+        "classes": 58,
+        "primary_students": 338,
+        "full_time_students": 80
+      },
+      "2024/25": {
+        "students": 978,
+        "classes": 57,
+        "primary_students": 318,
+        "full_time_students": 66
+      }
+    },
+    "046030": {
+      "2015/16": {
+        "students": 180,
+        "classes": 10,
+        "primary_students": 112,
+        "full_time_students": 110
+      },
+      "2016/17": {
+        "students": 167,
+        "classes": 9,
+        "primary_students": 101,
+        "full_time_students": 101
+      },
+      "2017/18": {
+        "students": 161,
+        "classes": 9,
+        "primary_students": 96,
+        "full_time_students": 96
+      },
+      "2018/19": {
+        "students": 148,
+        "classes": 9,
+        "primary_students": 92,
+        "full_time_students": 92
+      },
+      "2019/20": {
+        "students": 135,
+        "classes": 9,
+        "primary_students": 83,
+        "full_time_students": 83
+      },
+      "2020/21": {
+        "students": 135,
+        "classes": 9,
+        "primary_students": 76,
+        "full_time_students": 76
+      },
+      "2021/22": {
+        "students": 135,
+        "classes": 8,
+        "primary_students": 69,
+        "full_time_students": 69
+      },
+      "2022/23": {
+        "students": 125,
+        "classes": 8,
+        "primary_students": 74,
+        "full_time_students": 74
+      },
+      "2023/24": {
+        "students": 131,
+        "classes": 8,
+        "primary_students": 77,
+        "full_time_students": 77
+      },
+      "2024/25": {
+        "students": 106,
+        "classes": 8,
+        "primary_students": 64,
+        "full_time_students": 64
+      }
+    },
+    "046033": {
+      "2015/16": {
+        "students": 7868,
+        "classes": 385,
+        "primary_students": 2660,
+        "full_time_students": 919
+      },
+      "2016/17": {
+        "students": 7708,
+        "classes": 381,
+        "primary_students": 2602,
+        "full_time_students": 941
+      },
+      "2017/18": {
+        "students": 7646,
+        "classes": 385,
+        "primary_students": 2554,
+        "full_time_students": 948
+      },
+      "2018/19": {
+        "students": 7704,
+        "classes": 387,
+        "primary_students": 2555,
+        "full_time_students": 982
+      },
+      "2019/20": {
+        "students": 7713,
+        "classes": 392,
+        "primary_students": 2447,
+        "full_time_students": 980
+      },
+      "2020/21": {
+        "students": 7643,
+        "classes": 399,
+        "primary_students": 2324,
+        "full_time_students": 987
+      },
+      "2021/22": {
+        "students": 7612,
+        "classes": 399,
+        "primary_students": 2266,
+        "full_time_students": 958
+      },
+      "2022/23": {
+        "students": 7652,
+        "classes": 389,
+        "primary_students": 2238,
+        "full_time_students": 1002
+      },
+      "2023/24": {
+        "students": 7632,
+        "classes": 387,
+        "primary_students": 2226,
+        "full_time_students": 1038
+      },
+      "2024/25": {
+        "students": 7508,
+        "classes": 387,
+        "primary_students": 2188,
+        "full_time_students": 1024
+      }
+    }
+  },
+  "series": {
+    "schoolStudents": {
+      "046005": [
+        2924,
+        3006,
+        3002,
+        3010,
+        3023,
+        2955,
+        2831,
+        2775,
+        2743,
+        2739
+      ],
+      "046013": [
+        1230,
+        1232,
+        1242,
+        1282,
+        1275,
+        1254,
+        1220,
+        1203,
+        1128,
+        1065
+      ],
+      "046018": [
+        1580,
+        1593,
+        1617,
+        1594,
+        1544,
+        1481,
+        1434,
+        1355,
+        1319,
+        1282
+      ],
+      "046024": [
+        1919,
+        1854,
+        1748,
+        1684,
+        1607,
+        1550,
+        1554,
+        1556,
+        1528,
+        1490
+      ],
+      "046028": [
+        994,
+        1017,
+        1037,
+        1001,
+        1001,
+        1002,
+        1012,
+        1021,
+        1028,
+        978
+      ],
+      "046030": [
+        180,
+        167,
+        161,
+        148,
+        135,
+        135,
+        135,
+        125,
+        131,
+        106
+      ],
+      "046033": [
+        7868,
+        7708,
+        7646,
+        7704,
+        7713,
+        7643,
+        7612,
+        7652,
+        7632,
+        7508
+      ]
+    },
+    "studentsPerClass": {
+      "046005": [
+        20.73758865248227,
+        21.02097902097902,
+        20.84722222222222,
+        20.616438356164384,
+        19.132911392405063,
+        20.520833333333332,
+        19.797202797202797,
+        18.5,
+        18.65986394557823,
+        18.632653061224488
+      ],
+      "046013": [
+        23.20754716981132,
+        22.814814814814813,
+        22.581818181818182,
+        22.103448275862068,
+        21.25,
+        20.225806451612904,
+        20.0,
+        19.721311475409838,
+        19.789473684210527,
+        19.72222222222222
+      ],
+      "046018": [
+        18.372093023255815,
+        18.741176470588236,
+        18.802325581395348,
+        19.204819277108435,
+        18.829268292682926,
+        18.5125,
+        18.384615384615383,
+        18.066666666666666,
+        18.577464788732396,
+        17.805555555555557
+      ],
+      "046024": [
+        19.581632653061224,
+        19.51578947368421,
+        19.42222222222222,
+        19.58139534883721,
+        19.13095238095238,
+        18.674698795180724,
+        18.951219512195124,
+        18.305882352941175,
+        18.40963855421687,
+        18.170731707317074
+      ],
+      "046028": [
+        18.072727272727274,
+        17.53448275862069,
+        17.879310344827587,
+        17.56140350877193,
+        17.56140350877193,
+        16.983050847457626,
+        17.152542372881356,
+        17.912280701754387,
+        17.724137931034484,
+        17.157894736842106
+      ],
+      "046030": [
+        18.0,
+        18.555555555555557,
+        17.88888888888889,
+        16.444444444444443,
+        15.0,
+        15.0,
+        16.875,
+        15.625,
+        16.375,
+        13.25
+      ],
+      "046033": [
+        20.436363636363637,
+        20.230971128608925,
+        19.85974025974026,
+        19.906976744186046,
+        19.676020408163264,
+        19.155388471177943,
+        19.07769423558897,
+        19.67095115681234,
+        19.72093023255814,
+        19.400516795865634
+      ]
+    },
+    "primaryFullTimeShare": {
+      "046005": [
+        28.848920863309353,
+        31.931575196008552,
+        35.100821508588496,
+        35.691823899371066,
+        37.36447039199333,
+        33.62068965517241,
+        33.810375670840784,
+        33.60730593607306,
+        35.338345864661655,
+        38.4321223709369
+      ],
+      "046013": [
+        22.45250431778929,
+        21.631205673758867,
+        19.5364238410596,
+        22.66244057052298,
+        22.372881355932204,
+        21.005385996409334,
+        19.666048237476808,
+        22.417153996101366,
+        19.703389830508474,
+        18.574514038876888
+      ],
+      "046018": [
+        57.638888888888886,
+        58.31663326653307,
+        57.27002967359051,
+        56.82730923694779,
+        57.76135163674763,
+        58.006718924972006,
+        55.55555555555556,
+        55.61097256857855,
+        54.64052287581699,
+        55.287817938420346
+      ],
+      "046024": [
+        50.122249388753055,
+        51.3715710723192,
+        53.763440860215056,
+        57.43519781718963,
+        65.07042253521126,
+        64.94845360824742,
+        61.458333333333336,
+        65.11627906976744,
+        62.79809220985692,
+        62.58389261744966
+      ],
+      "046028": [
+        15.339233038348082,
+        11.411411411411411,
+        14.803625377643504,
+        11.589403973509933,
+        15.54054054054054,
+        20.689655172413794,
+        25.07645259938838,
+        21.779141104294478,
+        23.668639053254438,
+        20.754716981132077
+      ],
+      "046030": [
+        98.21428571428571,
+        100.0,
+        100.0,
+        100.0,
+        100.0,
+        100.0,
+        100.0,
+        100.0,
+        100.0,
+        100.0
+      ],
+      "046033": [
+        34.54887218045113,
+        36.16448885472713,
+        37.11824588880188,
+        38.43444227005871,
+        40.04903964037597,
+        42.46987951807229,
+        42.277140335392765,
+        44.77211796246649,
+        46.63072776280323,
+        46.80073126142596
+      ]
+    }
+  },
+  "qualityGate": {
+    "status": "PASS",
+    "note": "a.s. 2024/25 identico ai valori pubblicati per i 7 Comuni e i 3 indicatori."
+  },
+  "acquisitionEvidence": {
+    "script": "scripts/update_source_data.py mim-students-history"
+  }
+}
