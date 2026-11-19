@@ -207,7 +207,7 @@ def available_periods(engine, key, dimension, row):
 
 def selection_guard(key, dimension, operation):
     if operation in ('series', 'absolute_change', 'relative_change', 'percentage_points', 'trend'):
-        if key in (SITES, *BUILDINGS): raise ValueError('demography_school_history_not_frozen')
+        if key in (SITES, *STUDENTS, *BUILDINGS): raise ValueError('demography_school_history_not_frozen')  # STUDENTS: si apre con la serie MIM materializzata
         if '|sex:' in dimension or (key == FOREIGN and dimension.startswith('sex:')): raise ValueError('demography_sex_history_not_frozen')
         if key == CHANGE and operation == 'trend': raise ValueError('demography_cumulative_trend_not_annual_growth')
 
