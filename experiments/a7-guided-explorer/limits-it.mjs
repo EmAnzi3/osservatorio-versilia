@@ -207,6 +207,7 @@ export default {
 "mef_missing_band_cells_not_zero_or_redistributed": "Una fascia mancante non è zero e non viene redistribuita.",
 "mef_nominal_declared_income_not_disposable_income": "È il reddito dichiarato in valori nominali, non il reddito disponibile.",
 "mef_tax_year_2024_and_adult_population_2026_distinct": "I redditi sono del 2024, la popolazione adulta del 2026.",
+"mef_taxpayers_history_tax_year_with_residents_two_years_later": "Ogni anno d’imposta usa i maggiorenni residenti al 1° gennaio di due anni dopo, come il valore più recente.",
 "mef_taxpayers_may_include_minors_not_share_of_adults_paying_irpef": "I contribuenti possono includere minori: non è la quota di adulti che pagano l’IRPEF.",
 "micro_unit_share_rounded_no_inferred_counts": "La quota di microimprese è arrotondata; non si ricostruiscono i conteggi.",
 "mission_03_commitments_not_crime_staff_or_delivered_security": "La spesa per sicurezza non misura criminalità, personale né sicurezza effettiva.",

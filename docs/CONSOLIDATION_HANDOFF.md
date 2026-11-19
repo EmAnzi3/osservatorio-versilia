@@ -1,5 +1,14 @@
 # Consolidamento Osservatorio Versilia — handoff operativo
 
+## Serie storica dei contribuenti ogni 100 maggiorenni (19 novembre 2026)
+
+L'indicatore «Contribuenti ogni 100 maggiorenni» ha ora la serie per anno d'imposta dal 2017 al 2024 nei sette Comuni.
+
+- La regola è la stessa del valore pubblicato: contribuenti MEF dell'anno d'imposta A / residenti 18+ al 1° gennaio A+2 (Istat POSAS) × 100. La nota del metodo lo dichiara.
+- `scripts/taxpayers_history.py`; aggiornatore solo in CI `update_source_data.py mef-taxpayers-history`, attivato dalla richiesta `mefTaxpayersHistory`; snapshot `mef-contribuenti-serie.json`.
+- Si usano gli anni in cui entrambi i file esistono. POSAS è pubblicato dal 2019, quindi la serie parte dall'anno d'imposta 2017.
+- Nel motore A6 (pin `mef#11`/`#12`) sono ammessi serie e confronti per anno. Variazioni, trend e confronto Toscana/Italia restano sul solo anno corrente.
+
 ## Serie storica del parco autovetture ACI (19 novembre 2026)
 
 Motorizzazione e quota di auto Euro 0–3 hanno ora la serie 2018–2025 per i sette Comuni. Il 2021 manca perché ACI non lo pubblica, e la nota del metodo lo dichiara.

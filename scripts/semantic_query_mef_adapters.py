@@ -12,6 +12,7 @@ HISTORY='data/source-snapshots/a3-simple-mef-history-2023-2024.json'
 DEMO='data/source-snapshots/istat-demography-lotto-a-2026-08.json'
 BENCH='data/source-snapshots/a3-mef-benchmark-2024.json'
 TAX_BENCH='data/source-snapshots/a3-mef-taxpayers-benchmark-2024.json'
+TAX_HISTORY='data/source-snapshots/mef-contribuenti-serie.json'
 URL='https://www1.finanze.gov.it/finanze/analisi_stat/public/index.php'
 HYBRID='MEF a.i. 2024 · residenti 1.1.2026'
 SOURCES=('employment','pension','selfEmployment','entrepreneurOrdinary','entrepreneurSimplified','participation','buildings')
@@ -24,7 +25,8 @@ HASHES={
  HISTORY:(_pin('mef#3'),_pin('mef#4')),
  DEMO:(_pin('mef#5'),_pin('mef#6')),
  BENCH:(_pin('mef#7'),_pin('mef#8')),
- TAX_BENCH:(_pin('mef#9'),_pin('mef#10'))}
+ TAX_BENCH:(_pin('mef#9'),_pin('mef#10')),
+ TAX_HISTORY:(_pin('mef#11'),_pin('mef#12'))}
 
 
 def dimensions(key):
@@ -36,7 +38,8 @@ def dimensions(key):
 def token(key,period):
     t=str(period)
     if key==TAXPAYERS:
-        if t!=HYBRID:raise ValueError('mef_hybrid_period_required')
+        # Periodo corrente ibrido; gli anni d'imposta della serie (2017–2024) solo come storico congelato.
+        if t!=HYBRID and not (len(t)==4 and t.isdigit()):raise ValueError('mef_hybrid_period_required')
     elif t not in ('2023','2024'):raise ValueError('mef_period_not_frozen')
     return t
 
@@ -48,11 +51,11 @@ def selected(key,dim):
 
 
 def scopes(key,dim):return ['tuscany','italy'] if key in (PENSION,TAXPAYERS) or key==PROFILE and selected(key,dim)=='employment' else []
-def operations(key,dim):return ['compare','rank','weighted_ratio',*(['series'] if key in (PROFILE,PENSION) else []),*(['benchmark_gap'] if scopes(key,dim) else [])]
+def operations(key,dim):return ['compare','rank','weighted_ratio',*(['series'] if key in (PROFILE,PENSION,TAXPAYERS) else []),*(['benchmark_gap'] if scopes(key,dim) else [])]
 def selection_guard(key,dim,op):
     if op=='correlation':raise ValueError('mef_pair_not_jointly_reviewed')
     if op in ('absolute_change','relative_change','percentage_points','trend'):raise ValueError('mef_temporal_change_not_reviewed')
-    if op=='series' and key not in (PROFILE,PENSION):raise ValueError('mef_history_not_frozen')
+    if op=='series' and key not in (PROFILE,PENSION,TAXPAYERS):raise ValueError('mef_history_not_frozen')
     if op=='anomaly':raise ValueError('mef_peer_anomaly_not_reviewed')
     if op=='benchmark_gap' and not scopes(key,dim):raise ValueError('mef_benchmark_dimension_not_reviewed')
 
@@ -91,6 +94,10 @@ def identity(engine,metric,row,native):
 
 
 def available_periods(engine,key,dim,row):
+    if key==TAXPAYERS:
+        series=row.get('series')
+        if not isinstance(series,dict):raise ValueError('mef_history_not_materialized')
+        return [str(y) for y in series['years']]
     if key not in (PROFILE,PENSION):raise ValueError('mef_history_not_frozen')
     series=row.get('series') if key==PENSION or dim=='total' else row.get('componentSeries',{}).get(LABELS[SOURCES.index(selected(key,dim))])
     if not isinstance(series,dict):raise ValueError('mef_history_not_materialized')
@@ -147,7 +154,7 @@ def observation(engine,key,index,dim,period,historical):
             j=BANDS.index(p[5:]);num=bands[j]['frequency'];den=den_all;value=row['detailParts'][j]['value'];pointer=base+f'detailParts/{j}/value';extra.update(numeratorPointer=path+f'/incomeBands/{j}/frequency',denominatorPointer=path+'/totalIncome/frequency')
         extra.update(bandCoverage=coverage,missingBandKeys=[b['key'] for b in bands if b['frequency'] is None]);warnings+=['mef_macro_known_cells_denominator_differs_from_eight_band_total_denominator','mef_missing_band_cells_not_zero_or_redistributed','mef_bands_not_current_tax_brackets']
     else:
-        if period!=HYBRID:raise ValueError('mef_hybrid_period_required')
+        if period!=HYBRID:return taxpayer_history(engine,m,index,row,n,ctx,period,s)
         demo,dref=frozen(engine,DEMO);age=demo['posas']['ageSex2026'][row['town']];adults=sum(r['total'] for r in age if 18<=r['age']<=120);num=n['taxpayers'];den=adults;value=ratio(num,den,100)
         close(n['adultPopulation2026'],adults);close(row['taxpayers'],num);close(row['adultPopulation2026'],adults);close(row['value'],value)
         refs.append(dict(dref,kind='source_snapshot',recordPointer='/posas/ageSex2026/'+row['town'],includedAges='18–120',sourceUrl='https://demo.istat.it/'));extra.update(numeratorPointer=path+'/taxpayers',denominatorSnapshot=DEMO,denominatorPointer='/posas/ageSex2026/'+row['town']);warnings+=['mef_taxpayers_may_include_minors_not_share_of_adults_paying_irpef','mef_tax_year_2024_and_adult_population_2026_distinct']
@@ -155,6 +162,24 @@ def observation(engine,key,index,dim,period,historical):
     if key in (PROFILE,PENSION) and period=='2023':source_url=frozen(engine,HISTORY)[0]['source']['url']
     else:source_url=s['source']['downloadUrl']
     return dict(ctx,metric=key,dimension=dim,geography=row['code'],period=period,value=value,numerator=num,denominator=den,scale=scale,numeratorPeriod='2024' if key==TAXPAYERS else period,denominatorPeriod='2026-01-01' if key==TAXPAYERS else period,source=source_url,evidence=evidence,provenance=evidence,notApplicable=False,dataUnavailable=value is None),warnings
+
+
+def taxpayer_history(engine,m,index,row,n,ctx,period,current):
+    """Anno d'imposta A della serie: contribuenti MEF A / residenti 18+ al 1° gennaio A+2, come il valore corrente."""
+    if m['meta'].get('sourceMeta',{}).get('historySnapshot')!=TAX_HISTORY:raise ValueError('mef_history_not_materialized')
+    h,href=frozen(engine,TAX_HISTORY)
+    if h.get('qualityGate',{}).get('status')!='PASS':raise ValueError('mef_frozen_input_changed')
+    years=[str(y) for y in h['years']];periods=available_periods(engine,TAXPAYERS,'total',row)
+    if periods!=years or row['series']['values']!=h['series'][row['code']]:raise ValueError('mef_history_current_mismatch')
+    if period not in years:raise ValueError('mef_period_not_in_public_history')
+    last=h['towns'][row['code']][years[-1]]
+    if years[-1]!='2024' or last['taxpayers']!=n['taxpayers'] or last['adults']!=n['adultPopulation2026'] or last['taxpayers']!=row['taxpayers'] or last['adults']!=row['adultPopulation2026']:raise ValueError('mef_history_current_mismatch')
+    t=h['towns'][row['code']][period];i=years.index(period);num=t['taxpayers'];den=t['adults'];value=ratio(num,den,100);close(row['series']['values'][i],value)
+    a=h['archives'][period];base=f'/metrics/{TAXPAYERS}/rows/{index}/'
+    evidence=[dict(kind='catalog_snapshot',path=engine.catalog_path,sha256=engine.catalog_hash,valuePointer=base+f'series/values/{i}'),
+              dict(href,kind='source_snapshot',recordPointer=f'/towns/{row["code"]}/{period}',numeratorPointer=f'/towns/{row["code"]}/{period}/taxpayers',denominatorPointer=f'/towns/{row["code"]}/{period}/adults',includedAges='18–120',mefArchive=a['mef'],posasArchive=a['posas'])]
+    out=dict(ctx,periodBasis=f'MEF a.i. {period} · residenti 1.1.{int(period)+2}',metric=TAXPAYERS,dimension='total',geography=row['code'],period=period,value=value,numerator=num,denominator=den,scale=100,numeratorPeriod=period,denominatorPeriod=f'{int(period)+2}-01-01',source=a['mef']['url'],evidence=evidence,provenance=evidence,notApplicable=False,dataUnavailable=False)
+    return out,['mef_nominal_declared_income_not_disposable_income','mef_taxpayers_may_include_minors_not_share_of_adults_paying_irpef','mef_taxpayers_history_tax_year_with_residents_two_years_later']
 
 
 def benchmark(engine,key,scope,municipal):

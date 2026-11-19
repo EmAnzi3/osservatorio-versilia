@@ -866,6 +866,40 @@ def update_aci_vehicles_history(dry_run: bool) -> Changes:
     return changes
 
 
+# ------------------------------------------------------------------ MEF/Istat: serie dei contribuenti ogni 100 maggiorenni
+
+def update_mef_taxpayers_history(dry_run: bool, fetch=None) -> Changes:
+    """Serie per anno d'imposta dei contribuenti MEF su residenti 18+ (POSAS a due anni); ultimo anno = valore pubblicato."""
+    import taxpayers_history as tx
+
+    def fetcher(url: str) -> bytes:
+        try:
+            raw = (fetch or probes.http_fetch)(url)
+        except probes.ProbeError as error:
+            if error.reason == "not_found":
+                raise tx.Unavailable(url) from error
+            raise
+        if not raw.startswith(b"PK"):
+            raise tx.Unavailable(url)
+        return raw
+
+    site = load(SITE)
+    metric = site["metrics"][tx.METRIC]
+    last = int(re.search(r"a\.i\. (20\d\d)", metric["meta"]["year"]).group(1))
+    current = {r["code"]: {k: r[k] for k in ("value", "taxpayers", "adultPopulation2026")} for r in metric["rows"]}
+    try:
+        snapshot = tx.build_snapshot(fetcher, current, last)
+    except (tx.TaxpayersError, KeyError, ValueError, zipfile.BadZipFile) as error:
+        raise UpdateError(f"Serie contribuenti: {error}") from error
+    changes = Changes()
+    for code, values in snapshot["series"].items():
+        changes.note(f"{tx.METRIC} {code} {snapshot['years'][0]}", None, round(values[0], 4))
+    snapshot["acquisitionEvidence"] = {"script": "scripts/update_source_data.py mef-taxpayers-history"}
+    if not dry_run:
+        save(ROOT / tx.SNAPSHOT, snapshot)
+    return changes
+
+
 # ------------------------------------------------------------------ Istat: componenti per famiglia (serie)
 
 def update_istat_famiglie(file: Path | None, dry_run: bool) -> Changes:
@@ -1613,6 +1647,8 @@ def main() -> int:
     sub.add_parser("bdi-branches-probe", help="sonda degli sportelli Banca d'Italia (non modifica il catalogo)")
     vh_p = sub.add_parser("aci-vehicles-history", help="serie storica di motorizzazione e quota Euro 0–3 (archivi ACI)")
     vh_p.add_argument("--dry-run", action="store_true")
+    tx_p = sub.add_parser("mef-taxpayers-history", help="serie dei contribuenti MEF ogni 100 maggiorenni (MEF + Istat POSAS)")
+    tx_p.add_argument("--dry-run", action="store_true")
     hh_p = sub.add_parser("istat-famiglie", help="serie comunale del numero medio di componenti per famiglia (Istat)")
     hh_p.add_argument("--file", type=Path, help="workbook 3-Famiglie.xlsx già scaricato")
     hh_p.add_argument("--dry-run", action="store_true")
@@ -1635,6 +1671,8 @@ def main() -> int:
             update_bdi_branches(args.year, args.dir, args.dry_run).report(f"Sportelli bancari {args.year}{' (prova a secco)' if args.dry_run else ''}:")
         elif args.updater == "aci-vehicles-history":
             update_aci_vehicles_history(args.dry_run).report("Serie parco autovetture:")
+        elif args.updater == "mef-taxpayers-history":
+            update_mef_taxpayers_history(args.dry_run).report("Serie contribuenti:")
         elif args.updater == "istat-famiglie":
             update_istat_famiglie(args.file, args.dry_run).report("Componenti per famiglia:")
         elif args.updater == "openbdap-benchmarks":
