@@ -1,0 +1,550 @@
+{
+ "schemaVersion": 1,
+ "createdAt": "2026-11-18T15:37:32Z",
+ "note": "Sonda: struttura della fonte consultata; non è un dato pubblicato.",
+ "follow": null,
+ "result": {
+  "url": "https://www1.finanze.gov.it/finanze/analisi_stat/public/index.php?opendata=yes&search_class%5B0%5D=cCOMUNE",
+  "contentType": "text/html;charset=UTF-8",
+  "bytes": 427107,
+  "sha256": "c1478930f9e9fc75b158aa2e047600aa873184cfa1416196ab108dc70bc73619",
+  "forms": [
+   {
+    "action": "https://www.finanze.gov.it/it/ricerca/",
+    "method": "get",
+    "fields": [
+     {
+      "tag": "input",
+      "name": "sq",
+      "type": "text",
+      "value": "",
+      "options": []
+     }
+    ]
+   },
+   {
+    "action": "https://www.finanze.gov.it/opencms/it/ricerca/",
+    "method": "get",
+    "fields": [
+     {
+      "tag": "input",
+      "name": "sq",
+      "type": "text",
+      "value": "",
+      "options": []
+     }
+    ]
+   },
+   {
+    "action": "https://www.finanze.gov.it/opencms/it/ricerca/",
+    "method": "get",
+    "fields": [
+     {
+      "tag": "input",
+      "name": "sq",
+      "type": "text",
+      "value": "",
+      "options": []
+     }
+    ]
+   },
+   {
+    "action": "https://www1.finanze.gov.it/finanze/analisi_stat/public/index.php?opendata=yes",
+    "method": "post",
+    "fields": [
+     {
+      "tag": "input",
+      "name": "opendata",
+      "type": "hidden",
+      "value": "yes",
+      "options": []
+     },
+     {
+      "tag": "select",
+      "name": "search_class[]",
+      "type": "",
+      "value": "",
+      "options": [
+       [
+        "cCOMUNE",
+        "Comune"
+       ],
+       [
+        "cETA",
+        "Classi di et&agrave;"
+       ],
+       [
+        "cSESSO",
+        "Sesso"
+       ],
+       [
+        "cCLACOMP",
+        "Classi di compensi"
+       ],
+       [
+        "cCOD_SEZ",
+        "Sezione di attivit&agrave;"
+       ],
+       [
+        "cTIP_MOD",
+        "Tipo dichiarazione"
+       ],
+       [
+        "cTIPO_SOST_770",
+        "Tipo soggetto sostituto d'imposta"
+       ],
+       [
+        "cG_SOG",
+        "Tipo soggetto"
+       ],
+       [
+        "cANAG",
+        "Anagrafica dei contribuenti"
+       ],
+       [
+        "cG_CL_RED",
+        "Classi di reddito"
+       ],
+       [
+        "cG_VOLUME_AFFARI",
+        "Classi di volume d'affari"
+       ],
+       [
+        "cG_COD_ATT",
+        "Codice attivit&agrave;"
+       ],
+       [
+        "cG_DIM_IMP",
+        "Dimensione d'impresa"
+       ],
+       [
+        "cG_DIV_ATT",
+        "Divisione di attivit&agrave;"
+       ],
+       [
+        "cG_NAT_GIUR",
+        "Natura giuridica"
+       ],
+       [
+        "cG_NUM_SOST",
+        "Numero sostituti d'imposta"
+       ],
+       [
+        "cG_REGIONE",
+        "Regione"
+       ],
+       [
+        "cG_VENT",
+        "Ventili di reddito"
+       ]
+      ]
+     },
+     {
+      "tag": "select",
+      "name": "search_anni",
+      "type": "",
+      "value": "",
+      "options": [
+       [
+        "",
+        "-"
+       ],
+       [
+        "2025",
+        "2025"
+       ],
+       [
+        "2024",
+        "2024"
+       ],
+       [
+        "2023",
+        "2023"
+       ],
+       [
+        "2022",
+        "2022"
+       ],
+       [
+        "2021",
+        "2021"
+       ],
+       [
+        "2020",
+        "2020"
+       ],
+       [
+        "2019",
+        "2019"
+       ],
+       [
+        "2018",
+        "2018"
+       ],
+       [
+        "2017",
+        "2017"
+       ],
+       [
+        "2016",
+        "2016"
+       ],
+       [
+        "2015",
+        "2015"
+       ],
+       [
+        "2014",
+        "2014"
+       ],
+       [
+        "2013",
+        "2013"
+       ],
+       [
+        "2012",
+        "2012"
+       ],
+       [
+        "2011",
+        "2011"
+       ],
+       [
+        "2010",
+        "2010"
+       ],
+       [
+        "2009",
+        "2009"
+       ],
+       [
+        "2008",
+        "2008"
+       ],
+       [
+        "2007",
+        "2007"
+       ],
+       [
+        "2006",
+        "2006"
+       ],
+       [
+        "2005",
+        "2005"
+       ],
+       [
+        "2004",
+        "2004"
+       ],
+       [
+        "2003",
+        "2003"
+       ],
+       [
+        "2002",
+        "2002"
+       ],
+       [
+        "2001",
+        "2001"
+       ]
+      ]
+     }
+    ]
+   }
+  ],
+  "scripts": [
+   "https://www1.finanze.gov.it/finanze/frameworkdf/js/jquery.min.js",
+   "https://www1.finanze.gov.it/finanze/frameworkdf/js/jquery-migrate.min.js",
+   "https://www1.finanze.gov.it/export/system/modules/it.gov.finanze.template/resources/js/html5shiv.js",
+   "https://www1.finanze.gov.it/export/system/modules/it.gov.finanze.template/resources/js/css3-mediaqueries.js",
+   "https://www1.finanze.gov.it/finanze/frameworkdf/js/script.js",
+   "https://www1.finanze.gov.it/finanze/analisi_stat/public/v_4_0_0/js/approfondimenti.js?d=1615465800",
+   "https://www1.finanze.gov.it/finanze/analisi_stat/public/v_4_0_0/js/opendata.js?d=1615465800",
+   "https://www1.finanze.gov.it/finanze/analisi_stat/public/v_4_0_0/js/plugins/select2-3.5.2/select2.js?d=1615465800",
+   "https://www1.finanze.gov.it/finanze/redesign-sitodf/js/jquery.min.js",
+   "https://www1.finanze.gov.it/finanze/redesign-sitodf/js/bootstrap.bundle.min.js",
+   "https://www1.finanze.gov.it/finanze/redesign-sitodf/js/bootstrap-datepicker.min.js",
+   "https://www1.finanze.gov.it/finanze/redesign-sitodf/js/bootstrap-datepicker.it.min.js",
+   "https://www1.finanze.gov.it/finanze/redesign-sitodf/js/mef/carousel.js",
+   "https://www1.finanze.gov.it/export/system/modules/it.gov.finanze.template/resources/js/webtrends.js"
+  ],
+  "inlineScript": "\n\n\n\n\n             $(document).ready(function () {                 $('#overlay').on('click', function () {                      closeNav();                 });                  $(window).on('resize', function () {                     if ($(window).width() >= 992) {                         closeNav();                     }                 });             });         \n\n\n\n  \t\t\t             function getCookie(cname) {                  var name = cname + \"=\";                 var ca = document.cookie.split(';');                  for (var i = 0; i < ca.length; i++) {                      var c = ca[i];                      while (c.charAt(0) == ' ') {                          c = c.substring(1);                     }                      if (c.indexOf(name) == 0) {                         return c.substring(name.length, c.length);                     }                  }                 return \"\";              }               //FIX CHECKMARX IN CASO DI RIPRISTINO DEL COOKIE             // $('#btnInfo').click(function () {             //     var currentUrl = new URL(window.location.href);             //     currentUrl.searchParams.set('privacy', 'ko');             //     window.location = currentUrl.toString();             // });              // $('#btnOk').click(function () {             //     var currentUrl = new URL(window.location.href);             //     currentUrl.searchParams.set('privacy', 'ok');             //     window.location = currentUrl.toString();             // });             //FINE CHECKMARX                           // $('#btnInfo').click(function () {             // url = window.location.href;             // if (window.location.search == \"\") {             //     url += '?privacy=ko';             // } else {              //     url += '&privacy=ko';             // }             // window.location = url;             // });                          // $('#btnOk').click(function () {             //     url = window.location.href;             //     if (window.location.search == \"\") {              //         url += '?privacy=ok';             //     } else { url += '&privacy=ok';             //     } window.location = url;             // });                          function checkCookie() {                 var privacyCookie = getCookie(\"privacyCookie\");                 if (privacyCookie != \"\") {                     $(\"#bannerInfo\").remove();                 }             }             /*             $(document).ready(function () {                 checkCookie();                 $(\"#bannerInfo p a\").each(function () {                     $(this).attr(\"href\");                 });             });             */              //chiusura emergenza          \n\n                                $(document).ready(function() {\n                                    $(\"#e2_2\").select2({placeholder: \"Seleziona una o più classificazioni\"}); });\n                            \n\n                                function clear_all()\n                                {\n                                    $('#e2_2'). val(null). trigger('change'); \n                                }                    \n                \n\n\n\n\n\n\n  console.log (\"Matomo go live - prod settings\");\n  var _paq = window._paq || [];\n  /* tracker methods like \"setCustomDimension\" should be called before \"trackPageView\" */\n  _paq.push([\"setDocumentTitle\", document.domain + \"/\" + document.title]);\n  _paq.push([\"setCookieDomain\", \"*.www1.finanze.gov.it\"]);\n  _paq.push([\"setDomains\", [\"*.www.finanze.gov.it\", \"*.www1.finanze.gov.it\"]]);\n  _paq.push(['trackPageView']);\n  _paq.push(['enableLinkTracking']);\n  (function () {\n      var u = \" https://aaws-aanalytics.sogei.it/piwik/\";\n      _paq.push(['setTrackerUrl', u + 'matomo.php']);\n      _paq.push(['setSiteId', '8']);\n      var d = document, g = d.createElement('script'), s = d.getElementsByTagName('script')[0];\n      g.type = 'text/javascript'; g.async = true; g.defer = true; g.src = u + 'matomo.js'; s.parentNode.insertBefore(g, s);\n  })();\n\n\n    var _paq = window._paq || [];\n    /* tracker methods like \"setCustomDimension\" should be called before \"trackPageView\" */\n    _paq.push([\"setDocumentTitle\", document.domain + \"/\" + document.title]);\n    _paq.push([\"setCookieDomain\", \"*.www.finanze.gov.it\"]);\n    _paq.push([\"setDomains\", [\"*.www.finanze.gov.it\", \"*.www1.finanze.gov.it\"]]);\n    _paq.push(['trackPageView']);\n    _paq.push(['enableLinkTracking']);\n    (function () {\n        var u = \" https://aaws-aanalytics.sogei.it/piwik/\";\n        _paq.push(['setTrackerUrl', u + 'matomo.php']);\n        _paq.push(['setSiteId', '8']);\n        var d = document, g = d.createElement('script'), s = d.getElementsByTagName('script')[0];\n        g.type = 'text/javascript'; g.async = true; g.defer = true; g.src = u + 'matomo.js'; s.parentNode.insertBefore(g, s);\n    })();\n\n\n\n    //<![CDATA[\n    var _tag = new WebTrends();\n    _tag.dcsGetId();\n  //]]>\n\n\n    //<![CDATA[\n    _tag.dcsCustom = function () {\n        // Add custom parameters here.\n        //_tag.DCSext.param_name=param_value;\n    }\n    _tag.dcsCollect();\n  //]]>\n",
+  "links": [
+   {
+    "url": "https://www.finanze.gov.it/export/sites/finanze/.galleries/Documenti/Informativa-e-richiesta-di-consenso-per-il-trattamento-dei-dati-personali.pdf",
+    "text": "clicca qui"
+   },
+   {
+    "url": "https://www1.finanze.gov.it/finanze/analisi_stat/public/v_4_0_0/contenuti/Redditi_e_principali_variabili_IRPEF_su_base_comunale_CSV_2024.zip?d=1615465800",
+    "text": "Scarica CSV"
+   },
+   {
+    "url": "https://www1.finanze.gov.it/finanze/analisi_stat/public/v_4_0_0/contenuti/Redditi_e_principali_variabili_IRPEF_su_base_comunale_RDF_2024.zip?d=1615465800",
+    "text": "Scarica RDF"
+   },
+   {
+    "url": "https://www1.finanze.gov.it/finanze/analisi_stat/public/v_4_0_0/contenuti/Redditi_e_principali_variabili_IRPEF_su_base_subcomunale_CSV_2024.zip?d=1615465800",
+    "text": "Scarica CSV"
+   },
+   {
+    "url": "https://www1.finanze.gov.it/finanze/analisi_stat/public/v_4_0_0/contenuti/Redditi_e_principali_variabili_IRPEF_su_base_subcomunale_RDF_2024.zip?d=1615465800",
+    "text": "Scarica RDF"
+   },
+   {
+    "url": "https://www1.finanze.gov.it/finanze/analisi_stat/public/v_4_0_0/contenuti/Redditi_e_principali_variabili_IRPEF_su_base_comunale_CSV_2023.zip?d=1615465800",
+    "text": "Scarica CSV"
+   },
+   {
+    "url": "https://www1.finanze.gov.it/finanze/analisi_stat/public/v_4_0_0/contenuti/Redditi_e_principali_variabili_IRPEF_su_base_comunale_RDF_2023.zip?d=1615465800",
+    "text": "Scarica RDF"
+   },
+   {
+    "url": "https://www1.finanze.gov.it/finanze/analisi_stat/public/v_4_0_0/contenuti/Redditi_e_principali_variabili_IRPEF_su_base_subcomunale_CSV_2023.zip?d=1615465800",
+    "text": "Scarica CSV"
+   },
+   {
+    "url": "https://www1.finanze.gov.it/finanze/analisi_stat/public/v_4_0_0/contenuti/Redditi_e_principali_variabili_IRPEF_su_base_subcomunale_RDF_2023.zip?d=1615465800",
+    "text": "Scarica RDF"
+   },
+   {
+    "url": "https://www1.finanze.gov.it/finanze/analisi_stat/public/v_4_0_0/contenuti/Redditi_e_principali_variabili_IRPEF_su_base_comunale_CSV_2022.zip?d=1615465800",
+    "text": "Scarica CSV"
+   },
+   {
+    "url": "https://www1.finanze.gov.it/finanze/analisi_stat/public/v_4_0_0/contenuti/Redditi_e_principali_variabili_IRPEF_su_base_comunale_RDF_2022.zip?d=1615465800",
+    "text": "Scarica RDF"
+   },
+   {
+    "url": "https://www1.finanze.gov.it/finanze/analisi_stat/public/v_4_0_0/contenuti/Redditi_e_principali_variabili_IRPEF_su_base_subcomunale_CSV_2022.zip?d=1615465800",
+    "text": "Scarica CSV"
+   },
+   {
+    "url": "https://www1.finanze.gov.it/finanze/analisi_stat/public/v_4_0_0/contenuti/Redditi_e_principali_variabili_IRPEF_su_base_subcomunale_RDF_2022.zip?d=1615465800",
+    "text": "Scarica RDF"
+   },
+   {
+    "url": "https://www1.finanze.gov.it/finanze/analisi_stat/public/v_4_0_0/contenuti/Redditi_e_principali_variabili_IRPEF_su_base_comunale_CSV_2021.zip?d=1615465800",
+    "text": "Scarica CSV"
+   },
+   {
+    "url": "https://www1.finanze.gov.it/finanze/analisi_stat/public/v_4_0_0/contenuti/Redditi_e_principali_variabili_IRPEF_su_base_comunale_RDF_2021.zip?d=1615465800",
+    "text": "Scarica RDF"
+   },
+   {
+    "url": "https://www1.finanze.gov.it/finanze/analisi_stat/public/v_4_0_0/contenuti/Redditi_e_principali_variabili_IRPEF_su_base_subcomunale_CSV_2021.zip?d=1615465800",
+    "text": "Scarica CSV"
+   },
+   {
+    "url": "https://www1.finanze.gov.it/finanze/analisi_stat/public/v_4_0_0/contenuti/Redditi_e_principali_variabili_IRPEF_su_base_subcomunale_RDF_2021.zip?d=1615465800",
+    "text": "Scarica RDF"
+   },
+   {
+    "url": "https://www1.finanze.gov.it/finanze/analisi_stat/public/v_4_0_0/contenuti/Redditi_e_principali_variabili_IRPEF_su_base_comunale_CSV_2020.zip?d=1615465800",
+    "text": "Scarica CSV"
+   },
+   {
+    "url": "https://www1.finanze.gov.it/finanze/analisi_stat/public/v_4_0_0/contenuti/Redditi_e_principali_variabili_IRPEF_su_base_comunale_RDF_2020.zip?d=1615465800",
+    "text": "Scarica RDF"
+   },
+   {
+    "url": "https://www1.finanze.gov.it/finanze/analisi_stat/public/v_4_0_0/contenuti/Redditi_e_principali_variabili_IRPEF_su_base_subcomunale_CSV_2020.zip?d=1615465800",
+    "text": "Scarica CSV"
+   },
+   {
+    "url": "https://www1.finanze.gov.it/finanze/analisi_stat/public/v_4_0_0/contenuti/Redditi_e_principali_variabili_IRPEF_su_base_subcomunale_RDF_2020.zip?d=1615465800",
+    "text": "Scarica RDF"
+   },
+   {
+    "url": "https://www1.finanze.gov.it/finanze/analisi_stat/public/v_4_0_0/contenuti/Redditi_e_principali_variabili_IRPEF_su_base_comunale_CSV_2019.zip?d=1615465800",
+    "text": "Scarica CSV"
+   },
+   {
+    "url": "https://www1.finanze.gov.it/finanze/analisi_stat/public/v_4_0_0/contenuti/Redditi_e_principali_variabili_IRPEF_su_base_comunale_RDF_2019.zip?d=1615465800",
+    "text": "Scarica RDF"
+   },
+   {
+    "url": "https://www1.finanze.gov.it/finanze/analisi_stat/public/v_4_0_0/contenuti/Redditi_e_principali_variabili_IRPEF_su_base_subcomunale_CSV_2019.zip?d=1615465800",
+    "text": "Scarica CSV"
+   },
+   {
+    "url": "https://www1.finanze.gov.it/finanze/analisi_stat/public/v_4_0_0/contenuti/Redditi_e_principali_variabili_IRPEF_su_base_subcomunale_RDF_2019.zip?d=1615465800",
+    "text": "Scarica RDF"
+   },
+   {
+    "url": "https://www1.finanze.gov.it/finanze/analisi_stat/public/v_4_0_0/contenuti/Redditi_e_principali_variabili_IRPEF_su_base_comunale_CSV_2018.zip?d=1615465800",
+    "text": "Scarica CSV"
+   },
+   {
+    "url": "https://www1.finanze.gov.it/finanze/analisi_stat/public/v_4_0_0/contenuti/Redditi_e_principali_variabili_IRPEF_su_base_comunale_RDF_2018.zip?d=1615465800",
+    "text": "Scarica RDF"
+   },
+   {
+    "url": "https://www1.finanze.gov.it/finanze/analisi_stat/public/v_4_0_0/contenuti/Redditi_e_principali_variabili_IRPEF_su_base_comunale_CSV_2017.zip?d=1615465800",
+    "text": "Scarica CSV"
+   },
+   {
+    "url": "https://www1.finanze.gov.it/finanze/analisi_stat/public/v_4_0_0/contenuti/Redditi_e_principali_variabili_IRPEF_su_base_comunale_RDF_2017.zip?d=1615465800",
+    "text": "Scarica RDF"
+   },
+   {
+    "url": "https://www1.finanze.gov.it/finanze/analisi_stat/public/v_4_0_0/contenuti/Redditi_e_principali_variabili_IRPEF_su_base_comunale_CSV_2016.zip?d=1615465800",
+    "text": "Scarica CSV"
+   },
+   {
+    "url": "https://www1.finanze.gov.it/finanze/analisi_stat/public/v_4_0_0/contenuti/Redditi_e_principali_variabili_IRPEF_su_base_comunale_RDF_2016.zip?d=1615465800",
+    "text": "Scarica RDF"
+   },
+   {
+    "url": "https://www1.finanze.gov.it/finanze/analisi_stat/public/v_4_0_0/contenuti/Redditi_e_principali_variabili_IRPEF_su_base_comunale_CSV_2015.zip?d=1615465800",
+    "text": "Scarica CSV"
+   },
+   {
+    "url": "https://www1.finanze.gov.it/finanze/analisi_stat/public/v_4_0_0/contenuti/Redditi_e_principali_variabili_IRPEF_su_base_comunale_RDF_2015.zip?d=1615465800",
+    "text": "Scarica RDF"
+   },
+   {
+    "url": "https://www1.finanze.gov.it/finanze/analisi_stat/public/v_4_0_0/contenuti/Redditi_e_principali_variabili_IRPEF_su_base_subcomunale_CSV_2015.zip?d=1615465800",
+    "text": "Scarica CSV"
+   },
+   {
+    "url": "https://www1.finanze.gov.it/finanze/analisi_stat/public/v_4_0_0/contenuti/Redditi_e_principali_variabili_IRPEF_su_base_subcomunale_RDF_2015.zip?d=1615465800",
+    "text": "Scarica RDF"
+   },
+   {
+    "url": "https://www1.finanze.gov.it/finanze/analisi_stat/public/v_4_0_0/contenuti/Redditi_e_principali_variabili_IRPEF_su_base_comunale_CSV_2014.zip?d=1615465800",
+    "text": "Scarica CSV"
+   },
+   {
+    "url": "https://www1.finanze.gov.it/finanze/analisi_stat/public/v_4_0_0/contenuti/Redditi_e_principali_variabili_IRPEF_su_base_comunale_RDF_2014.zip?d=1615465800",
+    "text": "Scarica RDF"
+   },
+   {
+    "url": "https://www1.finanze.gov.it/finanze/analisi_stat/public/v_4_0_0/contenuti/Redditi_e_principali_variabili_IRPEF_su_base_comunale_CSV_2013.zip?d=1615465800",
+    "text": "Scarica CSV"
+   },
+   {
+    "url": "https://www1.finanze.gov.it/finanze/analisi_stat/public/v_4_0_0/contenuti/Redditi_e_principali_variabili_IRPEF_su_base_comunale_RDF_2013.zip?d=1615465800",
+    "text": "Scarica RDF"
+   },
+   {
+    "url": "https://www1.finanze.gov.it/finanze/analisi_stat/public/v_4_0_0/contenuti/Redditi_e_principali_variabili_IRPEF_su_base_comunale_CSV_2012.zip?d=1615465800",
+    "text": "Scarica CSV"
+   },
+   {
+    "url": "https://www1.finanze.gov.it/finanze/analisi_stat/public/v_4_0_0/contenuti/Redditi_e_principali_variabili_IRPEF_su_base_comunale_RDF_2012.zip?d=1615465800",
+    "text": "Scarica RDF"
+   },
+   {
+    "url": "https://www1.finanze.gov.it/finanze/analisi_stat/public/v_4_0_0/contenuti/Redditi_e_principali_variabili_IRPEF_su_base_comunale_CSV_2011.zip?d=1615465800",
+    "text": "Scarica CSV"
+   },
+   {
+    "url": "https://www1.finanze.gov.it/finanze/analisi_stat/public/v_4_0_0/contenuti/Redditi_e_principali_variabili_IRPEF_su_base_comunale_RDF_2011.zip?d=1615465800",
+    "text": "Scarica RDF"
+   },
+   {
+    "url": "https://www1.finanze.gov.it/finanze/analisi_stat/public/v_4_0_0/contenuti/Redditi_e_principali_variabili_IRPEF_su_base_subcomunale_CSV_2011.zip?d=1615465800",
+    "text": "Scarica CSV"
+   },
+   {
+    "url": "https://www1.finanze.gov.it/finanze/analisi_stat/public/v_4_0_0/contenuti/Redditi_e_principali_variabili_IRPEF_su_base_subcomunale_RDF_2011.zip?d=1615465800",
+    "text": "Scarica RDF"
+   },
+   {
+    "url": "https://www1.finanze.gov.it/finanze/analisi_stat/public/v_4_0_0/contenuti/Redditi_e_principali_variabili_IRPEF_su_base_comunale_CSV_2010.zip?d=1615465800",
+    "text": "Scarica CSV"
+   },
+   {
+    "url": "https://www1.finanze.gov.it/finanze/analisi_stat/public/v_4_0_0/contenuti/Redditi_e_principali_variabili_IRPEF_su_base_comunale_RDF_2010.zip?d=1615465800",
+    "text": "Scarica RDF"
+   },
+   {
+    "url": "https://www1.finanze.gov.it/finanze/analisi_stat/public/v_4_0_0/contenuti/Redditi_e_principali_variabili_IRPEF_su_base_comunale_CSV_2009.zip?d=1615465800",
+    "text": "Scarica CSV"
+   },
+   {
+    "url": "https://www1.finanze.gov.it/finanze/analisi_stat/public/v_4_0_0/contenuti/Redditi_e_principali_variabili_IRPEF_su_base_comunale_RDF_2009.zip?d=1615465800",
+    "text": "Scarica RDF"
+   },
+   {
+    "url": "https://www1.finanze.gov.it/finanze/analisi_stat/public/v_4_0_0/contenuti/Redditi_e_principali_variabili_IRPEF_su_base_comunale_CSV_2008.zip?d=1615465800",
+    "text": "Scarica CSV"
+   },
+   {
+    "url": "https://www1.finanze.gov.it/finanze/analisi_stat/public/v_4_0_0/contenuti/Redditi_e_principali_variabili_IRPEF_su_base_comunale_RDF_2008.zip?d=1615465800",
+    "text": "Scarica RDF"
+   },
+   {
+    "url": "https://www1.finanze.gov.it/finanze/analisi_stat/public/v_4_0_0/contenuti/Redditi_e_principali_variabili_IRPEF_su_base_comunale_CSV_2007.zip?d=1615465800",
+    "text": "Scarica CSV"
+   },
+   {
+    "url": "https://www1.finanze.gov.it/finanze/analisi_stat/public/v_4_0_0/contenuti/Redditi_e_principali_variabili_IRPEF_su_base_comunale_RDF_2007.zip?d=1615465800",
+    "text": "Scarica RDF"
+   },
+   {
+    "url": "https://www1.finanze.gov.it/finanze/analisi_stat/public/v_4_0_0/contenuti/Redditi_e_principali_variabili_IRPEF_su_base_comunale_CSV_2006.zip?d=1615465800",
+    "text": "Scarica CSV"
+   },
+   {
+    "url": "https://www1.finanze.gov.it/finanze/analisi_stat/public/v_4_0_0/contenuti/Redditi_e_principali_variabili_IRPEF_su_base_comunale_RDF_2006.zip?d=1615465800",
+    "text": "Scarica RDF"
+   },
+   {
+    "url": "https://www1.finanze.gov.it/finanze/analisi_stat/public/v_4_0_0/contenuti/Redditi_e_principali_variabili_IRPEF_su_base_comunale_CSV_2005.zip?d=1615465800",
+    "text": "Scarica CSV"
+   },
+   {
+    "url": "https://www1.finanze.gov.it/finanze/analisi_stat/public/v_4_0_0/contenuti/Redditi_e_principali_variabili_IRPEF_su_base_comunale_RDF_2005.zip?d=1615465800",
+    "text": "Scarica RDF"
+   },
+   {
+    "url": "https://www1.finanze.gov.it/finanze/analisi_stat/public/v_4_0_0/contenuti/Redditi_e_principali_variabili_IRPEF_su_base_comunale_CSV_2004.zip?d=1615465800",
+    "text": "Scarica CSV"
+   },
+   {
+    "url": "https://www1.finanze.gov.it/finanze/analisi_stat/public/v_4_0_0/contenuti/Redditi_e_principali_variabili_IRPEF_su_base_comunale_RDF_2004.zip?d=1615465800",
+    "text": "Scarica RDF"
+   },
+   {
+    "url": "https://www1.finanze.gov.it/finanze/analisi_stat/public/v_4_0_0/contenuti/Redditi_e_principali_variabili_IRPEF_su_base_comunale_CSV_2003.zip?d=1615465800",
+    "text": "Scarica CSV"
+   },
+   {
+    "url": "https://www1.finanze.gov.it/finanze/analisi_stat/public/v_4_0_0/contenuti/Redditi_e_principali_variabili_IRPEF_su_base_comunale_RDF_2003.zip?d=1615465800",
+    "text": "Scarica RDF"
+   },
+   {
+    "url": "https://www1.finanze.gov.it/finanze/analisi_stat/public/v_4_0_0/contenuti/Redditi_e_principali_variabili_IRPEF_su_base_comunale_CSV_2002.zip?d=1615465800",
+    "text": "Scarica CSV"
+   },
+   {
+    "url": "https://www1.finanze.gov.it/finanze/analisi_stat/public/v_4_0_0/contenuti/Redditi_e_principali_variabili_IRPEF_su_base_comunale_RDF_2002.zip?d=1615465800",
+    "text": "Scarica RDF"
+   },
+   {
+    "url": "https://www1.finanze.gov.it/finanze/analisi_stat/public/v_4_0_0/contenuti/Redditi_e_principali_variabili_IRPEF_su_base_comunale_CSV_2001.zip?d=1615465800",
+    "text": "Scarica CSV"
+   },
+   {
+    "url": "https://www1.finanze.gov.it/finanze/analisi_stat/public/v_4_0_0/contenuti/Redditi_e_principali_variabili_IRPEF_su_base_comunale_RDF_2001.zip?d=1615465800",
+    "text": "Scarica RDF"
+   },
+   {
+    "url": "https://www1.finanze.gov.it/finanze/analisi_stat/public/v_4_0_0/contenuti/Redditi_e_principali_variabili_IRPEF_su_base_comunale_CSV_2000.zip?d=1615465800",
+    "text": "Scarica CSV"
+   },
+   {
+    "url": "https://www1.finanze.gov.it/finanze/analisi_stat/public/v_4_0_0/contenuti/Redditi_e_principali_variabili_IRPEF_su_base_comunale_RDF_2000.zip?d=1615465800",
+    "text": "Scarica RDF"
+   },
+   {
+    "url": "https://www.finanze.gov.it/export/sites/finanze/.galleries/Documenti/dipartimento_pol_fisc/informativaPrivacySitoDF.pdf",
+    "text": "Privacy"
+   }
+  ],
+  "text": "--> Dipartimento delle Finanze - Statistiche sulle dichiarazioni Ministero dell'Economia e delle Finanze --> Ministero dell'Economia e delle Finanze MEF Menu di servizio Contatti Menu di servizio Contatti Apri menu principale Dipartimento delle Finanze Dipartimento delle Finanze --> Seguici su: Pagina Facebook del MEF - Collegamento a sito esterno - Apertura in nuova scheda Canale LinkedIn del MEF Canale Telegram del MEF Canale YouTube del MEF Canale Instagram del MEF Canale Flickr del MEF Canale Twitter del MEF Cerca nel sito: Cerca Bottone per aprire il Menu principale, visibile solo nelle risoluzioni xs e sm --> Apri menu principale --> --> Menu principale --> Cerca nel sito: Cerca Il Dipartimento Vai alla sezione Il Dipartimento Amministrazione Trasparente Missione Organigramma Governance sulle Agenzie fiscali Governo sistema informativo della fiscalità Documenti e report di economia e finanza Analisi economiche e fiscali - note tematiche Borse di studio e formazione Collana di lavori e di ricerca Audizioni e interventi Comunicazione Modelli economici e strumenti di analisi Fisco e contribuenti Fisco e storia TAX JUSTICE DF --> Affidamento dei beni sequestrati Fiscalità Vai alla sezione Fiscalità Fiscalità nazionale Fiscalità regionale e locale Decreti Legge di stabilità Manovra di Bilancio Atti di indirizzo del Vice Ministro Normativa Tributaria --> Fiscalità UE e internazionale Vai alla sezione Fiscalità UE e internazionale Convenzioni e accordi Organizzazioni e internazionali Procedure amichevoli internazionali Unione Europea Imposta municipale propria (IMU) Imposta RC Auto Addizionale regionale all'IRPEF Altri Tributi provinciali IRAP Addizionale comunale all'IRPEF Albo dei gestori dell'accertamento e della riscossione dei tributi locali Tasse automobilistiche TARI, Imposta di soggiorno e altri tributi comunali Altri tributi regionali Imposta locale sul consumo di Campione d'Italia Archivio dei tributi non più vigenti Prassi amministrativa circolari risoluzioni (note, faq e comunicati) --> Dati e Statistiche Vai alla sezione Dati e Statistiche Agevolazioni fiscali di carattere ambientale Dichiarazioni fiscali Fiscalità ambientale nella UE Open data comunali: principali variabili IRPEF Osservatorio sulle partite IVA Indici Sintetici di Affidabilità - ex Studi di Settore Capacità fiscale dei Comuni Statistiche sul contenzioso tributario Calendario delle pubblicazioni Gli immobili in Italia Informative sulla privacy Fiscalità dell'Unione europea e internazionale In evidenza Convenzioni e accordi Organizzazioni internazionali Procedure amichevoli internazionali Unione Europea --> Entrate tributarie Vai alla sezione Entrate tributarie Entrate tributarie nazionali Entrate tributarie internazionali Monitoraggio entrate tributarie e contributive Consultazioni pubbliche Vai alla sezione Consultazioni pubbliche Consultazioni aperte Consultazioni chiuse Progetti europei Vai alla sezione Progetti europei PRO.DI.GI.T MENÙ × --> Cerca nel sito: Cerca Il Dipartimento Vai alla sezione Il Dipartimento Amministrazione Trasparente Missione Organigramma Governance sulle Agenzie fiscali Governo sistema informativo della fiscalità Documenti e report di economia e finanza Analisi economiche e fiscali - note tematiche Borse di studio e formazione Collana di lavori e di ricerca Audizioni e interventi Comunicazione Modelli economici e strumenti di analisi Fisco e contribuenti Fisco e storia Affidamento dei beni sequestrati Fiscalità Vai alla sezione Fiscalità Fiscalità nazionale Fiscalità regionale e locale Fiscalità UE e internazionale Vai alla sezione Fiscalità UE e internazionale Convenzioni e accordi Organizzazioni e internazionali Procedure amichevoli internazionali Unione Europea Dati e Statistiche Vai alla sezione Dati e Statistiche Agevolazioni fiscali di carattere ambientale Dichiarazioni fiscali Fiscalità ambientale nella UE Open data comunali: principali variabili IRPEF Osservatorio sulle partite IVA Indici Sintetici di Affidabilità - ex Studi di Settore Capacità fiscale dei Comuni Statistiche sul contenzioso tributario Calendario delle pubblicazioni Gli immobili in Italia Informative sulla privacy Entrate tributarie Vai alla sezione Entrate tributarie Entrate tributarie nazionali Entrate tributarie internazionali Monitoraggio entrate tributarie e contributive Consultazioni pubbliche Vai alla sezione Consultazioni pubbliche Consultazioni aperte Consultazioni chiuse Progetti europei Vai alla sezione Progetti europei PRO.DI.GI.T Contenuti della pagina Menu principale Questo sito utilizza cookie tecnici e di terze parti. Per visualizzare i contenuti correttamente e quindi installare i cookies sulla tua macchina occorre darne il consenso esplicito attraverso il bottone \"SI, acconsento\". Per visualizzare l'informativa clicca qui . Non acconsento Si, acconsento --> Home Dati e statistiche fiscali Dichiarazioni fiscali Open Data --> Open Data Dichiarazioni 6--> Analisi statistiche Open Data Dichiarazioni Ricerca per Classificazione: Comune Classi di età Sesso Classi di compensi Sezione di attività Tipo dichiarazione Tipo soggetto sostituto d'imposta Tipo soggetto Anagrafica dei contribuenti Classi di reddito Classi di volume d'affari Codice attività Dimensione d'impresa Divisione di attività Natura giuridica Numero sostituti d'imposta Regione Ventili di reddito Anno di dichiarazione: - 2025 2024 2023 2022 2021 2020 2019 2018 2017 2016 2015 2014 2013 2012 2011 2010 2009 2008 2007 2006 2005 2004 2003 2002 2001 Cerca Annulla Lavoratori dipendenti Classi di età Pensionati Persone fisiche Classi di reddito Regione Ventili di reddito Sezione di attività Comune Società di capitali Volume di affari Le imprese Persone fisiche titolari Società di persone IVA Enti non commerciali IRAP 1 Navigazione dinamica delle Dichiarazioni 2025 a.i. 2024 / IRPEF / Persone fisiche / Tutte le tipologie di contribuenti Data: 23 aprile 2026 Tematica: Redditi e principali variabili Irpef su base comunale Classificazione: Comune Tipo licenza: Variabili: Numero contribuenti, Reddito da fabbricati, Reddito da lavoro dipendente e assimilati, Reddito da pensione, Reddito da lavoro autonomo (compresi nulli), Reddito spettanza imprenditore ordinaria (compresi nulli), Reddito spettanza imprenditore semplificata (compresi nulli), Reddito da partecipazione (compresi nulli), Reddito imponibile, Imposta netta, Trattamento spettante, Reddito imponibile addizionale, Addizionale regionale dovuta, Addizionale comunale dovuta, Reddito complessivo, Reddito complessivo minore o uguale a zero euro, Reddito complessivo da 0 a 10000 euro, Reddito complessivo da 10000 a 15000 euro, Reddito complessivo da 15000 a 26000 euro, Reddito complessivo da 26000 a 55000 euro, Reddito complessivo da 55000 a 75000 euro, Reddito complessivo da 75000 a 120000 euro, Reddito complessivo oltre 120000 euro Scarica CSV Scarica RDF 2025 a.i. 2024 / IRPEF / Persone fisiche / Tutte le tipologie di contribuenti Data: 23 aprile 2026 Tematica: Redditi e principali variabili Irpef su base comunale Classificazione: Sub-Comunale(CAP) Tipo licenza: Variabili: Numero contribuenti, Reddito da fabbricati, Reddito da lavoro dipendente e assimilati, Reddito da pensione, Reddito da lavoro autonomo (compresi nulli), Reddito spettanza imprenditore ordinaria (compresi nulli), Reddito spettanza imprenditore semplificata (compresi nulli), Reddito da partecipazione (compresi nulli), Reddito imponibile, Imposta netta, Trattamento spettante, Reddito imponibile addizionale, Addizionale regionale dovuta, Addizionale comunale dovuta, Reddito complessivo, Reddito complessivo minore o uguale a zero euro, Reddito complessivo da 0 a 10000 euro, Reddito complessivo da 10000 a 15000 euro, Reddito complessivo da 15000 a 26000 euro, Reddito complessivo da 26000 a 55000 euro, Reddito complessivo da 55000 a 75000 euro, Reddito complessivo da 75000 a 120000 euro, Reddito complessivo oltre 120000 euro Scarica CSV Scarica RDF 2024 a.i. 2023 / IRPEF / Persone fisiche / Tutte le tipologie di contribuenti Data: 16 aprile 2025 Tematica: Redditi e principali variabili Irpef su base comunale Classificazione: Comune Tipo licenza: Variabili: Numero contribuenti, Reddito da fabbricati, Reddito da lavoro dipendente e assimilati, Reddito da pensione, Reddito da lavoro autonomo (compresi nulli), Reddito spettanza imprenditore ordinaria (compresi nulli), Reddito spettanza imprenditore semplificata (compresi nulli), Reddito da partecipazione (compresi nulli), Reddito imponibile, Imposta netta, Trattamento spettante, Reddito imponibile addizionale, Addizionale regionale dovuta, Addizionale comunale dovuta, Reddito complessivo, Reddito complessivo minore o uguale a zero euro, Reddito complessivo da 0 a 10000 euro, Reddito complessivo da 10000 a 15000 euro, Reddito complessivo da 15000 a 26000 euro, Reddito complessivo da 26000 a 55000 euro, Reddito complessivo da 55000 a 75000 euro, Reddito complessivo da 75000 a 120000 euro, Reddito complessivo oltre 120000 euro Scarica CSV Scarica RDF 2024 a.i. 2023 / IRPEF / Persone fisiche / Tutte le tipologie di contribuenti Data: 16 aprile 2025 Tematica: Redditi e principali variabili Irpef su base comunale Classificazione: Sub-Comunale(CAP) Tipo licenza: Variabili: Numero contribuenti, Reddito da fabbricati, Reddito da lavoro dipendente e assimilati, Reddito da pensione, Reddito da lavoro autonomo (compresi nulli), Reddito spettanza imprenditore ordinaria (compresi nulli), Reddito spettanza imprenditore semplificata (compresi nulli), Reddito da partecipazione (compresi nulli), Reddito imponibile, Imposta netta, Trattamento spettante, Reddito imponibile addizionale, Addizionale regionale dovuta, Addizionale comunale dovuta, Reddito complessivo, Reddito complessivo minore o uguale a zero euro, Reddito complessivo da 0 a 10000 euro, Reddito complessivo da 10000 a 15000 euro, Reddito complessivo da 15000 a 26000 euro, Reddito complessivo da 26000 a 55000 euro, Reddito complessivo da 55000 a 75000 euro, Reddito complessivo da 75000 a 120000 euro, Reddito complessivo oltre 120000 euro Scarica CSV Scarica RDF 2023 a.i. 2022 / IRPEF / Persone fisiche / Tutte le tipologie di contribuenti Data: 23 aprile 2024 Tematica: Redditi e principali variabili Irpef su base comunale Classificazione: Comune Tipo licenza: Variabili: Numero contribuenti, Reddito da fabbricati, Reddito da lavoro dipendente e assimilati, Reddito da pensione, Reddito da lavoro autonomo (compresi nulli), Reddito spettanza imprenditore ordinaria (compresi nulli), Reddito spettanza imprenditore semplificata (compresi nulli), Reddito da partecipazione (compresi nulli), Reddito imponibile, Imposta netta, Bonus spettante, Reddito imponibile addizionale, Addizionale regionale dovuta, Addizionale comunale dovuta, Reddito complessivo minore o uguale a zero euro, Reddito complessivo da 0 a 10000 euro, Reddito complessivo da 10000 a 15000 euro, Reddito complessivo da 15000 a 26000 euro, Reddito complessivo da 26000 a 55000 euro, Reddito complessivo da 55000 a 75000 euro, Reddito complessivo da 75000 a 120000 euro, Reddito complessivo oltre 120000 euro Scarica CSV Scarica RDF 2023 a.i. 2022 / IRPEF / Persone fisiche / Tutte le tipologie di contribuenti Data: 23 aprile 2024 Tematica: Redditi e principali variabili Irpef su base comunale Classificazione: Sub-Comunale(CAP) Tipo licenza: Variabili: Numero contribuenti, Reddito da fabbricati, Reddito da lavoro dipendente e assimilati, Reddito da pensione, Reddito da lavoro autonomo (compresi nulli), Reddito spettanza imprenditore ordinaria (compresi nulli), Reddito spettanza imprenditore semplificata (compresi nulli), Reddito da partecipazione (compresi nulli), Reddito imponibile, Imposta netta, Bonus spettante, Reddito imponibile addizionale, Addizionale regionale dovuta, Addizionale comunale dovuta, Reddito complessivo minore o uguale a zero euro, Reddito complessivo da 0 a 10000 euro, Reddito complessivo da 10000 a 15000 euro, Reddito complessivo da 15000 a 26000 euro, Reddito complessivo da 26000 a 55000 euro, Reddito complessivo da 55000 a 75000 euro, Reddito complessivo da 75000 a 120000 euro, Reddito complessivo oltre 120000 euro Scarica CSV Scarica RDF 2022 a.i. 2021 / IRPEF / Persone fisiche / Tutte le tipologie di contribuenti Data: 20 aprile 2023 Tematica: Redditi e principali variabili Irpef su base comunale Classificazione: Comune Tipo licenza: Variabili: Numero contribuenti, Reddito da fabbricati, Reddito da lavoro dipendente e assimilati, Reddito da pensione, Reddito da lavoro autonomo (compresi nulli), Reddito spettanza imprenditore ordinaria (compresi nulli), Reddito spettanza imprenditore semplificata (compresi nulli), Reddito da partecipazione (compresi nulli), Reddito imponibile, Imposta netta, Bonus spettante, Reddito imponibile addizionale, Addizionale regionale dovuta, Addizionale comunale dovuta, Reddito complessivo minore o uguale a zero euro, Reddito complessivo da 0 a 10000 euro, Reddito complessivo da 10000 a 15000 euro, Reddito complessivo da 15000 a 26000 euro, Reddito complessivo da 26000 a 55000 euro, Reddito complessivo da 55000 a 75000 euro, Reddito complessivo da 75000 a 120000 euro, Reddito complessivo oltre 120000 euro Scarica CSV Scarica RDF 2022 a.i. 2021 / IRPEF / Persone fisiche / Tutte le tipologie di contribuenti Data: 20 aprile 2023 Tematica: Redditi e principali variabili Irpef su base comunale Classificazione: Sub-Comunale(CAP) Tipo licenza: Variabili: Numero contribuenti, Reddito da fabbricati, Reddito da lavoro dipendente e assimilati, Reddito da pensione, Reddito da lavoro autonomo (compresi nulli), Reddito spettanza imprenditore ordinaria (compresi nulli), Reddito spettanza imprenditore semplificata (compresi nulli), Reddito da partecipazione (compresi nulli), Reddito imponibile, Imposta netta, Bonus spettante, Reddito imponibile addizionale, Addizionale regionale dovuta, Addizionale comunale dovuta, Reddito complessivo minore o uguale a zero euro, Reddito complessivo da 0 a 10000 euro, Reddito complessivo da 10000 a 15000 euro, Reddito complessivo da 15000 a 26000 euro, Reddito complessivo da 26000 a 55000 euro, Reddito complessivo da 55000 a 75000 euro, Reddito complessivo da 75000 a 120000 euro, Reddito complessivo oltre 120000 euro Scarica CSV Scarica RDF 2021 a.i. 2020 / IRPEF / Persone fisiche / Tutte le tipologie di contribuenti Data: 13 aprile 2022 Tematica: Redditi e principali variabili Irpef su base comunale Classificazione: Comune Tipo licenza: Variabili: Numero contribuenti, Reddito da fabbricati, Reddito da lavoro dipendente e assimilati, Reddito da pensione, Reddito da lavoro autonomo (compresi nulli), Reddito spettanza imprenditore ordinaria (compresi nulli), Reddito spettanza imprenditore semplificata (compresi nulli), Reddito da partecipazione (compresi nulli), Reddito imponibile, Imposta netta, Bonus spettante, Reddito imponibile addizionale, Addizionale regionale dovuta, Addizionale comunale dovuta, Reddito complessivo minore o uguale a zero euro, Re"
+ }
+}

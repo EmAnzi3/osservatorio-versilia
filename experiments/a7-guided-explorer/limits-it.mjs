@@ -173,6 +173,8 @@ export default {
 "hospital_public_catalog_replay_not_original_ministerial_records": "I dati derivano dal catalogo pubblicato, non dagli archivi originali del Ministero.",
 "hospital_sites_and_bed_rates_are_distinct_measures": "Numero di strutture e posti letto sono misure diverse.",
 "hospital_zero_local_presence_not_absence_of_health_services": "Nessun ospedale nel Comune non significa assenza di servizi sanitari.",
+"household_size_official_municipal_series": "Numero medio di componenti pubblicato da Istat per Comune; i totali di area sono componenti diviso famiglie.",
+"household_size_official_series_families_estimated_2018_2019": "Per il 2018 e il 2019 Istat pubblica un numero di famiglie stimato.",
 "household_size_raw_components_not_reconciled": "Le componenti del numero medio di persone per famiglia non sono ricontrollate.",
 "hydraulic_features_cross_municipal_boundaries_no_naive_sum_for_unique_versilia": "Le opere idrauliche attraversano più Comuni: la somma non dà il totale della Versilia.",
 "invalsi_2019_20_tests_not_conducted_gap_preserved": "Nell’anno scolastico 2019/20 le prove INVALSI non si sono svolte: il vuoto è mantenuto.",

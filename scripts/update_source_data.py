@@ -843,6 +843,29 @@ def update_bdi_branches(year: int, folder: Path | None, dry_run: bool) -> Change
     return changes
 
 
+# ------------------------------------------------------------------ Istat: componenti per famiglia (serie)
+
+def update_istat_famiglie(file: Path | None, dry_run: bool) -> Changes:
+    """Serie comunale del numero medio di componenti per famiglia dal workbook «A misura di Comune · Famiglie»."""
+    import household_size_history as hh
+
+    raw = file.read_bytes() if file else probes.http_fetch(hh.URL)
+    try:
+        snapshot = hh.build_snapshot(raw)
+    except (hh.HouseholdError, KeyError, ValueError) as error:
+        raise UpdateError(f"Componenti per famiglia: {error}") from error
+    path = f"{hh.SNAPSHOT_PREFIX}{snapshot['years'][-1]}.json"
+    previous = load(ROOT / path) if (ROOT / path).exists() else None
+    changes = Changes()
+    for code, t in snapshot["towns"].items():
+        before = previous["towns"][code]["size"][-1] if previous else None
+        changes.note(f"{hh.METRIC} {t['town']}", None if before is None else round(before, 4), round(t["size"][-1], 4))
+    snapshot["acquisitionEvidence"] = {"script": "scripts/update_source_data.py istat-famiglie"}
+    if not dry_run:
+        save(ROOT / path, snapshot)
+    return changes
+
+
 # ------------------------------------------------------------------ OpenBDAP: confronto Toscana/Italia dei rendiconti
 
 def update_openbdap_benchmarks(year: int, dry_run: bool, oc_fetch=None) -> Changes:
@@ -1565,6 +1588,9 @@ def main() -> int:
     bb_p.add_argument("--dir", type=Path, help="cartella con succursali.zip e localita.zip già scaricati")
     bb_p.add_argument("--dry-run", action="store_true")
     sub.add_parser("bdi-branches-probe", help="sonda degli sportelli Banca d'Italia (non modifica il catalogo)")
+    hh_p = sub.add_parser("istat-famiglie", help="serie comunale del numero medio di componenti per famiglia (Istat)")
+    hh_p.add_argument("--file", type=Path, help="workbook 3-Famiglie.xlsx già scaricato")
+    hh_p.add_argument("--dry-run", action="store_true")
     ob_p = sub.add_parser("openbdap-benchmarks", help="confronto Toscana/Italia dei rendiconti comunali OpenBDAP")
     ob_p.add_argument("--year", type=int, required=True)
     ob_p.add_argument("--dry-run", action="store_true")
@@ -1582,6 +1608,8 @@ def main() -> int:
     try:
         if args.updater == "bdi-branches":
             update_bdi_branches(args.year, args.dir, args.dry_run).report(f"Sportelli bancari {args.year}{' (prova a secco)' if args.dry_run else ''}:")
+        elif args.updater == "istat-famiglie":
+            update_istat_famiglie(args.file, args.dry_run).report("Componenti per famiglia:")
         elif args.updater == "openbdap-benchmarks":
             update_openbdap_benchmarks(args.year, args.dry_run, oc_fetch=None).report(f"Confronto bilanci {args.year}:")
         elif args.updater == "opencivitas-needs":
