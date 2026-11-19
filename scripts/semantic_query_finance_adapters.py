@@ -114,8 +114,26 @@ BENCHMARK_RE=re.compile(r'data/source-snapshots/openbdap-benchmark-(20[0-9]{2})[
 BENCHMARK_HASH=_pin('finance#1')
 
 
+_PUBLISHED_SCOPES={}
+
+
+def published_scopes():
+ """Territori con un confronto pubblicato nell'ultimo snapshot (≥90% dei residenti, riconciliazione 7/7 superata)."""
+ if not _PUBLISHED_SCOPES:
+  import json
+  from pathlib import Path
+  root=Path(__file__).resolve().parents[1]/'data'/'source-snapshots'
+  found=sorted(p for p in root.glob('openbdap-benchmark-*.json') if BENCHMARK_RE.fullmatch('data/source-snapshots/'+p.name))
+  if found:
+   snap=json.loads(found[-1].read_text(encoding='utf-8'))
+   for key,entries in snap.get('benchmarks',{}).items():
+    _PUBLISHED_SCOPES[key]=[sc for sc in ('tuscany','italy') if (entries.get(sc) or {}).get('value') is not None]
+  _PUBLISHED_SCOPES.setdefault('',[])
+ return _PUBLISHED_SCOPES
+
+
 def scopes(key,dimension):
- return ['tuscany','italy'] if key in BENCHMARKED and dimension=='total' else []
+ return list(published_scopes().get(key,[])) if key in BENCHMARKED and dimension=='total' else []
 
 
 def benchmark(engine,key,scope,municipal):
