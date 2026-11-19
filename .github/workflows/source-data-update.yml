@@ -46,7 +46,7 @@ jobs:
         with:
           python-version: "3.12"
       - name: Install dependencies
-        run: python -m pip install requests pypdf openpyxl
+        run: python -m pip install requests pypdf openpyxl xlrd
       - name: Offline updater tests
         run: |
           cd scripts
@@ -115,7 +115,7 @@ jobs:
         with:
           python-version: "3.12"
       - name: Install dependencies
-        run: python -m pip install requests pypdf openpyxl
+        run: python -m pip install requests pypdf openpyxl xlrd
       - name: Offline updater tests
         run: cd scripts && python test_update_source_data.py
       - name: Run requested updaters
@@ -139,6 +139,7 @@ jobs:
           commands += [["mef-fiscal-probe", "--year", str(int(y))] for y in request.get("mefFiscalProbe", [])]
           commands += [["bdi-branches", "--year", str(int(y))] for y in request.get("bdiBranches", [])]
           commands += [["bdi-branches-probe"]] if request.get("bdiBranchesProbe") else []
+          commands += [["aci-vehicles-history"]] if request.get("aciVehiclesHistory") else []
           commands += [["opencivitas-needs"] + (["--year", str(int(y))] if y else []) for y in request.get("opencivitasNeeds", [])]
           commands += [["sdmx-probe", "--name", str(p["name"])] + (["--find", str(p["find"])] if p.get("find") else ["--flow", str(p["flow"]), "--key", str(p.get("key", "all"))]) + (["--start", str(p["start"])] if p.get("start") else []) for p in request.get("sdmxProbe", [])]
           commands += [["source-probe", "--name", str(p["name"]), "--url", str(p["url"])] + (["--follow", str(p["follow"])] if p.get("follow") else []) + [a for step in p.get("post", []) for a in ("--post", str(step))] + (["--match", str(p["match"])] if p.get("match") else []) for p in request.get("sourceProbe", [])]

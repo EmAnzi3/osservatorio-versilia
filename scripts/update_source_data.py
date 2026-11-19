@@ -843,6 +843,29 @@ def update_bdi_branches(year: int, folder: Path | None, dry_run: bool) -> Change
     return changes
 
 
+# ------------------------------------------------------------------ ACI: serie del parco autovetture
+
+def update_aci_vehicles_history(dry_run: bool) -> Changes:
+    """Serie 2018–2025 di motorizzazione e quota Euro 0–3 dagli archivi ACI; ultimo anno = valore pubblicato."""
+    import vehicles_history as vh
+
+    site = load(SITE)
+    population = {r["code"]: dict(zip(r["series"]["years"], r["series"]["values"])) for r in site["metrics"]["population"]["rows"]}
+    current = {k: {r["code"]: r["value"] for r in site["metrics"][k]["rows"]} for k in ("motorization", "pollutingCars")}
+    try:
+        snapshot = vh.build_snapshot(probes.http_fetch, population, current)
+    except (vh.VehiclesError, KeyError, ValueError, zipfile.BadZipFile) as error:
+        raise UpdateError(f"Serie parco autovetture: {error}") from error
+    changes = Changes()
+    for key, towns in snapshot["series"].items():
+        for code, values in towns.items():
+            changes.note(f"{key} {code} {snapshot['years'][0]}", None, values[0])
+    snapshot["acquisitionEvidence"] = {"script": "scripts/update_source_data.py aci-vehicles-history"}
+    if not dry_run:
+        save(ROOT / vh.SNAPSHOT, snapshot)
+    return changes
+
+
 # ------------------------------------------------------------------ OpenCivitas: fabbisogni standard
 
 def update_opencivitas_needs(year: int | None, folder: Path | None, dry_run: bool) -> Changes:
@@ -1525,6 +1548,8 @@ def main() -> int:
     bb_p.add_argument("--dir", type=Path, help="cartella con succursali.zip e localita.zip già scaricati")
     bb_p.add_argument("--dry-run", action="store_true")
     sub.add_parser("bdi-branches-probe", help="sonda degli sportelli Banca d'Italia (non modifica il catalogo)")
+    vh_p = sub.add_parser("aci-vehicles-history", help="serie storica di motorizzazione e quota Euro 0–3 (archivi ACI)")
+    vh_p.add_argument("--dry-run", action="store_true")
     oc_p = sub.add_parser("opencivitas-needs", help="fabbisogni standard dei Comuni (OpenCivitas)")
     oc_p.add_argument("--year", type=int, help="annualità OpenCivitas, es. 2023 (predefinita: l'ultima pubblicata)")
     oc_p.add_argument("--dir", type=Path, help="cartella con pages/*.html, totale.csv ed enti.xlsx già scaricati")
@@ -1539,6 +1564,8 @@ def main() -> int:
     try:
         if args.updater == "bdi-branches":
             update_bdi_branches(args.year, args.dir, args.dry_run).report(f"Sportelli bancari {args.year}{' (prova a secco)' if args.dry_run else ''}:")
+        elif args.updater == "aci-vehicles-history":
+            update_aci_vehicles_history(args.dry_run).report("Serie parco autovetture:")
         elif args.updater == "opencivitas-needs":
             update_opencivitas_needs(args.year, args.dir, args.dry_run).report(f"Fabbisogni standard{' ' + str(args.year) if args.year else ''}{' (prova a secco)' if args.dry_run else ''}:")
         elif args.updater == "bdi-branches-probe":
