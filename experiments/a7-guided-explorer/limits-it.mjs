@@ -8,6 +8,10 @@ export default {
 "distinct_finance_massarosa_osl_temporal_perimeter_not_attested": "Per Massarosa la continuità fra gestione ordinaria e gestione del dissesto non è attestata.",
 "empty_period_selection": "Nessun periodo disponibile per questa selezione.",
 "explicit_benchmark_comparability_required": "Il confronto con Toscana o Italia non è ammesso per questa vista: le misure non sono confrontabili.",
+"finance_benchmark_components_or_complete_scope_not_frozen": "Per questo indicatore non c'è un confronto con Toscana e Italia ricostruito e verificato dalla fonte.",
+"finance_benchmark_frozen_input_changed": "Il confronto non si calcola: i dati regionali e nazionali congelati sono cambiati.",
+"finance_benchmark_period_not_frozen": "Il confronto con Toscana e Italia esiste solo per l'ultimo rendiconto.",
+"finance_benchmark_scope_below_coverage_threshold": "Il confronto non è pubblicato: i Comuni che hanno trasmesso il rendiconto coprono meno del 90% dei residenti.",
 "insufficient_observations": "Non ci sono abbastanza valori disponibili per questa analisi.",
 "partial_coverage_requires_opt_in": "Non tutti i Comuni hanno il dato: per proseguire serve la tua conferma sulla copertura incompleta.",
 "zero_baseline": "Il valore di partenza è zero: la variazione percentuale non è calcolabile."

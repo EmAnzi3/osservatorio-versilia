@@ -866,6 +866,46 @@ def update_aci_vehicles_history(dry_run: bool) -> Changes:
     return changes
 
 
+# ------------------------------------------------------------------ OpenBDAP: confronto Toscana/Italia dei rendiconti
+
+def update_openbdap_benchmarks(year: int, dry_run: bool, oc_fetch=None) -> Changes:
+    """Scrive lo snapshot dei benchmark Toscana/Italia dei rendiconti comunali (regola copertura ≥ 90% dei residenti)."""
+    import openbdap_benchmarks as ob
+
+    site = load(SITE)
+    published, towns = {}, {}
+    # Sei indicatori nascono in build dallo snapshot bilanci-v139: i valori pubblici vengono da lì.
+    v139 = load(ROOT / "data/source-snapshots/bilanci-v139.json")["series"]
+    code_of = {r["town"]: r["code"] for r in site["metrics"]["population"]["rows"]}
+    for key in ob.METRICS:
+        if key not in site["metrics"]:
+            published[key] = {code_of[t]: dict(zip(p["years"], p["values"]))[year] for t, p in v139[key]["towns"].items()}
+            continue
+        metric = site["metrics"][key]
+        if str(metric["meta"].get("year")) != str(year):
+            raise UpdateError(f"Confronto bilanci: {key} pubblicato per il {metric['meta'].get('year')}, non per il {year}")
+        published[key] = {}
+        for row in metric["rows"]:
+            series = dict(zip(row["series"]["years"], row["series"]["values"]))
+            published[key][row["code"]] = series[year]
+            towns[row["code"]] = row["town"]
+    try:
+        snapshot = ob.build_snapshot(year, oc_fetch or ob.fetch, published, towns)
+    except (ob.BenchmarkError, KeyError, ValueError, zipfile.BadZipFile) as error:
+        raise UpdateError(f"Confronto bilanci {year}: {error}") from error
+    path = ROOT / f"{ob.SNAPSHOT_PREFIX}{year}.json"
+    old = load(path) if path.exists() else {"benchmarks": {}}
+    changes = Changes()
+    for key, scopes in snapshot["benchmarks"].items():
+        for scope, entry in scopes.items():
+            before = (old["benchmarks"].get(key, {}).get(scope) or {}).get("value")
+            changes.note(f"{key} {scope}", None if before is None else round(before, 4), None if entry["value"] is None else round(entry["value"], 4))
+    snapshot["acquisitionEvidence"] = {"script": f"scripts/update_source_data.py openbdap-benchmarks --year {year}"}
+    if not dry_run:
+        save(path, snapshot)
+    return changes
+
+
 # ------------------------------------------------------------------ OpenCivitas: fabbisogni standard
 
 def update_opencivitas_needs(year: int | None, folder: Path | None, dry_run: bool) -> Changes:
@@ -1550,6 +1590,9 @@ def main() -> int:
     sub.add_parser("bdi-branches-probe", help="sonda degli sportelli Banca d'Italia (non modifica il catalogo)")
     vh_p = sub.add_parser("aci-vehicles-history", help="serie storica di motorizzazione e quota Euro 0–3 (archivi ACI)")
     vh_p.add_argument("--dry-run", action="store_true")
+    ob_p = sub.add_parser("openbdap-benchmarks", help="confronto Toscana/Italia dei rendiconti comunali OpenBDAP")
+    ob_p.add_argument("--year", type=int, required=True)
+    ob_p.add_argument("--dry-run", action="store_true")
     oc_p = sub.add_parser("opencivitas-needs", help="fabbisogni standard dei Comuni (OpenCivitas)")
     oc_p.add_argument("--year", type=int, help="annualità OpenCivitas, es. 2023 (predefinita: l'ultima pubblicata)")
     oc_p.add_argument("--dir", type=Path, help="cartella con pages/*.html, totale.csv ed enti.xlsx già scaricati")
@@ -1566,6 +1609,8 @@ def main() -> int:
             update_bdi_branches(args.year, args.dir, args.dry_run).report(f"Sportelli bancari {args.year}{' (prova a secco)' if args.dry_run else ''}:")
         elif args.updater == "aci-vehicles-history":
             update_aci_vehicles_history(args.dry_run).report("Serie parco autovetture:")
+        elif args.updater == "openbdap-benchmarks":
+            update_openbdap_benchmarks(args.year, args.dry_run, oc_fetch=None).report(f"Confronto bilanci {args.year}:")
         elif args.updater == "opencivitas-needs":
             update_opencivitas_needs(args.year, args.dir, args.dry_run).report(f"Fabbisogni standard{' ' + str(args.year) if args.year else ''}{' (prova a secco)' if args.dry_run else ''}:")
         elif args.updater == "bdi-branches-probe":

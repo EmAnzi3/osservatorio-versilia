@@ -1,6 +1,6 @@
 # Programma dei dossier territoriali — evidenze verificate
 
-Esito **PASS**; catalogo `ca5c9a0a4f631d3ed050ac64d454d00720ac79dd453aa08403eb7322a37e227a`; motore `e75fb581cf472fc07ea07a679225f7cf665733f89ca6eee9c3da1fdaee78bd22`.
+Esito **PASS**; catalogo `2b6ee339f316df2704631ad6c95818fa92c88252b682e132b282780d2d063235`; motore `0972ea41d5eff32daa058ee77c948e234e9ef5de377ffa5a5111c7e28cbc5a32`.
 
 Le 20 domande A6 originarie sono riusate per riferimento, senza riscriverle. Le domande centrali orientano un programma amministrativo: i risultati di contesto non risolvono automaticamente bisogni, efficacia o causalità.
 
@@ -756,7 +756,7 @@ Le risorse comunali sono sostenibili e quali risultati dei servizi possiamo veri
 | Richiesta | Operazione / vista | Periodi / unità | Risposta | Verifica |
 |---|---|---|---|---|
 | finance_revenue | compare / currentRevenueAccruedPerResident / total | 2025 / currency | 046018: 1446.8854737228287; 046033: 1633.8676678544327 | PASS |
-| finance_benchmark_refused | benchmark_gap / currentCollectionCapacity / total |  /  | finance_benchmark_components_or_complete_scope_not_frozen | PASS |
+| finance_benchmark_tuscany | benchmark_gap / currentCollectionCapacity / total | 2025 / percent | 046018: 74.73251568554335; tuscany: 77.03034146738112 | PASS |
 | finance_rigid | compare / rigidExpenditureShare / total | 2025 / percent | 046018: 20.66; 046033: 24.48 | PASS |
 | finance_rigid_weight_refused | weighted_ratio / rigidExpenditureShare / total | 2025 / percent | verified_ratio_adapter_required | PASS |
 | distinct_debt_current | compare / financialDebtProfile / total | 2025 / currency | 046018: 465.49354306154265; 046033: 500.2012974693985 | PASS |

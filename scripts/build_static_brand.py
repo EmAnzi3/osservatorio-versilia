@@ -56,6 +56,7 @@ A3_ENRICHMENT_EVIDENCE_MATERIALIZER = ROOT / "scripts" / "apply_enrichment_evide
 A3_PUBLICATION_ADAPTER = ROOT / "scripts" / "materialize_a3_publication_adapter.py"
 BANK_BRANCHES_MATERIALIZER = ROOT / "scripts" / "materialize_bank_branches.py"
 STANDARD_NEEDS_MATERIALIZER = ROOT / "scripts" / "materialize_opencivitas_needs.py"
+OPENBDAP_BENCHMARK_MATERIALIZER = ROOT / "scripts" / "materialize_openbdap_benchmarks.py"
 
 _ORIGINAL_RUN_PATH = runpy.run_path
 
@@ -114,6 +115,7 @@ def _run_path_with_fragilita_r3_fix(path_name, *args, **kwargs):
         _ORIGINAL_RUN_PATH(str(A3_PUBLICATION_ADAPTER), run_name="__main__")
         _ORIGINAL_RUN_PATH(str(BANK_BRANCHES_MATERIALIZER), run_name="__main__")
         _ORIGINAL_RUN_PATH(str(STANDARD_NEEDS_MATERIALIZER), run_name="__main__")
+        _ORIGINAL_RUN_PATH(str(OPENBDAP_BENCHMARK_MATERIALIZER), run_name="__main__")
         return result
     if path != FRAGILITA_RUNTIME_PATCH:
         return _ORIGINAL_RUN_PATH(path_name, *args, **kwargs)

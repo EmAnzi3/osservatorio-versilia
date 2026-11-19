@@ -1,5 +1,30 @@
 # Consolidamento Osservatorio Versilia — handoff operativo
 
+## Confronto Toscana/Italia per i bilanci comunali (19 novembre 2026)
+
+Diciotto indicatori di rendiconto hanno ora il confronto con Toscana e Italia. La regola l'ha decisa Ema il 18 novembre:
+
+- l'aggregato si calcola sui Comuni che hanno trasmesso il rendiconto, come somma dei numeratori sulla somma dei denominatori degli stessi Comuni (popolazione Istat P2 al 1° gennaio per i valori per residente);
+- il valore si pubblica solo se quei Comuni coprono almeno il 90% dei residenti, e la copertura è dichiarata nella nota;
+- una missione assente dal riepilogo di un Comune vale zero.
+
+Situazione 2025:
+
+- Toscana: 272 Comuni su 273 (99,9%).
+- Italia: 91,5%. Mancano Valle d'Aosta e Trentino (nessun archivio armonizzato) e i Comuni sardi, che usano codici diversi da quelli del P2 e sono esclusi e dichiarati.
+- Protezione civile, sviluppo economico e turismo restano senza Italia, perché la copertura è sotto il 90%.
+- Il risultato di amministrazione disponibile resta senza confronto: la riconciliazione 7/7 non passa, perché la fonte oggi dà per Camaiore −114,87 euro per residente contro −92,16 pubblicati. È probabilmente un rendiconto ritrasmesso, da aggiornare a parte.
+
+Componenti:
+
+- `scripts/openbdap_benchmarks.py`, con la riconciliazione 7/7 fatta per singolo indicatore;
+- `update_source_data.py openbdap-benchmarks --year`, attivato dalla richiesta `openbdapBenchmarks`;
+- lo snapshot `openbdap-benchmark-AAAA.json`;
+- `materialize_openbdap_benchmarks.py`, ultimo passo dell'overlay;
+- nel motore A6, `semantic_query_finance_adapters.benchmark` con pin `finance#1`, componenti native e copertura nell'evidenza.
+
+I pagamenti SIOPE restano con la sola Toscana: l'Italia richiede i 20 flussi regionali SIOPE, da fare a parte.
+
 ## Nuovi indicatori: fabbisogni standard OpenCivitas (18 novembre 2026)
 
 Due indicatori comunali nel tema «Bilanci e amministrazione», nuova sezione «Fabbisogni standard» dopo «Autonomia, riscossione ed equilibri». Fonte: OpenCivitas (SOSE, MEF), file «Indicatori — Totale funzioni», annualità 2023.
