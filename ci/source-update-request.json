@@ -20,5 +20,6 @@
   "opencivitasNeeds": [],
   "aciVehiclesHistory": false,
   "istatFamiglie": false,
-  "openbdapBenchmarks": []
+  "openbdapBenchmarks": [],
+  "mefTaxpayersHistory": true
 }

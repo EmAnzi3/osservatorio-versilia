@@ -141,6 +141,7 @@ jobs:
           commands += [["bdi-branches-probe"]] if request.get("bdiBranchesProbe") else []
           commands += [["aci-vehicles-history"]] if request.get("aciVehiclesHistory") else []
           commands += [["istat-famiglie"]] if request.get("istatFamiglie") else []
+          commands += [["mef-taxpayers-history"]] if request.get("mefTaxpayersHistory") else []
           commands += [["openbdap-benchmarks", "--year", str(int(y))] for y in request.get("openbdapBenchmarks", [])]
           commands += [["opencivitas-needs"] + (["--year", str(int(y))] if y else []) for y in request.get("opencivitasNeeds", [])]
           commands += [["sdmx-probe", "--name", str(p["name"])] + (["--find", str(p["find"])] if p.get("find") else ["--flow", str(p["flow"]), "--key", str(p.get("key", "all"))]) + (["--start", str(p["start"])] if p.get("start") else []) for p in request.get("sdmxProbe", [])]
