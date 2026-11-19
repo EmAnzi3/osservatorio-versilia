@@ -6,6 +6,7 @@ from decimal import Decimal, ROUND_HALF_UP
 from semantic_operations import finite
 from semantic_query_library_adapters import TOWNS, fingerprint
 from acquire_a3_benchmark_aci_istat_annual import latest_snapshot
+from vehicles_history import SNAPSHOT as HISTORY
 
 MOTOR, EURO = KEYS = ('motorization', 'pollutingCars')
 NATIVE = latest_snapshot()
@@ -18,7 +19,9 @@ FORMULAS = {MOTOR: f'Autovetture ACI {Y} / popolazione residente al 1° gennaio 
 HASHES = {
     NATIVE: (_pin('vehicle#1'), _pin('vehicle#2')),
     POPULATION: (_pin('vehicle#3'), _pin('vehicle#4')),
-    DEMO: (_pin('vehicle#5'), _pin('vehicle#6'))}
+    DEMO: (_pin('vehicle#5'), _pin('vehicle#6')),
+    HISTORY: (_pin('vehicle#7'), _pin('vehicle#8'))}
+DEFINITIONS = {MOTOR: 'Autovetture ACI al 31 dicembre / popolazione residente al 1° gennaio successivo × 1.000', EURO: FORMULAS[EURO]}
 NOTES = ['vehicles_registered_stock_not_traffic_actual_use_or_resident_ownership',
          'vehicles_euro_classes_not_measured_air_quality_or_emissions',
          'vehicles_no_automatic_causal_or_policy_priority_claim']
@@ -42,7 +45,8 @@ def operations(key, dim): return ['compare', 'rank', 'benchmark_gap'] + (['weigh
 
 
 def selection_guard(key, dim, op):
-    if op in ('series', 'absolute_change', 'relative_change', 'percentage_points', 'trend'):
+    # Serie ACI 2018–2025 (2021 assente alla fonte): solo sui valori pubblicati a un decimale.
+    if op in ('series', 'absolute_change', 'relative_change', 'percentage_points', 'trend') and dim != 'total':
         raise ValueError('vehicles_single_snapshot_no_history')
     if op == 'weighted_ratio' and dim != 'nativeRatio':
         raise ValueError('vehicles_native_ratio_dimension_required')
@@ -58,8 +62,9 @@ def context(metric, key, dim):
             or metric.get('sourceUrl') != URL or metric.get('method', {}).get('formula') != FORMULAS[key]
             or metric['method'].get('coverage') != '7/7'):
         raise ValueError('vehicles_definition_changed')
-    return dict(unit=UNITS[key], population=f'ACI PRA registered municipal car stock {Y}; administrative location, not vehicle use',
-                definition=FORMULAS[key], method='published one-decimal rate retained' if dim == 'total' else 'native integer components; no reverse derivation from public rounded rates',
+    # Definizione e universo senza anno (uguali per tutta la serie); l'anno sta in periodBasis.
+    return dict(unit=UNITS[key], population='ACI PRA registered municipal car stock at 31 December; administrative location, not vehicle use',
+                definition=DEFINITIONS[key], method='published one-decimal rate retained' if dim == 'total' else 'native integer components; no reverse derivation from public rounded rates',
                 frequency='annual_snapshot', periodBasis=f'car stock {Y}; resident denominator 1 January 2026' if key == MOTOR else f'Euro 0–3 and all registered cars, both {Y}',
                 nativeComponentsAvailable=dim == 'nativeRatio', adapter='vehicles/'+key+'/'+dim+'/v1')
 
@@ -88,12 +93,13 @@ def validated(engine, key):
         if (row.get('town') != TOWNS[code] or row.get('slug') != '-'.join(TOWNS[code].lower().split())
                 or record[1:4] != ['TOSCANA','LUCCA',TOWNS[code].upper()] or proof['town'] != TOWNS[code]
                 or row.get('notApplicable') or row.get('dataUnavailable')
-                or any(row.get(f) is not None for f in ('series','normalized','ratioComponents'))):
+                or any(row.get(f) is not None for f in ('normalized','ratioComponents'))):
             raise ValueError('vehicles_municipal_definition_changed')
         equal(proof['population'], populations[code]); num,den,scale = components(key, record, populations[code])
         published = float((Decimal(num)/Decimal(den)*scale).quantize(Decimal('0.1'), rounding=ROUND_HALF_UP))
         equal(row.get('value'), published); equal(row.get('benchmarkValue'), published)
         selected[code] = (index, record, num, den, scale)
+    history(engine, key, metric)
     total = sum(r[2] for r in selected.values())/sum(r[3] for r in selected.values())*next(iter(selected.values()))[4]
     if key == EURO:
         total = math.fsum(row['value']*selected[row['code']][3] for row in metric['rows'])/sum(r[3] for r in selected.values())
@@ -111,8 +117,42 @@ def validated(engine, key):
     return snap, ref, selected, populations
 
 
+def history(engine, key, metric):
+    """Serie pubblicata = serie dello snapshot storico ACI; ultimo anno = valore corrente."""
+    if all(row.get('series') is None for row in metric['rows']) and metric['meta'].get('sourceMeta', {}).get('historySnapshot') is None:
+        return None
+    if metric['meta'].get('sourceMeta', {}).get('historySnapshot') != HISTORY:
+        raise ValueError('vehicles_history_definition_changed')
+    hist, href = frozen(engine, HISTORY)
+    if hist.get('qualityGate', {}).get('status') != 'PASS' or hist['years'][-1] != int(Y):
+        raise ValueError('vehicles_history_definition_changed')
+    population = {r['code']: dict(zip(r['series']['years'], r['series']['values'])) for r in engine._catalog['metrics']['population']['rows']}
+    for row in metric['rows']:
+        values = hist['series'][key][row['code']]
+        if row.get('series') != {'years': hist['years'], 'values': values} or values[-1] != row['value']:
+            raise ValueError('vehicles_history_definition_changed')
+        for j, year in enumerate(hist['years']):
+            t = hist['towns'][row['code']][str(year)]
+            num, den, scale = (t['total'], population[row['code']].get(year + 1), 1000) if key == MOTOR else (sum(t['euro0to3']), t['total'], 100)
+            if not den: raise ValueError('vehicles_denominator_period_or_identity_changed')
+            equal(values[j], float((Decimal(num)/Decimal(den)*scale).quantize(Decimal('0.1'), rounding=ROUND_HALF_UP)))
+    return hist, href, population
+
+
 def observation(engine, key, index, dim, period, historical):
     metric = engine._catalog['metrics'][key]; ctx = context(metric,key,dim)
+    if period != Y and dim == 'total':
+        validated(engine, key); got = history(engine, key, metric)
+        if got is None or int(period) not in got[0]['years']: raise ValueError('vehicles_period_not_frozen')
+        hist, href, population = got; row = metric['rows'][index]; code = row['code']; j = hist['years'].index(int(period))
+        t = hist['towns'][code][period]; value = hist['series'][key][code][j]
+        evidence = [dict(kind='catalog_snapshot',path=engine.catalog_path,sha256=engine.catalog_hash,valuePointer=f'/metrics/{key}/rows/{index}/series/values/{j}',publishedPrecision='one decimal'),
+                    dict(href,kind='source_snapshot',recordPointer=f'/towns/{code}/{period}',nativeCounts=dict(euro0to3=t['euro0to3'],total=t['total']),archive=hist['archives'][period],sourceUrl=URL)]
+        if key == MOTOR:
+            evidence.append(dict(kind='catalog_snapshot',path=engine.catalog_path,sha256=engine.catalog_hash,valuePointer=f'/metrics/population/rows/{next(i for i,r in enumerate(engine._catalog["metrics"]["population"]["rows"]) if r["code"] == code)}/series',denominatorDate=f'{int(period)+1}-01-01',nativeDenominator=population[code][int(period)+1]))
+        ctx = dict(ctx, periodBasis=(f'car stock {period}; resident denominator 1 January {int(period)+1}' if key == MOTOR else f'Euro 0–3 and all registered cars, both {period}'))
+        out = dict(ctx,metric=key,dimension=dim,geography=code,period=period,value=value,source=URL,evidence=evidence,provenance=evidence,notApplicable=False,dataUnavailable=False,missingReason=None)
+        return out, NOTES + ['vehicles_history_one_decimal_published_rates', 'vehicles_history_2021_not_published_by_aci']
     if period != Y: raise ValueError('vehicles_period_not_frozen')
     snap, ref, selected, populations = validated(engine,key); row = metric['rows'][index];code = row['code']
     j,record,num,den,scale = selected[code]

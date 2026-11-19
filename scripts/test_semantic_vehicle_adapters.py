@@ -21,6 +21,33 @@ def query(key, dim='total', op='compare', **selection):
     return dict(operation=op,selectors=[dict(metric=key,dimension=dim,**selection)])
 
 
+# Serie ACI 2018–2025 (2021 non pubblicato), trascritta dagli archivi dell'Autoritratto:
+# Massarosa 2018 = 15.505 autovetture, Euro 0–3 1.051+265+994+1.801, residenti 1/1/2019 21.696.
+HISTORY_YEARS = [2018, 2019, 2020, 2022, 2023, 2024, 2025]
+HISTORY_FIXED = {v.MOTOR: ('046018', '2018', 714.6, 15505, 21696), v.EURO: ('046018', '2018', 26.5, 4111, 15505)}
+
+
+def history(e, key):
+    code, period, want, num, den = HISTORY_FIXED[key]
+    r = e.query(query(key, 'total', 'series', towns=[code])); assert r['status'] == 'computed', r
+    assert [int(o['period']) for o in r['observations']] == HISTORY_YEARS
+    old = next(o for o in r['observations'] if o['period'] == period)
+    assert period in old['periodBasis'] and len({(o['definition'], o['population']) for o in r['observations']}) == 1
+    assert old['value'] == want and math.isclose(num / den * (1000 if key == v.MOTOR else 100), want, abs_tol=0.05)
+    counts = old['evidence'][1]['nativeCounts']; assert counts['total'] == (num if key == v.MOTOR else den)
+    if key == v.MOTOR: assert old['evidence'][2]['nativeDenominator'] == den and old['evidence'][2]['denominatorDate'] == '2019-01-01'
+    else: assert sum(counts['euro0to3']) == num
+    assert r['observations'][-1]['value'] == FIXED[code][3 if key == v.MOTOR else 4]
+    change = e.query(query(key, 'total', 'absolute_change', towns=[code], periods=[period, v.Y])); assert change['status'] == 'computed', change
+    assert math.isclose(change['result']['value'], FIXED[code][3 if key == v.MOTOR else 4] - want, abs_tol=1e-9)
+    assert e.query(query(key, 'total', 'trend', towns=[code]))['status'] == 'computed'
+    cross = e.query(query(key, periods=[period])); assert cross['status'] == 'computed' and len(cross['observations']) == 7
+    rejected(e, dict(query(key, 'total', 'benchmark_gap', towns=[code], periods=[period]), benchmark='tuscany'), 'vehicles_benchmark_scope_not_reviewed')
+    for mutate in (lambda m: m['rows'][2]['series']['values'].__setitem__(0, want + 0.1), lambda m: m['meta']['sourceMeta'].update(historySnapshot=v.DEMO)):
+        g = QueryEngine(e.catalog_path, layer='effective'); mutate(g._catalog['metrics'][key])
+        assert g.query(query(key, 'total', 'series', towns=[code]))['status'] == 'not_computable'
+
+
 def replay_workbook(snapshot):
     # Read the original OOXML workbook with stdlib only, as Quick CI does not
     # install spreadsheet libraries. Only merged geographic labels are carried.
@@ -93,8 +120,12 @@ def regressions(path):
                     gap=e.query(dict(query(key,dim,'benchmark_gap',towns=[code]),benchmark=scope));assert gap['status']=='computed',gap
                     assert math.isclose(gap['result']['value'],values[code]-b,rel_tol=0,abs_tol=1e-10)
             rejected(e,dict(query(key,dim,'benchmark_gap',towns=['046018']),benchmark='versilia'),'vehicles_benchmark_scope_not_reviewed')
-            for op in ('series','absolute_change','relative_change','percentage_points','trend'):
-                rejected(e,query(key,dim,op,towns=['046018']),'vehicles_single_snapshot_no_history')
+            if dim == 'nativeRatio':
+                for op in ('series','absolute_change','relative_change','percentage_points','trend'):
+                    rejected(e,query(key,dim,op,towns=['046018']),'vehicles_single_snapshot_no_history')
+            else:
+                history(e,key)
+            rejected(e,query(key,dim,periods=['2021']),'vehicles_period_not_frozen')
             rejected(e,query(key,dim,'anomaly'),'vehicles_peer_anomaly_not_reviewed')
             rejected(e,query(key,dim,periods=[str(int(v.Y)+1)]),'vehicles_period_not_frozen')
             for order in ([key,'population'],['population',key]):
@@ -120,7 +151,7 @@ def regressions(path):
         for field in ('sha256','path'):
             g=QueryEngine(e.catalog_path,layer='effective');_,ref=g.file(path);ref[field]='changed';assert g.query(query(v.MOTOR))['status']=='not_computable'
         g=QueryEngine(e.catalog_path,layer='effective');data,_=g.file(path);data['schemaVersion']=999;assert g.query(query(v.EURO))['status']=='not_computable'
-    print('Vehicles PASS: 14 published and 14 distinct native ratios, 21 fixed components, 56 gaps, 2 pooled ratios, 7997 workbook localization rows replayed, identity/precision/date/adversarial guards')
+    print('Vehicles PASS: 14 published and 14 distinct native ratios, 21 fixed components, 56 gaps, 2 pooled ratios, 2018–2025 series (2021 absent) with fixed historical cells, 7997 workbook localization rows replayed, identity/precision/date/adversarial guards')
 
 
 if __name__=='__main__': regressions(ROOT/'dist/data/site-data.json')

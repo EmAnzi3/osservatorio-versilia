@@ -452,6 +452,8 @@ export default {
 "vehicles_2024_stock_2026_residents_hybrid_explicit": "I veicoli sono del 2024, i residenti del 2026.",
 "vehicles_2025_stock_2026_residents_hybrid_explicit": "I veicoli sono del 2025, i residenti del 2026.",
 "vehicles_euro_classes_not_measured_air_quality_or_emissions": "Le classi Euro dei veicoli non sono misure di qualità dell’aria o di emissioni.",
+"vehicles_history_2021_not_published_by_aci": "Il 2021 manca: l’ACI non ha pubblicato il parco veicolare di quell’anno.",
+"vehicles_history_one_decimal_published_rates": "La serie usa i valori pubblicati, arrotondati a un decimale.",
 "vehicles_no_automatic_causal_or_policy_priority_claim": "I dati sui veicoli non indicano cause né priorità.",
 "vehicles_public_euro_aggregate_weights_rounded_rates_native_pooling_distinct": "Il dato pubblicato sulle classi Euro e quello calcolato complessivamente possono differire.",
 "vehicles_public_one_decimal_native_ratio_distinct": "Il valore pubblicato a un decimale può differire dal rapporto calcolato.",

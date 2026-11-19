@@ -18,6 +18,7 @@
   "bdiBranchesProbe": false,
   "bdiBranches": [],
   "opencivitasNeeds": [],
+  "aciVehiclesHistory": false,
   "istatFamiglie": false,
   "openbdapBenchmarks": []
 }

@@ -1,5 +1,16 @@
 # Consolidamento Osservatorio Versilia — handoff operativo
 
+## Serie storica del parco autovetture ACI (19 novembre 2026)
+
+Motorizzazione e quota di auto Euro 0–3 hanno ora la serie 2018–2025 per i sette Comuni. Il 2021 manca perché ACI non lo pubblica, e la nota del metodo lo dichiara.
+
+- `scripts/vehicles_history.py` legge il foglio «AV per comune» (dal 2024 «4 AV per Comune», con la colonna REGIONE) dagli archivi dell'Autoritratto, in formato xlsx o xls. Applica la stessa regola del valore corrente: auto al 31 dicembre su residenti al 1° gennaio successivo, arrotondamento a un decimale. L'ultimo anno deve coincidere con il valore pubblicato.
+- L'acquisizione si fa solo in CI con `update_source_data.py aci-vehicles-history`, attivato dalla richiesta `aciVehiclesHistory` (`xlrd` è installato nel workflow). Scrive `data/source-snapshots/aci-autovetture-serie.json`.
+- `materialize_vehicles_history.py`, nell'overlay dopo il confronto bilanci, mette la serie nelle righe comunali.
+- Nel motore A6 (pin `vehicle#7`/`#8`) serie, variazioni e trend sono ammessi solo sulla vista `total`. Ogni anno viene ricalcolato dai conteggi dello snapshot; `nativeRatio` e i confronti Toscana/Italia restano sull'anno corrente.
+
+Toscana e Italia storiche non sono incluse: gli archivi danno i conteggi, ma servirebbero i residenti di tutti i Comuni anno per anno (P2 2019–2026). È un possibile passo successivo.
+
 ## Confronto Toscana/Italia per i bilanci comunali (19 novembre 2026)
 
 Diciotto indicatori di rendiconto hanno ora il confronto con Toscana e Italia. La regola l'ha decisa Ema il 18 novembre:

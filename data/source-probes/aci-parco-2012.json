@@ -1,0 +1,32 @@
+{
+ "schemaVersion": 1,
+ "createdAt": "2026-11-19T06:03:55Z",
+ "note": "Sonda: struttura della fonte consultata; non è un dato pubblicato.",
+ "follow": null,
+ "result": {
+  "url": "https://aci.gov.it//app/uploads/2025/02/Parco_veicolare_2012.zip",
+  "contentType": "application/zip",
+  "bytes": 4202404,
+  "sha256": "d352df203dc3eabd607830f2d440fc70df0982831ffa007df2f44a3ae367c295",
+  "members": [
+   {
+    "name": "Circolante_Copert_2012.xls",
+    "bytes": 6029824
+   },
+   {
+    "name": "Circolante_FTS_Autovetture_2012.xls",
+    "bytes": 6262784
+   },
+   {
+    "name": "Parco veicolare-Vendite nel Mondo 2012 (Fonte ANFIA).xls",
+    "bytes": 351232
+   },
+   {
+    "name": "Parco_veicolare_2012.xls",
+    "bytes": 1820672
+   }
+  ],
+  "memberWorkbooks": {},
+  "memberCsv": {}
+ }
+}

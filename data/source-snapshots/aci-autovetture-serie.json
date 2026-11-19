@@ -1,0 +1,709 @@
+{
+  "schemaVersion": 1,
+  "version": "aci-autovetture-serie-2018-2025-v1",
+  "retrieved": "2026-11-19",
+  "publisher": "ACI — Autoritratto, parco veicolare",
+  "sourceUrl": "https://aci.gov.it/attivita-e-progetti/studi-e-ricerche/autoritratto/",
+  "years": [
+    2018,
+    2019,
+    2020,
+    2022,
+    2023,
+    2024,
+    2025
+  ],
+  "missingYears": [
+    2021
+  ],
+  "archives": {
+    "2018": {
+      "url": "https://aci.gov.it/app/uploads/2025/02/Parco_Veicolare_2018.zip",
+      "sha256": "fdd72f94de53a8ec4b2ff87773f0d9e587d1f46631fdea37c75bac871351f5fe",
+      "bytes": 6564892,
+      "member": "Parco Veicolare 2018/Circolante_Copert_2018.xlsx"
+    },
+    "2019": {
+      "url": "https://aci.gov.it/app/uploads/2024/06/Parco_veicoli_2019.zip",
+      "sha256": "3dc88f381ef05dd84e2ec69f543b09911e6f53e709b3de5810d60da163d4c2fa",
+      "bytes": 6657044,
+      "member": "Parco veicoli 2019/Parco veicoli Copert 2019.xlsx"
+    },
+    "2020": {
+      "url": "https://aci.gov.it/app/uploads/2024/06/Autoritratto2020_Parco_veicolare.zip",
+      "sha256": "e43561dd1dffb3777b3f53d9ff25f6983d8e80fbd95b0e4027200ab3010d454b",
+      "bytes": 4891927,
+      "member": "Autoritratto2020_Parco veicolare/Circolante_Copert_2020.xls"
+    },
+    "2022": {
+      "url": "https://aci.gov.it/app/uploads/2024/06/Consistenza_Parco_veicoli_2022.zip",
+      "sha256": "f4273c3304a27c7597e78f509446c6aefe51b3c9d2802d11462aa977cd64e3c0",
+      "bytes": 4575624,
+      "member": "Autoritratto2022_Parco veicolare/Circolante_Copert_2022.xls"
+    },
+    "2023": {
+      "url": "https://aci.gov.it/app/uploads/2024/06/Autoritratto2023_Parco_veicolare.zip",
+      "sha256": "a59aae086022ab36b65a063d6ae72b708e59c7f013badae970fcb5386af5a1eb",
+      "bytes": 6688134,
+      "member": "Autoritratto2023_Parco veicolare/Circolante_Copert_2023.xlsx"
+    },
+    "2024": {
+      "url": "https://aci.gov.it/app/uploads/2025/06/Autoritratto-2024-Parco-Veicolare.zip",
+      "sha256": "733dd5877d127d9e55a202ea444044e2b789c975c670a07204f8f966e352372c",
+      "bytes": 8092741,
+      "member": "Autoritratto2024_Parco_veicolare/Circolante_Copert_2024.xlsx"
+    },
+    "2025": {
+      "url": "https://aci.gov.it/app/uploads/2026/06/Autoritratto2025_Parco_veicolare.zip",
+      "sha256": "8f81c97efa892fe4b02f31c56875ebcd1693da023533897387e0cf66d298e6e3",
+      "bytes": 8256052,
+      "member": "Circolante_Copert_2025.xlsx"
+    }
+  },
+  "towns": {
+    "046005": {
+      "2018": {
+        "name": "CAMAIORE",
+        "euro0to3": [
+          1635,
+          337,
+          1388,
+          2516
+        ],
+        "total": 21645
+      },
+      "2019": {
+        "name": "CAMAIORE",
+        "euro0to3": [
+          1607,
+          307,
+          1248,
+          2310
+        ],
+        "total": 21807
+      },
+      "2020": {
+        "name": "CAMAIORE",
+        "euro0to3": [
+          1601,
+          294,
+          1160,
+          2145
+        ],
+        "total": 21950
+      },
+      "2022": {
+        "name": "CAMAIORE",
+        "euro0to3": [
+          1654,
+          290,
+          1012,
+          1806
+        ],
+        "total": 22246
+      },
+      "2023": {
+        "name": "CAMAIORE",
+        "euro0to3": [
+          1659,
+          287,
+          963,
+          1686
+        ],
+        "total": 22555
+      },
+      "2024": {
+        "name": "CAMAIORE",
+        "euro0to3": [
+          1647,
+          277,
+          906,
+          1554
+        ],
+        "total": 22650
+      },
+      "2025": {
+        "name": "CAMAIORE",
+        "euro0to3": [
+          1646,
+          281,
+          862,
+          1432
+        ],
+        "total": 22893
+      }
+    },
+    "046013": {
+      "2018": {
+        "name": "FORTE DEI MARMI",
+        "euro0to3": [
+          450,
+          66,
+          273,
+          519
+        ],
+        "total": 4954
+      },
+      "2019": {
+        "name": "FORTE DEI MARMI",
+        "euro0to3": [
+          446,
+          62,
+          254,
+          478
+        ],
+        "total": 4985
+      },
+      "2020": {
+        "name": "FORTE DEI MARMI",
+        "euro0to3": [
+          460,
+          60,
+          238,
+          438
+        ],
+        "total": 5013
+      },
+      "2022": {
+        "name": "FORTE DEI MARMI",
+        "euro0to3": [
+          454,
+          55,
+          195,
+          329
+        ],
+        "total": 4914
+      },
+      "2023": {
+        "name": "FORTE DEI MARMI",
+        "euro0to3": [
+          457,
+          56,
+          178,
+          299
+        ],
+        "total": 4877
+      },
+      "2024": {
+        "name": "FORTE DEI MARMI",
+        "euro0to3": [
+          457,
+          56,
+          160,
+          266
+        ],
+        "total": 4839
+      },
+      "2025": {
+        "name": "FORTE DEI MARMI",
+        "euro0to3": [
+          456,
+          55,
+          151,
+          245
+        ],
+        "total": 4824
+      }
+    },
+    "046018": {
+      "2018": {
+        "name": "MASSAROSA",
+        "euro0to3": [
+          1051,
+          265,
+          994,
+          1801
+        ],
+        "total": 15505
+      },
+      "2019": {
+        "name": "MASSAROSA",
+        "euro0to3": [
+          1056,
+          249,
+          884,
+          1665
+        ],
+        "total": 15626
+      },
+      "2020": {
+        "name": "MASSAROSA",
+        "euro0to3": [
+          1055,
+          241,
+          795,
+          1538
+        ],
+        "total": 15712
+      },
+      "2022": {
+        "name": "MASSAROSA",
+        "euro0to3": [
+          1053,
+          227,
+          685,
+          1312
+        ],
+        "total": 15562
+      },
+      "2023": {
+        "name": "MASSAROSA",
+        "euro0to3": [
+          1054,
+          225,
+          650,
+          1250
+        ],
+        "total": 15938
+      },
+      "2024": {
+        "name": "MASSAROSA",
+        "euro0to3": [
+          1068,
+          220,
+          624,
+          1150
+        ],
+        "total": 16170
+      },
+      "2025": {
+        "name": "MASSAROSA",
+        "euro0to3": [
+          1067,
+          218,
+          611,
+          1094
+        ],
+        "total": 16515
+      }
+    },
+    "046024": {
+      "2018": {
+        "name": "PIETRASANTA",
+        "euro0to3": [
+          1521,
+          296,
+          969,
+          1691
+        ],
+        "total": 15961
+      },
+      "2019": {
+        "name": "PIETRASANTA",
+        "euro0to3": [
+          1508,
+          276,
+          868,
+          1553
+        ],
+        "total": 16153
+      },
+      "2020": {
+        "name": "PIETRASANTA",
+        "euro0to3": [
+          1499,
+          266,
+          793,
+          1424
+        ],
+        "total": 16169
+      },
+      "2022": {
+        "name": "PIETRASANTA",
+        "euro0to3": [
+          1511,
+          232,
+          671,
+          1157
+        ],
+        "total": 16228
+      },
+      "2023": {
+        "name": "PIETRASANTA",
+        "euro0to3": [
+          1512,
+          229,
+          617,
+          1069
+        ],
+        "total": 16420
+      },
+      "2024": {
+        "name": "PIETRASANTA",
+        "euro0to3": [
+          1516,
+          229,
+          585,
+          978
+        ],
+        "total": 16516
+      },
+      "2025": {
+        "name": "PIETRASANTA",
+        "euro0to3": [
+          1502,
+          225,
+          553,
+          932
+        ],
+        "total": 16683
+      }
+    },
+    "046028": {
+      "2018": {
+        "name": "SERAVEZZA",
+        "euro0to3": [
+          664,
+          125,
+          535,
+          954
+        ],
+        "total": 8334
+      },
+      "2019": {
+        "name": "SERAVEZZA",
+        "euro0to3": [
+          651,
+          119,
+          475,
+          859
+        ],
+        "total": 8383
+      },
+      "2020": {
+        "name": "SERAVEZZA",
+        "euro0to3": [
+          645,
+          111,
+          444,
+          779
+        ],
+        "total": 8384
+      },
+      "2022": {
+        "name": "SERAVEZZA",
+        "euro0to3": [
+          633,
+          100,
+          371,
+          633
+        ],
+        "total": 8434
+      },
+      "2023": {
+        "name": "SERAVEZZA",
+        "euro0to3": [
+          638,
+          104,
+          361,
+          566
+        ],
+        "total": 8568
+      },
+      "2024": {
+        "name": "SERAVEZZA",
+        "euro0to3": [
+          637,
+          98,
+          333,
+          517
+        ],
+        "total": 8607
+      },
+      "2025": {
+        "name": "SERAVEZZA",
+        "euro0to3": [
+          631,
+          97,
+          311,
+          484
+        ],
+        "total": 8713
+      }
+    },
+    "046030": {
+      "2018": {
+        "name": "STAZZEMA",
+        "euro0to3": [
+          183,
+          49,
+          144,
+          238
+        ],
+        "total": 1953
+      },
+      "2019": {
+        "name": "STAZZEMA",
+        "euro0to3": [
+          179,
+          47,
+          136,
+          212
+        ],
+        "total": 1982
+      },
+      "2020": {
+        "name": "STAZZEMA",
+        "euro0to3": [
+          180,
+          48,
+          128,
+          199
+        ],
+        "total": 1992
+      },
+      "2022": {
+        "name": "STAZZEMA",
+        "euro0to3": [
+          180,
+          45,
+          106,
+          173
+        ],
+        "total": 1979
+      },
+      "2023": {
+        "name": "STAZZEMA",
+        "euro0to3": [
+          183,
+          39,
+          110,
+          170
+        ],
+        "total": 2004
+      },
+      "2024": {
+        "name": "STAZZEMA",
+        "euro0to3": [
+          185,
+          43,
+          109,
+          172
+        ],
+        "total": 2060
+      },
+      "2025": {
+        "name": "STAZZEMA",
+        "euro0to3": [
+          190,
+          48,
+          109,
+          163
+        ],
+        "total": 2056
+      }
+    },
+    "046033": {
+      "2018": {
+        "name": "VIAREGGIO",
+        "euro0to3": [
+          3026,
+          585,
+          2171,
+          4101
+        ],
+        "total": 37471
+      },
+      "2019": {
+        "name": "VIAREGGIO",
+        "euro0to3": [
+          3018,
+          553,
+          1975,
+          3696
+        ],
+        "total": 38021
+      },
+      "2020": {
+        "name": "VIAREGGIO",
+        "euro0to3": [
+          3024,
+          536,
+          1814,
+          3359
+        ],
+        "total": 38392
+      },
+      "2022": {
+        "name": "VIAREGGIO",
+        "euro0to3": [
+          3025,
+          507,
+          1571,
+          2763
+        ],
+        "total": 38681
+      },
+      "2023": {
+        "name": "VIAREGGIO",
+        "euro0to3": [
+          2993,
+          487,
+          1460,
+          2593
+        ],
+        "total": 39191
+      },
+      "2024": {
+        "name": "VIAREGGIO",
+        "euro0to3": [
+          2982,
+          470,
+          1355,
+          2351
+        ],
+        "total": 39446
+      },
+      "2025": {
+        "name": "VIAREGGIO",
+        "euro0to3": [
+          2983,
+          467,
+          1274,
+          2182
+        ],
+        "total": 39896
+      }
+    }
+  },
+  "series": {
+    "motorization": {
+      "046005": [
+        683.5,
+        691.3,
+        691.1,
+        697.1,
+        707.9,
+        711.5,
+        720.7
+      ],
+      "046013": [
+        692.3,
+        701.0,
+        694.6,
+        714.3,
+        719.6,
+        725.9,
+        736.5
+      ],
+      "046018": [
+        714.6,
+        722.9,
+        715.8,
+        713.1,
+        728.9,
+        741.5,
+        758.2
+      ],
+      "046024": [
+        691.8,
+        702.4,
+        699.3,
+        707.6,
+        720.6,
+        726.2,
+        735.6
+      ],
+      "046028": [
+        648.8,
+        656.3,
+        667.7,
+        680.4,
+        689.0,
+        695.2,
+        709.3
+      ],
+      "046030": [
+        657.4,
+        670.0,
+        687.4,
+        687.9,
+        690.3,
+        712.3,
+        738.8
+      ],
+      "046033": [
+        618.3,
+        628.3,
+        626.8,
+        635.3,
+        645.1,
+        650.7,
+        657.5
+      ]
+    },
+    "pollutingCars": {
+      "046005": [
+        27.1,
+        25.1,
+        23.7,
+        21.4,
+        20.4,
+        19.4,
+        18.4
+      ],
+      "046013": [
+        26.4,
+        24.9,
+        23.9,
+        21.0,
+        20.3,
+        19.4,
+        18.8
+      ],
+      "046018": [
+        26.5,
+        24.7,
+        23.1,
+        21.1,
+        19.9,
+        18.9,
+        18.1
+      ],
+      "046024": [
+        28.0,
+        26.0,
+        24.6,
+        22.0,
+        20.9,
+        20.0,
+        19.3
+      ],
+      "046028": [
+        27.3,
+        25.1,
+        23.6,
+        20.6,
+        19.5,
+        18.4,
+        17.5
+      ],
+      "046030": [
+        31.4,
+        29.0,
+        27.9,
+        25.5,
+        25.0,
+        24.7,
+        24.8
+      ],
+      "046033": [
+        26.4,
+        24.3,
+        22.7,
+        20.3,
+        19.2,
+        18.1,
+        17.3
+      ]
+    }
+  },
+  "rule": "Motorizzazione = autovetture al 31 dicembre / residenti al 1° gennaio dell'anno successivo × 1.000; quota Euro 0–3 = autovetture Euro 0–3 / totale × 100; arrotondamento a un decimale come i valori pubblicati.",
+  "qualityGate": {
+    "status": "PASS",
+    "note": "Ultimo anno (2025) identico al valore pubblicato per i 7 Comuni."
+  },
+  "acquisitionEvidence": {
+    "script": "scripts/update_source_data.py aci-vehicles-history"
+  }
+}
