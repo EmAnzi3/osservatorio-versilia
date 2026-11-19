@@ -1,6 +1,6 @@
 # Programma dei dossier territoriali — evidenze verificate
 
-Esito **PASS**; catalogo `20c4757812f7bb5f166b7a5f1eaa78d9ec9a7d926d0b60fcc332daf2f47fa96a`; motore `0972ea41d5eff32daa058ee77c948e234e9ef5de377ffa5a5111c7e28cbc5a32`.
+Esito **PASS**; catalogo `d3ff4b9abbe1013be662cdd5e2cf830dda31def7d794c9f58bd90efa3ab6e6b7`; motore `0972ea41d5eff32daa058ee77c948e234e9ef5de377ffa5a5111c7e28cbc5a32`.
 
 Le 20 domande A6 originarie sono riusate per riferimento, senza riscriverle. Le domande centrali orientano un programma amministrativo: i risultati di contesto non risolvono automaticamente bisogni, efficacia o causalità.
 
@@ -8,7 +8,7 @@ Le 20 domande A6 originarie sono riusate per riferimento, senza riscriverle. Le 
 |---|---|---|---|---|
 | Famiglie, natalità e ricambio | program_backlog | 9 richieste verificate | Contesti e calcoli separati, periodi espliciti | Proiezioni per frazione e coorte; Composizione e bisogni dei nuclei, residenti effettivi |
 | Lavoro e trasformazioni produttive | ready_for_composition | 23 richieste verificate | Contesti e calcoli separati, periodi espliciti | Transizioni professionali e qualità dei contratti; Pannello settoriale a prezzi costanti e dati recenti |
-| Redditi e vulnerabilità economica | program_backlog | 22 richieste verificate | Contesti e calcoli separati, periodi espliciti | ISEE, reddito disponibile familiare e patrimonio; Costi essenziali e persone non dichiaranti |
+| Redditi e vulnerabilità economica | program_backlog | 23 richieste verificate | Contesti e calcoli separati, periodi espliciti | ISEE, reddito disponibile familiare e patrimonio; Costi essenziali e persone non dichiaranti |
 | Infanzia, scuola e giovani | ready_for_composition | 24 richieste verificate | Contesti e calcoli separati, periodi espliciti | Utenti residenti, domanda inevasa, tariffe e orari; Bacini degli alunni, capienza effettiva e tempi di percorso |
 | Invecchiamento, autonomia e assistenza | ready_for_composition | 16 richieste verificate | Contesti e calcoli separati, periodi espliciti | Non autosufficienza, caregiver e bisogni non soddisfatti; Utenti unici, intensità/ore di assistenza e attese |
 | Inclusione e servizi sociali | program_backlog | 18 richieste verificate | Contesti e calcoli separati, periodi espliciti | Platee eleggibili, utenti e domanda inevasa; Tempi, continuità, esiti e accesso per sottogruppo |
@@ -169,6 +169,7 @@ Quali segnali economici giustificano approfondire il bisogno di sostegno? **Risp
 | mef_pensionIncomeShare_tuscany_gap | benchmark_gap / pensionIncomeShare / total | 2024 / percent | 046018: 30.056261521961424; tuscany: 30.97777568992456 | PASS |
 | mef_pensionIncomeShare_absolute_change_refused | absolute_change / pensionIncomeShare / total |  /  | mef_temporal_change_not_reviewed | PASS |
 | mef_taxpayersAdultPopulationRate_total | compare / taxpayersAdultPopulationRate / total | MEF a.i. 2024 · residenti 1.1.2026 / per100 | 046005: 87.69446340674739; 046013: 88.31991779414284; 046018: 86.61949519484634; 046024: 88.1842223441944; 046028: 88.23257105823535; 046030: 86.58880386629077; 046033: 87.68618726196313 | PASS |
+| mef_taxpayersAdultPopulationRate_series_046018 | series / taxpayersAdultPopulationRate / total | 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024 / per100 | 046018: 85.26338702655639; 046018: 85.23197560444348; 046018: 84.14268905765323; 046018: 83.80482044124751; 046018: 84.41391843497782; 046018: 85.08334218069858; 046018: 86.71899862098228 | PASS |
 | mef_taxpayersAdultPopulationRate_total_pooled | weighted_ratio / taxpayersAdultPopulationRate / total | MEF a.i. 2024 · residenti 1.1.2026 / per100 | 046005: 87.69446340674739; 046013: 88.31991779414284; 046018: 86.61949519484634; 046024: 88.1842223441944; 046028: 88.23257105823535; 046030: 86.58880386629077; 046033: 87.68618726196313 | PASS |
 | mef_taxpayersAdultPopulationRate_tuscany_gap | benchmark_gap / taxpayersAdultPopulationRate / total | MEF a.i. 2024 · residenti 1.1.2026 / per100 | 046018: 86.61949519484634; tuscany: 89.35750687431118 | PASS |
 | mef_taxpayersAdultPopulationRate_absolute_change_refused | absolute_change / taxpayersAdultPopulationRate / total |  /  | mef_temporal_change_not_reviewed | PASS |
@@ -177,7 +178,7 @@ Quali segnali economici giustificano approfondire il bisogno di sostegno? **Risp
 | real_income_gap_tuscany_046018 | benchmark_gap / incomeVsInflation / total | 2024 / percent | 046018: 3.4042; tuscany: 1.1133958655057397 | PASS |
 | real_income_total_absolute_change_refused | absolute_change / incomeVsInflation / total |  /  | real_income_cumulative_temporal_analysis_not_reviewed | PASS |
 
-**Fonti effettivamente lette:** https://www1.finanze.gov.it/finanze/analisi_stat/public/index.php; https://www1.finanze.gov.it/finanze/analisi_stat/public/v_4_0_0/contenuti/Redditi_e_principali_variabili_IRPEF_su_base_comunale_CSV_2023.zip?d=1615465800; https://www1.finanze.gov.it/finanze/analisi_stat/public/v_4_0_0/contenuti/Redditi_e_principali_variabili_IRPEF_su_base_comunale_CSV_2024.zip?d=1615465800
+**Fonti effettivamente lette:** https://www1.finanze.gov.it/finanze/analisi_stat/public/index.php; https://www1.finanze.gov.it/finanze/analisi_stat/public/v_4_0_0/contenuti/Redditi_e_principali_variabili_IRPEF_su_base_comunale_CSV_2017.zip; https://www1.finanze.gov.it/finanze/analisi_stat/public/v_4_0_0/contenuti/Redditi_e_principali_variabili_IRPEF_su_base_comunale_CSV_2018.zip; https://www1.finanze.gov.it/finanze/analisi_stat/public/v_4_0_0/contenuti/Redditi_e_principali_variabili_IRPEF_su_base_comunale_CSV_2019.zip; https://www1.finanze.gov.it/finanze/analisi_stat/public/v_4_0_0/contenuti/Redditi_e_principali_variabili_IRPEF_su_base_comunale_CSV_2020.zip; https://www1.finanze.gov.it/finanze/analisi_stat/public/v_4_0_0/contenuti/Redditi_e_principali_variabili_IRPEF_su_base_comunale_CSV_2021.zip; https://www1.finanze.gov.it/finanze/analisi_stat/public/v_4_0_0/contenuti/Redditi_e_principali_variabili_IRPEF_su_base_comunale_CSV_2022.zip; https://www1.finanze.gov.it/finanze/analisi_stat/public/v_4_0_0/contenuti/Redditi_e_principali_variabili_IRPEF_su_base_comunale_CSV_2023.zip; https://www1.finanze.gov.it/finanze/analisi_stat/public/v_4_0_0/contenuti/Redditi_e_principali_variabili_IRPEF_su_base_comunale_CSV_2023.zip?d=1615465800; https://www1.finanze.gov.it/finanze/analisi_stat/public/v_4_0_0/contenuti/Redditi_e_principali_variabili_IRPEF_su_base_comunale_CSV_2024.zip; https://www1.finanze.gov.it/finanze/analisi_stat/public/v_4_0_0/contenuti/Redditi_e_principali_variabili_IRPEF_su_base_comunale_CSV_2024.zip?d=1615465800
 
 Un PASS delle richieste di contesto non rende determinabile la domanda decisionale centrale. I perimetri territoriali/temporali eseguiti restano quelli espliciti delle query.
 
