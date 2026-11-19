@@ -1285,6 +1285,13 @@
       "reasonCode": "outside_municipal_call",
       "reason": "GRANFEST 2027: «La partecipazione al bando è riservata a soli soggetti privati». Le richieste dei soggetti pubblici (Comuni, Unioni di Comuni) sono espressamente non ammissibili e rinviate al bando «FUORI LUOGO – Territori in scena»; il Comune compare solo come possibile cofinanziatore, che da solo non costituisce un ruolo nella candidatura.",
       "reviewed_at": "2026-11-06"
+    },
+    {
+      "coverage_id": "auto-164c8484e9bcd711",
+      "url": "https://www.regione.toscana.it/it/-/avviso-pubblico-toscana-art-bonus-per-comuni-e-unioni-di-comuni",
+      "reasonCode": "outside_municipal_call",
+      "reason": "Toscana Art Bonus per i progetti di paesaggio del PIT-PPR (decreto 24590 del 9 novembre 2026): ammessi solo i Comuni e le Unioni dei territori elencati nell'avviso (Leopoldine in Val di Chiana, Val d'Orcia e Crete Senesi, Pratomagno, Capraia, Mugello, Lunigiana, Val di Cecina; studi di fattibilità Valle del Serchio, Valli di Pesa e Virginio, area pisana). Nessun Comune della Versilia è fra gli enti ammessi.",
+      "reviewed_at": "2026-11-19"
     }
   ]
 }
