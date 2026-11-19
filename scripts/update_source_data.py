@@ -866,6 +866,29 @@ def update_aci_vehicles_history(dry_run: bool) -> Changes:
     return changes
 
 
+# ------------------------------------------------------------------ MIM: serie di alunni, classi e tempo pieno
+
+def update_mim_students_history(dry_run: bool, fetch=None) -> Changes:
+    """Serie per anno scolastico di alunni, alunni per classe e tempo pieno; ultimo anno = valori pubblicati."""
+    import school_history as sh
+
+    site = load(SITE)
+    current = {k: {r["code"]: r["value"] for r in site["metrics"][k]["rows"]} for k in sh.KEYS}
+    last = int(re.search(r"(20\d\d)/\d\d", site["metrics"]["schoolStudents"]["meta"]["year"]).group(1))
+    try:
+        snapshot = sh.build_snapshot(fetch or probes.http_fetch, current, last)
+    except (sh.SchoolError, KeyError, ValueError, probes.ProbeError) as error:
+        raise UpdateError(f"Serie alunni MIM: {error}") from error
+    changes = Changes()
+    for key, towns in snapshot["series"].items():
+        for code, values in towns.items():
+            changes.note(f"{key} {code} {snapshot['schoolYears'][0]}", None, round(values[0], 4))
+    snapshot["acquisitionEvidence"] = {"script": "scripts/update_source_data.py mim-students-history"}
+    if not dry_run:
+        save(ROOT / sh.SNAPSHOT, snapshot)
+    return changes
+
+
 # ------------------------------------------------------------------ MEF/Istat: serie dei contribuenti ogni 100 maggiorenni
 
 def update_mef_taxpayers_history(dry_run: bool, fetch=None) -> Changes:
@@ -1647,6 +1670,8 @@ def main() -> int:
     sub.add_parser("bdi-branches-probe", help="sonda degli sportelli Banca d'Italia (non modifica il catalogo)")
     vh_p = sub.add_parser("aci-vehicles-history", help="serie storica di motorizzazione e quota Euro 0–3 (archivi ACI)")
     vh_p.add_argument("--dry-run", action="store_true")
+    sc_p = sub.add_parser("mim-students-history", help="serie MIM di alunni, alunni per classe e tempo pieno della primaria")
+    sc_p.add_argument("--dry-run", action="store_true")
     tx_p = sub.add_parser("mef-taxpayers-history", help="serie dei contribuenti MEF ogni 100 maggiorenni (MEF + Istat POSAS)")
     tx_p.add_argument("--dry-run", action="store_true")
     hh_p = sub.add_parser("istat-famiglie", help="serie comunale del numero medio di componenti per famiglia (Istat)")
@@ -1671,6 +1696,8 @@ def main() -> int:
             update_bdi_branches(args.year, args.dir, args.dry_run).report(f"Sportelli bancari {args.year}{' (prova a secco)' if args.dry_run else ''}:")
         elif args.updater == "aci-vehicles-history":
             update_aci_vehicles_history(args.dry_run).report("Serie parco autovetture:")
+        elif args.updater == "mim-students-history":
+            update_mim_students_history(args.dry_run).report("Serie alunni MIM:")
         elif args.updater == "mef-taxpayers-history":
             update_mef_taxpayers_history(args.dry_run).report("Serie contribuenti:")
         elif args.updater == "istat-famiglie":

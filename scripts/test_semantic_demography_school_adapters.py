@@ -20,7 +20,7 @@ def regressions(path):
                 rows,_=e.select(selector,'compare');observations+=len(rows)
                 assert rows[0]['geography']==code and rows[0]['dimension']==dimension
                 assert all(len(p['sha256'])==64 for p in rows[0]['provenance'])
-                current_only=key in (d.SITES,*d.STUDENTS,*d.BUILDINGS) or '|sex:' in dimension or dimension.startswith('sex:')
+                current_only=key in (d.SITES,*d.BUILDINGS) or '|sex:' in dimension or dimension.startswith('sex:')
                 if not current_only:
                     rows,_=e.select(selector,'series');observations+=len(rows)
                     assert len({r['period'] for r in rows})==len(rows)
@@ -103,6 +103,22 @@ def regressions(path):
         frozen=root/d.BUILDING;snapshot=json.loads(frozen.read_text());snapshot['towns']['Massarosa']['accessibilita']['UNKNOWN_NEW']=1
         frozen.write_text(json.dumps(snapshot))
         rejected(changed(catalog),request('compare',d.BUILDINGS[1]),'response_category_not_reviewed')
+    # Serie MIM 2015/16–2024/25 (anagrafe di ciascun anno). Celle fisse: Massarosa 2015/16 = 1.580 alunni,
+    # 86 classi, 581 alunni della primaria a tempo pieno su 1.008; Stazzema 2018/19 = 148 alunni, 9 classi, 92/92.
+    school_fixed={('046018','2015/16'):(1580,86,581,1008),('046030','2018/19'):(148,9,92,92)}
+    for (code,period),(students,classes,full,primary) in school_fixed.items():
+        for key,want,n,den in (('schoolStudents',students,None,None),('studentsPerClass',students/classes,students,classes),('primaryFullTimeShare',100*full/primary,full,primary)):
+            r=e.query(request('compare',key,periods=[period]));assert r['status']=='computed' and len(r['observations'])==7,r
+            o=next(o for o in r['observations'] if o['geography']==code);assert math.isclose(o['value'],want,abs_tol=1e-9),(key,o['value'],want)
+            if n is not None:assert o['numerator']==n and o['denominator']==den
+            assert o['periodBasis'].startswith(f'native school year {period}');observations+=1
+    for key in d.STUDENTS:
+        series=e.query(request('series',key,towns=['046018']));assert series['status']=='computed',series
+        assert [o['period'] for o in series['observations']]==[f'{y}/{(y+1)%100:02d}' for y in range(2015,2025)]
+    rejected(e,request('compare','schoolStudents',periods=['2014/15']),'demography_school_period_not_available')
+    for mutate in (lambda m:m['rows'][0]['series']['values'].__setitem__(0,1),lambda m:m['meta']['sourceMeta'].update(historySnapshot=d.LIA)):
+        g=QueryEngine(e.catalog_path,layer='effective');mutate(g._catalog['metrics']['studentsPerClass'])
+        assert g.query(request('compare','studentsPerClass',periods=['2016/17']))['status']=='not_computable'
     print(f'A6 demography/school: {observations} native observations, independent arithmetic, nulls, dates and adversarial cases PASS')
 
 

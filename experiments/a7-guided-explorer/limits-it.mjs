@@ -343,6 +343,7 @@ export default {
 "road_speed_fine_share_intentionally_unpublished": "La quota delle multe per velocità non è pubblicata di proposito.",
 "road_temporal_continuity_and_pairs_not_reviewed": "La continuità nel tempo dei dati stradali non è stata verificata.",
 "road_traffic_tourism_and_small_counts_preclude_automatic_policy_ranking": "Traffico, turismo e numeri piccoli impediscono classifiche automatiche fra Comuni.",
+"school_history_registry_of_each_school_year": "Per ogni anno scolastico valgono le scuole dell’anagrafe di quell’anno.",
 "school_site_stock_and_normalized_denominator_dates_not_attested": "Le date di riferimento delle sedi scolastiche non sono attestate.",
 "school_sites_not_unique_buildings_or_pupil_capacity": "Le sedi scolastiche non sono edifici distinti né indicano la capienza.",
 "school_year_not_calendar_year": "Il periodo è l’anno scolastico, non l’anno solare.",

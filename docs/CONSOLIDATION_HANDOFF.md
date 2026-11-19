@@ -1,5 +1,13 @@
 # Consolidamento Osservatorio Versilia — handoff operativo
 
+## Serie storiche delle scuole (19 novembre 2026)
+
+Alunni nelle scuole del Comune, alunni per classe e alunni della primaria a tempo pieno hanno ora la serie dall'a.s. 2015/16 al 2024/25 nei sette Comuni.
+
+- Regola identica al valore pubblicato. Per ogni anno valgono le scuole statali e paritarie dell'anagrafe MIM di quell'anno (TOSCANA, LUCCA, Comune). Si contano alunni e classi di primaria e secondaria e la quota della primaria a «TEMPO PIENO», calcolata come 100 × numeratore / denominatore, nello stesso ordine del pubblicato.
+- `scripts/school_history.py`; aggiornatore solo in CI `update_source_data.py mim-students-history`, attivato dalla richiesta `mimStudentsHistory`; snapshot `mim-alunni-serie.json`.
+- Nel motore A6 (pin `demography_school#1`/`#2`) sono ammessi serie, variazioni, trend e confronti per anno. Le sedi scolastiche e l'edilizia restano senza storico.
+
 ## Serie storica dei contribuenti ogni 100 maggiorenni (19 novembre 2026)
 
 L'indicatore «Contribuenti ogni 100 maggiorenni» ha ora la serie per anno d'imposta dal 2017 al 2024 nei sette Comuni.
