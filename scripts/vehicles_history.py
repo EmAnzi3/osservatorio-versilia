@@ -15,6 +15,7 @@ from __future__ import annotations
 
 import hashlib
 import io
+import re
 import zipfile
 from datetime import date
 from decimal import ROUND_HALF_UP, Decimal
@@ -34,6 +35,8 @@ SNAPSHOT = "data/source-snapshots/aci-autovetture-serie.json"
 TOWNS = {"046005": "CAMAIORE", "046013": "FORTE DEI MARMI", "046018": "MASSAROSA", "046024": "PIETRASANTA",
          "046028": "SERAVEZZA", "046030": "STAZZEMA", "046033": "VIAREGGIO"}
 EURO = ("EURO 0", "EURO 1", "EURO 2", "EURO 3")
+# «AV per comune» fino al 2023, «4 AV per Comune» dal 2024 (con la colonna REGIONE in testa).
+SHEET_RE = re.compile(r"(?:\d+\s+)?AV PER COMUNE")
 
 
 class VehiclesError(RuntimeError):
@@ -46,7 +49,7 @@ def _rows(name: str, raw: bytes) -> list[list[Any]]:
         from openpyxl import load_workbook
 
         wb = load_workbook(io.BytesIO(raw), read_only=True, data_only=True)
-        sheets = [s for s in wb.sheetnames if s.strip().upper().startswith("AV PER COMUNE")]
+        sheets = [s for s in wb.sheetnames if SHEET_RE.fullmatch(s.strip().upper())]
         if len(sheets) != 1:
             raise VehiclesError(f"{name}: fogli «AV per comune» {sheets}")
         ws = wb[sheets[0]]
@@ -55,7 +58,7 @@ def _rows(name: str, raw: bytes) -> list[list[Any]]:
     import xlrd
 
     book = xlrd.open_workbook(file_contents=raw)
-    sheets = [s for s in book.sheet_names() if s.strip().upper().startswith("AV PER COMUNE")]
+    sheets = [s for s in book.sheet_names() if SHEET_RE.fullmatch(s.strip().upper())]
     if len(sheets) != 1:
         raise VehiclesError(f"{name}: fogli «AV per comune» {sheets}")
     sh = book.sheet_by_name(sheets[0])
@@ -68,20 +71,22 @@ def year_counts(raw: bytes, year: int) -> dict[str, Any]:
         if len(names) != 1:
             raise VehiclesError(f"{year}: file Copert {names} fra {z.namelist()}")
         rows = _rows(names[0], z.read(names[0]))
-    head = next((i for i, r in enumerate(rows) if r and str(r[0] or "").strip().upper() == "PROVINCIA"), None)
+    upper = lambda r: [str(h or "").strip().upper() for h in r]
+    head = next((i for i, r in enumerate(rows) if r and "PROVINCIA" in upper(r) and "COMUNE" in upper(r)), None)
     if head is None:
         raise VehiclesError(f"{year}: intestazione PROVINCIA/COMUNE assente")
-    header = [str(h or "").strip().upper() for h in rows[head]]
-    if header[1] != "COMUNE" or any(e not in header for e in EURO) or "TOTALE" not in header:
+    header = upper(rows[head])
+    pc, cc = header.index("PROVINCIA"), header.index("COMUNE")
+    if cc != pc + 1 or any(e not in header for e in EURO) or "TOTALE" not in header:
         raise VehiclesError(f"{year}: intestazione inattesa {header}")
     idx = {h: header.index(h) for h in (*EURO, "TOTALE")}
     out, province = {}, None
     for r in rows[head + 1:]:
         if not r or len(r) <= idx["TOTALE"]:
             continue
-        if r[0]:
-            province = str(r[0]).strip().upper()
-        name = str(r[1] or "").strip().upper()
+        if r[pc]:
+            province = str(r[pc]).strip().upper()
+        name = str(r[cc] or "").strip().upper()
         if province == "LUCCA" and name in TOWNS.values():
             num = lambda v: int(round(float(v))) if v not in (None, "") else 0
             euro = [num(r[idx[e]]) for e in EURO]

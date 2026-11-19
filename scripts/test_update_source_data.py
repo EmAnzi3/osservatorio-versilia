@@ -648,13 +648,15 @@ def aci_vehicles_history_cases() -> None:
     import vehicles_history as vh
 
     def archive(year: int, shift: int = 0) -> bytes:
-        wb = Workbook(); ws = wb.active; ws.title = "AV per comune "
+        # Dal 2024 il foglio è «4 AV per Comune» e ha la colonna REGIONE in testa.
+        lead = ["TOSCANA"] if year >= 2024 else []
+        wb = Workbook(); ws = wb.active; ws.title = "4 AV per Comune " if year >= 2024 else "AV per comune "
         ws.append([f"Autovetture distinte per comune. Anno {year}"])
-        ws.append(["PROVINCIA", "COMUNE", "EURO 0", "EURO 1", "EURO 2", "EURO 3", "EURO 4", "EURO 5", "EURO 6", "Non contemplato", "Non definito", "TOTALE"])
-        ws.append(["LUCCA", "ALTOPASCIO", 1, 1, 1, 1, 1, 1, 1, None, None, 7])
+        ws.append(["REGIONE"] * bool(lead) + ["PROVINCIA", "COMUNE", "EURO 0", "EURO 1", "EURO 2", "EURO 3", "EURO 4", "EURO 5", "EURO 6", "Non contemplato", "Non definito", "Totale "])
+        ws.append(lead + ["LUCCA", "ALTOPASCIO", 1, 1, 1, 1, 1, 1, 1, None, None, 7])
         for i, name in enumerate(vh.TOWNS.values()):
-            ws.append([None, name, 100 + i, 50, 50, 50 + shift, 300, 300, 1000 + year, None, 2, 1852 + i + year + shift])
-        ws.append(["MASSA-CARRARA", "MASSAROSA", 9, 9, 9, 9, 9, 9, 9, None, None, 63])
+            ws.append([None] * len(lead) + [None, name, 100 + i, 50, 50, 50 + shift, 300, 300, 1000 + year, None, 2, 1852 + i + year + shift])
+        ws.append(lead + ["MASSA-CARRARA", "MASSAROSA", 9, 9, 9, 9, 9, 9, 9, None, None, 63])
         b = _io.BytesIO(); wb.save(b)
         z = _io.BytesIO()
         with zipfile.ZipFile(z, "w") as f:
@@ -674,6 +676,7 @@ def aci_vehicles_history_cases() -> None:
     assert snap["years"] == [2018, 2019, 2020, 2022, 2023, 2024, 2025] and snap["missingYears"] == [2021]
     assert snap["series"]["motorization"]["046018"][0] == expect("046018", 2, 2018)[0]
     assert snap["towns"]["046018"]["2019"]["total"] == 1852 + 2 + 2019, "Massarosa di Massa-Carrara ignorata"
+    assert snap["towns"]["046018"]["2024"]["total"] == 1852 + 2 + 2024, "foglio «4 AV per Comune» con REGIONE non letto"
     metrics = {k: {"rows": [{"town": n.title(), "code": c, "value": current[k][c]} for c, n in vh.TOWNS.items()], "meta": {}, "method": {"caveat": "X."}} for k in current}
     vh.apply(metrics, snap, vh.SNAPSHOT)
     assert metrics["pollutingCars"]["rows"][0]["series"]["years"][-1] == 2025 and "2021" in metrics["motorization"]["method"]["caveat"]
