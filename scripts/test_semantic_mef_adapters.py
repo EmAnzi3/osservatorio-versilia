@@ -210,7 +210,29 @@ def regressions(path):
         for op in ('trend','absolute_change','relative_change','percentage_points','anomaly'):
             rejected(e,query(key,op=op),'mef_peer_anomaly_not_reviewed' if op=='anomaly' else 'mef_temporal_change_not_reviewed')
         rejected(e,dict(operation='correlation',selectors=[dict(metric='population'),dict(metric=key)],axis='municipalities',method='pearson',purpose='descriptive'),'mef_pair_not_jointly_reviewed')
-    rejected(e,query(m.TAXPAYERS,periods=['2024']),'mef_hybrid_period_required')
+    # Serie dei contribuenti per anno d'imposta: MEF A / POSAS 18+ al 1° gennaio A+2 (stessa regola del corrente).
+    # Celle fisse: Massarosa a.i. 2017 = 15.668 contribuenti / 18.376 maggiorenni al 1.1.2019;
+    # Stazzema a.i. 2020 = 2.087 / 2.562 al 1.1.2022.
+    tax_fixed={('046018','2017'):(15668,18376,'2019-01-01'),('046030','2020'):(2087,2562,'2022-01-01')}
+    th=e.file(m.TAX_HISTORY)[0];tax_years=[str(y) for y in range(2017,2025)]
+    for code,f in FIXED.items():
+        r=e.query(query(m.TAXPAYERS,op='series',towns=[code]));assert r['status']=='computed',r
+        assert [o['period'] for o in r['observations']]==tax_years
+        for o in r['observations']:
+            t=th['towns'][code][o['period']];assert o['numerator']==t['taxpayers'] and o['denominator']==t['adults']
+            assert math.isclose(o['value'],t['taxpayers']/t['adults']*100,abs_tol=1e-12) and o['denominatorPeriod']==f"{int(o['period'])+2}-01-01"
+            assert pointer(e._catalog,o['evidence'][0]['valuePointer'])==o['value'];history+=1
+        last=r['observations'][-1];assert last['numerator']==f['taxpayers'] and last['denominator']==f['adults']
+    for (code,period),(num,den,date_) in tax_fixed.items():
+        r=e.query(query(m.TAXPAYERS,periods=[period]));assert r['status']=='computed' and len(r['observations'])==7,r
+        o=next(o for o in r['observations'] if o['geography']==code)
+        assert o['numerator']==num and o['denominator']==den and o['denominatorPeriod']==date_ and math.isclose(o['value'],num/den*100,abs_tol=1e-12)
+        assert o['periodBasis']==f'MEF a.i. {period} · residenti 1.1.{int(period)+2}'
+    rejected(e,query(m.TAXPAYERS,periods=['2016']),'mef_period_not_in_public_history')
+    rejected(e,query(m.TAXPAYERS,periods=['a.i.']),'mef_hybrid_period_required')
+    rejected(e,dict(query(m.TAXPAYERS,periods=['2018'],op='benchmark_gap',towns=['046018']),benchmark='tuscany'),'mef_benchmark_scope_or_period_not_reviewed')
+    for mutate in (lambda m_:m_['rows'][0]['series']['values'].__setitem__(0,1.0),lambda m_:m_['meta']['sourceMeta'].update(historySnapshot=m.DEMO)):
+        g=QueryEngine(path,layer='effective');mutate(g._catalog['metrics'][m.TAXPAYERS]);assert g.query(query(m.TAXPAYERS,op='series',towns=['046018']))['status']=='not_computable'
     rejected(e,query(m.DISTRIBUTION,op='series',towns=['046018']),'mef_history_not_frozen')
     rejected(e,dict(query(m.PROFILE,'source:pension',op='benchmark_gap',towns=['046018']),benchmark='italy'),'mef_benchmark_dimension_not_reviewed')
     rejected(e,query(m.DISTRIBUTION,'band:le0'),'partial_coverage_requires_opt_in')
@@ -235,7 +257,7 @@ def regressions(path):
             else:ref['sha256']='0'*64
         assert g.query(request)['status']=='not_computable',(mode,g.query(request))
     assert checked==161
-    print(f'A6 MEF PASS: {checked} fixed current observations including aliases/nulls; {history} frozen historical observations replayed; three native pooled ratios, six benchmark references and adversarial/refusal boundaries')
+    print(f'A6 MEF PASS: {checked} fixed current observations including aliases/nulls; {history} frozen historical observations replayed (taxpayers 2017–2024 with fixed cells); three native pooled ratios, six benchmark references and adversarial/refusal boundaries')
 
 
 if __name__=='__main__':regressions(ROOT/'dist/data/site-data.json')
