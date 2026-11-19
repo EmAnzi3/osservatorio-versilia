@@ -1,6 +1,6 @@
 # Programma dei dossier territoriali — evidenze verificate
 
-Esito **PASS**; catalogo `d3ff4b9abbe1013be662cdd5e2cf830dda31def7d794c9f58bd90efa3ab6e6b7`; motore `0972ea41d5eff32daa058ee77c948e234e9ef5de377ffa5a5111c7e28cbc5a32`.
+Esito **PASS**; catalogo `390ec7ebd824934979ab0321231c3ad4a062e5e4d4c4664bdea12eeb46215139`; motore `0972ea41d5eff32daa058ee77c948e234e9ef5de377ffa5a5111c7e28cbc5a32`.
 
 Le 20 domande A6 originarie sono riusate per riferimento, senza riscriverle. Le domande centrali orientano un programma amministrativo: i risultati di contesto non risolvono automaticamente bisogni, efficacia o causalità.
 
@@ -223,7 +223,7 @@ L’offerta educativa risponde ai bisogni delle famiglie e dei giovani? **Rispos
 | school_class_size | compare / studentsPerClass / total | 2024/25 / studentsPerClass | 046018: 17.805555555555557; 046033: 19.400516795865634 | PASS |
 | school_calendar_year_refused | compare / studentsPerClass / total |  /  | demography_school_native_school_year_required | PASS |
 | school_full_time | compare / primaryFullTimeShare / total | 2024/25 / percent | 046018: 55.287817938420346; 046033: 46.80073126142596 | PASS |
-| school_history_refused | trend / primaryFullTimeShare / total |  /  | demography_school_history_not_frozen | PASS |
+| school_fulltime_series_046018 | series / primaryFullTimeShare / total | 2015/16, 2016/17, 2017/18, 2018/19, 2019/20, 2020/21, 2021/22, 2022/23, 2023/24, 2024/25 / percent | 046018: 57.638888888888886; 046018: 58.31663326653307; 046018: 57.27002967359051; 046018: 56.82730923694779; 046018: 57.76135163674763; 046018: 58.006718924972006; 046018: 55.55555555555556 | PASS |
 | school_access_defined | compare / schoolBuildingAccessibility / total | 2024/25 / percent | 046018: 100.0; 046033: 92.10526315789474 | PASS |
 | school_cpi | compare / schoolBuildingSafetyDocs / part:cpi | 2024/25 / percent | 046018: 16.666666666666664; 046033: 55.26315789473685 | PASS |
 | school_scia_unknown_refused | compare / schoolBuildingSafetyDocs / part:scia | 2024/25 / percent | insufficient_observations, partial_coverage_requires_opt_in | PASS |

@@ -117,7 +117,7 @@ def regressions(path):
         assert [o['period'] for o in series['observations']]==[f'{y}/{(y+1)%100:02d}' for y in range(2015,2025)]
     rejected(e,request('compare','schoolStudents',periods=['2014/15']),'demography_school_period_not_available')
     for mutate in (lambda m:m['rows'][0]['series']['values'].__setitem__(0,1),lambda m:m['meta']['sourceMeta'].update(historySnapshot=d.LIA)):
-        g=QueryEngine(path,layer='effective');mutate(g._catalog['metrics']['studentsPerClass'])
+        g=QueryEngine(e.catalog_path,layer='effective');mutate(g._catalog['metrics']['studentsPerClass'])
         assert g.query(request('compare','studentsPerClass',periods=['2016/17']))['status']=='not_computable'
     print(f'A6 demography/school: {observations} native observations, independent arithmetic, nulls, dates and adversarial cases PASS')
 
