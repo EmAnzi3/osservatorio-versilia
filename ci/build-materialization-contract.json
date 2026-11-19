@@ -60,6 +60,7 @@
     "scripts/materialize_a3_publication_adapter.py",
     "scripts/materialize_bank_branches.py",
     "scripts/materialize_opencivitas_needs.py",
+    "scripts/materialize_household_size_history.py",
     "scripts/materialize_openbdap_benchmarks.py",
     "scripts/materialize_vehicles_history.py",
     "scripts/apply_per_capita_reference_contract.py",

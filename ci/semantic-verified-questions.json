@@ -1652,14 +1652,14 @@
         "checks": [
           {
             "path": "/observations/0/value",
-            "value": 2.38
+            "value": 2.3953667105841
           }
         ],
         "warnings": [
-          "household_size_raw_components_not_reconciled"
+          "household_size_official_municipal_series"
         ]
       },
-      "reference": "Carrier ufficiale pubblicato 2023: 2,38; componenti grezzi non riconciliati, nessuna ricostruzione"
+      "reference": "Istat «A misura di Comune · Famiglie», Tav. 4.1, 2023: 2,3954 componenti per famiglia"
     },
     {
       "id": "census_ageing",
@@ -1977,8 +1977,8 @@
       "reference": "Limite del carrier/periodo/metodo esplicito; nessun dato inferito"
     },
     {
-      "id": "census_size_history_refused",
-      "question": "Posso ricostruire lo storico della dimensione familiare con componenti non riconciliati?",
+      "id": "census_size_history",
+      "question": "Come è cambiata la dimensione media della famiglia a Massarosa dal 2018?",
       "query": {
         "operation": "series",
         "selectors": [
@@ -1992,12 +1992,23 @@
         ]
       },
       "expected": {
-        "status": "not_computable",
-        "reasons": [
-          "census_historical_dimension_not_available"
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "value": 2.48055489929376
+          },
+          {
+            "path": "/observations/5/value",
+            "value": 2.3953667105841
+          }
+        ],
+        "warnings": [
+          "household_size_official_municipal_series",
+          "household_size_official_series_families_estimated_2018_2019"
         ]
       },
-      "reference": "Limite del carrier/periodo/metodo esplicito; nessun dato inferito"
+      "reference": "Serie Istat 2018–2023 (Tav. 4.1); famiglie 2018 e 2019 stimate dalla fonte"
     },
     {
       "id": "census_young_history_refused",

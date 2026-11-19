@@ -689,6 +689,65 @@ def aci_vehicles_history_cases() -> None:
         raise AssertionError("ultimo anno diverso dal pubblicato accettato")
 
 
+def istat_famiglie_cases(tmp: Path) -> None:
+    """Componenti per famiglia: serie comunale, aggregati come componenti/famiglie, Toscana riscontrata sulla riga pubblicata."""
+    import io as _io
+    from openpyxl import Workbook
+    import household_size_history as hh
+
+    years = [2018, 2019, 2020, 2021, 2022, 2023]
+    towns = {c: n for c, n in zip(hh.TOWNS, ("Camaiore", "Forte dei Marmi", "Massarosa", "Pietrasanta", "Seravezza", "Stazzema", "Viareggio"))}
+    provinces = [("09", f"Prov{i}") for i in range(10)] + [(f"{r:02d}", f"P{r}-{i}") for r in range(1, 21) if r != 9 for i in range(5)]
+    fam = {p: [1000.0 + 10 * j + k for j in range(6)] for k, p in enumerate(provinces)}
+    size = {p: [2.0 + 0.01 * (k % 7) - 0.005 * j for j in range(6)] for k, p in enumerate(provinces)}
+
+    def book(tus_shift: float = 0.0) -> bytes:
+        wb = Workbook(); wb.remove(wb.active)
+        for title, kind in (("Tav. 1.1 Comuni", "f"), ("Tav. 4.1 Comuni", "s")):
+            ws = wb.create_sheet(title); ws.append([title]); ws.append(["INDICE"]); ws.append([])
+            ws.append(["Ripartizione", "Codice regione", "Denominazione regione", "Provincia", "Capoluogo", "Denominazione comune", "Codice comune Istat", *years])
+            ws.append(["Nord-ovest", "01", "Piemonte", "Torino", "0", "Agliè", "001001", *([3.0] * 6)])
+            for i, (c, n) in enumerate(towns.items()):
+                vals = [5000.0 + 100 * i + j for j in range(6)] if kind == "f" else [2.4 - 0.01 * i - 0.02 * j for j in range(6)]
+                ws.append(["Centro", "09", "Toscana", "Lucca", "0", n, c, *vals])
+        for title, data in (("Tav. 1.2 Province e regioni", fam), ("Tav. 4.2 Province e regioni", size)):
+            ws = wb.create_sheet(title); ws.append([title]); ws.append(["INDICE"]); ws.append([])
+            ws.append(["Ripartizione", "Codice regione", "Denominazione regione", "Provincia", *years])
+            for p in provinces:
+                ws.append(["X", p[0], "R", p[1], *data[p]])
+            tus = [p for p in provinces if p[0] == "09"]
+            tot = [sum(fam[p][j] for p in tus) for j in range(6)]
+            row = tot if data is fam else [sum(fam[p][j] * size[p][j] for p in tus) / tot[j] + tus_shift for j in range(6)]
+            ws.append(["Centro", "09", "Toscana", "TOTALE", *row])
+        b = _io.BytesIO(); wb.save(b); return b.getvalue()
+
+    snap = hh.build_snapshot(book())
+    assert snap["years"] == years and snap["provinceCount"] == len(provinces)
+    assert snap["towns"]["046018"]["size"][-1] == 2.4 - 0.02 - 0.1
+    v = snap["scopes"]["versilia"][-1]
+    exp = sum((5000.0 + 100 * i + 5) * (2.4 - 0.01 * i - 0.1) for i in range(7)) / sum(5000.0 + 100 * i + 5 for i in range(7))
+    assert abs(v["value"] - exp) < 1e-12
+    it = snap["scopes"]["italy"][0]
+    assert abs(it["value"] - sum(fam[p][0] * size[p][0] for p in provinces) / sum(fam[p][0] for p in provinces)) < 1e-12
+    metric = {"rows": [{"town": n, "code": c, "value": 0} for c, n in towns.items()], "meta": {"year": "2023"}, "method": {}}
+    hh.apply(metric, snap, "data/source-snapshots/istat-famiglie-serie-2023.json")
+    assert metric["rows"][2]["series"]["years"] == years and metric["rows"][2]["formatted"] == "2,28" and metric["meta"]["benchmark"]["italy"] is not None
+    try:
+        hh.build_snapshot(book(tus_shift=0.01))
+    except hh.HouseholdError:
+        pass
+    else:
+        raise AssertionError("riga toscana pubblicata diversa dall'aggregato accettata")
+    upd_file = tmp / "3-Famiglie.xlsx"; upd_file.write_bytes(book())
+    real_root = upd.ROOT
+    try:
+        upd.ROOT = tmp; (tmp / "data/source-snapshots").mkdir(parents=True, exist_ok=True)
+        changes = upd.update_istat_famiglie(upd_file, dry_run=False)
+        assert (tmp / f"{hh.SNAPSHOT_PREFIX}2023.json").exists() and any("Massarosa" in l for l in changes.lines)
+    finally:
+        upd.ROOT = real_root
+
+
 def openbdap_benchmarks_cases() -> None:
     """Confronto bilanci: aggregato sui Comuni che hanno trasmesso, soglia 90% dei residenti, riconciliazione 7/7 obbligatoria."""
     import io as _io
@@ -1062,9 +1121,11 @@ def main() -> None:
     with tempfile.TemporaryDirectory() as tmp:
         opencivitas_needs_cases(Path(tmp))
     aci_vehicles_history_cases()
+    with tempfile.TemporaryDirectory() as tmp:
+        istat_famiglie_cases(Path(tmp))
     openbdap_benchmarks_cases()
     source_probe_cases(Path("."))
-    print("Aggiornatori dalla fonte: ARS stesso export invariato, revisione e Toscana rilevate, periodo nuovo rifiutato; mobilità P2 ricostruita 7/7 identica, rigiro senza modifiche; ASIA-UL ricostruita 7/7 identica, anno nuovo accettato, Comune incompleto rifiutato; AGCOM FTTH ricostruita 7/7 identica, edizione nuova accettata, edizione vecchia e Comune mancante rifiutati; sonda MEF limitata agli atti DIMUNIC; capacità ricettiva pubblicata ricostruita identica, anno nuovo accettato con perimetro dichiarato, anno precedente rifiutato; consumo di suolo anno nuovo accettato con benchmark ufficiali, anno precedente rifiutato; parco ACI ricostruito 7/7 identico da un anno nuovo, anno pubblicato rifiutato; OMI al punto medio con semestre pubblicato rigiocato, replay diverso e semestre vecchio rifiutati; sonda generica dei fogli; morosità ERP esercizio nuovo riconciliato e prospetti incoerenti rifiutati; acqua GAIA 70 località ricostruite identiche, semestre nuovo accettato, periodo vecchio, parametro cambiato e semestre precedente rifiutati; sedi scolastiche MIM ricostruite 7/7 identiche, a.s. nuovo accettato, a.s. precedente, Comune mancante e altro anno rifiutati; sportelli Banca d'Italia: serie 2018–2025 ricostruita con chiave banca + sede, riconciliazione Istat 2022 obbligatoria, anno aperto rifiutato; fabbisogni standard OpenCivitas 2023 riconciliati con la sonda, aggregati sui Comuni valutabili, valori diversi e annualità assente rifiutati; confronto bilanci sui Comuni che hanno trasmesso, soglia 90% e riconciliazione 7/7; serie ACI del parco autovetture con ultimo anno vincolato al pubblicato PASS")
+    print("Aggiornatori dalla fonte: ARS stesso export invariato, revisione e Toscana rilevate, periodo nuovo rifiutato; mobilità P2 ricostruita 7/7 identica, rigiro senza modifiche; ASIA-UL ricostruita 7/7 identica, anno nuovo accettato, Comune incompleto rifiutato; AGCOM FTTH ricostruita 7/7 identica, edizione nuova accettata, edizione vecchia e Comune mancante rifiutati; sonda MEF limitata agli atti DIMUNIC; capacità ricettiva pubblicata ricostruita identica, anno nuovo accettato con perimetro dichiarato, anno precedente rifiutato; consumo di suolo anno nuovo accettato con benchmark ufficiali, anno precedente rifiutato; parco ACI ricostruito 7/7 identico da un anno nuovo, anno pubblicato rifiutato; OMI al punto medio con semestre pubblicato rigiocato, replay diverso e semestre vecchio rifiutati; sonda generica dei fogli; morosità ERP esercizio nuovo riconciliato e prospetti incoerenti rifiutati; acqua GAIA 70 località ricostruite identiche, semestre nuovo accettato, periodo vecchio, parametro cambiato e semestre precedente rifiutati; sedi scolastiche MIM ricostruite 7/7 identiche, a.s. nuovo accettato, a.s. precedente, Comune mancante e altro anno rifiutati; sportelli Banca d'Italia: serie 2018–2025 ricostruita con chiave banca + sede, riconciliazione Istat 2022 obbligatoria, anno aperto rifiutato; fabbisogni standard OpenCivitas 2023 riconciliati con la sonda, aggregati sui Comuni valutabili, valori diversi e annualità assente rifiutati; serie dei componenti per famiglia con aggregati componenti/famiglie e riscontro toscano; serie ACI del parco autovetture con ultimo anno vincolato al pubblicato PASS")
 
 
 if __name__ == "__main__":

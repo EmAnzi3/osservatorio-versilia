@@ -436,9 +436,9 @@ Richiesta `census_size` — `compare`; esito `computed`.
 
 **Universi e definizioni:** resident households — householdSize; total
 
-**Fonti:** [https://www.istat.it/statistiche-per-temi/censimenti/popolazione-e-abitazioni/risultati/](https://www.istat.it/statistiche-per-temi/censimenti/popolazione-e-abitazioni/risultati/)
+**Fonti:** [https://www.istat.it/storage/misura-comune/3-Famiglie.xlsx](https://www.istat.it/storage/misura-comune/3-Famiglie.xlsx)
 
-**Avvertenze:** household_size_raw_components_not_reconciled
+**Avvertenze:** household_size_official_municipal_series
 
 #### Controlli metodologici, separati dalle domande territoriali
 
