@@ -150,6 +150,13 @@ def main() -> int:
         {"sourceId": "gse", "coveredBy": ["mase-bandi"], "reason": "il sito blocca i server della CI"}]}
     covered = build_report(_snapshot([data_loss_old]), covered_snapshot, phase_statuses=phases)
     assert "Fonti bloccate ma coperte" in render_markdown(covered) and "`gse`" in render_markdown(covered)
+    territory_snapshot = {**_snapshot([cleaned_new]), "autoQualification": {"checked": 2, "rejected": 1, "checks": [
+        {"status": "rejected", "title": "Avviso paesaggio", "url": "https://example.gov.it/a",
+         "reason": "Destinatari limitati ai territori elencati nell'avviso («Comuni interessati dai…»): nessun Comune della Versilia è nominato.",
+         "applicant": "Comuni interessati dai progetti di paesaggio"},
+        {"status": "rejected", "title": "Bando imprese", "url": "https://example.gov.it/b", "reason": "Solo imprese."}]}}
+    territory_md = render_markdown(build_report(_snapshot([data_loss_old]), territory_snapshot, phase_statuses=phases))
+    assert "la Versilia non compare (1)" in territory_md and "Avviso paesaggio" in territory_md and "Bando imprese" not in territory_md
     assert report["added"][0]["title"] == "Bando nuovo"
     assert report["archived"][0]["title"] == "Bando scaduto"
     assert report["removed"][0]["title"] == "Bando scomparso"

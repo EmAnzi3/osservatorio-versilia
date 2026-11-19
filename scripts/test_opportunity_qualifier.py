@@ -505,6 +505,24 @@ def test_open_call_absorbs_its_announcement_only():
     assert [x["id"] for x in result["opportunities"]] == ["auto-1", "old", "other", "late"]
 
 
+def test_listed_territories_without_versilia_rejected():
+    listed = (PAD + "Art. 2 – Beneficiari. Possono presentare manifestazione di interesse i Comuni e le Unioni di Comuni "
+              "interessati dai progetti di paesaggio elencati di seguito: Aulla, Bagnone, Pontremoli, Volterra, Cecina. "
+              "Le domande vanno presentate entro il 31 marzo 2027.")
+    d = decide("Avviso per Comuni interessati da progetti di paesaggio", listed)
+    assert d.status == "rejected" and "Versilia" in d.reason, d
+    named = listed.replace("Volterra", "Seravezza")
+    assert decide("Avviso per Comuni interessati da progetti di paesaggio", named).status == "qualified"
+    annex = (PAD + "Soggetti ammessi. Possono presentare domanda i Comuni ricadenti nelle aree di cui all'allegato B. Le domande vanno presentate "
+             "entro il 15 dicembre 2026.")
+    assert "Versilia" in decide("Avviso aree interne", annex).reason
+    regional = (PAD + "Soggetti ammessi. Possono presentare domanda tutti i Comuni della Toscana compresi nelle zone climatiche E ed F. "
+                "Le domande vanno presentate entro il 15 dicembre 2026.")
+    assert decide("Avviso efficienza energetica", regional).status == "qualified"
+    assert decide("Avviso sport e rigenerazione urbana", PAD + "Beneficiari. Possono presentare domanda i Comuni e le Unioni di Comuni "
+                  "entro il 15 dicembre 2026.").status == "qualified"
+
+
 if __name__ == "__main__":
     tests = [v for k, v in sorted(globals().items()) if k.startswith("test_")]
     for test in tests:

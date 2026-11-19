@@ -527,6 +527,31 @@ def find_applicant(text: str, strict: bool = False) -> tuple[str, str]:
     return "", "direct_applicant"
 
 
+# Destinatari limitati a territori elencati nell'avviso («Comuni interessati dai progetti…», «ricadenti nei
+# territori…», «di cui all'allegato…»): si pubblica solo se la Versilia è nominata o il perimetro la comprende.
+TERRITORIAL_LIMIT = re.compile(
+    r"\b(?:comuni|enti(?:\s+locali)?|unioni(?:\s+(?:dei|di)\s+comuni)?)\b[^.;]{0,80}?\b(?:"
+    r"interessat[ie]\s+(?:da|dal|dai|dagli|dalle|dalla)\b|ricadent[ie]\s+(?:nel|nei|negli|nell|nella|nelle|in)\b|"
+    r"compres[ie]\s+(?:nel|nei|negli|nell|nella|nelle)\b|appartenent[ie]\s+(?:al|ai|agli|all|alla|alle)\b|"
+    r"elencat[ie]\b|individuat[ie]\s+(?:nel|nell|nella|dal|dall|dalla)|"
+    r"(?:di\s+cui|indicat[ie])\s+(?:all|nell)['’]\s*allegato)", re.I)
+VERSILIA_NAMED = re.compile(
+    r"\b(?:Camaiore|Forte\s+dei\s+Marmi|Massarosa|Pietrasanta|Seravezza|Stazzema|Viareggio|Versilia|"
+    r"provincia\s+di\s+Lucca|Unione\s+(?:dei\s+)?Comuni\s+(?:della\s+)?Alta\s+Versilia)\b", re.I)
+WHOLE_SCOPE = re.compile(
+    r"\b(?:tutti\s+i\s+comuni|comuni\s+(?:della\s+)?toscan\w*|comuni\s+della\s+(?:regione\s+)?toscana|"
+    r"comuni\s+italiani|intero\s+territorio\s+(?:regionale|nazionale))\b", re.I)
+
+
+def territorial_limit(title: str, applicant: str, combined: str) -> str | None:
+    """Citazione del limite territoriale se i territori ammessi sono elencati e la Versilia non c'è."""
+    probe = f"{title} {applicant}"
+    match = TERRITORIAL_LIMIT.search(probe)
+    if not match or WHOLE_SCOPE.search(probe) or VERSILIA_NAMED.search(f"{title} {combined}"):
+        return None
+    return re.sub(r"\s+", " ", match.group(0)).strip()
+
+
 def other_region(title: str, applicant: str) -> str | None:
     # «ANCI Lombardia informa…»: è chi rilancia l'avviso, non il territorio ammesso.
     probe = re.sub(r"\bANCI\s+\w+", " ", f"{title} {applicant}")
@@ -573,6 +598,10 @@ def qualify(candidate: dict[str, Any], page_text: str, documents: dict[str, str]
     region = other_region(title, applicant)
     if region:
         return Decision("rejected", f"Avviso riservato a enti di un'altra regione ({region}).")
+    limit = territorial_limit(title, applicant, combined)
+    if limit:
+        return Decision("rejected", f"Destinatari limitati ai territori elencati nell'avviso («{limit}…»): "
+                        "nessun Comune della Versilia è nominato.", applicant=applicant)
     if DISTRESS_ONLY.search(applicant):
         return Decision("rejected", "Riservato a enti in dissesto o in riequilibrio finanziario.", applicant=applicant)
     population = population_limits(applicant)
