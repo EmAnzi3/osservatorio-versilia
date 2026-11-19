@@ -113,7 +113,8 @@ def year_counts(fetcher: Callable[[str], bytes], start: int) -> dict[str, Any]:
 
 def values(counts: dict[str, int]) -> dict[str, float]:
     return {"schoolStudents": counts["students"], "studentsPerClass": counts["students"] / counts["classes"],
-            "primaryFullTimeShare": counts["full_time_students"] / counts["primary_students"] * 100}
+            # stesso ordine di calcolo del valore pubblicato (100 × numeratore / denominatore)
+            "primaryFullTimeShare": 100 * counts["full_time_students"] / counts["primary_students"]}
 
 
 def label(start: int) -> str:

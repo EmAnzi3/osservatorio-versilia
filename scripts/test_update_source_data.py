@@ -722,7 +722,7 @@ def mim_students_history_cases() -> None:
     def counts(i, start):
         shift = start - 2015
         students = 2 * ((10 + i + shift) + 10 + 10)
-        return students, students / 4, 2 * (8 + i) / (2 * (8 + i + 12 + shift)) * 100
+        return students, students / 4, 100 * (2 * (8 + i)) / (2 * (8 + i + 12 + shift))
     current = {k: {c: counts(i, 2024)[j] for i, c in enumerate(sh.TOWNS)} for j, k in enumerate(sh.KEYS)}
     snap = sh.build_snapshot(fetch, current, 2024)
     assert snap["schoolYears"][0] == "2015/16" and snap["schoolYears"][-1] == "2024/25" and len(snap["schoolYears"]) == 10
