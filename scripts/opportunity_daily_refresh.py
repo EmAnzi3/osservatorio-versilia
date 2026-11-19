@@ -301,6 +301,76 @@ def _restore_recent_verified_continuity(
     return restored
 
 
+def _restore_transport_coverage_holds(
+    result: dict[str, Any],
+    previous: dict[str, Any],
+    today: date,
+    *,
+    max_age_days: int = CONTINUITY_VERIFIED_GRACE_DAYS,
+) -> list[dict[str, Any]]:
+    """Stessa grazia della continuità per le schede verificate rimaste in hold solo per il trasporto.
+
+    Una scheda della matrice verificata (coverageHold senza gate_origin) che nel run corrente non
+    si riesce a scaricare (timeout, errore HTTP, browser) non deve bloccare l'intero Radar se
+    lo snapshot precedente la conteneva con verifica diretta di non più di `max_age_days` giorni
+    e scadenza non trascorsa: resta pubblicata con `continuity_fallback`. Se invece la pagina è
+    stata letta e i termini obbligatori non ci sono più (contenuto cambiato), l'hold resta e il
+    run si ferma come prima. Scaduta la grazia, l'hold torna a bloccare.
+    """
+    holds = list(result.get("coverageHold") or [])
+    if not holds:
+        return []
+    previous_items = list(previous.get("opportunities") or [])
+    by_coverage = {str(item.get("coverage_id") or ""): item for item in previous_items if item.get("coverage_id")}
+    by_url = {radar.radar.v025.normalized_url(str(item.get("url") or "")): item for item in previous_items if item.get("url")}
+    current = {str(item.get("coverage_id") or "") for item in result.get("opportunities") or [] if item.get("coverage_id")}
+    keep: list[dict[str, Any]] = []
+    restored: list[dict[str, Any]] = []
+    for hold in holds:
+        reason = str(hold.get("reason") or "")
+        coverage_id = str(hold.get("coverage_id") or "")
+        if hold.get("gate_origin") or "termini obbligatori non trovati" in reason:
+            keep.append(hold)
+            continue
+        old = by_coverage.get(coverage_id) if coverage_id else None
+        if old is None and hold.get("url"):
+            old = by_url.get(radar.radar.v025.normalized_url(str(hold.get("url") or "")))
+        try:
+            age_days = (today - date.fromisoformat(str((old or {}).get("verified_at") or ""))).days
+            deadline_ok = not (old or {}).get("deadline_at") or date.fromisoformat(str(old["deadline_at"])[:10]) >= today
+        except ValueError:
+            keep.append(hold)
+            continue
+        if old is None or not old.get("verified_direct") or not 0 <= age_days <= max_age_days or not deadline_ok:
+            keep.append(hold)
+            continue
+        if coverage_id and coverage_id in current:
+            restored.append(old)
+            continue
+        item = json.loads(json.dumps(old, ensure_ascii=False))
+        item["verification_status"] = "cached_recent"
+        item["continuity_fallback"] = {
+            "restored_at": today.isoformat(),
+            "previous_verified_at": str(old.get("verified_at")),
+            "age_days": age_days,
+            "max_age_days": max_age_days,
+            "reason": "Fonte primaria non raggiungibile nel run corrente (" + reason[:160] + "); "
+                      "mantenimento temporaneo dall'ultimo snapshot verificato.",
+        }
+        result.setdefault("opportunities", []).append(item)
+        restored.append(item)
+    if not restored:
+        return []
+    result["coverageHold"] = keep
+    result.setdefault("counts", {})["coverageHold"] = len(keep)
+    _reconcile_final_continuity(result)
+    _recompute_after_continuity_restore(result)
+    print(f"COVERAGE FALLBACK: {len(restored)} schede verificate mantenute nonostante la fonte non raggiungibile")
+    for item in restored:
+        print(f"  {item.get('title')} · fonte {item.get('source_id')} · ultima verifica {item.get('verified_at')}")
+    return restored
+
+
 def _publishability_problems(result: dict[str, Any]) -> list[str]:
     """Return every final blocker without short-circuiting on the first gate.
 
@@ -348,6 +418,9 @@ def _assert_publishable(result: dict[str, Any]) -> None:
                 + f" · storiche non monitorate {', '.join(audit.get('historicalUnmonitored') or []) or 'nessuna'}"
                 + f" · copertura residua {(audit.get('residualCoverage') or {}).get('status', 'n.d.')}"
             )
+        for hold in result.get("coverageHold") or []:
+            print(f"COVERAGE HOLD: {hold.get('title')} · fonte {hold.get('source_id')} · "
+                  f"{hold.get('gate_origin') or 'verifica diretta'} · {str(hold.get('reason') or '')[:240]}")
         raise RuntimeError("Snapshot giornaliero non pubblicabile: " + ", ".join(problems))
 
 
@@ -511,6 +584,7 @@ def main() -> int:
     # restored from its canonical detail page, not the earlier partial scan.
     result = _reconcile_final_continuity(result)
     _restore_recent_verified_continuity(result, previous, today)
+    _restore_transport_coverage_holds(result, previous, today)
     result = regione_guard.apply(result, today)
     _sanitize_public_content(result, previous)
     _assert_publishable(result)

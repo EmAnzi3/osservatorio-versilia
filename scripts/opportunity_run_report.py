@@ -487,6 +487,8 @@ def build_report(
         "autoQualification": {k: v for k, v in (current.get("autoQualification") or {}).items() if k != "checks"} | {
             "published": [c for c in (current.get("autoQualification") or {}).get("checks") or [] if c.get("status") == "qualified"],
             "unreadableChecks": [c for c in (current.get("autoQualification") or {}).get("checks") or [] if c.get("status") == "unreadable"],
+            "territoryChecks": [c for c in (current.get("autoQualification") or {}).get("checks") or []
+                                if c.get("status") == "rejected" and str(c.get("reason") or "").startswith("Destinatari limitati ai territori")],
         },
         "sourcesToRepair": list(current.get("sourcesToRepair") or []),
         "sourcesBlockedCovered": list(current.get("sourcesBlockedCovered") or []),
@@ -567,6 +569,13 @@ def render_markdown(report: dict[str, Any], *, detail_limit: int = 25) -> str:
         for check in (auto.get("published") or [])[:detail_limit]:
             lines.append(f"- [{_markdown_cell(check.get('title'), 120)}](<{check.get('url')}>) · scadenza "
                          f"{check.get('deadline') or 'a sportello'} · «{_markdown_cell(check.get('applicant'), 200)}»")
+        territory = auto.get("territoryChecks") or []
+        if territory:
+            lines.extend(["", f"Non pubblicate perché l'avviso elenca i territori ammessi e la Versilia non compare "
+                              f"({len(territory)}): se un allegato la comprende, va aggiunta di persona.", ""])
+            for check in territory[:detail_limit]:
+                lines.append(f"- [{_markdown_cell(check.get('title'), 120)}](<{check.get('url')}>) · "
+                             f"«{_markdown_cell(check.get('applicant'), 200)}»")
     repair = report.get("sourcesToRepair") or []
     if repair:
         lines.extend(["", f"## Fonti da riparare ({len(repair)})", "",

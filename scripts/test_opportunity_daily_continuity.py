@@ -10,6 +10,7 @@ from opportunity_daily_refresh import (
     _annotate_first_seen,
     _reconcile_final_continuity,
     _restore_recent_verified_continuity,
+    _restore_transport_coverage_holds,
     _write_continuity_diagnostic,
 )
 
@@ -170,6 +171,26 @@ def main() -> int:
     previous_stale["opportunities"][0]["verified_at"] = "2026-08-20"
     assert _restore_recent_verified_continuity(stale, previous_stale, date(2026, 8, 28)) == []
     assert len(stale["continuityHold"]) == 1
+
+    # Scheda della matrice verificata ieri, oggi irraggiungibile per timeout: resta pubblicata con la stessa
+    # grazia; se invece la pagina è cambiata (termini mancanti) o la verifica è vecchia, l'hold blocca.
+    seed = {"coverage_id": "rt-dati-2026", "title": "Progetti sui dati 2026", "source_id": "regione-toscana",
+            "url": "https://example.test/dati", "deadline_at": "2026-09-30", "verified_direct": True, "verified_at": "2026-08-27"}
+    def held(reason):
+        return {"opportunities": [], "counts": {}, "coverageHold": [
+            {"coverage_id": "rt-dati-2026", "title": "Progetti sui dati 2026", "source_id": "regione-toscana",
+             "url": "https://example.test/dati", "reason": reason}]}
+    timeout = held("The read operation timed out")
+    assert len(_restore_transport_coverage_holds(timeout, {"opportunities": [seed]}, date(2026, 8, 28))) == 1
+    assert timeout["coverageHold"] == [] and timeout["opportunities"][0]["continuity_fallback"]["age_days"] == 1
+    changed = held("termini obbligatori non trovati: 367.643,80")
+    assert _restore_transport_coverage_holds(changed, {"opportunities": [seed]}, date(2026, 8, 28)) == []
+    assert len(changed["coverageHold"]) == 1
+    old_seed = dict(seed, verified_at="2026-08-20")
+    late = held("The read operation timed out")
+    assert _restore_transport_coverage_holds(late, {"opportunities": [old_seed]}, date(2026, 8, 28)) == [] and len(late["coverageHold"]) == 1
+    regional = held("x"); regional["coverageHold"][0]["gate_origin"] = "regional_completeness"
+    assert _restore_transport_coverage_holds(regional, {"opportunities": [seed]}, date(2026, 8, 28)) == []
 
     # Le variazioni di scadenza devono essere contabilizzate separatamente
     # dal discovery, con update lag quando la fonte espone la data dell'atto.
