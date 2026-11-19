@@ -22,10 +22,24 @@ def regressions(path):
   r=e.query(request('weighted_ratio',k))
   if k in f.RATIOS:assert r['status']=='computed',(k,r['reasons'])
   else:assert 'verified_ratio_adapter_required' in r['reasons']
-  rejected(e,dict(request('benchmark_gap',k,towns=['046018']),benchmark='tuscany'),'finance_benchmark_components_or_complete_scope_not_frozen')
+  bench=e._catalog['metrics'][k]['meta'].get('benchmark') or {}
+  if k in f.BENCHMARKED and isinstance(bench.get('tuscany'),(int,float)):
+   snap,_=e.file(bench['sourceSnapshot']);ent=snap['benchmarks'][k]['tuscany']
+   r=e.query(dict(request('benchmark_gap',k,towns=['046018']),benchmark='tuscany'));assert r['status']=='computed',(k,r['reasons'])
+   assert ent['populationShare']>=0.9 and math.isclose(r['observations'][1]['value'],ent['numerator']/ent['denominator']*(100 if k in f.BENCHMARK_RATIOS else 1),abs_tol=1e-9)
+  else:rejected(e,dict(request('benchmark_gap',k,towns=['046018']),benchmark='tuscany'),'finance_benchmark')
  for key,value in [('currentRevenueAccruedPerResident',31550784.64/21806),('ownRevenueShare',30149960.78/31550784.64*100),('socialMissionExpenditurePerResident',4284516.36/21806),('rigidExpenditureShare',20.66),('cashBalancePerResident',(36273551.04-38649263.81)/21782),('fcdePerResident',508.0258616894433)]:
   if key not in e._catalog['metrics']:continue
   r=e.query(request('compare',key,towns=['046018','046033']));assert math.isclose(r['observations'][0]['value'],value,abs_tol=1e-7),(key,r['observations'][0]['value'],value)
+ # Confronto bilanci 2025 (OpenBDAP, Comuni che hanno trasmesso il rendiconto, soglia 90% dei residenti): ancore indipendenti.
+ if 'benchmark' in (e._catalog['metrics']['currentRevenueAccruedPerResident']['meta'] or {}) and e._catalog['metrics']['currentRevenueAccruedPerResident']['meta']['benchmark']:
+  r=e.query(dict(request('benchmark_gap','currentRevenueAccruedPerResident',towns=['046018']),benchmark='tuscany'));assert r['status']=='computed',r['reasons']
+  assert math.isclose(r['observations'][1]['value'],5062879022.64/3652987,abs_tol=1e-9) and r['observations'][1]['evidence'][0]['coverage']['municipalities']==272
+  rejected(e,dict(request('benchmark_gap','tourismDevelopmentMissionExpenditurePerResident',towns=['046018']),benchmark='italy'),'finance_benchmark_scope_below_coverage_threshold')
+  rejected(e,dict(request('benchmark_gap','availableAdministrationResultPerResident',towns=['046018']),benchmark='tuscany'),'finance_benchmark')
+  g=QueryEngine(path,layer='effective')
+  snap,_=g.file(g._catalog['metrics']['ownRevenueShare']['meta']['benchmark']['sourceSnapshot']);snap['benchmarks']['ownRevenueShare']['tuscany']['numerator']*=1.01
+  rejected(g,dict(request('benchmark_gap','ownRevenueShare',towns=['046018']),benchmark='tuscany'),'finance_catalog_source_mismatch')
  r=e.query(request('compare','rigidExpenditureShare'));assert all('denominatorReferenceDate' not in o for o in r['observations'])
  r=e.query(request('compare','cashReceiptsPerResident'));assert all(o['denominatorPeriod']=='2026' and o['denominatorReferenceDate']=='1 gennaio 2026' for o in r['observations'])
  with tempfile.TemporaryDirectory() as t:

@@ -1,6 +1,6 @@
 # Programma dei dossier territoriali — evidenze verificate
 
-Esito **PASS**; catalogo `d4bd49c7dc53876b64b030d43a0d260e510378136930edc9da46d0867b11ea82`; motore `e75fb581cf472fc07ea07a679225f7cf665733f89ca6eee9c3da1fdaee78bd22`.
+Esito **PASS**; catalogo `2b6ee339f316df2704631ad6c95818fa92c88252b682e132b282780d2d063235`; motore `0972ea41d5eff32daa058ee77c948e234e9ef5de377ffa5a5111c7e28cbc5a32`.
 
 Le 20 domande A6 originarie sono riusate per riferimento, senza riscriverle. Le domande centrali orientano un programma amministrativo: i risultati di contesto non risolvono automaticamente bisogni, efficacia o causalità.
 
@@ -59,10 +59,10 @@ Quali dinamiche demografiche cambiano la domanda di servizi? **Risposta parziale
 | demography_foreign_events | compare / foreignResidentialMobility / total | 2025 / per1000 | 046018: 2.8907038634486555; 046033: 2.819502382561955 | PASS |
 | demography_historical_weight_refused | weighted_ratio / foreignResidentialMobility / total | 2023 / per1000 | ratio_components_required:0, ratio_components_required:1, ratio_components_required:2, ratio_components_required:3, ratio_components_required:4, ratio_components_required:5, ratio_components_required:6 | PASS |
 | census_single | compare / singleHouseholds / total | 2023 / percent | 046018: 29.2; 046033: 41.3 | PASS |
-| census_size | compare / householdSize / total | 2023 / decimal | 046018: 2.3953667105841; 046033: 2.08514960575698 | PASS |
-| census_size_history | series / householdSize / total | 2018, 2019, 2020, 2021, 2022, 2023 / decimal | 046018: 2.48055489929376; 046018: 2.472480210295; 046018: 2.43381535038932; 046018: 2.41129568106312; 046018: 2.40510384445426; 046018: 2.3953667105841 | PASS |
+| census_size | compare / householdSize / total | 2023 / decimal | 046018: 2.38; 046033: 2.08 | PASS |
+| census_size_history_refused | series / householdSize / total |  /  | census_historical_dimension_not_available | PASS |
 
-**Fonti effettivamente lette:** https://demo.istat.it/; https://demo.istat.it/data/posas/POSAS_2026_it_046_Lucca.zip; https://esploradati.istat.it/databrowser/DWL/PERMPOP/SUBCOM/Dati_regionali_2023.zip; https://www.istat.it/storage/misura-comune/3-Famiglie.xlsx; https://www1.finanze.gov.it/finanze/analisi_stat/public/index.php
+**Fonti effettivamente lette:** https://demo.istat.it/; https://demo.istat.it/data/posas/POSAS_2026_it_046_Lucca.zip; https://esploradati.istat.it/databrowser/DWL/PERMPOP/SUBCOM/Dati_regionali_2023.zip; https://www.istat.it/statistiche-per-temi/censimenti/popolazione-e-abitazioni/risultati/; https://www1.finanze.gov.it/finanze/analisi_stat/public/index.php
 
 Un PASS delle richieste di contesto non rende determinabile la domanda decisionale centrale. I perimetri territoriali/temporali eseguiti restano quelli espliciti delle query.
 
@@ -756,7 +756,7 @@ Le risorse comunali sono sostenibili e quali risultati dei servizi possiamo veri
 | Richiesta | Operazione / vista | Periodi / unità | Risposta | Verifica |
 |---|---|---|---|---|
 | finance_revenue | compare / currentRevenueAccruedPerResident / total | 2025 / currency | 046018: 1446.8854737228287; 046033: 1633.8676678544327 | PASS |
-| finance_benchmark_refused | benchmark_gap / currentCollectionCapacity / total |  /  | finance_benchmark_components_or_complete_scope_not_frozen | PASS |
+| finance_benchmark_tuscany | benchmark_gap / currentCollectionCapacity / total | 2025 / percent | 046018: 74.73251568554335; tuscany: 77.03034146738112 | PASS |
 | finance_rigid | compare / rigidExpenditureShare / total | 2025 / percent | 046018: 20.66; 046033: 24.48 | PASS |
 | finance_rigid_weight_refused | weighted_ratio / rigidExpenditureShare / total | 2025 / percent | verified_ratio_adapter_required | PASS |
 | distinct_debt_current | compare / financialDebtProfile / total | 2025 / currency | 046018: 465.49354306154265; 046033: 500.2012974693985 | PASS |

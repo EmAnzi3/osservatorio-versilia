@@ -18,5 +18,6 @@
   "bdiBranchesProbe": false,
   "bdiBranches": [],
   "opencivitasNeeds": [],
-  "istatFamiglie": false
+  "istatFamiglie": false,
+  "openbdapBenchmarks": []
 }

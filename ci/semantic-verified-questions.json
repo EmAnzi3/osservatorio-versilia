@@ -2389,8 +2389,8 @@
       "reference": "Percentuale PDI arrotondata senza componenti additivi."
     },
     {
-      "id": "finance_benchmark_refused",
-      "question": "È ammessa questa lettura senza le evidenze necessarie?",
+      "id": "finance_benchmark_tuscany",
+      "question": "Quanto incassa Massarosa delle entrate correnti accertate, rispetto alla media dei Comuni toscani?",
       "query": {
         "operation": "benchmark_gap",
         "selectors": [
@@ -2404,12 +2404,21 @@
         "benchmark": "tuscany"
       },
       "expected": {
-        "status": "not_computable",
-        "reasons": [
-          "finance_benchmark_components_or_complete_scope_not_frozen"
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/1/value",
+            "value": 77.03034146738112
+          }
+        ],
+        "warnings": [
+          "accounting_ratio_not_service_outcome",
+          "benchmark_gap_is_not_policy_priority",
+          "gross_municipal_amounts_not_consolidated_for_interentity_transfers",
+          "municipal_accounting_perimeter_not_service_quality_or_policy_effect"
         ]
       },
-      "reference": "Candidato Rendiconto Toscana 271/273 Comuni, rifiutato."
+      "reference": "Rendiconti 2025 OpenBDAP: Toscana su 272 Comuni su 273 (99,9% dei residenti), somma riscossioni / somma accertamenti"
     },
     {
       "id": "finance_cash_benchmark_refused",

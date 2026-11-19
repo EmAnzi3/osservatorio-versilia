@@ -1,0 +1,1477 @@
+{
+  "schemaVersion": 1,
+  "version": "openbdap-benchmark-2025-v1",
+  "retrieved": "2026-11-18",
+  "publisher": "Ragioneria Generale dello Stato — OpenBDAP (rendiconti) · Istat (bilancio demografico P2)",
+  "sourceUrl": "https://openbdap.rgs.mef.gov.it/it/FET/Analizza",
+  "year": 2025,
+  "rule": "Aggregato sui Comuni che hanno trasmesso il rendiconto con le righe necessarie (una missione assente dal riepilogo di un Comune vale zero): somma dei numeratori / somma dei denominatori (popolazione al 1° gennaio per i valori per residente). Pubblicato solo con almeno il 90% dei residenti coperti; copertura dichiarata.",
+  "minCoverage": 0.9,
+  "population": {
+    "url": "https://demo.istat.it/data/p2/P2_2025_it_Comuni.zip",
+    "sha256": "614fef7e3e5fe559aafac4ecf82cf6ac8a968d4d4f03103ee90d9aaa692de5f2",
+    "municipalities": 7897,
+    "date": "2025-01-01"
+  },
+  "regions": {
+    "01": {
+      "archive": "https://openbdap.rgs.mef.gov.it/Datasets_FET/Rendiconto/2025/2025_Rendiconto%20-%20Schemi%20di%20bilancio_PIEMONTE.zip",
+      "sha256": "3311f4a7d82fc21abb7c75fc11848474ef74fe3f35a820240eff69f66660d8b2",
+      "bytes": 72664502,
+      "municipalities": 1176
+    },
+    "03": {
+      "archive": "https://openbdap.rgs.mef.gov.it/Datasets_FET/Rendiconto/2025/2025_Rendiconto%20-%20Schemi%20di%20bilancio_LOMBARDIA.zip",
+      "sha256": "c3c51968a635dcacce769f383345dea38d72b30001caad4245e503a67071c0f3",
+      "bytes": 55287580,
+      "municipalities": 1496
+    },
+    "05": {
+      "archive": "https://openbdap.rgs.mef.gov.it/Datasets_FET/Rendiconto/2025/2025_Rendiconto%20-%20Schemi%20di%20bilancio_VENETO.zip",
+      "sha256": "a757eb3e7bb5b5d89c678895b0c68edf5c67dc0873632848ec42f383b81b7d4e",
+      "bytes": 23426568,
+      "municipalities": 556
+    },
+    "06": {
+      "archive": "https://openbdap.rgs.mef.gov.it/Datasets_FET/Rendiconto/2025/2025_Rendiconto%20-%20Schemi%20di%20bilancio_FRIULI-VENEZIA%20GIULIA.zip",
+      "sha256": "be98b5664bb5758f1b246473ef2699ab3f0f4f1d6a839d80649e7f529aeedfc8",
+      "bytes": 10268440,
+      "municipalities": 213
+    },
+    "07": {
+      "archive": "https://openbdap.rgs.mef.gov.it/Datasets_FET/Rendiconto/2025/2025_Rendiconto%20-%20Schemi%20di%20bilancio_LIGURIA.zip",
+      "sha256": "5ccb5990af6b0c674b9cb002be1cade7602dc5a08b9acf0657a054fe6a277d00",
+      "bytes": 12736317,
+      "municipalities": 233
+    },
+    "08": {
+      "archive": "https://openbdap.rgs.mef.gov.it/Datasets_FET/Rendiconto/2025/2025_Rendiconto%20-%20Schemi%20di%20bilancio_EMILIA-ROMAGNA.zip",
+      "sha256": "34199ecc62aeb95aaf0eb9445847af445d01b3aac8346a20f8ab4643ece94647",
+      "bytes": 19843930,
+      "municipalities": 328
+    },
+    "09": {
+      "archive": "https://openbdap.rgs.mef.gov.it/Datasets_FET/Rendiconto/2025/2025_Rendiconto%20-%20Schemi%20di%20bilancio_TOSCANA.zip",
+      "sha256": "cc4bed76379f5d311d814670bc86972eac6351b296a2d6e64ed8ce9904dd5ec7",
+      "bytes": 15991487,
+      "municipalities": 272
+    },
+    "10": {
+      "archive": "https://openbdap.rgs.mef.gov.it/Datasets_FET/Rendiconto/2025/2025_Rendiconto%20-%20Schemi%20di%20bilancio_UMBRIA.zip",
+      "sha256": "722e907a7ac86cf6bf995f5ae5fd82032616c3ddfbf515f5387564190383ab45",
+      "bytes": 6486393,
+      "municipalities": 92
+    },
+    "11": {
+      "archive": "https://openbdap.rgs.mef.gov.it/Datasets_FET/Rendiconto/2025/2025_Rendiconto%20-%20Schemi%20di%20bilancio_MARCHE.zip",
+      "sha256": "131f47762cb7e40fdd479014a2b814b61c69298bee4d2b7c18bba6f1269098e5",
+      "bytes": 12069195,
+      "municipalities": 224
+    },
+    "12": {
+      "archive": "https://openbdap.rgs.mef.gov.it/Datasets_FET/Rendiconto/2025/2025_Rendiconto%20-%20Schemi%20di%20bilancio_LAZIO.zip",
+      "sha256": "895d21840a138bd2ad919f0ef7990d0748790d16a2115f1b8c4beb5367268312",
+      "bytes": 16162463,
+      "municipalities": 368
+    },
+    "13": {
+      "archive": "https://openbdap.rgs.mef.gov.it/Datasets_FET/Rendiconto/2025/2025_Rendiconto%20-%20Schemi%20di%20bilancio_ABRUZZO.zip",
+      "sha256": "27d19511e8308023e3962fa84e959cd913c206b3f0f0bebc5dcba42fb494876d",
+      "bytes": 11383612,
+      "municipalities": 295
+    },
+    "14": {
+      "archive": "https://openbdap.rgs.mef.gov.it/Datasets_FET/Rendiconto/2025/2025_Rendiconto%20-%20Schemi%20di%20bilancio_MOLISE.zip",
+      "sha256": "ce61b75f01d61a7ed0a333fef177817e2b33d00304a812fcc39bc653a4297518",
+      "bytes": 6952141,
+      "municipalities": 135
+    },
+    "15": {
+      "archive": "https://openbdap.rgs.mef.gov.it/Datasets_FET/Rendiconto/2025/2025_Rendiconto%20-%20Schemi%20di%20bilancio_CAMPANIA.zip",
+      "sha256": "aec0af683c572f60a8010b20d63e21de284e3645c41cc92e9afb45192de7ba9e",
+      "bytes": 20456127,
+      "municipalities": 532
+    },
+    "16": {
+      "archive": "https://openbdap.rgs.mef.gov.it/Datasets_FET/Rendiconto/2025/2025_Rendiconto%20-%20Schemi%20di%20bilancio_PUGLIA.zip",
+      "sha256": "061df2c85c113731921cee4fa315c2ab0f1f1c60ea0ee5040700b75f401100a1",
+      "bytes": 13312479,
+      "municipalities": 255
+    },
+    "17": {
+      "archive": "https://openbdap.rgs.mef.gov.it/Datasets_FET/Rendiconto/2025/2025_Rendiconto%20-%20Schemi%20di%20bilancio_BASILICATA.zip",
+      "sha256": "6d70f6ff2a58019e0697dbe0e92dc25d7a6ca123b04fd41acb1be8aed3d82d6f",
+      "bytes": 7831107,
+      "municipalities": 129
+    },
+    "18": {
+      "archive": "https://openbdap.rgs.mef.gov.it/Datasets_FET/Rendiconto/2025/2025_Rendiconto%20-%20Schemi%20di%20bilancio_CALABRIA.zip",
+      "sha256": "9a5d38a263027d48cd7acd8b04de046543a6077fbf7bf24d4b3ead9b4b587063",
+      "bytes": 14243496,
+      "municipalities": 366
+    },
+    "19": {
+      "archive": "https://openbdap.rgs.mef.gov.it/Datasets_FET/Rendiconto/2025/2025_Rendiconto%20-%20Schemi%20di%20bilancio_SICILIA.zip",
+      "sha256": "9c83a3559bc9dee763e63a66942fcd980d11f2a44d306c44d990a446f0cf010a",
+      "bytes": 13175868,
+      "municipalities": 269
+    },
+    "20": {
+      "archive": "https://openbdap.rgs.mef.gov.it/Datasets_FET/Rendiconto/2025/2025_Rendiconto%20-%20Schemi%20di%20bilancio_SARDEGNA.zip",
+      "sha256": "b690313ffa95f91d6243d3a34b82e81b06247e6bab284c60326b4cfce99c1ed3",
+      "bytes": 19760068,
+      "municipalities": 363
+    }
+  },
+  "missingRegions": {
+    "02": [
+      "https://openbdap.rgs.mef.gov.it/Datasets_FET/Rendiconto/2025/2025_Rendiconto%20-%20Schemi%20di%20bilancio_VALLE%20D'AOSTA.zip → HTTP 404",
+      "https://openbdap.rgs.mef.gov.it/Datasets_FET/Rendiconto/2025/2025_Rendiconto%20-%20Schemi%20di%20bilancio_VALLE%20D%20AOSTA.zip → HTTP 404",
+      "https://openbdap.rgs.mef.gov.it/Datasets_FET/Rendiconto/2025/2025_Rendiconto%20-%20Schemi%20di%20bilancio_VALLE%20DAOSTA.zip → HTTP 404",
+      "https://openbdap.rgs.mef.gov.it/Datasets_FET/Rendiconto/2025/2025_Rendiconto%20-%20Schemi%20di%20bilancio_VALLE_D_AOSTA.zip → HTTP 404"
+    ],
+    "04": [
+      "https://openbdap.rgs.mef.gov.it/Datasets_FET/Rendiconto/2025/2025_Rendiconto%20-%20Schemi%20di%20bilancio_TRENTINO-ALTO%20ADIGE.zip → HTTP 404",
+      "https://openbdap.rgs.mef.gov.it/Datasets_FET/Rendiconto/2025/2025_Rendiconto%20-%20Schemi%20di%20bilancio_TRENTINO%20ALTO%20ADIGE.zip → HTTP 404",
+      "https://openbdap.rgs.mef.gov.it/Datasets_FET/Rendiconto/2025/2025_Rendiconto%20-%20Schemi%20di%20bilancio_TRENTINO-ALTO%20ADIGE-SUDTIROL.zip → HTTP 404"
+    ]
+  },
+  "unknownCodes": [
+    "024129",
+    "112001",
+    "112002",
+    "112003",
+    "112004",
+    "112005",
+    "112006",
+    "112007",
+    "112008",
+    "112009",
+    "112011",
+    "112012",
+    "112013",
+    "112014",
+    "112015",
+    "112016",
+    "112017",
+    "112018",
+    "112019",
+    "112020",
+    "112021",
+    "112022",
+    "112023",
+    "112024",
+    "112025",
+    "112026",
+    "112027",
+    "112028",
+    "112029",
+    "112030",
+    "112031",
+    "112032",
+    "112033",
+    "112034",
+    "112035",
+    "112037",
+    "112038",
+    "112039",
+    "112040",
+    "112041",
+    "112042",
+    "112043",
+    "112044",
+    "112045",
+    "112046",
+    "112047",
+    "112048",
+    "112049",
+    "112050",
+    "112051",
+    "112052",
+    "112053",
+    "112054",
+    "112055",
+    "112056",
+    "112057",
+    "112058",
+    "112059",
+    "112060",
+    "112061",
+    "112062",
+    "112063",
+    "112064",
+    "112065",
+    "112066",
+    "113001",
+    "113002",
+    "113003",
+    "113004",
+    "113005",
+    "113006",
+    "113007",
+    "113008",
+    "113009",
+    "113010",
+    "113011",
+    "113012",
+    "113013",
+    "113014",
+    "113015",
+    "113016",
+    "113017",
+    "113019",
+    "113020",
+    "113022",
+    "113023",
+    "113024",
+    "113025",
+    "113026",
+    "114001",
+    "114002",
+    "114003",
+    "114004",
+    "114006",
+    "114007",
+    "114008",
+    "114009",
+    "114010",
+    "114011",
+    "114012",
+    "114013",
+    "114014",
+    "114015",
+    "114016",
+    "114017",
+    "114018",
+    "114019",
+    "114020",
+    "114021",
+    "114022",
+    "114023",
+    "114024",
+    "114025",
+    "114026",
+    "114027",
+    "114028",
+    "114029",
+    "114030",
+    "114031",
+    "114032",
+    "114033",
+    "114034",
+    "114035",
+    "114036",
+    "114037",
+    "114038",
+    "114039",
+    "114040",
+    "114041",
+    "114042",
+    "114043",
+    "114044",
+    "114045",
+    "114046",
+    "114047",
+    "114048",
+    "114049",
+    "114050",
+    "114051",
+    "114052",
+    "114053",
+    "115001",
+    "115002",
+    "115003",
+    "115004",
+    "115005",
+    "115006",
+    "115007",
+    "115008",
+    "115009",
+    "115010",
+    "115011",
+    "115012",
+    "115013",
+    "115015",
+    "115016",
+    "115017",
+    "115018",
+    "115019",
+    "115020",
+    "115021",
+    "115022",
+    "115023",
+    "115024",
+    "115025",
+    "115026",
+    "115027",
+    "115028",
+    "115029",
+    "115030",
+    "115031",
+    "115032",
+    "115033",
+    "115034",
+    "115035",
+    "115036",
+    "115037",
+    "115038",
+    "115039",
+    "115040",
+    "115041",
+    "115042",
+    "115043",
+    "115044",
+    "115045",
+    "115046",
+    "115048",
+    "115049",
+    "115050",
+    "115051",
+    "115052",
+    "115053",
+    "115054",
+    "115055",
+    "115056",
+    "115057",
+    "115058",
+    "115059",
+    "115060",
+    "115061",
+    "115062",
+    "115063",
+    "115064",
+    "115066",
+    "115067",
+    "115068",
+    "115069",
+    "115070",
+    "115071",
+    "115072",
+    "115073",
+    "115074",
+    "115075",
+    "115077",
+    "115078",
+    "115079",
+    "115080",
+    "115081",
+    "115082",
+    "115083",
+    "115084",
+    "115085",
+    "115086",
+    "115087",
+    "116001",
+    "116002",
+    "116003",
+    "116004",
+    "116005",
+    "116006",
+    "116007",
+    "116008",
+    "116009",
+    "116010",
+    "116011",
+    "116012",
+    "116013",
+    "116014",
+    "116015",
+    "116016",
+    "116017",
+    "116018",
+    "116019",
+    "116020",
+    "116021",
+    "116022",
+    "116023",
+    "117001",
+    "117002",
+    "117003",
+    "117004",
+    "117005",
+    "117006",
+    "117007",
+    "117008",
+    "117009",
+    "117010",
+    "117011",
+    "117012",
+    "117013",
+    "117014",
+    "117015",
+    "117016",
+    "117017",
+    "117018",
+    "117019",
+    "117020",
+    "117021",
+    "117022",
+    "117023",
+    "117024",
+    "117025",
+    "117026",
+    "117027",
+    "117028",
+    "118002",
+    "118003",
+    "118004",
+    "118005",
+    "118006",
+    "118007",
+    "118008",
+    "118009",
+    "118010",
+    "118011",
+    "118012",
+    "118013",
+    "118014",
+    "118015",
+    "118016",
+    "118017",
+    "118018",
+    "118019",
+    "118020",
+    "118021",
+    "118022",
+    "118023",
+    "118024",
+    "118025",
+    "118026",
+    "118027",
+    "118028",
+    "118029",
+    "118031",
+    "118032",
+    "118034",
+    "118035",
+    "118036",
+    "118037",
+    "118038",
+    "118039",
+    "118040",
+    "118041",
+    "118042",
+    "118043",
+    "118044",
+    "118045",
+    "118046",
+    "118047",
+    "118048",
+    "118049",
+    "118050",
+    "118051",
+    "118052",
+    "118053",
+    "118054",
+    "118056",
+    "118057",
+    "118058",
+    "118059",
+    "118060",
+    "118061",
+    "118063",
+    "118064",
+    "118065",
+    "118066",
+    "118068",
+    "118069",
+    "118071",
+    "118072",
+    "119001",
+    "119002",
+    "119003",
+    "119004",
+    "119005",
+    "119006",
+    "119007",
+    "119008",
+    "119009",
+    "119010",
+    "119011",
+    "119012",
+    "119013",
+    "119014",
+    "119015",
+    "119016",
+    "119017",
+    "119018",
+    "119019",
+    "119020",
+    "119021",
+    "119022",
+    "119023",
+    "119024"
+  ],
+  "towns": {
+    "046018": {
+      "currentRevenueAccruedPerResident": [
+        31550784.64,
+        null
+      ],
+      "currentExpenditureCommittedPerResident": [
+        26114235.42,
+        null
+      ],
+      "capitalExpenditureCommittedPerResident": [
+        4529368.79,
+        null
+      ],
+      "currentCollectionCapacity": [
+        23578695.080000002,
+        31550784.64
+      ],
+      "currentPaymentCapacity": [
+        22292611.84,
+        26114235.42
+      ],
+      "ownRevenueShare": [
+        30149960.78,
+        31550784.64
+      ],
+      "availableAdministrationResultPerResident": [
+        527763.38,
+        null
+      ],
+      "fcdePerResident": [
+        11078011.94,
+        null
+      ],
+      "yearEndCashFundPerResident": [
+        7030169.59,
+        null
+      ],
+      "civilProtectionMissionExpenditurePerResident": [
+        119272.55,
+        null
+      ],
+      "cultureSportMissionExpenditurePerResident": [
+        640667.2,
+        null
+      ],
+      "economicDevelopmentMissionExpenditurePerResident": [
+        89750.0,
+        null
+      ],
+      "educationMissionExpenditurePerResident": [
+        4400763.72,
+        null
+      ],
+      "environmentMissionExpenditurePerResident": [
+        8527063.39,
+        null
+      ],
+      "generalAdministrationMissionExpenditurePerResident": [
+        7417435.6,
+        null
+      ],
+      "mobilityMissionExpenditurePerResident": [
+        1701502.13,
+        null
+      ],
+      "socialMissionExpenditurePerResident": [
+        4284516.36,
+        null
+      ],
+      "territorialPlanningMissionExpenditurePerResident": [
+        2135917.69,
+        null
+      ],
+      "tourismDevelopmentMissionExpenditurePerResident": [
+        160510.0,
+        null
+      ],
+      "population": 21806
+    },
+    "046033": {
+      "currentRevenueAccruedPerResident": [
+        99041790.29,
+        null
+      ],
+      "currentExpenditureCommittedPerResident": [
+        85008050.86,
+        null
+      ],
+      "capitalExpenditureCommittedPerResident": [
+        22475447.47,
+        null
+      ],
+      "currentCollectionCapacity": [
+        82471466.28,
+        99041790.29
+      ],
+      "currentPaymentCapacity": [
+        70621135.68,
+        85008050.86
+      ],
+      "ownRevenueShare": [
+        86016961.15,
+        99041790.29
+      ],
+      "availableAdministrationResultPerResident": [
+        1345819.86,
+        null
+      ],
+      "fcdePerResident": [
+        77527811.19,
+        null
+      ],
+      "yearEndCashFundPerResident": [
+        46361668.52,
+        null
+      ],
+      "civilProtectionMissionExpenditurePerResident": [
+        113028.14,
+        null
+      ],
+      "cultureSportMissionExpenditurePerResident": [
+        4139515.0,
+        null
+      ],
+      "economicDevelopmentMissionExpenditurePerResident": [
+        1059590.87,
+        null
+      ],
+      "educationMissionExpenditurePerResident": [
+        4164077.69,
+        null
+      ],
+      "environmentMissionExpenditurePerResident": [
+        26447285.11,
+        null
+      ],
+      "generalAdministrationMissionExpenditurePerResident": [
+        47354417.51,
+        null
+      ],
+      "mobilityMissionExpenditurePerResident": [
+        4566282.42,
+        null
+      ],
+      "socialMissionExpenditurePerResident": [
+        17364486.83,
+        null
+      ],
+      "territorialPlanningMissionExpenditurePerResident": [
+        2421690.46,
+        null
+      ],
+      "tourismDevelopmentMissionExpenditurePerResident": [
+        2402100.72,
+        null
+      ],
+      "population": 60618
+    },
+    "046005": {
+      "currentRevenueAccruedPerResident": [
+        43571122.15,
+        null
+      ],
+      "currentExpenditureCommittedPerResident": [
+        40164617.99,
+        null
+      ],
+      "capitalExpenditureCommittedPerResident": [
+        24057122.01,
+        null
+      ],
+      "currentCollectionCapacity": [
+        35924485.25,
+        43571122.15
+      ],
+      "currentPaymentCapacity": [
+        33683287.51,
+        40164617.99
+      ],
+      "ownRevenueShare": [
+        41046605.3,
+        43571122.15
+      ],
+      "availableAdministrationResultPerResident": [
+        -3656681.9,
+        null
+      ],
+      "fcdePerResident": [
+        14240754.05,
+        null
+      ],
+      "yearEndCashFundPerResident": [
+        8104846.43,
+        null
+      ],
+      "civilProtectionMissionExpenditurePerResident": [
+        157429.33,
+        null
+      ],
+      "cultureSportMissionExpenditurePerResident": [
+        3305811.92,
+        null
+      ],
+      "economicDevelopmentMissionExpenditurePerResident": [
+        6205996.02,
+        null
+      ],
+      "educationMissionExpenditurePerResident": [
+        5464597.36,
+        null
+      ],
+      "environmentMissionExpenditurePerResident": [
+        15110794.11,
+        null
+      ],
+      "generalAdministrationMissionExpenditurePerResident": [
+        25557702.34,
+        null
+      ],
+      "mobilityMissionExpenditurePerResident": [
+        5161979.62,
+        null
+      ],
+      "socialMissionExpenditurePerResident": [
+        4905604.61,
+        null
+      ],
+      "territorialPlanningMissionExpenditurePerResident": [
+        1963835.93,
+        null
+      ],
+      "tourismDevelopmentMissionExpenditurePerResident": [
+        6812044.64,
+        null
+      ],
+      "population": 31832
+    },
+    "046024": {
+      "currentRevenueAccruedPerResident": [
+        42808944.51,
+        null
+      ],
+      "currentExpenditureCommittedPerResident": [
+        35850568.75,
+        null
+      ],
+      "capitalExpenditureCommittedPerResident": [
+        15831051.37,
+        null
+      ],
+      "currentCollectionCapacity": [
+        36820130.62,
+        42808944.51
+      ],
+      "currentPaymentCapacity": [
+        30316480.31,
+        35850568.75
+      ],
+      "ownRevenueShare": [
+        39783408.019999996,
+        42808944.51
+      ],
+      "availableAdministrationResultPerResident": [
+        8701293.6,
+        null
+      ],
+      "fcdePerResident": [
+        9212517.16,
+        null
+      ],
+      "yearEndCashFundPerResident": [
+        37276807.73,
+        null
+      ],
+      "civilProtectionMissionExpenditurePerResident": [
+        417199.08,
+        null
+      ],
+      "cultureSportMissionExpenditurePerResident": [
+        3079710.9699999997,
+        null
+      ],
+      "economicDevelopmentMissionExpenditurePerResident": [
+        139440.93,
+        null
+      ],
+      "educationMissionExpenditurePerResident": [
+        7172923.86,
+        null
+      ],
+      "environmentMissionExpenditurePerResident": [
+        12946259.79,
+        null
+      ],
+      "generalAdministrationMissionExpenditurePerResident": [
+        11108586.38,
+        null
+      ],
+      "mobilityMissionExpenditurePerResident": [
+        6597007.76,
+        null
+      ],
+      "socialMissionExpenditurePerResident": [
+        3682966.86,
+        null
+      ],
+      "territorialPlanningMissionExpenditurePerResident": [
+        2372270.22,
+        null
+      ],
+      "tourismDevelopmentMissionExpenditurePerResident": [
+        1583486.0799999998,
+        null
+      ],
+      "population": 22743
+    },
+    "046028": {
+      "currentRevenueAccruedPerResident": [
+        15094596.24,
+        null
+      ],
+      "currentExpenditureCommittedPerResident": [
+        13173763.22,
+        null
+      ],
+      "capitalExpenditureCommittedPerResident": [
+        7565211.35,
+        null
+      ],
+      "currentCollectionCapacity": [
+        11041687.4,
+        15094596.24
+      ],
+      "currentPaymentCapacity": [
+        10578962.07,
+        13173763.22
+      ],
+      "ownRevenueShare": [
+        12925864.3,
+        15094596.24
+      ],
+      "availableAdministrationResultPerResident": [
+        1751574.45,
+        null
+      ],
+      "fcdePerResident": [
+        7585000.0,
+        null
+      ],
+      "yearEndCashFundPerResident": [
+        5188811.87,
+        null
+      ],
+      "civilProtectionMissionExpenditurePerResident": [
+        1330772.97,
+        null
+      ],
+      "cultureSportMissionExpenditurePerResident": [
+        610243.01,
+        null
+      ],
+      "economicDevelopmentMissionExpenditurePerResident": [
+        109946.01,
+        null
+      ],
+      "educationMissionExpenditurePerResident": [
+        1123376.26,
+        null
+      ],
+      "environmentMissionExpenditurePerResident": [
+        4143014.24,
+        null
+      ],
+      "generalAdministrationMissionExpenditurePerResident": [
+        7048694.12,
+        null
+      ],
+      "mobilityMissionExpenditurePerResident": [
+        2735614.07,
+        null
+      ],
+      "socialMissionExpenditurePerResident": [
+        1902609.37,
+        null
+      ],
+      "territorialPlanningMissionExpenditurePerResident": [
+        805918.18,
+        null
+      ],
+      "tourismDevelopmentMissionExpenditurePerResident": [
+        153928.16999999998,
+        null
+      ],
+      "population": 12381
+    },
+    "046013": {
+      "currentRevenueAccruedPerResident": [
+        32008735.31,
+        null
+      ],
+      "currentExpenditureCommittedPerResident": [
+        29436116.67,
+        null
+      ],
+      "capitalExpenditureCommittedPerResident": [
+        13055273.69,
+        null
+      ],
+      "currentCollectionCapacity": [
+        26106694.57,
+        32008735.31
+      ],
+      "currentPaymentCapacity": [
+        22716778.28,
+        29436116.67
+      ],
+      "ownRevenueShare": [
+        30705003.11,
+        32008735.31
+      ],
+      "availableAdministrationResultPerResident": [
+        9257608.77,
+        null
+      ],
+      "fcdePerResident": [
+        7277368.0,
+        null
+      ],
+      "yearEndCashFundPerResident": [
+        47669797.59,
+        null
+      ],
+      "civilProtectionMissionExpenditurePerResident": [
+        34961.3,
+        null
+      ],
+      "cultureSportMissionExpenditurePerResident": [
+        2277567.5599999996,
+        null
+      ],
+      "economicDevelopmentMissionExpenditurePerResident": [
+        221106.07,
+        null
+      ],
+      "educationMissionExpenditurePerResident": [
+        6496031.49,
+        null
+      ],
+      "environmentMissionExpenditurePerResident": [
+        9503014.43,
+        null
+      ],
+      "generalAdministrationMissionExpenditurePerResident": [
+        14373846.41,
+        null
+      ],
+      "mobilityMissionExpenditurePerResident": [
+        2407728.18,
+        null
+      ],
+      "socialMissionExpenditurePerResident": [
+        2500315.09,
+        null
+      ],
+      "territorialPlanningMissionExpenditurePerResident": [
+        1852001.3,
+        null
+      ],
+      "tourismDevelopmentMissionExpenditurePerResident": [
+        932792.06,
+        null
+      ],
+      "population": 6666
+    },
+    "046030": {
+      "currentRevenueAccruedPerResident": [
+        4346721.75,
+        null
+      ],
+      "currentExpenditureCommittedPerResident": [
+        3612145.57,
+        null
+      ],
+      "capitalExpenditureCommittedPerResident": [
+        755720.01,
+        null
+      ],
+      "currentCollectionCapacity": [
+        3504694.42,
+        4346721.75
+      ],
+      "currentPaymentCapacity": [
+        2583373.48,
+        3612145.57
+      ],
+      "ownRevenueShare": [
+        3111142.37,
+        4346721.75
+      ],
+      "availableAdministrationResultPerResident": [
+        -1444386.13,
+        null
+      ],
+      "fcdePerResident": [
+        570942.52,
+        null
+      ],
+      "yearEndCashFundPerResident": [
+        449403.31,
+        null
+      ],
+      "civilProtectionMissionExpenditurePerResident": [
+        128234.02,
+        null
+      ],
+      "cultureSportMissionExpenditurePerResident": [
+        109535.84000000001,
+        null
+      ],
+      "economicDevelopmentMissionExpenditurePerResident": [
+        87034.64,
+        null
+      ],
+      "educationMissionExpenditurePerResident": [
+        440160.84,
+        null
+      ],
+      "environmentMissionExpenditurePerResident": [
+        1065295.32,
+        null
+      ],
+      "generalAdministrationMissionExpenditurePerResident": [
+        1370607.37,
+        null
+      ],
+      "mobilityMissionExpenditurePerResident": [
+        497985.74,
+        null
+      ],
+      "socialMissionExpenditurePerResident": [
+        364392.05,
+        null
+      ],
+      "territorialPlanningMissionExpenditurePerResident": [
+        251515.58,
+        null
+      ],
+      "tourismDevelopmentMissionExpenditurePerResident": [
+        89916.78,
+        null
+      ],
+      "population": 2892
+    }
+  },
+  "benchmarks": {
+    "currentRevenueAccruedPerResident": {
+      "tuscany": {
+        "municipalities": 272,
+        "municipalitiesTotal": 273,
+        "populationCovered": 3652987,
+        "populationTotal": 3657716,
+        "populationShare": 0.9987071166815575,
+        "value": 1385.955937603939,
+        "numerator": 5062879022.64,
+        "denominator": 3652987
+      },
+      "italy": {
+        "municipalities": 6938,
+        "municipalitiesTotal": 7897,
+        "populationCovered": 53931895,
+        "populationTotal": 58943464,
+        "populationShare": 0.9149766800268135,
+        "value": 1276.9227211969837,
+        "numerator": 68866862122.71,
+        "denominator": 53931895
+      }
+    },
+    "currentExpenditureCommittedPerResident": {
+      "tuscany": {
+        "municipalities": 272,
+        "municipalitiesTotal": 273,
+        "populationCovered": 3652987,
+        "populationTotal": 3657716,
+        "populationShare": 0.9987071166815575,
+        "value": 1185.0724280814577,
+        "numerator": 4329054173.84,
+        "denominator": 3652987
+      },
+      "italy": {
+        "municipalities": 6938,
+        "municipalitiesTotal": 7897,
+        "populationCovered": 53931895,
+        "populationTotal": 58943464,
+        "populationShare": 0.9149766800268135,
+        "value": 1092.2333935703539,
+        "numerator": 58906216697.53,
+        "denominator": 53931895
+      }
+    },
+    "capitalExpenditureCommittedPerResident": {
+      "tuscany": {
+        "municipalities": 272,
+        "municipalitiesTotal": 273,
+        "populationCovered": 3652987,
+        "populationTotal": 3657716,
+        "populationShare": 0.9987071166815575,
+        "value": 434.0799099011302,
+        "numerator": 1585688267.83,
+        "denominator": 3652987
+      },
+      "italy": {
+        "municipalities": 6938,
+        "municipalitiesTotal": 7897,
+        "populationCovered": 53931895,
+        "populationTotal": 58943464,
+        "populationShare": 0.9149766800268135,
+        "value": 430.8507468469261,
+        "numerator": 23236597239.62,
+        "denominator": 53931895
+      }
+    },
+    "currentCollectionCapacity": {
+      "tuscany": {
+        "municipalities": 272,
+        "municipalitiesTotal": 273,
+        "populationCovered": 3652987,
+        "populationTotal": 3657716,
+        "populationShare": 0.9987071166815575,
+        "value": 77.03034146738112,
+        "numerator": 3899952999.2200003,
+        "denominator": 5062879022.64
+      },
+      "italy": {
+        "municipalities": 6938,
+        "municipalitiesTotal": 7897,
+        "populationCovered": 53931895,
+        "populationTotal": 58943464,
+        "populationShare": 0.9149766800268135,
+        "value": 76.65105048238075,
+        "numerator": 52787173251.31,
+        "denominator": 68866862122.71
+      }
+    },
+    "currentPaymentCapacity": {
+      "tuscany": {
+        "municipalities": 272,
+        "municipalitiesTotal": 273,
+        "populationCovered": 3652987,
+        "populationTotal": 3657716,
+        "populationShare": 0.9987071166815575,
+        "value": 81.64209846985914,
+        "numerator": 3534330671.42,
+        "denominator": 4329054173.84
+      },
+      "italy": {
+        "municipalities": 6938,
+        "municipalitiesTotal": 7897,
+        "populationCovered": 53931895,
+        "populationTotal": 58943464,
+        "populationShare": 0.9149766800268135,
+        "value": 80.0809775753227,
+        "numerator": 47172674184.02,
+        "denominator": 58906216697.53
+      }
+    },
+    "ownRevenueShare": {
+      "tuscany": {
+        "municipalities": 272,
+        "municipalitiesTotal": 273,
+        "populationCovered": 3652987,
+        "populationTotal": 3657716,
+        "populationShare": 0.9987071166815575,
+        "value": 90.23238706379092,
+        "numerator": 4568356596.28,
+        "denominator": 5062879022.64
+      },
+      "italy": {
+        "municipalities": 6938,
+        "municipalitiesTotal": 7897,
+        "populationCovered": 53931895,
+        "populationTotal": 58943464,
+        "populationShare": 0.9149766800268135,
+        "value": 82.19903783473328,
+        "numerator": 56607898051.84,
+        "denominator": 68866862122.71
+      }
+    },
+    "availableAdministrationResultPerResident": {
+      "tuscany": {
+        "value": null,
+        "reason": "riconciliazione 7/7 non superata: Camaiore: fonte -114.87439997486806 ≠ pubblicato -92.1586670645891"
+      },
+      "italy": {
+        "value": null,
+        "reason": "riconciliazione 7/7 non superata: Camaiore: fonte -114.87439997486806 ≠ pubblicato -92.1586670645891"
+      }
+    },
+    "fcdePerResident": {
+      "tuscany": {
+        "municipalities": 272,
+        "municipalitiesTotal": 273,
+        "populationCovered": 3652987,
+        "populationTotal": 3657716,
+        "populationShare": 0.9987071166815575,
+        "value": 583.2219393362199,
+        "numerator": 2130502162.51,
+        "denominator": 3652987
+      },
+      "italy": {
+        "municipalities": 6938,
+        "municipalitiesTotal": 7897,
+        "populationCovered": 53931895,
+        "populationTotal": 58943464,
+        "populationShare": 0.9149766800268135,
+        "value": 607.8472752624398,
+        "numerator": 32782355425.49,
+        "denominator": 53931895
+      }
+    },
+    "yearEndCashFundPerResident": {
+      "tuscany": {
+        "municipalities": 272,
+        "municipalitiesTotal": 273,
+        "populationCovered": 3652987,
+        "populationTotal": 3657716,
+        "populationShare": 0.9987071166815575,
+        "value": 612.4258229908838,
+        "numerator": 2237183569.85,
+        "denominator": 3652987
+      },
+      "italy": {
+        "municipalities": 6938,
+        "municipalitiesTotal": 7897,
+        "populationCovered": 53931895,
+        "populationTotal": 58943464,
+        "populationShare": 0.9149766800268135,
+        "value": 687.61971181784,
+        "numerator": 37084634097.69,
+        "denominator": 53931895
+      }
+    },
+    "civilProtectionMissionExpenditurePerResident": {
+      "tuscany": {
+        "municipalities": 266,
+        "municipalitiesTotal": 273,
+        "populationCovered": 3606966,
+        "populationTotal": 3657716,
+        "populationShare": 0.9861252213129723,
+        "value": 7.747466452414578,
+        "numerator": 27944848.080000002,
+        "denominator": 3606966
+      },
+      "italy": {
+        "municipalities": 6706,
+        "municipalitiesTotal": 7897,
+        "populationCovered": 52895638,
+        "populationTotal": 58943464,
+        "populationShare": 0.8973961557468018,
+        "value": null,
+        "reason": "copertura 89.7% sotto la soglia del 90%"
+      }
+    },
+    "cultureSportMissionExpenditurePerResident": {
+      "tuscany": {
+        "municipalities": 268,
+        "municipalitiesTotal": 273,
+        "populationCovered": 3649675,
+        "populationTotal": 3657716,
+        "populationShare": 0.9978016335877362,
+        "value": 142.17304005151144,
+        "numerator": 518885389.95,
+        "denominator": 3649675
+      },
+      "italy": {
+        "municipalities": 6800,
+        "municipalitiesTotal": 7897,
+        "populationCovered": 53586059,
+        "populationTotal": 58943464,
+        "populationShare": 0.9091094306910771,
+        "value": 100.45525986357758,
+        "numerator": 5383001481.91,
+        "denominator": 53586059
+      }
+    },
+    "economicDevelopmentMissionExpenditurePerResident": {
+      "tuscany": {
+        "municipalities": 266,
+        "municipalitiesTotal": 273,
+        "populationCovered": 3622767,
+        "populationTotal": 3657716,
+        "populationShare": 0.9904451302397452,
+        "value": 23.221881528676835,
+        "numerator": 84127466.08,
+        "denominator": 3622767
+      },
+      "italy": {
+        "municipalities": 6608,
+        "municipalitiesTotal": 7897,
+        "populationCovered": 52993394,
+        "populationTotal": 58943464,
+        "populationShare": 0.8990546263110699,
+        "value": null,
+        "reason": "copertura 89.9% sotto la soglia del 90%"
+      }
+    },
+    "educationMissionExpenditurePerResident": {
+      "tuscany": {
+        "municipalities": 272,
+        "municipalitiesTotal": 273,
+        "populationCovered": 3652987,
+        "populationTotal": 3657716,
+        "populationShare": 0.9987071166815575,
+        "value": 172.7210652186827,
+        "numerator": 630947805.87,
+        "denominator": 3652987
+      },
+      "italy": {
+        "municipalities": 6931,
+        "municipalitiesTotal": 7897,
+        "populationCovered": 53930227,
+        "populationTotal": 58943464,
+        "populationShare": 0.9149483817238837,
+        "value": 163.96941179628263,
+        "numerator": 8842907599.23,
+        "denominator": 53930227
+      }
+    },
+    "environmentMissionExpenditurePerResident": {
+      "tuscany": {
+        "municipalities": 272,
+        "municipalitiesTotal": 273,
+        "populationCovered": 3652987,
+        "populationTotal": 3657716,
+        "populationShare": 0.9987071166815575,
+        "value": 310.949489423313,
+        "numerator": 1135894442.52,
+        "denominator": 3652987
+      },
+      "italy": {
+        "municipalities": 6934,
+        "municipalitiesTotal": 7897,
+        "populationCovered": 53928765,
+        "populationTotal": 58943464,
+        "populationShare": 0.9149235782952967,
+        "value": 265.5726386762241,
+        "numerator": 14322004421.6,
+        "denominator": 53928765
+      }
+    },
+    "generalAdministrationMissionExpenditurePerResident": {
+      "tuscany": {
+        "municipalities": 272,
+        "municipalitiesTotal": 273,
+        "populationCovered": 3652987,
+        "populationTotal": 3657716,
+        "populationShare": 0.9987071166815575,
+        "value": 384.3218141838446,
+        "numerator": 1403922591.03,
+        "denominator": 3652987
+      },
+      "italy": {
+        "municipalities": 6938,
+        "municipalitiesTotal": 7897,
+        "populationCovered": 53931895,
+        "populationTotal": 58943464,
+        "populationShare": 0.9149766800268135,
+        "value": 390.42737788649924,
+        "numerator": 21056488349.3,
+        "denominator": 53931895
+      }
+    },
+    "mobilityMissionExpenditurePerResident": {
+      "tuscany": {
+        "municipalities": 272,
+        "municipalitiesTotal": 273,
+        "populationCovered": 3652987,
+        "populationTotal": 3657716,
+        "populationShare": 0.9987071166815575,
+        "value": 227.74243847842877,
+        "numerator": 831940167.11,
+        "denominator": 3652987
+      },
+      "italy": {
+        "municipalities": 6913,
+        "municipalitiesTotal": 7897,
+        "populationCovered": 53863985,
+        "populationTotal": 58943464,
+        "populationShare": 0.913824559072402,
+        "value": 224.3618032705898,
+        "numerator": 12085020805.94,
+        "denominator": 53863985
+      }
+    },
+    "socialMissionExpenditurePerResident": {
+      "tuscany": {
+        "municipalities": 272,
+        "municipalitiesTotal": 273,
+        "populationCovered": 3652987,
+        "populationTotal": 3657716,
+        "populationShare": 0.9987071166815575,
+        "value": 212.71815916946872,
+        "numerator": 777056670.11,
+        "denominator": 3652987
+      },
+      "italy": {
+        "municipalities": 6935,
+        "municipalitiesTotal": 7897,
+        "populationCovered": 53929920,
+        "populationTotal": 58943464,
+        "populationShare": 0.9149431733431886,
+        "value": 209.0739766009295,
+        "numerator": 11275342832.17,
+        "denominator": 53929920
+      }
+    },
+    "territorialPlanningMissionExpenditurePerResident": {
+      "tuscany": {
+        "municipalities": 272,
+        "municipalitiesTotal": 273,
+        "populationCovered": 3652987,
+        "populationTotal": 3657716,
+        "populationShare": 0.9987071166815575,
+        "value": 59.736834678031975,
+        "numerator": 218217880.5,
+        "denominator": 3652987
+      },
+      "italy": {
+        "municipalities": 6796,
+        "municipalitiesTotal": 7897,
+        "populationCovered": 53594360,
+        "populationTotal": 58943464,
+        "populationShare": 0.909250260554758,
+        "value": 71.44863624437347,
+        "numerator": 3829243932.39,
+        "denominator": 53594360
+      }
+    },
+    "tourismDevelopmentMissionExpenditurePerResident": {
+      "tuscany": {
+        "municipalities": 263,
+        "municipalitiesTotal": 273,
+        "populationCovered": 3584330,
+        "populationTotal": 3657716,
+        "populationShare": 0.9799366599265771,
+        "value": 43.533704095326044,
+        "numerator": 156039161.6,
+        "denominator": 3584330
+      },
+      "italy": {
+        "municipalities": 6478,
+        "municipalitiesTotal": 7897,
+        "populationCovered": 52085383,
+        "populationTotal": 58943464,
+        "populationShare": 0.883649847928856,
+        "value": null,
+        "reason": "copertura 88.4% sotto la soglia del 90%"
+      }
+    }
+  },
+  "blocked": {
+    "availableAdministrationResultPerResident": [
+      "Camaiore: fonte -114.87439997486806 ≠ pubblicato -92.1586670645891"
+    ]
+  },
+  "qualityGate": {
+    "status": "PASS",
+    "publicReconciliation": "18 indicatori × 7/7; 1 esclusi dal confronto"
+  },
+  "acquisitionEvidence": {
+    "script": "scripts/update_source_data.py openbdap-benchmarks --year 2025"
+  }
+}
