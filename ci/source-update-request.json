@@ -6,7 +6,43 @@
   "agcomFtth": false,
   "istatTourism": [],
   "mefFiscalProbe": [],
-  "sourceProbe": [],
+  "sourceProbe": [
+    {
+      "name": "aci-parco-2012",
+      "url": "https://aci.gov.it//app/uploads/2025/02/Parco_veicolare_2012.zip",
+      "match": "VIAREGGIO|Viareggio|EURO|Euro|Comune|COMUNE|AUTOVETTURE|Autovetture"
+    },
+    {
+      "name": "aci-parco-2015",
+      "url": "https://aci.gov.it//app/uploads/2025/02/Consistenza_parco_veicoli_2015.zip",
+      "match": "VIAREGGIO|Viareggio|EURO|Euro|Comune|COMUNE|AUTOVETTURE|Autovetture"
+    },
+    {
+      "name": "aci-parco-2017",
+      "url": "https://aci.gov.it//app/uploads/2025/02/Consistenza_Parco_veicoli_2017.zip",
+      "match": "VIAREGGIO|Viareggio|EURO|Euro|Comune|COMUNE|AUTOVETTURE|Autovetture"
+    },
+    {
+      "name": "aci-parco-2019",
+      "url": "https://aci.gov.it//app/uploads/2024/06/Parco_veicoli_2019.zip",
+      "match": "VIAREGGIO|Viareggio|EURO|Euro|Comune|COMUNE|AUTOVETTURE|Autovetture"
+    },
+    {
+      "name": "aci-parco-2020",
+      "url": "https://aci.gov.it//app/uploads/2024/06/Autoritratto2020_Parco_veicolare.zip",
+      "match": "VIAREGGIO|Viareggio|EURO|Euro|Comune|COMUNE|AUTOVETTURE|Autovetture"
+    },
+    {
+      "name": "aci-parco-2022",
+      "url": "https://aci.gov.it//app/uploads/2024/06/Consistenza_Parco_veicoli_2022.zip",
+      "match": "VIAREGGIO|Viareggio|EURO|Euro|Comune|COMUNE|AUTOVETTURE|Autovetture"
+    },
+    {
+      "name": "aci-parco-2023",
+      "url": "https://aci.gov.it//app/uploads/2024/06/Autoritratto2023_Parco_veicolare.zip",
+      "match": "VIAREGGIO|Viareggio|EURO|Euro|Comune|COMUNE|AUTOVETTURE|Autovetture"
+    }
+  ],
   "ispraSoil": [],
   "aciVehicles": [],
   "omiResidential": [],
