@@ -64,6 +64,7 @@
     "scripts/materialize_openbdap_benchmarks.py",
     "scripts/materialize_vehicles_history.py",
     "scripts/materialize_taxpayers_history.py",
+    "scripts/materialize_school_history.py",
     "scripts/apply_per_capita_reference_contract.py",
     "scripts/patch_fragilita_runtime.py",
     "scripts/materialize_territorio_v137.py",

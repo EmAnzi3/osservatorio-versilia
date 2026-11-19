@@ -22,5 +22,5 @@
   "istatFamiglie": false,
   "openbdapBenchmarks": [],
   "mefTaxpayersHistory": false,
-  "mimStudentsHistory": true
+  "mimStudentsHistory": false
 }

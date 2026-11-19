@@ -3631,10 +3631,10 @@
       "reference": "Anno scolastico nativo 2024/25"
     },
     {
-      "id": "school_history_refused",
-      "question": "Qual è il trend pluriennale del tempo pieno?",
+      "id": "school_fulltime_series_046018",
+      "question": "Com'è cambiata la quota di alunni della primaria a tempo pieno a Massarosa dal 2015/16?",
       "query": {
-        "operation": "trend",
+        "operation": "series",
         "selectors": [
           {
             "metric": "primaryFullTimeShare",
@@ -3645,12 +3645,26 @@
         ]
       },
       "expected": {
-        "status": "not_computable",
-        "reasons": [
-          "demography_school_history_not_frozen"
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/period",
+            "value": "2015/16"
+          },
+          {
+            "path": "/observations/0/value",
+            "value": 57.638888888888886
+          },
+          {
+            "path": "/observations/9/value",
+            "value": 55.287817938420346
+          }
+        ],
+        "warnings": [
+          "school_history_registry_of_each_school_year"
         ]
       },
-      "reference": "Un solo anno scolastico acquisito"
+      "reference": "MIM open data a.s. 2015/16–2024/25 (anagrafe, alunni per classe, tempo scuola; statali e paritarie), frozen in data/source-snapshots/mim-alunni-serie.json; Massarosa 2015/16: 581 full-time primary pupils / 1008; 2024/25: 413 / 747."
     },
     {
       "id": "school_absolute_benchmark_refused",
