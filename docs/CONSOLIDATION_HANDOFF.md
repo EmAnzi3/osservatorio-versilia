@@ -6,6 +6,7 @@
 - `opportunity_qualifier.single_form()`: se il testo ammette la forma singola e il partenariato non è «con i Comuni», il Comune è richiedente diretto. «In partenariato con i Comuni» resta partner.
 - Versione della qualificazione 1.2: le schede automatiche già pubblicate vengono rilette al prossimo run.
 - Gli importi restano fuori dalle schede automatiche, che rimandano all'avviso.
+- Doppioni fra fonti: la notizia ANCI Toscana del 20/11 ripeteva l'avviso regionale già in Radar dal 13/11. `_open_duplicate()`: una scheda automatica aperta con la stessa scadenza e tutte (almeno 3) le parole distintive del titolo più corto nell'altro cede il posto a quella vista per prima; va in archivio come `duplicate_of_open_call`.
 
 ## Confronti bilanci, secondo blocco: sicurezza e cassa SIOPE (20 novembre 2026)
 

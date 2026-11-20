@@ -508,6 +508,22 @@ def test_open_call_absorbs_its_announcement_only():
     assert [x["id"] for x in result["opportunities"]] == ["auto-1", "old", "other", "late"]
 
 
+def test_open_duplicate_from_second_source_absorbed():
+    """Issue #634: la notizia ANCI Toscana ripete l'avviso regionale già in Radar dal 13/11."""
+    region = {"id": "auto-r", "status": "open", "first_seen_at": "2026-11-13", "deadline_at": "2026-11-26",
+              "title": "Rete dei Punti Digitale Facile: contributi per consolidamento e ampliamento delle attività"}
+    anci = {"id": "auto-a", "status": "open", "first_seen_at": "2026-11-20", "deadline_at": "2026-11-26", "title": "Punti Digitale Facile"}
+    other_deadline = dict(anci, id="auto-b", deadline_at="2027-03-31")
+    different = {"id": "auto-c", "status": "open", "first_seen_at": "2026-11-20", "deadline_at": "2026-11-26",
+                 "title": "Contributi per impianti sportivi comunali"}
+    curated = {"id": "rt-punti", "status": "open", "first_seen_at": "2026-11-19", "deadline_at": "2026-11-26", "title": "Punti Digitale Facile Toscana"}
+    result = {"opportunities": [region, anci, other_deadline, different, curated]}
+    gone = q.absorb_announcements(result)
+    assert [x["id"] for x in gone] == ["auto-a"], gone
+    assert [x["id"] for x in result["opportunities"]] == ["auto-r", "auto-b", "auto-c", "rt-punti"]
+    assert result["absorbedAnnouncements"][0]["absorbedBy"] == "auto-r"
+
+
 def test_listed_territories_without_versilia_rejected():
     listed = (PAD + "Art. 2 – Beneficiari. Possono presentare manifestazione di interesse i Comuni e le Unioni di Comuni "
               "interessati dai progetti di paesaggio elencati di seguito: Aulla, Bagnone, Pontremoli, Volterra, Cecina. "

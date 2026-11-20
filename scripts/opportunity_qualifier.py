@@ -1028,12 +1028,33 @@ def _stems(title: Any) -> tuple[set[str], set[str]]:
     return stems, years
 
 
+def _open_duplicate(item: dict[str, Any], opened: list[dict[str, Any]]) -> dict[str, Any] | None:
+    """Scheda automatica aperta che ripete un bando già in Radar da un'altra fonte (issue #634: la notizia
+    ANCI Toscana e l'avviso della Regione). Stesso bando = stessa scadenza, anni compatibili, tutte (almeno 3)
+    le parole distintive del titolo più corto nell'altro. Resta la scheda vista per prima."""
+    stems, years = _stems(item.get("title"))
+    first = str(item.get("first_seen_at") or "9999")
+    for other in opened:
+        if other is item or other.get("deadline_at") != item.get("deadline_at"):
+            continue
+        other_stems, other_years = _stems(other.get("title"))
+        smaller = stems if len(stems) <= len(other_stems) else other_stems
+        if len(smaller) < 3 or not smaller <= (stems & other_stems) or (years and other_years and not years & other_years):
+            continue
+        other_first = str(other.get("first_seen_at") or "9999")
+        curated = not str(other.get("id") or "").startswith("auto-")
+        if other_first < first or (other_first == first and (curated or str(other.get("id")) < str(item.get("id")))):
+            return other
+    return None
+
+
 def absorb_announcements(result: dict[str, Any]) -> list[dict[str, Any]]:
     """Una scheda «in arrivo» sparisce quando lo stesso bando è pubblicato come aperto.
 
     Stesso bando = le parole distintive del titolo più corto stanno (almeno 4 e
     per l'80%) in quello dell'altro, gli anni citati coincidono e la scadenza
-    eventualmente annunciata è la stessa del bando aperto.
+    eventualmente annunciata è la stessa del bando aperto. Allo stesso modo una scheda automatica aperta
+    che ripete un bando aperto già presente (stessa scadenza) cede il posto a quella vista per prima.
     """
     items = result.get("opportunities") or []
     opened = [x for x in items if x.get("status") == "open"]
@@ -1053,6 +1074,8 @@ def absorb_announcements(result: dict[str, Any]) -> list[dict[str, Any]]:
                         and (not item.get("deadline_at") or item.get("deadline_at") == other.get("deadline_at"))):
                     target = other
                     break
+        elif item.get("status") == "open" and str(item.get("id") or "").startswith("auto-") and item.get("deadline_at"):
+            target = _open_duplicate(item, opened)
         if target is None:
             keep.append(item)
         else:
