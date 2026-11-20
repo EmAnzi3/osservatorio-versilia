@@ -23,7 +23,7 @@ def regressions(path):
   if k in f.RATIOS:assert r['status']=='computed',(k,r['reasons'])
   else:assert 'verified_ratio_adapter_required' in r['reasons']
   bench=e._catalog['metrics'][k]['meta'].get('benchmark') or {}
-  if k in f.BENCHMARKED and isinstance(bench.get('tuscany'),(int,float)):
+  if (k in f.BENCHMARKED or k in f.CASH_BENCHMARKED) and isinstance(bench.get('tuscany'),(int,float)):
    snap,_=e.file(bench['sourceSnapshot']);ent=snap['benchmarks'][k]['tuscany']
    r=e.query(dict(request('benchmark_gap',k,towns=['046018']),benchmark='tuscany'));assert r['status']=='computed',(k,r['reasons'])
    assert ent['populationShare']>=0.9 and math.isclose(r['observations'][1]['value'],ent['numerator']/ent['denominator']*(100 if k in f.BENCHMARK_RATIOS else 1),abs_tol=1e-9)

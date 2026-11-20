@@ -1,8 +1,8 @@
 {
   "schemaVersion": 3,
   "status": "PASS",
-  "catalogSha256": "e8cca74e6808d8a144acf97c97712842444bc665b52235acc63ad14b656bda0e",
-  "engineSha256": "906639f162cc0ba4425588d3151aa8794e5945f59508349e626053aecede9c69",
+  "catalogSha256": "ac4abd23b8191c9ed852e04384dc1086d8167680efbec5063a82b78e3162ebda",
+  "engineSha256": "f46ff4c80335e1d1b9185195f1f9ab66264c0bcb918a4b0ae5b10cc4e3d6176a",
   "programSha256": "c37e0defcade0ebdcb768631ba0f99d4413e5718b869e4c3ca7c66b196a2a109",
   "limits": [
     "No new acquisitions, adapters, political rankings or causal evaluation.",
@@ -17,7 +17,7 @@
   "expectedRefusals": 91,
   "unexpectedFailures": 0,
   "baselineQuestions": 20,
-  "evidenceSha256": "3f910ecd973fe1bf2e3686d0b441f8d2ec072a35641b60d9951a161650132509",
+  "evidenceSha256": "2690f4d6f9e63d8c8b240ff7c2da47c5584d80eca5070d093e80c3857fd3111c",
   "evidenceHashFormat": "UTF-8, sorted JSON keys, indent 2, trailing LF; declared catalog locations addressed by matching SHA256; distinct source paths and all pointers preserved",
   "baselineQuestionsSha256": "a90db8e808a49542860fe74cc3db2c92a6372d6e3354b61f8644decfebcc92ca",
   "questionPlans": 51,
