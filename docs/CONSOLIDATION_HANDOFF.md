@@ -1,5 +1,18 @@
 # Consolidamento Osservatorio Versilia — handoff operativo
 
+## Confronti bilanci, secondo blocco: sicurezza e cassa SIOPE (20 novembre 2026)
+
+Si applica la regola della #620: almeno il 90% dei residenti coperti, copertura dichiarata, riconciliazione 7/7 per indicatore.
+
+- **Spesa per sicurezza (Missione 03):** aggiunta a `openbdap_benchmarks.MISSIONS`; nuovo snapshot `openbdap-benchmark-2025.json`, pin `finance#1` aggiornato.
+  - Toscana 69,85 € (271/273 Comuni, 99,8% dei residenti), Italia 61,41 € (91,4%).
+  - Nel motore il confronto passa dall'adapter della finanza: `distinct.scopes`/`benchmark` delegano per la sola sicurezza.
+- **Incassi e saldo di cassa SIOPE:** `scripts/siope_cash_benchmarks.py`, aggiornatore solo in CI `siope-cash-benchmarks --year 2025`, snapshot `siope-cash-benchmark-2025.json` (pin `finance#2`), materializzatore `materialize_siope_cash_benchmarks.py`.
+  - Toscana: 273/273 Comuni presenti in entrambi i flussi di dicembre, divisi per i residenti POSAS 1.1.2026, lo stesso denominatore dei valori comunali. Incassi 1.929,28 €, saldo −28,84 €.
+  - Italia non calcolata: il flusso è pubblicato per regione.
+- `materialize_openbdap_benchmarks.py` salta gli indicatori non ancora presenti nello snapshot.
+- Stagionalità turistica rinviata finché non ci sarà un terzo anno di file mensili comunali (2026); oggi esistono solo 2024 e 2025.
+
 ## Serie storica dell'intensità turistica (20 novembre 2026)
 
 Le presenze per residente hanno ora la serie 2023–2025 nei sette Comuni, senza nuove acquisizioni.

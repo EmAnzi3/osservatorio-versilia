@@ -42,6 +42,12 @@ def regressions(path):
   rejected(g,dict(request('benchmark_gap','ownRevenueShare',towns=['046018']),benchmark='tuscany'),'finance_catalog_source_mismatch')
  r=e.query(request('compare','rigidExpenditureShare'));assert all('denominatorReferenceDate' not in o for o in r['observations'])
  r=e.query(request('compare','cashReceiptsPerResident'));assert all(o['denominatorPeriod']=='2026' and o['denominatorReferenceDate']=='1 gennaio 2026' for o in r['observations'])
+ # Cassa SIOPE 2025, Toscana (273/273 Comuni in entrambi i flussi, residenti POSAS 1.1.2026 = 3.659.222):
+ # incassi 7.059.647.759,85 €; saldo incassi − pagamenti −105.544.995,01 €. Italia non calcolata.
+ for key,n in (('cashReceiptsPerResident',7059647759.85),('cashBalancePerResident',-105544995.01)):
+  r=e.query(dict(request('benchmark_gap',key,towns=['046018']),benchmark='tuscany'));assert r['status']=='computed',r['reasons']
+  assert math.isclose(r['observations'][1]['value'],n/3659222,abs_tol=1e-6) and r['observations'][1]['evidence'][0]['coverage']['municipalities']==273
+  rejected(e,dict(request('benchmark_gap',key,towns=['046018']),benchmark='italy'),'finance_benchmark')
  with tempfile.TemporaryDirectory() as t:
   root=Path(t)
   for p in (f.BILANCI,f.SIOPE,f.EXTENSION):

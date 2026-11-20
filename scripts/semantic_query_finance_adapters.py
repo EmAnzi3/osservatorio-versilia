@@ -112,6 +112,9 @@ def observation(engine,key,index,dimension,period,historical):
 
 BENCHMARK_RE=re.compile(r'data/source-snapshots/openbdap-benchmark-(20[0-9]{2})[.]json')
 BENCHMARK_HASH=_pin('finance#1')
+CASH_BENCHMARK='data/source-snapshots/siope-cash-benchmark-2025.json'
+CASH_BENCHMARK_HASH=_pin('finance#2')
+CASH_BENCHMARKED=('cashReceiptsPerResident','cashBalancePerResident')
 
 
 _PUBLISHED_SCOPES={}
@@ -128,16 +131,21 @@ def published_scopes():
    snap=json.loads(found[-1].read_text(encoding='utf-8'))
    for key,entries in snap.get('benchmarks',{}).items():
     _PUBLISHED_SCOPES[key]=[sc for sc in ('tuscany','italy') if (entries.get(sc) or {}).get('value') is not None]
+  cash=root/CASH_BENCHMARK.rsplit('/',1)[1]
+  if cash.exists():
+   for key,entries in json.loads(cash.read_text(encoding='utf-8')).get('benchmarks',{}).items():
+    _PUBLISHED_SCOPES[key]=[sc for sc in ('tuscany','italy') if (entries.get(sc) or {}).get('value') is not None]
   _PUBLISHED_SCOPES.setdefault('',[])
  return _PUBLISHED_SCOPES
 
 
 def scopes(key,dimension):
- return list(published_scopes().get(key,[])) if key in BENCHMARKED and dimension=='total' else []
+ return list(published_scopes().get(key,[])) if (key in BENCHMARKED or key in CASH_BENCHMARKED) and dimension=='total' else []
 
 
 def benchmark(engine,key,scope,municipal):
  """Toscana/Italia sui Comuni che hanno trasmesso il rendiconto (≥90% dei residenti), componenti native nello snapshot."""
+ if key in CASH_BENCHMARKED:return cash_benchmark(engine,key,scope,municipal)
  if key not in BENCHMARKED or scope not in ('tuscany','italy'):raise ValueError('finance_benchmark_components_or_complete_scope_not_frozen')
  published=engine._catalog['metrics'][key]['meta'].get('benchmark') or {}
  path=str(published.get('sourceSnapshot'))
@@ -155,3 +163,21 @@ def benchmark(engine,key,scope,municipal):
            dict(kind='catalog_snapshot',path=engine.catalog_path,sha256=engine.catalog_hash,valuePointer=f'/metrics/{key}/meta/benchmark/{scope}')]
  return dict(municipal,geography=scope,value=value,evidence=evidence,provenance=evidence,
              benchmarkAggregation='sum over municipalities that filed the Rendiconto with the required rows / their own denominators (residents 1 January for per-resident values); published only with ≥90% of residents covered')
+
+
+def cash_benchmark(engine,key,scope,municipal):
+ """Toscana per incassi e saldo di cassa SIOPE: Comuni presenti in entrambi i flussi / loro residenti POSAS (≥90%)."""
+ if scope!='tuscany':raise ValueError('finance_benchmark_components_or_complete_scope_not_frozen')
+ published=engine._catalog['metrics'][key]['meta'].get('benchmark') or {}
+ if published.get('sourceSnapshot')!=CASH_BENCHMARK:raise ValueError('finance_benchmark_components_or_complete_scope_not_frozen')
+ snap,ref=engine.file(CASH_BENCHMARK)
+ if ref.get('sha256')!=CASH_BENCHMARK_HASH or snap.get('qualityGate',{}).get('status')!='PASS':raise ValueError('finance_benchmark_frozen_input_changed')
+ if municipal['period']!=str(snap['year']) or str(published.get('year'))!=str(snap['year']):raise ValueError('finance_benchmark_period_not_frozen')
+ entry=snap['benchmarks'][key]['tuscany']
+ if entry.get('value') is None or entry['populationShare']<snap['minCoverage']:raise ValueError('finance_benchmark_scope_below_coverage_threshold')
+ value=entry['numerator']/entry['denominator'];close(value,entry['value']);close(published.get('tuscany'),value)
+ evidence=[dict(ref,kind='source_snapshot',recordPointer=f'/benchmarks/{key}/tuscany',nativeComponents=dict(numerator=entry['numerator'],denominator=entry['denominator'],scale=1),
+               coverage=dict(municipalities=entry['municipalities'],municipalitiesTotal=entry['municipalitiesTotal'],populationShare=entry['populationShare'])),
+           dict(kind='catalog_snapshot',path=engine.catalog_path,sha256=engine.catalog_hash,valuePointer=f'/metrics/{key}/meta/benchmark/tuscany')]
+ return dict(municipal,geography=scope,value=value,evidence=evidence,provenance=evidence,
+             benchmarkAggregation='Tuscan municipalities present in both December SIOPE flows: sum of receipts (or receipts minus payments) / their POSAS residents at the next January 1; published only with ≥90% of residents covered')

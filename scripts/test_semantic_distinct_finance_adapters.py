@@ -38,7 +38,13 @@ def regressions(path):
                 expected = sum(o['numerator'] for o in observations) / sum(o['denominator'] for o in observations) * observations[0]['scale']
                 assert math.isclose(r['result']['value'], expected, abs_tol=1e-7)
             else: assert 'verified_ratio_adapter_required' in r['reasons'], r
-            rejected(e, dict(query('benchmark_gap', key, dimension, towns=['046018']), benchmark='tuscany'), 'distinct_finance_benchmark_components_or_perimeter_not_frozen')
+            if key != d.SECURITY:
+                rejected(e, dict(query('benchmark_gap', key, dimension, towns=['046018']), benchmark='tuscany'), 'distinct_finance_benchmark_components_or_perimeter_not_frozen')
+    # Missione 03 nel confronto dei rendiconti OpenBDAP 2025 (≥90% dei residenti): ancore indipendenti.
+    # Toscana 271/273 Comuni, impegni 255.118.089,40 € / 3.652.204 residenti; Italia 6.868 Comuni, 3.307.674.164,86 € / 53.864.384.
+    for scope, n, den, towns_ in (('tuscany', 255118089.4, 3652204, 271), ('italy', 3307674164.86, 53864384, 6868)):
+        r = e.query(dict(query('benchmark_gap', d.SECURITY, 'total', towns=['046018']), benchmark=scope)); assert r['status'] == 'computed', r['reasons']
+        bench = r['observations'][1]; assert math.isclose(bench['value'], n / den, abs_tol=1e-9) and bench['evidence'][0]['coverage']['municipalities'] == towns_
     # Independent source values, including official scale corrections and verified zero.
     cases = [(d.DEBT, 'part:debtPerResident', 10150552.2 / 21806),
              (d.DEBT, 'part:interestShare', 1382657.67 / 31550784.64 * 100),
