@@ -65,7 +65,7 @@ def regressions(catalog_path):
         o=next(o for o in engine.query(query('compare','tourismIntensity',periods=[period]))['observations'] if o['geography']==code)
         assert o['numerator']==n and o['denominator']==d and o['denominatorPeriod']==stock;close(o['value'],Fraction(n,d))
         assert 'tourism_flow_year_resident_stock_next_january' in engine.query(query('compare','tourismIntensity',periods=[period]))['warnings']
-    rejected(engine,query('compare','tourismIntensity',periods=['2022']),'tourism_period_scope_or_quality_mismatch')
+    rejected(engine,query('compare','tourismIntensity',periods=['2022']),'period_not_available:tourismIntensity')
     for dimension,value in [('sex:total',30.085),('sex:men',21.8674),('sex:women',34.5972)]:
         r=engine.query(query('compare','elderlyHomeCare',dimension))
         assert r['status']=='computed',r
