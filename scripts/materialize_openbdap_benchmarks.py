@@ -62,7 +62,9 @@ def apply(data: dict) -> int:
             raise RuntimeError(f"Confronto bilanci: indicatore assente {key}")
         if str(metric["meta"].get("year")) != year:
             continue
-        entries = snap["benchmarks"][key]
+        entries = snap["benchmarks"].get(key)
+        if entries is None:  # indicatore aggiunto dopo l'ultima acquisizione: nessun confronto finché non è acquisito
+            continue
         if all(entries[s].get("value") is None for s in ("tuscany", "italy")):
             continue
         for row in metric["rows"]:
