@@ -209,6 +209,7 @@ export default {
 "mef_tax_year_2024_and_adult_population_2026_distinct": "I redditi sono del 2024, la popolazione adulta del 2026.",
 "mef_taxpayers_history_tax_year_with_residents_two_years_later": "Ogni anno d’imposta usa i maggiorenni residenti al 1° gennaio di due anni dopo, come il valore più recente.",
 "mef_taxpayers_may_include_minors_not_share_of_adults_paying_irpef": "I contribuenti possono includere minori: non è la quota di adulti che pagano l’IRPEF.",
+"micro_unit_history_same_asia_flow_totals_match_local_units": "La serie viene dallo stesso flusso Istat e i totali coincidono con le unità locali pubblicate.",
 "micro_unit_share_rounded_no_inferred_counts": "La quota di microimprese è arrotondata; non si ricostruiscono i conteggi.",
 "mission_03_commitments_not_crime_staff_or_delivered_security": "La spesa per sicurezza non misura criminalità, personale né sicurezza effettiva.",
 "mission_commitments_include_current_and_capital_not_delivered_services": "Gli impegni di spesa includono parte corrente e investimenti: non misurano i servizi erogati.",

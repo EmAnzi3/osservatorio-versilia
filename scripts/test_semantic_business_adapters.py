@@ -45,7 +45,16 @@ def regressions(catalog_path):
  weighted=e.query(request('weighted_ratio','employeesPerLocalUnit'));assert math.isclose(weighted['result']['value'],55474.02/18019,rel_tol=0,abs_tol=1e-10)
  industry=e.query(request('weighted_ratio','turnoverPerPersonEmployed',dimension='sector:industry'));assert math.isclose(industry['result']['value'],3270358000/16477,rel_tol=0,abs_tol=1e-8)
  rejected(e,request('compare','localUnitsChange',periods=['2023']),'business_explicit_baseline_interval_required')
- rejected(e,request('series','microUnits',towns=['046018']),'business_series_not_available')
+ # Serie ASIA-UL 2018–2024 delle micro unità (stesso flusso SDMX). Celle fisse: Massarosa 2018 = 1522/1602;
+ # Stazzema 2020 = 174/178; quote a due decimali come il valore pubblicato.
+ micro=e.query(request('series','microUnits',towns=['046018']));assert micro['status']=='computed',micro['reasons']
+ assert [o['period'] for o in micro['observations']]==[str(y) for y in range(2018,2025)] and micro['observations'][-1]['value']==95.11
+ for code,year,n,den in (('046018','2018',1522,1602),('046030','2020',174,178)):
+  o=next(o for o in e.query(request('compare','microUnits',periods=[year]))['observations'] if o['geography']==code)
+  assert o['numerator']==n and o['denominator']==den and o['value']==round(n/den*100,2)
+ rejected(e,request('compare','microUnits',periods=['2017']),'business_history_period_not_available')
+ g=QueryEngine(e.catalog_path,layer='effective');g._catalog['metrics']['microUnits']['rows'][0]['series']['values'][0]+=0.01
+ assert g.query(request('compare','microUnits',periods=['2019']))['status']=='not_computable'
  rejected(e,dict(request('benchmark_gap','industryWorkerShare',towns=['046018']),benchmark='tuscany'),'business_benchmark_scope_or_dimension_not_available')
  rejected(e,dict(request('benchmark_gap','businessValueAdded',dimension='sector:industry',towns=['046018']),benchmark='tuscany'),'business_benchmark_scope_or_dimension_not_available')
  rejected(e,dict(request('benchmark_gap','localUnits',periods=['2022'],towns=['046018']),benchmark='tuscany'),'business_historical_benchmark_not_available')
