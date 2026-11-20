@@ -148,6 +148,7 @@ BENEFICIARY_HEAD = re.compile(
     r"(?:\s+(?:del\s+(?:bando|contributo|finanziamento)|dell[’']\s*avviso))?|"
     r"chi\s+pu[oò]\s+(?:partecipare|presentare(?:\s+domanda)?|candidarsi|fare\s+domanda|accedere)|"
     r"a\s+chi\s+(?:è|e['’])\s+rivolt[oa]|a\s+chi\s+si\s+rivolge|requisiti\s+soggettivi|"
+    r"(?:gli\s+|i\s+|l['’]\s*|il\s+)?(?:avvis[oi]|band[oi])\s+(?:sono\s+|è\s+)?(?:aperti|aperto|rivolt[oi])\s+a(?:i|gli|lle)?\b|"
     r"(?:pre)?requisiti\s+di\s+(?:ammissibilit[àa]|partecipazione|accesso)|domanda\s+(?:deve\s+essere\s+)?presentata\s+da|"
     r"(?:le\s+)?domande\s+possono\s+essere\s+presentate\s+da|"
     r"possono\s+(?:presentare\s+(?:domanda|candidatura|istanza|richiesta|progett\w+|propost\w+)|partecipare|candidarsi)"
@@ -415,6 +416,7 @@ class Decision:
     role: str = "direct_applicant"
     documents: list[str] = field(default_factory=list)
     population: tuple[int | None, int | None] = (None, None)
+    announced: bool = False          # bando annunciato, non ancora aperto: scheda «in arrivo» riletta ogni giorno
 
 
 def visible_text(payload: str) -> str:
@@ -578,6 +580,15 @@ def theme(text: str) -> str:
     return "generale"
 
 
+# Bando annunciato ma non ancora aperto («Bando in arrivo», «di prossima pubblicazione»): non è uno scarto,
+# è una scheda «in arrivo» da rileggere ogni giorno finché esce l'avviso (issue #634).
+ANNOUNCED = re.compile(
+    r"\b(?:bando|bandi|avvis[oi]|contribut[oi]|finanziament[oi])\s+in\s+arrivo\b|\bin\s+arrivo\s+(?:il\s+|i\s+|l['’]\s*)?(?:bando|bandi|avviso)\b|"
+    r"\bdi\s+prossima\s+(?:pubblicazione|apertura|uscita)\b|\b(?:sar[àa]|verr[àa])\s+(?:a\s+breve\s+)?pubblicat[oa]\b", re.I)
+# Pagine delle prefetture: contano solo quelle della provincia di Lucca.
+OTHER_PREFECTURE = re.compile(r"prefettura\.interno\.gov\.it/it/prefetture/(?!lucca(?:/|$))[a-z-]+", re.I)
+
+
 def qualify(candidate: dict[str, Any], page_text: str, documents: dict[str, str], today: date) -> Decision:
     title = str(candidate.get("title") or "")
     combined = " ".join([page_text, *documents.values()])
@@ -588,8 +599,14 @@ def qualify(candidate: dict[str, Any], page_text: str, documents: dict[str, str]
     # I menu dei siti occupano spesso le prime migliaia di caratteri.
     if not CALL.search(title) and not CALL.search(combined[:6000]):
         return Decision("rejected", "Nessun elemento di avviso o bando nella pagina.")
+    announced = False
     if not candidate.get("deadline_at") and not APPLY.search(combined):
-        return Decision("rejected", "La pagina non indica come presentare domanda: riparto, adempimento o notizia.")
+        # Senza modalità di domanda la pagina resta in gioco se annuncia il bando o se ne riporta un termine
+        # futuro (proroghe, «pubblicato l'avviso»): i destinatari si controllano come per gli avvisi.
+        announced = bool(ANNOUNCED.search(title) or ANNOUNCED.search(combined[:6000]))
+        upcoming_term = find_deadline(combined, today)[0]
+        if not announced and not (upcoming_term and upcoming_term >= today and CALL.search(title)):
+            return Decision("rejected", "La pagina non indica come presentare domanda né annuncia un bando: riparto, adempimento o notizia.")
     if OPERATOR.search(combined):
         return Decision("rejected", "Bando per il gestore di uno strumento di sostegno: i Comuni ne sono destinatari, non richiedenti.")
     if candidate.get("strict_municipal"):
@@ -631,6 +648,9 @@ def qualify(candidate: dict[str, Any], page_text: str, documents: dict[str, str]
     if deadline and deadline < today:
         return Decision("expired", f"Termine concluso il {deadline.isoformat()}.", applicant=applicant,
                         deadline=deadline.isoformat(), deadline_evidence=evidence)
+    if not deadline and not rolling and announced:
+        return Decision("qualified", "Bando annunciato con Comuni o enti locali fra i destinatari: in arrivo, riletto ogni giorno.",
+                        applicant=applicant, role=role, documents=list(documents), population=population, announced=True)
     if not deadline and not rolling:
         return Decision("rejected", "Nessuna scadenza futura né modalità a sportello indicata.", applicant=applicant)
     return Decision("qualified", "Avviso aperto con Comuni o enti locali fra i soggetti ammessi.", applicant=applicant,
@@ -656,18 +676,19 @@ def _fold(value: Any) -> str:
 def build_entry(candidate: dict[str, Any], decision: Decision, today: date, towns: tuple[str, ...]) -> dict[str, Any]:
     title = re.sub(r"\s+", " ", str(candidate.get("title") or "")).strip()
     source_label = candidate.get("source_label") or candidate.get("publisher") or candidate.get("source_id")
-    when = (f"scadenza {decision.deadline}" if decision.deadline else "a sportello")
+    when = (f"scadenza {decision.deadline}" if decision.deadline else "bando annunciato, non ancora aperto" if decision.announced else "a sportello")
     partner = decision.role == "partner"
     requirements = (
         f"{LABEL}: scheda qualificata automaticamente dal Radar leggendo la fonte ufficiale. "
         f"Soggetti ammessi, dal testo: «{decision.applicant.strip()}»"
         + (f" Termine, dal testo: «{decision.deadline_evidence.strip()}»" if decision.deadline_evidence else "")
+        + (" Bando annunciato e non ancora aperto: il Radar rilegge la pagina ogni giorno." if decision.announced else "")
         + " Prima di candidarsi verificare requisiti, importi e modalità nell’avviso."
     )
     description = (f"Segnalato da {source_label} ({when}). "
                    + ("Il Comune partecipa come partner. " if partner else "Possono candidarsi Comuni o enti locali. ")
                    + LABEL + ".")
-    stage = "announced_upcoming" if decision.opens_at and decision.opens_at > today.isoformat() else (
+    stage = "announced_upcoming" if decision.announced or (decision.opens_at and decision.opens_at > today.isoformat()) else (
         "rolling_open" if decision.rolling else "application_open")
     return {
         "coverage_id": identity(candidate, decision),
@@ -782,7 +803,8 @@ def apply(result: dict[str, Any], today: date, *, loader: Callable[[str, bool], 
         if deadline and str(deadline) < today.isoformat():
             continue
         source_url = old.get("discovery_url") or old.get("url")
-        if old.get("auto_qualification_version") != VERSION and source_url:
+        # Le schede «in arrivo» si rileggono ogni giorno: appena esce l'avviso diventano il bando aperto.
+        if source_url and (old.get("auto_qualification_version") != VERSION or old.get("lifecycle_stage") == "announced_upcoming"):
             stale[_fold(source_url)] = old
             continue
         items.append(dict(old, is_new=False))
@@ -806,6 +828,9 @@ def apply(result: dict[str, Any], today: date, *, loader: Callable[[str, bool], 
 
     candidates = []
     for candidate in queue:
+        if OTHER_PREFECTURE.search(str(candidate.get("url") or "")):
+            report["otherPrefectures"] = report.get("otherPrefectures", 0) + 1
+            continue
         if _fold(candidate.get("url")) in known_urls or _fold(candidate.get("title")) in known_titles:
             continue
         if not candidate.get("url"):

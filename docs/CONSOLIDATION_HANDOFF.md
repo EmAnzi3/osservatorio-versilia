@@ -7,6 +7,7 @@
 - Versione della qualificazione 1.2: le schede automatiche già pubblicate vengono rilette al prossimo run.
 - Gli importi restano fuori dalle schede automatiche, che rimandano all'avviso.
 - Niente più attesa di 7 giorni sugli scarti: le pagine scartate di recente si rileggono ogni giorno, dopo le segnalazioni nuove e partendo da quelle lette da più tempo (`recheckedRejections`, `deferredRechecks` nel rapporto). Il 20/11 erano 272 pagine in attesa, 180 scartate come «non indica come presentare domanda».
+- Scarti «non indica come presentare domanda» (180 il 20/11): 151 erano pagine di prefetture di altre province, ora escluse prima della lettura (`OTHER_PREFECTURE`, `otherPrefectures` nel rapporto). Una pagina «Bando in arrivo» con i Comuni fra i destinatari diventa una scheda «in arrivo» (`Decision.announced`), riletta ogni giorno finché esce l'avviso. Una notizia che riporta il termine futuro di un bando aperto ai Comuni (proroghe ICSC Sport/Cultura Missione Comune al 5/12, mancate) passa la qualificazione come gli avvisi.
 - Doppioni fra fonti: la notizia ANCI Toscana del 20/11 ripeteva l'avviso regionale già in Radar dal 13/11. `_open_duplicate()`: una scheda automatica aperta con la stessa scadenza e tutte (almeno 3) le parole distintive del titolo più corto nell'altro cede il posto a quella vista per prima; va in archivio come `duplicate_of_open_call`.
 
 ## Confronti bilanci, secondo blocco: sicurezza e cassa SIOPE (20 novembre 2026)
