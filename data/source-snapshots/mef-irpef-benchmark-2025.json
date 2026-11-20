@@ -1,0 +1,309 @@
+{
+  "schemaVersion": 1,
+  "version": "mef-irpef-benchmark-2025-v1",
+  "retrieved": "2026-11-20",
+  "publisher": "Dipartimento delle Finanze — MEF · Istat (POSAS, elenco dei Comuni)",
+  "year": 2025,
+  "scenarios": [
+    20000,
+    30000,
+    50000
+  ],
+  "rule": "Per ogni Comune dell'elenco generale MEF: importo dell'addizionale con la stessa regola dei valori comunali (sotto la soglia di esenzione zero, altrimenti aliquota unica o scaglioni sull'intero imponibile, al centesimo). Toscana e Italia: media degli importi pesata per i residenti al 1° gennaio dell'anno dopo, sui Comuni la cui disciplina si legge senza ambiguità per lo scenario. Pubblicato solo con almeno il 90% dei residenti coperti; copertura dichiarata.",
+  "minCoverage": 0.9,
+  "sources": {
+    "mef": {
+      "url": "https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_addcomirpef/download/download.php?anno=2025",
+      "page": "https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_addcomirpef/download/tabella.htm",
+      "sha256": "57daea5818a90fa58bca533a905b215528be79c4226fdf01bf66f9c82fe18b2f",
+      "bytes": 1225962
+    },
+    "istat": {
+      "url": "https://www.istat.it/storage/codici-unita-amministrative/Elenco-comuni-italiani.csv",
+      "sha256": "57eaf945182fc64fa05f80f1a5fb2a84cff55ebde2af6e3947a731776e7809e0",
+      "bytes": 1126843
+    },
+    "posas": {
+      "url": "https://demo.istat.it/data/posas/POSAS_2026_it_Comuni.zip",
+      "sha256": "910639e5f7b1bb8256637eee824655ba76fb8459670c9559fea1ac0922667eac",
+      "date": "2026-01-01"
+    }
+  },
+  "audit": {
+    "rows": 7896,
+    "municipalities": 7896,
+    "duplicates": [],
+    "readable": 6958,
+    "unreadable": 938,
+    "unmatchedCadastral": [],
+    "unreadableExamples": {
+      "A022": "coppia aliquota/fascia incompleta 1",
+      "A049": "coppia aliquota/fascia incompleta 1",
+      "A051": "coppia aliquota/fascia incompleta 1",
+      "A083": "fascia non riconosciuta 'applicabile a fino a 15.000,00'",
+      "A094": "coppia aliquota/fascia incompleta 1",
+      "A097": "coppia aliquota/fascia incompleta 1",
+      "A115": "coppia aliquota/fascia incompleta 1",
+      "A117": "coppia aliquota/fascia incompleta 1",
+      "A126": "coppia aliquota/fascia incompleta 1",
+      "A135": "coppia aliquota/fascia incompleta 1",
+      "A145": "fascia non riconosciuta 'applicabile a da 0 a 15.000 euro'",
+      "A158": "coppia aliquota/fascia incompleta 1",
+      "A171": "coppia aliquota/fascia incompleta 1",
+      "A172": "coppia aliquota/fascia incompleta 1",
+      "A178": "coppia aliquota/fascia incompleta 1",
+      "A179": "coppia aliquota/fascia incompleta 1",
+      "A180": "coppia aliquota/fascia incompleta 1",
+      "A182": "aliquota fuori intervallo '1,1'",
+      "A204": "coppia aliquota/fascia incompleta 1",
+      "A205": "coppia aliquota/fascia incompleta 1",
+      "A254": "coppia aliquota/fascia incompleta 1",
+      "A264": "fascia non riconosciuta 'applicabile a fino a 15000€'",
+      "A266": "coppia aliquota/fascia incompleta 1",
+      "A272": "coppia aliquota/fascia incompleta 1",
+      "A273": "coppia aliquota/fascia incompleta 1",
+      "A274": "coppia aliquota/fascia incompleta 1",
+      "A278": "coppia aliquota/fascia incompleta 1",
+      "A283": "coppia aliquota/fascia incompleta 1",
+      "A286": "coppia aliquota/fascia incompleta 1",
+      "A287": "coppia aliquota/fascia incompleta 1",
+      "A305": "coppia aliquota/fascia incompleta 1",
+      "A306": "coppia aliquota/fascia incompleta 1",
+      "A308": "coppia aliquota/fascia incompleta 1",
+      "A317": "coppia aliquota/fascia incompleta 1",
+      "A347": "coppia aliquota/fascia incompleta 1",
+      "A372": "coppia aliquota/fascia incompleta 1",
+      "A379": "coppia aliquota/fascia incompleta 1",
+      "A380": "coppia aliquota/fascia incompleta 1",
+      "A382": "coppia aliquota/fascia incompleta 1",
+      "A397": "coppia aliquota/fascia incompleta 1"
+    }
+  },
+  "towns": {
+    "046018": {
+      "cadastral": "F035",
+      "rule": {
+        "exemption": 10000.0,
+        "categoryExemption": null,
+        "scheme": "flat",
+        "ratePercent": 0.8
+      },
+      "amounts": {
+        "20000": 160.0,
+        "30000": 240.0,
+        "50000": 400.0
+      }
+    },
+    "046033": {
+      "cadastral": "L833",
+      "rule": {
+        "exemption": 13000.0,
+        "categoryExemption": null,
+        "scheme": "flat",
+        "ratePercent": 0.75
+      },
+      "amounts": {
+        "20000": 150.0,
+        "30000": 225.0,
+        "50000": 375.0
+      }
+    },
+    "046005": {
+      "cadastral": "B455",
+      "rule": {
+        "exemption": 15000.0,
+        "categoryExemption": null,
+        "scheme": "progressive",
+        "brackets": [
+          {
+            "upTo": 15000.0,
+            "ratePercent": 0.35
+          },
+          {
+            "upTo": 28000.0,
+            "ratePercent": 0.6
+          },
+          {
+            "upTo": 50000.0,
+            "ratePercent": 0.7
+          },
+          {
+            "upTo": null,
+            "ratePercent": 0.8
+          }
+        ]
+      },
+      "amounts": {
+        "20000": 82.5,
+        "30000": 144.5,
+        "50000": 284.5
+      }
+    },
+    "046024": {
+      "cadastral": "G628",
+      "rule": {
+        "exemption": 14500.0,
+        "categoryExemption": null,
+        "scheme": "flat",
+        "ratePercent": 0.75
+      },
+      "amounts": {
+        "20000": 150.0,
+        "30000": 225.0,
+        "50000": 375.0
+      }
+    },
+    "046028": {
+      "cadastral": "I622",
+      "rule": {
+        "exemption": null,
+        "categoryExemption": null,
+        "scheme": "flat",
+        "ratePercent": 0.8
+      },
+      "amounts": {
+        "20000": 160.0,
+        "30000": 240.0,
+        "50000": 400.0
+      }
+    },
+    "046013": {
+      "cadastral": "D730",
+      "rule": {
+        "exemption": 20000.0,
+        "categoryExemption": null,
+        "scheme": "progressive",
+        "brackets": [
+          {
+            "upTo": 28000.0,
+            "ratePercent": 0.5
+          },
+          {
+            "upTo": 50000.0,
+            "ratePercent": 0.65
+          },
+          {
+            "upTo": null,
+            "ratePercent": 0.8
+          }
+        ]
+      },
+      "amounts": {
+        "20000": 0.0,
+        "30000": 153.0,
+        "50000": 283.0
+      }
+    },
+    "046030": {
+      "cadastral": "I942",
+      "rule": {
+        "exemption": null,
+        "categoryExemption": null,
+        "scheme": "flat",
+        "ratePercent": 0.8
+      },
+      "amounts": {
+        "20000": 160.0,
+        "30000": 240.0,
+        "50000": 400.0
+      }
+    }
+  },
+  "benchmarks": {
+    "20000": {
+      "tuscany": {
+        "municipalities": 263,
+        "municipalitiesTotal": 273,
+        "populationCovered": 3636094,
+        "populationTotal": 3659222,
+        "populationShare": 0.9936795307855057,
+        "excluded": {
+          "disciplina non leggibile": 10
+        },
+        "value": 127.01010864955636,
+        "numerator": 461820694.0,
+        "denominator": 3636094
+      },
+      "italy": {
+        "municipalities": 6949,
+        "municipalitiesTotal": 7896,
+        "populationCovered": 54377585,
+        "populationTotal": 58942828,
+        "populationShare": 0.9225479476485248,
+        "excluded": {
+          "disciplina non leggibile": 938,
+          "esenzione per categorie fino allo scenario": 9
+        },
+        "value": 141.49722309109535,
+        "numerator": 7694277275.9,
+        "denominator": 54377585
+      }
+    },
+    "30000": {
+      "tuscany": {
+        "municipalities": 263,
+        "municipalitiesTotal": 273,
+        "populationCovered": 3636094,
+        "populationTotal": 3659222,
+        "populationShare": 0.9936795307855057,
+        "excluded": {
+          "disciplina non leggibile": 10
+        },
+        "value": 198.45545544202102,
+        "numerator": 721602690.8,
+        "denominator": 3636094
+      },
+      "italy": {
+        "municipalities": 6950,
+        "municipalitiesTotal": 7896,
+        "populationCovered": 54391592,
+        "populationTotal": 58942828,
+        "populationShare": 0.9227855847025188,
+        "excluded": {
+          "disciplina non leggibile": 938,
+          "esenzione per categorie fino allo scenario": 8
+        },
+        "value": 220.90573694368055,
+        "numerator": 12015414714.3,
+        "denominator": 54391592
+      }
+    },
+    "50000": {
+      "tuscany": {
+        "municipalities": 263,
+        "municipalitiesTotal": 273,
+        "populationCovered": 3636094,
+        "populationTotal": 3659222,
+        "populationShare": 0.9936795307855057,
+        "excluded": {
+          "disciplina non leggibile": 10
+        },
+        "value": 338.1386677022101,
+        "numerator": 1229503980.8,
+        "denominator": 3636094
+      },
+      "italy": {
+        "municipalities": 6953,
+        "municipalitiesTotal": 7896,
+        "populationCovered": 54423755,
+        "populationTotal": 58942828,
+        "populationShare": 0.9233312490537441,
+        "excluded": {
+          "disciplina non leggibile": 938,
+          "esenzione per categorie fino allo scenario": 5
+        },
+        "value": 372.28703113006446,
+        "numerator": 20261258171.9,
+        "denominator": 54423755
+      }
+    }
+  },
+  "blocked": [],
+  "qualityGate": {
+    "status": "PASS",
+    "publicReconciliation": "7/7"
+  },
+  "acquisitionEvidence": {
+    "script": "scripts/update_source_data.py mef-irpef-benchmarks --year 2025"
+  }
+}
