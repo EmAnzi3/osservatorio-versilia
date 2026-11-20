@@ -216,9 +216,23 @@ def browser_checks() -> None:
         browser.close()
 
 
+def acquisition_method_checks() -> None:
+    """Il metodo «Acquisizione» Frame SBS compare solo sulle schede di Economia prodotta, non su quelle ASIA-UL."""
+    import re as _re
+    def acquisition(slug: str) -> str:
+        page = (DIST / "indicatori" / slug / "index.html").read_text(encoding="utf-8")
+        match = _re.search(r"<h3>Acquisizione</h3><p>(.*?)</p>", page, _re.S)
+        assert match, f"{slug}: riquadro Acquisizione assente"
+        return match.group(1)
+    for slug in ("unita-locali-con-meno-di-10-addetti", "addetti-nelle-unita-locali", "addetti-per-unita-locale"):
+        assert "Frame SBS" not in acquisition(slug), f"{slug}: metodo Frame SBS su un indicatore ASIA-UL"
+    assert "Frame SBS" in acquisition("fatturato-delle-unita-locali"), "fatturato: metodo Frame SBS mancante"
+
+
 def main() -> None:
     static_checks()
     browser_checks()
+    acquisition_method_checks()
     data = json.loads((ROOT / "data" / "site-data.json").read_text(encoding="utf-8"))
     external_count = sum(
         metric.get("dataStorage", {}).get("type") == "external-climate"
