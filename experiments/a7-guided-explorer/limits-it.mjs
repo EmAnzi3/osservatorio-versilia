@@ -3,6 +3,7 @@
 export default {
 "reasons": {
 "anomaly_zero_interquartile_range": "Almeno metà dei Comuni ha valori molto vicini o uguali: la regola non può distinguere valori fuori scala.",
+"business_micro_rounded_change_not_supported": "Le quote sono pubblicate a due decimali: si mostra la serie, ma non si calcolano variazioni o tendenze su valori arrotondati.",
 "census_historical_dimension_not_available": "Per questo dettaglio la serie storica non è disponibile. Non significa che il dato manchi nella fonte.",
 "census_method_break_change_not_supported": "Il metodo del censimento è cambiato nel tempo: la variazione fra questi anni non è calcolabile.",
 "distinct_finance_massarosa_osl_temporal_perimeter_not_attested": "Per Massarosa la continuità fra gestione ordinaria e gestione del dissesto non è attestata.",

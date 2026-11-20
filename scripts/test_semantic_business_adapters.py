@@ -53,6 +53,7 @@ def regressions(catalog_path):
   o=next(o for o in e.query(request('compare','microUnits',periods=[year]))['observations'] if o['geography']==code)
   assert o['numerator']==n and o['denominator']==den and o['value']==round(n/den*100,2)
  rejected(e,request('compare','microUnits',periods=['2017']),'business_history_period_not_available')
+ rejected(e,request('absolute_change','microUnits',towns=['046018'],periods=['2018','2024']),'business_micro_rounded_change_not_supported')
  g=QueryEngine(e.catalog_path,layer='effective');g._catalog['metrics']['microUnits']['rows'][0]['series']['values'][0]+=0.01
  assert g.query(request('compare','microUnits',periods=['2019']))['status']=='not_computable'
  rejected(e,dict(request('benchmark_gap','industryWorkerShare',towns=['046018']),benchmark='tuscany'),'business_benchmark_scope_or_dimension_not_available')
