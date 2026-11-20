@@ -234,7 +234,16 @@ def observation(engine, key, index, dimension, period, historical):
                 dataUnavailable=value is None or (bool(row.get('dataUnavailable')) if not historical else False)), warnings
 
 
+def scopes(key, dimension):
+    """Solo la spesa per sicurezza (Missione 03) ha un confronto: quello dei rendiconti OpenBDAP (≥90% dei residenti)."""
+    import semantic_query_finance_adapters as finance
+    return finance.scopes(key, dimension) if key == SECURITY else []
+
+
 def benchmark(engine, key, scope, municipal):
+    if key == SECURITY and scope in scopes(key, municipal.get('dimension', 'total')):
+        import semantic_query_finance_adapters as finance
+        return finance.benchmark(engine, key, scope, municipal)
     raise ValueError('distinct_finance_benchmark_components_or_perimeter_not_frozen')
 
 

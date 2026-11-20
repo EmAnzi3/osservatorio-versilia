@@ -52,6 +52,7 @@ MISSIONS = {
     "cultureSportMissionExpenditurePerResident": ("05", "06"), "tourismDevelopmentMissionExpenditurePerResident": ("07", "14"),
     "generalAdministrationMissionExpenditurePerResident": ("01",), "territorialPlanningMissionExpenditurePerResident": ("08",),
     "civilProtectionMissionExpenditurePerResident": ("11",), "economicDevelopmentMissionExpenditurePerResident": ("14",),
+    "securityMissionExpenditurePerResident": ("03",),
 }
 RESULTS = {"availableAdministrationResultPerResident": "0502", "fcdePerResident": "0491", "yearEndCashFundPerResident": "0495"}
 RATIOS = {"ownRevenueShare", "currentCollectionCapacity", "currentPaymentCapacity"}

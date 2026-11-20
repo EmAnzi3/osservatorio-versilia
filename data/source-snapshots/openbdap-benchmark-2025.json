@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "version": "openbdap-benchmark-2025-v1",
-  "retrieved": "2026-11-18",
+  "retrieved": "2026-11-20",
   "publisher": "Ragioneria Generale dello Stato — OpenBDAP (rendiconti) · Istat (bilancio demografico P2)",
   "sourceUrl": "https://openbdap.rgs.mef.gov.it/it/FET/Analizza",
   "year": 2025,
@@ -568,6 +568,10 @@
         1701502.13,
         null
       ],
+      "securityMissionExpenditurePerResident": [
+        1207668.11,
+        null
+      ],
       "socialMissionExpenditurePerResident": [
         4284516.36,
         null
@@ -645,6 +649,10 @@
       ],
       "mobilityMissionExpenditurePerResident": [
         4566282.42,
+        null
+      ],
+      "securityMissionExpenditurePerResident": [
+        5506405.11,
         null
       ],
       "socialMissionExpenditurePerResident": [
@@ -726,6 +734,10 @@
         5161979.62,
         null
       ],
+      "securityMissionExpenditurePerResident": [
+        1780046.9,
+        null
+      ],
       "socialMissionExpenditurePerResident": [
         4905604.61,
         null
@@ -803,6 +815,10 @@
       ],
       "mobilityMissionExpenditurePerResident": [
         6597007.76,
+        null
+      ],
+      "securityMissionExpenditurePerResident": [
+        2411305.98,
         null
       ],
       "socialMissionExpenditurePerResident": [
@@ -884,6 +900,10 @@
         2735614.07,
         null
       ],
+      "securityMissionExpenditurePerResident": [
+        709095.74,
+        null
+      ],
       "socialMissionExpenditurePerResident": [
         1902609.37,
         null
@@ -963,6 +983,10 @@
         2407728.18,
         null
       ],
+      "securityMissionExpenditurePerResident": [
+        2113132.54,
+        null
+      ],
       "socialMissionExpenditurePerResident": [
         2500315.09,
         null
@@ -1040,6 +1064,10 @@
       ],
       "mobilityMissionExpenditurePerResident": [
         497985.74,
+        null
+      ],
+      "securityMissionExpenditurePerResident": [
+        31675.69,
         null
       ],
       "socialMissionExpenditurePerResident": [
@@ -1396,6 +1424,28 @@
         "denominator": 53863985
       }
     },
+    "securityMissionExpenditurePerResident": {
+      "tuscany": {
+        "municipalities": 271,
+        "municipalitiesTotal": 273,
+        "populationCovered": 3652204,
+        "populationTotal": 3657716,
+        "populationShare": 0.9984930486675291,
+        "value": 69.85318711660138,
+        "numerator": 255118089.4,
+        "denominator": 3652204
+      },
+      "italy": {
+        "municipalities": 6868,
+        "municipalitiesTotal": 7897,
+        "populationCovered": 53864384,
+        "populationTotal": 58943464,
+        "populationShare": 0.9138313282707646,
+        "value": 61.40744438588586,
+        "numerator": 3307674164.86,
+        "denominator": 53864384
+      }
+    },
     "socialMissionExpenditurePerResident": {
       "tuscany": {
         "municipalities": 272,
@@ -1469,7 +1519,7 @@
   },
   "qualityGate": {
     "status": "PASS",
-    "publicReconciliation": "18 indicatori × 7/7; 1 esclusi dal confronto"
+    "publicReconciliation": "19 indicatori × 7/7; 1 esclusi dal confronto"
   },
   "acquisitionEvidence": {
     "script": "scripts/update_source_data.py openbdap-benchmarks --year 2025"

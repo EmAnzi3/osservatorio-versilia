@@ -1,0 +1,120 @@
+{
+  "schemaVersion": 1,
+  "version": "siope-cash-benchmark-2025-v1",
+  "retrieved": "2026-11-20",
+  "publisher": "Ragioneria Generale dello Stato — OpenBDAP/SIOPE · Istat (POSAS)",
+  "year": 2025,
+  "rule": "Comuni toscani presenti nei flussi SIOPE di entrata e di spesa (dicembre, cumulato): somma degli incassi (o degli incassi meno i pagamenti) / somma dei loro residenti al 1° gennaio dell'anno dopo. Pubblicato solo con almeno il 90% dei residenti coperti; copertura dichiarata.",
+  "minCoverage": 0.9,
+  "sources": {
+    "entrata": {
+      "url": "https://bdap-opendata.rgs.mef.gov.it/SpodCkanApi/api/3/datastore/dump/4dbef43d-72fa-4fe2-a716-45986be658f2.csv",
+      "sha256": "d3d86e80dc5f9efac0d9070bc423784ad4fc3c821007accc362101effcc99e01",
+      "bytes": 53007584
+    },
+    "spesa": {
+      "url": "https://bdap-opendata.rgs.mef.gov.it/SpodCkanApi/api/3/datastore/dump/74533d22-b1c2-4d89-b1b9-b98e6c9713ff.csv",
+      "sha256": "2208960f5ad5f970fee82443e81cd463063f959c0f2532b37ea0ad8df23fb346",
+      "bytes": 98028860
+    },
+    "posas": {
+      "url": "https://demo.istat.it/data/posas/POSAS_2026_it_Comuni.zip",
+      "sha256": "910639e5f7b1bb8256637eee824655ba76fb8459670c9559fea1ac0922667eac",
+      "date": "2026-01-01"
+    }
+  },
+  "audit": {
+    "entrata": {
+      "encoding": "cp1252",
+      "delimiter": ";",
+      "selectedRows": 16650,
+      "municipalities": 273
+    },
+    "spesa": {
+      "encoding": "cp1252",
+      "delimiter": ";",
+      "selectedRows": 32246,
+      "municipalities": 273
+    },
+    "unknownCodes": []
+  },
+  "towns": {
+    "046005": {
+      "receipts": 105058904.43999998,
+      "payments": 105949133.58000003,
+      "residents": 31763
+    },
+    "046013": {
+      "receipts": 44198468.69000001,
+      "payments": 46488563.65000002,
+      "residents": 6550
+    },
+    "046018": {
+      "receipts": 36273551.03999998,
+      "payments": 38649263.809999995,
+      "residents": 21782
+    },
+    "046024": {
+      "receipts": 60588517.65999999,
+      "payments": 57097006.850000024,
+      "residents": 22678
+    },
+    "046028": {
+      "receipts": 20502401.530000005,
+      "payments": 23399383.7,
+      "residents": 12284
+    },
+    "046030": {
+      "receipts": 6773454.110000001,
+      "payments": 6818696.15,
+      "residents": 2783
+    },
+    "046033": {
+      "receipts": 121276046.77000006,
+      "payments": 137146316.9,
+      "residents": 60680
+    }
+  },
+  "benchmarks": {
+    "cashReceiptsPerResident": {
+      "tuscany": {
+        "municipalities": 273,
+        "municipalitiesTotal": 273,
+        "populationCovered": 3659222,
+        "populationTotal": 3659222,
+        "populationShare": 1.0,
+        "value": 1929.275611004197,
+        "numerator": 7059647759.849999,
+        "denominator": 3659222
+      },
+      "italy": {
+        "value": null,
+        "reason": "flusso SIOPE pubblicato per regione: aggregato nazionale non calcolato"
+      }
+    },
+    "cashBalancePerResident": {
+      "tuscany": {
+        "municipalities": 273,
+        "municipalitiesTotal": 273,
+        "populationCovered": 3659222,
+        "populationTotal": 3659222,
+        "populationShare": 1.0,
+        "value": -28.84356155762078,
+        "numerator": -105544995.01000023,
+        "denominator": 3659222
+      },
+      "italy": {
+        "value": null,
+        "reason": "flusso SIOPE pubblicato per regione: aggregato nazionale non calcolato"
+      }
+    }
+  },
+  "blocked": {},
+  "qualityGate": {
+    "status": "PASS",
+    "publicReconciliation": "2 indicatori × 7/7"
+  },
+  "acquisitionEvidence": {
+    "script": "scripts/update_source_data.py siope-cash-benchmarks --year 2025"
+  }
+}

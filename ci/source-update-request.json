@@ -23,5 +23,6 @@
   "openbdapBenchmarks": [],
   "mefTaxpayersHistory": false,
   "mimStudentsHistory": false,
-  "asiaMicroUnitsHistory": false
+  "asiaMicroUnitsHistory": false,
+  "siopeCashBenchmarks": []
 }
