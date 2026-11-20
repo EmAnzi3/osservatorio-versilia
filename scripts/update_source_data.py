@@ -877,8 +877,8 @@ def update_asia_micro_units_history(dry_run: bool, fetch=None) -> Changes:
     local_units = {r["code"]: dict(zip(r["series"]["years"], r["series"]["values"])) for r in site["metrics"]["localUnits"]["rows"]}
     last = int(site["metrics"][mu.METRIC]["meta"]["year"])
     try:
-        snapshot = mu.build_snapshot(fetch or probes.http_fetch, current, local_units, last)
-    except (mu.MicroUnitsError, KeyError, ValueError, probes.ProbeError) as error:
+        snapshot = mu.build_snapshot(fetch or (lambda url: sdmx_csv(url, None)), current, local_units, last)
+    except (mu.MicroUnitsError, KeyError, ValueError) as error:
         raise UpdateError(f"Serie micro unità: {error}") from error
     changes = Changes()
     for code, values in snapshot["series"].items():
