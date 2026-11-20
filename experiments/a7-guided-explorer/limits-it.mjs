@@ -16,6 +16,7 @@ export default {
 "finance_benchmark_scope_below_coverage_threshold": "Il confronto non è pubblicato: i Comuni che hanno trasmesso il rendiconto coprono meno del 90% dei residenti.",
 "insufficient_observations": "Non ci sono abbastanza valori disponibili per questa analisi.",
 "partial_coverage_requires_opt_in": "Non tutti i Comuni hanno il dato: per proseguire serve la tua conferma sulla copertura incompleta.",
+"percentage_unit_required": "La variazione in punti percentuali vale solo per indicatori espressi in percentuale.",
 "zero_baseline": "Il valore di partenza è zero: la variazione percentuale non è calcolabile."
 },
 "warnings": {
