@@ -812,20 +812,19 @@ def apply(result: dict[str, Any], today: date, *, loader: Callable[[str, bool], 
             continue
         candidates.append(candidate)
     unique = list({_fold(c.get("url")): c for c in candidates}.values())
-    # Decisioni negative recenti: non si rileggono ogni giorno, così la coda
-    # avanza e le segnalazioni nuove vengono lette entro un giorno.
+    # Decisioni negative recenti: si rileggono ogni giorno, dopo le segnalazioni nuove e partendo da quelle
+    # lette da più tempo. Una pagina «bando in arrivo» scartata ieri può essere il bando aperto oggi (issue #634:
+    # sette giorni di attesa con la vecchia regola).
     horizon = (today - timedelta(days=RECHECK_DAYS)).isoformat()
     cache = {url: row for url, row in ((previous or {}).get("autoQualificationCache") or {}).items()
              if str(row.get("checkedAt") or "") >= horizon and row.get("reason")}
     result["autoQualificationCache"] = cache
-    pending = []
+    recheck: dict[str, str] = {}
     for candidate in unique:
         row = cache.get(str(candidate.get("url")))
         if row and row.get("status") in {"rejected", "expired"} and _fold(candidate.get("url")) not in stale:
-            report["skippedRecent"] = report.get("skippedRecent", 0) + 1
-            continue
-        pending.append(candidate)
-    unique = pending
+            recheck[_fold(candidate.get("url"))] = str(row.get("checkedAt") or "")
+    report["recheckedRejections"] = len(recheck)
     # Segnalazioni che citano solo anni ormai chiusi: scartate senza scaricarle.
     fresh = []
     for candidate in unique:
@@ -841,13 +840,14 @@ def apply(result: dict[str, Any], today: date, *, loader: Callable[[str, bool], 
             continue
         fresh.append(candidate)
     # Prima i dati strutturati (nessuno scaricamento), poi le segnalazioni più recenti.
-    fresh.sort(key=lambda c: (_fold(c.get("url")) not in stale, not c.get("structured_text"),
-                              -(max(_years(c)) if _years(c) else today.year)))
+    fresh.sort(key=lambda c: (_fold(c.get("url")) not in stale, _fold(c.get("url")) in recheck, not c.get("structured_text"),
+                              recheck.get(_fold(c.get("url")), ""), -(max(_years(c)) if _years(c) else today.year)))
     # I dati strutturati non scaricano nulla: si decidono tutti e non tolgono
     # posto alle segnalazioni da leggere in rete (prima occupavano 97 posti su 120).
     structured = [c for c in fresh if c.get("structured_text")]
     networked = [c for c in fresh if not c.get("structured_text")]
     report["deferred"] = max(0, len(networked) - MAX_CANDIDATES)
+    report["deferredRechecks"] = sum(1 for c in networked[MAX_CANDIDATES:] if _fold(c.get("url")) in recheck)
     started = time.monotonic()
     selected = structured + networked[:MAX_CANDIDATES]
     for position, candidate in enumerate(selected):

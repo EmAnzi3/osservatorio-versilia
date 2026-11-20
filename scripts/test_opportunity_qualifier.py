@@ -131,7 +131,7 @@ def test_curated_previous_entry_is_not_duplicated():
     assert result["autoQualification"]["checked"] == 0 and result["opportunities"] == []
 
 
-def test_recent_rejections_are_not_reread():
+def test_recent_rejections_are_reread_after_new_signals():
     calls = []
     def loader(url, document):
         calls.append(url)
@@ -142,10 +142,18 @@ def test_recent_rejections_are_not_reread():
     assert first["autoQualificationCache"]["https://x.gov.it/n1"]["status"] == "rejected"
     second = {"opportunities": [], "discoveryQueue": list(queue)}
     q.apply(second, date(2026, 10, 3), loader=loader, previous=first, build_item=lambda *a: {}, towns=TOWNS)
-    assert len(calls) == 1 and second["autoQualification"]["skippedRecent"] == 1
-    third = {"opportunities": [], "discoveryQueue": list(queue)}
-    q.apply(third, date(2026, 10, 9), loader=loader, previous=second, build_item=lambda *a: {}, towns=TOWNS)
-    assert len(calls) == 2
+    # Issue #634: la pagina scartata ieri si rilegge oggi, non dopo sette giorni.
+    assert len(calls) == 2 and second["autoQualification"]["recheckedRejections"] == 1
+    # Con il budget pieno passano prima le segnalazioni nuove; la rilettura resta in coda.
+    calls.clear()
+    old_max = q.MAX_CANDIDATES
+    q.MAX_CANDIDATES = 1
+    try:
+        third = {"opportunities": [], "discoveryQueue": list(queue) + [candidate("Avviso nuovo", url="https://x.gov.it/n2")]}
+        q.apply(third, date(2026, 10, 4), loader=loader, previous=second, build_item=lambda *a: {}, towns=TOWNS)
+    finally:
+        q.MAX_CANDIDATES = old_max
+    assert calls == ["https://x.gov.it/n2"] and third["autoQualification"]["deferredRechecks"] == 1, calls
 
 
 def test_facility_operator_topic_rejected():
