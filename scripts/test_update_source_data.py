@@ -741,6 +741,11 @@ def irpef_benchmarks_cases() -> None:
     loose = {**r("0", "Esenzione per redditi imponibili fino a euro 12.000,00"), **r(",5", "Applicabile a redditi da 0 a 15000", 2),
              **r(",8", "Applicabile a redditi oltre 15000", 3), "IMPORTO_ESENTE": "12000"}
     assert ib.amount(ib.rule(loose), 20000) == 15000 * 0.005 + 5000 * 0.008
+    agordo = {**r("0,63", "Applicabile a FINO A 15.000,00"), **r(",76", "Applicabile a DA 15.001,00 A 28.000,00", 2),
+              **r(",79", "Applicabile a DAL 28.001,00 A 50.000,00", 3), **r(",8", "Applicabile a OLTRE 50.000,00", 4), "IMPORTO_ESENTE": "0"}
+    assert ib.amount(ib.rule(agordo), 30000) == round(15000 * 0.0063 + 13000 * 0.0076 + 2000 * 0.0079, 2)
+    none = {**r("0*", ""), "IMPORTO_ESENTE": "0"}
+    assert ib.rule(none)["notInstituted"] and ib.amount(ib.rule(none), 50000) == 0.0
     category = {**r("0", "Esenzione per REDDITI DA LAVORO DIPENDENTE E/O PENSIONI PARI A €25.000,00"), **r(",8", "Aliquota unica", 2), "IMPORTO_ESENTE": "0"}
     assert ib.amount(ib.rule(category), 30000) == 240.0
     for bad in ({**r(",5", "Applicabile a scaglione di reddito fino a euro 15.000,00"), **r(",8", "Applicabile a scaglione di reddito oltre euro 28.000,00", 2)},

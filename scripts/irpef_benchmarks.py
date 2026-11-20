@@ -65,7 +65,7 @@ def money(value: Decimal) -> Decimal:
 
 
 def rate(text: str) -> Decimal:
-    t = str(text or "").strip().replace(" ", "")
+    t = str(text or "").strip().replace(" ", "").rstrip("*")
     if not re.fullmatch(r"\d*[.,]?\d+", t):
         raise Unreadable(f"aliquota {text!r}")
     value = Decimal(t.replace(",", "."))
@@ -87,6 +87,11 @@ GENERAL_EXEMPTION = re.compile(r"^esenzione per redditi imponibili fino a euro [
 
 def rule(row: dict[str, str]) -> dict[str, Any]:
     """Riga MEF → {scheme, ratePercent | brackets, exemption, categoryExemption}. Unreadable se ambigua."""
+    first = (row.get("ALIQUOTA") or "").strip().replace(" ", "")
+    others = [(row.get(f"ALIQUOTA_{i}") or "").strip() or (row.get(f"FASCIA_{i}") or "").strip() for i in range(2, 13)]
+    if first == "0*" and not (row.get("FASCIA") or "").strip() and not any(others):
+        # «0*» nell'elenco definitivo (dopo il 20 dicembre): il Comune non ha istituito l'addizionale.
+        return {"exemption": None, "categoryExemption": None, "scheme": "flat", "ratePercent": 0.0, "notInstituted": True}
     pairs = []
     for i in range(1, 13):
         suffix = "" if i == 1 else f"_{i}"
@@ -112,13 +117,14 @@ def rule(row: dict[str, str]) -> dict[str, Any]:
                 category = max(numbers) if category is None else max(category, *numbers)
         elif f == "aliquota unica":
             flat.append(r)
-        elif "applicabile" in f and ("scaglione" in f or "redditi" in f):
+        elif f.startswith("applicabile"):
             numbers = amounts(f)
+            since = re.search(r"\bda(?:l|ll['’])?\b", f)
             if "oltre" in f and len(numbers) == 1:
                 brackets.append((numbers[0], None, r))
-            elif "fino" in f and len(numbers) == 1 and " da " not in f:
+            elif "fino" in f and len(numbers) == 1 and not since:
                 brackets.append((Decimal(0), numbers[0], r))
-            elif len(numbers) == 2 and " da " in f and "oltre" not in f:
+            elif len(numbers) == 2 and since and "oltre" not in f:
                 brackets.append((numbers[0], numbers[1], r))
             else:
                 raise Unreadable(f"scaglione non leggibile {f!r}")
