@@ -49,3 +49,9 @@ python scripts/semantic_engine_benchmark.py --catalog dist/data/site-data.json -
 ```
 
 La baseline separata è in `reports/a6-business/performance.*`: nove carichi, inclusi rapporto industriale e rifiuto del periodo finale. Non è uno stress test, una prova concorrente o un SLO. I gate sono integrati nel preflight generale esistente; nessun nuovo workflow. A6.4 rimane parziale, A6.5–A6.6 aperte alla revisione, A7 non avviata. Merge solo su istruzione specifica del proprietario.
+
+## Serie 2018–2024 della quota di micro unità locali
+
+Snapshot `data/source-snapshots/istat-micro-unita-serie.json` (pin `business#1` SHA-256, `business#2` fingerprint), scritto in CI da `update_source_data.py asia-micro-units-history` con una sola richiesta SDMX al flusso `DICA_ASIAULP_TERRIFDATA_7` (sette Comuni, W0_9 e TOTAL, 2018–2024; URL, SHA-256 e dimensione conservati). I totali di ogni anno devono coincidere con la serie pubblicata delle unità locali attive e la quota 2024 con il valore corrente.
+
+Per gli anni storici l'adapter ricalcola la quota a due decimali da W0_9 e TOTAL dello snapshot, espone numeratore e denominatore e verifica i totali anche contro lo snapshot ASIA delle unità locali. Il 2024 continua a passare per lo snapshot A3 originale. Avvertenza `micro_unit_history_same_asia_flow_totals_match_local_units`.

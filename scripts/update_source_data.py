@@ -866,6 +866,29 @@ def update_aci_vehicles_history(dry_run: bool) -> Changes:
     return changes
 
 
+# ------------------------------------------------------------------ Istat ASIA-UL: serie della quota di micro unità locali
+
+def update_asia_micro_units_history(dry_run: bool, fetch=None) -> Changes:
+    """Serie 2018–ultimo anno della quota di unità locali con 0–9 addetti; totali = serie delle unità locali pubblicata."""
+    import micro_units_history as mu
+
+    site = load(SITE)
+    current = {r["code"]: r["value"] for r in site["metrics"][mu.METRIC]["rows"]}
+    local_units = {r["code"]: dict(zip(r["series"]["years"], r["series"]["values"])) for r in site["metrics"]["localUnits"]["rows"]}
+    last = int(site["metrics"][mu.METRIC]["meta"]["year"])
+    try:
+        snapshot = mu.build_snapshot(fetch or (lambda url: sdmx_csv(url, None)), current, local_units, last)
+    except (mu.MicroUnitsError, KeyError, ValueError) as error:
+        raise UpdateError(f"Serie micro unità: {error}") from error
+    changes = Changes()
+    for code, values in snapshot["series"].items():
+        changes.note(f"{mu.METRIC} {code} {snapshot['years'][0]}", None, values[0])
+    snapshot["acquisitionEvidence"] = {"script": "scripts/update_source_data.py asia-micro-units-history"}
+    if not dry_run:
+        save(ROOT / mu.SNAPSHOT, snapshot)
+    return changes
+
+
 # ------------------------------------------------------------------ MIM: serie di alunni, classi e tempo pieno
 
 def update_mim_students_history(dry_run: bool, fetch=None) -> Changes:
@@ -1670,6 +1693,8 @@ def main() -> int:
     sub.add_parser("bdi-branches-probe", help="sonda degli sportelli Banca d'Italia (non modifica il catalogo)")
     vh_p = sub.add_parser("aci-vehicles-history", help="serie storica di motorizzazione e quota Euro 0–3 (archivi ACI)")
     vh_p.add_argument("--dry-run", action="store_true")
+    mu_p = sub.add_parser("asia-micro-units-history", help="serie Istat ASIA-UL della quota di unità locali con 0–9 addetti")
+    mu_p.add_argument("--dry-run", action="store_true")
     sc_p = sub.add_parser("mim-students-history", help="serie MIM di alunni, alunni per classe e tempo pieno della primaria")
     sc_p.add_argument("--dry-run", action="store_true")
     tx_p = sub.add_parser("mef-taxpayers-history", help="serie dei contribuenti MEF ogni 100 maggiorenni (MEF + Istat POSAS)")
@@ -1696,6 +1721,8 @@ def main() -> int:
             update_bdi_branches(args.year, args.dir, args.dry_run).report(f"Sportelli bancari {args.year}{' (prova a secco)' if args.dry_run else ''}:")
         elif args.updater == "aci-vehicles-history":
             update_aci_vehicles_history(args.dry_run).report("Serie parco autovetture:")
+        elif args.updater == "asia-micro-units-history":
+            update_asia_micro_units_history(args.dry_run).report("Serie micro unità:")
         elif args.updater == "mim-students-history":
             update_mim_students_history(args.dry_run).report("Serie alunni MIM:")
         elif args.updater == "mef-taxpayers-history":

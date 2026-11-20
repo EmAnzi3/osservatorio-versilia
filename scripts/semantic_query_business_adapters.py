@@ -7,6 +7,7 @@ import re
 from pathlib import Path
 from urllib.parse import urlparse
 from semantic_operations import finite
+from a6_pins import Pin as _pin
 import asia_sources
 
 ASIA=asia_sources.TOWNS
@@ -15,6 +16,8 @@ ASIA_BENCH=asia_sources.BUSINESS
 FRAME_BENCH='data/source-snapshots/a3-frame-sbs-benchmark-2023.json'
 MICRO=asia_sources.MICRO
 MICRO_YEAR=MICRO[-9:-5]
+MICRO_HISTORY='data/source-snapshots/istat-micro-unita-serie.json'
+MICRO_HISTORY_PINS=(_pin('business#1'),_pin('business#2'))
 # These are adapter formula rules. Catalog IDs/availability remain canonical.
 FRAME_FIELDS={
  'businessTurnover':('turnoverThousandEuro',.001,'millionCurrency'),
@@ -152,6 +155,9 @@ def observation(engine,key,row_index,dimension,period,historical):
   if not historical and key in FRAME_FIELDS:
    scope=dimension.split(':')[1] if dimension!='total' else 'total'
    close(row['economicScopes'][scope]['value'],expected)
+ elif key=='microUnits' and historical and year!=MICRO_YEAR:
+  components,expected,ref,source=micro_history(engine,metric,row,year);close(value,expected,0)
+  evidence.append(ref);warnings+=['micro_unit_share_rounded_no_inferred_counts','micro_unit_history_same_asia_flow_totals_match_local_units']
  elif key=='microUnits':
   snap,ref=engine.file(MICRO);record=snap['records'][str(row['code'])];csv_source=snap['sources'][str(row['code'])]
   if hashlib.sha256(csv_source['csv'].encode()).hexdigest()!=csv_source['sha256']:raise ValueError('business_csv_hash_mismatch')
@@ -191,6 +197,24 @@ def observation(engine,key,row_index,dimension,period,historical):
   notApplicable=bool(row.get('notApplicable')) if not historical else False,dataUnavailable=value is None or (bool(row.get('dataUnavailable')) if not historical else False))
  if key in CHANGES:obs.update(baselinePeriod='2018',endpointPeriod=year)
  return obs,warnings
+
+
+def micro_history(engine,metric,row,year):
+ """Anno storico della quota di micro unità: conteggi W0_9/TOTAL dello snapshot SDMX, due decimali come il pubblicato."""
+ snap,ref=engine.file(MICRO_HISTORY)
+ fingerprint=hashlib.sha256(__import__('json').dumps(snap,sort_keys=True,separators=(',',':'),ensure_ascii=False).encode()).hexdigest()
+ if ref.get('path')!=MICRO_HISTORY or ref.get('sha256')!=MICRO_HISTORY_PINS[0] or fingerprint!=MICRO_HISTORY_PINS[1]:raise ValueError('business_frozen_input_changed')
+ if snap.get('qualityGate',{}).get('status')!='PASS' or metric['meta'].get('sourceMeta',{}).get('historySnapshot')!=MICRO_HISTORY:raise ValueError('business_micro_history_not_materialized')
+ code=str(row['code']);years=list(map(str,snap['years']))
+ if years[-1]!=MICRO_YEAR or row.get('series')!={'years':snap['years'],'values':snap['series'][code]}:raise ValueError('business_micro_history_mismatch')
+ last=snap['towns'][code][MICRO_YEAR];current=engine.file(MICRO)[0]['records'][code]
+ if last!={'W0_9':current['W0_9'],'TOTAL':current['TOTAL']}:raise ValueError('business_micro_history_mismatch')
+ asia=next(r for r in engine.file(ASIA)[0]['towns'] if str(r['code'])==code)['asia']
+ if year not in years:raise ValueError('business_history_period_not_available')
+ cell=snap['towns'][code][year];ay=list(map(str,asia['years']))
+ if year in ay and asia['localUnits'][ay.index(year)]!=cell['TOTAL']:raise ValueError('business_micro_history_mismatch')
+ expected=round(cell['W0_9']/cell['TOTAL']*100,2)
+ return dict(numerator=cell['W0_9'],denominator=cell['TOTAL'],scale=100),expected,dict(ref,kind='source_snapshot',recordPointer=f'/towns/{code}/{year}',sourceUrl=snap['source']['url'],sourceSha256=snap['source']['sha256']),snap['source']['url']
 
 
 def benchmark(engine,key,scope,municipal):

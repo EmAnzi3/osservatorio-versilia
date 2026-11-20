@@ -242,7 +242,7 @@ def _existing_operations(key, dimension, unit):
     if key in census.KEYS:
         return [o for o in NUMERICAL_SUPPORTED if (o!='weighted_ratio' or key in census.RATIOS) and (o!='benchmark_gap' or census.benchmark_scopes(key,dimension)) and (o!='percentage_points' or unit=='percent') and not (key=='householdSize' and o in TEMPORAL) and not (key=='diplomaPlus' and dimension in ('total','age:25-64|sex:total') and o=='trend')]
     if key in business.KEYS:
-        return [o for o in NUMERICAL_SUPPORTED if (o!='weighted_ratio' or key in business.RATIOS) and (o!='benchmark_gap' or business.benchmark_scopes(key,dimension)) and (o!='percentage_points' or unit=='percent') and not (key=='microUnits' and o in TEMPORAL) and not (key in business.CHANGES and o=='trend')]
+        return [o for o in NUMERICAL_SUPPORTED if (o!='weighted_ratio' or key in business.RATIOS) and (o!='benchmark_gap' or business.benchmark_scopes(key,dimension)) and (o!='percentage_points' or unit=='percent') and not (key=='microUnits' and o in TEMPORAL and o!='series') and not (key in business.CHANGES and o=='trend')]
     if key in ars.KEYS:
         rolling='-' in ars._SPECS[key]['period']
         historical=key=='lifeExpectancy' or dimension=='total'
@@ -709,7 +709,8 @@ class QueryEngine:
         if key in commuting.KEYS and operation in TEMPORAL:raise ValueError('commuting_history_not_frozen')
         if key=='diplomaPlus' and dimension in ('total','age:25-64|sex:total') and operation=='trend':raise ValueError('census_method_break_trend_not_supported')
         if key in business.CHANGES and operation=='trend':raise ValueError('business_cumulative_trend_not_supported')
-        if key=='microUnits' and operation in TEMPORAL:raise ValueError('business_series_not_available')
+        # Quote pubblicate a due decimali: serie sì, variazioni e trend calcolati su valori arrotondati no.
+        if key=='microUnits' and operation in TEMPORAL and operation!='series':raise ValueError('business_micro_rounded_change_not_supported')
         if key in ars.KEYS and operation in TEMPORAL:
             if 'age:' in dimension or (dimension!='total' and key!='lifeExpectancy'):raise ValueError('ars_historical_dimension_not_available')
             if operation=='trend' and '-' in ars._SPECS[key]['period']:raise ValueError('ars_window_trend_not_supported')

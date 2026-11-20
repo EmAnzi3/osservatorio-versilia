@@ -1,5 +1,13 @@
 # Consolidamento Osservatorio Versilia — handoff operativo
 
+## Serie storica delle micro unità locali (20 novembre 2026)
+
+La quota di unità locali con meno di 10 addetti ha ora la serie 2018–2024 nei sette Comuni.
+
+- Viene dallo stesso flusso SDMX Istat ASIA-UL del valore pubblicato (`DICA_ASIAULP_TERRIFDATA_7`): W0_9 / TOTAL × 100, a due decimali. I totali di ogni anno coincidono con la serie pubblicata delle unità locali attive e il 2024 con il valore corrente.
+- `scripts/micro_units_history.py`; aggiornatore solo in CI `update_source_data.py asia-micro-units-history`, attivato dalla richiesta `asiaMicroUnitsHistory`; snapshot `istat-micro-unita-serie.json`.
+- Nel motore A6 (pin `business#1`/`#2`) sono ammessi serie e confronti per anno, con numeratore e denominatore esposti; il confronto Toscana/Italia resta sul 2024.
+
 ## Serie storiche delle scuole (19 novembre 2026)
 
 Alunni nelle scuole del Comune, alunni per classe e alunni della primaria a tempo pieno hanno ora la serie dall'a.s. 2015/16 al 2024/25 nei sette Comuni.
