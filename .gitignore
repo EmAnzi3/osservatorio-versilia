@@ -4,3 +4,6 @@ Thumbs.db
 dist/
 __pycache__/
 *.pyc
+
+# Cartelle temporanee dell'esploratore A7 (restano se una build viene interrotta)
+.a7-public-*/
