@@ -57,6 +57,15 @@ def regressions(catalog_path):
     assert pressure['result']['numeratorPeriod']=='2025' and pressure['result']['denominatorPeriod']=='2026'
     assert 'tourism_flow_2025_resident_stock_2026' in pressure['warnings']
     rejected(engine,query('benchmark_gap','tourismIntensity',towns=['046018'],benchmark='italy'),'scope_or_period_not_available')
+    # Serie 2023–2025 dell'intensità: presenze dell'anno / residenti POSAS al 1° gennaio successivo.
+    # Celle fisse: Massarosa 2023 = 35.107 presenze / 21.865 residenti (1.1.2024); Forte dei Marmi 2024 = 345.342 / 6.666 (1.1.2025).
+    series=engine.query(query('series','tourismIntensity',towns=['046018']))
+    assert series['status']=='computed' and [o['period'] for o in series['observations']]==['2023','2024','2025'],series
+    for code,period,n,d,stock in (('046018','2023',35107,21865,'2024'),('046013','2024',345342,6666,'2025')):
+        o=next(o for o in engine.query(query('compare','tourismIntensity',periods=[period]))['observations'] if o['geography']==code)
+        assert o['numerator']==n and o['denominator']==d and o['denominatorPeriod']==stock;close(o['value'],Fraction(n,d))
+        assert 'tourism_flow_year_resident_stock_next_january' in engine.query(query('compare','tourismIntensity',periods=[period]))['warnings']
+    rejected(engine,query('compare','tourismIntensity',periods=['2022']),'tourism_period_scope_or_quality_mismatch')
     for dimension,value in [('sex:total',30.085),('sex:men',21.8674),('sex:women',34.5972)]:
         r=engine.query(query('compare','elderlyHomeCare',dimension))
         assert r['status']=='computed',r

@@ -1,5 +1,13 @@
 # Consolidamento Osservatorio Versilia — handoff operativo
 
+## Serie storica dell'intensità turistica (20 novembre 2026)
+
+Le presenze per residente hanno ora la serie 2023–2025 nei sette Comuni, senza nuove acquisizioni.
+
+- Presenze dell'anno (Regione Toscana, al netto delle locazioni, già congelate per presenze e arrivi) / residenti POSAS al 1° gennaio dell'anno dopo, come il valore 2025.
+- `materialize_tourism_intensity_history.py` nell'overlay di build. L'adapter territoriale non tratta più l'indicatore come «solo anno corrente».
+- Stagionalità: i file mensili per Comune esistono per il 2024 e il 2025, non per il 2023. Da valutare in un blocco a parte.
+
 ## Serie storica delle micro unità locali (20 novembre 2026)
 
 La quota di unità locali con meno di 10 addetti ha ora la serie 2018–2024 nei sette Comuni.

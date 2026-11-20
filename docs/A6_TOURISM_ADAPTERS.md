@@ -48,3 +48,9 @@ Report riproducibili in `reports/a6-tourism/`. Quick locale canonico prima del p
 Dal 2025 Istat conta anche gli alloggi privati non imprenditoriali: i valori non sono confrontabili con il 2024. Per questo la serie storica dei posti letto (2002–2024) non è più disponibile e la richiesta di serie viene rifiutata (`tourism_historical_resident_ratio_not_frozen`), come per i due rapporti; il 2024 non è più un periodo selezionabile. Nota esposta: `tourism_capacity_2025_scope_includes_private_non_business_not_comparable`. Lo snapshot 2024, con la sua serie, resta nel repository.
 
 Versilia 2025: 69.031 posti letto (34.703 nel 2024, perimetro diverso), 435,5 ogni 1.000 residenti, 42,9 strutture ogni 1.000 residenti. Toscana 937.066 posti letto, Italia 7.687.036. Fixture di `test_semantic_tourism_adapters.py` trascritte dal pannello 2025.
+
+## Serie 2023–2025 dell'intensità turistica
+
+`materialize_tourism_intensity_history.py` mette in build la serie delle presenze per residente senza nuove acquisizioni. Il numeratore sono le presenze dell'anno A, dalla storia del movimento comunale già congelata in `a3-regione-toscana-tourism-benchmark-2025.json` (al netto delle locazioni). Il denominatore sono i residenti POSAS al 1° gennaio A+1, da `istat-demography-lotto-a-2026-08.json`. La regola è la stessa del valore 2025 (presenze 2025 / residenti 1.1.2026) e l'ultimo anno deve coincidere con il pubblicato.
+
+L'adapter ammette serie, variazioni e confronti per anno (2023–2025), con numeratore, denominatore e date esposti. Definizione e universo sono formulati senza anno, così restano uguali su tutta la serie. Avvertenza `tourism_flow_year_resident_stock_next_january` per gli anni precedenti al 2025. Il confronto Toscana resta sul 2025.
