@@ -689,6 +689,41 @@ def aci_vehicles_history_cases() -> None:
         raise AssertionError("ultimo anno diverso dal pubblicato accettato")
 
 
+def siope_cash_benchmarks_cases() -> None:
+    """Cassa SIOPE: Comuni toscani in entrambi i flussi, residenti POSAS dell'anno dopo, 7/7 e soglia del 90%."""
+    import io as _io
+    import siope_cash_benchmarks as cb
+
+    codes = [f"046{i:03d}" for i in range(1, 281)]
+    towns = ["046005", "046013", "046018", "046024", "046028", "046030", "046033"]
+    def posas() -> bytes:
+        lines = ["Popolazione 2026", "Codice comune;Comune;Età;Totale maschi;Totale femmine;Totale"]
+        lines += [f"{c};X;999;0;0;{1000 + i}" for i, c in enumerate(codes)] + ["001001;Torino;999;0;0;99999"]
+        b = _io.BytesIO()
+        with zipfile.ZipFile(b, "w") as z:
+            z.writestr("POSAS_2026.csv", "\n".join(lines))
+        return b.getvalue()
+    residents = {c: 1000 + i for i, c in enumerate(codes)}
+    def parser(blob: bytes, movement: str):
+        drop = set(codes[-20:]) if blob == b"few" else set()
+        rows = {c: {"total": (3.0 if movement == "entrata" else 2.0) * residents[c], "population": residents[c]} for c in codes if c not in drop}
+        return rows, {"municipalities": len(rows)}
+    published = {"cashReceiptsPerResident": {c: 3.0 for c in towns}, "cashBalancePerResident": {c: 1.0 for c in towns}}
+    snap = cb.build_snapshot(2025, lambda u: posas() if "posas" in u else b"ok", parser, {"entrata": "E", "spesa": "S"}, published, {c: residents[c] for c in towns})
+    t = snap["benchmarks"]["cashReceiptsPerResident"]["tuscany"]
+    assert t["value"] == 3.0 and t["municipalities"] == 280 and snap["benchmarks"]["cashBalancePerResident"]["tuscany"]["value"] == 1.0
+    assert snap["benchmarks"]["cashReceiptsPerResident"]["italy"]["value"] is None
+    wrong = {**published, "cashBalancePerResident": {**published["cashBalancePerResident"], "046030": 1.5}}
+    snap = cb.build_snapshot(2025, lambda u: posas() if "posas" in u else b"ok", parser, {"entrata": "E", "spesa": "S"}, wrong, {c: residents[c] for c in towns})
+    assert snap["benchmarks"]["cashBalancePerResident"]["tuscany"]["value"] is None and snap["benchmarks"]["cashReceiptsPerResident"]["tuscany"]["value"] == 3.0
+    try:
+        cb.build_snapshot(2025, lambda u: posas() if "posas" in u else b"ok", parser, {"entrata": "E", "spesa": "S"}, published, {**{c: residents[c] for c in towns}, "046018": 1})
+    except cb.CashBenchmarkError:
+        pass
+    else:
+        raise AssertionError("denominatore diverso dal pubblicato accettato")
+
+
 def asia_micro_units_history_cases() -> None:
     """Micro unità: SDMX ASIA-UL per i 7 Comuni, totali = unità locali pubblicate, ultima quota = pubblicata."""
     import micro_units_history as mu
@@ -1265,11 +1300,12 @@ def main() -> None:
     mef_taxpayers_history_cases()
     mim_students_history_cases()
     asia_micro_units_history_cases()
+    siope_cash_benchmarks_cases()
     with tempfile.TemporaryDirectory() as tmp:
         istat_famiglie_cases(Path(tmp))
     openbdap_benchmarks_cases()
     source_probe_cases(Path("."))
-    print("Aggiornatori dalla fonte: ARS stesso export invariato, revisione e Toscana rilevate, periodo nuovo rifiutato; mobilità P2 ricostruita 7/7 identica, rigiro senza modifiche; ASIA-UL ricostruita 7/7 identica, anno nuovo accettato, Comune incompleto rifiutato; AGCOM FTTH ricostruita 7/7 identica, edizione nuova accettata, edizione vecchia e Comune mancante rifiutati; sonda MEF limitata agli atti DIMUNIC; capacità ricettiva pubblicata ricostruita identica, anno nuovo accettato con perimetro dichiarato, anno precedente rifiutato; consumo di suolo anno nuovo accettato con benchmark ufficiali, anno precedente rifiutato; parco ACI ricostruito 7/7 identico da un anno nuovo, anno pubblicato rifiutato; OMI al punto medio con semestre pubblicato rigiocato, replay diverso e semestre vecchio rifiutati; sonda generica dei fogli; morosità ERP esercizio nuovo riconciliato e prospetti incoerenti rifiutati; acqua GAIA 70 località ricostruite identiche, semestre nuovo accettato, periodo vecchio, parametro cambiato e semestre precedente rifiutati; sedi scolastiche MIM ricostruite 7/7 identiche, a.s. nuovo accettato, a.s. precedente, Comune mancante e altro anno rifiutati; sportelli Banca d'Italia: serie 2018–2025 ricostruita con chiave banca + sede, riconciliazione Istat 2022 obbligatoria, anno aperto rifiutato; fabbisogni standard OpenCivitas 2023 riconciliati con la sonda, aggregati sui Comuni valutabili, valori diversi e annualità assente rifiutati; serie dei componenti per famiglia con aggregati componenti/famiglie e riscontro toscano; serie ACI del parco autovetture con ultimo anno vincolato al pubblicato; serie dei contribuenti con POSAS a due anni e ultimo anno vincolato; serie MIM con anagrafe di ciascun anno e ultimo anno vincolato; serie ASIA-UL delle micro unità con totali vincolati alle unità locali PASS")
+    print("Aggiornatori dalla fonte: ARS stesso export invariato, revisione e Toscana rilevate, periodo nuovo rifiutato; mobilità P2 ricostruita 7/7 identica, rigiro senza modifiche; ASIA-UL ricostruita 7/7 identica, anno nuovo accettato, Comune incompleto rifiutato; AGCOM FTTH ricostruita 7/7 identica, edizione nuova accettata, edizione vecchia e Comune mancante rifiutati; sonda MEF limitata agli atti DIMUNIC; capacità ricettiva pubblicata ricostruita identica, anno nuovo accettato con perimetro dichiarato, anno precedente rifiutato; consumo di suolo anno nuovo accettato con benchmark ufficiali, anno precedente rifiutato; parco ACI ricostruito 7/7 identico da un anno nuovo, anno pubblicato rifiutato; OMI al punto medio con semestre pubblicato rigiocato, replay diverso e semestre vecchio rifiutati; sonda generica dei fogli; morosità ERP esercizio nuovo riconciliato e prospetti incoerenti rifiutati; acqua GAIA 70 località ricostruite identiche, semestre nuovo accettato, periodo vecchio, parametro cambiato e semestre precedente rifiutati; sedi scolastiche MIM ricostruite 7/7 identiche, a.s. nuovo accettato, a.s. precedente, Comune mancante e altro anno rifiutati; sportelli Banca d'Italia: serie 2018–2025 ricostruita con chiave banca + sede, riconciliazione Istat 2022 obbligatoria, anno aperto rifiutato; fabbisogni standard OpenCivitas 2023 riconciliati con la sonda, aggregati sui Comuni valutabili, valori diversi e annualità assente rifiutati; serie dei componenti per famiglia con aggregati componenti/famiglie e riscontro toscano; serie ACI del parco autovetture con ultimo anno vincolato al pubblicato; serie dei contribuenti con POSAS a due anni e ultimo anno vincolato; serie MIM con anagrafe di ciascun anno e ultimo anno vincolato; serie ASIA-UL delle micro unità con totali vincolati alle unità locali; confronto Toscana della cassa SIOPE con 7/7 e soglia del 90% PASS")
 
 
 if __name__ == "__main__":

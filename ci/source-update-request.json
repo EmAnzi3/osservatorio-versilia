@@ -20,8 +20,13 @@
   "opencivitasNeeds": [],
   "aciVehiclesHistory": false,
   "istatFamiglie": false,
-  "openbdapBenchmarks": [],
+  "openbdapBenchmarks": [
+    2025
+  ],
   "mefTaxpayersHistory": false,
   "mimStudentsHistory": false,
-  "asiaMicroUnitsHistory": false
+  "asiaMicroUnitsHistory": false,
+  "siopeCashBenchmarks": [
+    2025
+  ]
 }

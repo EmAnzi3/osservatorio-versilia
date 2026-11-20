@@ -866,6 +866,42 @@ def update_aci_vehicles_history(dry_run: bool) -> Changes:
     return changes
 
 
+# ------------------------------------------------------------------ SIOPE: confronto Toscana di incassi e saldo di cassa
+
+def update_siope_cash_benchmarks(year: int, dry_run: bool, fetch=None) -> Changes:
+    """Toscana per incassi e saldo di cassa per residente; 7/7 riconciliati, ≥90% dei residenti coperti."""
+    import acquire_a3_benchmark_siope_candidates as siope
+    import siope_cash_benchmarks as cb
+
+    if year != 2025:
+        raise UpdateError("Confronto cassa SIOPE: dump regionali fissati per il 2025")
+    site = load(SITE)
+    history = load(ROOT / "data/source-snapshots/siope-history-v1.6.0.json")
+    published = {k: {r["code"]: r["value"] for r in site["metrics"][k]["rows"]} for k in cb.METRICS}
+    codes = {r["town"]: r["code"] for r in site["metrics"][cb.METRICS[0]]["rows"]}
+    residents = {codes[t]: v[str(year)]["population_resident"] for t, v in history["raw"].items()}
+
+    def fetcher(url: str) -> bytes:
+        if fetch:
+            return fetch(url)
+        if url in (siope.ENTRATA, siope.SPESA):  # dump CSV da ~100 MB: stessa sessione requests dell'acquisizione A3
+            import requests
+            return siope.get_blob(requests.Session(), url)
+        return probes.http_fetch(url)
+
+    try:
+        snapshot = cb.build_snapshot(year, fetcher, siope.parse, {"entrata": siope.ENTRATA, "spesa": siope.SPESA}, published, residents)
+    except (cb.CashBenchmarkError, RuntimeError, KeyError, ValueError, probes.ProbeError) as error:
+        raise UpdateError(f"Confronto cassa SIOPE: {error}") from error
+    changes = Changes()
+    for metric, entries in snapshot["benchmarks"].items():
+        changes.note(f"{metric} Toscana {year}", None, entries["tuscany"].get("value"))
+    snapshot["acquisitionEvidence"] = {"script": f"scripts/update_source_data.py siope-cash-benchmarks --year {year}"}
+    if not dry_run:
+        save(ROOT / cb.SNAPSHOT.format(year=year), snapshot)
+    return changes
+
+
 # ------------------------------------------------------------------ Istat ASIA-UL: serie della quota di micro unità locali
 
 def update_asia_micro_units_history(dry_run: bool, fetch=None) -> Changes:
@@ -1693,6 +1729,9 @@ def main() -> int:
     sub.add_parser("bdi-branches-probe", help="sonda degli sportelli Banca d'Italia (non modifica il catalogo)")
     vh_p = sub.add_parser("aci-vehicles-history", help="serie storica di motorizzazione e quota Euro 0–3 (archivi ACI)")
     vh_p.add_argument("--dry-run", action="store_true")
+    sc2_p = sub.add_parser("siope-cash-benchmarks", help="confronto Toscana di incassi e saldo di cassa SIOPE per residente")
+    sc2_p.add_argument("--year", type=int, required=True)
+    sc2_p.add_argument("--dry-run", action="store_true")
     mu_p = sub.add_parser("asia-micro-units-history", help="serie Istat ASIA-UL della quota di unità locali con 0–9 addetti")
     mu_p.add_argument("--dry-run", action="store_true")
     sc_p = sub.add_parser("mim-students-history", help="serie MIM di alunni, alunni per classe e tempo pieno della primaria")
@@ -1721,6 +1760,8 @@ def main() -> int:
             update_bdi_branches(args.year, args.dir, args.dry_run).report(f"Sportelli bancari {args.year}{' (prova a secco)' if args.dry_run else ''}:")
         elif args.updater == "aci-vehicles-history":
             update_aci_vehicles_history(args.dry_run).report("Serie parco autovetture:")
+        elif args.updater == "siope-cash-benchmarks":
+            update_siope_cash_benchmarks(args.year, args.dry_run).report("Confronto cassa SIOPE:")
         elif args.updater == "asia-micro-units-history":
             update_asia_micro_units_history(args.dry_run).report("Serie micro unità:")
         elif args.updater == "mim-students-history":
