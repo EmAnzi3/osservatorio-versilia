@@ -29,7 +29,7 @@ from datetime import date, timedelta
 from typing import Any, Callable
 from urllib.parse import urlsplit
 
-VERSION = "1.1"
+VERSION = "1.2"
 LABEL = "Requisiti da confermare"
 VERIFICATION_STATUS = "auto_qualified"
 MAX_CANDIDATES = 120
@@ -319,7 +319,7 @@ def classify_section(section: str) -> tuple[str, str]:
     if collaborator:
         return "municipal", "partner"
     lead = re.search(r"\b(capofila|proponente|soggetto\s+richiedente|soggetto\s+capofila)\b[^.;]{0,80}\b(comun|ente\s+locale|enti\s+locali|soggett\w+\s+pubblic)", cleaned, re.I)
-    role = "partner" if PARTNER.search(cleaned) and not lead and not re.match(r"\s*(?:i\s+|gli\s+|le\s+)?(?:comuni|enti\s+locali|soggetti\s+pubblici)", cleaned, re.I) else "direct_applicant"
+    role = "partner" if PARTNER.search(cleaned) and not lead and not single_form(cleaned) and not re.match(r"\s*(?:i\s+|gli\s+|le\s+)?(?:comuni|enti\s+locali|soggetti\s+pubblici)", cleaned, re.I) else "direct_applicant"
     return "municipal", role
 
 
@@ -367,6 +367,14 @@ def _quote(section: str, limit: int = 320) -> str:
 
 
 PARTNER = re.compile(r"\b(partner|partenariato|in\s+collaborazione\s+con|capofila|consorzi[oa]|associated\s+partner)\b", re.I)
+# «sia in forma singola sia in partenariato»: se i Comuni sono fra i soggetti ammessi possono presentare da soli,
+# il partenariato è un'alternativa e non li rende partner. Non vale per «in partenariato con i Comuni».
+SINGLE_FORM = re.compile(r"\b(?:in\s+forma\s+singola|singolarmente|forma\s+(?:singola|individuale))\b", re.I)
+PARTNER_WITH_TOWNS = re.compile(r"\b(?:partenariato|partnership|collaborazione|accordo)\s+con\s+(?:i\s+|gli\s+|le\s+|il\s+)?(?:comun|enti\s+local|amministrazion)", re.I)
+
+
+def single_form(text: str) -> bool:
+    return bool(SINGLE_FORM.search(text)) and not PARTNER_WITH_TOWNS.search(text)
 DEADLINE_CUE = re.compile(
     r"(scadenz[ae]|scade|entro\s+(?:e\s+non\s+oltre\s+)?(?:il|le\s+ore)?|termine|fino\s+al|chiusura|"
     r"presentazione\s+delle\s+(?:domande|candidature|proposte)|prorogat\w*|deadline|closing\s+date|until|"
@@ -522,7 +530,7 @@ def find_applicant(text: str, strict: bool = False) -> tuple[str, str]:
                 continue
             role = "direct_applicant" if lead else "partner"
         else:
-            role = "partner" if PARTNER.search(sentence) and not re.search(r"\b(capofila|proponente|soggetto\s+richiedente)\b.*\b(comun|ente locale)", sentence, re.I) else "direct_applicant"
+            role = "partner" if PARTNER.search(sentence) and not single_form(sentence) and not re.search(r"\b(capofila|proponente|soggetto\s+richiedente)\b.*\b(comun|ente locale)", sentence, re.I) else "direct_applicant"
         return sentence, role
     return "", "direct_applicant"
 

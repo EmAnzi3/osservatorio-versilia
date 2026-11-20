@@ -1,5 +1,12 @@
 # Consolidamento Osservatorio Versilia — handoff operativo
 
+## Radar: forma singola ammessa (20 novembre 2026)
+
+- Issue #634, «Punti Digitale Facile»: l'avviso ammette i Comuni «sia in forma singola sia in partenariato», ma la scheda li indicava come partner.
+- `opportunity_qualifier.single_form()`: se il testo ammette la forma singola e il partenariato non è «con i Comuni», il Comune è richiedente diretto. «In partenariato con i Comuni» resta partner.
+- Versione della qualificazione 1.2: le schede automatiche già pubblicate vengono rilette al prossimo run.
+- Gli importi restano fuori dalle schede automatiche, che rimandano all'avviso.
+
 ## Confronti bilanci, secondo blocco: sicurezza e cassa SIOPE (20 novembre 2026)
 
 Si applica la regola della #620: almeno il 90% dei residenti coperti, copertura dichiarata, riconciliazione 7/7 per indicatore.

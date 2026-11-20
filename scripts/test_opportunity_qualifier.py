@@ -369,6 +369,9 @@ def test_municipality_counts_if_it_takes_part_in_any_form():
         "Soggetti beneficiari: ASD e SSD. Al partenariato possono aggiungersi anche enti pubblici.": ("qualified", None),
         "Soggetti beneficiari: associazioni. Possono partecipare anche i Comuni in forma associata.": ("qualified", None),
         "Soggetti beneficiari: i Comuni della Toscana, anche in collaborazione con associazioni.": ("qualified", "direct_applicant"),
+        # Punti Digitale Facile 2026 (issue #634): la forma singola ammessa rende il Comune richiedente.
+        "Possono partecipare al bando i seguenti soggetti, sia in forma singola sia in partenariato costituito o da costituire: Enti Locali della Toscana: Comuni, Unioni di Comuni, Province e Città Metropolitana; Enti del Terzo Settore iscritti al RUNTS.": ("qualified", "direct_applicant"),
+        "Soggetti ammessi: associazioni, in forma singola o in partenariato con i Comuni del territorio.": ("qualified", "partner"),
     }
     for body, (status, role) in out.items():
         result = decide("Bando di prova", PAD + body + tail)
