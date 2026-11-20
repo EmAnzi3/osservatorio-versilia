@@ -9,7 +9,7 @@ ARS = 'data/source-snapshots/ars-salute-demographics-v140.json'
 NEW_KEYS = ('earlyChildhoodPotentialCapacityRate','tourismPresences','tourismIntensity','elderlyHomeCare')
 SEX = {'sex:total':'totale','sex:men':'maschi','sex:women':'femmine'}
 RATIOS = ('earlyChildhoodPotentialCapacityRate','tourismIntensity')
-CURRENT_ONLY = ('earlyChildhoodPotentialCapacityRate','tourismIntensity','elderlyHomeCare')
+CURRENT_ONLY = ('earlyChildhoodPotentialCapacityRate','elderlyHomeCare')
 
 
 def integer(value):
@@ -53,10 +53,10 @@ def context(metric, key, dimension):
         unit='number' if key=='tourismPresences' else 'decimal'
         if meta.get('unit')!=unit or metric['sourceUrl']!='https://www.regione.toscana.it/-/arrivi-e-presenze-nelle-strutture-ricettive-e-struttura-dell-offerta-dati-2025%C2%A0':
             raise ValueError('tourism_definition_changed')
-        return dict(unit=unit,population='registered accommodation nights excluding locazioni' if key=='tourismPresences' else 'resident population at January 1 2026',
-            definition='registered accommodation nights' if key=='tourismPresences' else 'registered accommodation nights 2025 / POSAS residents January 1 2026',
+        return dict(unit=unit,population='registered accommodation nights excluding locazioni' if key=='tourismPresences' else 'resident population at January 1 of the following year',
+            definition='registered accommodation nights' if key=='tourismPresences' else 'registered accommodation nights of the year / POSAS residents January 1 of the following year',
             method='Tuscany municipal movement counts excluding locazioni',frequency='annual',
-            periodBasis='tourism flow in reference calendar year' if key=='tourismPresences' else 'tourism flow 2025 divided by stock January 1 2026',
+            periodBasis='tourism flow in reference calendar year' if key=='tourismPresences' else 'tourism flow of the year divided by stock January 1 of the following year',
             adapter=f'tuscany-{key}/v1')
     raise ValueError('adapter_not_implemented')
 
@@ -119,21 +119,20 @@ def observation(engine, key, row, dimension, period, value):
         n=integer(history['countsByYear'][period][str(row['code'])]['presences'])
         if key=='tourismPresences':expected=n
         else:
-            if period!='2025':raise ValueError('tourism_ratio_period_not_available')
-            pop,popref=engine.file(AGE_SNAPSHOT)
-            records=[r for r in pop['posas']['towns'][row['town']] if str(r['year'])=='2026']
+            pop,popref=engine.file(AGE_SNAPSHOT);stock=str(int(period)+1)
+            records=[r for r in pop['posas']['towns'][row['town']] if str(r['year'])==stock]
             if len(records)!=1:raise ValueError('tourism_population_record_not_unique')
             d=integer(records[0]['population']);expected=ratio(n,d,1)
-            components=dict(numerator=n,denominator=d,scale=1,numeratorPeriod='2025',denominatorPeriod='2026')
-            notes.append('tourism_flow_2025_resident_stock_2026')
+            components=dict(numerator=n,denominator=d,scale=1,numeratorPeriod=period,denominatorPeriod=stock)
+            notes.append('tourism_flow_2025_resident_stock_2026' if period=='2025' else 'tourism_flow_year_resident_stock_next_january')
         if value is not None:reconcile(value,expected)
         source=history['sources'][period]['url'];pointer=f'/municipalMovementHistory/countsByYear/{period}/{row["code"]}/presences'
         evidence=source_record(engine,TOURISM,pointer,source,archive=history['sources'][period],scope=history['scope'],qualityGate=snapshot['qualityGate'])
         notes.extend(['registered_nights_exclude_locazioni_and_day_visitors','tourism_intensity_is_not_daily_peak_or_service_demand'])
         extra=[]
         if key=='tourismIntensity':
-            extra=[dict(popref,kind='denominator_snapshot',record=f'posas.towns.{row["town"]}.year=2026',
-                period='2026',sourceUrl=next(s['url'] for s in pop['posas']['sources'] if str(s['year'])=='2026'))]
+            extra=[dict(popref,kind='denominator_snapshot',record=f'posas.towns.{row["town"]}.year={stock}',
+                period=stock,sourceUrl=next(s['url'] for s in pop['posas']['sources'] if str(s['year'])==stock))]
         return value,'',components,[evidence]+extra,source,notes
     elif key=='elderlyHomeCare':
         snapshot,_=engine.file(ARS);spec=snapshot['indicators']['260']

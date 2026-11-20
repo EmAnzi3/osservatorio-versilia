@@ -425,6 +425,7 @@ export default {
 "tourism_capacity_2025_scope_includes_private_non_business_not_comparable": "Dal 2025 Istat conta anche gli alloggi privati non imprenditoriali: i valori non sono confrontabili con il 2024.",
 "tourism_existing_presences_operations_preserved": "Le presenze turistiche già pubblicate restano invariate.",
 "tourism_flow_2025_resident_stock_2026": "I flussi turistici sono del 2025, i residenti del 2026.",
+"tourism_flow_year_resident_stock_next_january": "Le presenze dell’anno sono divise per i residenti al 1° gennaio dell’anno successivo, come il valore più recente.",
 "tourism_frozen_extraction_not_new_live_acquisition": "I dati sul turismo sono un’estrazione fissata a una data, non un aggiornamento in tempo reale.",
 "tourism_intensity_is_not_daily_peak_or_service_demand": "L’intensità turistica non misura il picco giornaliero né la domanda di servizi.",
 "tourism_movement_net_of_rentals_provisional": "I movimenti turistici escludono gli affitti brevi e sono provvisori.",
