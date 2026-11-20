@@ -117,11 +117,16 @@ def patch_theme(data):
     e['featured']=featured[:3]
 
 
+SBS_ACQUISITION='Tavole comunali ufficiali Frame SBS Territoriale Istat; snapshot 2015–2023 con file, tavola, riga e impronta SHA-256 delle fonti annuali.'
+
+
 def patch_registry(metrics):
     r=json.loads(REGISTRY.read_text(encoding='utf-8')); external=sum(m.get('dataStorage',{}).get('type')=='external-climate' for m in metrics.values()); r['expectedMetricCount']=len(metrics);r['expectedExternalMetricCount']=external;r['expectedInlineMetricCount']=len(metrics)-external
-    p=r.setdefault('sourceProfiles',{}).setdefault('istat-business-annual',{}); p.update({'publisher':'Istat','frequency':'annual','frequencyLabel':'Annuale','expectedRelease':'Con ritardo fisiologico di circa due anni','acquisitionMethod':'Tavole comunali ufficiali Frame SBS Territoriale Istat; snapshot 2015–2023 con file, tavola, riga e impronta SHA-256 delle fonti annuali.','licenseName':'CC BY 4.0','licenseUrl':'https://www.istat.it/note-legali/'})
+    p=r.setdefault('sourceProfiles',{}).setdefault('istat-business-annual',{}); p.update({'publisher':'Istat','frequency':'annual','frequencyLabel':'Annuale','expectedRelease':'Con ritardo fisiologico di circa due anni','licenseName':'CC BY 4.0','licenseUrl':'https://www.istat.it/note-legali/'})
     r.setdefault('sourceProfileByUrl',{})[SOURCE_URL]='istat-business-annual'; o=r.setdefault('metricOverrides',{})
-    for k in ECONOMIA_PRODOTTA_KEYS:o[k]={'profile':'istat-business-annual'}
+    # Il profilo è condiviso con gli indicatori ASIA-UL (unità locali, addetti, micro unità): il metodo Frame SBS
+    # vale solo per gli indicatori di Economia prodotta e resta nei loro override.
+    for k in ECONOMIA_PRODOTTA_KEYS:o[k]={'profile':'istat-business-annual','acquisitionMethod':SBS_ACQUISITION}
     REGISTRY.write_text(json.dumps(r,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
 
 

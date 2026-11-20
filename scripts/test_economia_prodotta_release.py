@@ -120,6 +120,12 @@ def main() -> int:
     assert registry["expectedInlineMetricCount"] + registry["expectedExternalMetricCount"] == len(metrics)
     for key in KEYS:
         assert registry["metricOverrides"][key]["profile"] == "istat-business-annual"
+        assert "Frame SBS" in registry["metricOverrides"][key]["acquisitionMethod"]
+    # Il profilo condiviso non porta il metodo Frame SBS sugli indicatori ASIA-UL.
+    assert "Frame SBS" not in registry["sourceProfiles"]["istat-business-annual"]["acquisitionMethod"]
+    from source_policy import resolve_metric_policy
+    for key in ("microUnits", "localUnits", "localEmployees"):
+        assert "Frame SBS" not in resolve_metric_policy(key, metrics[key], registry)["acquisitionMethod"], key
 
     report = {
         "release": data["version"],
