@@ -1,5 +1,9 @@
 # Consolidamento Osservatorio Versilia — handoff operativo
 
+## Gate browser: testo per screen reader (21 novembre 2026)
+
+- «full» falliva a intermittenza su /chiedi/ per l'etichetta «La tua domanda» della mascotte (`.vm-sr`, 1×1 px con `clip`): nascosta per scelta, non troncata. Il controllo «testo nowrap troncato» salta ora gli elementi solo per screen reader (assoluti, 1×1, `clip: rect(0…)` o `clip-path: inset(50%)`).
+
 ## Radar: falsi positivi del 21 novembre e notizie uscite dalla coda
 
 - Edicole («Bando in arrivo», destinatari imprese): i Comuni comparivano solo come luogo («situate nei comuni…», «per ogni Comune servito»). `MUNICIPAL_AS_PLACE` copre ora il plurale locativo.

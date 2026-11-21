@@ -126,6 +126,10 @@ def browser_findings(page: Page) -> dict[str, object]:
             if (!visible(el) || insideHorizontalScroller(el)) continue;
             const style = getComputedStyle(el);
             if (style.whiteSpace !== 'nowrap') continue;
+            // Testo solo per screen reader (.vm-sr della mascotte, .sr-only): è nascosto per scelta, non troncato.
+            const srOnly = style.position === 'absolute' && el.clientWidth <= 1 && el.clientHeight <= 1
+              && (style.clip === 'rect(0px, 0px, 0px, 0px)' || style.clipPath === 'inset(50%)');
+            if (srOnly) continue;
             if (el.scrollWidth > el.clientWidth + EPS) {
               nowrapOverflow.push({
                 tag: el.tagName.toLowerCase(),
