@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "version": "mef-irpef-benchmark-2025-v1",
-  "retrieved": "2026-11-20",
+  "retrieved": "2026-11-21",
   "publisher": "Dipartimento delle Finanze — MEF · Istat (POSAS, elenco dei Comuni)",
   "year": 2025,
   "scenarios": [
@@ -33,33 +33,17 @@
     "rows": 7896,
     "municipalities": 7896,
     "duplicates": [],
-    "readable": 7873,
-    "unreadable": 23,
+    "readable": 7889,
+    "unreadable": 7,
     "unmatchedCadastral": [],
     "unreadableExamples": {
-      "A182": "aliquota fuori intervallo '1,1'",
-      "A264": "scaglione non leggibile 'applicabile a oltre 15000€ fino a 28000€'",
-      "B180": "aliquota fuori intervallo '1,2'",
-      "D314": "scaglione non leggibile 'applicabile a redditi oltre euro 15.000,00 fino a euro 28.000,00'",
       "D317": "scaglione non leggibile 'applicabile a 0.00 - 15000.00'",
-      "D510": "scaglione non leggibile 'applicabile a redditi imponibili tra € 15.000,01 e € 28.000,00'",
       "D593": "esenzione non leggibile \"esenzione per reddito dell'unita' immobiliare adibita ad abitazione principale e relative pertinenze\"",
-      "D969": "aliquota fuori intervallo '1,1'",
       "E027": "esenzione non leggibile \"esenzione per soggetti con reddito complessivo composto unicamente da reddito dell'unita' immobiliare adibita ad abitazione principale e relative pertinenze. i soggetti che non rientrano nelle ipotesi di esenzioni sono obbligati al pagamento sull'intero reddito posseduto.\"",
-      "E038": "scaglione non leggibile 'applicabile a redditi oltre € 15.000,01 e fino a € 28.000,00'",
       "E224": "esenzione non leggibile 'esenzione per esenzione per reddito delle unita immobiliare adibita ad abitazione principale e relative pertinenze'",
-      "E343": "scaglione non leggibile 'applicabile a redditi oltre 15.000,00 e fino a 28.000,00'",
-      "E506": "aliquota fuori intervallo '1,2'",
       "E514": "scaglioni non contigui",
       "E819": "scaglione non leggibile 'applicabile a scaglione di reddito da euro 28.000.01 fino a euro 50000'",
-      "F537": "aliquota fuori intervallo '1,2'",
-      "F582": "scaglione non leggibile 'applicabile a scaglioni di reddito complessivo oltre € 15.000 e fino a € 28.000'",
-      "F723": "scaglione non leggibile 'applicabile a scaglione di reddito oltre euro 15.00,00 e fino a euro 28.000,00'",
-      "G273": "aliquota fuori intervallo '1,014'",
-      "H703": "aliquota fuori intervallo '1,1'",
-      "I823": "scaglione non leggibile 'applicabile a oltre € 15.000 e fino a € 28.000'",
-      "L039": "scaglione non leggibile 'applicabile a scaglione di reddito da euro 50.000,01'",
-      "L219": "aliquota fuori intervallo '1,1'"
+      "F723": "scaglione non leggibile 'applicabile a scaglione di reddito oltre euro 15.00,00 e fino a euro 28.000,00'"
     }
   },
   "towns": {
@@ -195,89 +179,83 @@
   "benchmarks": {
     "20000": {
       "tuscany": {
-        "municipalities": 272,
+        "municipalities": 273,
         "municipalitiesTotal": 273,
-        "populationCovered": 3655567,
+        "populationCovered": 3659222,
         "populationTotal": 3659222,
-        "populationShare": 0.9990011537971732,
-        "excluded": {
-          "disciplina non leggibile": 1
-        },
-        "value": 126.33353293757166,
-        "numerator": 461820694.0,
-        "denominator": 3655567
+        "populationShare": 1.0,
+        "excluded": {},
+        "value": 126.32520901984083,
+        "numerator": 462251984.0,
+        "denominator": 3659222
       },
       "italy": {
-        "municipalities": 7864,
+        "municipalities": 7879,
         "municipalitiesTotal": 7896,
-        "populationCovered": 56223296,
+        "populationCovered": 58650905,
         "populationTotal": 58942828,
-        "populationShare": 0.9538615283270765,
+        "populationShare": 0.9950473533438199,
         "excluded": {
-          "disciplina non leggibile": 23,
-          "esenzione per categorie fino allo scenario": 9
+          "esenzione per categorie fino allo scenario": 10,
+          "disciplina non leggibile": 7
         },
-        "value": 137.08070806450053,
-        "numerator": 7707129225.4,
-        "denominator": 56223296
+        "value": 139.10109590465825,
+        "numerator": 8158405161.3,
+        "denominator": 58650905
       }
     },
     "30000": {
       "tuscany": {
-        "municipalities": 272,
+        "municipalities": 273,
         "municipalitiesTotal": 273,
-        "populationCovered": 3655567,
+        "populationCovered": 3659222,
         "populationTotal": 3659222,
-        "populationShare": 0.9990011537971732,
-        "excluded": {
-          "disciplina non leggibile": 1
-        },
-        "value": 197.39829438223947,
-        "numerator": 721602690.8,
-        "denominator": 3655567
+        "populationShare": 1.0,
+        "excluded": {},
+        "value": 197.39609862424308,
+        "numerator": 722316146.8,
+        "denominator": 3659222
       },
       "italy": {
-        "municipalities": 7865,
+        "municipalities": 7881,
         "municipalitiesTotal": 7896,
-        "populationCovered": 56237303,
+        "populationCovered": 58759299,
         "populationTotal": 58942828,
-        "populationShare": 0.9540991653810706,
+        "populationShare": 0.9968863217760776,
         "excluded": {
-          "disciplina non leggibile": 23,
-          "esenzione per categorie fino allo scenario": 8
+          "esenzione per categorie fino allo scenario": 8,
+          "disciplina non leggibile": 7
         },
-        "value": 214.01127111661097,
-        "numerator": 12035416699.2,
-        "denominator": 56237303
+        "value": 216.86661689922474,
+        "numerator": 12742930385.5,
+        "denominator": 58759299
       }
     },
     "50000": {
       "tuscany": {
-        "municipalities": 272,
+        "municipalities": 273,
         "municipalitiesTotal": 273,
-        "populationCovered": 3655567,
+        "populationCovered": 3659222,
         "populationTotal": 3659222,
-        "populationShare": 0.9990011537971732,
-        "excluded": {
-          "disciplina non leggibile": 1
-        },
-        "value": 336.33742201962104,
-        "numerator": 1229503980.8,
-        "denominator": 3655567
+        "populationShare": 1.0,
+        "excluded": {},
+        "value": 336.35226744920095,
+        "numerator": 1230787616.8,
+        "denominator": 3659222
       },
       "italy": {
-        "municipalities": 7868,
+        "municipalities": 7884,
         "municipalitiesTotal": 7896,
-        "populationCovered": 56269466,
+        "populationCovered": 58791462,
         "populationTotal": 58942828,
-        "populationShare": 0.9546448297322958,
+        "populationShare": 0.9974319861273029,
         "excluded": {
-          "disciplina non leggibile": 23,
-          "esenzione per categorie fino allo scenario": 5
+          "esenzione per categorie fino allo scenario": 5,
+          "disciplina non leggibile": 7
         },
-        "value": 360.70110291787734,
-        "numerator": 20296458446.8,
-        "denominator": 56269466
+        "value": 366.51443727492267,
+        "numerator": 21547919611.5,
+        "denominator": 58791462
       }
     }
   },
