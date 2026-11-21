@@ -1,5 +1,9 @@
 # Consolidamento Osservatorio Versilia — handoff operativo
 
+## Gate browser: testo per screen reader (21 novembre 2026)
+
+- «full» falliva a intermittenza su /chiedi/ per l'etichetta «La tua domanda» della mascotte (`.vm-sr`, 1×1 px con `clip`): nascosta per scelta, non troncata. Il controllo «testo nowrap troncato» salta ora gli elementi solo per screen reader (assoluti, 1×1, `clip: rect(0…)` o `clip-path: inset(50%)`).
+
 ## Radar: forma singola ammessa (20 novembre 2026)
 
 - Issue #634, «Punti Digitale Facile»: l'avviso ammette i Comuni «sia in forma singola sia in partenariato», ma la scheda li indicava come partner.
