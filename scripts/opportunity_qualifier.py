@@ -29,7 +29,7 @@ from datetime import date, timedelta
 from typing import Any, Callable
 from urllib.parse import urlsplit
 
-VERSION = "1.1"
+VERSION = "1.2"
 LABEL = "Requisiti da confermare"
 VERIFICATION_STATUS = "auto_qualified"
 MAX_CANDIDATES = 120
@@ -148,6 +148,7 @@ BENEFICIARY_HEAD = re.compile(
     r"(?:\s+(?:del\s+(?:bando|contributo|finanziamento)|dell[’']\s*avviso))?|"
     r"chi\s+pu[oò]\s+(?:partecipare|presentare(?:\s+domanda)?|candidarsi|fare\s+domanda|accedere)|"
     r"a\s+chi\s+(?:è|e['’])\s+rivolt[oa]|a\s+chi\s+si\s+rivolge|requisiti\s+soggettivi|"
+    r"(?:gli\s+|i\s+|l['’]\s*|il\s+)?(?:avvis[oi]|band[oi])\s+(?:sono\s+|è\s+)?(?:aperti|aperto|rivolt[oi])\s+a(?:i|gli|lle)?\b|"
     r"(?:pre)?requisiti\s+di\s+(?:ammissibilit[àa]|partecipazione|accesso)|domanda\s+(?:deve\s+essere\s+)?presentata\s+da|"
     r"(?:le\s+)?domande\s+possono\s+essere\s+presentate\s+da|"
     r"possono\s+(?:presentare\s+(?:domanda|candidatura|istanza|richiesta|progett\w+|propost\w+)|partecipare|candidarsi)"
@@ -319,7 +320,7 @@ def classify_section(section: str) -> tuple[str, str]:
     if collaborator:
         return "municipal", "partner"
     lead = re.search(r"\b(capofila|proponente|soggetto\s+richiedente|soggetto\s+capofila)\b[^.;]{0,80}\b(comun|ente\s+locale|enti\s+locali|soggett\w+\s+pubblic)", cleaned, re.I)
-    role = "partner" if PARTNER.search(cleaned) and not lead and not re.match(r"\s*(?:i\s+|gli\s+|le\s+)?(?:comuni|enti\s+locali|soggetti\s+pubblici)", cleaned, re.I) else "direct_applicant"
+    role = "partner" if PARTNER.search(cleaned) and not lead and not single_form(cleaned) and not re.match(r"\s*(?:i\s+|gli\s+|le\s+)?(?:comuni|enti\s+locali|soggetti\s+pubblici)", cleaned, re.I) else "direct_applicant"
     return "municipal", role
 
 
@@ -367,6 +368,14 @@ def _quote(section: str, limit: int = 320) -> str:
 
 
 PARTNER = re.compile(r"\b(partner|partenariato|in\s+collaborazione\s+con|capofila|consorzi[oa]|associated\s+partner)\b", re.I)
+# «sia in forma singola sia in partenariato»: se i Comuni sono fra i soggetti ammessi possono presentare da soli,
+# il partenariato è un'alternativa e non li rende partner. Non vale per «in partenariato con i Comuni».
+SINGLE_FORM = re.compile(r"\b(?:in\s+forma\s+singola|singolarmente|forma\s+(?:singola|individuale))\b", re.I)
+PARTNER_WITH_TOWNS = re.compile(r"\b(?:partenariato|partnership|collaborazione|accordo)\s+con\s+(?:i\s+|gli\s+|le\s+|il\s+)?(?:comun|enti\s+local|amministrazion)", re.I)
+
+
+def single_form(text: str) -> bool:
+    return bool(SINGLE_FORM.search(text)) and not PARTNER_WITH_TOWNS.search(text)
 DEADLINE_CUE = re.compile(
     r"(scadenz[ae]|scade|entro\s+(?:e\s+non\s+oltre\s+)?(?:il|le\s+ore)?|termine|fino\s+al|chiusura|"
     r"presentazione\s+delle\s+(?:domande|candidature|proposte)|prorogat\w*|deadline|closing\s+date|until|"
@@ -407,6 +416,7 @@ class Decision:
     role: str = "direct_applicant"
     documents: list[str] = field(default_factory=list)
     population: tuple[int | None, int | None] = (None, None)
+    announced: bool = False          # bando annunciato, non ancora aperto: scheda «in arrivo» riletta ogni giorno
 
 
 def visible_text(payload: str) -> str:
@@ -522,7 +532,7 @@ def find_applicant(text: str, strict: bool = False) -> tuple[str, str]:
                 continue
             role = "direct_applicant" if lead else "partner"
         else:
-            role = "partner" if PARTNER.search(sentence) and not re.search(r"\b(capofila|proponente|soggetto\s+richiedente)\b.*\b(comun|ente locale)", sentence, re.I) else "direct_applicant"
+            role = "partner" if PARTNER.search(sentence) and not single_form(sentence) and not re.search(r"\b(capofila|proponente|soggetto\s+richiedente)\b.*\b(comun|ente locale)", sentence, re.I) else "direct_applicant"
         return sentence, role
     return "", "direct_applicant"
 
@@ -570,6 +580,15 @@ def theme(text: str) -> str:
     return "generale"
 
 
+# Bando annunciato ma non ancora aperto («Bando in arrivo», «di prossima pubblicazione»): non è uno scarto,
+# è una scheda «in arrivo» da rileggere ogni giorno finché esce l'avviso (issue #634).
+ANNOUNCED = re.compile(
+    r"\b(?:bando|bandi|avvis[oi]|contribut[oi]|finanziament[oi])\s+in\s+arrivo\b|\bin\s+arrivo\s+(?:il\s+|i\s+|l['’]\s*)?(?:bando|bandi|avviso)\b|"
+    r"\bdi\s+prossima\s+(?:pubblicazione|apertura|uscita)\b|\b(?:sar[àa]|verr[àa])\s+(?:a\s+breve\s+)?pubblicat[oa]\b", re.I)
+# Pagine delle prefetture: contano solo quelle della provincia di Lucca.
+OTHER_PREFECTURE = re.compile(r"prefettura\.interno\.gov\.it/it/prefetture/(?!lucca(?:/|$))[a-z-]+", re.I)
+
+
 def qualify(candidate: dict[str, Any], page_text: str, documents: dict[str, str], today: date) -> Decision:
     title = str(candidate.get("title") or "")
     combined = " ".join([page_text, *documents.values()])
@@ -580,8 +599,14 @@ def qualify(candidate: dict[str, Any], page_text: str, documents: dict[str, str]
     # I menu dei siti occupano spesso le prime migliaia di caratteri.
     if not CALL.search(title) and not CALL.search(combined[:6000]):
         return Decision("rejected", "Nessun elemento di avviso o bando nella pagina.")
+    announced = False
     if not candidate.get("deadline_at") and not APPLY.search(combined):
-        return Decision("rejected", "La pagina non indica come presentare domanda: riparto, adempimento o notizia.")
+        # Senza modalità di domanda la pagina resta in gioco se annuncia il bando o se ne riporta un termine
+        # futuro (proroghe, «pubblicato l'avviso»): i destinatari si controllano come per gli avvisi.
+        announced = bool(ANNOUNCED.search(title) or ANNOUNCED.search(combined[:6000]))
+        upcoming_term = find_deadline(combined, today)[0]
+        if not announced and not (upcoming_term and upcoming_term >= today and CALL.search(title)):
+            return Decision("rejected", "La pagina non indica come presentare domanda né annuncia un bando: riparto, adempimento o notizia.")
     if OPERATOR.search(combined):
         return Decision("rejected", "Bando per il gestore di uno strumento di sostegno: i Comuni ne sono destinatari, non richiedenti.")
     if candidate.get("strict_municipal"):
@@ -623,6 +648,9 @@ def qualify(candidate: dict[str, Any], page_text: str, documents: dict[str, str]
     if deadline and deadline < today:
         return Decision("expired", f"Termine concluso il {deadline.isoformat()}.", applicant=applicant,
                         deadline=deadline.isoformat(), deadline_evidence=evidence)
+    if not deadline and not rolling and announced:
+        return Decision("qualified", "Bando annunciato con Comuni o enti locali fra i destinatari: in arrivo, riletto ogni giorno.",
+                        applicant=applicant, role=role, documents=list(documents), population=population, announced=True)
     if not deadline and not rolling:
         return Decision("rejected", "Nessuna scadenza futura né modalità a sportello indicata.", applicant=applicant)
     return Decision("qualified", "Avviso aperto con Comuni o enti locali fra i soggetti ammessi.", applicant=applicant,
@@ -648,18 +676,19 @@ def _fold(value: Any) -> str:
 def build_entry(candidate: dict[str, Any], decision: Decision, today: date, towns: tuple[str, ...]) -> dict[str, Any]:
     title = re.sub(r"\s+", " ", str(candidate.get("title") or "")).strip()
     source_label = candidate.get("source_label") or candidate.get("publisher") or candidate.get("source_id")
-    when = (f"scadenza {decision.deadline}" if decision.deadline else "a sportello")
+    when = (f"scadenza {decision.deadline}" if decision.deadline else "bando annunciato, non ancora aperto" if decision.announced else "a sportello")
     partner = decision.role == "partner"
     requirements = (
         f"{LABEL}: scheda qualificata automaticamente dal Radar leggendo la fonte ufficiale. "
         f"Soggetti ammessi, dal testo: «{decision.applicant.strip()}»"
         + (f" Termine, dal testo: «{decision.deadline_evidence.strip()}»" if decision.deadline_evidence else "")
+        + (" Bando annunciato e non ancora aperto: il Radar rilegge la pagina ogni giorno." if decision.announced else "")
         + " Prima di candidarsi verificare requisiti, importi e modalità nell’avviso."
     )
     description = (f"Segnalato da {source_label} ({when}). "
                    + ("Il Comune partecipa come partner. " if partner else "Possono candidarsi Comuni o enti locali. ")
                    + LABEL + ".")
-    stage = "announced_upcoming" if decision.opens_at and decision.opens_at > today.isoformat() else (
+    stage = "announced_upcoming" if decision.announced or (decision.opens_at and decision.opens_at > today.isoformat()) else (
         "rolling_open" if decision.rolling else "application_open")
     return {
         "coverage_id": identity(candidate, decision),
@@ -774,7 +803,8 @@ def apply(result: dict[str, Any], today: date, *, loader: Callable[[str, bool], 
         if deadline and str(deadline) < today.isoformat():
             continue
         source_url = old.get("discovery_url") or old.get("url")
-        if old.get("auto_qualification_version") != VERSION and source_url:
+        # Le schede «in arrivo» si rileggono ogni giorno: appena esce l'avviso diventano il bando aperto.
+        if source_url and (old.get("auto_qualification_version") != VERSION or old.get("lifecycle_stage") == "announced_upcoming"):
             stale[_fold(source_url)] = old
             continue
         items.append(dict(old, is_new=False))
@@ -798,26 +828,28 @@ def apply(result: dict[str, Any], today: date, *, loader: Callable[[str, bool], 
 
     candidates = []
     for candidate in queue:
+        if OTHER_PREFECTURE.search(str(candidate.get("url") or "")):
+            report["otherPrefectures"] = report.get("otherPrefectures", 0) + 1
+            continue
         if _fold(candidate.get("url")) in known_urls or _fold(candidate.get("title")) in known_titles:
             continue
         if not candidate.get("url"):
             continue
         candidates.append(candidate)
     unique = list({_fold(c.get("url")): c for c in candidates}.values())
-    # Decisioni negative recenti: non si rileggono ogni giorno, così la coda
-    # avanza e le segnalazioni nuove vengono lette entro un giorno.
+    # Decisioni negative recenti: si rileggono ogni giorno, dopo le segnalazioni nuove e partendo da quelle
+    # lette da più tempo. Una pagina «bando in arrivo» scartata ieri può essere il bando aperto oggi (issue #634:
+    # sette giorni di attesa con la vecchia regola).
     horizon = (today - timedelta(days=RECHECK_DAYS)).isoformat()
     cache = {url: row for url, row in ((previous or {}).get("autoQualificationCache") or {}).items()
              if str(row.get("checkedAt") or "") >= horizon and row.get("reason")}
     result["autoQualificationCache"] = cache
-    pending = []
+    recheck: dict[str, str] = {}
     for candidate in unique:
         row = cache.get(str(candidate.get("url")))
         if row and row.get("status") in {"rejected", "expired"} and _fold(candidate.get("url")) not in stale:
-            report["skippedRecent"] = report.get("skippedRecent", 0) + 1
-            continue
-        pending.append(candidate)
-    unique = pending
+            recheck[_fold(candidate.get("url"))] = str(row.get("checkedAt") or "")
+    report["recheckedRejections"] = len(recheck)
     # Segnalazioni che citano solo anni ormai chiusi: scartate senza scaricarle.
     fresh = []
     for candidate in unique:
@@ -833,13 +865,14 @@ def apply(result: dict[str, Any], today: date, *, loader: Callable[[str, bool], 
             continue
         fresh.append(candidate)
     # Prima i dati strutturati (nessuno scaricamento), poi le segnalazioni più recenti.
-    fresh.sort(key=lambda c: (_fold(c.get("url")) not in stale, not c.get("structured_text"),
-                              -(max(_years(c)) if _years(c) else today.year)))
+    fresh.sort(key=lambda c: (_fold(c.get("url")) not in stale, _fold(c.get("url")) in recheck, not c.get("structured_text"),
+                              recheck.get(_fold(c.get("url")), ""), -(max(_years(c)) if _years(c) else today.year)))
     # I dati strutturati non scaricano nulla: si decidono tutti e non tolgono
     # posto alle segnalazioni da leggere in rete (prima occupavano 97 posti su 120).
     structured = [c for c in fresh if c.get("structured_text")]
     networked = [c for c in fresh if not c.get("structured_text")]
     report["deferred"] = max(0, len(networked) - MAX_CANDIDATES)
+    report["deferredRechecks"] = sum(1 for c in networked[MAX_CANDIDATES:] if _fold(c.get("url")) in recheck)
     started = time.monotonic()
     selected = structured + networked[:MAX_CANDIDATES]
     for position, candidate in enumerate(selected):
@@ -1020,12 +1053,33 @@ def _stems(title: Any) -> tuple[set[str], set[str]]:
     return stems, years
 
 
+def _open_duplicate(item: dict[str, Any], opened: list[dict[str, Any]]) -> dict[str, Any] | None:
+    """Scheda automatica aperta che ripete un bando già in Radar da un'altra fonte (issue #634: la notizia
+    ANCI Toscana e l'avviso della Regione). Stesso bando = stessa scadenza, anni compatibili, tutte (almeno 3)
+    le parole distintive del titolo più corto nell'altro. Resta la scheda vista per prima."""
+    stems, years = _stems(item.get("title"))
+    first = str(item.get("first_seen_at") or "9999")
+    for other in opened:
+        if other is item or other.get("deadline_at") != item.get("deadline_at"):
+            continue
+        other_stems, other_years = _stems(other.get("title"))
+        smaller = stems if len(stems) <= len(other_stems) else other_stems
+        if len(smaller) < 3 or not smaller <= (stems & other_stems) or (years and other_years and not years & other_years):
+            continue
+        other_first = str(other.get("first_seen_at") or "9999")
+        curated = not str(other.get("id") or "").startswith("auto-")
+        if other_first < first or (other_first == first and (curated or str(other.get("id")) < str(item.get("id")))):
+            return other
+    return None
+
+
 def absorb_announcements(result: dict[str, Any]) -> list[dict[str, Any]]:
     """Una scheda «in arrivo» sparisce quando lo stesso bando è pubblicato come aperto.
 
     Stesso bando = le parole distintive del titolo più corto stanno (almeno 4 e
     per l'80%) in quello dell'altro, gli anni citati coincidono e la scadenza
-    eventualmente annunciata è la stessa del bando aperto.
+    eventualmente annunciata è la stessa del bando aperto. Allo stesso modo una scheda automatica aperta
+    che ripete un bando aperto già presente (stessa scadenza) cede il posto a quella vista per prima.
     """
     items = result.get("opportunities") or []
     opened = [x for x in items if x.get("status") == "open"]
@@ -1045,6 +1099,8 @@ def absorb_announcements(result: dict[str, Any]) -> list[dict[str, Any]]:
                         and (not item.get("deadline_at") or item.get("deadline_at") == other.get("deadline_at"))):
                     target = other
                     break
+        elif item.get("status") == "open" and str(item.get("id") or "").startswith("auto-") and item.get("deadline_at"):
+            target = _open_duplicate(item, opened)
         if target is None:
             keep.append(item)
         else:
