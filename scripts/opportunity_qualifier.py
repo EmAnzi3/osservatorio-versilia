@@ -550,6 +550,11 @@ TERRITORIAL_LIMIT = re.compile(
 VERSILIA_NAMED = re.compile(
     r"\b(?:Camaiore|Forte\s+dei\s+Marmi|Massarosa|Pietrasanta|Seravezza|Stazzema|Viareggio|Versilia|"
     r"provincia\s+di\s+Lucca|Unione\s+(?:dei\s+)?Comuni\s+(?:della\s+)?Alta\s+Versilia)\b", re.I)
+# Elenchi regionali che comprendono Comuni della Versilia anche se non li nominano: Toscana diffusa
+# (l.r. 11/2025, Allegato A della DCR 10/2025: Stazzema e Seravezza totalmente montani, Camaiore per la parte
+# montana) e Comuni montani. Un avviso riservato a questi territori non esclude la Versilia.
+KNOWN_AREAS_WITH_VERSILIA = re.compile(
+    r"\btoscana\s+diffusa\b|\bl\.?\s*r\.?\s*(?:n\.?\s*)?11\s*/\s*2025\b|\bcomuni\s+(?:totalmente\s+o\s+parzialmente\s+|parzialmente\s+o\s+totalmente\s+)?montani\b", re.I)
 WHOLE_SCOPE = re.compile(
     r"\b(?:tutti\s+i\s+comuni|comuni\s+(?:della\s+)?toscan\w*|comuni\s+della\s+(?:regione\s+)?toscana|"
     r"comuni\s+italiani|intero\s+territorio\s+(?:regionale|nazionale))\b", re.I)
@@ -559,7 +564,7 @@ def territorial_limit(title: str, applicant: str, combined: str) -> str | None:
     """Citazione del limite territoriale se i territori ammessi sono elencati e la Versilia non c'è."""
     probe = f"{title} {applicant}"
     match = TERRITORIAL_LIMIT.search(probe)
-    if not match or WHOLE_SCOPE.search(probe) or VERSILIA_NAMED.search(f"{title} {combined}"):
+    if not match or WHOLE_SCOPE.search(probe) or VERSILIA_NAMED.search(f"{title} {combined}") or KNOWN_AREAS_WITH_VERSILIA.search(probe):
         return None
     return re.sub(r"\s+", " ", match.group(0)).strip()
 

@@ -529,6 +529,15 @@ def test_announced_call_is_upcoming_card_not_rejection():
     assert decide("Comunicato del 12 ottobre 2026", PAD + "Erogazione ai Comuni del contributo per il 2026.").status == "rejected"
 
 
+def test_toscana_diffusa_includes_versilia_towns():
+    """Run del 21/11: «Comuni ricadenti nei territori della Toscana Diffusa» escludeva a torto Stazzema, Seravezza e Camaiore."""
+    applicant = ("Il bando si rivolge esclusivamente a soggetti pubblici specifici: Comuni ricadenti nei territori della "
+                 "“Toscana Diffusa”, come individuati dalla l.r. 11/2025.")
+    assert q.territorial_limit("Toscana Diffusa – Interventi di riqualificazione", applicant, applicant) is None
+    other = "Possono partecipare i Comuni ricadenti nell'area del cratere sismico 2016."
+    assert q.territorial_limit("Ricostruzione", other, other)
+
+
 def test_rejected_news_reread_after_leaving_the_queue():
     """ICSC 20/11: la notizia scartata non era più nella coda il giorno dopo e non veniva riletta."""
     url = "https://www.anci.piemonte.it/prorogati-al-5-dicembre-i-bandi-sport-missione-comune/"

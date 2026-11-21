@@ -4,6 +4,7 @@
 
 - Edicole («Bando in arrivo», destinatari imprese): i Comuni comparivano solo come luogo («situate nei comuni…», «per ogni Comune servito»). `MUNICIPAL_AS_PLACE` copre ora il plurale locativo.
 - Proroga MIM «al 16 ottobre» pubblicata con scadenza 2028 (fine lavori): `title_term()` legge il termine nel titolo e, se è passato, la notizia è scaduta.
+- «Toscana Diffusa – Interventi di riqualificazione» esclusa a torto: la Toscana diffusa (l.r. 11/2025, Allegato A DCR 10/2025) comprende Stazzema, Seravezza e la parte montana di Camaiore. `KNOWN_AREAS_WITH_VERSILIA`: un avviso riservato alla Toscana diffusa o ai Comuni montani non esclude la Versilia.
 - Notizie scartate che escono dalla coda delle fonti (ICSC Sport/Cultura Missione Comune, 20/11): si rileggono dal cache, con titolo conservato o ricavato dall'indirizzo.
 
 ## Radar: forma singola ammessa (20 novembre 2026)
