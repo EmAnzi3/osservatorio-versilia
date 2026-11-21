@@ -214,6 +214,9 @@ def _recompute_after_continuity_restore(result: dict[str, Any]) -> None:
         row["publicCount"] = by_source.get(source_id, 0)
 
 
+RETIRED_REASONS = {"withdrawn_by_current_rules", "expired_by_current_rules", "superseded_by_open_call", "duplicate_of_open_call"}
+
+
 def _restore_recent_verified_continuity(
     result: dict[str, Any],
     previous: dict[str, Any],
@@ -245,6 +248,9 @@ def _restore_recent_verified_continuity(
         if item.get("url")
     }
 
+    # Schede ritirate o sostituite in questo run (archivio con motivo): la grazia non le rimette.
+    retired = {str(row.get("coverage_id") or row.get("id")) for row in result.get("archive") or []
+               if row.get("archive_reason") in RETIRED_REASONS}
     restored: list[dict[str, Any]] = []
     for hold in holds:
         hold_identity = str(hold.get("identity_key") or "")
@@ -253,7 +259,7 @@ def _restore_recent_verified_continuity(
         old = by_rule.get(rule_id) if rule_id else None
         if old is None and hold_url:
             old = by_url.get(hold_url)
-        if old is None or not old.get("verified_direct"):
+        if old is None or not old.get("verified_direct") or str(old.get("coverage_id") or old.get("id")) in retired:
             continue
 
         verified_text = str(old.get("verified_at") or "")

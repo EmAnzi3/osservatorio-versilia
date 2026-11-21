@@ -419,8 +419,24 @@ def test_cards_from_older_rules_are_reread():
     assert urls == ["https://x.gov.it/offline", "https://x.gov.it/scuole"]
     report = result["autoQualification"]
     assert report["withdrawn"] == 1 and report["carried"] == 1
+    # La scheda ritirata passa all'archivio con il motivo (la continuità non deve rimetterla).
+    assert [(x["coverage_id"], x["withdrawn_status"]) for x in result["autoWithdrawn"]] == [("auto-festival", "rejected")]
     reread = [x for x in result["opportunities"] if x.get("discovery_url") == "https://x.gov.it/scuole"]
     assert reread[0]["auto_qualification_version"] == q.VERSION
+
+
+def test_cached_recent_auto_card_is_reread():
+    """Una scheda automatica rimessa dalla continuità («cached_recent») resta del qualificatore e si rilegge."""
+    url = "https://ancitoscana.it/edicole-bando-in-arrivo/"
+    old = {"id": "auto-e", "coverage_id": "auto-e", "url": url, "discovery_url": url, "title": "Edicole – Bando in arrivo",
+           "verification_status": "cached_recent", "auto_qualification_version": q.VERSION, "lifecycle_stage": "announced_upcoming"}
+    seen = []
+    def loader(u, document):
+        seen.append(u)
+        return "<html><body><main>" + PAD + "Possono accedere all'agevolazione le imprese iscritte al Registro delle Imprese.</main></body></html>"
+    result = {"opportunities": [], "discoveryQueue": []}
+    q.apply(result, date(2026, 11, 22), loader=loader, previous={"opportunities": [old]}, build_item=lambda *a: {}, towns=TOWNS)
+    assert seen == [url] and result["autoQualification"]["withdrawn"] == 1 and result["autoWithdrawn"][0]["coverage_id"] == "auto-e"
 
 
 def test_structured_topics_do_not_take_network_slots():
