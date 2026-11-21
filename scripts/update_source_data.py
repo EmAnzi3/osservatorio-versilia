@@ -902,6 +902,31 @@ def update_siope_cash_benchmarks(year: int, dry_run: bool, fetch=None) -> Change
     return changes
 
 
+# ------------------------------------------------------------------ MEF: confronto Toscana/Italia dell'addizionale comunale IRPEF
+
+def update_irpef_benchmarks(year: int, dry_run: bool, fetch=None) -> Changes:
+    """Toscana e Italia per i tre scenari dell'addizionale comunale IRPEF; 7/7 riconciliati, ≥90% dei residenti coperti."""
+    import irpef_benchmarks as ib
+
+    site = load(SITE)
+    metric = site["metrics"][ib.METRIC]
+    if str(metric["meta"]["year"]) != str(year):
+        raise UpdateError(f"Confronto addizionale IRPEF: anno pubblicato {metric['meta']['year']} ≠ {year}")
+    published = {r["code"]: [p["value"] for p in r["parts"]] for r in metric["rows"]}
+    try:
+        snapshot = ib.build_snapshot(year, fetch or probes.http_fetch, published)
+    except (ib.IrpefBenchmarkError, RuntimeError, KeyError, ValueError, probes.ProbeError) as error:
+        raise UpdateError(f"Confronto addizionale IRPEF: {error}") from error
+    changes = Changes()
+    for income, scopes in snapshot["benchmarks"].items():
+        for scope, entry in scopes.items():
+            changes.note(f"{income} € {scope} {year} (copertura {entry['populationShare']:.1%})", None, entry.get("value"))
+    snapshot["acquisitionEvidence"] = {"script": f"scripts/update_source_data.py mef-irpef-benchmarks --year {year}"}
+    if not dry_run:
+        save(ROOT / ib.SNAPSHOT.format(year=year), snapshot)
+    return changes
+
+
 # ------------------------------------------------------------------ Istat ASIA-UL: serie della quota di micro unità locali
 
 def update_asia_micro_units_history(dry_run: bool, fetch=None) -> Changes:
@@ -1732,6 +1757,9 @@ def main() -> int:
     sc2_p = sub.add_parser("siope-cash-benchmarks", help="confronto Toscana di incassi e saldo di cassa SIOPE per residente")
     sc2_p.add_argument("--year", type=int, required=True)
     sc2_p.add_argument("--dry-run", action="store_true")
+    ir_p = sub.add_parser("mef-irpef-benchmarks", help="confronto Toscana/Italia dell'addizionale comunale IRPEF negli scenari di reddito")
+    ir_p.add_argument("--year", type=int, required=True)
+    ir_p.add_argument("--dry-run", action="store_true")
     mu_p = sub.add_parser("asia-micro-units-history", help="serie Istat ASIA-UL della quota di unità locali con 0–9 addetti")
     mu_p.add_argument("--dry-run", action="store_true")
     sc_p = sub.add_parser("mim-students-history", help="serie MIM di alunni, alunni per classe e tempo pieno della primaria")
@@ -1762,6 +1790,8 @@ def main() -> int:
             update_aci_vehicles_history(args.dry_run).report("Serie parco autovetture:")
         elif args.updater == "siope-cash-benchmarks":
             update_siope_cash_benchmarks(args.year, args.dry_run).report("Confronto cassa SIOPE:")
+        elif args.updater == "mef-irpef-benchmarks":
+            update_irpef_benchmarks(args.year, args.dry_run).report("Confronto addizionale IRPEF:")
         elif args.updater == "asia-micro-units-history":
             update_asia_micro_units_history(args.dry_run).report("Serie micro unità:")
         elif args.updater == "mim-students-history":

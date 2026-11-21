@@ -24,5 +24,6 @@
   "mefTaxpayersHistory": false,
   "mimStudentsHistory": false,
   "asiaMicroUnitsHistory": false,
-  "siopeCashBenchmarks": []
+  "siopeCashBenchmarks": [],
+  "mefIrpefBenchmarks": []
 }

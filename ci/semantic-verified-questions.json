@@ -54182,6 +54182,37 @@
       "reference": "Scenario congelato 2026, cella trascritta indipendentemente Viareggio: 1.14; aliquote/importi standard, non bolletta personale."
     },
     {
+      "id": "tax_municipalIrpef_benchmark_tuscany_046018",
+      "question": "Quanto paga di addizionale IRPEF un contribuente di Massarosa con 20.000 € di imponibile rispetto alla media toscana?",
+      "query": {
+        "operation": "benchmark_gap",
+        "selectors": [
+          {
+            "metric": "municipalIrpef",
+            "dimension": "total",
+            "towns": [
+              "046018"
+            ]
+          }
+        ],
+        "benchmark": "tuscany"
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/result/value",
+            "fraction": [
+              3367479098,
+              100000000
+            ],
+            "tolerance": 1e-06
+          }
+        ]
+      },
+      "reference": "Massarosa: aliquota unica 0,8% → 160,00 €. Toscana: 126,33 € (273/273 Comuni dell'elenco MEF 2025, importi pesati per i residenti POSAS 1/1/2026). Ancore in test_semantic_municipal_tax_adapters.py."
+    },
+    {
       "id": "tax_municipalIrpef_total_046005",
       "question": "Qual è il valore 2025 di municipalIrpef, lettura total, nello scenario standard per Camaiore?",
       "query": {
@@ -57594,7 +57625,7 @@
     },
     {
       "id": "tax_municipalIrpef_benchmark_gap_refused",
-      "question": "Posso applicare benchmark_gap a municipalIrpef nel lotto 2025?",
+      "question": "Posso confrontare con la Toscana l'aliquota effettiva dell'addizionale IRPEF di Massarosa a 20.000 €?",
       "query": {
         "operation": "benchmark_gap",
         "selectors": [
@@ -57602,7 +57633,8 @@
             "metric": "municipalIrpef",
             "towns": [
               "046018"
-            ]
+            ],
+            "dimension": "effectiveRate:20000"
           }
         ],
         "benchmark": "tuscany"
@@ -57613,7 +57645,7 @@
           "municipal_tax_geographic_benchmark_not_frozen"
         ]
       },
-      "reference": "Unica fotografia di scenari teorici; operazione o universo non revisionato."
+      "reference": "Il confronto Toscana/Italia esiste per gli importi dei tre scenari, non per l'aliquota effettiva derivata."
     },
     {
       "id": "tax_municipalIrpef_2024_refused",

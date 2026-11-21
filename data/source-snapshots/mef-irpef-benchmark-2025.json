@@ -1,0 +1,270 @@
+{
+  "schemaVersion": 1,
+  "version": "mef-irpef-benchmark-2025-v1",
+  "retrieved": "2026-11-21",
+  "publisher": "Dipartimento delle Finanze — MEF · Istat (POSAS, elenco dei Comuni)",
+  "year": 2025,
+  "scenarios": [
+    20000,
+    30000,
+    50000
+  ],
+  "rule": "Per ogni Comune dell'elenco generale MEF: importo dell'addizionale con la stessa regola dei valori comunali (sotto la soglia di esenzione zero, altrimenti aliquota unica o scaglioni sull'intero imponibile, al centesimo). Toscana e Italia: media degli importi pesata per i residenti al 1° gennaio dell'anno dopo, sui Comuni la cui disciplina si legge senza ambiguità per lo scenario. Pubblicato solo con almeno il 90% dei residenti coperti; copertura dichiarata.",
+  "minCoverage": 0.9,
+  "sources": {
+    "mef": {
+      "url": "https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_addcomirpef/download/download.php?anno=2025",
+      "page": "https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_addcomirpef/download/tabella.htm",
+      "sha256": "57daea5818a90fa58bca533a905b215528be79c4226fdf01bf66f9c82fe18b2f",
+      "bytes": 1225962
+    },
+    "istat": {
+      "url": "https://www.istat.it/storage/codici-unita-amministrative/Elenco-comuni-italiani.csv",
+      "sha256": "57eaf945182fc64fa05f80f1a5fb2a84cff55ebde2af6e3947a731776e7809e0",
+      "bytes": 1126843
+    },
+    "posas": {
+      "url": "https://demo.istat.it/data/posas/POSAS_2026_it_Comuni.zip",
+      "sha256": "910639e5f7b1bb8256637eee824655ba76fb8459670c9559fea1ac0922667eac",
+      "date": "2026-01-01"
+    }
+  },
+  "audit": {
+    "rows": 7896,
+    "municipalities": 7896,
+    "duplicates": [],
+    "readable": 7889,
+    "unreadable": 7,
+    "unmatchedCadastral": [],
+    "unreadableExamples": {
+      "D317": "scaglione non leggibile 'applicabile a 0.00 - 15000.00'",
+      "D593": "esenzione non leggibile \"esenzione per reddito dell'unita' immobiliare adibita ad abitazione principale e relative pertinenze\"",
+      "E027": "esenzione non leggibile \"esenzione per soggetti con reddito complessivo composto unicamente da reddito dell'unita' immobiliare adibita ad abitazione principale e relative pertinenze. i soggetti che non rientrano nelle ipotesi di esenzioni sono obbligati al pagamento sull'intero reddito posseduto.\"",
+      "E224": "esenzione non leggibile 'esenzione per esenzione per reddito delle unita immobiliare adibita ad abitazione principale e relative pertinenze'",
+      "E514": "scaglioni non contigui",
+      "E819": "scaglione non leggibile 'applicabile a scaglione di reddito da euro 28.000.01 fino a euro 50000'",
+      "F723": "scaglione non leggibile 'applicabile a scaglione di reddito oltre euro 15.00,00 e fino a euro 28.000,00'"
+    }
+  },
+  "towns": {
+    "046018": {
+      "cadastral": "F035",
+      "rule": {
+        "exemption": 10000.0,
+        "categoryExemption": null,
+        "scheme": "flat",
+        "ratePercent": 0.8
+      },
+      "amounts": {
+        "20000": 160.0,
+        "30000": 240.0,
+        "50000": 400.0
+      }
+    },
+    "046033": {
+      "cadastral": "L833",
+      "rule": {
+        "exemption": 13000.0,
+        "categoryExemption": null,
+        "scheme": "flat",
+        "ratePercent": 0.75
+      },
+      "amounts": {
+        "20000": 150.0,
+        "30000": 225.0,
+        "50000": 375.0
+      }
+    },
+    "046005": {
+      "cadastral": "B455",
+      "rule": {
+        "exemption": 15000.0,
+        "categoryExemption": null,
+        "scheme": "progressive",
+        "brackets": [
+          {
+            "upTo": 15000.0,
+            "ratePercent": 0.35
+          },
+          {
+            "upTo": 28000.0,
+            "ratePercent": 0.6
+          },
+          {
+            "upTo": 50000.0,
+            "ratePercent": 0.7
+          },
+          {
+            "upTo": null,
+            "ratePercent": 0.8
+          }
+        ]
+      },
+      "amounts": {
+        "20000": 82.5,
+        "30000": 144.5,
+        "50000": 284.5
+      }
+    },
+    "046024": {
+      "cadastral": "G628",
+      "rule": {
+        "exemption": 14500.0,
+        "categoryExemption": null,
+        "scheme": "flat",
+        "ratePercent": 0.75
+      },
+      "amounts": {
+        "20000": 150.0,
+        "30000": 225.0,
+        "50000": 375.0
+      }
+    },
+    "046028": {
+      "cadastral": "I622",
+      "rule": {
+        "exemption": null,
+        "categoryExemption": null,
+        "scheme": "flat",
+        "ratePercent": 0.8
+      },
+      "amounts": {
+        "20000": 160.0,
+        "30000": 240.0,
+        "50000": 400.0
+      }
+    },
+    "046013": {
+      "cadastral": "D730",
+      "rule": {
+        "exemption": 20000.0,
+        "categoryExemption": null,
+        "scheme": "progressive",
+        "brackets": [
+          {
+            "upTo": 28000.0,
+            "ratePercent": 0.5
+          },
+          {
+            "upTo": 50000.0,
+            "ratePercent": 0.65
+          },
+          {
+            "upTo": null,
+            "ratePercent": 0.8
+          }
+        ]
+      },
+      "amounts": {
+        "20000": 0.0,
+        "30000": 153.0,
+        "50000": 283.0
+      }
+    },
+    "046030": {
+      "cadastral": "I942",
+      "rule": {
+        "exemption": null,
+        "categoryExemption": null,
+        "scheme": "flat",
+        "ratePercent": 0.8
+      },
+      "amounts": {
+        "20000": 160.0,
+        "30000": 240.0,
+        "50000": 400.0
+      }
+    }
+  },
+  "benchmarks": {
+    "20000": {
+      "tuscany": {
+        "municipalities": 273,
+        "municipalitiesTotal": 273,
+        "populationCovered": 3659222,
+        "populationTotal": 3659222,
+        "populationShare": 1.0,
+        "excluded": {},
+        "value": 126.32520901984083,
+        "numerator": 462251984.0,
+        "denominator": 3659222
+      },
+      "italy": {
+        "municipalities": 7879,
+        "municipalitiesTotal": 7896,
+        "populationCovered": 58650905,
+        "populationTotal": 58942828,
+        "populationShare": 0.9950473533438199,
+        "excluded": {
+          "esenzione per categorie fino allo scenario": 10,
+          "disciplina non leggibile": 7
+        },
+        "value": 139.10109590465825,
+        "numerator": 8158405161.3,
+        "denominator": 58650905
+      }
+    },
+    "30000": {
+      "tuscany": {
+        "municipalities": 273,
+        "municipalitiesTotal": 273,
+        "populationCovered": 3659222,
+        "populationTotal": 3659222,
+        "populationShare": 1.0,
+        "excluded": {},
+        "value": 197.39609862424308,
+        "numerator": 722316146.8,
+        "denominator": 3659222
+      },
+      "italy": {
+        "municipalities": 7881,
+        "municipalitiesTotal": 7896,
+        "populationCovered": 58759299,
+        "populationTotal": 58942828,
+        "populationShare": 0.9968863217760776,
+        "excluded": {
+          "esenzione per categorie fino allo scenario": 8,
+          "disciplina non leggibile": 7
+        },
+        "value": 216.86661689922474,
+        "numerator": 12742930385.5,
+        "denominator": 58759299
+      }
+    },
+    "50000": {
+      "tuscany": {
+        "municipalities": 273,
+        "municipalitiesTotal": 273,
+        "populationCovered": 3659222,
+        "populationTotal": 3659222,
+        "populationShare": 1.0,
+        "excluded": {},
+        "value": 336.35226744920095,
+        "numerator": 1230787616.8,
+        "denominator": 3659222
+      },
+      "italy": {
+        "municipalities": 7884,
+        "municipalitiesTotal": 7896,
+        "populationCovered": 58791462,
+        "populationTotal": 58942828,
+        "populationShare": 0.9974319861273029,
+        "excluded": {
+          "esenzione per categorie fino allo scenario": 5,
+          "disciplina non leggibile": 7
+        },
+        "value": 366.51443727492267,
+        "numerator": 21547919611.5,
+        "denominator": 58791462
+      }
+    }
+  },
+  "blocked": [],
+  "qualityGate": {
+    "status": "PASS",
+    "publicReconciliation": "7/7"
+  },
+  "acquisitionEvidence": {
+    "script": "scripts/update_source_data.py mef-irpef-benchmarks --year 2025"
+  }
+}
