@@ -154,6 +154,17 @@ def main() -> int:
     assert transient["sources"][0]["publicCount"] == 1
     assert transient["sourceCoverage"]["rows"][0]["publicCount"] == 1
 
+    # Scheda ritirata in questo run dalle regole correnti (archivio con motivo): la grazia non la rimette
+    # (edicole, 21/11: ritirata dal qualificatore e ripristinata come cached_recent).
+    retired = json.loads(json.dumps(transient))
+    retired["opportunities"] = []
+    retired["continuityHold"] = [dict(transient_hold) for transient_hold in [{"identity_key": "rule:mic-jazz-2027", "title": "Bando Jazz 2027",
+                                  "source_id": "mic-spettacolo", "url": "https://example.test/jazz", "deadline_at": "2026-09-10"}]]
+    retired["archive"] = [{"id": "opp-jazz", "archive_reason": "withdrawn_by_current_rules"}]
+    retired["counts"] = {"continuityHold": 1}
+    assert _restore_recent_verified_continuity(retired, previous, date(2026, 8, 28)) == []
+    assert retired["opportunities"] == []
+
     # Oltre la grace il gate deve restare attivo: niente trascinamento indefinito.
     stale = json.loads(json.dumps(transient))
     stale["opportunities"] = []

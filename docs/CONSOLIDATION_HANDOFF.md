@@ -1,5 +1,11 @@
 # Consolidamento Osservatorio Versilia — handoff operativo
 
+## Radar: schede ritirate che la continuità rimetteva (21 novembre 2026, pomeriggio)
+
+- Run delle 15:19: «Sostegno a edicole» ritirata dal qualificatore e rimessa da `_restore_recent_verified_continuity` come `cached_recent` (verifica di poche ore prima); la proroga MIM restava perché la versione delle regole non era cambiata e le schede non si rileggevano.
+- Le schede ritirate escono dal Radar e vanno in archivio con `withdrawn_by_current_rules` / `expired_by_current_rules` (`_archive_withdrawn_auto_cards`); la continuità le riconosce e la grazia non rimette ciò che è in archivio con un motivo di ritiro.
+- Le schede automatiche `cached_recent` restano del qualificatore e si rileggono. Versione delle regole 1.3: tutte le schede automatiche si rileggono al prossimo run.
+
 ## Radar: falsi positivi del 21 novembre e notizie uscite dalla coda
 
 - Edicole («Bando in arrivo», destinatari imprese): i Comuni comparivano solo come luogo («situate nei comuni…», «per ogni Comune servito»). `MUNICIPAL_AS_PLACE` copre ora il plurale locativo.
