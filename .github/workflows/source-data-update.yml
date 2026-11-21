@@ -147,6 +147,7 @@ jobs:
           commands += [["openbdap-benchmarks", "--year", str(int(y))] for y in request.get("openbdapBenchmarks", [])]
           commands += [["siope-cash-benchmarks", "--year", str(int(y))] for y in request.get("siopeCashBenchmarks", [])]
           commands += [["mef-irpef-benchmarks", "--year", str(int(y))] for y in request.get("mefIrpefBenchmarks", [])]
+          commands += [["mim-buildings-history"]] if request.get("mimBuildingsHistory") else []
           commands += [["opencivitas-needs"] + (["--year", str(int(y))] if y else []) for y in request.get("opencivitasNeeds", [])]
           commands += [["sdmx-probe", "--name", str(p["name"])] + (["--find", str(p["find"])] if p.get("find") else ["--flow", str(p["flow"]), "--key", str(p.get("key", "all"))]) + (["--start", str(p["start"])] if p.get("start") else []) for p in request.get("sdmxProbe", [])]
           commands += [["source-probe", "--name", str(p["name"]), "--url", str(p["url"])] + (["--follow", str(p["follow"])] if p.get("follow") else []) + [a for step in p.get("post", []) for a in ("--post", str(step))] + (["--match", str(p["match"])] if p.get("match") else []) for p in request.get("sourceProbe", [])]

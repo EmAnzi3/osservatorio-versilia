@@ -973,6 +973,35 @@ def update_mim_students_history(dry_run: bool, fetch=None) -> Changes:
     return changes
 
 
+# ------------------------------------------------------------------ MIM: serie dell'Anagrafe dell'Edilizia Scolastica
+
+def update_mim_buildings_history(dry_run: bool, fetch=None) -> Changes:
+    """Serie per anno scolastico dei cinque indicatori sull'edilizia scolastica; 2024/25 = conteggi pubblicati."""
+    import school_buildings_history as sb
+    import school_history as sh
+
+    def fetcher(url: str) -> bytes:
+        try:
+            return (fetch or probes.http_fetch)(url)
+        except probes.ProbeError as error:
+            if error.reason == "not_found" and "EDI" in url.rsplit("/", 1)[-1]:
+                raise sb.Unavailable(url) from error
+            raise
+
+    current = load(ROOT / sb.CURRENT)
+    try:
+        snapshot = sb.build_snapshot(fetcher, current)
+    except (sb.BuildingsError, sh.SchoolError, KeyError, ValueError) as error:
+        raise UpdateError(f"Serie edilizia scolastica: {error}") from error
+    changes = Changes()
+    for key, block in snapshot["metrics"].items():
+        changes.note(f"{key} anni", None, ", ".join(block["schoolYears"]))
+    snapshot["acquisitionEvidence"] = {"script": "scripts/update_source_data.py mim-buildings-history"}
+    if not dry_run:
+        save(ROOT / sb.SNAPSHOT, snapshot)
+    return changes
+
+
 # ------------------------------------------------------------------ MEF/Istat: serie dei contribuenti ogni 100 maggiorenni
 
 def update_mef_taxpayers_history(dry_run: bool, fetch=None) -> Changes:
@@ -1760,6 +1789,8 @@ def main() -> int:
     ir_p = sub.add_parser("mef-irpef-benchmarks", help="confronto Toscana/Italia dell'addizionale comunale IRPEF negli scenari di reddito")
     ir_p.add_argument("--year", type=int, required=True)
     ir_p.add_argument("--dry-run", action="store_true")
+    sb_p = sub.add_parser("mim-buildings-history", help="serie dell'Anagrafe dell'Edilizia Scolastica (cinque indicatori)")
+    sb_p.add_argument("--dry-run", action="store_true")
     mu_p = sub.add_parser("asia-micro-units-history", help="serie Istat ASIA-UL della quota di unità locali con 0–9 addetti")
     mu_p.add_argument("--dry-run", action="store_true")
     sc_p = sub.add_parser("mim-students-history", help="serie MIM di alunni, alunni per classe e tempo pieno della primaria")
@@ -1792,6 +1823,8 @@ def main() -> int:
             update_siope_cash_benchmarks(args.year, args.dry_run).report("Confronto cassa SIOPE:")
         elif args.updater == "mef-irpef-benchmarks":
             update_irpef_benchmarks(args.year, args.dry_run).report("Confronto addizionale IRPEF:")
+        elif args.updater == "mim-buildings-history":
+            update_mim_buildings_history(args.dry_run).report("Serie edilizia scolastica:")
         elif args.updater == "asia-micro-units-history":
             update_asia_micro_units_history(args.dry_run).report("Serie micro unità:")
         elif args.updater == "mim-students-history":

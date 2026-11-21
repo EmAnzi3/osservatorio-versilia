@@ -813,6 +813,68 @@ def irpef_benchmarks_cases() -> None:
     assert snap["benchmarks"]["30000"]["tuscany"]["value"] is not None
 
 
+def mim_buildings_history_cases() -> None:
+    """Edilizia scolastica: edifici univoci per Comune con l'anagrafe dell'anno, 2024/25 = conteggi pubblicati, anni mancanti."""
+    import school_buildings_history as sb
+    import materialize_scuola_mim as ms
+
+    names = dict(sb.TOWN_LABELS)
+    def registry(start):
+        lines = ["CODICESCUOLA,REGIONE,PROVINCIA,DESCRIZIONECOMUNE"]
+        lines += [f"S{c},TOSCANA,LUCCA,{sb.TOWNS[c]}" for c in sb.TOWNS] + ["SX,TOSCANA,PISA,PISA"]
+        return "\n".join(lines).encode()
+    def dataset(key, start):
+        _, fields = sb.DATASETS[key]
+        cols = ["CODICESCUOLA", "CODICEEDIFICIO", *fields.values()]
+        lines = [",".join(cols)]
+        for i, c in enumerate(sb.TOWNS):
+            for b in range(2 + (start == 2024 and c == "046018")):
+                vals = ["tra il 1950 e il 1970" if f == "periodoCostruzione" else ("SI" if b == 0 else "NO") for f in fields]
+                lines.append(",".join([f"S{c}", f"E{c}{b}", *vals]))
+        lines.append(",".join(["S046005", "E0460330", *(["SI"] * len(fields))]))  # edificio in due Comuni: escluso
+        lines.append(",".join(["SX", "EPISA", *(["SI"] * len(fields))]))
+        return "\n".join(lines).encode()
+    def fetch(url):
+        name = url.rsplit("/", 1)[-1]
+        start = next((s for s in range(2020, 2025) if f"{s}{(s + 1) % 100:02d}" in name), None)
+        if name.startswith("SCUANAGRAFE"):
+            return registry(start)
+        if start < 2023:
+            raise sb.Unavailable(url)
+        key = next(k for k, (prefix, _) in sb.DATASETS.items() if name.startswith(prefix))
+        return dataset(key, start)
+    def counts(code, fields, start):
+        n = 2 + (start == 2024 and code == "046018")
+        out = {"buildings": n - (1 if code == "046033" else 0)}
+        for f in fields:
+            if f == "periodoCostruzione":
+                out[f] = {"tra il 1950 e il 1970": out["buildings"]}
+            else:
+                yes = 1 if code != "046033" else 0
+                out[f] = {k: v for k, v in (("SI", yes), ("NO", out["buildings"] - yes)) if v}
+        return out
+    fields_all = {f for _, fields in sb.DATASETS.values() for f in fields}
+    current = {"schoolYear": "2024/25", "towns": {names[c]: counts(c, fields_all, 2024) for c in sb.TOWNS}}
+    snap = sb.build_snapshot(fetch, current)
+    block = snap["metrics"]["schoolBuildingFacilities"]
+    assert block["schoolYears"] == ["2023/24", "2024/25"], block["schoolYears"]
+    assert block["towns"]["046018"]["2024/25"]["buildings"] == 3 and block["towns"]["046018"]["2023/24"]["buildings"] == 2
+    assert block["towns"]["046033"]["2024/25"]["buildings"] == 1  # E0460330 condiviso con Camaiore: escluso
+    bad = json.loads(json.dumps(current)); bad["towns"]["Massarosa"]["mensa"] = {"SI": 3}
+    try:
+        sb.build_snapshot(fetch, bad)
+    except sb.BuildingsError:
+        pass
+    else:
+        raise AssertionError("riconciliazione 2024/25 non applicata")
+    # Materializzazione: componentSeries per parte, ultimo anno = parti pubblicate.
+    rows = [{"code": c, "town": names[c], "parts": ms.facilities_parts(counts(c, fields_all, 2024))} for c in sb.TOWNS]
+    metrics = {"schoolBuildingFacilities": {"meta": {"year": "2024/25"}, "rows": rows, "method": {"caveat": ""}}}
+    sb.apply(metrics, snap, sb.SNAPSHOT, {"schoolBuildingFacilities": ms.facilities_parts})
+    r = metrics["schoolBuildingFacilities"]["rows"][2]
+    assert r["componentSeries"]["Mensa"] == {"years": ["2023/24", "2024/25"], "values": [50.0, 1 / 3 * 100]} and r["series"] == r["componentSeries"]["Mensa"]
+
+
 def asia_micro_units_history_cases() -> None:
     """Micro unità: SDMX ASIA-UL per i 7 Comuni, totali = unità locali pubblicate, ultima quota = pubblicata."""
     import micro_units_history as mu
@@ -1391,6 +1453,7 @@ def main() -> None:
     asia_micro_units_history_cases()
     siope_cash_benchmarks_cases()
     irpef_benchmarks_cases()
+    mim_buildings_history_cases()
     with tempfile.TemporaryDirectory() as tmp:
         istat_famiglie_cases(Path(tmp))
     openbdap_benchmarks_cases()
