@@ -7,6 +7,12 @@
 - 2025: Toscana 273/273 Comuni (126,33 / 197,40 / 336,35 €), Italia 7.879–7.884 su 7.896, 99,5% dei residenti (139,10 / 216,87 / 366,51 €); 7/7 riconciliati.
 - `materialize_irpef_benchmarks.py`: `meta.benchmark` sullo scenario predefinito 20.000 € e `meta.benchmarkScenarios` per i tre. Motore: `benchmark_gap` per totale e scenari (pin `municipal_tax#7/#8`); l'aliquota effettiva resta senza confronto.
 
+## Radar: schede ritirate che la continuità rimetteva (21 novembre 2026, pomeriggio)
+
+- Run delle 15:19: «Sostegno a edicole» ritirata dal qualificatore e rimessa da `_restore_recent_verified_continuity` come `cached_recent` (verifica di poche ore prima); la proroga MIM restava perché la versione delle regole non era cambiata e le schede non si rileggevano.
+- Le schede ritirate escono dal Radar e vanno in archivio con `withdrawn_by_current_rules` / `expired_by_current_rules` (`_archive_withdrawn_auto_cards`); la continuità le riconosce e la grazia non rimette ciò che è in archivio con un motivo di ritiro.
+- Le schede automatiche `cached_recent` restano del qualificatore e si rileggono. Versione delle regole 1.3: tutte le schede automatiche si rileggono al prossimo run.
+
 ## Gate browser: testo per screen reader (21 novembre 2026)
 
 - «full» falliva a intermittenza su /chiedi/ per l'etichetta «La tua domanda» della mascotte (`.vm-sr`, 1×1 px con `clip`): nascosta per scelta, non troncata. Il controllo «testo nowrap troncato» salta ora gli elementi solo per screen reader (assoluti, 1×1, `clip: rect(0…)` o `clip-path: inset(50%)`).

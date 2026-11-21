@@ -29,7 +29,7 @@ from datetime import date, timedelta
 from typing import Any, Callable
 from urllib.parse import urlsplit
 
-VERSION = "1.2"
+VERSION = "1.3"
 LABEL = "Requisiti da confermare"
 VERIFICATION_STATUS = "auto_qualified"
 MAX_CANDIDATES = 120
@@ -823,7 +823,13 @@ def apply(result: dict[str, Any], today: date, *, loader: Callable[[str, bool], 
     # la pagina non si legge in questo run, la scheda resta com'era.
     stale: dict[str, dict[str, Any]] = {}
     for old in (previous or {}).get("opportunities") or []:
-        if old.get("verification_status") != VERIFICATION_STATUS or old.get("coverage_id") in known_ids:
+        # Anche le schede automatiche rimesse dalla continuità («cached_recent») restano del qualificatore: si rileggono.
+        own = old.get("verification_status") == VERIFICATION_STATUS or (
+            str(old.get("verification_status") or "").startswith("cached_recent") and str(old.get("id") or "").startswith("auto-"))
+        if not own or old.get("coverage_id") in known_ids:
+            continue
+        if old.get("verification_status") != VERIFICATION_STATUS:
+            stale[_fold(old.get("discovery_url") or old.get("url"))] = old
             continue
         deadline = old.get("deadline_at")
         if deadline and str(deadline) < today.isoformat():
@@ -848,7 +854,7 @@ def apply(result: dict[str, Any], today: date, *, loader: Callable[[str, bool], 
     # Le schede verificate dello snapshot precedente (regole e corpora curati)
     # possono essere ricostruite più avanti nella catena: non vanno duplicate.
     for old in (previous or {}).get("opportunities") or []:
-        if old.get("verification_status") != VERIFICATION_STATUS:
+        if old.get("verification_status") != VERIFICATION_STATUS and _fold(old.get("discovery_url") or old.get("url")) not in stale:
             known_urls.add(_fold(old.get("url")))
             known_titles.add(_fold(old.get("title")))
 
@@ -982,6 +988,10 @@ def apply(result: dict[str, Any], today: date, *, loader: Callable[[str, bool], 
         status = decided.get(key)
         if status in {"rejected", "expired"}:
             report["withdrawn"] += 1
+            # Vanno in archivio con il motivo: altrimenti la continuità le vede sparire senza spiegazione e le
+            # ripristina (edicole, 21/11 pomeriggio: ritirata dal qualificatore, rimessa dalla continuità).
+            reason = next((c.get("reason") for c in report["checks"] if _fold(c.get("url")) == key), "")
+            result.setdefault("autoWithdrawn", []).append(dict(old, withdrawn_reason=reason, withdrawn_status=status))
             continue
         if status in {"qualified", "duplicate"} or old.get("coverage_id") in known_ids:
             continue

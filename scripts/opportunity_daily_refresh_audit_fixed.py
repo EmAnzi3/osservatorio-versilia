@@ -268,6 +268,7 @@ def _run_v04_with_audit_promotions(today: date, **kwargs: Any) -> dict[str, Any]
             review_actions.collect_document_links(result, previous=previous, budget=discovery.LIVE_BUDGET)
     _apply_publication_exclusions(result)
     _archive_absorbed_announcements(result)
+    _archive_withdrawn_auto_cards(result)
     _archive_expired_opportunities(result, today)
     if hasattr(core, "_recompute_v04_counts"):
         core._recompute_v04_counts(result)
@@ -282,6 +283,20 @@ def _archive_absorbed_announcements(result: dict[str, Any]) -> None:
         for row in result.get("archive") or []:
             if (row.get("coverage_id") or row.get("id")) == (item.get("coverage_id") or item.get("id")):
                 row["archive_reason"] = "superseded_by_open_call" if item.get("status") != "open" else "duplicate_of_open_call"
+
+
+def _archive_withdrawn_auto_cards(result: dict[str, Any]) -> None:
+    """Schede automatiche che non superano più le regole: fuori dal Radar e in archivio, così la continuità le riconosce
+    (edicole, 21/11 pomeriggio: ritirata dal qualificatore e rimessa dalla continuità perché sparita senza motivo)."""
+    withdrawn = result.pop("autoWithdrawn", None) or []
+    ids = {item.get("coverage_id") or item.get("id") for item in withdrawn}
+    result["opportunities"] = [x for x in result.get("opportunities") or [] if (x.get("coverage_id") or x.get("id")) not in ids]
+    for item in withdrawn:
+        core._append_archive(result, item)
+        for row in result.get("archive") or []:
+            if (row.get("coverage_id") or row.get("id")) == (item.get("coverage_id") or item.get("id")):
+                row["archive_reason"] = "withdrawn_by_current_rules" if item.get("withdrawn_status") == "rejected" else "expired_by_current_rules"
+                row["withdrawn_reason"] = item.get("withdrawn_reason")
 
 
 def _archive_expired_opportunities(result: dict[str, Any], today: date) -> None:
@@ -414,6 +429,7 @@ def _prepare_public_audit_fixed(result: dict[str, Any], today: date) -> dict[str
         audit_promotions.apply_complete_promotions(result, today)
     _apply_publication_exclusions(result)
     _archive_absorbed_announcements(result)
+    _archive_withdrawn_auto_cards(result)
     _archive_expired_opportunities(result, today)
     # Il replay aggiunge schede dopo il normale classificatore h5: riallineiamo
     # prima i contatori legacy e poi il contratto comunale/partnership.
