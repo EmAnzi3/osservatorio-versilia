@@ -7,6 +7,10 @@
 - 2025: Toscana 273/273 Comuni (126,33 / 197,40 / 336,35 €), Italia 7.879–7.884 su 7.896, 99,5% dei residenti (139,10 / 216,87 / 366,51 €); 7/7 riconciliati.
 - `materialize_irpef_benchmarks.py`: `meta.benchmark` sullo scenario predefinito 20.000 € e `meta.benchmarkScenarios` per i tre. Motore: `benchmark_gap` per totale e scenari (pin `municipal_tax#7/#8`); l'aliquota effettiva resta senza confronto.
 
+## Gate browser: testo per screen reader (21 novembre 2026)
+
+- «full» falliva a intermittenza su /chiedi/ per l'etichetta «La tua domanda» della mascotte (`.vm-sr`, 1×1 px con `clip`): nascosta per scelta, non troncata. Il controllo «testo nowrap troncato» salta ora gli elementi solo per screen reader (assoluti, 1×1, `clip: rect(0…)` o `clip-path: inset(50%)`).
+
 ## Radar: falsi positivi del 21 novembre e notizie uscite dalla coda
 
 - Edicole («Bando in arrivo», destinatari imprese): i Comuni comparivano solo come luogo («situate nei comuni…», «per ogni Comune servito»). `MUNICIPAL_AS_PLACE` copre ora il plurale locativo.
