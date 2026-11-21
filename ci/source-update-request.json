@@ -25,5 +25,6 @@
   "mimStudentsHistory": false,
   "asiaMicroUnitsHistory": false,
   "siopeCashBenchmarks": [],
-  "mefIrpefBenchmarks": []
+  "mefIrpefBenchmarks": [],
+  "toscanaInfancyHistory": true
 }
