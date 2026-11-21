@@ -12,9 +12,11 @@ export default {
 "finance_benchmark_components_or_complete_scope_not_frozen": "Per questo indicatore non c'è un confronto con Toscana e Italia ricostruito e verificato dalla fonte.",
 "finance_benchmark_frozen_input_changed": "Il confronto non si calcola: i dati regionali e nazionali congelati sono cambiati.",
 "finance_benchmark_period_not_frozen": "Il confronto con Toscana e Italia esiste solo per l'ultimo rendiconto.",
+"density_benchmark_period_not_frozen": "Il confronto con Toscana e Italia della densità esiste solo per il 2026.",
 "finance_benchmark_scope_below_coverage_threshold": "Il confronto non è pubblicato: i Comuni che hanno trasmesso il rendiconto coprono meno del 90% dei residenti.",
 "insufficient_observations": "Non ci sono abbastanza valori disponibili per questa analisi.",
 "partial_coverage_requires_opt_in": "Non tutti i Comuni hanno il dato: per proseguire serve la tua conferma sulla copertura incompleta.",
+"percentage_unit_required": "La variazione in punti percentuali vale solo per indicatori espressi in percentuale.",
 "zero_baseline": "Il valore di partenza è zero: la variazione percentuale non è calcolabile."
 },
 "warnings": {
@@ -106,6 +108,7 @@ export default {
 "declared_building_attributes_not_certification_quality_capacity_or_pupil_access": "Le caratteristiche degli edifici sono dichiarate: non certificano qualità, capienza né accesso degli alunni.",
 "density_native_km_over_own_area_not_resident_weight": "La densità è in chilometri sulla superficie del Comune, non in base ai residenti.",
 "density_not_daily_presence_or_service_demand": "La densità non misura le presenze giornaliere né la domanda di servizi.",
+"density_history_residents_of_year_fixed_surface_2021": "Ogni anno usa i residenti al 1° gennaio sulla stessa superficie del 2021: i confini non sono cambiati.",
 "density_population_2026_surface_2021_reviewed_mixed_reference": "La densità combina popolazione 2026 e superficie 2021.",
 "disjoint_populations_must_be_attested": "Le popolazioni confrontate devono essere distinte e verificate.",
 "education_title_not_skills_or_job_match": "Il titolo di studio non misura le competenze né la corrispondenza con il lavoro svolto.",

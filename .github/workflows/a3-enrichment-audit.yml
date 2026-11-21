@@ -919,7 +919,6 @@ jobs:
               ('voterTurnout', 'benchmark_toscana_italia'),
               ('erpArrears', 'dettaglio_territoriale'),
               ('municipalSurface', 'serie_storica'),
-              ('populationDensity', 'serie_storica'),
               ('accreditedRsaCount', 'serie_storica'),
           }
           final_source_unavailable_expected = {

@@ -1,6 +1,6 @@
 # Programma dei dossier territoriali — evidenze verificate
 
-Esito **PASS**; catalogo `ac4abd23b8191c9ed852e04384dc1086d8167680efbec5063a82b78e3162ebda`; motore `f46ff4c80335e1d1b9185195f1f9ab66264c0bcb918a4b0ae5b10cc4e3d6176a`.
+Esito **PASS**; catalogo `198af0097125e3d6fc8826554d8f533e50cfef5fe258ad0486a461490325aaf6`; motore `5ed0ee332d2c5ebd1442cbbfc8365103d47e2742492216d8d7b6f41557524c5a`.
 
 Le 20 domande A6 originarie sono riusate per riferimento, senza riscriverle. Le domande centrali orientano un programma amministrativo: i risultati di contesto non risolvono automaticamente bisogni, efficacia o causalità.
 
