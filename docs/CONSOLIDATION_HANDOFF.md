@@ -4,6 +4,13 @@
 
 - «full» falliva a intermittenza su /chiedi/ per l'etichetta «La tua domanda» della mascotte (`.vm-sr`, 1×1 px con `clip`): nascosta per scelta, non troncata. Il controllo «testo nowrap troncato» salta ora gli elementi solo per screen reader (assoluti, 1×1, `clip: rect(0…)` o `clip-path: inset(50%)`).
 
+## Radar: falsi positivi del 21 novembre e notizie uscite dalla coda
+
+- Edicole («Bando in arrivo», destinatari imprese): i Comuni comparivano solo come luogo («situate nei comuni…», «per ogni Comune servito»). `MUNICIPAL_AS_PLACE` copre ora il plurale locativo.
+- Proroga MIM «al 16 ottobre» pubblicata con scadenza 2028 (fine lavori): `title_term()` legge il termine nel titolo e, se è passato, la notizia è scaduta.
+- «Toscana Diffusa – Interventi di riqualificazione» esclusa a torto: la Toscana diffusa (l.r. 11/2025, Allegato A DCR 10/2025) comprende Stazzema, Seravezza e la parte montana di Camaiore. `KNOWN_AREAS_WITH_VERSILIA`: un avviso riservato alla Toscana diffusa o ai Comuni montani non esclude la Versilia.
+- Notizie scartate che escono dalla coda delle fonti (ICSC Sport/Cultura Missione Comune, 20/11): si rileggono dal cache, con titolo conservato o ricavato dall'indirizzo.
+
 ## Serie storica della densità abitativa (20 novembre 2026)
 
 I residenti per km² hanno ora la serie 2019–2026 nei sette Comuni, senza nuove acquisizioni.
