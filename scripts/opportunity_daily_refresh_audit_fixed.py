@@ -281,7 +281,7 @@ def _archive_absorbed_announcements(result: dict[str, Any]) -> None:
         core._append_archive(result, item)
         for row in result.get("archive") or []:
             if (row.get("coverage_id") or row.get("id")) == (item.get("coverage_id") or item.get("id")):
-                row["archive_reason"] = "superseded_by_open_call"
+                row["archive_reason"] = "superseded_by_open_call" if item.get("status") != "open" else "duplicate_of_open_call"
 
 
 def _archive_expired_opportunities(result: dict[str, Any], today: date) -> None:
