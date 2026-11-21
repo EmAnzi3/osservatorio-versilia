@@ -68,6 +68,7 @@
     "scripts/materialize_micro_units_history.py",
     "scripts/materialize_tourism_intensity_history.py",
     "scripts/materialize_siope_cash_benchmarks.py",
+    "scripts/materialize_population_density_history.py",
     "scripts/apply_per_capita_reference_contract.py",
     "scripts/patch_fragilita_runtime.py",
     "scripts/materialize_territorio_v137.py",

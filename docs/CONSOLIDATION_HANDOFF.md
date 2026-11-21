@@ -7,6 +7,14 @@
 - «Toscana Diffusa – Interventi di riqualificazione» esclusa a torto: la Toscana diffusa (l.r. 11/2025, Allegato A DCR 10/2025) comprende Stazzema, Seravezza e la parte montana di Camaiore. `KNOWN_AREAS_WITH_VERSILIA`: un avviso riservato alla Toscana diffusa o ai Comuni montani non esclude la Versilia.
 - Notizie scartate che escono dalla coda delle fonti (ICSC Sport/Cultura Missione Comune, 20/11): si rileggono dal cache, con titolo conservato o ricavato dall'indirizzo.
 
+## Serie storica della densità abitativa (20 novembre 2026)
+
+I residenti per km² hanno ora la serie 2019–2026 nei sette Comuni, senza nuove acquisizioni.
+
+- Residenti al 1° gennaio di ogni anno (serie canonica della popolazione) / superficie Istat al 31 dicembre 2021, come il valore 2026. La superficie resta quella del 2021 perché i confini non sono cambiati nel periodo.
+- `materialize_population_density_history.py` nell'overlay di build; l'ultimo anno deve coincidere con il valore pubblicato.
+- Nel motore A6 la densità ammette serie, confronti per anno e variazioni; il confronto Toscana/Italia resta solo sul 2026 (`density_benchmark_period_not_frozen`). Le altre misure geografiche restano una sola fotografia.
+
 ## Radar: forma singola ammessa (20 novembre 2026)
 
 - Issue #634, «Punti Digitale Facile»: l'avviso ammette i Comuni «sia in forma singola sia in partenariato», ma la scheda li indicava come partner.
