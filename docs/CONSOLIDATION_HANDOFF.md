@@ -1,5 +1,11 @@
 # Consolidamento Osservatorio Versilia — handoff operativo
 
+## Radar: falsi positivi del 21 novembre e notizie uscite dalla coda
+
+- Edicole («Bando in arrivo», destinatari imprese): i Comuni comparivano solo come luogo («situate nei comuni…», «per ogni Comune servito»). `MUNICIPAL_AS_PLACE` copre ora il plurale locativo.
+- Proroga MIM «al 16 ottobre» pubblicata con scadenza 2028 (fine lavori): `title_term()` legge il termine nel titolo e, se è passato, la notizia è scaduta.
+- Notizie scartate che escono dalla coda delle fonti (ICSC Sport/Cultura Missione Comune, 20/11): si rileggono dal cache, con titolo conservato o ricavato dall'indirizzo.
+
 ## Radar: forma singola ammessa (20 novembre 2026)
 
 - Issue #634, «Punti Digitale Facile»: l'avviso ammette i Comuni «sia in forma singola sia in partenariato», ma la scheda li indicava come partner.

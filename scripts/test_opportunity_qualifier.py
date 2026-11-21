@@ -529,6 +529,36 @@ def test_announced_call_is_upcoming_card_not_rejection():
     assert decide("Comunicato del 12 ottobre 2026", PAD + "Erogazione ai Comuni del contributo per il 2026.").status == "rejected"
 
 
+def test_rejected_news_reread_after_leaving_the_queue():
+    """ICSC 20/11: la notizia scartata non era più nella coda il giorno dopo e non veniva riletta."""
+    url = "https://www.anci.piemonte.it/prorogati-al-5-dicembre-i-bandi-sport-missione-comune/"
+    previous = {"opportunities": [], "autoQualificationCache": {
+        url: {"status": "rejected", "checkedAt": "2026-11-20", "reason": "La pagina non indica come presentare domanda: notizia."},
+        "https://x.gov.it/esito": {"status": "rejected", "checkedAt": "2026-11-20", "reason": "Il titolo indica una notizia."}}}
+    seen = []
+    def loader(u, document):
+        seen.append(u)
+        return ""
+    result = {"opportunities": [], "discoveryQueue": []}
+    q.apply(result, date(2026, 11, 21), loader=loader, previous=previous, build_item=lambda *a: {}, towns=TOWNS)
+    assert seen == [url] and result["autoQualification"]["recheckedRejections"] == 1, seen
+
+
+def test_false_positives_of_21_november():
+    """Run del 21/11: edicole (Comuni solo come luogo) e proroga MIM già scaduta (data futura = fine lavori)."""
+    edicole = (PAD + "Possono accedere all'agevolazione le imprese iscritte al Registro delle Imprese e i titolari di Partita IVA "
+               "attiva in Toscana. Punto A1: edicole esclusive situate nei comuni rientranti nella L.R. n. 11/2025 (per i comuni "
+               "parzialmente montani, la sede deve ricadere nella zona montana). Punto B: edicole ubicate nei restanti comuni "
+               "regionali. Fino a 180 euro per ogni Comune servito.")
+    assert decide("Sostegno a Edicole e Distributori di Giornali – Bando in arrivo", edicole).status == "rejected"
+    mim = (PAD + "Possono presentare richiesta di finanziamento gli enti locali proprietari di edifici scolastici. "
+           "Le verifiche dovranno essere completate entro il 31 dicembre 2028.")
+    d = q.qualify(candidate("Avviso MIM vulnerabilità sismica, prorogato al 16 ottobre il termine per le candidature"), mim, {}, date(2026, 11, 21))
+    assert d.status == "expired" and d.deadline == "2026-10-16", d
+    # Termine nel titolo ancora futuro: si prosegue con le regole ordinarie.
+    assert q.title_term("Prorogati al 5 dicembre i bandi Sport Missione Comune", date(2026, 11, 21)) == date(2026, 12, 5)
+
+
 def test_news_with_future_term_of_open_calls_qualifies():
     """Proroga riportata da una notizia (ANCI Piemonte, bandi ICSC): termine futuro e Comuni ammessi bastano."""
     text = (PAD + "Sono stati prorogati i termini fino al 5 dicembre 2026 dei bandi Sport Missione Comune e Cultura Missione "

@@ -104,6 +104,8 @@ EU_RESERVED = re.compile(r"(?:must|shall)\s+be\s+from\s+one\s+of\s+the\s+\d+\s+c
 MUNICIPAL_AS_PLACE = re.compile(
     r"(sede(?:\s+legale|\s+operativa)?\s+(?:nel|in\s+un|in)\s+comune|residen\w*\s+(?:nel|in)\s+(?:un\s+)?comune|"
     r"ubicat\w+\s+(?:nel|in)\s+(?:un\s+)?comune|nel\s+territorio\s+(?:del|di\s+un)\s+comune|"
+    # Plurale locativo (issue: «edicole situate nei comuni rientranti…», «per ogni Comune servito»).
+    r"\bnei\s+(?:[\w’']+\s+){0,2}comuni\b|\bogni\s+comune\s+servit\w+|\bper\s+i\s+comuni\s+(?:parzialmente\s+)?montani\b|"
     # «beni comuni», «spazi comuni»: aggettivo, non l'ente.
     r"\b(?:ben[ei]|spaz[io]|aree?|part[ei]|obiettiv[oi]|interess[ei])\s+comun[ei]\b)", re.I)
 SUBJECT_APPLIES = re.compile(
@@ -589,6 +591,21 @@ ANNOUNCED = re.compile(
 OTHER_PREFECTURE = re.compile(r"prefettura\.interno\.gov\.it/it/prefetture/(?!lucca(?:/|$))[a-z-]+", re.I)
 
 
+# Termine nel titolo di una notizia («prorogato al 16 ottobre il termine…»): se è passato, la notizia è scaduta
+# anche quando nella pagina compaiono date successive (per esempio la fine dei lavori).
+TITLE_TERM = re.compile(r"\b(?:prorogat\w*|scadenza|scade|termine|entro)\b[^.]{0,40}?\b(\d{1,2})(?:°|º)?\s+(" + "|".join(MONTHS) + r")(?:\s+(20\d{2}))?\b", re.I)
+
+
+def title_term(title: str, today: date) -> date | None:
+    m = TITLE_TERM.search(title)
+    if not m:
+        return None
+    try:
+        return date(int(m[3]) if m[3] else today.year, MONTHS[m[2].lower()], int(m[1]))
+    except ValueError:
+        return None
+
+
 def qualify(candidate: dict[str, Any], page_text: str, documents: dict[str, str], today: date) -> Decision:
     title = str(candidate.get("title") or "")
     combined = " ".join([page_text, *documents.values()])
@@ -596,6 +613,10 @@ def qualify(candidate: dict[str, Any], page_text: str, documents: dict[str, str]
         return Decision("rejected", "Il titolo indica una notizia, un esito o una comunicazione, non un avviso aperto.")
     if len(combined) < 400:
         return Decision("unreadable", "Pagina e documenti senza testo sufficiente da leggere.")
+    term = title_term(title, today)
+    if term and term < today and not candidate.get("deadline_at"):
+        return Decision("expired", f"Il titolo indica un termine già passato ({term.isoformat()}).", deadline=term.isoformat(),
+                        deadline_evidence=f"Titolo: «{title[:120]}»")
     # I menu dei siti occupano spesso le prime migliaia di caratteri.
     if not CALL.search(title) and not CALL.search(combined[:6000]):
         return Decision("rejected", "Nessun elemento di avviso o bando nella pagina.")
@@ -849,6 +870,18 @@ def apply(result: dict[str, Any], today: date, *, loader: Callable[[str, bool], 
         row = cache.get(str(candidate.get("url")))
         if row and row.get("status") in {"rejected", "expired"} and _fold(candidate.get("url")) not in stale:
             recheck[_fold(candidate.get("url"))] = str(row.get("checkedAt") or "")
+    # Pagine scartate perché «notizia» che nel frattempo sono uscite dalla coda delle fonti (caso ICSC del 20/11):
+    # si rileggono lo stesso, con il titolo conservato nel cache o, per le righe più vecchie, ricavato dall'indirizzo.
+    present = {_fold(c.get("url")) for c in unique}
+    for url, row in cache.items():
+        if (_fold(url) in present or row.get("status") != "rejected" or not str(row.get("reason") or "").startswith("La pagina non indica")
+                or OTHER_PREFECTURE.search(url) or str(row.get("checkedAt") or "") >= today.isoformat()):
+            continue
+        slug = urlsplit(url).path.rstrip("/").rsplit("/", 1)[-1]
+        title = row.get("title") or re.sub(r"[-_]+", " ", re.sub(r"\.\w{2,5}$", "", slug)).strip()
+        unique.append({"url": url, "title": title, "source_id": row.get("source_id") or "recheck", "origin": "rejection-recheck"})
+        present.add(_fold(url))
+        recheck[_fold(url)] = str(row.get("checkedAt") or "")
     report["recheckedRejections"] = len(recheck)
     # Segnalazioni che citano solo anni ormai chiusi: scartate senza scaricarle.
     fresh = []
@@ -914,7 +947,8 @@ def apply(result: dict[str, Any], today: date, *, loader: Callable[[str, bool], 
                      deadline=decision.deadline, documents=decision.documents)
         if not candidate.get("structured_text"):
             cache[url] = {"status": decision.status, "checkedAt": today.isoformat(),
-                          "reason": str(decision.reason or "")[:200]}
+                          "reason": str(decision.reason or "")[:200], "title": str(candidate.get("title") or "")[:200],
+                          "source_id": candidate.get("source_id")}
         if decision.status != "qualified":
             report[decision.status] = report.get(decision.status, 0) + 1
             continue
