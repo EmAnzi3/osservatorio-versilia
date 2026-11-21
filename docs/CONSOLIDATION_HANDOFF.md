@@ -7,6 +7,14 @@
 - 2025: Toscana 273/273 Comuni (126,33 / 197,40 / 336,35 €), Italia 7.879–7.884 su 7.896, 99,5% dei residenti (139,10 / 216,87 / 366,51 €); 7/7 riconciliati.
 - `materialize_irpef_benchmarks.py`: `meta.benchmark` sullo scenario predefinito 20.000 € e `meta.benchmarkScenarios` per i tre. Motore: `benchmark_gap` per totale e scenari (pin `municipal_tax#7/#8`); l'aliquota effettiva resta senza confronto.
 
+## Serie storica della densità abitativa (20 novembre 2026)
+
+I residenti per km² hanno ora la serie 2019–2026 nei sette Comuni, senza nuove acquisizioni.
+
+- Residenti al 1° gennaio di ogni anno (serie canonica della popolazione) / superficie Istat al 31 dicembre 2021, come il valore 2026. La superficie resta quella del 2021 perché i confini non sono cambiati nel periodo.
+- `materialize_population_density_history.py` nell'overlay di build; l'ultimo anno deve coincidere con il valore pubblicato.
+- Nel motore A6 la densità ammette serie, confronti per anno e variazioni; il confronto Toscana/Italia resta solo sul 2026 (`density_benchmark_period_not_frozen`). Le altre misure geografiche restano una sola fotografia.
+
 ## Radar: forma singola ammessa (20 novembre 2026)
 
 - Issue #634, «Punti Digitale Facile»: l'avviso ammette i Comuni «sia in forma singola sia in partenariato», ma la scheda li indicava come partner.

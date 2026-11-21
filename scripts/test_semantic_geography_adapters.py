@@ -16,6 +16,9 @@ ROWS={
  '046030':(80.639757592,2783,6934.268,85.991,(73,784.096788486609,1860),(5.8841,24.2606,33.5819,27.0372,8.0119,1.2243,0,0)),
  '046033':(32.7261333045,60680,580.067,17.725,(-5,2.44748310490747,21),(100,0,0,0,0,0,0,0)),
 }
+# Residenti al 1° gennaio 2019 e 2021 (serie canonica Population), per la serie della densità.
+HISTORY={'046005':{'2019':31670,'2021':31761},'046013':{'2019':7156,'2021':7217},'046018':{'2019':21696,'2021':21951},
+ '046024':{'2019':23073,'2021':23121},'046028':{'2019':12845,'2021':12556},'046030':{'2019':2971,'2021':2898},'046033':{'2019':60602,'2021':61251}}
 BENCHMARKS={'tuscany':(22989.775575942836,273,3659222,47.407879965451585),
  'italy':(302109.5696553943,7904,58942828,53.60951619684477)}
 
@@ -37,8 +40,21 @@ def regressions(path):
     n=sum(v[1] if key=='populationDensity' else v[2] for v in ROWS.values());d=sum(v[0] if key=='populationDensity' else v[0]*100 for v in ROWS.values());scale=1 if key=='populationDensity' else 100
     assert math.isclose(r['result']['value'],n/d*scale,abs_tol=1e-8)
    else:rejected(e,request('weighted_ratio',key,dimension=dim),'verified_ratio_adapter_required')
+  if key=='populationDensity':continue
   rejected(e,request('series',key,towns=['046018']),'geography_history_not_frozen')
   rejected(e,request('compare',key,periods=['2025']),'geography_period_not_frozen')
+ # Densità: serie sui residenti al 1° gennaio di ogni anno, sempre sulla superficie 2021.
+ r=e.query(request('series','populationDensity',towns=['046018']));assert r['status']=='computed',r
+ obs={o['period']:o for o in r['observations']};assert sorted(obs)==[str(y) for y in range(2019,2027)],sorted(obs)
+ for year,pop in dict(HISTORY['046018'],**{'2026':ROWS['046018'][1]}).items():
+  o=obs[year];assert math.isclose(o['value'],pop/ROWS['046018'][0],rel_tol=0,abs_tol=1e-9),(year,o)
+  assert o['numeratorPeriod']==year and o['denominatorPeriod']=='2021' and o['frequency']=='annual';count+=1
+ r=e.query(request('compare','populationDensity',periods=['2019']));assert r['status']=='computed',r
+ for o in r['observations']:assert math.isclose(o['value'],HISTORY[o['geography']]['2019']/ROWS[o['geography']][0],rel_tol=0,abs_tol=1e-9),o;count+=1
+ r=e.query(request('absolute_change','populationDensity',towns=['046013'],periods=['2019','2026']));assert r['status']=='computed',r
+ assert math.isclose(r['result']['value'],(6550-HISTORY['046013']['2019'])/ROWS['046013'][0],abs_tol=1e-9),r['result']
+ rejected(e,request('compare','populationDensity',periods=['2018']),'geography_period_not_frozen')
+ rejected(e,dict(request('benchmark_gap','populationDensity',towns=['046018'],periods=['2019']),benchmark='tuscany'),'density_benchmark_period_not_frozen')
  for scope,(area,municipalities,pop,altitude) in BENCHMARKS.items():
   for key in g.KEYS[:3]:
    r=e.query(dict(request('benchmark_gap',key,towns=['046018']),benchmark=scope));assert r['status']=='computed',r

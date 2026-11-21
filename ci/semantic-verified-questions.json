@@ -5739,6 +5739,48 @@
       }
     },
     {
+      "id": "density_history_2019",
+      "question": "Qual era la densità abitativa di Forte dei Marmi nel 2019?",
+      "query": {
+        "operation": "compare",
+        "selectors": [
+          {
+            "metric": "populationDensity",
+            "dimension": "total",
+            "towns": [
+              "046013",
+              "046018"
+            ],
+            "periods": [
+              "2019"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "status": "computed",
+        "checks": [
+          {
+            "path": "/observations/0/value",
+            "fraction": [
+              715600000000000,
+              918671486427
+            ],
+            "tolerance": 1e-08
+          },
+          {
+            "path": "/observations/1/value",
+            "fraction": [
+              216960000000000,
+              682455922649
+            ],
+            "tolerance": 1e-08
+          }
+        ]
+      },
+      "reference": "Residenti POSAS al 1/1/2019: Forte dei Marmi 7156, Massarosa 21696 (serie canonica Population); superficie Istat 31/12/2021: 9,18671486427 e 68,2455922649 km². Riferimenti trascritti in test_semantic_geography_adapters.py."
+    },
+    {
       "id": "geography_no_report_year",
       "question": "La copertura forestale è una rilevazione 2026?",
       "reference": "Istat biometria 31/12/2021 e POSAS 1/1/2026; Foreste in Comune 2026, CFI 2020 aggiornata 2024. Riferimenti trascritti in test_semantic_geography_adapters.py.",

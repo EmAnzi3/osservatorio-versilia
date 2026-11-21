@@ -226,7 +226,7 @@ def _existing_operations(key, dimension, unit):
     if key in hazard.KEYS:return [o for o in NUMERICAL_SUPPORTED if (o not in TEMPORAL or o=='series' and dimension==hazard.HISTORY) and o!='benchmark_gap' and (o!='weighted_ratio' or hazard.weighted(key,dimension))]
     if key in territory.KEYS:return [o for o in NUMERICAL_SUPPORTED if o not in TEMPORAL and o!='benchmark_gap' and (o!='weighted_ratio' or territory.weighted(key,dimension))]
     if key in soil.KEYS:return [o for o in NUMERICAL_SUPPORTED if (o not in TEMPORAL or o=='series') and (o!='weighted_ratio' or soil.weighted(key,dimension)) and (o!='benchmark_gap' or soil.scopes(key,dimension))]
-    if key in geography.KEYS:return [o for o in NUMERICAL_SUPPORTED if o not in TEMPORAL and (o!='weighted_ratio' or geography.weighted(key,dimension)) and (o!='benchmark_gap' or geography.scopes(key,dimension))]
+    if key in geography.KEYS:return [o for o in NUMERICAL_SUPPORTED if (o not in TEMPORAL or key=='populationDensity') and (o!='weighted_ratio' or geography.weighted(key,dimension)) and (o!='benchmark_gap' or geography.scopes(key,dimension))]
     if key in agriculture.KEYS:return [o for o in NUMERICAL_SUPPORTED if o not in TEMPORAL and (o!='weighted_ratio' or agriculture.weighted(key,dimension)) and (o!='benchmark_gap' or agriculture.scopes(key,dimension)) and o!='percentage_points']
     if key in environment.KEYS:
         return [o for o in NUMERICAL_SUPPORTED if (o!='weighted_ratio' or key in environment.RATIOS) and (o!='percentage_points' or unit=='percent') and not (key in environment.WASTE and o in TEMPORAL and o!='series')]
@@ -691,7 +691,7 @@ class QueryEngine:
             self._climate_validation={}
             climate.selection_guard(key,dimension,operation)
         if key in profiles.KEYS:profiles.selection_guard(key,dimension,operation)
-        if key in geography.KEYS and operation in TEMPORAL:raise ValueError('geography_history_not_frozen')
+        if key in geography.KEYS and operation in TEMPORAL and key!='populationDensity':raise ValueError('geography_history_not_frozen')
         if key in agriculture.KEYS and operation in TEMPORAL:raise ValueError('agriculture_single_census_no_history')
         if key in pab.KEYS:
             self._pab_validation=None

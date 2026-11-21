@@ -52,7 +52,7 @@ Il collegamento con il lavoro femminile è una domanda pertinente, ma i dati dis
 
 I valori esposti sono arrotondati per la lettura. Il JSON riproducibile conserva tutta la precisione, richieste, risultati, hash degli snapshot e puntatori. Le fonti sotto sono quelle delle osservazioni acquisite, non una verifica della loro disponibilità online oggi.
 
-Catalogo congelato `c798912b0427256b241acd890a3a47a601991c80a1fe35dac5d4f343f01ff6c6`; motore `4398df76882fa39157caf1d1b083f659192760552b42ff6512c443496cb0f068`.
+Catalogo congelato `198af0097125e3d6fc8826554d8f533e50cfef5fe258ad0486a461490325aaf6`; motore `5ed0ee332d2c5ebd1442cbbfc8365103d47e2742492216d8d7b6f41557524c5a`.
 
 - `child_weighted`: `weighted_ratio`, `earlyChildhoodPotentialCapacityRate`, dimensione `total`; periodi 2024/25. [https://dati.toscana.it/dataset/98ee6064-b61a-45e2-a790-86c55b278574/resource/01588909-8f0b-4b80-8af7-1749bab80a5e/download/opendata-_-da-pubblicare-24-25.csv](https://dati.toscana.it/dataset/98ee6064-b61a-45e2-a790-86c55b278574/resource/01588909-8f0b-4b80-8af7-1749bab80a5e/download/opendata-_-da-pubblicare-24-25.csv)
 - `child_zero`: `compare`, `earlyChildhoodPotentialCapacityRate`, dimensione `total`; periodi 2024/25. [https://dati.toscana.it/dataset/98ee6064-b61a-45e2-a790-86c55b278574/resource/01588909-8f0b-4b80-8af7-1749bab80a5e/download/opendata-_-da-pubblicare-24-25.csv](https://dati.toscana.it/dataset/98ee6064-b61a-45e2-a790-86c55b278574/resource/01588909-8f0b-4b80-8af7-1749bab80a5e/download/opendata-_-da-pubblicare-24-25.csv)
