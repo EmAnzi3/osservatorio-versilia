@@ -34,7 +34,9 @@ METRIC = "municipalIrpef"
 SCENARIOS = (20000, 30000, 50000)
 TUSCANY_REGION = "09"
 MIN_COVERAGE = 0.90
-MAX_RATE = Decimal("1.0")
+# Oltre lo 0,8% solo per i Comuni in riequilibrio (L. 234/2021, c. 567; l'elenco 2025 arriva a 1,2%): 1,5 è il
+# limite di plausibilità oltre il quale la riga si considera un errore di battitura.
+MAX_RATE = Decimal("1.5")
 
 
 class IrpefBenchmarkError(RuntimeError):
@@ -120,11 +122,12 @@ def rule(row: dict[str, str]) -> dict[str, Any]:
         elif f.startswith("applicabile"):
             numbers = amounts(f)
             since = re.search(r"\bda(?:l|ll['’])?\b", f)
-            if "oltre" in f and len(numbers) == 1:
+            between = since or " tra " in f or ("oltre" in f and "fino" in f) or re.search(r"\d\s+-\s+\d", f)
+            if len(numbers) == 1 and ("oltre" in f or since) and "fino" not in f:
                 brackets.append((numbers[0], None, r))
             elif "fino" in f and len(numbers) == 1 and not since:
                 brackets.append((Decimal(0), numbers[0], r))
-            elif len(numbers) == 2 and since and "oltre" not in f:
+            elif len(numbers) == 2 and between and numbers[0] < numbers[1]:
                 brackets.append((numbers[0], numbers[1], r))
             else:
                 raise Unreadable(f"scaglione non leggibile {f!r}")

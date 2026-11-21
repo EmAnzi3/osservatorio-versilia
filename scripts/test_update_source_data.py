@@ -744,12 +744,16 @@ def irpef_benchmarks_cases() -> None:
     agordo = {**r("0,63", "Applicabile a FINO A 15.000,00"), **r(",76", "Applicabile a DA 15.001,00 A 28.000,00", 2),
               **r(",79", "Applicabile a DAL 28.001,00 A 50.000,00", 3), **r(",8", "Applicabile a OLTRE 50.000,00", 4), "IMPORTO_ESENTE": "0"}
     assert ib.amount(ib.rule(agordo), 30000) == round(15000 * 0.0063 + 13000 * 0.0076 + 2000 * 0.0079, 2)
+    worded = {**r("0,6", "Applicabile a redditi fino a € 15.000,00"), **r(",7", "Applicabile a redditi oltre € 15.000,00 e fino a € 28.000,00", 2),
+              **r(",75", "Applicabile a redditi imponibili tra € 28.000,01 e € 50.000,00", 3), **r("1,2", "Applicabile a scaglione di reddito da euro 50.000,01", 4), "IMPORTO_ESENTE": "0"}
+    assert ib.amount(ib.rule(worded), 50000) == round(15000 * 0.006 + 13000 * 0.007 + 22000 * 0.0075, 2)
+    assert ib.rule(worded)["brackets"][-1] == {"upTo": None, "ratePercent": 1.2}
     none = {**r("0*", ""), "IMPORTO_ESENTE": "0"}
     assert ib.rule(none)["notInstituted"] and ib.amount(ib.rule(none), 50000) == 0.0
     category = {**r("0", "Esenzione per REDDITI DA LAVORO DIPENDENTE E/O PENSIONI PARI A €25.000,00"), **r(",8", "Aliquota unica", 2), "IMPORTO_ESENTE": "0"}
     assert ib.amount(ib.rule(category), 30000) == 240.0
     for bad in ({**r(",5", "Applicabile a scaglione di reddito fino a euro 15.000,00"), **r(",8", "Applicabile a scaglione di reddito oltre euro 28.000,00", 2)},
-                {**r(",8", "Applicabile agli scaglioni IRPEF statali")}, {**r("1,5", "Aliquota unica")}):
+                {**r(",8", "Applicabile agli scaglioni IRPEF statali")}, {**r("1,6", "Aliquota unica")}):
         try:
             ib.rule(bad)
         except ib.Unreadable:
