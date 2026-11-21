@@ -64,6 +64,7 @@ SCHOOL_HISTORY_MATERIALIZER = ROOT / "scripts" / "materialize_school_history.py"
 MICRO_UNITS_HISTORY_MATERIALIZER = ROOT / "scripts" / "materialize_micro_units_history.py"
 TOURISM_INTENSITY_HISTORY_MATERIALIZER = ROOT / "scripts" / "materialize_tourism_intensity_history.py"
 SIOPE_CASH_BENCHMARK_MATERIALIZER = ROOT / "scripts" / "materialize_siope_cash_benchmarks.py"
+IRPEF_BENCHMARK_MATERIALIZER = ROOT / "scripts" / "materialize_irpef_benchmarks.py"
 
 _ORIGINAL_RUN_PATH = runpy.run_path
 
@@ -130,6 +131,7 @@ def _run_path_with_fragilita_r3_fix(path_name, *args, **kwargs):
         _ORIGINAL_RUN_PATH(str(MICRO_UNITS_HISTORY_MATERIALIZER), run_name="__main__")
         _ORIGINAL_RUN_PATH(str(TOURISM_INTENSITY_HISTORY_MATERIALIZER), run_name="__main__")
         _ORIGINAL_RUN_PATH(str(SIOPE_CASH_BENCHMARK_MATERIALIZER), run_name="__main__")
+        _ORIGINAL_RUN_PATH(str(IRPEF_BENCHMARK_MATERIALIZER), run_name="__main__")
         return result
     if path != FRAGILITA_RUNTIME_PATCH:
         return _ORIGINAL_RUN_PATH(path_name, *args, **kwargs)

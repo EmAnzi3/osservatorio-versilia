@@ -1,5 +1,12 @@
 # Consolidamento Osservatorio Versilia — handoff operativo
 
+## Confronto Toscana/Italia dell'addizionale comunale IRPEF (21 novembre 2026)
+
+- `irpef_benchmarks.py` + aggiornatore CI `mef-irpef-benchmarks --year 2025`: elenco MEF delle aliquote di tutti i Comuni, codici catastali → Istat, residenti POSAS 1/1/2026. Stessa regola dei valori comunali; Toscana e Italia = media degli importi pesata per i residenti.
+- «0*» nell'elenco definitivo = Comune senza addizionale (importo zero). Aliquote fino all'1,5% accettate (Comuni in riequilibrio). Esclusi i Comuni con regole ambigue per lo scenario (esenzioni per categoria che arrivano allo scenario, scaglioni scritti male).
+- 2025: Toscana 273/273 Comuni (126,33 / 197,40 / 336,35 €), Italia 7.879–7.884 su 7.896, 99,5% dei residenti (139,10 / 216,87 / 366,51 €); 7/7 riconciliati.
+- `materialize_irpef_benchmarks.py`: `meta.benchmark` sullo scenario predefinito 20.000 € e `meta.benchmarkScenarios` per i tre. Motore: `benchmark_gap` per totale e scenari (pin `municipal_tax#7/#8`); l'aliquota effettiva resta senza confronto.
+
 ## Confronti bilanci, secondo blocco: sicurezza e cassa SIOPE (20 novembre 2026)
 
 Si applica la regola della #620: almeno il 90% dei residenti coperti, copertura dichiarata, riconciliazione 7/7 per indicatore.
