@@ -131,7 +131,7 @@ def test_curated_previous_entry_is_not_duplicated():
     assert result["autoQualification"]["checked"] == 0 and result["opportunities"] == []
 
 
-def test_recent_rejections_are_not_reread():
+def test_recent_rejections_are_reread_after_new_signals():
     calls = []
     def loader(url, document):
         calls.append(url)
@@ -142,10 +142,18 @@ def test_recent_rejections_are_not_reread():
     assert first["autoQualificationCache"]["https://x.gov.it/n1"]["status"] == "rejected"
     second = {"opportunities": [], "discoveryQueue": list(queue)}
     q.apply(second, date(2026, 10, 3), loader=loader, previous=first, build_item=lambda *a: {}, towns=TOWNS)
-    assert len(calls) == 1 and second["autoQualification"]["skippedRecent"] == 1
-    third = {"opportunities": [], "discoveryQueue": list(queue)}
-    q.apply(third, date(2026, 10, 9), loader=loader, previous=second, build_item=lambda *a: {}, towns=TOWNS)
-    assert len(calls) == 2
+    # Issue #634: la pagina scartata ieri si rilegge oggi, non dopo sette giorni.
+    assert len(calls) == 2 and second["autoQualification"]["recheckedRejections"] == 1
+    # Con il budget pieno passano prima le segnalazioni nuove; la rilettura resta in coda.
+    calls.clear()
+    old_max = q.MAX_CANDIDATES
+    q.MAX_CANDIDATES = 1
+    try:
+        third = {"opportunities": [], "discoveryQueue": list(queue) + [candidate("Avviso nuovo", url="https://x.gov.it/n2")]}
+        q.apply(third, date(2026, 10, 4), loader=loader, previous=second, build_item=lambda *a: {}, towns=TOWNS)
+    finally:
+        q.MAX_CANDIDATES = old_max
+    assert calls == ["https://x.gov.it/n2"] and third["autoQualification"]["deferredRechecks"] == 1, calls
 
 
 def test_facility_operator_topic_rejected():
@@ -369,6 +377,9 @@ def test_municipality_counts_if_it_takes_part_in_any_form():
         "Soggetti beneficiari: ASD e SSD. Al partenariato possono aggiungersi anche enti pubblici.": ("qualified", None),
         "Soggetti beneficiari: associazioni. Possono partecipare anche i Comuni in forma associata.": ("qualified", None),
         "Soggetti beneficiari: i Comuni della Toscana, anche in collaborazione con associazioni.": ("qualified", "direct_applicant"),
+        # Punti Digitale Facile 2026 (issue #634): la forma singola ammessa rende il Comune richiedente.
+        "Possono partecipare al bando i seguenti soggetti, sia in forma singola sia in partenariato costituito o da costituire: Enti Locali della Toscana: Comuni, Unioni di Comuni, Province e Città Metropolitana; Enti del Terzo Settore iscritti al RUNTS.": ("qualified", "direct_applicant"),
+        "Soggetti ammessi: associazioni, in forma singola o in partenariato con i Comuni del territorio.": ("qualified", "partner"),
     }
     for body, (status, role) in out.items():
         result = decide("Bando di prova", PAD + body + tail)
@@ -503,6 +514,69 @@ def test_open_call_absorbs_its_announcement_only():
     assert {x["id"] for x in absorbed} == {"mit", "anci"}, absorbed
     assert {x["absorbedBy"] for x in result["absorbedAnnouncements"]} == {"auto-1"}
     assert [x["id"] for x in result["opportunities"]] == ["auto-1", "old", "other", "late"]
+
+
+def test_announced_call_is_upcoming_card_not_rejection():
+    """Issue #634: «Bando in arrivo» con i Comuni fra i destinatari è una scheda in arrivo, riletta ogni giorno."""
+    text = (PAD + "Rimozione amianto da edifici pubblici: la Regione Toscana pubblicherà a breve il bando. "
+            "Beneficiari: i Comuni e le Unioni di Comuni della Toscana. Il contributo copre rimozione e smaltimento.")
+    d = decide("Rimozione Amianto da Edifici Pubblici – Bando in arrivo", text)
+    assert d.status == "qualified" and d.announced and d.deadline is None, d
+    entry = q.build_entry(candidate("Rimozione Amianto da Edifici Pubblici – Bando in arrivo"), d, date(2026, 10, 1), TOWNS)
+    assert entry["lifecycle_stage"] == "announced_upcoming" and "non ancora aperto" in entry["description"]
+    # Senza Comuni fra i destinatari resta uno scarto; una notizia qualsiasi pure.
+    assert decide("Edicole – Bando in arrivo", PAD + "Beneficiari: le edicole e i distributori di giornali.").status == "rejected"
+    assert decide("Comunicato del 12 ottobre 2026", PAD + "Erogazione ai Comuni del contributo per il 2026.").status == "rejected"
+
+
+def test_news_with_future_term_of_open_calls_qualifies():
+    """Proroga riportata da una notizia (ANCI Piemonte, bandi ICSC): termine futuro e Comuni ammessi bastano."""
+    text = (PAD + "Sono stati prorogati i termini fino al 5 dicembre 2026 dei bandi Sport Missione Comune e Cultura Missione "
+            "Comune. Gli Avvisi sono aperti a Comuni, Unioni di Comuni, Città Metropolitane, Province e Regioni.")
+    d = decide("Prorogati al 5 dicembre i bandi Sport Missione Comune e Cultura Missione Comune", text)
+    assert d.status == "qualified" and d.deadline == "2026-12-05" and d.role == "direct_applicant", d
+
+
+def test_other_prefectures_never_enter_the_queue():
+    calls = []
+    def loader(url, document):
+        calls.append(url)
+        return ""
+    queue = [candidate("CAS - Gara accoglienza", url="https://prefettura.interno.gov.it/it/prefetture/piacenza/comunicazioni/cas1"),
+             candidate("Avviso Prefettura di Lucca", url="https://prefettura.interno.gov.it/it/prefetture/lucca/avvisi/a1")]
+    result = {"opportunities": [], "discoveryQueue": queue}
+    q.apply(result, date(2026, 10, 1), loader=loader, build_item=lambda *a: {}, towns=TOWNS)
+    assert calls == ["https://prefettura.interno.gov.it/it/prefetture/lucca/avvisi/a1"], calls
+    assert result["autoQualification"]["otherPrefectures"] == 1
+
+
+def test_announced_cards_are_reread_every_day():
+    url = "https://ancitoscana.it/amianto-bando-in-arrivo/"
+    old = {"id": "auto-x", "coverage_id": "auto-x", "url": url, "title": "Amianto – Bando in arrivo", "verification_status": q.VERIFICATION_STATUS,
+           "auto_qualification_version": q.VERSION, "lifecycle_stage": "announced_upcoming", "status": "upcoming"}
+    calls = []
+    def loader(u, document):
+        calls.append(u)
+        return ""
+    result = {"opportunities": [], "discoveryQueue": []}
+    q.apply(result, date(2026, 10, 2), loader=loader, previous={"opportunities": [old]}, build_item=lambda *a: {}, towns=TOWNS)
+    assert calls == [url], calls
+
+
+def test_open_duplicate_from_second_source_absorbed():
+    """Issue #634: la notizia ANCI Toscana ripete l'avviso regionale già in Radar dal 13/11."""
+    region = {"id": "auto-r", "status": "open", "first_seen_at": "2026-11-13", "deadline_at": "2026-11-26",
+              "title": "Rete dei Punti Digitale Facile: contributi per consolidamento e ampliamento delle attività"}
+    anci = {"id": "auto-a", "status": "open", "first_seen_at": "2026-11-20", "deadline_at": "2026-11-26", "title": "Punti Digitale Facile"}
+    other_deadline = dict(anci, id="auto-b", deadline_at="2027-03-31")
+    different = {"id": "auto-c", "status": "open", "first_seen_at": "2026-11-20", "deadline_at": "2026-11-26",
+                 "title": "Contributi per impianti sportivi comunali"}
+    curated = {"id": "rt-punti", "status": "open", "first_seen_at": "2026-11-19", "deadline_at": "2026-11-26", "title": "Punti Digitale Facile Toscana"}
+    result = {"opportunities": [region, anci, other_deadline, different, curated]}
+    gone = q.absorb_announcements(result)
+    assert [x["id"] for x in gone] == ["auto-a"], gone
+    assert [x["id"] for x in result["opportunities"]] == ["auto-r", "auto-b", "auto-c", "rt-punti"]
+    assert result["absorbedAnnouncements"][0]["absorbedBy"] == "auto-r"
 
 
 def test_listed_territories_without_versilia_rejected():
