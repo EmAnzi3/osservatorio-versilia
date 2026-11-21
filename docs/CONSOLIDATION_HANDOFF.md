@@ -7,6 +7,13 @@
 - 2025: Toscana 273/273 Comuni (126,33 / 197,40 / 336,35 €), Italia 7.879–7.884 su 7.896, 99,5% dei residenti (139,10 / 216,87 / 366,51 €); 7/7 riconciliati.
 - `materialize_irpef_benchmarks.py`: `meta.benchmark` sullo scenario predefinito 20.000 € e `meta.benchmarkScenarios` per i tre. Motore: `benchmark_gap` per totale e scenari (pin `municipal_tax#7/#8`); l'aliquota effettiva resta senza confronto.
 
+## Radar: falsi positivi del 21 novembre e notizie uscite dalla coda
+
+- Edicole («Bando in arrivo», destinatari imprese): i Comuni comparivano solo come luogo («situate nei comuni…», «per ogni Comune servito»). `MUNICIPAL_AS_PLACE` copre ora il plurale locativo.
+- Proroga MIM «al 16 ottobre» pubblicata con scadenza 2028 (fine lavori): `title_term()` legge il termine nel titolo e, se è passato, la notizia è scaduta.
+- «Toscana Diffusa – Interventi di riqualificazione» esclusa a torto: la Toscana diffusa (l.r. 11/2025, Allegato A DCR 10/2025) comprende Stazzema, Seravezza e la parte montana di Camaiore. `KNOWN_AREAS_WITH_VERSILIA`: un avviso riservato alla Toscana diffusa o ai Comuni montani non esclude la Versilia.
+- Notizie scartate che escono dalla coda delle fonti (ICSC Sport/Cultura Missione Comune, 20/11): si rileggono dal cache, con titolo conservato o ricavato dall'indirizzo.
+
 ## Serie storica della densità abitativa (20 novembre 2026)
 
 I residenti per km² hanno ora la serie 2019–2026 nei sette Comuni, senza nuove acquisizioni.
