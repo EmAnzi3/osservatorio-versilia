@@ -10,6 +10,9 @@ import semantic_query_municipal_tax_adapters as t
 TARI = {'046005':427.43,'046013':480.13,'046018':544.85,'046024':357.43,'046028':515.61,'046030':368.82,'046033':430.16}
 # IMU 2026: prospetti 2026 (Forte, Pietrasanta, Seravezza, Stazzema) e aliquote 2025 prorogate (Camaiore, Massarosa, Viareggio).
 IMU = {'046005':1140,'046013':1060,'046018':1060,'046024':1060,'046028':1140,'046030':1060,'046033':1140}
+# Confronto 2025 (snapshot MEF di tutti i Comuni, media pesata per i residenti POSAS 1/1/2026), al centesimo:
+# Toscana 273/273 Comuni, Italia ≥99,5% dei residenti.
+IRPEF_BENCH = {'tuscany':(126.33,197.40,336.35),'italy':(139.10,216.87,366.51)}
 IRPEF = {'046005':(82.5,144.5,284.5),'046013':(0,153,283),'046018':(160,240,400),'046024':(150,225,375),'046028':(160,240,400),'046030':(160,240,400),'046033':(150,225,375)}
 
 
@@ -44,12 +47,22 @@ def regressions(path):
             rejected(e,query(key,op,dimension=dim,towns=['046018']),'municipal_tax_single_snapshot_no_history')
         rejected(e,query(key,'weighted_ratio',dimension=dim),'municipal_tax_scenarios_not_additive_population')
         rejected(e,query(key,'anomaly',dimension=dim),'municipal_tax_peer_anomaly_not_reviewed')
-        rejected(e,dict(query(key,'benchmark_gap',dimension=dim,towns=['046018']),benchmark='tuscany'),'municipal_tax_geographic_benchmark_not_frozen')
+        if key==t.IRPEF and dim in t.BENCHMARK_DIMS:
+            i=0 if dim=='total' else t.SCENARIOS.index(int(dim.split(':')[1]))
+            for scope,values in IRPEF_BENCH.items():
+                for town in ('046018','046013'):
+                    r=e.query(dict(query(key,'benchmark_gap',dimension=dim,towns=[town]),benchmark=scope));assert r['status']=='computed',r
+                    b=r['observations'][1];assert abs(b['value']-values[i])<0.005,(scope,dim,b['value'])
+                    assert math.isclose(r['result']['value'],expected[town]-b['value'],abs_tol=1e-9) and b['evidence'][0]['coverage']['populationShare']>=0.9
+            rejected(e,dict(query(key,'benchmark_gap',dimension=dim,towns=['046018']),benchmark='versilia'),'municipal_tax_geographic_benchmark_not_frozen')
+            rejected(e,dict(query(key,'benchmark_gap',dimension=dim,towns=['046018'],periods=['2024']),benchmark='tuscany'),'municipal_tax_period_not_frozen')
+        else:
+            rejected(e,dict(query(key,'benchmark_gap',dimension=dim,towns=['046018']),benchmark='tuscany'),'municipal_tax_geographic_benchmark_not_frozen')
     for key in t.KEYS:
         for pair in ([dict(metric=key),dict(metric='population')],[dict(metric='population'),dict(metric=key)]):
             rejected(e,dict(operation='correlation',selectors=pair,axis='municipalities',method='pearson',purpose='descriptive'),'municipal_tax_pair_not_jointly_reviewed')
         mutations=[lambda m:m['meta'].update(year='2027'),lambda m:m['meta'].update(unit='percent'),lambda m:m['meta'].update(polarity='positive'),lambda m:m.update(sourceUrl='https://example.com'),lambda m:m['method'].update(formula='different'),lambda m:m['rows'][0].update(value=False),lambda m:m['rows'][0].update(benchmarkValue=1),lambda m:m['rows'][0].update(town='Unknown'),lambda m:m['rows'][0].update(slug='unknown'),lambda m:m['rows'][0].update(code='046005'),lambda m:m['rows'][0].update(dataUnavailable=True),lambda m:m['rows'][0].update(normalized={'value':1}),lambda m:m['rows'][0].update(ratioComponents={'numerator':1}),lambda m:m['rows'][0]['series']['values'].__setitem__(0,False),lambda m:m['aggregate'].update(value=999),lambda m:m['aggregate'].update(label='Consolidated Versilia'),lambda m:m['meta'].update(benchmark={'tuscany':1})]
-        if key==t.IRPEF: mutations += [lambda m:m['rows'][0]['parts'][1].update(value=1),lambda m:m['rows'][0]['municipalIrpefScaleCompanion'].update(normalized=1),lambda m:m['rows'][0]['componentSeries']['30.000 €']['years'].__setitem__(0,2024)]
+        if key==t.IRPEF: mutations += [lambda m:m['meta']['benchmark'].update(sourceSnapshot='data/source-snapshots/other.json'),lambda m:m['rows'][0]['parts'][1].update(value=1),lambda m:m['rows'][0]['municipalIrpefScaleCompanion'].update(normalized=1),lambda m:m['rows'][0]['componentSeries']['30.000 €']['years'].__setitem__(0,2024)]
         if key==t.TARI: mutations += [lambda m:m['rows'][0]['tariffDetail'].update(equalization2026=0),lambda m:m['rows'][0]['series']['values'].__setitem__(0,1)]
         if key==t.IMU: mutations += [lambda m:m['rows'][0].update(ratePercent=1),lambda m:m['rows'][0]['series']['years'].__setitem__(0,'2024')]
         for mutation in mutations:
@@ -62,7 +75,10 @@ def regressions(path):
     assert t.irpef_amount(rules['Forte dei Marmi'],20000)==0
     assert 15000*.0035+5000*.006==82.5  # Camaiore: all brackets taxable after exemption threshold.
     assert 28000*.005+2000*.0065==153  # Forte: exemption doesn't subtract 20000 from base.
-    print('Municipal tax adapters PASS: 56 fixed cells, TARI/IMU 2026 and IRPEF 2025 periods, zero/exemption and ties, provenance and adversarial guards')
+    # Il confronto non sopravvive a un valore pubblicato diverso dallo snapshot.
+    g=QueryEngine(path,layer='effective');g._catalog['metrics'][t.IRPEF]['meta']['benchmarkScenarios']['30000']['italy']=1
+    rejected(g,dict(query(t.IRPEF,'benchmark_gap',dimension='income:30000',towns=['046018']),benchmark='italy'),'municipal_tax_public_native_mismatch')
+    print('Municipal tax adapters PASS: 56 fixed cells + 16 IRPEF benchmark gaps (Toscana/Italia, 3 scenari), TARI/IMU 2026 and IRPEF 2025 periods, zero/exemption and ties, provenance and adversarial guards')
 
 
 if __name__=='__main__':regressions(ROOT/'dist/data/site-data.json')

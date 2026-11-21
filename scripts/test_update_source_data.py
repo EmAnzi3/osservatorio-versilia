@@ -724,6 +724,95 @@ def siope_cash_benchmarks_cases() -> None:
         raise AssertionError("denominatore diverso dal pubblicato accettato")
 
 
+def irpef_benchmarks_cases() -> None:
+    """Addizionale IRPEF: elenco MEF di tutti i Comuni, stessa regola dei valori comunali, media pesata per residenti, 7/7 e 90%."""
+    import csv
+    import io as _io
+    import irpef_benchmarks as ib
+
+    def r(aliquota, fascia, n=1):
+        return {("ALIQUOTA" if n == 1 else f"ALIQUOTA_{n}"): aliquota, ("FASCIA" if n == 1 else f"FASCIA_{n}"): fascia}
+    flat = {**r(",8", "Aliquota unica"), "IMPORTO_ESENTE": "0"}
+    camaiore = {**r("0", "Esenzione per redditi imponibili fino a euro 15.000,00"), **r("0,35", "Applicabile a scaglione di reddito fino a euro 15.000,00", 2),
+                **r(",6", "Applicabile a scaglione di reddito da euro 15.000,01 fino ad euro 28.000,00", 3),
+                **r(",7", "Applicabile a scaglione di reddito da euro 28.000,01 fino a euro 50.000,00", 4),
+                **r(",8", "Applicabile a scaglione di reddito oltre euro 50.000,00", 5), "IMPORTO_ESENTE": "15000"}
+    assert [ib.amount(ib.rule(camaiore), n) for n in ib.SCENARIOS] == [82.5, 144.5, 284.5]
+    loose = {**r("0", "Esenzione per redditi imponibili fino a euro 12.000,00"), **r(",5", "Applicabile a redditi da 0 a 15000", 2),
+             **r(",8", "Applicabile a redditi oltre 15000", 3), "IMPORTO_ESENTE": "12000"}
+    assert ib.amount(ib.rule(loose), 20000) == 15000 * 0.005 + 5000 * 0.008
+    agordo = {**r("0,63", "Applicabile a FINO A 15.000,00"), **r(",76", "Applicabile a DA 15.001,00 A 28.000,00", 2),
+              **r(",79", "Applicabile a DAL 28.001,00 A 50.000,00", 3), **r(",8", "Applicabile a OLTRE 50.000,00", 4), "IMPORTO_ESENTE": "0"}
+    assert ib.amount(ib.rule(agordo), 30000) == round(15000 * 0.0063 + 13000 * 0.0076 + 2000 * 0.0079, 2)
+    worded = {**r("0,6", "Applicabile a redditi fino a € 15.000,00"), **r(",7", "Applicabile a redditi oltre € 15.000,00 e fino a € 28.000,00", 2),
+              **r(",75", "Applicabile a redditi imponibili tra € 28.000,01 e € 50.000,00", 3), **r("1,2", "Applicabile a scaglione di reddito da euro 50.000,01", 4), "IMPORTO_ESENTE": "0"}
+    assert ib.amount(ib.rule(worded), 50000) == round(15000 * 0.006 + 13000 * 0.007 + 22000 * 0.0075, 2)
+    assert ib.rule(worded)["brackets"][-1] == {"upTo": None, "ratePercent": 1.2}
+    none = {**r("0*", ""), "IMPORTO_ESENTE": "0"}
+    assert ib.rule(none)["notInstituted"] and ib.amount(ib.rule(none), 50000) == 0.0
+    category = {**r("0", "Esenzione per REDDITI DA LAVORO DIPENDENTE E/O PENSIONI PARI A €25.000,00"), **r(",8", "Aliquota unica", 2), "IMPORTO_ESENTE": "0"}
+    assert ib.amount(ib.rule(category), 30000) == 240.0
+    for bad in ({**r(",5", "Applicabile a scaglione di reddito fino a euro 15.000,00"), **r(",8", "Applicabile a scaglione di reddito oltre euro 28.000,00", 2)},
+                {**r(",8", "Applicabile agli scaglioni IRPEF statali")}, {**r("1,6", "Aliquota unica")}):
+        try:
+            ib.rule(bad)
+        except ib.Unreadable:
+            pass
+        else:
+            raise AssertionError(f"disciplina ambigua accettata {bad}")
+    try:
+        ib.amount(ib.rule(category), 20000)
+    except ib.Unreadable:
+        pass
+    else:
+        raise AssertionError("esenzione per categoria fino allo scenario accettata")
+
+    towns = {"046005": camaiore, "046013": flat, "046018": flat, "046024": flat, "046028": flat, "046030": flat, "046033": flat}
+    tuscany = list(towns) + [f"046{i:03d}" for i in range(100, 373)]
+    others = [f"{100 + i // 1000:03d}{i % 1000:03d}" for i in range(7600)]
+    cat = {c: f"{chr(65 + i // 1000)}{i % 1000:03d}" for i, c in enumerate(tuscany + others)}
+    residents = {c: 1000 + i for i, c in enumerate(tuscany + others)}
+    fields = ["CODICE_CATASTALE", "COMUNE", "PR"] + [f for n in range(1, 13) for f in (("ALIQUOTA", "FASCIA") if n == 1 else (f"ALIQUOTA_{n}", f"FASCIA_{n}"))] + ["FLAG_NUOVA", "IMPORTO_ESENTE"]
+    def mef(unreadable=0, mismatch=False):
+        out = _io.StringIO()
+        w = csv.DictWriter(out, fieldnames=fields, delimiter=";")
+        w.writeheader()
+        for i, c in enumerate(tuscany + others):
+            row = towns.get(c, category if c in tuscany[7:17] else flat)
+            if mismatch and c == "046018":
+                row = {**r(",7", "Aliquota unica"), "IMPORTO_ESENTE": "0"}
+            if c in others[len(others) - unreadable:]:
+                row = r(",8", "Applicabile agli scaglioni IRPEF statali")
+            w.writerow({"CODICE_CATASTALE": cat[c], "COMUNE": "X", "PR": "XX", "FLAG_NUOVA": "1", **row})
+        return out.getvalue().encode("cp1252")
+    def istat():
+        lines = ["Codice Regione;Codice Comune formato alfanumerico;Denominazione;Codice Catastale del comune"]
+        lines += [f"{'09' if c in tuscany else '01'};{c};X;{cat[c]}" for c in tuscany + others]
+        return "\n".join(lines).encode("cp1252")
+    def posas():
+        lines = ["Popolazione 2026", "Codice comune;Comune;Età;Totale maschi;Totale femmine;Totale"]
+        lines += [f"{c};X;999;0;0;{n}" for c, n in residents.items()]
+        b = _io.BytesIO()
+        with zipfile.ZipFile(b, "w") as z:
+            z.writestr("POSAS_2026.csv", "\n".join(lines))
+        return b.getvalue()
+    published = {c: [82.5, 144.5, 284.5] if c == "046005" else [160.0, 240.0, 400.0] for c in towns}
+    def fetch(**kw):
+        return lambda u: posas() if "posas" in u else istat() if "istat.it" in u else mef(**kw)
+    snap = ib.build_snapshot(2025, fetch(), published)
+    t20, t30 = snap["benchmarks"]["20000"]["tuscany"], snap["benchmarks"]["30000"]["tuscany"]
+    pop = {c: residents[c] for c in tuscany if c not in tuscany[7:17]}
+    expected = (82.5 * residents["046005"] + 160 * (sum(pop.values()) - residents["046005"])) / sum(pop.values())
+    assert math.isclose(t20["value"], expected, rel_tol=0, abs_tol=1e-9) and t20["municipalities"] == 270 and t20["excluded"] == {"esenzione per categorie fino allo scenario": 10}
+    assert t30["municipalities"] == 280 and snap["qualityGate"]["publicReconciliation"] == "7/7"
+    assert snap["benchmarks"]["50000"]["italy"]["municipalities"] == 7880 and snap["towns"]["046005"]["cadastral"] == cat["046005"]
+    snap = ib.build_snapshot(2025, fetch(mismatch=True), published)
+    assert snap["blocked"] and snap["benchmarks"]["30000"]["italy"]["value"] is None
+    snap = ib.build_snapshot(2025, fetch(unreadable=1500), published)
+    assert snap["benchmarks"]["30000"]["italy"]["value"] is None and "copertura" in snap["benchmarks"]["30000"]["italy"]["reason"]
+    assert snap["benchmarks"]["30000"]["tuscany"]["value"] is not None
+
+
 def asia_micro_units_history_cases() -> None:
     """Micro unità: SDMX ASIA-UL per i 7 Comuni, totali = unità locali pubblicate, ultima quota = pubblicata."""
     import micro_units_history as mu
@@ -1301,11 +1390,12 @@ def main() -> None:
     mim_students_history_cases()
     asia_micro_units_history_cases()
     siope_cash_benchmarks_cases()
+    irpef_benchmarks_cases()
     with tempfile.TemporaryDirectory() as tmp:
         istat_famiglie_cases(Path(tmp))
     openbdap_benchmarks_cases()
     source_probe_cases(Path("."))
-    print("Aggiornatori dalla fonte: ARS stesso export invariato, revisione e Toscana rilevate, periodo nuovo rifiutato; mobilità P2 ricostruita 7/7 identica, rigiro senza modifiche; ASIA-UL ricostruita 7/7 identica, anno nuovo accettato, Comune incompleto rifiutato; AGCOM FTTH ricostruita 7/7 identica, edizione nuova accettata, edizione vecchia e Comune mancante rifiutati; sonda MEF limitata agli atti DIMUNIC; capacità ricettiva pubblicata ricostruita identica, anno nuovo accettato con perimetro dichiarato, anno precedente rifiutato; consumo di suolo anno nuovo accettato con benchmark ufficiali, anno precedente rifiutato; parco ACI ricostruito 7/7 identico da un anno nuovo, anno pubblicato rifiutato; OMI al punto medio con semestre pubblicato rigiocato, replay diverso e semestre vecchio rifiutati; sonda generica dei fogli; morosità ERP esercizio nuovo riconciliato e prospetti incoerenti rifiutati; acqua GAIA 70 località ricostruite identiche, semestre nuovo accettato, periodo vecchio, parametro cambiato e semestre precedente rifiutati; sedi scolastiche MIM ricostruite 7/7 identiche, a.s. nuovo accettato, a.s. precedente, Comune mancante e altro anno rifiutati; sportelli Banca d'Italia: serie 2018–2025 ricostruita con chiave banca + sede, riconciliazione Istat 2022 obbligatoria, anno aperto rifiutato; fabbisogni standard OpenCivitas 2023 riconciliati con la sonda, aggregati sui Comuni valutabili, valori diversi e annualità assente rifiutati; serie dei componenti per famiglia con aggregati componenti/famiglie e riscontro toscano; serie ACI del parco autovetture con ultimo anno vincolato al pubblicato; serie dei contribuenti con POSAS a due anni e ultimo anno vincolato; serie MIM con anagrafe di ciascun anno e ultimo anno vincolato; serie ASIA-UL delle micro unità con totali vincolati alle unità locali; confronto Toscana della cassa SIOPE con 7/7 e soglia del 90% PASS")
+    print("Aggiornatori dalla fonte: ARS stesso export invariato, revisione e Toscana rilevate, periodo nuovo rifiutato; mobilità P2 ricostruita 7/7 identica, rigiro senza modifiche; ASIA-UL ricostruita 7/7 identica, anno nuovo accettato, Comune incompleto rifiutato; AGCOM FTTH ricostruita 7/7 identica, edizione nuova accettata, edizione vecchia e Comune mancante rifiutati; sonda MEF limitata agli atti DIMUNIC; capacità ricettiva pubblicata ricostruita identica, anno nuovo accettato con perimetro dichiarato, anno precedente rifiutato; consumo di suolo anno nuovo accettato con benchmark ufficiali, anno precedente rifiutato; parco ACI ricostruito 7/7 identico da un anno nuovo, anno pubblicato rifiutato; OMI al punto medio con semestre pubblicato rigiocato, replay diverso e semestre vecchio rifiutati; sonda generica dei fogli; morosità ERP esercizio nuovo riconciliato e prospetti incoerenti rifiutati; acqua GAIA 70 località ricostruite identiche, semestre nuovo accettato, periodo vecchio, parametro cambiato e semestre precedente rifiutati; sedi scolastiche MIM ricostruite 7/7 identiche, a.s. nuovo accettato, a.s. precedente, Comune mancante e altro anno rifiutati; sportelli Banca d'Italia: serie 2018–2025 ricostruita con chiave banca + sede, riconciliazione Istat 2022 obbligatoria, anno aperto rifiutato; fabbisogni standard OpenCivitas 2023 riconciliati con la sonda, aggregati sui Comuni valutabili, valori diversi e annualità assente rifiutati; serie dei componenti per famiglia con aggregati componenti/famiglie e riscontro toscano; serie ACI del parco autovetture con ultimo anno vincolato al pubblicato; serie dei contribuenti con POSAS a due anni e ultimo anno vincolato; serie MIM con anagrafe di ciascun anno e ultimo anno vincolato; serie ASIA-UL delle micro unità con totali vincolati alle unità locali; confronto Toscana della cassa SIOPE con 7/7 e soglia del 90%; confronto Toscana/Italia dell'addizionale IRPEF pesato per residenti, esenzioni per categoria escluse, 7/7 e 90% PASS")
 
 
 if __name__ == "__main__":

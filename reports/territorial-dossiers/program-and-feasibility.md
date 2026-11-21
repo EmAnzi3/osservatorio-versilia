@@ -1,6 +1,6 @@
 # Programma dei dossier territoriali — evidenze verificate
 
-Esito **PASS**; catalogo `198af0097125e3d6fc8826554d8f533e50cfef5fe258ad0486a461490325aaf6`; motore `5ed0ee332d2c5ebd1442cbbfc8365103d47e2742492216d8d7b6f41557524c5a`.
+Esito **PASS**; catalogo `203afa53f53d4fbe6c7525f8224ec82abd8152d716985bf5adf05b6660872180`; motore `2519d6290cf0fb833369f249b766097dc732ce783a062a5b012ab51a8849ceb7`.
 
 Le 20 domande A6 originarie sono riusate per riferimento, senza riscriverle. Le domande centrali orientano un programma amministrativo: i risultati di contesto non risolvono automaticamente bisogni, efficacia o causalità.
 
@@ -19,7 +19,7 @@ Le 20 domande A6 originarie sono riusate per riferimento, senza riscriverle. Le 
 | Ambiente, clima e rischio | program_backlog | 26 richieste verificate | Contesti e calcoli separati, periodi espliciti | Vulnerabilità, danni ed efficacia delle opere; Geometrie e scenari locali aggiornati, qualità dell’aria dove non misurata |
 | Suolo, agricoltura e biodiversità | program_backlog | 26 richieste verificate | Contesti e calcoli separati, periodi espliciti | Habitat/specie e stato ecologico; Continuità metodologica, uso effettivo e qualità del suolo |
 | Energia e transizione accessibile | program_backlog | 8 richieste verificate | Contesti e calcoli separati, periodi espliciti | Consumi, bollette, potenza e uso degli impianti; Produzione rinnovabile, reti e nuclei vulnerabili |
-| Bilanci e risultati dei servizi | ready_for_composition | 19 richieste verificate | Contesti e calcoli separati, periodi espliciti | Costi e utenti per servizio, qualità ed esiti; Fabbisogni/costi standard confrontabili e perimetri gestionali |
+| Bilanci e risultati dei servizi | ready_for_composition | 20 richieste verificate | Contesti e calcoli separati, periodi espliciti | Costi e utenti per servizio, qualità ed esiti; Fabbisogni/costi standard confrontabili e perimetri gestionali |
 | Investimenti, PNRR e opere | program_backlog | 14 richieste verificate | Contesti e calcoli separati, periodi espliciti | CUP e localizzazioni riconciliati, costi finali e cronoprogrammi; Collaudi, messa in esercizio, utenti e risultati |
 | Capacità amministrativa e digitale | program_backlog | 20 richieste verificate | Contesti e calcoli separati, periodi espliciti | Carichi per funzione, tempi, competenze e gestione associata; Utenti, completamenti, abbandoni e barriere digitali |
 | Partecipazione, cultura e vita quotidiana | program_backlog | 22 richieste verificate | Contesti e calcoli separati, periodi espliciti | Partecipazione non elettorale, accesso e barriere; Qualità percepita, uso degli spazi e copertura di gruppi |
@@ -771,6 +771,7 @@ Le risorse comunali sono sostenibili e quali risultati dei servizi possiamo veri
 | environment_cost_gap | benchmark_gap / wasteServiceCost / total | 2024 / eurPerResident | 046018: 275.56; tuscany: 297.74 | PASS |
 | environment_cost_weighting_refused | weighted_ratio / wasteServiceCost / total | 2024 / eurPerResident | verified_ratio_adapter_required | PASS |
 | tax_municipalIrpef_total_046018 | compare / municipalIrpef / total | 2025 / currency2 | 046005: 82.5; 046018: 160.0 | PASS |
+| tax_municipalIrpef_benchmark_tuscany_046018 | benchmark_gap / municipalIrpef / total | 2025 / currency2 | 046018: 160.0; tuscany: 126.32520901984083 | PASS |
 | tax_municipalIrpef_series_refused | series / municipalIrpef / total |  /  | municipal_tax_single_snapshot_no_history | PASS |
 | tax_tariStandardHousehold_total_046018 | compare / tariStandardHousehold / total | 2026 / currency2 | 046005: 427.43; 046018: 544.85 | PASS |
 | tax_tariStandardHousehold_series_refused | series / tariStandardHousehold / total |  /  | municipal_tax_single_snapshot_no_history | PASS |

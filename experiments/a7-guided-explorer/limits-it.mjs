@@ -14,6 +14,7 @@ export default {
 "finance_benchmark_period_not_frozen": "Il confronto con Toscana e Italia esiste solo per l'ultimo rendiconto.",
 "density_benchmark_period_not_frozen": "Il confronto con Toscana e Italia della densità esiste solo per il 2026.",
 "finance_benchmark_scope_below_coverage_threshold": "Il confronto non è pubblicato: i Comuni che hanno trasmesso il rendiconto coprono meno del 90% dei residenti.",
+"municipal_tax_benchmark_scope_below_coverage_threshold": "Il confronto non è pubblicato: i Comuni con regole leggibili coprono meno del 90% dei residenti.",
 "insufficient_observations": "Non ci sono abbastanza valori disponibili per questa analisi.",
 "partial_coverage_requires_opt_in": "Non tutti i Comuni hanno il dato: per proseguire serve la tua conferma sulla copertura incompleta.",
 "percentage_unit_required": "La variazione in punti percentuali vale solo per indicatori espressi in percentuale.",

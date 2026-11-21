@@ -61,15 +61,19 @@ def dimensions(key):
     return ['total']
 
 
-def scopes(key, dim): return []
-def operations(key, dim): return ['compare','rank']
+IRPEF_BENCHMARK = 'data/source-snapshots/mef-irpef-benchmark-2025.json'
+BENCHMARK_DIMS = ('total',*('income:'+str(n) for n in SCENARIOS))
+
+
+def scopes(key, dim): return ['tuscany','italy'] if key == IRPEF and dim in BENCHMARK_DIMS else []
+def operations(key, dim): return ['compare','rank']+(['benchmark_gap'] if scopes(key,dim) else [])
 
 
 def selection_guard(key, dim, op):
     if op in ('series','absolute_change','relative_change','percentage_points','trend'):
         raise ValueError('municipal_tax_single_snapshot_no_history')
     if op == 'weighted_ratio': raise ValueError('municipal_tax_scenarios_not_additive_population')
-    if op == 'benchmark_gap': raise ValueError('municipal_tax_geographic_benchmark_not_frozen')
+    if op == 'benchmark_gap' and not scopes(key,dim): raise ValueError('municipal_tax_geographic_benchmark_not_frozen')
     if op == 'anomaly': raise ValueError('municipal_tax_peer_anomaly_not_reviewed')
     if op == 'correlation': raise ValueError('municipal_tax_pair_not_jointly_reviewed')
 
@@ -79,7 +83,7 @@ def context(metric, key, dim):
     if (dim not in dimensions(key) or meta.get('key') != key or meta.get('year') != str(YEARS[key])
             or meta.get('unit') != UNITS[key] or meta.get('polarity') != 'neutral'
             or metric.get('sourceUrl') != URLS[key] or metric.get('method',{}).get('formula') != FORMULAS[key]
-            or meta.get('benchmark') is not None):
+            or (meta.get('benchmark') is not None and not (key == IRPEF and meta['benchmark'].get('sourceSnapshot') == IRPEF_BENCHMARK))):
         raise ValueError('municipal_tax_definition_changed')
     if dim == 'effectiveRate:20000' and not all(isinstance(r.get('municipalIrpefScaleCompanion'),dict) for r in metric['rows']):
         raise ValueError('municipal_tax_effective_rate_companion_not_materialized')
@@ -177,3 +181,30 @@ def observation(engine, key, index, dim, period, historical):
         notes += ['municipal_tax_irpef_total_alias_20000','municipal_tax_irpef_effective_rate_not_marginal_rate','municipal_tax_missing_exemption_not_general_no_exemption_claim','municipal_tax_seravezza_municipal_confirmation_not_mef_row','municipal_tax_source_normalized_snapshot_not_raw_document_replay']
     evidence=[dict(kind='catalog_snapshot',path=engine.catalog_path,sha256=engine.catalog_hash,valuePointer=f'/metrics/{key}/rows/{index}/{field}'),dict(ref,kind='source_snapshot',recordPointer=record,**extra)]
     return dict(ctx,metric=key,dimension=dim,geography=row['code'],period=period,value=value,source=URLS[key],evidence=evidence,provenance=evidence,notApplicable=False,dataUnavailable=False,missingReason=None),notes
+
+
+def benchmark(engine, key, scope, municipal):
+    """Toscana/Italia: importi dei Comuni dell'elenco MEF pesati per i residenti, stesso scenario, ≥90% coperti."""
+    if key != IRPEF or scope not in ('tuscany','italy') or municipal.get('dimension') not in BENCHMARK_DIMS:
+        raise ValueError('municipal_tax_geographic_benchmark_not_frozen')
+    meta = engine._catalog['metrics'][key]['meta']; published = meta.get('benchmark') or {}
+    if published.get('sourceSnapshot') != IRPEF_BENCHMARK: raise ValueError('municipal_tax_geographic_benchmark_not_frozen')
+    snap, ref = engine.file(IRPEF_BENCHMARK)
+    if (ref.get('sha256'),fingerprint(snap)) != (_pin('municipal_tax#7'),_pin('municipal_tax#8')) or snap.get('qualityGate',{}).get('status') != 'PASS' or snap.get('blocked'):
+        raise ValueError('municipal_tax_frozen_input_changed')
+    if municipal['period'] != str(snap['year']) or str(published.get('year')) != str(snap['year']) or snap['scenarios'] != list(SCENARIOS):
+        raise ValueError('municipal_tax_period_not_frozen')
+    n = 20000 if municipal['dimension'] == 'total' else int(municipal['dimension'].split(':')[1])
+    row = next(r for r in engine._catalog['metrics'][key]['rows'] if r['code'] == municipal['geography'])
+    equal(snap['towns'][row['code']]['amounts'][str(n)], municipal['value'])
+    entry = snap['benchmarks'][str(n)][scope]
+    if entry.get('value') is None or entry['populationShare'] < snap['minCoverage']: raise ValueError('municipal_tax_benchmark_scope_below_coverage_threshold')
+    value = entry['numerator']/entry['denominator']; equal(value, entry['value'])
+    equal((meta.get('benchmarkScenarios') or {}).get(str(n),{}).get(scope), value)
+    if n == SCENARIOS[0]: equal(published.get(scope), value)
+    evidence = [dict(ref,kind='source_snapshot',recordPointer=f'/benchmarks/{n}/{scope}',
+                     nativeComponents=dict(numerator=entry['numerator'],denominator=entry['denominator'],scale=1),
+                     coverage=dict(municipalities=entry['municipalities'],municipalitiesTotal=entry['municipalitiesTotal'],populationShare=entry['populationShare'])),
+                dict(kind='catalog_snapshot',path=engine.catalog_path,sha256=engine.catalog_hash,valuePointer=f'/metrics/{key}/meta/benchmarkScenarios/{n}/{scope}')]
+    return dict(municipal,geography=scope,value=value,evidence=evidence,provenance=evidence,
+                benchmarkAggregation='MEF municipal rules applied to the same scenario income; amounts weighted by POSAS residents at the next January 1 over municipalities with unambiguous rules (category-only exemptions reaching the scenario excluded); published only with ≥90% of residents covered; Versilia aggregate stays the simple mean of seven municipalities')
