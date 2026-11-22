@@ -128,14 +128,22 @@ def verify_daily(path: Path) -> None:
     assert payload.get("releaseVersion") == "0.4.4"
     assert payload.get("dailyHardeningVersion") == "0.4.4-h5"
     assert payload.get("sourceHealthGraceDays") == 2
-    assert not payload.get("continuityHold")
-    assert not payload.get("coverageHold")
     assert (payload.get("backtest") or {}).get("passed") is True
-    assert (payload.get("coverageAudit") or {}).get("status") == "pass"
-    from opportunity_runtime_snapshot import discovery_coverage_errors
-    assert not discovery_coverage_errors(payload), discovery_coverage_errors(payload)
-    assert (payload.get("regionalCompleteness") or {}).get("status") in {"pass", "degraded"}
-    assert (payload.get("continuityReconciliation") or {}).get("remaining") == 0
+    partial = payload.get("partialPublication")
+    if partial:
+        # Pubblicazione parziale: i gate di completezza possono fallire, ma solo loro, e il blocco è dichiarato.
+        from opportunity_runtime_snapshot import PARTIAL_GATES as PARTIAL_BLOCKERS
+        assert partial.get("status") == "partial" and partial.get("date") == expected.isoformat(), partial
+        blocked = {str(x).split("=", 1)[0] for x in partial.get("blockedBy") or []}
+        assert blocked and blocked <= PARTIAL_BLOCKERS, partial
+    else:
+        assert not payload.get("continuityHold")
+        assert not payload.get("coverageHold")
+        assert (payload.get("coverageAudit") or {}).get("status") == "pass"
+        from opportunity_runtime_snapshot import discovery_coverage_errors
+        assert not discovery_coverage_errors(payload), discovery_coverage_errors(payload)
+        assert (payload.get("regionalCompleteness") or {}).get("status") in {"pass", "degraded"}
+        assert (payload.get("continuityReconciliation") or {}).get("remaining") == 0
 
     opportunities = list(payload.get("opportunities") or [])
     archive = list(payload.get("archive") or [])

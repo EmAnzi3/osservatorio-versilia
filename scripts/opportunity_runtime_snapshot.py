@@ -83,7 +83,21 @@ def validation_errors(payload: dict[str, Any], today: date) -> list[str]:
     reconciliation = payload.get("continuityReconciliation") or {}
     if reconciliation and int(reconciliation.get("remaining") or 0) != 0:
         errors.append("continuityReconciliation")
+    partial = payload.get("partialPublication") or {}
+    if partial:
+        # Pubblicazione parziale dichiarata (opportunity_daily_refresh.PARTIAL_BLOCKERS): i soli gate di completezza
+        # possono fallire; backtest, versioni e schede restano obbligatori.
+        blocked = {str(x).split("=", 1)[0] for x in partial.get("blockedBy") or []}
+        if partial.get("status") != "partial" or not blocked or blocked - PARTIAL_GATES:
+            errors.append("partialPublication")
+        else:
+            errors = [e for e in errors if e not in PARTIAL_GATE_ERRORS]
     return errors
+
+
+PARTIAL_GATES = frozenset({"continuityHold", "coverageHold", "coverageAudit", "regionalCompleteness"})
+PARTIAL_GATE_ERRORS = frozenset({"continuityHold", "coverageHold", "coverageAudit", "transportBudget",
+                                 "regionalCompleteness", "continuityReconciliation"})
 
 
 def select_snapshot(

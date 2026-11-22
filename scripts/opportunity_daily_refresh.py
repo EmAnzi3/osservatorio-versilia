@@ -17,6 +17,7 @@ from typing import Any
 
 from opportunity_continuity import reconcile_final_continuity as _reconcile_final_continuity
 import opportunity_regione_toscana_guard as regione_guard
+from opportunity_runtime_snapshot import PARTIAL_GATES
 import run_opportunity_radar_v044 as radar
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -430,6 +431,41 @@ def _assert_publishable(result: dict[str, Any]) -> None:
         raise RuntimeError("Snapshot giornaliero non pubblicabile: " + ", ".join(problems))
 
 
+# Gate di completezza: dicono che il run potrebbe non aver visto tutto, non che ciò che ha verificato sia
+# sbagliato. Con solo questi blocchi si pubblica in parte: resta tutto ciò che era pubblicato, si aggiungono
+# le schede nuove verificate oggi. Backtest fallito o zero schede bloccano tutto.
+PARTIAL_BLOCKERS = PARTIAL_GATES  # stesso elenco per scan, validazione e seed del run successivo
+
+
+def _apply_partial_publication(result: dict[str, Any], previous: dict[str, Any], today: date) -> bool:
+    problems = _publishability_problems(result)
+    names = {problem.split("=", 1)[0] for problem in problems}
+    previous_items = [item for item in previous.get("opportunities") or [] if _identity(item) not in {"id:", "url:", "coverage:"}]
+    if not problems or names - PARTIAL_BLOCKERS or not previous_items:
+        return False
+    current = {_identity(item) for item in result.get("opportunities") or []}
+    # Ciò che il run ha già archiviato (scaduto, assorbito, ritirato) non torna dallo stato precedente.
+    archived = {_identity(item) for item in result.get("archive") or []}
+    carried = []
+    for old in previous_items:
+        if _identity(old) in current or _identity(old) in archived:
+            continue
+        item = json.loads(json.dumps(old, ensure_ascii=False))
+        item["partial_carryover"] = True
+        carried.append(item)
+    result.setdefault("opportunities", []).extend(carried)
+    result["partialPublication"] = {
+        "status": "partial",
+        "date": today.isoformat(),
+        "blockedBy": problems,
+        "carriedOver": len(carried),
+        "carriedOverTitles": [str(item.get("title") or "") for item in carried],
+        "rule": "Pubblicate le schede già pubblicate e le nuove verificate oggi; ritirate e scadute escono come sempre.",
+    }
+    print(f"RADAR PARZIALE: bloccato da {', '.join(problems)}; {len(carried)} schede riprese dallo stato pubblicato.")
+    return True
+
+
 def _annotate_first_seen(
     result: dict[str, Any],
     previous: dict[str, Any],
@@ -593,7 +629,13 @@ def main() -> int:
     _restore_transport_coverage_holds(result, previous, today)
     result = regione_guard.apply(result, today)
     _sanitize_public_content(result, previous)
-    _assert_publishable(result)
+    try:
+        _assert_publishable(result)
+    except RuntimeError:
+        # Il blocco resta (diagnostica scritta, notifica, run non verde ai fini della stabilità), ma non trattiene
+        # le schede nuove già verificate.
+        if not _apply_partial_publication(result, previous, today):
+            raise
     new_items = _annotate_first_seen(result, previous, today)
     result = _prepare_public(result, today)
 
