@@ -973,6 +973,29 @@ def update_mim_students_history(dry_run: bool, fetch=None) -> Changes:
     return changes
 
 
+# ------------------------------------------------------------------ Regione Toscana: serie dei servizi per la prima infanzia
+
+def update_infancy_history(dry_run: bool, fetch=None) -> Changes:
+    """Serie della ricettività potenziale per la prima infanzia; anno corrente = componenti pubblicati."""
+    import infancy_history as ih
+
+    site = load(SITE)
+    metric = site["metrics"][ih.METRIC]
+    last = int(metric["meta"]["year"][:4])
+    current = {r["code"]: {k: r[k] for k in ("potentialCapacity", "children3to36Months")} for r in metric["rows"]}
+    try:
+        snapshot = ih.build_snapshot(fetch or probes.http_fetch, current, last)
+    except (ih.InfancyError, KeyError, ValueError, probes.ProbeError) as error:
+        raise UpdateError(f"Serie prima infanzia: {error}") from error
+    changes = Changes()
+    for code, values in snapshot["series"].items():
+        changes.note(f"{ih.METRIC} {code} {snapshot['schoolYears'][0]}", None, round(values[0], 4))
+    snapshot["acquisitionEvidence"] = {"script": "scripts/update_source_data.py toscana-infancy-history"}
+    if not dry_run:
+        save(ROOT / ih.SNAPSHOT, snapshot)
+    return changes
+
+
 # ------------------------------------------------------------------ MEF/Istat: serie dei contribuenti ogni 100 maggiorenni
 
 def update_mef_taxpayers_history(dry_run: bool, fetch=None) -> Changes:
@@ -1760,6 +1783,8 @@ def main() -> int:
     ir_p = sub.add_parser("mef-irpef-benchmarks", help="confronto Toscana/Italia dell'addizionale comunale IRPEF negli scenari di reddito")
     ir_p.add_argument("--year", type=int, required=True)
     ir_p.add_argument("--dry-run", action="store_true")
+    ih_p = sub.add_parser("toscana-infancy-history", help="serie della ricettività potenziale per la prima infanzia")
+    ih_p.add_argument("--dry-run", action="store_true")
     mu_p = sub.add_parser("asia-micro-units-history", help="serie Istat ASIA-UL della quota di unità locali con 0–9 addetti")
     mu_p.add_argument("--dry-run", action="store_true")
     sc_p = sub.add_parser("mim-students-history", help="serie MIM di alunni, alunni per classe e tempo pieno della primaria")
@@ -1792,6 +1817,8 @@ def main() -> int:
             update_siope_cash_benchmarks(args.year, args.dry_run).report("Confronto cassa SIOPE:")
         elif args.updater == "mef-irpef-benchmarks":
             update_irpef_benchmarks(args.year, args.dry_run).report("Confronto addizionale IRPEF:")
+        elif args.updater == "toscana-infancy-history":
+            update_infancy_history(args.dry_run).report("Serie prima infanzia:")
         elif args.updater == "asia-micro-units-history":
             update_asia_micro_units_history(args.dry_run).report("Serie micro unità:")
         elif args.updater == "mim-students-history":

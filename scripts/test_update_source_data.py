@@ -813,6 +813,46 @@ def irpef_benchmarks_cases() -> None:
     assert snap["benchmarks"]["30000"]["tuscany"]["value"] is not None
 
 
+def infancy_history_cases() -> None:
+    """Prima infanzia: posti / bambini 3-36 mesi per anno educativo; celle vuote fermano la serie; ultimo anno vincolato."""
+    import infancy_history as ih
+
+    def csv_year(start, blank=None, header="Totale Ricettività potenziale"):
+        kids = "Totale 3-36 mesi" if start == 2024 else "Popolazione 3-36 mesi"  # intestazione degli anni precedenti
+        lines = [f"Anno educativo;CODICE ISTAT;Zone;{kids};Totale servizi;Totale Ricettività Nidi;{header}"]
+        for i, c in enumerate(ih.TOWNS):
+            if c == "046028":  # Seravezza senza servizi: tutto vuoto, posti zero
+                lines.append(f"{start}-{(start + 1) % 100:02d};{int(c)};Versilia;{200 + i};;;")
+                continue
+            cap = "" if blank == c else str(50 + i + start - 2020)
+            lines.append(f"{start}-{(start + 1) % 100:02d};{int(c)};Versilia;{200 + i};2;{cap};{cap}")
+        lines.append(f"{start}-{(start + 1) % 100:02d};;Toscana;59000;1000;28000;28000")
+        return "\n".join(lines).encode("cp1252")
+    def fetch_for(stop):
+        def fetch(url):
+            start = next(s for s, u in ih.FILES.items() if u == url)
+            return csv_year(start, blank="046030" if start == stop else None)
+        return fetch
+    current = {c: {"potentialCapacity": 0 if c == "046028" else 54 + i, "children3to36Months": 200 + i} for i, c in enumerate(ih.TOWNS)}
+    snap = ih.build_snapshot(fetch_for(2019), current)
+    assert snap["schoolYears"] == ["2020/21", "2021/22", "2022/23", "2023/24", "2024/25"] and snap["stoppedAt"]["schoolYear"] == "2019/20"
+    assert snap["series"]["046005"][0] == 50 / 200 * 100 and snap["series"]["046033"][-1] == 60 / 206 * 100
+    assert snap["series"]["046028"] == [0.0] * 5 and snap["noServiceCells"]["2020/21"] == ["046028"]
+    for bad in ({**current, "046018": {"potentialCapacity": 1, "children3to36Months": 202}},):
+        try:
+            ih.build_snapshot(fetch_for(2019), bad)
+        except ih.InfancyError:
+            pass
+        else:
+            raise AssertionError("ultimo anno non vincolato ai componenti pubblicati")
+    try:
+        ih.build_snapshot(fetch_for(2024), current)
+    except ih.InfancyError:
+        pass
+    else:
+        raise AssertionError("anno corrente con cella vuota accettato")
+
+
 def asia_micro_units_history_cases() -> None:
     """Micro unità: SDMX ASIA-UL per i 7 Comuni, totali = unità locali pubblicate, ultima quota = pubblicata."""
     import micro_units_history as mu
@@ -1391,6 +1431,7 @@ def main() -> None:
     asia_micro_units_history_cases()
     siope_cash_benchmarks_cases()
     irpef_benchmarks_cases()
+    infancy_history_cases()
     with tempfile.TemporaryDirectory() as tmp:
         istat_famiglie_cases(Path(tmp))
     openbdap_benchmarks_cases()
