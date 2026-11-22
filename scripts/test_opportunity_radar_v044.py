@@ -2,7 +2,7 @@
 """Contratti statici per Sport/LIFE, first-seen e copertura Toscana del Radar v0.4.4."""
 from __future__ import annotations
 
-from datetime import date
+from datetime import date, timedelta
 
 import run_opportunity_radar_v044 as radar
 
@@ -183,6 +183,18 @@ def main() -> int:
     evidence = radar._v044_evidence_audit(mock, evidence_date)
     assert evidence["status"] == "pass", evidence
     assert evidence["sourcesVerified"] == evidence["sourcesExpected"] == 2
+
+    # Oltre i 45 giorni la prova manuale scade; una fonte raggiunta oggi che produce segnalazioni la rinnova
+    # (22/11: Radar bloccato per pcm-sport e cinea-life, entrambe attive). Fonte raggiunta ma muta: resta scaduta.
+    late = evidence_date + timedelta(days=46)
+    assert radar._v044_evidence_audit(mock, late)["status"] == "fail"
+    live = {"sourceCoverage": {"rows": [{"source_id": "pcm-sport", "runtimeStatus": "ok", "candidateCount": 6},
+                                        {"source_id": "cinea-life", "runtimeStatus": "ok", "candidateCount": 4}]}}
+    renewed = radar._v044_evidence_audit(live, late)
+    assert renewed["status"] == "pass" and all(r["renewedByRuntime"] for r in renewed["rows"]), renewed
+    mute = {"sourceCoverage": {"rows": [{"source_id": "pcm-sport", "runtimeStatus": "ok", "candidateCount": 0},
+                                        {"source_id": "cinea-life", "runtimeStatus": "failed", "candidateCount": 4}]}}
+    assert radar._v044_evidence_audit(mute, late)["staleEvidence"] == ["cinea-life", "pcm-sport"]
 
     _test_regione_toscana_bandi_tutti(config, coverage)
 
