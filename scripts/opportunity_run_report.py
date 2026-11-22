@@ -426,7 +426,13 @@ def build_report(
     diagnostic_error = str((diagnostic or {}).get("error") or "").strip()
     if diagnostic_error:
         failure_reasons.append(diagnostic_error)
-    if phase_failed or gate_failed or load_errors:
+    partial = current.get("partialPublication") if current_error is None else None
+    if phase_failed or load_errors:
+        overall = "fail"
+    elif partial:
+        # Blocco di completezza: pubblicato lo stato precedente più le nuove schede verificate.
+        overall = "partial"
+    elif gate_failed:
         overall = "fail"
     elif source_rows or int(transport_summary.get("endpointFailures") or 0) or int(transport_summary.get("sourcesInGrace") or 0) or int(transport_summary.get("unhealthySources") or 0):
         overall = "pass_with_warnings"
@@ -449,6 +455,7 @@ def build_report(
         "generatedAt": datetime.now(timezone.utc).isoformat(),
         "referenceDate": current.get("referenceDate") or previous.get("referenceDate"),
         "overallStatus": overall,
+        "partialPublication": partial or None,
         "phases": [
             {"name": name, "label": PHASE_LABELS[name], "status": phase_statuses[name]}
             for name in PHASE_LABELS
@@ -504,6 +511,7 @@ def _status_label(value: str) -> str:
         "pass": "PASS",
         "pass_with_warnings": "PASS CON ANOMALIE GESTITE",
         "fail": "FAIL",
+        "partial": "PUBBLICATO IN PARTE",
         "success": "PASS",
         "failure": "FAIL",
         "skipped": "NON ESEGUITO",
@@ -541,6 +549,14 @@ def render_markdown(report: dict[str, Any], *, detail_limit: int = 25) -> str:
         "",
         f"Snapshot precedente: **{counts['previous']}** -> snapshot corrente: **{counts['current']}**; record invariati: **{counts['unchanged']}**.",
     ]
+    partial = report.get("partialPublication") or {}
+    if partial:
+        lines.extend([
+            "",
+            f"> Pubblicazione parziale. Bloccato da: {', '.join(partial.get('blockedBy') or [])}. Restano le schede già "
+            f"pubblicate ({partial.get('carriedOver', 0)} riprese dallo stato precedente) e si aggiungono le nuove verificate oggi; "
+            "ritirate e scadute escono come sempre.",
+        ])
     if not report.get("comparisonAvailable"):
         lines.extend([
             "",

@@ -7,6 +7,13 @@
 - Nidi: la voce sui destinatari («Famiglie con ISEE…») veniva letta insieme alla frase seguente sui Comuni che aderiscono alla misura (il taglio delle frasi non spezza dopo un anno, «2026-2027. Con…»), e `MUNICIPAL_AS_COLLABORATOR` la rende comunale. `PRIVATE_TITLE`: titolo «rivolto/riservato/destinato a famiglie, cittadini, imprese…» → scartato. Il taglio delle frasi dopo un anno resta da rivedere insieme alla regola «adesione».
 - Versione delle regole 1.4: tutte le schede automatiche si rileggono al prossimo run. Verificato sulle 41 schede pubblicate: la nuova regola tocca solo le due sbagliate.
 
+## Radar: pubblicazione parziale quando un gate di completezza blocca (22 novembre 2026)
+
+- Prima: un gate fallito (copertura, completezza regionale, continuità, verifiche dirette in hold) bloccava tutto e i bandi nuovi già verificati restavano fuori finché il gate non tornava verde.
+- Ora (`_apply_partial_publication` in `opportunity_daily_refresh.py`): con soli blocchi di completezza (`PARTIAL_GATES` in `opportunity_runtime_snapshot.py`) si pubblica lo stato precedente più le schede del run; la versione del run vince, ciò che il run archivia (scaduto, ritirato, assorbito) non torna. Backtest fallito o zero schede: blocco totale come prima.
+- Lo snapshot dichiara `partialPublication` (blocchi, schede riprese con `partial_carryover`); il validatore daily e il seed del run successivo accettano solo un parziale dichiarato con blocchi di completezza.
+- Il rapporto del run dice «PUBBLICATO IN PARTE» e la notifica dopo la pubblicazione parte sempre, con titolo «Radar pubblicato in parte». Ai fini della stabilità un run parziale conta come bloccato.
+
 ## Radar: prove di copertura rinnovate dal run (22 novembre 2026)
 
 - Run del 22/11 bloccato con `coverageAudit=fail`: le prove manuali Sport/LIFE (`opportunity-coverage-evidence-v044.json`, verificate il 7/10) superavano i 45 giorni, anche se `pcm-sport` e `cinea-life` erano raggiunte con 6 e 4 segnalazioni.
