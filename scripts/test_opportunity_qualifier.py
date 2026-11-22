@@ -584,6 +584,29 @@ def test_false_positives_of_21_november():
     assert q.title_term("Prorogati al 5 dicembre i bandi Sport Missione Comune", date(2026, 11, 21)) == date(2026, 12, 5)
 
 
+def test_false_positives_of_22_november():
+    """Run del 22/11: proroga MIM riletta con la scadenza dedotta 2028; Nidi gratis rivolto alle famiglie."""
+    mim = (PAD + "Possono presentare richiesta di finanziamento gli enti locali proprietari di edifici scolastici. "
+           "Le verifiche dovranno essere completate entro il 31 dicembre 2028.")
+    title = "Avviso MIM vulnerabilità sismica, prorogato al 16 ottobre il termine per le candidature"
+    reread = candidate(title, deadline_at="2028-12-31", origin="requalify")
+    d = q.qualify(reread, mim, {}, date(2026, 11, 22))
+    assert d.status == "expired" and d.deadline == "2026-10-16", d
+    # Una scadenza strutturata della fonte (non una rilettura) resta prevalente.
+    assert q.qualify(candidate(title, deadline_at="2028-12-31"), mim, {}, date(2026, 11, 22)).status != "expired"
+    nidi = (PAD + "Destinatari: Famiglie con ISEE fino a 40.000 euro, affinché queste possano beneficiare per i loro bambini "
+            "0-3 anni di un accesso agevolato ai servizi educativi nell'anno educativo 2026-2027. Con il decreto 19629 sono "
+            "state riaperte anche le adesioni da parte di nuovi Comuni. La domanda si presenta online entro il 1 dicembre 2026.")
+    d = decide("Bando Nidi gratis 2026-2027 per i servizi educativi rivolto alle famiglie", nidi, date(2026, 11, 22))
+    assert d.status == "rejected" and "destinatari privati" in d.reason, d
+    for title in ("Contributi rivolti alle imprese del commercio", "Voucher riservati ai cittadini over 65"):
+        assert decide(title, nidi, date(2026, 11, 22)).status == "rejected", title
+    # Il bando gemello per i Comuni resta qualificabile.
+    comuni = (PAD + "Soggetti ammessi: i Comuni della Toscana che gestiscono servizi educativi per la prima infanzia. "
+              "La domanda si presenta tramite PEC entro il 1 dicembre 2026.")
+    assert decide("Bando Nidi gratis 2026-2027 per i servizi educativi rivolto ai Comuni", comuni, date(2026, 11, 22)).status == "qualified"
+
+
 def test_news_with_future_term_of_open_calls_qualifies():
     """Proroga riportata da una notizia (ANCI Piemonte, bandi ICSC): termine futuro e Comuni ammessi bastano."""
     text = (PAD + "Sono stati prorogati i termini fino al 5 dicembre 2026 dei bandi Sport Missione Comune e Cultura Missione "

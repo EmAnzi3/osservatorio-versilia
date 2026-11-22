@@ -1,5 +1,12 @@
 # Consolidamento Osservatorio Versilia — handoff operativo
 
+## Radar: proroga MIM e Nidi gratis per le famiglie (22 novembre 2026, pomeriggio)
+
+- Run delle 16:33 (dopo #647): edicole ritirata; restavano la proroga MIM «al 16 ottobre» e una scheda nuova «Nidi gratis 2026-2027 … rivolto alle famiglie».
+- MIM: la rilettura (`origin: requalify`) passa la scadenza dedotta dal Radar (2028, fine lavori) come `deadline_at`, e `title_term` si applicava solo senza scadenza. Ora per le schede rilette il termine passato nel titolo prevale; una scadenza strutturata della fonte resta prevalente.
+- Nidi: la voce sui destinatari («Famiglie con ISEE…») veniva letta insieme alla frase seguente sui Comuni che aderiscono alla misura (il taglio delle frasi non spezza dopo un anno, «2026-2027. Con…»), e `MUNICIPAL_AS_COLLABORATOR` la rende comunale. `PRIVATE_TITLE`: titolo «rivolto/riservato/destinato a famiglie, cittadini, imprese…» → scartato. Il taglio delle frasi dopo un anno resta da rivedere insieme alla regola «adesione».
+- Versione delle regole 1.4: tutte le schede automatiche si rileggono al prossimo run. Verificato sulle 41 schede pubblicate: la nuova regola tocca solo le due sbagliate.
+
 ## Radar: pubblicazione parziale quando un gate di completezza blocca (22 novembre 2026)
 
 - Prima: un gate fallito (copertura, completezza regionale, continuità, verifiche dirette in hold) bloccava tutto e i bandi nuovi già verificati restavano fuori finché il gate non tornava verde.

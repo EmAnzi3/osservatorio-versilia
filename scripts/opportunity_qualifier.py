@@ -29,7 +29,7 @@ from datetime import date, timedelta
 from typing import Any, Callable
 from urllib.parse import urlsplit
 
-VERSION = "1.3"
+VERSION = "1.4"
 LABEL = "Requisiti da confermare"
 VERIFICATION_STATUS = "auto_qualified"
 MAX_CANDIDATES = 120
@@ -601,6 +601,12 @@ OTHER_PREFECTURE = re.compile(r"prefettura\.interno\.gov\.it/it/prefetture/(?!lu
 TITLE_TERM = re.compile(r"\b(?:prorogat\w*|scadenza|scade|termine|entro)\b[^.]{0,40}?\b(\d{1,2})(?:°|º)?\s+(" + "|".join(MONTHS) + r")(?:\s+(20\d{2}))?\b", re.I)
 
 
+# «Bando Nidi gratis … rivolto alle famiglie» (accanto a quello «rivolto ai Comuni»): il titolo dichiara i destinatari.
+PRIVATE_TITLE = re.compile(
+    r"\b(?:rivolt[oaie]|riservat[oaie]|dedicat[oaie]|destinat[oaie])\s+(?:esclusivamente\s+|solo\s+)?(?:a(?:lle|i|gli|l)?\s+)"
+    r"(?:famiglie|cittadin[ie]|imprese|aziende|privati|persone\s+fisiche|studenti|genitori|lavorator[ie]|professionisti)\b", re.I)
+
+
 def title_term(title: str, today: date) -> date | None:
     m = TITLE_TERM.search(title)
     if not m:
@@ -616,10 +622,16 @@ def qualify(candidate: dict[str, Any], page_text: str, documents: dict[str, str]
     combined = " ".join([page_text, *documents.values()])
     if NOT_A_CALL.search(title):
         return Decision("rejected", "Il titolo indica una notizia, un esito o una comunicazione, non un avviso aperto.")
+    audience = PRIVATE_TITLE.search(title)
+    if audience:
+        return Decision("rejected", f"Il titolo indica destinatari privati («{audience.group(0)}»), non i Comuni.")
     if len(combined) < 400:
         return Decision("unreadable", "Pagina e documenti senza testo sufficiente da leggere.")
     term = title_term(title, today)
-    if term and term < today and not candidate.get("deadline_at"):
+    # La scadenza di una scheda riletta è quella dedotta dal Radar stesso, non un dato della fonte: il termine passato nel
+    # titolo prevale (proroga MIM «al 16 ottobre» rimasta con la fine lavori 2028, 22/11).
+    own_deadline = candidate.get("origin") == "requalify"
+    if term and term < today and (not candidate.get("deadline_at") or own_deadline):
         return Decision("expired", f"Il titolo indica un termine già passato ({term.isoformat()}).", deadline=term.isoformat(),
                         deadline_evidence=f"Titolo: «{title[:120]}»")
     # I menu dei siti occupano spesso le prime migliaia di caratteri.
