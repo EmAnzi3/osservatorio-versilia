@@ -121,12 +121,3 @@
     gap: .4rem;
   }
 }
-
-/* Data ufficiale di pubblicazione e prima rilevazione del Radar, sotto il titolo. */
-.op-published {
-  margin: 6px 0 0;
-  color: var(--muted, #5c6f77);
-  font-size: 12px;
-  line-height: 1.45;
-  font-weight: 600;
-}

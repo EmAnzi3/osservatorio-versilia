@@ -6,6 +6,7 @@
 - Schede automatiche: `opportunity_publication_date.publication_date` legge la data dalla pagina (JSON-LD `datePublished`, `article:published_time`, Dublin Core, poi «Data di pubblicazione» / «Pubblicato il» nel testo). Data futura, più vecchia di due anni o diciture discordanti: nessuna data. Una data della fonte strutturata prevale. Evidenza in `published_at_evidence`. Versione delle regole 1.5: tutte le schede automatiche si rileggono.
 - Schede curate: `data/opportunity-publication-dates.json`, 12 date verificate il 22/11 sulle pagine ufficiali (NEB, SAI, EUCF, EUI peer review, SINFI), applicate solo dove manca la data. I programmi permanenti (ELENA, EEEF, InvestEU, CEB, Conto Termico…) restano senza data. EIT Delegate Cities: la pagina non dichiara una data.
 - `detection_lag` usa la stessa data: con più date il ritardo di intercettazione diventa misurabile.
+- Stile in `opportunity-preview-v04.css`: la pagina pubblica del Radar non collega `opportunity-preview-v044.css` (anche il badge «Nuova» resta senza i suoi stili): da sistemare nella pulizia.
 
 ## Radar: proroga MIM e Nidi gratis per le famiglie (22 novembre 2026, pomeriggio)
 
