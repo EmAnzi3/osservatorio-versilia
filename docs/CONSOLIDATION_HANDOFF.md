@@ -1,5 +1,23 @@
 # Consolidamento Osservatorio Versilia — handoff operativo
 
+## Serie storiche verificate e non pubblicate (22 novembre 2026)
+
+Decisione di Ema: non pubblicare per ora. Note per i prossimi giri e per i dossier.
+
+**Servizi per la prima infanzia** (`earlyChildhoodPotentialCapacityRate`)
+- Acquisizione pronta e dormiente: `scripts/infancy_history.py`, aggiornatore CI `toscana-infancy-history`, richiesta `toscanaInfancyHistory` (false). Snapshot `data/source-snapshots/toscana-prima-infanzia-serie.json`, non materializzato.
+- Serie omogenea solo 2023/24–2024/25. Dal 2022/23 indietro cambia definizione: «Pop 3-36 mesi» con decimali (Massarosa 335,5, quindi stima o media, non conteggio), numeratore con altri campi, nel 2014/15 senza codice Istat. Non vanno mescolati.
+- Regola approvata da Ema: posti zero solo se nella riga «Totale servizi» e tutte le ricettività sono vuoti o zero (Seravezza e Stazzema 2023/24, elencati in `noServiceCells`). Ogni altro vuoto ferma la serie.
+- **Quando riprendere:** con il file 2025/26 (stessa intestazione del 2024/25) la serie arriva a tre anni: riattivare la richiesta, poi materializzatore, motore (`CURRENT_ONLY` nel territorial adapter, come per l'intensità turistica) e anteprima.
+- **Per i dossier:** fra 2023/24 e 2024/25 i posti sono invariati in 5 Comuni su 7; la quota sale soprattutto perché calano i bambini di 3–36 mesi (Camaiore 471→436, Massarosa 324→297, Seravezza 181→168, Stazzema 43→35). Unico aumento di posti: Pietrasanta 204→221. Seravezza e Stazzema restano senza servizi localizzati nel Comune.
+
+**Edilizia scolastica** (cinque indicatori `schoolBuilding*`), PR #644 chiusa
+- Riconciliazione 2024/25 perfetta (7 Comuni × 5 indicatori × tutti i campi), ma dal 2021/22 al 2024/25 l'Anagrafe MIM è identica ogni anno. Le sole differenze 2020/21→2021/22 sono completamenti di dati («non definito» → SI/NO; epoca di costruzione compilata per edifici esistenti). Una serie suggerirebbe cambiamenti mai avvenuti: **non ritentare** finché il MIM non pubblica aggiornamenti reali.
+- Per i dossier: le risposte vanno lette come stato dichiarato e stabile dal 2021/22, non come esito recente di interventi.
+
+**Farmacie per 1.000 abitanti**
+- Il file ministeriale congelato contiene solo le farmacie attive, con la data dell'ultima registrazione: ricostruire il passato sottostima (Massarosa 1 farmacia nel 2017). Servono i file storici datati del Ministero della Salute, se esistono: da verificare con una sonda CI prima di ritentare.
+
 ## Confronto Toscana/Italia dell'addizionale comunale IRPEF (21 novembre 2026)
 
 - `irpef_benchmarks.py` + aggiornatore CI `mef-irpef-benchmarks --year 2025`: elenco MEF delle aliquote di tutti i Comuni, codici catastali → Istat, residenti POSAS 1/1/2026. Stessa regola dei valori comunali; Toscana e Italia = media degli importi pesata per i residenti.
