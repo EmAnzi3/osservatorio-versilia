@@ -1,14 +1,19 @@
 {
   "schemaVersion": 1,
-  "version": "toscana-prima-infanzia-serie-2024-25-2024-25-v1",
+  "version": "toscana-prima-infanzia-serie-2023-24-2024-25-v1",
   "retrieved": "2026-11-22",
   "publisher": "Regione Toscana — Servizi educativi per la prima infanzia",
   "sourceUrl": "https://dati.toscana.it/dataset/serviziprimainfanzia",
   "schoolYears": [
+    "2023/24",
     "2024/25"
   ],
   "rule": "Totale Ricettività potenziale / Totale 3-36 mesi × 100 dalle righe comunali di ciascun anno educativo; celle vuote mai trasformate in zero.",
   "archives": {
+    "2023/24": {
+      "url": "https://dati.toscana.it/dataset/98ee6064-b61a-45e2-a790-86c55b278574/resource/ec21720f-42aa-4d13-89e5-23464bb295a1/download/opendata-_-da-pubblicare-23-24.csv",
+      "sha256": "04c17ddda8ceb324f9a4799920e880f6425f83eeeba27206c167e3ba819dece8"
+    },
     "2024/25": {
       "url": "https://dati.toscana.it/dataset/98ee6064-b61a-45e2-a790-86c55b278574/resource/01588909-8f0b-4b80-8af7-1749bab80a5e/download/opendata-_-da-pubblicare-24-25.csv",
       "sha256": "b899e5a6e1af3f176e3b3e70183e5241a36241ab362e97bdca21528b5d8e1bf0"
@@ -16,42 +21,72 @@
   },
   "towns": {
     "046005": {
+      "2023/24": {
+        "potentialCapacity": 177,
+        "children3to36Months": 471
+      },
       "2024/25": {
         "potentialCapacity": 177,
         "children3to36Months": 436
       }
     },
     "046013": {
+      "2023/24": {
+        "potentialCapacity": 63,
+        "children3to36Months": 74
+      },
       "2024/25": {
         "potentialCapacity": 63,
         "children3to36Months": 75
       }
     },
     "046018": {
+      "2023/24": {
+        "potentialCapacity": 87,
+        "children3to36Months": 324
+      },
       "2024/25": {
         "potentialCapacity": 87,
         "children3to36Months": 297
       }
     },
     "046024": {
+      "2023/24": {
+        "potentialCapacity": 204,
+        "children3to36Months": 292
+      },
       "2024/25": {
         "potentialCapacity": 221,
         "children3to36Months": 295
       }
     },
     "046028": {
+      "2023/24": {
+        "potentialCapacity": 0,
+        "children3to36Months": 181,
+        "noServices": true
+      },
       "2024/25": {
         "potentialCapacity": 0,
         "children3to36Months": 168
       }
     },
     "046030": {
+      "2023/24": {
+        "potentialCapacity": 0,
+        "children3to36Months": 43,
+        "noServices": true
+      },
       "2024/25": {
         "potentialCapacity": 0,
         "children3to36Months": 35
       }
     },
     "046033": {
+      "2023/24": {
+        "potentialCapacity": 483,
+        "children3to36Months": 915
+      },
       "2024/25": {
         "potentialCapacity": 483,
         "children3to36Months": 911
@@ -60,30 +95,43 @@
   },
   "series": {
     "046005": [
+      37.57961783439491,
       40.596330275229356
     ],
     "046013": [
+      85.13513513513513,
       84.0
     ],
     "046018": [
+      26.851851851851855,
       29.292929292929294
     ],
     "046024": [
+      69.86301369863014,
       74.91525423728814
     ],
     "046028": [
+      0.0,
       0.0
     ],
     "046030": [
+      0.0,
       0.0
     ],
     "046033": [
+      52.78688524590164,
       53.018660812294186
     ]
   },
   "stoppedAt": {
-    "schoolYear": "2023/24",
-    "reason": "046028 posti: valore ''"
+    "schoolYear": "2022/23",
+    "reason": "colonna codice Istat: assente"
+  },
+  "noServiceCells": {
+    "2023/24": [
+      "046028",
+      "046030"
+    ]
   },
   "qualityGate": {
     "status": "PASS",
