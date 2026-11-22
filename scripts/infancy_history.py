@@ -71,6 +71,17 @@ def count(raw: Any, what: str) -> int:
     return int(text)
 
 
+def blank_or_zero(value: Any) -> bool:
+    text = str(value or "").strip()
+    return text == "" or re.fullmatch(r"0+", text) is not None
+
+
+def no_services(row: dict[str, str], services_h: list[str], capacity_cols: list[str]) -> bool:
+    """Vero solo se la riga dichiara che il Comune non ha servizi: «Totale servizi» presente e vuoto o zero,
+    e tutte le colonne di ricettività vuote o zero. Ogni altro vuoto resta un dato mancante."""
+    return len(services_h) == 1 and blank_or_zero(row.get(services_h[0])) and bool(capacity_cols) and all(blank_or_zero(row.get(h)) for h in capacity_cols)
+
+
 def year_components(raw: bytes, start: int) -> dict[str, dict[str, int]]:
     text = decode(raw)
     if "<html" in text[:500].lower():
@@ -91,7 +102,10 @@ def year_components(raw: bytes, start: int) -> dict[str, dict[str, int]]:
     # «Totale 3-36 mesi» dal 2024/25, «Popolazione 3-36 mesi» negli anni precedenti: stessa grandezza (residenti 3–36 mesi).
     kids_h = col(lambda h: "3-36" in h.replace(" ", "") and h.startswith(("totale", "popolazione")) and "ricettivita" not in h, "bambini 3-36 mesi")
     year_h = next((h for h in headers if norm(h) == "anno educativo"), None)
+    services_h = [h for h in headers if norm(h) == "totale servizi"]
+    capacity_cols = [h for h in headers if "ricettivita" in norm(h)]
     out: dict[str, dict[str, int]] = {}
+    no_service_towns: list[str] = []
     for row in reader:
         code = re.sub(r"\D", "", str(row.get(code_h) or "")).zfill(6) if str(row.get(code_h) or "").strip() else ""
         if code not in TOWNS:
@@ -100,12 +114,20 @@ def year_components(raw: bytes, start: int) -> dict[str, dict[str, int]]:
             raise YearUnusable(f"{code}: anno educativo {row.get(year_h)!r}")
         if code in out:
             raise YearUnusable(f"{code}: riga duplicata")
-        cap, kids = count(row.get(cap_h), f"{code} posti"), count(row.get(kids_h), f"{code} bambini")
+        kids = count(row.get(kids_h), f"{code} bambini")
+        if not str(row.get(cap_h) or "").strip() and no_services(row, services_h, capacity_cols):
+            # Comune senza alcun servizio (totale servizi e tutte le ricettività vuoti o zero): posti zero, dichiarato.
+            cap = 0
+            no_service_towns.append(code)
+        else:
+            cap = count(row.get(cap_h), f"{code} posti")
         if kids <= 0:
             raise YearUnusable(f"{code}: denominatore nullo")
         out[code] = {"potentialCapacity": cap, "children3to36Months": kids}
     if set(out) != set(TOWNS):
         raise YearUnusable(f"Comuni trovati {sorted(out)}")
+    for code in no_service_towns:
+        out[code]["noServices"] = True
     return out
 
 
@@ -125,7 +147,7 @@ def build_snapshot(fetcher: Callable[[str], bytes], current: dict[str, dict[str,
         years[start] = {"url": FILES[start], "sha256": hashlib.sha256(raw).hexdigest(), "towns": towns}
     for code, pub in current.items():
         got = years[last]["towns"][code]
-        if got != {"potentialCapacity": pub["potentialCapacity"], "children3to36Months": pub["children3to36Months"]}:
+        if {k: got[k] for k in ("potentialCapacity", "children3to36Months")} != {"potentialCapacity": pub["potentialCapacity"], "children3to36Months": pub["children3to36Months"]}:
             raise InfancyError(f"{code} {label(last)}: {got} ≠ pubblicato {pub}")
     starts = sorted(years)
     return {
@@ -137,6 +159,7 @@ def build_snapshot(fetcher: Callable[[str], bytes], current: dict[str, dict[str,
         "towns": {c: {label(s): years[s]["towns"][c] for s in starts} for c in TOWNS},
         "series": {c: [years[s]["towns"][c]["potentialCapacity"] / years[s]["towns"][c]["children3to36Months"] * 100 for s in starts] for c in TOWNS},
         "stoppedAt": stopped,
+        "noServiceCells": {label(s): sorted(c for c, v in years[s]["towns"].items() if v.get("noServices")) for s in starts if any(v.get("noServices") for v in years[s]["towns"].values())},
         "qualityGate": {"status": "PASS", "note": f"a.s. {label(last)} identico ai componenti pubblicati per i 7 Comuni."},
     }
 
@@ -153,6 +176,7 @@ def apply(metrics: dict[str, dict[str, Any]], snapshot: dict[str, Any], path: st
             raise InfancyError(f"{row['town']}: serie {values[-1]} ≠ valore {row['value']}")
         row["series"] = {"years": list(years), "values": list(values)}
     metric["meta"].setdefault("sourceMeta", {})["historySnapshot"] = path
-    note = f" Serie dall'anno educativo {years[0]} al {years[-1]}, stessa regola su ciascun file regionale."
+    note = (f" Serie dall'anno educativo {years[0]} al {years[-1]}, stessa regola su ciascun file regionale; dove il file lascia "
+            "vuoti i posti di un Comune senza alcun servizio (totale servizi e ricettività vuoti), i posti valgono zero.")
     if note.strip() not in metric["method"].get("caveat", ""):
         metric["method"]["caveat"] = (metric["method"].get("caveat", "").rstrip() + note).strip()

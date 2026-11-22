@@ -819,21 +819,25 @@ def infancy_history_cases() -> None:
 
     def csv_year(start, blank=None, header="Totale Ricettività potenziale"):
         kids = "Totale 3-36 mesi" if start == 2024 else "Popolazione 3-36 mesi"  # intestazione degli anni precedenti
-        lines = [f"Anno educativo;CODICE ISTAT;Zone;{kids};{header}"]
+        lines = [f"Anno educativo;CODICE ISTAT;Zone;{kids};Totale servizi;Totale Ricettività Nidi;{header}"]
         for i, c in enumerate(ih.TOWNS):
+            if c == "046028":  # Seravezza senza servizi: tutto vuoto, posti zero
+                lines.append(f"{start}-{(start + 1) % 100:02d};{int(c)};Versilia;{200 + i};;;")
+                continue
             cap = "" if blank == c else str(50 + i + start - 2020)
-            lines.append(f"{start}-{(start + 1) % 100:02d};{int(c)};Versilia;{200 + i};{cap}")
-        lines.append(f"{start}-{(start + 1) % 100:02d};;Toscana;59000;28000")
+            lines.append(f"{start}-{(start + 1) % 100:02d};{int(c)};Versilia;{200 + i};2;{cap};{cap}")
+        lines.append(f"{start}-{(start + 1) % 100:02d};;Toscana;59000;1000;28000;28000")
         return "\n".join(lines).encode("cp1252")
     def fetch_for(stop):
         def fetch(url):
             start = next(s for s, u in ih.FILES.items() if u == url)
             return csv_year(start, blank="046030" if start == stop else None)
         return fetch
-    current = {c: {"potentialCapacity": 54 + i, "children3to36Months": 200 + i} for i, c in enumerate(ih.TOWNS)}
+    current = {c: {"potentialCapacity": 0 if c == "046028" else 54 + i, "children3to36Months": 200 + i} for i, c in enumerate(ih.TOWNS)}
     snap = ih.build_snapshot(fetch_for(2019), current)
     assert snap["schoolYears"] == ["2020/21", "2021/22", "2022/23", "2023/24", "2024/25"] and snap["stoppedAt"]["schoolYear"] == "2019/20"
     assert snap["series"]["046005"][0] == 50 / 200 * 100 and snap["series"]["046033"][-1] == 60 / 206 * 100
+    assert snap["series"]["046028"] == [0.0] * 5 and snap["noServiceCells"]["2020/21"] == ["046028"]
     for bad in ({**current, "046018": {"potentialCapacity": 1, "children3to36Months": 202}},):
         try:
             ih.build_snapshot(fetch_for(2019), bad)
