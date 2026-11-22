@@ -4,6 +4,9 @@
 
 - Run del 22/11 bloccato con `coverageAudit=fail`: le prove manuali Sport/LIFE (`opportunity-coverage-evidence-v044.json`, verificate il 7/10) superavano i 45 giorni, anche se `pcm-sport` e `cinea-life` erano raggiunte con 6 e 4 segnalazioni.
 - `_v044_evidence_audit`: una fonte raggiunta nel run (`ok` o `degraded`) che produce segnalazioni rinnova la prova (`renewedByRuntime`); una fonte muta o in errore resta scaduta e il gate resta attivo.
+- Stesso blocco nella copertura residua v0.4.3 (`opportunity-coverage-evidence-v043.json`, 12 fonti, tutte al 7/10): `_residual_evidence_audit` applica la stessa regola, che rinnova 9 fonti su 12.
+- Le 3 fonti mute (`eu-erasmus`, `eu-cef`, `eu-horizon`: raggiunte, zero segnalazioni) non si rinnovano dal run. Il 22/11 ho riverificato a mano le 12 pagine ufficiali e portato il file al 22/11 (ricevuta `reports/radar/coverage-revalidation-2026-11-22.json`). Le 3 mute scadono di nuovo il 6/1/2027 se nel frattempo non si sistema il loro parser (pulizia Radar, punto 2).
+- `test_opportunity_radar_v043.py::test_residual_sources_are_configured` (38 < 39 discovery) fallisce già su main e non gira in CI: da allineare nella pulizia.
 
 ## Confronto Toscana/Italia dell'addizionale comunale IRPEF (21 novembre 2026)
 

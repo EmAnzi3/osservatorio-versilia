@@ -61,6 +61,25 @@ class RadarV043Test(unittest.TestCase):
         self.assertEqual(audit["status"], "fail")
         self.assertEqual(len(audit["staleEvidence"]), 12)
 
+    def test_active_source_renews_residual_evidence_silent_one_does_not(self):
+        _, coverage = v043.compose_runtime_payloads()
+        evidence = v043._load(v043.EVIDENCE_V043)
+        late = date.fromisoformat(evidence["referenceDate"]) + timedelta(days=evidence["maxEvidenceAgeDays"] + 1)
+        silent = {"eu-erasmus", "eu-cef", "eu-horizon"}
+        rows = []
+        for source_id in coverage.get("sources") or {}:
+            if source_id in silent:
+                rows.append({"source_id": source_id, "runtimeStatus": "ok", "candidateCount": 0})
+            else:
+                rows.append({"source_id": source_id, "runtimeStatus": "ok", "candidateCount": 2})
+        audit = v043._residual_evidence_audit({"sourceCoverage": {"rows": rows}}, late)
+        self.assertEqual(audit["status"], "fail")
+        self.assertEqual(set(audit["staleEvidence"]), silent)
+        renewed = {r["source_id"] for r in audit["rows"] if r["renewedByRuntime"]}
+        self.assertEqual(len(renewed), 9)
+        failed = [dict(r, runtimeStatus="failed") for r in rows]
+        self.assertEqual(len(v043._residual_evidence_audit({"sourceCoverage": {"rows": failed}}, late)["staleEvidence"]), 12)
+
     def test_every_residual_source_has_official_evidence(self):
         source_ids = set()
         for discovery in v043._discovery_layers():

@@ -92,10 +92,11 @@ def _residual_evidence_audit(result: dict[str, Any], today: date) -> dict[str, A
     cfg = core._load(EVIDENCE_V043)
     entries = list(cfg.get("entries") or [])
     max_age = int(cfg.get("maxEvidenceAgeDays") or 45)
-    configured = {
-        str(row.get("source_id") or "")
+    coverage_rows = {
+        str(row.get("source_id") or ""): row
         for row in (result.get("sourceCoverage") or {}).get("rows") or []
     }
+    configured = set(coverage_rows)
     contract = core._load(core.CONTRACT_V04)
     required_families = {str(x.get("id") or "") for x in contract.get("requiredFamilies") or []}
 
@@ -118,6 +119,12 @@ def _residual_evidence_audit(result: dict[str, Any], today: date) -> dict[str, A
             fresh = 0 <= age_days <= max_age
         except ValueError:
             fresh = False
+        # Come in v0.4.4: una fonte raggiunta oggi che produce segnalazioni rinnova da sola la prova manuale.
+        # Una fonte muta resta legata alla verifica manuale del canale ufficiale.
+        runtime = coverage_rows.get(source_id) or {}
+        renewed = str(runtime.get("runtimeStatus") or "") in {"ok", "degraded"} and int(runtime.get("candidateCount") or 0) > 0
+        if renewed:
+            age_days, fresh = 0, True
 
         configured_ok = source_id in configured
         family_ok = family in required_families
@@ -142,6 +149,7 @@ def _residual_evidence_audit(result: dict[str, Any], today: date) -> dict[str, A
             "configured": configured_ok,
             "familyInContract": family_ok,
             "fresh": evidence_ok,
+            "renewedByRuntime": renewed,
         })
 
     expected_families = {str(x.get("family") or "") for x in entries if x.get("family")}
