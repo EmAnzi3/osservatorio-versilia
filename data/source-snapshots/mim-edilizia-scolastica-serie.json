@@ -1,0 +1,2442 @@
+{
+  "schemaVersion": 1,
+  "version": "mim-edilizia-scolastica-serie-2020-21-2024-25-v1",
+  "retrieved": "2026-11-22",
+  "publisher": "MIM — Anagrafe dell'Edilizia Scolastica",
+  "rule": "Edifici univoci delle scuole statali localizzate nel Comune secondo l'anagrafe delle scuole dell'anno; conteggi delle risposte per campo; edifici in più Comuni o con risposte discordanti esclusi, come nel calcolo pubblicato.",
+  "archives": {
+    "2020/21": {
+      "registry_state": {
+        "url": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/leaf/SCUANAGRAFESTAT20202120210831.csv",
+        "sha256": "e8593f41ed799a9114a095a0c9b3e5d3067ec2b3526b4209766cded977b36923"
+      },
+      "registry_private": {
+        "url": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/leaf/SCUANAGRAFEPAR20202120210831.csv",
+        "sha256": "2010dc01c6cf3f1b28a4fb64b82054feeedda32694a7509203809f5f2a96f5e4"
+      },
+      "schoolBuildingSafetyDocs": {
+        "url": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/leaf/EDICONSICUREZZASTA202120202120211116.csv",
+        "sha256": "cdb35be9991047c1ffa4dfb5176d6963a53be1e3f03f90304dcccfb7afc60437",
+        "bytes": 4101988,
+        "excludedBuildings": 0
+      },
+      "schoolBuildingAccessibility": {
+        "url": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/leaf/EDISUPBARARCSTA202120202120211116.csv",
+        "sha256": "c2a7dea1fc18c214d25ff7cb968027799cd50040d46d8a5491f55b3694a27a4a",
+        "bytes": 5707373,
+        "excludedBuildings": 0
+      },
+      "schoolBuildingFacilities": {
+        "url": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/leaf/EDIAMBFUNZSTA202120202120211116.csv",
+        "sha256": "3f77a32ad959eb076ee37932591b9de744a1fa18a38e6c128ba354d107c13a95",
+        "bytes": 5159215,
+        "excludedBuildings": 0
+      },
+      "schoolBuildingAge": {
+        "url": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/leaf/EDIETAORIGINESTA202120202120211116.csv",
+        "sha256": "2bcc85bb7a6929ef6fa0089015ffe7d35f30fb8b165f15dfc2f85e3bdacfcd39",
+        "bytes": 5247773,
+        "excludedBuildings": 0
+      },
+      "schoolBuildingTransport": {
+        "url": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/leaf/EDICOLLEGAMENTISTA202120202120211116.csv",
+        "sha256": "e7e63a2f50d8b3c4ab5d12716b2fb2ca1dcb55676982b83e912ac0fcd4033951",
+        "bytes": 3690727,
+        "excludedBuildings": 0
+      }
+    },
+    "2021/22": {
+      "registry_state": {
+        "url": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/leaf/SCUANAGRAFESTAT20212220220831.csv",
+        "sha256": "d8d6edbaa4e8e486c98d1097a7545aaedcc8164f38d3c38599f876534844f255"
+      },
+      "registry_private": {
+        "url": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/leaf/SCUANAGRAFEPAR20212220220831.csv",
+        "sha256": "b42edb0d70e2937bfdd79949fc1614188afb7eca887e8a6edd6a43b674e64480"
+      },
+      "schoolBuildingSafetyDocs": {
+        "url": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/leaf/EDICONSICUREZZASTA202120212220220908.csv",
+        "sha256": "a3a3edc8eeb9a53582baacfe5a8b10fd3999492abd0931caa9241fa9f0abd98a",
+        "bytes": 3856459,
+        "excludedBuildings": 0
+      },
+      "schoolBuildingAccessibility": {
+        "url": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/leaf/EDISUPBARARCSTA202120212220220908.csv",
+        "sha256": "0fda40533b172e5dc0992e3e6df346ec6afb17af09a583d2a742842f7168aa36",
+        "bytes": 5159881,
+        "excludedBuildings": 0
+      },
+      "schoolBuildingFacilities": {
+        "url": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/leaf/EDIAMBFUNZSTA202120212220220908.csv",
+        "sha256": "25108e2cdcb75307a0e9e7e37a8ce786e579c5d4045cd6650ee4a21e21649253",
+        "bytes": 4684815,
+        "excludedBuildings": 0
+      },
+      "schoolBuildingAge": {
+        "url": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/leaf/EDIETAORIGINESTA202120212220220908.csv",
+        "sha256": "f59f6ad6ca3286fc43cf6224a71d47854fd7453d22d363c35e612fdfc6f9b187",
+        "bytes": 5264103,
+        "excludedBuildings": 0
+      },
+      "schoolBuildingTransport": {
+        "url": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/leaf/EDICOLLEGAMENTISTA202120212220220908.csv",
+        "sha256": "e2a5776b07453ad38b14ba41d3d4d30069175faca3ceaf95112d5b72004138da",
+        "bytes": 3576934,
+        "excludedBuildings": 0
+      }
+    },
+    "2022/23": {
+      "registry_state": {
+        "url": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/leaf/SCUANAGRAFESTAT20222320230831.csv",
+        "sha256": "85d463505bba9e3e98acd62a34efa10a32ac5aca9912db406b38738b1bba6569"
+      },
+      "registry_private": {
+        "url": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/leaf/SCUANAGRAFEPAR20222320230831.csv",
+        "sha256": "b8ccca14b8a43b28206eeec98ca9d8276d24b38cb6d5e8c462b076f35940f16d"
+      },
+      "schoolBuildingSafetyDocs": {
+        "url": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/leaf/EDICONSICUREZZASTA202120222320230731.csv",
+        "sha256": "a52300423855a433e25c9422fd3cdf2710c33e83758be2738e303b9a299b324a",
+        "bytes": 3807087,
+        "excludedBuildings": 0
+      },
+      "schoolBuildingAccessibility": {
+        "url": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/leaf/EDISUPBARARCSTA202120222320230731.csv",
+        "sha256": "0e8217371fb57857afce8438fd4cad34060a51c06d64fb6940ce04c037afbd9f",
+        "bytes": 5051388,
+        "excludedBuildings": 0
+      },
+      "schoolBuildingFacilities": {
+        "url": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/leaf/EDIAMBFUNZSTA202120222320230731.csv",
+        "sha256": "fbfe4cc8f1862afc7170576d695752ac8d062f43aec3e734ae29f92e95c9adc3",
+        "bytes": 4554245,
+        "excludedBuildings": 0
+      },
+      "schoolBuildingAge": {
+        "url": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/leaf/EDIETAORIGINESTA202120222320230731.csv",
+        "sha256": "9ac46aca15098941716918e6799e1c736d7ac899fb59b476f6c6bfc7e8531a35",
+        "bytes": 5271589,
+        "excludedBuildings": 0
+      },
+      "schoolBuildingTransport": {
+        "url": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/leaf/EDICOLLEGAMENTISTA202120222320230731.csv",
+        "sha256": "bf0ec2cd4c50fe8fb086b5b16d6e6201c6c2e7bf12c824ae69a4a31585385849",
+        "bytes": 3566902,
+        "excludedBuildings": 0
+      }
+    },
+    "2023/24": {
+      "registry_state": {
+        "url": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/leaf/SCUANAGRAFESTAT20232420240831.csv",
+        "sha256": "21455ecb7b7bb337da15ee7350802e27992635c92d06b894780ef5e5f926fc7d"
+      },
+      "registry_private": {
+        "url": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/leaf/SCUANAGRAFEPAR20232420240831.csv",
+        "sha256": "deb59392df8178d7fb6942e11d68632723433600cf7f093631b55a198d4487c1"
+      },
+      "schoolBuildingSafetyDocs": {
+        "url": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/leaf/EDICONSICUREZZASTA202120232420250714.csv",
+        "sha256": "1ff08c80682075e63100cacae8ffae1c18ebaa7428c4537a5349758e0d1e83a5",
+        "bytes": 3741664,
+        "excludedBuildings": 0
+      },
+      "schoolBuildingAccessibility": {
+        "url": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/leaf/EDISUPBARARCSTA202120232420250714.csv",
+        "sha256": "f5fe779bb5c50a3d03fc92222da02f3a10e8311730f47c7c2f3dda628806b541",
+        "bytes": 4884082,
+        "excludedBuildings": 0
+      },
+      "schoolBuildingFacilities": {
+        "url": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/leaf/EDIAMBFUNZSTA202120232420250714.csv",
+        "sha256": "30e2e25ddf828add3dba6404e05270b597f4d755af684c439bd6043543fb9e0a",
+        "bytes": 4412965,
+        "excludedBuildings": 0
+      },
+      "schoolBuildingAge": {
+        "url": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/leaf/EDIETAORIGINESTA202120232420250714.csv",
+        "sha256": "48bcb93fff004caa91565cd79bce62862d280a58fb8913f0732db3bb015195b7",
+        "bytes": 4365193,
+        "excludedBuildings": 0
+      },
+      "schoolBuildingTransport": {
+        "url": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/leaf/EDICOLLEGAMENTISTA202120232420250714.csv",
+        "sha256": "8fdbfbfc351ff03bc5d570b98c7fe5bf5e157b1ed41849582ed80d1d846f989e",
+        "bytes": 3532629,
+        "excludedBuildings": 0
+      }
+    },
+    "2024/25": {
+      "registry_state": {
+        "url": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/leaf/SCUANAGRAFESTAT20242520250831.csv",
+        "sha256": "91fac2ac891aa111ad448123e33a0118a854ce58237f985d21b1d7424f0be6fa"
+      },
+      "registry_private": {
+        "url": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/leaf/SCUANAGRAFEPAR20242520250831.csv",
+        "sha256": "fd8ec418966aea01537f0816f3e8fc911391eae2c34063e9ca411f14e7ec0c9b"
+      },
+      "schoolBuildingSafetyDocs": {
+        "url": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/leaf/EDICONSICUREZZASTA202120242520250806.csv",
+        "sha256": "d420dfc50e336f7302b646db01ae188b270a4dff9cb91c9c5eee234340686c2e",
+        "bytes": 3640268,
+        "excludedBuildings": 0
+      },
+      "schoolBuildingAccessibility": {
+        "url": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/leaf/EDISUPBARARCSTA202120242520250806.csv",
+        "sha256": "800ee2b376bb98123fac7a0570d3a9effad0163f94fd0229a23a9cb8b84b3ef0",
+        "bytes": 4696419,
+        "excludedBuildings": 0
+      },
+      "schoolBuildingFacilities": {
+        "url": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/leaf/EDIAMBFUNZSTA202120242520250806.csv",
+        "sha256": "c6e1c4f1e081a8bfe83e4d8b35fc6d1d876da8b5dbecebced998f2264d23e408",
+        "bytes": 4249665,
+        "excludedBuildings": 0
+      },
+      "schoolBuildingAge": {
+        "url": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/leaf/EDIETAORIGINESTA202120242520250806.csv",
+        "sha256": "e3fd12f7b4c05cb16dc6d404ed2f9662f10d2c3ffd7913062f8df0e1223d5a95",
+        "bytes": 4257542,
+        "excludedBuildings": 0
+      },
+      "schoolBuildingTransport": {
+        "url": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/leaf/EDICOLLEGAMENTISTA202120242520250806.csv",
+        "sha256": "a33a9cee57af9235c6dcc6ba994ebd15d5b32d6bc2ccc5960f2bd8c84cd406e2",
+        "bytes": 3442382,
+        "excludedBuildings": 0
+      }
+    }
+  },
+  "metrics": {
+    "schoolBuildingSafetyDocs": {
+      "schoolYears": [
+        "2020/21",
+        "2021/22",
+        "2022/23",
+        "2023/24",
+        "2024/25"
+      ],
+      "towns": {
+        "046005": {
+          "2020/21": {
+            "buildings": 17,
+            "agibilita": {
+              "NO": 15,
+              "NON DEFINITO": 1,
+              "SI": 1
+            },
+            "cpi": {
+              "SI": 8,
+              "NO": 9
+            },
+            "sciaAntincendio": {
+              "NON DEFINITO": 16,
+              "NO": 1
+            },
+            "rinnovoAntincendio": {
+              "NON DEFINITO": 16,
+              "NO": 1
+            }
+          },
+          "2021/22": {
+            "buildings": 17,
+            "agibilita": {
+              "NO": 16,
+              "SI": 1
+            },
+            "cpi": {
+              "NO": 10,
+              "SI": 7
+            },
+            "sciaAntincendio": {
+              "NO": 9,
+              "SI": 8
+            },
+            "rinnovoAntincendio": {
+              "NO": 14,
+              "SI": 3
+            }
+          },
+          "2022/23": {
+            "buildings": 17,
+            "agibilita": {
+              "SI": 1,
+              "NO": 16
+            },
+            "cpi": {
+              "SI": 7,
+              "NO": 10
+            },
+            "sciaAntincendio": {
+              "SI": 8,
+              "NO": 9
+            },
+            "rinnovoAntincendio": {
+              "NO": 14,
+              "SI": 3
+            }
+          },
+          "2023/24": {
+            "buildings": 17,
+            "agibilita": {
+              "SI": 1,
+              "NO": 16
+            },
+            "cpi": {
+              "SI": 7,
+              "NO": 10
+            },
+            "sciaAntincendio": {
+              "SI": 8,
+              "NO": 9
+            },
+            "rinnovoAntincendio": {
+              "NO": 14,
+              "SI": 3
+            }
+          },
+          "2024/25": {
+            "buildings": 17,
+            "agibilita": {
+              "NO": 16,
+              "SI": 1
+            },
+            "cpi": {
+              "SI": 7,
+              "NO": 10
+            },
+            "sciaAntincendio": {
+              "SI": 8,
+              "NO": 9
+            },
+            "rinnovoAntincendio": {
+              "NO": 14,
+              "SI": 3
+            }
+          }
+        },
+        "046013": {
+          "2020/21": {
+            "buildings": 7,
+            "agibilita": {
+              "SI": 6,
+              "NO": 1
+            },
+            "cpi": {
+              "SI": 6,
+              "NO": 1
+            },
+            "sciaAntincendio": {
+              "NON DEFINITO": 6,
+              "NO": 1
+            },
+            "rinnovoAntincendio": {
+              "NON DEFINITO": 6,
+              "NO": 1
+            }
+          },
+          "2021/22": {
+            "buildings": 7,
+            "agibilita": {
+              "SI": 6,
+              "NO": 1
+            },
+            "cpi": {
+              "SI": 5,
+              "NO": 2
+            },
+            "sciaAntincendio": {
+              "SI": 6,
+              "NO": 1
+            },
+            "rinnovoAntincendio": {
+              "SI": 6,
+              "NO": 1
+            }
+          },
+          "2022/23": {
+            "buildings": 7,
+            "agibilita": {
+              "SI": 6,
+              "NO": 1
+            },
+            "cpi": {
+              "SI": 5,
+              "NO": 2
+            },
+            "sciaAntincendio": {
+              "SI": 6,
+              "NO": 1
+            },
+            "rinnovoAntincendio": {
+              "SI": 6,
+              "NO": 1
+            }
+          },
+          "2023/24": {
+            "buildings": 7,
+            "agibilita": {
+              "SI": 6,
+              "NO": 1
+            },
+            "cpi": {
+              "SI": 5,
+              "NO": 2
+            },
+            "sciaAntincendio": {
+              "SI": 6,
+              "NO": 1
+            },
+            "rinnovoAntincendio": {
+              "SI": 6,
+              "NO": 1
+            }
+          },
+          "2024/25": {
+            "buildings": 7,
+            "agibilita": {
+              "SI": 6,
+              "NO": 1
+            },
+            "cpi": {
+              "NO": 2,
+              "SI": 5
+            },
+            "sciaAntincendio": {
+              "SI": 6,
+              "NO": 1
+            },
+            "rinnovoAntincendio": {
+              "SI": 6,
+              "NO": 1
+            }
+          }
+        },
+        "046018": {
+          "2020/21": {
+            "buildings": 15,
+            "agibilita": {
+              "NO": 9,
+              "SI": 6
+            },
+            "cpi": {
+              "NON DEFINITO": 9,
+              "SI": 1,
+              "NO": 5
+            },
+            "sciaAntincendio": {
+              "NON DEFINITO": 15
+            },
+            "rinnovoAntincendio": {
+              "NON DEFINITO": 15
+            }
+          },
+          "2021/22": {
+            "buildings": 15,
+            "agibilita": {
+              "NO": 9,
+              "SI": 6
+            },
+            "cpi": {
+              "NON DEFINITO": 9,
+              "SI": 1,
+              "NO": 5
+            },
+            "sciaAntincendio": {
+              "NON DEFINITO": 15
+            },
+            "rinnovoAntincendio": {
+              "NON DEFINITO": 15
+            }
+          },
+          "2022/23": {
+            "buildings": 15,
+            "agibilita": {
+              "NO": 9,
+              "SI": 6
+            },
+            "cpi": {
+              "NON DEFINITO": 9,
+              "NO": 5,
+              "SI": 1
+            },
+            "sciaAntincendio": {
+              "NON DEFINITO": 15
+            },
+            "rinnovoAntincendio": {
+              "NON DEFINITO": 15
+            }
+          },
+          "2023/24": {
+            "buildings": 15,
+            "agibilita": {
+              "NO": 9,
+              "SI": 6
+            },
+            "cpi": {
+              "NON DEFINITO": 9,
+              "NO": 5,
+              "SI": 1
+            },
+            "sciaAntincendio": {
+              "NON DEFINITO": 15
+            },
+            "rinnovoAntincendio": {
+              "NON DEFINITO": 15
+            }
+          },
+          "2024/25": {
+            "buildings": 15,
+            "agibilita": {
+              "NO": 9,
+              "SI": 6
+            },
+            "cpi": {
+              "NON DEFINITO": 9,
+              "SI": 1,
+              "NO": 5
+            },
+            "sciaAntincendio": {
+              "NON DEFINITO": 15
+            },
+            "rinnovoAntincendio": {
+              "NON DEFINITO": 15
+            }
+          }
+        },
+        "046024": {
+          "2020/21": {
+            "buildings": 19,
+            "agibilita": {
+              "NO": 19
+            },
+            "cpi": {
+              "NO": 19
+            },
+            "sciaAntincendio": {
+              "NO": 17,
+              "NON DEFINITO": 1,
+              "SI": 1
+            },
+            "rinnovoAntincendio": {
+              "NO": 17,
+              "NON DEFINITO": 1,
+              "SI": 1
+            }
+          },
+          "2021/22": {
+            "buildings": 19,
+            "agibilita": {
+              "NO": 19
+            },
+            "cpi": {
+              "NO": 19
+            },
+            "sciaAntincendio": {
+              "NO": 17,
+              "NON DEFINITO": 1,
+              "SI": 1
+            },
+            "rinnovoAntincendio": {
+              "NO": 17,
+              "NON DEFINITO": 1,
+              "SI": 1
+            }
+          },
+          "2022/23": {
+            "buildings": 19,
+            "agibilita": {
+              "NO": 19
+            },
+            "cpi": {
+              "NO": 19
+            },
+            "sciaAntincendio": {
+              "NO": 17,
+              "NON DEFINITO": 1,
+              "SI": 1
+            },
+            "rinnovoAntincendio": {
+              "NO": 17,
+              "NON DEFINITO": 1,
+              "SI": 1
+            }
+          },
+          "2023/24": {
+            "buildings": 19,
+            "agibilita": {
+              "NO": 19
+            },
+            "cpi": {
+              "NO": 19
+            },
+            "sciaAntincendio": {
+              "NO": 17,
+              "NON DEFINITO": 1,
+              "SI": 1
+            },
+            "rinnovoAntincendio": {
+              "NO": 17,
+              "NON DEFINITO": 1,
+              "SI": 1
+            }
+          },
+          "2024/25": {
+            "buildings": 19,
+            "agibilita": {
+              "NO": 19
+            },
+            "cpi": {
+              "NO": 19
+            },
+            "sciaAntincendio": {
+              "NO": 17,
+              "SI": 1,
+              "NON DEFINITO": 1
+            },
+            "rinnovoAntincendio": {
+              "NO": 17,
+              "SI": 1,
+              "NON DEFINITO": 1
+            }
+          }
+        },
+        "046028": {
+          "2020/21": {
+            "buildings": 10,
+            "agibilita": {
+              "NO": 9,
+              "SI": 1
+            },
+            "cpi": {
+              "NO": 9,
+              "NON DEFINITO": 1
+            },
+            "sciaAntincendio": {
+              "NON DEFINITO": 8,
+              "NO": 2
+            },
+            "rinnovoAntincendio": {
+              "NON DEFINITO": 8,
+              "NO": 2
+            }
+          },
+          "2021/22": {
+            "buildings": 10,
+            "agibilita": {
+              "NO": 9,
+              "SI": 1
+            },
+            "cpi": {
+              "NO": 9,
+              "NON DEFINITO": 1
+            },
+            "sciaAntincendio": {
+              "NO": 2,
+              "NON DEFINITO": 8
+            },
+            "rinnovoAntincendio": {
+              "NO": 2,
+              "NON DEFINITO": 8
+            }
+          },
+          "2022/23": {
+            "buildings": 10,
+            "agibilita": {
+              "NO": 9,
+              "SI": 1
+            },
+            "cpi": {
+              "NO": 10
+            },
+            "sciaAntincendio": {
+              "NO": 2,
+              "NON DEFINITO": 8
+            },
+            "rinnovoAntincendio": {
+              "NO": 2,
+              "NON DEFINITO": 8
+            }
+          },
+          "2023/24": {
+            "buildings": 10,
+            "agibilita": {
+              "NO": 9,
+              "SI": 1
+            },
+            "cpi": {
+              "NO": 10
+            },
+            "sciaAntincendio": {
+              "NON DEFINITO": 8,
+              "NO": 2
+            },
+            "rinnovoAntincendio": {
+              "NON DEFINITO": 8,
+              "NO": 2
+            }
+          },
+          "2024/25": {
+            "buildings": 10,
+            "agibilita": {
+              "NO": 9,
+              "SI": 1
+            },
+            "cpi": {
+              "NO": 10
+            },
+            "sciaAntincendio": {
+              "NON DEFINITO": 8,
+              "NO": 2
+            },
+            "rinnovoAntincendio": {
+              "NON DEFINITO": 8,
+              "NO": 2
+            }
+          }
+        },
+        "046030": {
+          "2020/21": {
+            "buildings": 3,
+            "agibilita": {
+              "NO": 1,
+              "SI": 2
+            },
+            "cpi": {
+              "NO": 3
+            },
+            "sciaAntincendio": {
+              "NON DEFINITO": 2,
+              "NO": 1
+            },
+            "rinnovoAntincendio": {
+              "NON DEFINITO": 2,
+              "NO": 1
+            }
+          },
+          "2021/22": {
+            "buildings": 3,
+            "agibilita": {
+              "NO": 2,
+              "SI": 1
+            },
+            "cpi": {
+              "NO": 3
+            },
+            "sciaAntincendio": {
+              "NO": 3
+            },
+            "rinnovoAntincendio": {
+              "NO": 3
+            }
+          },
+          "2022/23": {
+            "buildings": 3,
+            "agibilita": {
+              "NO": 2,
+              "SI": 1
+            },
+            "cpi": {
+              "NO": 3
+            },
+            "sciaAntincendio": {
+              "NO": 3
+            },
+            "rinnovoAntincendio": {
+              "NO": 3
+            }
+          },
+          "2023/24": {
+            "buildings": 3,
+            "agibilita": {
+              "NO": 2,
+              "SI": 1
+            },
+            "cpi": {
+              "NO": 3
+            },
+            "sciaAntincendio": {
+              "NO": 3
+            },
+            "rinnovoAntincendio": {
+              "NO": 3
+            }
+          },
+          "2024/25": {
+            "buildings": 3,
+            "agibilita": {
+              "SI": 1,
+              "NO": 2
+            },
+            "cpi": {
+              "NO": 3
+            },
+            "sciaAntincendio": {
+              "NO": 3
+            },
+            "rinnovoAntincendio": {
+              "NO": 3
+            }
+          }
+        },
+        "046033": {
+          "2020/21": {
+            "buildings": 38,
+            "agibilita": {
+              "SI": 11,
+              "NO": 25,
+              "IN PARTE": 2
+            },
+            "cpi": {
+              "SI": 21,
+              "NO": 17
+            },
+            "sciaAntincendio": {
+              "NO": 37,
+              "SI": 1
+            },
+            "rinnovoAntincendio": {
+              "NO": 38
+            }
+          },
+          "2021/22": {
+            "buildings": 38,
+            "agibilita": {
+              "SI": 11,
+              "NO": 25,
+              "IN PARTE": 2
+            },
+            "cpi": {
+              "SI": 21,
+              "NO": 17
+            },
+            "sciaAntincendio": {
+              "NO": 37,
+              "SI": 1
+            },
+            "rinnovoAntincendio": {
+              "NO": 38
+            }
+          },
+          "2022/23": {
+            "buildings": 38,
+            "agibilita": {
+              "NO": 25,
+              "IN PARTE": 2,
+              "SI": 11
+            },
+            "cpi": {
+              "NO": 17,
+              "SI": 21
+            },
+            "sciaAntincendio": {
+              "NO": 37,
+              "SI": 1
+            },
+            "rinnovoAntincendio": {
+              "NO": 38
+            }
+          },
+          "2023/24": {
+            "buildings": 38,
+            "agibilita": {
+              "NO": 25,
+              "IN PARTE": 2,
+              "SI": 11
+            },
+            "cpi": {
+              "NO": 17,
+              "SI": 21
+            },
+            "sciaAntincendio": {
+              "NO": 37,
+              "SI": 1
+            },
+            "rinnovoAntincendio": {
+              "NO": 38
+            }
+          },
+          "2024/25": {
+            "buildings": 38,
+            "agibilita": {
+              "SI": 11,
+              "IN PARTE": 2,
+              "NO": 25
+            },
+            "cpi": {
+              "SI": 21,
+              "NO": 17
+            },
+            "sciaAntincendio": {
+              "NO": 37,
+              "SI": 1
+            },
+            "rinnovoAntincendio": {
+              "NO": 38
+            }
+          }
+        }
+      }
+    },
+    "schoolBuildingAccessibility": {
+      "schoolYears": [
+        "2020/21",
+        "2021/22",
+        "2022/23",
+        "2023/24",
+        "2024/25"
+      ],
+      "towns": {
+        "046005": {
+          "2020/21": {
+            "buildings": 17,
+            "accessibilita": {
+              "SI": 17
+            }
+          },
+          "2021/22": {
+            "buildings": 17,
+            "accessibilita": {
+              "SI": 17
+            }
+          },
+          "2022/23": {
+            "buildings": 17,
+            "accessibilita": {
+              "SI": 17
+            }
+          },
+          "2023/24": {
+            "buildings": 17,
+            "accessibilita": {
+              "SI": 17
+            }
+          },
+          "2024/25": {
+            "buildings": 17,
+            "accessibilita": {
+              "SI": 17
+            }
+          }
+        },
+        "046013": {
+          "2020/21": {
+            "buildings": 7,
+            "accessibilita": {
+              "SI": 7
+            }
+          },
+          "2021/22": {
+            "buildings": 7,
+            "accessibilita": {
+              "SI": 7
+            }
+          },
+          "2022/23": {
+            "buildings": 7,
+            "accessibilita": {
+              "SI": 7
+            }
+          },
+          "2023/24": {
+            "buildings": 7,
+            "accessibilita": {
+              "SI": 7
+            }
+          },
+          "2024/25": {
+            "buildings": 7,
+            "accessibilita": {
+              "SI": 7
+            }
+          }
+        },
+        "046018": {
+          "2020/21": {
+            "buildings": 15,
+            "accessibilita": {
+              "SI": 12,
+              "NON DEFINITO": 3
+            }
+          },
+          "2021/22": {
+            "buildings": 15,
+            "accessibilita": {
+              "SI": 12,
+              "NON DEFINITO": 3
+            }
+          },
+          "2022/23": {
+            "buildings": 15,
+            "accessibilita": {
+              "SI": 12,
+              "NON DEFINITO": 3
+            }
+          },
+          "2023/24": {
+            "buildings": 15,
+            "accessibilita": {
+              "SI": 12,
+              "NON DEFINITO": 3
+            }
+          },
+          "2024/25": {
+            "buildings": 15,
+            "accessibilita": {
+              "SI": 12,
+              "NON DEFINITO": 3
+            }
+          }
+        },
+        "046024": {
+          "2020/21": {
+            "buildings": 19,
+            "accessibilita": {
+              "SI": 19
+            }
+          },
+          "2021/22": {
+            "buildings": 19,
+            "accessibilita": {
+              "SI": 19
+            }
+          },
+          "2022/23": {
+            "buildings": 19,
+            "accessibilita": {
+              "SI": 19
+            }
+          },
+          "2023/24": {
+            "buildings": 19,
+            "accessibilita": {
+              "SI": 19
+            }
+          },
+          "2024/25": {
+            "buildings": 19,
+            "accessibilita": {
+              "SI": 19
+            }
+          }
+        },
+        "046028": {
+          "2020/21": {
+            "buildings": 10,
+            "accessibilita": {
+              "SI": 9,
+              "NON DEFINITO": 1
+            }
+          },
+          "2021/22": {
+            "buildings": 10,
+            "accessibilita": {
+              "NON DEFINITO": 1,
+              "SI": 9
+            }
+          },
+          "2022/23": {
+            "buildings": 10,
+            "accessibilita": {
+              "SI": 9,
+              "NON DEFINITO": 1
+            }
+          },
+          "2023/24": {
+            "buildings": 10,
+            "accessibilita": {
+              "NON DEFINITO": 1,
+              "SI": 9
+            }
+          },
+          "2024/25": {
+            "buildings": 10,
+            "accessibilita": {
+              "SI": 9,
+              "NON DEFINITO": 1
+            }
+          }
+        },
+        "046030": {
+          "2020/21": {
+            "buildings": 3,
+            "accessibilita": {
+              "NON DEFINITO": 1,
+              "SI": 1,
+              "NO": 1
+            }
+          },
+          "2021/22": {
+            "buildings": 3,
+            "accessibilita": {
+              "SI": 2,
+              "NO": 1
+            }
+          },
+          "2022/23": {
+            "buildings": 3,
+            "accessibilita": {
+              "SI": 2,
+              "NO": 1
+            }
+          },
+          "2023/24": {
+            "buildings": 3,
+            "accessibilita": {
+              "SI": 2,
+              "NO": 1
+            }
+          },
+          "2024/25": {
+            "buildings": 3,
+            "accessibilita": {
+              "SI": 2,
+              "NO": 1
+            }
+          }
+        },
+        "046033": {
+          "2020/21": {
+            "buildings": 38,
+            "accessibilita": {
+              "NO": 4,
+              "SI": 34
+            }
+          },
+          "2021/22": {
+            "buildings": 38,
+            "accessibilita": {
+              "SI": 35,
+              "NO": 3
+            }
+          },
+          "2022/23": {
+            "buildings": 38,
+            "accessibilita": {
+              "SI": 35,
+              "NO": 3
+            }
+          },
+          "2023/24": {
+            "buildings": 38,
+            "accessibilita": {
+              "SI": 35,
+              "NO": 3
+            }
+          },
+          "2024/25": {
+            "buildings": 38,
+            "accessibilita": {
+              "SI": 35,
+              "NO": 3
+            }
+          }
+        }
+      }
+    },
+    "schoolBuildingFacilities": {
+      "schoolYears": [
+        "2020/21",
+        "2021/22",
+        "2022/23",
+        "2023/24",
+        "2024/25"
+      ],
+      "towns": {
+        "046005": {
+          "2020/21": {
+            "buildings": 17,
+            "mensa": {
+              "SI": 15,
+              "NO": 2
+            },
+            "palestra": {
+              "SI": 6,
+              "NO": 11
+            }
+          },
+          "2021/22": {
+            "buildings": 17,
+            "mensa": {
+              "SI": 15,
+              "NO": 2
+            },
+            "palestra": {
+              "SI": 6,
+              "NO": 11
+            }
+          },
+          "2022/23": {
+            "buildings": 17,
+            "mensa": {
+              "NO": 2,
+              "SI": 15
+            },
+            "palestra": {
+              "SI": 6,
+              "NO": 11
+            }
+          },
+          "2023/24": {
+            "buildings": 17,
+            "mensa": {
+              "SI": 15,
+              "NO": 2
+            },
+            "palestra": {
+              "SI": 6,
+              "NO": 11
+            }
+          },
+          "2024/25": {
+            "buildings": 17,
+            "mensa": {
+              "SI": 15,
+              "NO": 2
+            },
+            "palestra": {
+              "SI": 6,
+              "NO": 11
+            }
+          }
+        },
+        "046013": {
+          "2020/21": {
+            "buildings": 7,
+            "mensa": {
+              "NO": 2,
+              "SI": 5
+            },
+            "palestra": {
+              "SI": 5,
+              "NO": 2
+            }
+          },
+          "2021/22": {
+            "buildings": 7,
+            "mensa": {
+              "NO": 2,
+              "SI": 5
+            },
+            "palestra": {
+              "SI": 5,
+              "NO": 2
+            }
+          },
+          "2022/23": {
+            "buildings": 7,
+            "mensa": {
+              "SI": 5,
+              "NO": 2
+            },
+            "palestra": {
+              "SI": 5,
+              "NO": 2
+            }
+          },
+          "2023/24": {
+            "buildings": 7,
+            "mensa": {
+              "SI": 5,
+              "NO": 2
+            },
+            "palestra": {
+              "SI": 5,
+              "NO": 2
+            }
+          },
+          "2024/25": {
+            "buildings": 7,
+            "mensa": {
+              "SI": 5,
+              "NO": 2
+            },
+            "palestra": {
+              "SI": 5,
+              "NO": 2
+            }
+          }
+        },
+        "046018": {
+          "2020/21": {
+            "buildings": 15,
+            "mensa": {
+              "SI": 15
+            },
+            "palestra": {
+              "NO": 8,
+              "SI": 7
+            }
+          },
+          "2021/22": {
+            "buildings": 15,
+            "mensa": {
+              "SI": 15
+            },
+            "palestra": {
+              "SI": 7,
+              "NO": 8
+            }
+          },
+          "2022/23": {
+            "buildings": 15,
+            "mensa": {
+              "SI": 15
+            },
+            "palestra": {
+              "SI": 7,
+              "NO": 8
+            }
+          },
+          "2023/24": {
+            "buildings": 15,
+            "mensa": {
+              "SI": 15
+            },
+            "palestra": {
+              "SI": 7,
+              "NO": 8
+            }
+          },
+          "2024/25": {
+            "buildings": 15,
+            "mensa": {
+              "SI": 15
+            },
+            "palestra": {
+              "SI": 7,
+              "NO": 8
+            }
+          }
+        },
+        "046024": {
+          "2020/21": {
+            "buildings": 19,
+            "mensa": {
+              "SI": 14,
+              "NO": 5
+            },
+            "palestra": {
+              "SI": 10,
+              "NO": 9
+            }
+          },
+          "2021/22": {
+            "buildings": 19,
+            "mensa": {
+              "NO": 5,
+              "SI": 14
+            },
+            "palestra": {
+              "SI": 10,
+              "NO": 9
+            }
+          },
+          "2022/23": {
+            "buildings": 19,
+            "mensa": {
+              "SI": 14,
+              "NO": 5
+            },
+            "palestra": {
+              "SI": 10,
+              "NO": 9
+            }
+          },
+          "2023/24": {
+            "buildings": 19,
+            "mensa": {
+              "SI": 14,
+              "NO": 5
+            },
+            "palestra": {
+              "NO": 9,
+              "SI": 10
+            }
+          },
+          "2024/25": {
+            "buildings": 19,
+            "mensa": {
+              "NO": 5,
+              "SI": 14
+            },
+            "palestra": {
+              "SI": 10,
+              "NO": 9
+            }
+          }
+        },
+        "046028": {
+          "2020/21": {
+            "buildings": 10,
+            "mensa": {
+              "SI": 8,
+              "NO": 2
+            },
+            "palestra": {
+              "SI": 5,
+              "NO": 5
+            }
+          },
+          "2021/22": {
+            "buildings": 10,
+            "mensa": {
+              "NO": 2,
+              "SI": 8
+            },
+            "palestra": {
+              "NO": 5,
+              "SI": 5
+            }
+          },
+          "2022/23": {
+            "buildings": 10,
+            "mensa": {
+              "SI": 8,
+              "NO": 2
+            },
+            "palestra": {
+              "SI": 5,
+              "NO": 5
+            }
+          },
+          "2023/24": {
+            "buildings": 10,
+            "mensa": {
+              "SI": 8,
+              "NO": 2
+            },
+            "palestra": {
+              "NO": 5,
+              "SI": 5
+            }
+          },
+          "2024/25": {
+            "buildings": 10,
+            "mensa": {
+              "SI": 8,
+              "NO": 2
+            },
+            "palestra": {
+              "SI": 5,
+              "NO": 5
+            }
+          }
+        },
+        "046030": {
+          "2020/21": {
+            "buildings": 3,
+            "mensa": {
+              "SI": 3
+            },
+            "palestra": {
+              "SI": 1,
+              "NO": 2
+            }
+          },
+          "2021/22": {
+            "buildings": 3,
+            "mensa": {
+              "SI": 3
+            },
+            "palestra": {
+              "SI": 1,
+              "NO": 2
+            }
+          },
+          "2022/23": {
+            "buildings": 3,
+            "mensa": {
+              "SI": 3
+            },
+            "palestra": {
+              "NO": 2,
+              "SI": 1
+            }
+          },
+          "2023/24": {
+            "buildings": 3,
+            "mensa": {
+              "SI": 3
+            },
+            "palestra": {
+              "SI": 1,
+              "NO": 2
+            }
+          },
+          "2024/25": {
+            "buildings": 3,
+            "mensa": {
+              "SI": 3
+            },
+            "palestra": {
+              "SI": 1,
+              "NO": 2
+            }
+          }
+        },
+        "046033": {
+          "2020/21": {
+            "buildings": 38,
+            "mensa": {
+              "NO": 17,
+              "SI": 21
+            },
+            "palestra": {
+              "NO": 16,
+              "SI": 22
+            }
+          },
+          "2021/22": {
+            "buildings": 38,
+            "mensa": {
+              "SI": 21,
+              "NO": 17
+            },
+            "palestra": {
+              "SI": 22,
+              "NO": 16
+            }
+          },
+          "2022/23": {
+            "buildings": 38,
+            "mensa": {
+              "SI": 21,
+              "NO": 17
+            },
+            "palestra": {
+              "NO": 16,
+              "SI": 22
+            }
+          },
+          "2023/24": {
+            "buildings": 38,
+            "mensa": {
+              "SI": 21,
+              "NO": 17
+            },
+            "palestra": {
+              "SI": 22,
+              "NO": 16
+            }
+          },
+          "2024/25": {
+            "buildings": 38,
+            "mensa": {
+              "NO": 17,
+              "SI": 21
+            },
+            "palestra": {
+              "NO": 16,
+              "SI": 22
+            }
+          }
+        }
+      }
+    },
+    "schoolBuildingAge": {
+      "schoolYears": [
+        "2020/21",
+        "2021/22",
+        "2022/23",
+        "2023/24",
+        "2024/25"
+      ],
+      "towns": {
+        "046005": {
+          "2020/21": {
+            "buildings": 17,
+            "periodoCostruzione": {
+              "tra il 1950 e il 1970": 11,
+              "tra il 1976 e il 1992": 2,
+              "tra il 1997 e il 2008": 1,
+              "tra il 2009 e il 2017": 1,
+              "non definito": 1,
+              "tra il 1971 e il 1975": 1
+            }
+          },
+          "2021/22": {
+            "buildings": 17,
+            "periodoCostruzione": {
+              "tra il 1950 e il 1970": 12,
+              "tra il 1971 e il 1975": 1,
+              "tra il 1976 e il 1992": 2,
+              "tra il 2009 e il 2017": 1,
+              "tra il 1997 e il 2008": 1
+            }
+          },
+          "2022/23": {
+            "buildings": 17,
+            "periodoCostruzione": {
+              "tra il 1950 e il 1970": 12,
+              "tra il 1976 e il 1992": 2,
+              "tra il 1971 e il 1975": 1,
+              "tra il 1997 e il 2008": 1,
+              "tra il 2009 e il 2017": 1
+            }
+          },
+          "2023/24": {
+            "buildings": 17,
+            "periodoCostruzione": {
+              "tra il 2009 e il 2017": 1,
+              "tra il 1950 e il 1970": 12,
+              "tra il 1976 e il 1992": 2,
+              "tra il 1971 e il 1975": 1,
+              "tra il 1997 e il 2008": 1
+            }
+          },
+          "2024/25": {
+            "buildings": 17,
+            "periodoCostruzione": {
+              "tra il 1950 e il 1970": 12,
+              "tra il 1976 e il 1992": 2,
+              "tra il 1997 e il 2008": 1,
+              "tra il 1971 e il 1975": 1,
+              "tra il 2009 e il 2017": 1
+            }
+          }
+        },
+        "046013": {
+          "2020/21": {
+            "buildings": 7,
+            "periodoCostruzione": {
+              "non definito": 6,
+              "tra il 1997 e il 2008": 1
+            }
+          },
+          "2021/22": {
+            "buildings": 7,
+            "periodoCostruzione": {
+              "tra il 1976 e il 1992": 2,
+              "tra il 1934 e il 1949": 1,
+              "tra il 1950 e il 1970": 2,
+              "tra il 1997 e il 2008": 1,
+              "tra il 1971 e il 1975": 1
+            }
+          },
+          "2022/23": {
+            "buildings": 7,
+            "periodoCostruzione": {
+              "tra il 1976 e il 1992": 2,
+              "tra il 1971 e il 1975": 1,
+              "tra il 1950 e il 1970": 2,
+              "tra il 1934 e il 1949": 1,
+              "tra il 1997 e il 2008": 1
+            }
+          },
+          "2023/24": {
+            "buildings": 7,
+            "periodoCostruzione": {
+              "tra il 1934 e il 1949": 1,
+              "tra il 1950 e il 1970": 2,
+              "tra il 1997 e il 2008": 1,
+              "tra il 1976 e il 1992": 2,
+              "tra il 1971 e il 1975": 1
+            }
+          },
+          "2024/25": {
+            "buildings": 7,
+            "periodoCostruzione": {
+              "tra il 1997 e il 2008": 1,
+              "tra il 1976 e il 1992": 2,
+              "tra il 1950 e il 1970": 2,
+              "tra il 1971 e il 1975": 1,
+              "tra il 1934 e il 1949": 1
+            }
+          }
+        },
+        "046018": {
+          "2020/21": {
+            "buildings": 15,
+            "periodoCostruzione": {
+              "tra il 1997 e il 2008": 1,
+              "tra il 1950 e il 1970": 6,
+              "non definito": 7,
+              "tra il 1976 e il 1992": 1
+            }
+          },
+          "2021/22": {
+            "buildings": 15,
+            "periodoCostruzione": {
+              "tra il 1997 e il 2008": 1,
+              "tra il 1950 e il 1970": 6,
+              "non definito": 7,
+              "tra il 1976 e il 1992": 1
+            }
+          },
+          "2022/23": {
+            "buildings": 15,
+            "periodoCostruzione": {
+              "tra il 1950 e il 1970": 6,
+              "tra il 1997 e il 2008": 1,
+              "non definito": 7,
+              "tra il 1976 e il 1992": 1
+            }
+          },
+          "2023/24": {
+            "buildings": 15,
+            "periodoCostruzione": {
+              "tra il 1950 e il 1970": 6,
+              "non definito": 7,
+              "tra il 1997 e il 2008": 1,
+              "tra il 1976 e il 1992": 1
+            }
+          },
+          "2024/25": {
+            "buildings": 15,
+            "periodoCostruzione": {
+              "tra il 1997 e il 2008": 1,
+              "non definito": 7,
+              "tra il 1950 e il 1970": 6,
+              "tra il 1976 e il 1992": 1
+            }
+          }
+        },
+        "046024": {
+          "2020/21": {
+            "buildings": 19,
+            "periodoCostruzione": {
+              "tra il 1976 e il 1992": 5,
+              "tra il 1950 e il 1970": 10,
+              "tra il 1934 e il 1949": 2,
+              "prima del 1800": 1,
+              "non definito": 1
+            }
+          },
+          "2021/22": {
+            "buildings": 19,
+            "periodoCostruzione": {
+              "tra il 1950 e il 1970": 10,
+              "tra il 1934 e il 1949": 2,
+              "tra il 1976 e il 1992": 5,
+              "non definito": 1,
+              "prima del 1800": 1
+            }
+          },
+          "2022/23": {
+            "buildings": 19,
+            "periodoCostruzione": {
+              "tra il 1950 e il 1970": 10,
+              "prima del 1800": 1,
+              "tra il 1934 e il 1949": 2,
+              "tra il 1976 e il 1992": 5,
+              "non definito": 1
+            }
+          },
+          "2023/24": {
+            "buildings": 19,
+            "periodoCostruzione": {
+              "tra il 1950 e il 1970": 10,
+              "prima del 1800": 1,
+              "tra il 1934 e il 1949": 2,
+              "tra il 1976 e il 1992": 5,
+              "non definito": 1
+            }
+          },
+          "2024/25": {
+            "buildings": 19,
+            "periodoCostruzione": {
+              "tra il 1976 e il 1992": 5,
+              "tra il 1950 e il 1970": 10,
+              "prima del 1800": 1,
+              "tra il 1934 e il 1949": 2,
+              "non definito": 1
+            }
+          }
+        },
+        "046028": {
+          "2020/21": {
+            "buildings": 10,
+            "periodoCostruzione": {
+              "tra il 1950 e il 1970": 4,
+              "tra il 1900 e il 1933": 2,
+              "non definito": 1,
+              "tra il 1800 e il 1899": 1,
+              "tra il 1976 e il 1992": 1,
+              "tra il 1934 e il 1949": 1
+            }
+          },
+          "2021/22": {
+            "buildings": 10,
+            "periodoCostruzione": {
+              "tra il 1900 e il 1933": 2,
+              "tra il 1950 e il 1970": 4,
+              "tra il 1800 e il 1899": 1,
+              "tra il 1934 e il 1949": 1,
+              "non definito": 1,
+              "tra il 1976 e il 1992": 1
+            }
+          },
+          "2022/23": {
+            "buildings": 10,
+            "periodoCostruzione": {
+              "tra il 1900 e il 1933": 2,
+              "tra il 1934 e il 1949": 1,
+              "tra il 1950 e il 1970": 4,
+              "tra il 1800 e il 1899": 1,
+              "tra il 1976 e il 1992": 1,
+              "non definito": 1
+            }
+          },
+          "2023/24": {
+            "buildings": 10,
+            "periodoCostruzione": {
+              "tra il 1934 e il 1949": 1,
+              "tra il 1900 e il 1933": 2,
+              "non definito": 1,
+              "tra il 1950 e il 1970": 4,
+              "tra il 1976 e il 1992": 1,
+              "tra il 1800 e il 1899": 1
+            }
+          },
+          "2024/25": {
+            "buildings": 10,
+            "periodoCostruzione": {
+              "non definito": 1,
+              "tra il 1900 e il 1933": 2,
+              "tra il 1976 e il 1992": 1,
+              "tra il 1800 e il 1899": 1,
+              "tra il 1950 e il 1970": 4,
+              "tra il 1934 e il 1949": 1
+            }
+          }
+        },
+        "046030": {
+          "2020/21": {
+            "buildings": 3,
+            "periodoCostruzione": {
+              "tra il 1950 e il 1970": 3
+            }
+          },
+          "2021/22": {
+            "buildings": 3,
+            "periodoCostruzione": {
+              "tra il 1950 e il 1970": 3
+            }
+          },
+          "2022/23": {
+            "buildings": 3,
+            "periodoCostruzione": {
+              "tra il 1950 e il 1970": 3
+            }
+          },
+          "2023/24": {
+            "buildings": 3,
+            "periodoCostruzione": {
+              "tra il 1950 e il 1970": 3
+            }
+          },
+          "2024/25": {
+            "buildings": 3,
+            "periodoCostruzione": {
+              "tra il 1950 e il 1970": 3
+            }
+          }
+        },
+        "046033": {
+          "2020/21": {
+            "buildings": 38,
+            "periodoCostruzione": {
+              "tra il 1971 e il 1975": 7,
+              "tra il 2009 e il 2017": 1,
+              "tra il 1950 e il 1970": 11,
+              "tra il 1976 e il 1992": 12,
+              "tra il 1997 e il 2008": 3,
+              "tra il 1900 e il 1933": 3,
+              "tra il 1934 e il 1949": 1
+            }
+          },
+          "2021/22": {
+            "buildings": 38,
+            "periodoCostruzione": {
+              "tra il 1997 e il 2008": 3,
+              "tra il 1976 e il 1992": 12,
+              "tra il 1971 e il 1975": 7,
+              "tra il 1950 e il 1970": 11,
+              "tra il 1900 e il 1933": 3,
+              "tra il 1934 e il 1949": 1,
+              "tra il 2009 e il 2017": 1
+            }
+          },
+          "2022/23": {
+            "buildings": 38,
+            "periodoCostruzione": {
+              "tra il 1976 e il 1992": 12,
+              "tra il 1997 e il 2008": 3,
+              "tra il 1950 e il 1970": 11,
+              "tra il 1934 e il 1949": 1,
+              "tra il 1971 e il 1975": 7,
+              "tra il 1900 e il 1933": 3,
+              "tra il 2009 e il 2017": 1
+            }
+          },
+          "2023/24": {
+            "buildings": 38,
+            "periodoCostruzione": {
+              "tra il 1900 e il 1933": 3,
+              "tra il 1976 e il 1992": 12,
+              "tra il 1971 e il 1975": 7,
+              "tra il 1950 e il 1970": 11,
+              "tra il 1997 e il 2008": 3,
+              "tra il 2009 e il 2017": 1,
+              "tra il 1934 e il 1949": 1
+            }
+          },
+          "2024/25": {
+            "buildings": 38,
+            "periodoCostruzione": {
+              "tra il 1976 e il 1992": 12,
+              "tra il 1950 e il 1970": 11,
+              "tra il 2009 e il 2017": 1,
+              "tra il 1900 e il 1933": 3,
+              "tra il 1997 e il 2008": 3,
+              "tra il 1971 e il 1975": 7,
+              "tra il 1934 e il 1949": 1
+            }
+          }
+        }
+      }
+    },
+    "schoolBuildingTransport": {
+      "schoolYears": [
+        "2020/21",
+        "2021/22",
+        "2022/23",
+        "2023/24",
+        "2024/25"
+      ],
+      "towns": {
+        "046005": {
+          "2020/21": {
+            "buildings": 17,
+            "scuolabus": {
+              "NO": 1,
+              "SI": 16
+            },
+            "tplUrbano": {
+              "SI": 13,
+              "NO": 4
+            },
+            "tplInterurbano": {
+              "NO": 10,
+              "SI": 7
+            }
+          },
+          "2021/22": {
+            "buildings": 17,
+            "scuolabus": {
+              "SI": 16,
+              "NO": 1
+            },
+            "tplUrbano": {
+              "SI": 13,
+              "NO": 4
+            },
+            "tplInterurbano": {
+              "NO": 10,
+              "SI": 7
+            }
+          },
+          "2022/23": {
+            "buildings": 17,
+            "scuolabus": {
+              "SI": 16,
+              "NO": 1
+            },
+            "tplUrbano": {
+              "SI": 13,
+              "NO": 4
+            },
+            "tplInterurbano": {
+              "NO": 10,
+              "SI": 7
+            }
+          },
+          "2023/24": {
+            "buildings": 17,
+            "scuolabus": {
+              "SI": 16,
+              "NO": 1
+            },
+            "tplUrbano": {
+              "SI": 13,
+              "NO": 4
+            },
+            "tplInterurbano": {
+              "NO": 10,
+              "SI": 7
+            }
+          },
+          "2024/25": {
+            "buildings": 17,
+            "scuolabus": {
+              "SI": 16,
+              "NO": 1
+            },
+            "tplUrbano": {
+              "SI": 13,
+              "NO": 4
+            },
+            "tplInterurbano": {
+              "NO": 10,
+              "SI": 7
+            }
+          }
+        },
+        "046013": {
+          "2020/21": {
+            "buildings": 7,
+            "scuolabus": {
+              "SI": 6,
+              "NO": 1
+            },
+            "tplUrbano": {
+              "SI": 4,
+              "NO": 3
+            },
+            "tplInterurbano": {
+              "NO": 7
+            }
+          },
+          "2021/22": {
+            "buildings": 7,
+            "scuolabus": {
+              "SI": 6,
+              "NO": 1
+            },
+            "tplUrbano": {
+              "NO": 3,
+              "SI": 4
+            },
+            "tplInterurbano": {
+              "NO": 7
+            }
+          },
+          "2022/23": {
+            "buildings": 7,
+            "scuolabus": {
+              "SI": 6,
+              "NO": 1
+            },
+            "tplUrbano": {
+              "SI": 4,
+              "NO": 3
+            },
+            "tplInterurbano": {
+              "NO": 7
+            }
+          },
+          "2023/24": {
+            "buildings": 7,
+            "scuolabus": {
+              "SI": 6,
+              "NO": 1
+            },
+            "tplUrbano": {
+              "NO": 3,
+              "SI": 4
+            },
+            "tplInterurbano": {
+              "NO": 7
+            }
+          },
+          "2024/25": {
+            "buildings": 7,
+            "scuolabus": {
+              "NO": 1,
+              "SI": 6
+            },
+            "tplUrbano": {
+              "SI": 4,
+              "NO": 3
+            },
+            "tplInterurbano": {
+              "NO": 7
+            }
+          }
+        },
+        "046018": {
+          "2020/21": {
+            "buildings": 15,
+            "scuolabus": {
+              "SI": 14,
+              "NO": 1
+            },
+            "tplUrbano": {
+              "NO": 13,
+              "SI": 2
+            },
+            "tplInterurbano": {
+              "SI": 7,
+              "NO": 8
+            }
+          },
+          "2021/22": {
+            "buildings": 15,
+            "scuolabus": {
+              "SI": 14,
+              "NO": 1
+            },
+            "tplUrbano": {
+              "NO": 13,
+              "SI": 2
+            },
+            "tplInterurbano": {
+              "SI": 7,
+              "NO": 8
+            }
+          },
+          "2022/23": {
+            "buildings": 15,
+            "scuolabus": {
+              "SI": 14,
+              "NO": 1
+            },
+            "tplUrbano": {
+              "SI": 2,
+              "NO": 13
+            },
+            "tplInterurbano": {
+              "NO": 8,
+              "SI": 7
+            }
+          },
+          "2023/24": {
+            "buildings": 15,
+            "scuolabus": {
+              "SI": 14,
+              "NO": 1
+            },
+            "tplUrbano": {
+              "NO": 13,
+              "SI": 2
+            },
+            "tplInterurbano": {
+              "SI": 7,
+              "NO": 8
+            }
+          },
+          "2024/25": {
+            "buildings": 15,
+            "scuolabus": {
+              "SI": 14,
+              "NO": 1
+            },
+            "tplUrbano": {
+              "NO": 13,
+              "SI": 2
+            },
+            "tplInterurbano": {
+              "NO": 8,
+              "SI": 7
+            }
+          }
+        },
+        "046024": {
+          "2020/21": {
+            "buildings": 19,
+            "scuolabus": {
+              "NO": 3,
+              "SI": 16
+            },
+            "tplUrbano": {
+              "SI": 15,
+              "NO": 4
+            },
+            "tplInterurbano": {
+              "SI": 10,
+              "NO": 9
+            }
+          },
+          "2021/22": {
+            "buildings": 19,
+            "scuolabus": {
+              "SI": 16,
+              "NO": 3
+            },
+            "tplUrbano": {
+              "SI": 15,
+              "NO": 4
+            },
+            "tplInterurbano": {
+              "NO": 9,
+              "SI": 10
+            }
+          },
+          "2022/23": {
+            "buildings": 19,
+            "scuolabus": {
+              "NO": 3,
+              "SI": 16
+            },
+            "tplUrbano": {
+              "SI": 15,
+              "NO": 4
+            },
+            "tplInterurbano": {
+              "NO": 9,
+              "SI": 10
+            }
+          },
+          "2023/24": {
+            "buildings": 19,
+            "scuolabus": {
+              "SI": 16,
+              "NO": 3
+            },
+            "tplUrbano": {
+              "SI": 15,
+              "NO": 4
+            },
+            "tplInterurbano": {
+              "SI": 10,
+              "NO": 9
+            }
+          },
+          "2024/25": {
+            "buildings": 19,
+            "scuolabus": {
+              "SI": 16,
+              "NO": 3
+            },
+            "tplUrbano": {
+              "NO": 4,
+              "SI": 15
+            },
+            "tplInterurbano": {
+              "SI": 10,
+              "NO": 9
+            }
+          }
+        },
+        "046028": {
+          "2020/21": {
+            "buildings": 10,
+            "scuolabus": {
+              "NO": 2,
+              "SI": 8
+            },
+            "tplUrbano": {
+              "NO": 3,
+              "SI": 7
+            },
+            "tplInterurbano": {
+              "NO": 5,
+              "SI": 5
+            }
+          },
+          "2021/22": {
+            "buildings": 10,
+            "scuolabus": {
+              "NO": 2,
+              "SI": 8
+            },
+            "tplUrbano": {
+              "SI": 8,
+              "NO": 2
+            },
+            "tplInterurbano": {
+              "SI": 6,
+              "NO": 4
+            }
+          },
+          "2022/23": {
+            "buildings": 10,
+            "scuolabus": {
+              "NO": 2,
+              "SI": 8
+            },
+            "tplUrbano": {
+              "SI": 8,
+              "NO": 2
+            },
+            "tplInterurbano": {
+              "SI": 6,
+              "NO": 4
+            }
+          },
+          "2023/24": {
+            "buildings": 10,
+            "scuolabus": {
+              "SI": 8,
+              "NO": 2
+            },
+            "tplUrbano": {
+              "SI": 8,
+              "NO": 2
+            },
+            "tplInterurbano": {
+              "SI": 6,
+              "NO": 4
+            }
+          },
+          "2024/25": {
+            "buildings": 10,
+            "scuolabus": {
+              "SI": 8,
+              "NO": 2
+            },
+            "tplUrbano": {
+              "SI": 8,
+              "NO": 2
+            },
+            "tplInterurbano": {
+              "NO": 4,
+              "SI": 6
+            }
+          }
+        },
+        "046030": {
+          "2020/21": {
+            "buildings": 3,
+            "scuolabus": {
+              "SI": 3
+            },
+            "tplUrbano": {
+              "SI": 3
+            },
+            "tplInterurbano": {
+              "SI": 1,
+              "NO": 2
+            }
+          },
+          "2021/22": {
+            "buildings": 3,
+            "scuolabus": {
+              "SI": 3
+            },
+            "tplUrbano": {
+              "SI": 3
+            },
+            "tplInterurbano": {
+              "SI": 1,
+              "NO": 2
+            }
+          },
+          "2022/23": {
+            "buildings": 3,
+            "scuolabus": {
+              "SI": 3
+            },
+            "tplUrbano": {
+              "SI": 3
+            },
+            "tplInterurbano": {
+              "SI": 1,
+              "NO": 2
+            }
+          },
+          "2023/24": {
+            "buildings": 3,
+            "scuolabus": {
+              "SI": 3
+            },
+            "tplUrbano": {
+              "SI": 3
+            },
+            "tplInterurbano": {
+              "NO": 2,
+              "SI": 1
+            }
+          },
+          "2024/25": {
+            "buildings": 3,
+            "scuolabus": {
+              "SI": 3
+            },
+            "tplUrbano": {
+              "SI": 3
+            },
+            "tplInterurbano": {
+              "SI": 1,
+              "NO": 2
+            }
+          }
+        },
+        "046033": {
+          "2020/21": {
+            "buildings": 38,
+            "scuolabus": {
+              "NO": 21,
+              "SI": 17
+            },
+            "tplUrbano": {
+              "SI": 28,
+              "NO": 10
+            },
+            "tplInterurbano": {
+              "NO": 33,
+              "SI": 5
+            }
+          },
+          "2021/22": {
+            "buildings": 38,
+            "scuolabus": {
+              "NO": 21,
+              "SI": 17
+            },
+            "tplUrbano": {
+              "NO": 10,
+              "SI": 28
+            },
+            "tplInterurbano": {
+              "NO": 32,
+              "SI": 6
+            }
+          },
+          "2022/23": {
+            "buildings": 38,
+            "scuolabus": {
+              "NO": 21,
+              "SI": 17
+            },
+            "tplUrbano": {
+              "SI": 28,
+              "NO": 10
+            },
+            "tplInterurbano": {
+              "NO": 32,
+              "SI": 6
+            }
+          },
+          "2023/24": {
+            "buildings": 38,
+            "scuolabus": {
+              "NO": 21,
+              "SI": 17
+            },
+            "tplUrbano": {
+              "NO": 10,
+              "SI": 28
+            },
+            "tplInterurbano": {
+              "NO": 32,
+              "SI": 6
+            }
+          },
+          "2024/25": {
+            "buildings": 38,
+            "scuolabus": {
+              "NO": 21,
+              "SI": 17
+            },
+            "tplUrbano": {
+              "SI": 28,
+              "NO": 10
+            },
+            "tplInterurbano": {
+              "NO": 32,
+              "SI": 6
+            }
+          }
+        }
+      }
+    }
+  },
+  "qualityGate": {
+    "status": "PASS",
+    "note": "a.s. 2024/25 identico ai conteggi pubblicati per 7 Comuni, 5 indicatori e tutti i campi."
+  },
+  "acquisitionEvidence": {
+    "script": "scripts/update_source_data.py mim-buildings-history"
+  }
+}
