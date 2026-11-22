@@ -818,7 +818,8 @@ def infancy_history_cases() -> None:
     import infancy_history as ih
 
     def csv_year(start, blank=None, header="Totale Ricettività potenziale"):
-        lines = [f"Anno educativo;CODICE ISTAT;Zone;Totale 3-36 mesi;{header}"]
+        kids = "Totale 3-36 mesi" if start == 2024 else "Popolazione 3-36 mesi"  # intestazione degli anni precedenti
+        lines = [f"Anno educativo;CODICE ISTAT;Zone;{kids};{header}"]
         for i, c in enumerate(ih.TOWNS):
             cap = "" if blank == c else str(50 + i + start - 2020)
             lines.append(f"{start}-{(start + 1) % 100:02d};{int(c)};Versilia;{200 + i};{cap}")

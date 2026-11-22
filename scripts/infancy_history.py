@@ -88,7 +88,8 @@ def year_components(raw: bytes, start: int) -> dict[str, dict[str, int]]:
         return found[0]
     code_h = col(lambda h: h in ("codice istat", "cod istat", "codice istat comune"), "codice Istat")
     cap_h = col(lambda h: "ricettivita potenziale" in h and h.startswith("totale"), "ricettività potenziale")
-    kids_h = col(lambda h: "3-36" in h.replace(" ", "") and h.startswith("totale"), "bambini 3-36 mesi")
+    # «Totale 3-36 mesi» dal 2024/25, «Popolazione 3-36 mesi» negli anni precedenti: stessa grandezza (residenti 3–36 mesi).
+    kids_h = col(lambda h: "3-36" in h.replace(" ", "") and h.startswith(("totale", "popolazione")) and "ricettivita" not in h, "bambini 3-36 mesi")
     year_h = next((h for h in headers if norm(h) == "anno educativo"), None)
     out: dict[str, dict[str, int]] = {}
     for row in reader:
