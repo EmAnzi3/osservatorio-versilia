@@ -1,5 +1,10 @@
 # Consolidamento Osservatorio Versilia — handoff operativo
 
+## Radar: prove di copertura rinnovate dal run (22 novembre 2026)
+
+- Run del 22/11 bloccato con `coverageAudit=fail`: le prove manuali Sport/LIFE (`opportunity-coverage-evidence-v044.json`, verificate il 7/10) superavano i 45 giorni, anche se `pcm-sport` e `cinea-life` erano raggiunte con 6 e 4 segnalazioni.
+- `_v044_evidence_audit`: una fonte raggiunta nel run (`ok` o `degraded`) che produce segnalazioni rinnova la prova (`renewedByRuntime`); una fonte muta o in errore resta scaduta e il gate resta attivo.
+
 ## Confronto Toscana/Italia dell'addizionale comunale IRPEF (21 novembre 2026)
 
 - `irpef_benchmarks.py` + aggiornatore CI `mef-irpef-benchmarks --year 2025`: elenco MEF delle aliquote di tutti i Comuni, codici catastali → Istat, residenti POSAS 1/1/2026. Stessa regola dei valori comunali; Toscana e Italia = media degli importi pesata per i residenti.

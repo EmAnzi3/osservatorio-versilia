@@ -180,10 +180,11 @@ def inject_verified_v04(
 def _v044_evidence_audit(result: dict[str, Any], today: date) -> dict[str, Any]:
     cfg = core._load(EVIDENCE_V044)
     max_age = int(cfg.get("maxEvidenceAgeDays") or 45)
-    configured = {
-        str(row.get("source_id") or "")
+    coverage_rows = {
+        str(row.get("source_id") or ""): row
         for row in (result.get("sourceCoverage") or {}).get("rows") or []
     }
+    configured = set(coverage_rows)
     contract = core._load(core.CONTRACT_V04)
     families = {str(x.get("id") or "") for x in contract.get("requiredFamilies") or []}
     rows: list[dict[str, Any]] = []
@@ -197,6 +198,12 @@ def _v044_evidence_audit(result: dict[str, Any], today: date) -> dict[str, Any]:
             age = (today - verified).days
         except ValueError:
             age = max_age + 1
+        # La prova manuale scade dopo max_age giorni; una fonte raggiunta oggi che produce segnalazioni la
+        # rinnova da sola (22/11: Radar bloccato per pcm-sport e cinea-life, entrambe attive con 6 e 4 segnalazioni).
+        runtime = coverage_rows.get(source_id) or {}
+        renewed = str(runtime.get("runtimeStatus") or "") in {"ok", "degraded"} and int(runtime.get("candidateCount") or 0) > 0
+        if renewed:
+            age = 0
         ok = source_id in configured and family in families and bool(entry.get("evidence_url")) and 0 <= age <= max_age
         if source_id not in configured:
             missing.append(source_id)
@@ -209,6 +216,7 @@ def _v044_evidence_audit(result: dict[str, Any], today: date) -> dict[str, Any]:
             "configured": source_id in configured,
             "familyInContract": family in families,
             "fresh": 0 <= age <= max_age,
+            "renewedByRuntime": renewed,
             "verified": ok,
         })
     return {
