@@ -56,6 +56,7 @@ jobs:
       removed: ${{ steps.run_report.outputs.removed }}
       human_review: ${{ steps.run_report.outputs.human_review }}
       owner_notification_needed: ${{ steps.run_report.outputs.owner_notification_needed }}
+      partial: ${{ steps.run_report.outputs.partial }}
     steps:
       - name: Checkout workflow ref
         uses: actions/checkout@v4
@@ -89,6 +90,7 @@ jobs:
           python scripts/test_opportunity_source_health.py
           python scripts/test_opportunity_independent_audit_recovery.py
           python scripts/test_opportunity_publishability_matrix.py
+          python scripts/test_opportunity_partial_publication.py
           python scripts/test_opportunity_expired_lifecycle.py
           python scripts/test_opportunity_content_sanitization.py
           python scripts/test_opportunity_run_report.py
@@ -271,6 +273,7 @@ jobs:
           print(f"fingerprint={report['fingerprint']}")
           print(f"human_review={(report.get('reviewActions') or {}).get('counts', {}).get('human', 0)}")
           print(f"owner_notification_needed={'true' if publication_requires_notification(report) else 'false'}")
+          print(f"partial={'true' if report.get('partialPublication') else 'false'}")
           for key in ('added', 'modified', 'archived', 'removed'):
               print(f"{key}={int(counts[key])}")
           PY
@@ -447,22 +450,30 @@ jobs:
           path: reports/runtime
 
       - name: Notify owner after successful publication
-        if: needs.refresh.outputs.owner_notification_needed == 'true'
+        # Una pubblicazione parziale si segnala sempre: il run resta bloccato da un gate di completezza.
+        if: needs.refresh.outputs.owner_notification_needed == 'true' || needs.refresh.outputs.partial == 'true'
         shell: bash
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
           marker="radar-published:${{ needs.refresh.outputs.reference_date }}:${{ needs.refresh.outputs.fingerprint }}"
+          if [ "${{ needs.refresh.outputs.partial }}" = "true" ]; then
+            heading="Radar pubblicato in parte"
+            note="Un gate di completezza ha bloccato il run: restano le schede già pubblicate e si aggiungono solo le nuove verificate oggi."
+          else
+            heading="Radar verificato e pubblicato"
+            note="La pubblicazione è conclusa."
+          fi
           {
             echo "<!-- ${marker} -->"
-            echo "# Radar verificato e pubblicato"
+            echo "# ${heading}"
             echo
-            echo "La pubblicazione è conclusa. [Apri il Radar Opportunità](https://osservatorioversilia.it/opportunita/)."
+            echo "${note} [Apri il Radar Opportunità](https://osservatorioversilia.it/opportunita/)."
             echo
             cat reports/runtime/opportunity-run-report.md
           } > /tmp/opportunity-radar-published.md
-          title="Radar pubblicato · ${{ needs.refresh.outputs.reference_date }} · +${{ needs.refresh.outputs.added }} · verifiche richieste ${{ needs.refresh.outputs.human_review }}"
+          title="${heading} · ${{ needs.refresh.outputs.reference_date }} · +${{ needs.refresh.outputs.added }} · verifiche richieste ${{ needs.refresh.outputs.human_review }}"
           python scripts/opportunity_owner_notification.py \
             --repo "$GITHUB_REPOSITORY" \
             --marker "$marker" \
