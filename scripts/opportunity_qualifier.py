@@ -29,7 +29,9 @@ from datetime import date, timedelta
 from typing import Any, Callable
 from urllib.parse import urlsplit
 
-VERSION = "1.4"
+from opportunity_publication_date import publication_date
+
+VERSION = "1.5"
 LABEL = "Requisiti da confermare"
 VERIFICATION_STATUS = "auto_qualified"
 MAX_CANDIDATES = 120
@@ -943,7 +945,7 @@ def apply(result: dict[str, Any], today: date, *, loader: Callable[[str, bool], 
             check["origin"] = candidate["origin"]
         report["checks"].append(check)
         report["checked"] += 1
-        page_text, documents = "", {}
+        page_text, documents, raw_page = "", {}, ""
         if candidate.get("structured_text"):
             page_text = str(candidate["structured_text"])
         elif loader is not None:
@@ -954,6 +956,7 @@ def apply(result: dict[str, Any], today: date, *, loader: Callable[[str, bool], 
                 if not is_pdf and raw.lstrip().startswith("%PDF"):
                     is_pdf, raw = True, loader(url, True)
                 page_text = re.sub(r"\s+", " ", raw) if is_pdf else visible_text(raw)
+                raw_page = "" if is_pdf else raw
                 links = (document_links(raw, url) if document_links and not is_pdf else [])
                 cached = [d.get("url") for d in (lookup.get(url) or {}).get("documents") or [] if d.get("url")]
                 for doc_url in list(dict.fromkeys([*links, *cached]))[:MAX_DOCUMENTS]:
@@ -980,10 +983,15 @@ def apply(result: dict[str, Any], today: date, *, loader: Callable[[str, bool], 
             check["status"] = "duplicate"
             continue
         report["qualified"] += 1
+        # Data ufficiale di pubblicazione: quella della fonte strutturata, altrimenti quella dichiarata dalla pagina.
+        published, published_evidence = (str(candidate["published_at"])[:10], "fonte strutturata") if candidate.get("published_at") \
+            else publication_date(raw_page, page_text, today)
+        entry["published_at"] = published
         item = build_item(entry, today, VERIFICATION_STATUS)
         item.update(
             id=entry["coverage_id"], discovery_url=url, auto_qualification_version=VERSION,
             municipal_relevance_class="partner" if entry["municipality_role"] == "partner" else "direct_conditional",
+            published_at_evidence=published_evidence or None,
             auto_qualification={"applicant": decision.applicant, "deadline": decision.deadline_evidence,
                                 "documents": decision.documents, "checked_at": today.isoformat()},
             first_seen_at=candidate.get("discovery_first_seen_at") or today.isoformat(),

@@ -1,5 +1,12 @@
 # Consolidamento Osservatorio Versilia — handoff operativo
 
+## Radar: data ufficiale di pubblicazione sulle schede (22 novembre 2026, sera)
+
+- Il 22/11 solo 9 schede su 41 avevano `published_at`. Ogni scheda mostra ora sotto il titolo «Pubblicato il … · nel Radar dal …» (`publication_line`), oppure «Data di pubblicazione non indicata dalla fonte».
+- Schede automatiche: `opportunity_publication_date.publication_date` legge la data dalla pagina (JSON-LD `datePublished`, `article:published_time`, Dublin Core, poi «Data di pubblicazione» / «Pubblicato il» nel testo). Data futura, più vecchia di due anni o diciture discordanti: nessuna data. Una data della fonte strutturata prevale. Evidenza in `published_at_evidence`. Versione delle regole 1.5: tutte le schede automatiche si rileggono.
+- Schede curate: `data/opportunity-publication-dates.json`, 12 date verificate il 22/11 sulle pagine ufficiali (NEB, SAI, EUCF, EUI peer review, SINFI), applicate solo dove manca la data. I programmi permanenti (ELENA, EEEF, InvestEU, CEB, Conto Termico…) restano senza data. EIT Delegate Cities: la pagina non dichiara una data.
+- `detection_lag` usa la stessa data: con più date il ritardo di intercettazione diventa misurabile.
+
 ## Radar: proroga MIM e Nidi gratis per le famiglie (22 novembre 2026, pomeriggio)
 
 - Run delle 16:33 (dopo #647): edicole ritirata; restavano la proroga MIM «al 16 ottobre» e una scheda nuova «Nidi gratis 2026-2027 … rivolto alle famiglie».

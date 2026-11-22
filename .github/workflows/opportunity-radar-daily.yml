@@ -98,6 +98,7 @@ jobs:
           python scripts/test_opportunity_prefecture_noise.py
           python scripts/test_opportunity_document_promotion.py
           python scripts/test_opportunity_qualifier.py
+          python scripts/test_opportunity_publication_date.py
           python scripts/test_opportunity_official_recheck.py
           python scripts/test_opportunity_eu_calls.py
           python scripts/test_opportunity_runtime_snapshot.py

@@ -20,8 +20,28 @@ _ORIGINAL_LIFECYCLE_CARD = v04.lifecycle_card
 _source_options = base._source_options
 
 
+def _dmy(value: object) -> str:
+    text = str(value or "")[:10]
+    return f"{text[8:10]}/{text[5:7]}/{text[:4]}" if re.fullmatch(r"\d{4}-\d{2}-\d{2}", text) else ""
+
+
+def publication_line(item: dict) -> str:
+    """«Pubblicato il … · nel Radar dal …»: data ufficiale della fonte e prima rilevazione del Radar."""
+    published, seen = _dmy(item.get("published_at")), _dmy(item.get("first_seen_at"))
+    parts = [f"Pubblicato il {published}" if published else "Data di pubblicazione non indicata dalla fonte"]
+    if seen:
+        parts.append(f"nel Radar dal {seen}")
+    evidence = html.escape(str(item.get("published_at_evidence") or ""), quote=True)
+    title = f' title="{evidence}"' if evidence else ""
+    return f'<p class="op-published"{title}>{html.escape(" · ".join(parts))}</p>'
+
+
 def _card_with_new_badge(item: dict) -> str:
     text = _ORIGINAL_LIFECYCLE_CARD(item)
+    heading = re.search(r"(<div class=\"op-card-heading\">\s*<h3>.*?</h3>)", text, re.S)
+    if not heading:
+        raise RuntimeError("Titolo della scheda non trovato per la data di pubblicazione")
+    text = text[:heading.end()] + "\n        " + publication_line(item) + text[heading.end():]
     first_seen = html.escape(str(item.get("first_seen_at") or ""), quote=True)
     deadline = html.escape(str(item.get("deadline_at") or ""), quote=True)
     new_attr = ' data-new="true"' if bool(item.get("is_new")) else ' data-new="false"'
