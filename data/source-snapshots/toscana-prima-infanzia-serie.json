@@ -1,0 +1,95 @@
+{
+  "schemaVersion": 1,
+  "version": "toscana-prima-infanzia-serie-2024-25-2024-25-v1",
+  "retrieved": "2026-11-22",
+  "publisher": "Regione Toscana — Servizi educativi per la prima infanzia",
+  "sourceUrl": "https://dati.toscana.it/dataset/serviziprimainfanzia",
+  "schoolYears": [
+    "2024/25"
+  ],
+  "rule": "Totale Ricettività potenziale / Totale 3-36 mesi × 100 dalle righe comunali di ciascun anno educativo; celle vuote mai trasformate in zero.",
+  "archives": {
+    "2024/25": {
+      "url": "https://dati.toscana.it/dataset/98ee6064-b61a-45e2-a790-86c55b278574/resource/01588909-8f0b-4b80-8af7-1749bab80a5e/download/opendata-_-da-pubblicare-24-25.csv",
+      "sha256": "b899e5a6e1af3f176e3b3e70183e5241a36241ab362e97bdca21528b5d8e1bf0"
+    }
+  },
+  "towns": {
+    "046005": {
+      "2024/25": {
+        "potentialCapacity": 177,
+        "children3to36Months": 436
+      }
+    },
+    "046013": {
+      "2024/25": {
+        "potentialCapacity": 63,
+        "children3to36Months": 75
+      }
+    },
+    "046018": {
+      "2024/25": {
+        "potentialCapacity": 87,
+        "children3to36Months": 297
+      }
+    },
+    "046024": {
+      "2024/25": {
+        "potentialCapacity": 221,
+        "children3to36Months": 295
+      }
+    },
+    "046028": {
+      "2024/25": {
+        "potentialCapacity": 0,
+        "children3to36Months": 168
+      }
+    },
+    "046030": {
+      "2024/25": {
+        "potentialCapacity": 0,
+        "children3to36Months": 35
+      }
+    },
+    "046033": {
+      "2024/25": {
+        "potentialCapacity": 483,
+        "children3to36Months": 911
+      }
+    }
+  },
+  "series": {
+    "046005": [
+      40.596330275229356
+    ],
+    "046013": [
+      84.0
+    ],
+    "046018": [
+      29.292929292929294
+    ],
+    "046024": [
+      74.91525423728814
+    ],
+    "046028": [
+      0.0
+    ],
+    "046030": [
+      0.0
+    ],
+    "046033": [
+      53.018660812294186
+    ]
+  },
+  "stoppedAt": {
+    "schoolYear": "2023/24",
+    "reason": "colonna bambini 3-36 mesi: assente"
+  },
+  "qualityGate": {
+    "status": "PASS",
+    "note": "a.s. 2024/25 identico ai componenti pubblicati per i 7 Comuni."
+  },
+  "acquisitionEvidence": {
+    "script": "scripts/update_source_data.py toscana-infancy-history"
+  }
+}
