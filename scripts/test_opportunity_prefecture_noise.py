@@ -66,6 +66,10 @@ def test_prefecture_noise() -> None:
     })
     assert result["counts"].get("technical", 0) == 0, result["counts"]
     assert result["discardedCount"] == len(cases), result["counts"]
+    # Anche le voci di altre province passano dalle azioni del rapporto senza errori e risultano scartate.
+    other = [_item("Disattivazione indirizzi PEC", place="catanzaro"), _item("Avviso chiusura Ufficio URP", place="bari")]
+    result = build_actions({"referenceDate": "2026-11-23", "opportunities": [], "discoveryQueue": other})
+    assert result["discardedCount"] == 2 and result["counts"].get("technical", 0) == 0, result["counts"]
 
 
 def main() -> int:
