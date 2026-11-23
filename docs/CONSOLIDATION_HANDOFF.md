@@ -1,5 +1,13 @@
 # Consolidamento Osservatorio Versilia — handoff operativo
 
+## Farmacie: serie 2019–2025 ogni 1.000 residenti (23 novembre 2026)
+
+- Decisione di Ema: pubblicare la serie 2019–2025 (sonda in #654: il 31/12/2024 ricostruito dal file corrente coincide con il file di fine 2024, Comune per Comune; il 2025 con i valori pubblicati).
+- `scripts/pharmacy_history.py`: sedi con codice univoco valide al 31/12 dagli intervalli di validità del file corrente (nome datato letto dalla pagina del dataset, TLS permissivo), 2025 vincolato ai conteggi di `a3-health-pharmacies-benchmark-2025.json`, 2024 confrontato col file di fine 2024 finché resta online.
+- Aggiornatore `salute-pharmacies-history` (richiesta `salutePharmaciesHistory`), snapshot `data/source-snapshots/salute-farmacie-serie.json`, materializzatore `materialize_pharmacy_history.py` dopo il confronto IRPEF: tasso = sedi al 31/12/Y / residenti al 1/1/(Y+1) × 1.000, arrotondato a due decimali come il valore pubblicato.
+- Sedi invariate dal 2019 al 2025 (56): il tasso cambia solo con i residenti (Forte dei Marmi 0,70 → 0,76). Prima del 2019 mancano i residenti pubblicati (totale 47 nel 2014, 52 nel 2016).
+- Chiedi resta sul singolo anno (`health_facilities_single_snapshot_no_history`): aggiornamento rimandato con gli altri di Chiedi.
+
 ## Radar: fonti mute e rinnovo delle prove dalla pagina ufficiale (23 novembre 2026)
 
 - Le cinque fonti «mute» (zero segnalazioni) non sono rotte:

@@ -996,6 +996,36 @@ def update_infancy_history(dry_run: bool, fetch=None) -> Changes:
     return changes
 
 
+# ------------------------------------------------------------------ Ministero della Salute: serie delle farmacie
+
+def update_pharmacy_history(dry_run: bool, fetch=None) -> Changes:
+    """Sedi di farmacia al 31 dicembre 2019–2025 dal file ministeriale corrente; 2025 = conteggi pubblicati."""
+    import pharmacy_history as ph
+
+    get = fetch or (lambda url: probes.http_fetch("LEGACYTLS " + url))
+
+    def check(url: str) -> bytes | None:
+        try:
+            return get(url)
+        except probes.ProbeError as error:
+            if error.reason == "not_found":
+                return None
+            raise
+
+    published = ph.published_counts(load(ROOT / ph.PUBLISHED))
+    try:
+        snapshot = ph.build_snapshot(get, published, check)
+    except (ph.PharmacyError, KeyError, ValueError, probes.ProbeError) as error:
+        raise UpdateError(f"Serie farmacie: {error}") from error
+    changes = Changes()
+    for code, values in snapshot["counts"].items():
+        changes.note(f"{ph.METRIC} {code} {snapshot['years'][0]}", None, values[0])
+    snapshot["acquisitionEvidence"] = {"script": "scripts/update_source_data.py salute-pharmacies-history"}
+    if not dry_run:
+        save(ROOT / ph.SNAPSHOT, snapshot)
+    return changes
+
+
 # ------------------------------------------------------------------ MEF/Istat: serie dei contribuenti ogni 100 maggiorenni
 
 def update_mef_taxpayers_history(dry_run: bool, fetch=None) -> Changes:
@@ -1784,6 +1814,7 @@ def main() -> int:
     ir_p.add_argument("--year", type=int, required=True)
     ir_p.add_argument("--dry-run", action="store_true")
     ih_p = sub.add_parser("toscana-infancy-history", help="serie della ricettività potenziale per la prima infanzia")
+    sub.add_parser("salute-pharmacies-history", help="serie delle farmacie ogni 1.000 residenti (Ministero della Salute)")
     ih_p.add_argument("--dry-run", action="store_true")
     mu_p = sub.add_parser("asia-micro-units-history", help="serie Istat ASIA-UL della quota di unità locali con 0–9 addetti")
     mu_p.add_argument("--dry-run", action="store_true")
@@ -1819,6 +1850,8 @@ def main() -> int:
             update_irpef_benchmarks(args.year, args.dry_run).report("Confronto addizionale IRPEF:")
         elif args.updater == "toscana-infancy-history":
             update_infancy_history(args.dry_run).report("Serie prima infanzia:")
+        elif args.updater == "salute-pharmacies-history":
+            update_pharmacy_history(args.dry_run).report("Serie farmacie:")
         elif args.updater == "asia-micro-units-history":
             update_asia_micro_units_history(args.dry_run).report("Serie micro unità:")
         elif args.updater == "mim-students-history":
