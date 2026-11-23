@@ -3,7 +3,7 @@
 ## Farmacie: sonda CI dei file storici del Ministero della Salute (23 novembre 2026)
 
 - Il file congelato `FRM_FARMA_5_20251231.csv` riporta per ogni farmacia solo l'ultima registrazione: ricostruire gli anni passati sottostima (Massarosa 1 farmacia nel 2017). Per la serie servono file datati di fine anno.
-- Sonda `sourceProbe`: pagina del dataset sul portale storico (`idPag=5`) e sul nuovo portale, con i collegamenti `FRM_FARMA`, più quattro file di fine anno con lo stesso schema di nome (2024, 2023, 2021, 2018). Esito in `data/source-probes/salute-farmacie-*.json`.
+- Sonda `sourceProbe`: pagina del dataset sul portale storico (`idPag=5`) e sul nuovo portale, con i collegamenti `FRM_FARMA`, più quattro file di fine anno con lo stesso schema di nome (2024, 2023, 2021, 2018). Esito in `data/source-probes/salute-farmacie-*.json`. Primo giro: tutte le richieste rifiutate con «SSLV3_ALERT_HANDSHAKE_FAILURE»; `probe_source_files.fetch` ora riprova con TLS permissivo (`SECLEVEL=0`, come `LEGACYTLS` nelle sonde mensili) solo su quell'errore.
 - Correzione di una nota del 22/11: la pagina pubblica del Radar carica `opportunity-preview-v044.css` (anche il badge «Nuova» ha i suoi stili); il collegamento mancava solo nella mia anteprima locale.
 
 ## Radar: fonti mute e rinnovo delle prove dalla pagina ufficiale (23 novembre 2026)
