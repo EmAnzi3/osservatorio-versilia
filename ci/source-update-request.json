@@ -6,18 +6,7 @@
   "agcomFtth": false,
   "istatTourism": [],
   "mefFiscalProbe": [],
-  "sourceProbe": [
-    {
-      "name": "salute-farmacie-versilia-20261122",
-      "url": "https://www.dati.salute.gov.it/sites/default/files/opendata/FRM_FARMA_5_20261122.csv",
-      "match": ";(?:046005|046013|046018|046024|046028|046030|046033);"
-    },
-    {
-      "name": "salute-farmacie-versilia-20241231",
-      "url": "https://www.dati.salute.gov.it/sites/default/files/opendata/FRM_FARMA_5_20241231.csv",
-      "match": ";(?:046005|046013|046018|046024|046028|046030|046033);"
-    }
-  ],
+  "sourceProbe": [],
   "ispraSoil": [],
   "aciVehicles": [],
   "omiResidential": [],
