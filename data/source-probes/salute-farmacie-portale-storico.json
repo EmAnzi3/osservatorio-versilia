@@ -1,0 +1,10 @@
+{
+ "schemaVersion": 1,
+ "createdAt": "2026-11-23T06:57:00Z",
+ "note": "Sonda: struttura della fonte consultata; non è un dato pubblicato.",
+ "follow": "FRM_FARMA",
+ "result": {
+  "url": "https://www.dati.salute.gov.it/dati/dettaglioDataset.jsp?menu=dati&idPag=5",
+  "error": "URLError: <urlopen error [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] ssl/tls alert handshake failure (_ssl.c:1011)>"
+ }
+}
