@@ -4,6 +4,7 @@
 
 - Il file congelato `FRM_FARMA_5_20251231.csv` riporta per ogni farmacia solo l'ultima registrazione: ricostruire gli anni passati sottostima (Massarosa 1 farmacia nel 2017). Per la serie servono file datati di fine anno.
 - Sonda `sourceProbe`: pagina del dataset sul portale storico (`idPag=5`) e sul nuovo portale, con i collegamenti `FRM_FARMA`, più quattro file di fine anno con lo stesso schema di nome (2024, 2023, 2021, 2018). Esito in `data/source-probes/salute-farmacie-*.json`. Primo giro: tutte le richieste rifiutate con «SSLV3_ALERT_HANDSHAKE_FAILURE»; `probe_source_files.fetch` ora riprova con TLS permissivo (`SECLEVEL=0`, come `LEGACYTLS` nelle sonde mensili) solo su quell'errore.
+- Secondo giro: esiste `FRM_FARMA_5_20241231.csv` (56.284 righe); 2023, 2021 e 2018 danno 404. La pagina del dataset elenca solo il file corrente (`FRM_FARMA_5_20261122`, CSV/XML/JSON). Il file contiene più righe per farmacia con intervalli di validità dal 2005 (es. cambio di titolare): la storia c'è, la nota precedente va verificata. Terzo giro: righe dei sette Comuni dal file corrente e da quello 2024, per confrontare il 2024 ricostruito con il 2024 dichiarato allora.
 - Correzione di una nota del 22/11: la pagina pubblica del Radar carica `opportunity-preview-v044.css` (anche il badge «Nuova» ha i suoi stili); il collegamento mancava solo nella mia anteprima locale.
 
 ## Radar: fonti mute e rinnovo delle prove dalla pagina ufficiale (23 novembre 2026)
