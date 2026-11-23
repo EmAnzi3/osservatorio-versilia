@@ -23,13 +23,13 @@
       }
     },
     "mim-enti-locali": {
-      "checkEveryDays": 7,
       "urls": [
         "https://www.istruzione.it/edilizia_scolastica/news.shtml",
         "https://pn20212027.istruzione.it/avvisi/?beneficiari=enti-locali",
         "https://pnrr.istruzione.it/feed/",
         "https://www.mim.gov.it/web/guest/comunicati"
       ],
+      "endpointRoles": {"https://pn20212027.istruzione.it/avvisi/?beneficiari=enti-locali": "supplementary"},
       "fetchTimeoutSeconds": 18,
       "includeTerms": ["avviso", "enti locali", "scuole", "asili", "nido", "mense", "edilizia scolastica", "sicurezza", "finanzi", "PNRR"],
       "municipalTerms": ["enti locali", "comun", "proprietari", "beneficiari", "territoriali"]
