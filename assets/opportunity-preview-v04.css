@@ -106,3 +106,5 @@
     padding-right: 5px;
   }
 }
+/* Data ufficiale di pubblicazione e prima rilevazione del Radar, sotto il titolo (stile di .op-description, più piccolo). */
+.op-card-heading .op-published{margin:6px 0 0;color:#5c6f77;font-size:12px;line-height:1.45;font-weight:650}

@@ -28,6 +28,7 @@ import opportunity_independent_audit_recovery as independent_recovery
 import opportunity_review_actions as review_actions
 import opportunity_discovery_resilient as discovery_transport
 import opportunity_official_recheck as official_recheck
+import opportunity_publication_date as publication_dates
 from opportunity_discovery_noise import clean_review_queues
 
 
@@ -431,6 +432,7 @@ def _prepare_public_audit_fixed(result: dict[str, Any], today: date) -> dict[str
     _archive_absorbed_announcements(result)
     _archive_withdrawn_auto_cards(result)
     _archive_expired_opportunities(result, today)
+    publication_dates.apply_overlay(result, ROOT)
     # Il replay aggiunge schede dopo il normale classificatore h5: riallineiamo
     # prima i contatori legacy e poi il contratto comunale/partnership.
     if hasattr(core, "_recompute_v04_counts"):

@@ -1,0 +1,79 @@
+{
+  "schemaVersion": 1,
+  "verifiedAt": "2026-11-22",
+  "rule": "Data ufficiale di pubblicazione delle schede curate, letta sulla pagina ufficiale. Si applica solo se la scheda non ha già una data. I programmi permanenti senza data restano senza.",
+  "entries": [
+    {
+      "coverage_id": "HORIZON-NEB-2026-01-BUSINESS-01",
+      "published_at": "2025-12-12",
+      "evidence_url": "https://cinea.ec.europa.eu/funding-opportunities/calls-proposals/horizon-europe-eur-1011-million-under-new-european-bauhaus-facility_en",
+      "evidence": "Pagina CINEA: pubblicata il 12 dicembre 2025; call aperta dal 5 maggio 2026."
+    },
+    {
+      "coverage_id": "HORIZON-NEB-2026-01-BUSINESS-03",
+      "published_at": "2025-12-12",
+      "evidence_url": "https://cinea.ec.europa.eu/funding-opportunities/calls-proposals/horizon-europe-eur-1011-million-under-new-european-bauhaus-facility_en",
+      "evidence": "Pagina CINEA: pubblicata il 12 dicembre 2025; call aperta dal 5 maggio 2026."
+    },
+    {
+      "coverage_id": "HORIZON-NEB-2026-01-PARTICIPATION-01",
+      "published_at": "2025-12-12",
+      "evidence_url": "https://cinea.ec.europa.eu/funding-opportunities/calls-proposals/horizon-europe-eur-1011-million-under-new-european-bauhaus-facility_en",
+      "evidence": "Pagina CINEA: pubblicata il 12 dicembre 2025; call aperta dal 5 maggio 2026."
+    },
+    {
+      "coverage_id": "HORIZON-NEB-2026-01-PARTICIPATION-02",
+      "published_at": "2025-12-12",
+      "evidence_url": "https://cinea.ec.europa.eu/funding-opportunities/calls-proposals/horizon-europe-eur-1011-million-under-new-european-bauhaus-facility_en",
+      "evidence": "Pagina CINEA: pubblicata il 12 dicembre 2025; call aperta dal 5 maggio 2026."
+    },
+    {
+      "coverage_id": "HORIZON-NEB-2026-01-REGEN-01",
+      "published_at": "2025-12-12",
+      "evidence_url": "https://cinea.ec.europa.eu/funding-opportunities/calls-proposals/horizon-europe-eur-1011-million-under-new-european-bauhaus-facility_en",
+      "evidence": "Pagina CINEA: pubblicata il 12 dicembre 2025; call aperta dal 5 maggio 2026."
+    },
+    {
+      "coverage_id": "HORIZON-NEB-2026-01-REGEN-02",
+      "published_at": "2025-12-12",
+      "evidence_url": "https://cinea.ec.europa.eu/funding-opportunities/calls-proposals/horizon-europe-eur-1011-million-under-new-european-bauhaus-facility_en",
+      "evidence": "Pagina CINEA: pubblicata il 12 dicembre 2025; call aperta dal 5 maggio 2026."
+    },
+    {
+      "coverage_id": "sai-2026-ordinary-2402",
+      "published_at": "2026-08-13",
+      "evidence_url": "https://fnasilo.dlci.interno.it/sprar/",
+      "evidence": "FNAsilo: «Avvio della procedura per il finanziamento di nuovi progetti SAI», pubblicato il 13/08/2026."
+    },
+    {
+      "coverage_id": "sai-2026-disagio-300",
+      "published_at": "2026-08-13",
+      "evidence_url": "https://fnasilo.dlci.interno.it/sprar/secure/notiziaVisualizza/64",
+      "evidence": "FNAsilo: «Avvio della procedura per il finanziamento di nuovi progetti SAI», pubblicato il 13/08/2026."
+    },
+    {
+      "coverage_id": "sai-2026-msna-500",
+      "published_at": "2026-08-13",
+      "evidence_url": "https://fnasilo.dlci.interno.it/sprar/secure/notiziaVisualizza/65",
+      "evidence": "FNAsilo: «Avvio della procedura per il finanziamento di nuovi progetti SAI», pubblicato il 13/08/2026."
+    },
+    {
+      "coverage_id": "eu-eucf-call-8-2026",
+      "published_at": "2026-08-17",
+      "evidence_url": "https://managenergy.ec.europa.eu/managenergy-discover/managenergy-news/get-ready-eucfs-8th-call-opens-october-2026-08-17_en",
+      "evidence": "ManagEnergy: annuncio dell'8ª call pubblicato il 17 agosto 2026."
+    },
+    {
+      "coverage_id": "eui-permanent-peer-reviewers",
+      "published_at": "2025-11-19",
+      "evidence_url": "https://www.urban-initiative.eu/capacity-building/peer-reviews/ongoing-call-peer-reviews",
+      "evidence": "EUI: «Call opened on 19 November 2025»."
+    },
+    {
+      "coverage_id": "sinfi-supporto-comuni-2026",
+      "published_at": "2026-06-03",
+      "evidence_url": "https://www.infratelitalia.it/archivio-news/notizie/progetto-sinfi-2026-i-comuni-fino-50000-abitanti-infratel-italia-apre",
+      "evidence": "Infratel Italia: notizia del 3 giugno 2026; richieste dall'8 giugno 2026."
+    }
+  ]
+}
