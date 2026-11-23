@@ -23,7 +23,6 @@
       }
     },
     "mim-enti-locali": {
-      "checkEveryDays": 7,
       "urls": [
         "https://www.istruzione.it/edilizia_scolastica/news.shtml",
         "https://pn20212027.istruzione.it/avvisi/?beneficiari=enti-locali",

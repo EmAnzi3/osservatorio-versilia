@@ -46,6 +46,19 @@ def test_prefecture_noise() -> None:
     reopened = _item("Avviso pubblico per ricerca immobile: nuova finestra per domande")
     assert classify_signal(reopened, "2026-10-28") is None
 
+    # Altre province: comunicazioni locali fuori territorio (23/11: 204 voci in coda, quasi tutte rumore).
+    for title, place in (("A24 - Roma-Teramo. Tratta L'Aquila Ovest-Tornimparte. Provv. viabilità", "laquila"),
+                         ("Disattivazione indirizzi PEC", "catanzaro"),
+                         ("Partita di Serie C Potenza - Cerignola, divieto di vendita tagliandi", "potenza"),
+                         ("Bando di esame per abilitazione ascensorista", "biella"),
+                         ("Fondo Edifici di Culto: le iniziative editoriali per il 2027", "terni"),
+                         ("Estrazione, revisione economico-finanziaria Comune di Ventotene", "latina")):
+        assert classify_signal(_item(title, place=place), "2026-11-23") == "other_prefecture", title
+    # Restano: Prefettura di Lucca, segnali di finanziamento, scadenza aperta.
+    assert classify_signal(_item("Disattivazione indirizzi PEC", place="lucca"), "2026-11-23") is None
+    assert classify_signal(_item("Fondo per la prevenzione e il contrasto delle truffe agli anziani", place="trapani"), "2026-11-23") is None
+    assert classify_signal(_item("Disattivazione indirizzi PEC", place="catanzaro", deadline="2026-12-01"), "2026-11-23") is None
+
     result = build_actions({
         "referenceDate": "2026-10-28",
         "opportunities": [],
@@ -53,11 +66,15 @@ def test_prefecture_noise() -> None:
     })
     assert result["counts"].get("technical", 0) == 0, result["counts"]
     assert result["discardedCount"] == len(cases), result["counts"]
+    # Anche le voci di altre province passano dalle azioni del rapporto senza errori e risultano scartate.
+    other = [_item("Disattivazione indirizzi PEC", place="catanzaro"), _item("Avviso chiusura Ufficio URP", place="bari")]
+    result = build_actions({"referenceDate": "2026-11-23", "opportunities": [], "discoveryQueue": other})
+    assert result["discardedCount"] == 2 and result["counts"].get("technical", 0) == 0, result["counts"]
 
 
 def main() -> int:
     test_prefecture_noise()
-    print("Rumore Prefetture: 11 scarti mirati + 5 salvaguardie PASS")
+    print("Rumore Prefetture: 11 scarti mirati + 6 altre province + 8 salvaguardie PASS")
     return 0
 
 

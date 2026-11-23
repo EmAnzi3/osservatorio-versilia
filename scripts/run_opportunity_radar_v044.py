@@ -14,6 +14,7 @@ from datetime import date
 from pathlib import Path
 from typing import Any
 
+import opportunity_evidence_renewal as evidence_renewal
 import run_opportunity_radar_v043 as prev
 
 core = prev.core
@@ -200,8 +201,8 @@ def _v044_evidence_audit(result: dict[str, Any], today: date) -> dict[str, Any]:
             age = max_age + 1
         # La prova manuale scade dopo max_age giorni; una fonte raggiunta oggi che produce segnalazioni la
         # rinnova da sola (22/11: Radar bloccato per pcm-sport e cinea-life, entrambe attive con 6 e 4 segnalazioni).
-        runtime = coverage_rows.get(source_id) or {}
-        renewed = str(runtime.get("runtimeStatus") or "") in {"ok", "degraded"} and int(runtime.get("candidateCount") or 0) > 0
+        renewed_by = evidence_renewal.renewal(coverage_rows.get(source_id), entry.get("evidence_url"))
+        renewed = renewed_by is not None
         if renewed:
             age = 0
         ok = source_id in configured and family in families and bool(entry.get("evidence_url")) and 0 <= age <= max_age
@@ -217,6 +218,7 @@ def _v044_evidence_audit(result: dict[str, Any], today: date) -> dict[str, Any]:
             "familyInContract": family in families,
             "fresh": 0 <= age <= max_age,
             "renewedByRuntime": renewed,
+            "renewedBy": renewed_by,
             "verified": ok,
         })
     return {

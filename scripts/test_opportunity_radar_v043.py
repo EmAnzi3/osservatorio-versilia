@@ -18,7 +18,8 @@ class RadarV043Test(unittest.TestCase):
         }
         self.assertTrue(expected.issubset(discovery))
         self.assertTrue(expected.issubset(set((coverage.get("sources") or {}).keys())))
-        self.assertGreaterEqual(len(discovery), 39)
+        # 38: la fonte ANCI nazionale è stata tolta perché irraggiungibile dalla CI (ce84d64e); i lead ANCI arrivano da ANCI Toscana.
+        self.assertGreaterEqual(len(discovery), 38)
 
     def test_contract_has_explicit_european_subfamilies(self):
         contract = v043._load(v043.CONTRACT_V04)
@@ -79,6 +80,37 @@ class RadarV043Test(unittest.TestCase):
         self.assertEqual(len(renewed), 9)
         failed = [dict(r, runtimeStatus="failed") for r in rows]
         self.assertEqual(len(v043._residual_evidence_audit({"sourceCoverage": {"rows": failed}}, late)["staleEvidence"]), 12)
+
+    def test_evidence_page_read_today_renews_silent_sources(self):
+        """Erasmus+, CEF e Horizon sorvegliano la pagina della prova: letta con successo oggi, la prova è rinnovata."""
+        import opportunity_discovery_resilient as discovery
+        _, coverage = v043.compose_runtime_payloads()
+        evidence = v043._load(v043.EVIDENCE_V043)
+        late = date.fromisoformat(evidence["referenceDate"]) + timedelta(days=evidence["maxEvidenceAgeDays"] + 1)
+        by_id = {e["source_id"]: e for e in evidence["entries"]}
+        silent = {"eu-erasmus", "eu-cef", "eu-horizon"}
+        rows = [{"source_id": s, "runtimeStatus": "ok", "candidateCount": 0 if s in silent else 2} for s in coverage.get("sources") or {}]
+        saved = dict(discovery.FETCH_TRACE)
+        try:
+            discovery.FETCH_TRACE.clear()
+            for s in silent:
+                # Erasmus+: URL configurato diverso, URL finale = pagina della prova.
+                discovery.FETCH_TRACE["https://configured/" + s] = {"url": "https://configured/" + s, "status": "ok",
+                                                                    "resolvedUrl": by_id[s]["evidence_url"]}
+            audit = v043._residual_evidence_audit({"sourceCoverage": {"rows": rows}}, late)
+            self.assertEqual(audit["status"], "pass", audit["staleEvidence"])
+            self.assertEqual({r["source_id"] for r in audit["rows"] if r["renewedBy"] == "evidence_page"}, silent)
+            # Pagina letta con errore, o fonte in errore: nessun rinnovo.
+            for s in silent:
+                discovery.FETCH_TRACE["https://configured/" + s]["status"] = "error"
+            self.assertEqual(set(v043._residual_evidence_audit({"sourceCoverage": {"rows": rows}}, late)["staleEvidence"]), silent)
+            for s in silent:
+                discovery.FETCH_TRACE["https://configured/" + s]["status"] = "ok"
+            failed = [dict(r, runtimeStatus="failed") if r["source_id"] in silent else r for r in rows]
+            self.assertEqual(set(v043._residual_evidence_audit({"sourceCoverage": {"rows": failed}}, late)["staleEvidence"]), silent)
+        finally:
+            discovery.FETCH_TRACE.clear()
+            discovery.FETCH_TRACE.update(saved)
 
     def test_every_residual_source_has_official_evidence(self):
         source_ids = set()
