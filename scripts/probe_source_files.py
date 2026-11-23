@@ -38,14 +38,29 @@ MAX_CSV_HITS = 1500
 OPENER = urllib.request.build_opener(urllib.request.HTTPCookieProcessor(http.cookiejar.CookieJar()))
 
 
+def _legacy_opener() -> urllib.request.OpenerDirector:
+    """TLS permissivo (come `LEGACYTLS` in release_period_probes): alcuni server pubblici, per esempio
+    dati.salute.gov.it, rifiutano l'handshake con le impostazioni predefinite di OpenSSL 3."""
+    import ssl
+    context = ssl.create_default_context()
+    context.set_ciphers("DEFAULT:@SECLEVEL=0")
+    context.minimum_version = ssl.TLSVersion.TLSv1
+    return urllib.request.build_opener(urllib.request.HTTPCookieProcessor(http.cookiejar.CookieJar()),
+                                       urllib.request.HTTPSHandler(context=context))
+
+
 def fetch(url: str, tries: int = 3, data: bytes | None = None) -> tuple[bytes, str]:
     error: Exception | None = None
+    opener = OPENER
     for attempt in range(tries):
         try:
-            with OPENER.open(urllib.request.Request(url, data=data, headers=UA), timeout=180) as r:
+            with opener.open(urllib.request.Request(url, data=data, headers=UA), timeout=180) as r:
                 return r.read(), r.headers.get("Content-Type", "")
         except Exception as exc:  # noqa: BLE001 - la sonda registra ogni errore
             error = exc
+            if "HANDSHAKE_FAILURE" in str(exc) and opener is OPENER:
+                opener = _legacy_opener()
+                continue
             time.sleep(3 * (attempt + 1))
     raise RuntimeError(f"{type(error).__name__}: {error}")
 

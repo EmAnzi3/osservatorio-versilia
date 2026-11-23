@@ -1,5 +1,14 @@
 # Consolidamento Osservatorio Versilia — handoff operativo
 
+## Farmacie: sonda CI dei file storici del Ministero della Salute (23 novembre 2026)
+
+- Il file congelato `FRM_FARMA_5_20251231.csv` riporta per ogni farmacia solo l'ultima registrazione: ricostruire gli anni passati sottostima (Massarosa 1 farmacia nel 2017). Per la serie servono file datati di fine anno.
+- Sonda `sourceProbe`: pagina del dataset sul portale storico (`idPag=5`) e sul nuovo portale, con i collegamenti `FRM_FARMA`, più quattro file di fine anno con lo stesso schema di nome (2024, 2023, 2021, 2018). Esito in `data/source-probes/salute-farmacie-*.json`. Primo giro: tutte le richieste rifiutate con «SSLV3_ALERT_HANDSHAKE_FAILURE»; `probe_source_files.fetch` ora riprova con TLS permissivo (`SECLEVEL=0`, come `LEGACYTLS` nelle sonde mensili) solo su quell'errore.
+- Secondo giro: esiste `FRM_FARMA_5_20241231.csv` (56.284 righe); 2023, 2021 e 2018 danno 404. La pagina del dataset elenca solo il file corrente (`FRM_FARMA_5_20261122`, CSV/XML/JSON). Il file contiene più righe per farmacia con intervalli di validità dal 2005 (es. cambio di titolare): la storia c'è, la nota precedente va verificata. Terzo giro: righe dei sette Comuni dal file corrente e da quello 2024, per confrontare il 2024 ricostruito con il 2024 dichiarato allora.
+- Esito del terzo giro (148 righe dei sette Comuni nel file del 22/11/2026, 141 in quello 2024): il 31/12/2024 ricostruito dal file corrente coincide Comune per Comune con il file 2024 (56 farmacie: Camaiore 11, Forte dei Marmi 5, Massarosa 6, Pietrasanta 9, Seravezza 4, Stazzema 1, Viareggio 20), e il 2025 coincide con i valori pubblicati. Le registrazioni chiuse restano nel file con la data di fine, dal 2005. La nota precedente («Massarosa 1 farmacia nel 2017») veniva dallo snapshot congelato con le sole sedi attive: dal file completo Massarosa ne ha 6.
+- Serie ricostruibile 2014–2026 (totale: 47 nel 2014, 52 nel 2016, 56 dal 2019). Verifica incrociata possibile solo sul 2024 (unico file storico rimasto online). Per il tasso servono i residenti di ciascun anno: la serie della popolazione pubblicata copre 2019–2026. Richiesta di sonda azzerata.
+- Correzione di una nota del 22/11: la pagina pubblica del Radar carica `opportunity-preview-v044.css` (anche il badge «Nuova» ha i suoi stili); il collegamento mancava solo nella mia anteprima locale.
+
 ## Radar: fonti mute e rinnovo delle prove dalla pagina ufficiale (23 novembre 2026)
 
 - Le cinque fonti «mute» (zero segnalazioni) non sono rotte:
@@ -17,7 +26,7 @@
 - Schede automatiche: `opportunity_publication_date.publication_date` legge la data dalla pagina (JSON-LD `datePublished`, `article:published_time`, Dublin Core, poi «Data di pubblicazione» / «Pubblicato il» nel testo). Data futura, più vecchia di due anni o diciture discordanti: nessuna data. Una data della fonte strutturata prevale. Evidenza in `published_at_evidence`. Versione delle regole 1.5: tutte le schede automatiche si rileggono.
 - Schede curate: `data/opportunity-publication-dates.json`, 12 date verificate il 22/11 sulle pagine ufficiali (NEB, SAI, EUCF, EUI peer review, SINFI), applicate solo dove manca la data. I programmi permanenti (ELENA, EEEF, InvestEU, CEB, Conto Termico…) restano senza data. EIT Delegate Cities: la pagina non dichiara una data.
 - `detection_lag` usa la stessa data: con più date il ritardo di intercettazione diventa misurabile.
-- Stile in `opportunity-preview-v04.css`: la pagina pubblica del Radar non collega `opportunity-preview-v044.css` (anche il badge «Nuova» resta senza i suoi stili): da sistemare nella pulizia.
+- Stile in `opportunity-preview-v04.css`, caricato dalla pagina pubblica del Radar insieme a `opportunity-preview-v044.css`.
 
 ## Radar: proroga MIM e Nidi gratis per le famiglie (22 novembre 2026, pomeriggio)
 
