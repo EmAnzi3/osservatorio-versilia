@@ -1,5 +1,11 @@
 # Consolidamento Osservatorio Versilia — handoff operativo
 
+## Farmacie: sonda CI dei file storici del Ministero della Salute (23 novembre 2026)
+
+- Il file congelato `FRM_FARMA_5_20251231.csv` riporta per ogni farmacia solo l'ultima registrazione: ricostruire gli anni passati sottostima (Massarosa 1 farmacia nel 2017). Per la serie servono file datati di fine anno.
+- Sonda `sourceProbe`: pagina del dataset sul portale storico (`idPag=5`) e sul nuovo portale, con i collegamenti `FRM_FARMA`, più quattro file di fine anno con lo stesso schema di nome (2024, 2023, 2021, 2018). Esito in `data/source-probes/salute-farmacie-*.json`.
+- Correzione di una nota del 22/11: la pagina pubblica del Radar carica `opportunity-preview-v044.css` (anche il badge «Nuova» ha i suoi stili); il collegamento mancava solo nella mia anteprima locale.
+
 ## Radar: fonti mute e rinnovo delle prove dalla pagina ufficiale (23 novembre 2026)
 
 - Le cinque fonti «mute» (zero segnalazioni) non sono rotte:
@@ -17,7 +23,7 @@
 - Schede automatiche: `opportunity_publication_date.publication_date` legge la data dalla pagina (JSON-LD `datePublished`, `article:published_time`, Dublin Core, poi «Data di pubblicazione» / «Pubblicato il» nel testo). Data futura, più vecchia di due anni o diciture discordanti: nessuna data. Una data della fonte strutturata prevale. Evidenza in `published_at_evidence`. Versione delle regole 1.5: tutte le schede automatiche si rileggono.
 - Schede curate: `data/opportunity-publication-dates.json`, 12 date verificate il 22/11 sulle pagine ufficiali (NEB, SAI, EUCF, EUI peer review, SINFI), applicate solo dove manca la data. I programmi permanenti (ELENA, EEEF, InvestEU, CEB, Conto Termico…) restano senza data. EIT Delegate Cities: la pagina non dichiara una data.
 - `detection_lag` usa la stessa data: con più date il ritardo di intercettazione diventa misurabile.
-- Stile in `opportunity-preview-v04.css`: la pagina pubblica del Radar non collega `opportunity-preview-v044.css` (anche il badge «Nuova» resta senza i suoi stili): da sistemare nella pulizia.
+- Stile in `opportunity-preview-v04.css`, caricato dalla pagina pubblica del Radar insieme a `opportunity-preview-v044.css`.
 
 ## Radar: proroga MIM e Nidi gratis per le famiglie (22 novembre 2026, pomeriggio)
 
