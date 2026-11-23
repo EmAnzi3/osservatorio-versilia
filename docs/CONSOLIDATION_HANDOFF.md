@@ -6,7 +6,7 @@
 - `scripts/pharmacy_history.py`: sedi con codice univoco valide al 31/12 dagli intervalli di validità del file corrente (nome datato letto dalla pagina del dataset, TLS permissivo), 2025 vincolato ai conteggi di `a3-health-pharmacies-benchmark-2025.json`, 2024 confrontato col file di fine 2024 finché resta online.
 - Aggiornatore `salute-pharmacies-history` (richiesta `salutePharmaciesHistory`), snapshot `data/source-snapshots/salute-farmacie-serie.json`, materializzatore `materialize_pharmacy_history.py` dopo il confronto IRPEF: tasso = sedi al 31/12/Y / residenti al 1/1/(Y+1) × 1.000, arrotondato a due decimali come il valore pubblicato.
 - Sedi invariate dal 2019 al 2025 (56): il tasso cambia solo con i residenti (Forte dei Marmi 0,70 → 0,76). Prima del 2019 mancano i residenti pubblicati (totale 47 nel 2014, 52 nel 2016).
-- Chiedi resta sul singolo anno (`health_facilities_single_snapshot_no_history`): aggiornamento rimandato con gli altri di Chiedi.
+- Chiedi resta sul singolo anno (`health_facilities_single_snapshot_no_history`): aggiornamento rimandato con gli altri di Chiedi. L'adattatore prima voleva le righe farmacie senza serie; ora accetta nessuna serie (catalogo sorgente) oppure esattamente quella ricostruita dallo snapshot fissato (`health_facilities#11/#12`) sui residenti pubblicati, con il 2025 uguale ai conteggi pubblicati (catalogo costruito): nessuna operazione temporale aperta.
 
 ## Farmacie: sonda CI dei file storici del Ministero della Salute (23 novembre 2026)
 
