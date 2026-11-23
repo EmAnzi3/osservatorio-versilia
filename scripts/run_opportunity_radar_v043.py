@@ -13,6 +13,7 @@ from datetime import date
 from pathlib import Path
 from typing import Any
 
+import opportunity_evidence_renewal as evidence_renewal
 import run_opportunity_radar_v042 as prev
 
 core = prev.core
@@ -119,10 +120,9 @@ def _residual_evidence_audit(result: dict[str, Any], today: date) -> dict[str, A
             fresh = 0 <= age_days <= max_age
         except ValueError:
             fresh = False
-        # Come in v0.4.4: una fonte raggiunta oggi che produce segnalazioni rinnova da sola la prova manuale.
-        # Una fonte muta resta legata alla verifica manuale del canale ufficiale.
-        runtime = coverage_rows.get(source_id) or {}
-        renewed = str(runtime.get("runtimeStatus") or "") in {"ok", "degraded"} and int(runtime.get("candidateCount") or 0) > 0
+        # Il run rinnova la prova se la fonte produce segnalazioni o se la pagina ufficiale della prova è letta oggi.
+        renewed_by = evidence_renewal.renewal(coverage_rows.get(source_id), entry.get("evidence_url"))
+        renewed = renewed_by is not None
         if renewed:
             age_days, fresh = 0, True
 
@@ -150,6 +150,7 @@ def _residual_evidence_audit(result: dict[str, Any], today: date) -> dict[str, A
             "familyInContract": family_ok,
             "fresh": evidence_ok,
             "renewedByRuntime": renewed,
+            "renewedBy": renewed_by,
         })
 
     expected_families = {str(x.get("family") or "") for x in entries if x.get("family")}

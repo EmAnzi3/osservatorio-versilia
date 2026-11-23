@@ -1,5 +1,14 @@
 # Consolidamento Osservatorio Versilia — handoff operativo
 
+## Radar: fonti mute e rinnovo delle prove dalla pagina ufficiale (23 novembre 2026)
+
+- Le cinque fonti «mute» (zero segnalazioni) non sono rotte:
+  - Erasmus+, CEF e Horizon sorvegliano ciascuna una sola pagina, la stessa della prova di copertura, letta con successo a ogni run, e senza novità da estrarre;
+  - Ministero del Turismo: l'elenco si legge, ma pubblica solo decreti, graduatorie ed eventi;
+  - CERV: pagina di programma senza bandi; i bandi CERV arrivano dal portale Funding & Tenders.
+- `opportunity_evidence_renewal.renewal`, usato da `_residual_evidence_audit` (v0.4.3) e `_v044_evidence_audit`: la prova si rinnova se la fonte produce segnalazioni (`signals`) o se la pagina ufficiale della prova è stata letta con successo nel run (`evidence_page`, da `FETCH_TRACE`, URL configurato o finale). Fonte in errore o pagina non letta: nessun rinnovo. Così Erasmus+, CEF e Horizon non scadono il 6/1/2027.
+- `test_opportunity_radar_v043.py`: allineato a 38 fonti discovery (ANCI nazionale tolta in ce84d64e) e aggiunto ai due workflow del Radar, dove non girava.
+
 ## Radar: data ufficiale di pubblicazione sulle schede (22 novembre 2026, sera)
 
 - Il 22/11 solo 9 schede su 41 avevano `published_at`. Ogni scheda mostra ora sotto il titolo «Pubblicato il … · nel Radar dal …» (`publication_line`), oppure «Data di pubblicazione non indicata dalla fonte».

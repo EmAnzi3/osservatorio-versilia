@@ -102,6 +102,7 @@ jobs:
           python scripts/test_opportunity_expired_lifecycle.py
           python scripts/test_opportunity_municipal_relevance.py
           python scripts/test_opportunity_audit_corpus_promotions.py
+          python scripts/test_opportunity_radar_v043.py
           python scripts/test_opportunity_radar_v044.py
           python scripts/test_opportunity_independent_kpi.py
           python scripts/run_opportunity_radar_v044.py --backtest-only
