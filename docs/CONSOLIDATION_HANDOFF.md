@@ -7,6 +7,7 @@
   - Ministero del Turismo: l'elenco si legge, ma pubblica solo decreti, graduatorie ed eventi;
   - CERV: pagina di programma senza bandi; i bandi CERV arrivano dal portale Funding & Tenders.
 - `opportunity_evidence_renewal.renewal`, usato da `_residual_evidence_audit` (v0.4.3) e `_v044_evidence_audit`: la prova si rinnova se la fonte produce segnalazioni (`signals`) o se la pagina ufficiale della prova è stata letta con successo nel run (`evidence_page`, da `FETCH_TRACE`, URL configurato o finale). Fonte in errore o pagina non letta: nessun rinnovo. Così Erasmus+, CEF e Horizon non scadono il 6/1/2027.
+- Rumore Prefetture: il 23/11 la coda interna aveva 204 voci di Prefetture di altre province (viabilità, PEC, partite, revisori). `classify_signal` le scarta come `other_prefecture` dopo le regole specifiche, salvo titoli con segni di finanziamento (bando non di gara/esame, contributi, fondi, videosorveglianza, Scuole sicure), scadenza aperta o riapertura. Lucca resta sempre. Sul run del 22/11: da 204 a 15.
 - `test_opportunity_radar_v043.py`: allineato a 38 fonti discovery (ANCI nazionale tolta in ce84d64e) e aggiunto ai due workflow del Radar, dove non girava.
 
 ## Radar: data ufficiale di pubblicazione sulle schede (22 novembre 2026, sera)

@@ -19,12 +19,36 @@ GENERIC = re.compile(
     r"strong interreg, strong regions, strong europe|"
     r"come mettersi in comunicazione con il ministero .+|our topics|"
     r"(?:ciao,\s*)?questa pagina . stata utile\?|progetti e finanziamenti per il pnrr)$", re.I)
+# Prefetture di altre province: comunicazioni locali fuori dal territorio (viabilità, PEC, ordine pubblico,
+# partite, sorteggi). Restano solo i titoli che indicano un finanziamento o un bando, perché le call nazionali
+# (videosorveglianza, Scuole sicure) sono ripubblicate anche da Prefetture non lucchesi.
+OTHER_PREFECTURE = re.compile(r"^/(?:it|de|en)/prefetture/(?!lucca(?:/|$))[a-z-]+/", re.I)
+FUNDING_TITLE = re.compile(r"\b(?:band[oi]\b(?!\s+di\s+(?:gara|esam\w*|concorso))|finanziament\w*|contribut\w*|"
+                           r"fond[oi]\b(?!\s+edifici\s+di\s+culto)|incentiv\w*|candidatur\w*|"
+                           r"videosorveglianza|scuole\s+sicure)", re.I)
 REOPENING = re.compile(r"prorog\w*|riapert\w*|nuova\s+finestra|"
                       r"(?:presentare|inviare)\s+(?:le\s+)?(?:domande|candidature)|"
                       r"(?:aperto|apertura)\s+(?:il\s+|del\s+)?bando", re.I)
 
 
 def classify_signal(item, reference_date=None):
+    reason = _classify_signal_base(item, reference_date)
+    if reason:
+        return reason
+    location = urlsplit(str(item.get("url") or ""))
+    title = re.sub(r"\s+", " ", str(item.get("title") or "")).strip()
+    # Ultima regola, dopo quelle specifiche: altra provincia e nessun segno di finanziamento nel titolo. Come per le
+    # altre regole, una riapertura o una scadenza ancora aperta prevalgono sempre.
+    deadline = str(item.get("deadline_at") or "")
+    open_window = bool(re.fullmatch(r"\d{4}-\d{2}-\d{2}", deadline) and deadline >= str(reference_date or date.today().isoformat()))
+    if (location.hostname == "prefettura.interno.gov.it" and OTHER_PREFECTURE.match(unquote(location.path))
+            and not FUNDING_TITLE.search(title) and not open_window
+            and not REOPENING.search(title + " " + str(item.get("summary") or ""))):
+        return "other_prefecture"
+    return None
+
+
+def _classify_signal_base(item, reference_date=None):
     from opportunity_review_actions import publication_exclusion
     if publication_exclusion(item):
         return "outside_municipal_scope"
