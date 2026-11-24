@@ -1,5 +1,14 @@
 # Consolidamento Osservatorio Versilia — handoff operativo
 
+## IMU seconda casa: definizione «abitazione a disposizione» e confronto Toscana (24 novembre 2026)
+
+- Decisioni di Ema:
+  - confronto prima per la Toscana, poi per l'Italia;
+  - definizione = aliquota per le «abitazioni a disposizione» (non locate né in comodato) se il prospetto la indica, altrimenti «Altri fabbricati».
+- Pietrasanta ha «Abitazione a disposizione 1,14%» già nel prospetto 2026 di dicembre 2025 (ID 13466), oltre che in quello di luglio 2026 (ID 19705). Il valore pubblicato, 1,06% («Altri fabbricati»), non è quello di una seconda casa vuota.
+- Forte dei Marmi, Seravezza e Stazzema: nessuna riga «a disposizione» nel prospetto 2026, resta «Altri fabbricati».
+- Camaiore, Massarosa e Viareggio usano le aliquote 2025, così come il punto 2025 della serie: sonda `mefFiscalProbe [2025]` per i testi dei prospetti 2025.
+
 ## Radar: contributi alle edicole, Comuni come condizione territoriale (24 novembre 2026)
 
 - Run del 23/11 sera: entrata «Contributi per distribuzione e commercio al dettaglio di giornali e pubblicazioni periodiche» (Regione, scadenza 15/12). Destinatari: edicole, punti vendita e distributori; i Comuni compaiono solo come luogo («a2 limitatamente ai Comuni privi di soggetti esercenti…», «ogni Comune servito»).

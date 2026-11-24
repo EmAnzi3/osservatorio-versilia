@@ -5,7 +5,9 @@
   "istatAsia": [],
   "agcomFtth": false,
   "istatTourism": [],
-  "mefFiscalProbe": [],
+  "mefFiscalProbe": [
+    2025
+  ],
   "sourceProbe": [],
   "ispraSoil": [],
   "aciVehicles": [],
