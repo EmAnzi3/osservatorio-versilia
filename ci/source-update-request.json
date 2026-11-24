@@ -29,5 +29,11 @@
   "siopeCashBenchmarks": [],
   "mefIrpefBenchmarks": [],
   "toscanaInfancyHistory": false,
-  "salutePharmaciesHistory": false
+  "salutePharmaciesHistory": false,
+  "mefImuBenchmark": [
+    {
+      "year": 2026,
+      "scope": "toscana"
+    }
+  ]
 }

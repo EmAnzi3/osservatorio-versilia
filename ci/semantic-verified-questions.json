@@ -53400,7 +53400,7 @@
           {
             "path": "/observations/1/value",
             "fraction": [
-              1060,
+              1140,
               1
             ],
             "tolerance": 1e-09
@@ -53411,7 +53411,7 @@
           }
         ]
       },
-      "reference": "Scenario congelato 2026, cella trascritta indipendentemente Pietrasanta: 1060; aliquote/importi standard, non bolletta personale."
+      "reference": "Scenario congelato 2026, cella trascritta indipendentemente Pietrasanta: 1140 (abitazione a disposizione); aliquote/importi standard, non bolletta personale."
     },
     {
       "id": "tax_municipalImuStandard_total_046024_2026",
@@ -53438,7 +53438,7 @@
           {
             "path": "/observations/1/value",
             "fraction": [
-              1060,
+              1140,
               1
             ],
             "tolerance": 1e-09
@@ -53449,7 +53449,7 @@
           }
         ]
       },
-      "reference": "Scenario congelato 2026, cella trascritta indipendentemente Pietrasanta: 1060; aliquote/importi standard, non bolletta personale."
+      "reference": "Scenario congelato 2026, cella trascritta indipendentemente Pietrasanta: 1140 (abitazione a disposizione); aliquote/importi standard, non bolletta personale."
     },
     {
       "id": "tax_municipalImuStandard_total_046028",
@@ -53911,7 +53911,7 @@
           {
             "path": "/observations/1/value",
             "fraction": [
-              53,
+              57,
               50
             ],
             "tolerance": 1e-09
@@ -53922,7 +53922,7 @@
           }
         ]
       },
-      "reference": "Scenario congelato 2026, cella trascritta indipendentemente Pietrasanta: 1.06; aliquote/importi standard, non bolletta personale."
+      "reference": "Scenario congelato 2026, cella trascritta indipendentemente Pietrasanta: 1.14 (abitazione a disposizione); aliquote/importi standard, non bolletta personale."
     },
     {
       "id": "tax_municipalImuStandard_ratePercent_046024_2026",
@@ -53949,7 +53949,7 @@
           {
             "path": "/observations/1/value",
             "fraction": [
-              53,
+              57,
               50
             ],
             "tolerance": 1e-09
@@ -53960,7 +53960,7 @@
           }
         ]
       },
-      "reference": "Scenario congelato 2026, cella trascritta indipendentemente Pietrasanta: 1.06; aliquote/importi standard, non bolletta personale."
+      "reference": "Scenario congelato 2026, cella trascritta indipendentemente Pietrasanta: 1.14 (abitazione a disposizione); aliquote/importi standard, non bolletta personale."
     },
     {
       "id": "tax_municipalImuStandard_ratePercent_046028",

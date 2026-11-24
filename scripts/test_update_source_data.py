@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import io
 import json
+import re
 import math
 import tempfile
 import zipfile
@@ -813,6 +814,51 @@ def irpef_benchmarks_cases() -> None:
     assert snap["benchmarks"]["30000"]["tuscany"]["value"] is not None
 
 
+def imu_benchmark_cases() -> None:
+    """IMU seconda casa vuota: «a disposizione» se prevista per la A/2 e senza requisiti particolari, altrimenti «Altri fabbricati»."""
+    import imu_benchmarks as imb
+
+    head = ("Prospetto aliquote IMU - Comune di PROVA ID Prospetto 19705 riferito all'anno 2026 "
+            "Comune oggetto di fusione/incorporazione che applica aliquote differenziate nei preesistenti comuni: NO ")
+    base = "Altri fabbricati (fabbricati diversi dall'abitazione principale e dai fabbricati appartenenti al gruppo 1,06% catastale D) "
+    disposal = ("Altri fabbricati (fabbricati diversi Abitazione a disposizione 1,14% dall'abitazione principale e dai fabbricati "
+                "- Abitazioni non locate e non concesse in comodato appartenenti al gruppo catastale D) ")
+    rented = "Altri fabbricati Abitazione locata o in comodato 0,76% - Ulteriori condizioni (non rinvenibili) "
+    assert imb.second_home_rate(head + base) == (1.06, "Altri fabbricati")
+    # Pietrasanta e Cecina: la riga «a disposizione» vale anche se la riga successiva ha condizioni proprie.
+    assert imb.second_home_rate(head + base + disposal + rented) == (1.14, "Abitazione a disposizione")
+    # Arezzo, Fiesole: riga riservata a proprietari particolari; Firenzuola: inagibili → resta «Altri fabbricati».
+    for extra in ("- Requisiti del soggetto passivo: Portatore di handicap grave ", "- Fabbricati divenuti inagibili: calamità "):
+        assert imb.second_home_rate(head + base + disposal.replace("gruppo catastale D) ", "gruppo catastale D) " + extra)) == (1.06, "Altri fabbricati"), extra
+    # Riga limitata a categorie senza A/2.
+    assert imb.second_home_rate(head + base + disposal + "Categoria catastale: - A/1 Abitazioni di tipo signorile ")[0] in (1.14, 1.06)
+    only_a1 = disposal.replace("appartenenti al gruppo catastale D) ", "appartenenti al gruppo catastale D) Categoria catastale: - A/1 Signorile ")
+    assert imb.second_home_rate(head + base + only_a1) == (1.06, "Altri fabbricati")
+    # Ambigui: due righe «a disposizione» diverse, Comune fuso con aliquote differenziate, nessuna voce.
+    assert imb.second_home_rate(head + base + disposal + disposal.replace("1,14%", "0,46%"))[0] is None
+    assert imb.second_home_rate(head.replace("comuni: NO", "comuni: SI") + base)[0] is None
+    assert imb.second_home_rate(head)[0] is None
+    # Scelta del prospetto: ultimo dell'anno pubblicato entro il 28/10, altrimenti l'anno precedente.
+    def page(rows):
+        cells = "".join(f'<tr><td>{n}</td><td>01-01-2026</td><td>{pub}</td><td><a href="download_lib.php?key=k{n}&nome={n}_DIMUNIC-x.pdf">PDF</a></td></tr>'
+                        for n, pub in rows)
+        return f"<table>{cells}</table>".encode()
+    pdfs = {"k1": head + base, "k2": head.replace("19705", "20001") + base + disposal, "k3": head.replace("19705", "20002") + base.replace("1,06", "0,96"),
+            "k9": head.replace("2026", "2025") + base.replace("1,06", "1,01")}
+    def fetch_for(rows26, rows25):
+        def fetch(url):
+            if "nuova_imu/risultato.htm" in url:
+                return page(rows26 if "anno=2026" in url else rows25)
+            return pdfs[re.search(r"key=(k\d+)", url).group(1)].encode()
+        return fetch
+    text = lambda raw: raw.decode()
+    r = imb.town_rate("G628", 2026, fetch_for([(1, "13-01-2026"), (2, "19-08-2026"), (3, "05-11-2026")], []), text)
+    assert (r["status"], r["ratePercent"], r["prospetto"], r["carriedFrom"]) == ("ok", 1.14, "20001", None), r
+    r = imb.town_rate("G628", 2026, fetch_for([(3, "05-11-2026")], [(9, "20-02-2025")]), text)
+    assert (r["ratePercent"], r["year"], r["carriedFrom"]) == (1.01, 2025, 2025), r
+    assert imb.town_rate("G628", 2026, fetch_for([], []), text)["status"] == "missing"
+
+
 def pharmacy_history_cases() -> None:
     """Farmacie: sedi univoche valide al 31/12 dagli intervalli; 2025 = pubblicato; 2024 = file di fine 2024 se online."""
     import pharmacy_history as ph
@@ -1485,6 +1531,7 @@ def main() -> None:
     irpef_benchmarks_cases()
     infancy_history_cases()
     pharmacy_history_cases()
+    imu_benchmark_cases()
     with tempfile.TemporaryDirectory() as tmp:
         istat_famiglie_cases(Path(tmp))
     openbdap_benchmarks_cases()

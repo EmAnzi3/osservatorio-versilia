@@ -149,6 +149,7 @@ jobs:
           commands += [["mef-irpef-benchmarks", "--year", str(int(y))] for y in request.get("mefIrpefBenchmarks", [])]
           commands += [["toscana-infancy-history"]] if request.get("toscanaInfancyHistory") else []
           commands += [["salute-pharmacies-history"]] if request.get("salutePharmaciesHistory") else []
+          commands += [["mef-imu-benchmark", "--year", str(int(r["year"])), "--scope", r.get("scope", "toscana")] for r in request.get("mefImuBenchmark", [])]
           commands += [["opencivitas-needs"] + (["--year", str(int(y))] if y else []) for y in request.get("opencivitasNeeds", [])]
           commands += [["sdmx-probe", "--name", str(p["name"])] + (["--find", str(p["find"])] if p.get("find") else ["--flow", str(p["flow"]), "--key", str(p.get("key", "all"))]) + (["--start", str(p["start"])] if p.get("start") else []) for p in request.get("sdmxProbe", [])]
           commands += [["source-probe", "--name", str(p["name"]), "--url", str(p["url"])] + (["--follow", str(p["follow"])] if p.get("follow") else []) + [a for step in p.get("post", []) for a in ("--post", str(step))] + (["--match", str(p["match"])] if p.get("match") else []) for p in request.get("sourceProbe", [])]

@@ -55159,7 +55159,7 @@
         "theme": "economia",
         "label": "IMU seconda abitazione standardizzata",
         "shortLabel": "IMU seconda abitazione",
-        "description": "Imposta annua teorica su una seconda abitazione A/2 con base imponibile IMU identica di 100.000 €, usando l’aliquota 2026 «Altri fabbricati». Aliquote applicate: 1,06%: Forte dei Marmi, Massarosa, Pietrasanta, Stazzema; 1,14%: Camaiore, Seravezza, Viareggio.",
+        "description": "Imposta annua teorica su una seconda abitazione A/2 non locata né in comodato, con base imponibile IMU identica di 100.000 €: aliquota 2026 per le abitazioni «a disposizione» se il Comune la prevede, altrimenti «Altri fabbricati». Aliquote applicate: 1,06%: Forte dei Marmi, Massarosa, Stazzema; 1,14%: Camaiore, Pietrasanta, Seravezza, Viareggio.",
         "unit": "currency",
         "year": "2026",
         "source": "Dipartimento delle Finanze — MEF",
@@ -55237,7 +55237,7 @@
           "town": "Pietrasanta",
           "code": "046024",
           "slug": "pietrasanta",
-          "value": 1060.0,
+          "value": 1140.0,
           "formatted": "",
           "series": {
             "years": [
@@ -55245,13 +55245,13 @@
               "2026"
             ],
             "values": [
-              1060.0,
-              1060.0
+              1140.0,
+              1140.0
             ]
           },
           "normalized": null,
-          "benchmarkValue": 1060.0,
-          "ratePercent": 1.06
+          "benchmarkValue": 1140.0,
+          "ratePercent": 1.14
         },
         {
           "town": "Seravezza",
@@ -55315,15 +55315,15 @@
         }
       ],
       "aggregate": {
-        "value": 1094.2857142857142,
+        "value": 1105.7142857142858,
         "label": "Media semplice dei 7 comuni",
         "note": "Benchmark su base imponibile identica di 100.000 €; non rappresenta una casa tipica."
       },
       "normalizedAggregate": null,
       "method": {
         "type": "Elaborazione Osservatorio su prospetti ufficiali MEF",
-        "formula": "100.000 € × aliquota IMU 2026 della categoria «Altri fabbricati».",
-        "caveat": "La base imponibile è standardizzata per isolare l’effetto dell’aliquota comunale. 1,06%: Forte dei Marmi, Massarosa, Pietrasanta, Stazzema; 1,14%: Camaiore, Seravezza, Viareggio. Camaiore, Massarosa, Viareggio: nessun prospetto 2026 pubblicato entro il 28 ottobre, quindi valgono le aliquote 2025 (art. 1, comma 767, legge 160/2019).",
+        "formula": "100.000 € × aliquota IMU 2026 per un’abitazione «a disposizione» (non locata né in comodato) se il prospetto la prevede, altrimenti «Altri fabbricati».",
+        "caveat": "La base imponibile è standardizzata per isolare l’effetto dell’aliquota comunale. 1,06%: Forte dei Marmi, Massarosa, Stazzema; 1,14%: Camaiore, Pietrasanta, Seravezza, Viareggio. Pietrasanta: aliquota specifica per le abitazioni a disposizione. Camaiore, Massarosa, Viareggio: nessun prospetto 2026 pubblicato entro il 28 ottobre, quindi valgono le aliquote 2025 (art. 1, comma 767, legge 160/2019).",
         "coverage": "7/7"
       }
     },

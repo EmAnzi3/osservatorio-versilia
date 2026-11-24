@@ -19,7 +19,7 @@ SNAP = ROOT / "data" / "source-snapshots" / "costi-fiscalita-2026.json"
 PRIOR = ROOT / "data" / "source-snapshots" / "costi-fiscalita-validated-2026-08.json"
 TARI, IMU = "tariStandardHousehold", "municipalImuStandard"
 TARI_FORMULA = "100 m² × quota fissa + quota variabile per 3 componenti; TEFA 5%; + 7,60 € di componenti perequative ARERA 2026."
-IMU_FORMULA = "100.000 € × aliquota IMU 2026 della categoria «Altri fabbricati»."
+IMU_FORMULA = "100.000 € × aliquota IMU 2026 per un’abitazione «a disposizione» (non locata né in comodato) se il prospetto la prevede, altrimenti «Altri fabbricati»."
 
 
 def load(path: Path):
@@ -51,14 +51,16 @@ def apply(data: dict, snap: dict, prior: dict) -> dict:
     m = data["metrics"][IMU]
     for row in m["rows"]:
         rec = imu["towns"][row["town"]]
-        old = prior["imu"]["towns"][row["town"]]["annualTax"]
+        # 2025: il prospetto 2025 corretto se lo snapshot lo riporta (Pietrasanta, «abitazione a disposizione»), altrimenti lo snapshot validato precedente.
+        old = (rec.get("prior2025") or {}).get("annualTax", prior["imu"]["towns"][row["town"]]["annualTax"])
         row.update(value=rec["annualTax"], benchmarkValue=rec["annualTax"], ratePercent=rec["ratePercent"],
                    series={"years": ["2025", "2026"], "values": [old, rec["annualTax"]]})
     extended = [t for t, rec in imu["towns"].items() if rec["basis"] != "prospetto 2026"]
     rates = rates_text(imu["towns"])
-    m["meta"].update(year="2026", description=f"Imposta annua teorica su una seconda abitazione A/2 con base imponibile IMU identica di 100.000 €, usando l’aliquota 2026 «Altri fabbricati». Aliquote applicate: {rates}.")
+    m["meta"].update(year="2026", description=f"Imposta annua teorica su una seconda abitazione A/2 non locata né in comodato, con base imponibile IMU identica di 100.000 €: aliquota 2026 per le abitazioni «a disposizione» se il Comune la prevede, altrimenti «Altri fabbricati». Aliquote applicate: {rates}.")
     m["method"].update(formula=IMU_FORMULA,
                        caveat=f"La base imponibile è standardizzata per isolare l’effetto dell’aliquota comunale. {rates}. "
+                              f"{', '.join(t for t, r in imu['towns'].items() if r.get('line') == 'Abitazione a disposizione')}: aliquota specifica per le abitazioni a disposizione. "
                               f"{', '.join(extended)}: nessun prospetto 2026 pubblicato entro il 28 ottobre, quindi valgono le aliquote 2025 (art. 1, comma 767, legge 160/2019).")
     m["aggregate"]["value"] = math.fsum(r["value"] for r in m["rows"]) / 7
     return data

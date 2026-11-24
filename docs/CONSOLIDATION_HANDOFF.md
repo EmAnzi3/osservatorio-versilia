@@ -8,6 +8,13 @@
 - Pietrasanta ha «Abitazione a disposizione 1,14%» già nel prospetto 2026 di dicembre 2025 (ID 13466), oltre che in quello di luglio 2026 (ID 19705). Il valore pubblicato, 1,06% («Altri fabbricati»), non è quello di una seconda casa vuota.
 - Forte dei Marmi, Seravezza e Stazzema: nessuna riga «a disposizione» nel prospetto 2026, resta «Altri fabbricati».
 - Camaiore, Massarosa e Viareggio usano le aliquote 2025, così come il punto 2025 della serie: sonda `mefFiscalProbe [2025]` per i testi dei prospetti 2025.
+- Letti i prospetti 2025 e 2026 dei sette Comuni con la nuova regola: cambia solo Pietrasanta, 1,06% → 1,14% (ID 2926 del 2025 e ID 13466/19705 del 2026, «Abitazione a disposizione»). `costi-fiscalita-2026.json` corretto, con `line` per Comune e `prior2025` per Pietrasanta. Materializzatore TARI/IMU rieseguito: media Versilia 1.105,71 €. Impronte `municipal_tax#5/#6` e 4 domande verificate di Pietrasanta aggiornate.
+- `scripts/imu_benchmarks.py`: regola di lettura del prospetto standard.
+  - «Abitazione a disposizione» se la riga vale per la A/2 e non ha requisiti del soggetto passivo, condizioni ulteriori o inagibilità; altrimenti «Altri fabbricati».
+  - Due righe «a disposizione» diverse o un Comune fuso con aliquote differenziate rendono il prospetto ambiguo: Comune escluso.
+  - Vale l'ultimo prospetto dell'anno pubblicato entro il 28/10, altrimenti quello dell'anno precedente.
+- Aggiornatore `mef-imu-benchmark --year --scope` (richiesta `mefImuBenchmark`), snapshot `mef-imu-benchmark-toscana-2026.json`, materializzatore `materialize_imu_benchmark.py`: media pesata per i residenti POSAS, pubblicata solo con le sette aliquote lette identiche a quelle pubblicate e copertura ≥ 90%. Italia vuota fino allo snapshot nazionale.
+- Prova locale sui 273 Comuni toscani: 272 letti; escluso Casciana Terme Lari (fuso con aliquote differenziate). 33 con «abitazione a disposizione» (es. Lastra a Signa 0,25%, Cecina 1,14%); esclusi dalla riga «a disposizione», perché riservata o condizionata, Arezzo, Fiesole, Calcinaia, Capoliveri, Greve, Firenzuola, Rosignano.
 
 ## Radar: contributi alle edicole, Comuni come condizione territoriale (24 novembre 2026)
 
