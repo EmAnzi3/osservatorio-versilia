@@ -16,7 +16,9 @@ import datetime as dt
 import hashlib
 import json
 import re
-from concurrent.futures import ThreadPoolExecutor
+import queue
+import threading
+import time
 from typing import Any, Callable
 
 import irpef_benchmarks as ib
@@ -125,7 +127,13 @@ ITALY_GROUPS = {
 }
 SCOPES = {"toscana": (TUSCANY,), **ITALY_GROUPS}
 REGIONS = tuple(f"{n:02d}" for n in range(1, 21))
+# Dove l'IMU non si applica: imposte immobiliari locali proprie (decisione del 24/11/2026: fuori dal perimetro Italia,
+# dichiarato nella nota). Province Istat: Bolzano 021, Trento 022; Friuli-Venezia Giulia 030, 031, 032, 093.
+NOT_IMU = {"021": "Bolzano (IMI)", "022": "Trento (IMIS)", "030": "Udine (ILIA)", "031": "Gorizia (ILIA)",
+           "032": "Trieste (ILIA)", "093": "Pordenone (ILIA)"}
+NOT_IMU_NOTE = "esclusi Trentino-Alto Adige e Friuli-Venezia Giulia, dove al posto dell'IMU si applicano IMI, IMIS e ILIA"
 WORKERS = 8  # prospetti letti in parallelo: al massimo 8 richieste insieme al sito MEF
+DEADLINE = 65 * 60  # secondi per gruppo: una corsa CI ha 90 minuti, meno preparazione, test e commit
 
 
 def _summary(year: int, scope: str, rows: dict[str, dict[str, Any]], sources: dict[str, Any]) -> dict[str, Any]:
@@ -153,7 +161,40 @@ def _summary(year: int, scope: str, rows: dict[str, dict[str, Any]], sources: di
     }
 
 
-def build_snapshot(year: int, fetch: Callable[[str], bytes], pdf_text: Callable[[bytes], str], scope: str = "toscana") -> dict[str, Any]:
+def read_all(codes: list[str], read: Callable[[str], dict[str, Any]], deadline: float, log: Callable[[str], None] = print) -> list[dict[str, Any]]:
+    """Legge i Comuni con WORKERS thread daemon entro `deadline` secondi. Un prospetto che blocca un thread (rete lenta,
+    PDF patologico) non ferma la corsa: allo scadere i Comuni non letti restano fuori con il motivo, e la copertura lo
+    misura. Avanzamento a intervalli regolari nel log della CI."""
+    pending: queue.Queue[str] = queue.Queue()
+    for code in codes:
+        pending.put(code)
+    done: dict[str, dict[str, Any]] = {}
+
+    def worker() -> None:
+        while True:
+            try:
+                code = pending.get_nowait()
+            except queue.Empty:
+                return
+            done[code] = read(code)
+
+    threads = [threading.Thread(target=worker, daemon=True) for _ in range(min(WORKERS, len(codes)) or 1)]
+    for t in threads:
+        t.start()
+    start = time.monotonic()
+    last = start
+    while any(t.is_alive() for t in threads) and time.monotonic() - start < deadline:
+        time.sleep(0.2)
+        if time.monotonic() - last >= 60:
+            last = time.monotonic()
+            log(f"  prospetti IMU: {len(done)}/{len(codes)} Comuni in {int(last - start)} s")
+    late = [c for c in codes if c not in done]
+    log(f"  prospetti IMU: {len(done)}/{len(codes)} Comuni in {int(time.monotonic() - start)} s" + (f"; non letti entro il tempo: {len(late)}" if late else ""))
+    return [dict(done[c]) if c in done else {"status": "error", "reason": "non letto entro il tempo della corsa"} for c in codes]
+
+
+def build_snapshot(year: int, fetch: Callable[[str], bytes], pdf_text: Callable[[bytes], str], scope: str = "toscana",
+                   deadline: float = DEADLINE) -> dict[str, Any]:
     if scope not in SCOPES:
         raise ImuBenchmarkError(f"ambito sconosciuto: {scope}")
     regions = set(SCOPES[scope])
@@ -173,8 +214,7 @@ def build_snapshot(year: int, fetch: Callable[[str], bytes], pdf_text: Callable[
             return {"status": "error", "reason": f"{type(error).__name__}: {error}"[:300]}
 
     order = sorted(towns.items())
-    with ThreadPoolExecutor(max_workers=WORKERS) as pool:
-        results = list(pool.map(read, [cc for cc, _ in order]))
+    results = read_all([cc for cc, _ in order], read, deadline)
     rows: dict[str, dict[str, Any]] = {}
     for (cc, istat), r in zip(order, results):
         r["catastale"] = cc
@@ -206,7 +246,13 @@ def combine(year: int, parts: dict[str, dict[str, Any]]) -> dict[str, Any]:
         rows.update(part["towns"])
     if sorted(r for g in ITALY_GROUPS.values() for r in g) != list(REGIONS):
         raise ImuBenchmarkError("i gruppi non coprono esattamente le venti regioni")
+    excluded = {k: v for k, v in rows.items() if k[:3] in NOT_IMU}
+    if any(v["status"] == "ok" for v in excluded.values()):
+        raise ImuBenchmarkError("prospetto IMU letto in un Comune con imposta propria: rivedere il perimetro")
+    rows = {k: v for k, v in rows.items() if k not in excluded}
     snap = _summary(year, "italia", dict(sorted(rows.items())), json.loads(sources.pop()))
+    snap["excluded"] = {"note": NOT_IMU_NOTE, "provinces": NOT_IMU, "municipalities": len(excluded),
+                        "residents": sum(v["residents"] or 0 for v in excluded.values()), "codes": sorted(excluded)}
     snap["retrieved"] = max(p["retrieved"] for p in parts.values())
     snap["parts"] = {name: {"retrieved": p["retrieved"], "municipalities": p["benchmark"]["municipalitiesTotal"],
                             "acquisitionEvidence": p.get("acquisitionEvidence")} for name, p in sorted(parts.items())}

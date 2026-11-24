@@ -4,7 +4,9 @@
 
 - Toscana: 273 Comuni in circa 25 minuti di CI (≈5,6 s a Comune). Italia (≈7.900 Comuni) in sequenza ≈12 ore, oltre il limite di 90 minuti del job.
 - `imu_benchmarks.py`: prospetti letti in parallelo (`WORKERS = 8`, al massimo 8 richieste insieme al MEF) e quattro gruppi `ITALY_GROUPS` (`italia-1`…`italia-4`, circa 2.000 Comuni ciascuno), uno per corsa: richiesta `mefImuBenchmark` con `scope` del gruppo, snapshot `mef-imu-benchmark-italia-N-AAAA.json`.
+- Gruppo 1: 17 minuti. Gruppi 2+3 nella stessa corsa: annullati a 90 minuti senza commit e senza log di avanzamento (in locale 16 Comuni lombardi in 12 s). Ora `read_all` usa thread daemon con scadenza `DEADLINE` (65 minuti per gruppo) e avanzamento ogni minuto nel log: un prospetto che blocca un thread non ferma la corsa, i Comuni non letti restano fuori con il motivo e pesano sulla copertura. Un gruppo per corsa.
 - `--scope italia` non scarica nulla: `combine` unisce i quattro gruppi e rifiuta gruppi mancanti, elenchi Istat/POSAS diversi (sha256), Comuni in più gruppi, regioni diverse da quelle attese o che non coprono le venti. Scrive `mef-imu-benchmark-italia-AAAA.json`.
+- Perimetro Italia (decisione di Ema, 24/11): fuori Trentino-Alto Adige e Friuli-Venezia Giulia (`NOT_IMU`, province 021, 022, 030, 031, 032, 093), che applicano IMI, IMIS e ILIA al posto dell'IMU; nel gruppo 1 erano 497 Comuni «senza prospetto» (copertura del gruppo 72%). `combine` li toglie dal denominatore, li elenca in `excluded` e si ferma se in uno di loro si legge un prospetto IMU.
 - Il materializzatore aggiunge l'Italia con le stesse condizioni della Toscana (qualityGate, anno, 7 aliquote identiche alle pubblicate, copertura ≥ 90%); senza snapshot valido resta «in preparazione».
 
 ## IMU seconda casa: definizione «abitazione a disposizione» e confronto Toscana (24 novembre 2026)

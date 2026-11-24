@@ -882,16 +882,19 @@ def imu_benchmark_cases() -> None:
         snap["regions"] = sorted(imb.ITALY_GROUPS[name])
         return snap
     versilia = {k: (1.06, 1000) for k in imb.TOWNS}
-    parts = {"italia-1": part("italia-1", {"001001": (1.06, 3000)}), "italia-2": part("italia-2", {"015146": (1.14, 1000)}),
+    parts = {"italia-1": part("italia-1", {"001001": (1.06, 3000), "022001": (0, 0)}), "italia-2": part("italia-2", {"015146": (1.14, 1000)}),
              "italia-3": part("italia-3", versilia), "italia-4": part("italia-4", {"063049": (1.06, 2000), "063050": (0.96, 0)})}
+    parts["italia-1"]["towns"]["022001"] = {"status": "missing", "residents": 500}  # Trento: IMIS, non IMU
     assert "versilia" not in parts["italia-1"] and parts["italia-1"]["qualityGate"]["status"] == "PASS"
     it = imb.combine(2026, parts)
+    assert it["excluded"]["codes"] == ["022001"] and it["excluded"]["residents"] == 500 and "022001" not in it["towns"]
     assert it["scope"] == "italia" and it["benchmark"]["municipalitiesTotal"] == 11 and it["qualityGate"]["status"] == "PASS"
     assert it["benchmark"]["value"] == round((1060 * 12000 + 1140 * 1000) / 13000, 2) and set(it["versilia"]) == set(imb.TOWNS)
     for broken, why in ((lambda p: p.pop("italia-4"), "mancanti"),
                         (lambda p: p["italia-2"]["sources"]["posas"].update(sha256="c"), "diversi"),
                         (lambda p: p["italia-4"]["towns"].update({"001001": {"status": "ok", "ratePercent": 1.0, "residents": 1}}), "più gruppi"),
-                        (lambda p: p["italia-1"].update(regions=["01"]), "regioni")):
+                        (lambda p: p["italia-1"].update(regions=["01"]), "regioni"),
+                        (lambda p: p["italia-1"]["towns"]["022001"].update(status="ok", ratePercent=0.79), "imposta propria")):
         bad = copy.deepcopy(parts)
         broken(bad)
         try:
@@ -901,6 +904,17 @@ def imu_benchmark_cases() -> None:
         else:
             raise AssertionError(f"unione Italia accettata: {why}")
     assert set(imb.SCOPES) == {"toscana", *imb.ITALY_GROUPS} and imb.WORKERS <= 8
+    # Un Comune che blocca un thread non ferma la corsa: allo scadere resta fuori con il motivo.
+    import threading as _th
+    gate = _th.Event()
+    def slow(code):
+        if code == "X2":
+            gate.wait(30)
+        return {"status": "ok", "ratePercent": 1.0}
+    log = []
+    got = imb.read_all(["X1", "X2", "X3"], slow, 1.5, log.append)
+    gate.set()
+    assert [g["status"] for g in got] == ["ok", "error", "ok"] and "tempo" in got[1]["reason"] and "non letti" in log[-1], (got, log)
 
 
 def pharmacy_history_cases() -> None:

@@ -56,7 +56,7 @@ def apply(data: dict) -> bool:
     italy = json.loads(italy_path.read_text(encoding="utf-8")) if italy_path.exists() else None
     if italy is not None and not valid(italy, year, metric["rows"]):
         italy = None
-    italy_note = (f"Italia: stessa regola, {coverage(italy['benchmark'])}. " if italy else "Italia in preparazione. ")
+    italy_note = (f"Italia: stessa regola, {coverage(italy['benchmark'])}; {imb.NOT_IMU_NOTE}. " if italy else "Italia in preparazione. ")
     metric["meta"]["benchmark"] = {
         "year": str(year), "tuscany": b["value"], "italy": italy["benchmark"]["value"] if italy else None, "source": SOURCE,
         "url": "https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_imu/",
