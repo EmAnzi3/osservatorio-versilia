@@ -27,5 +27,6 @@
   "siopeCashBenchmarks": [],
   "mefIrpefBenchmarks": [],
   "toscanaInfancyHistory": false,
-  "salutePharmaciesHistory": false
+  "salutePharmaciesHistory": false,
+  "mefImuBenchmark": []
 }

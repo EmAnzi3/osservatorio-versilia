@@ -996,6 +996,35 @@ def update_infancy_history(dry_run: bool, fetch=None) -> Changes:
     return changes
 
 
+# ------------------------------------------------------------------ MEF: confronto IMU seconda casa (Toscana)
+
+def update_imu_benchmark(year: int, scope: str, dry_run: bool, fetch=None) -> Changes:
+    """Aliquota IMU di una seconda casa vuota dai prospetti MEF di ogni Comune dell'ambito; media pesata per i residenti."""
+    import imu_benchmarks as imb
+    import irpef_benchmarks as ib
+    import probe_mef_fiscal as mef
+
+    def get(url: str) -> bytes:
+        # Istat (elenco dei Comuni, POSAS) con le attese lunghe del confronto IRPEF; i prospetti con il fetch MEF.
+        if fetch:
+            return fetch(url)
+        return mef.fetch(url) if url.startswith(mef.BASE) else probes.http_fetch(url)
+    try:
+        snapshot = imb.build_snapshot(year, get, lambda raw: mef.pdf_text(raw)[0], scope=imb.TUSCANY if scope == "toscana" else "IT")
+    except (imb.ImuBenchmarkError, ib.IrpefBenchmarkError, RuntimeError) as error:
+        raise UpdateError(f"Confronto IMU: {error}") from error
+    if snapshot["qualityGate"]["status"] != "PASS":
+        raise UpdateError(f"Confronto IMU: {snapshot['qualityGate']['note']}")
+    changes = Changes()
+    b = snapshot["benchmark"]
+    changes.note(f"{imb.METRIC} {scope} {year}", None, b["value"])
+    changes.note(f"{imb.METRIC} {scope} Comuni letti", None, f"{b['municipalities']}/{b['municipalitiesTotal']} ({b['populationShare']:.1%})")
+    snapshot["acquisitionEvidence"] = {"script": f"scripts/update_source_data.py mef-imu-benchmark --year {year} --scope {scope}"}
+    if not dry_run:
+        save(ROOT / imb.SNAPSHOT.format(year=year, scope=scope), snapshot)
+    return changes
+
+
 # ------------------------------------------------------------------ Ministero della Salute: serie delle farmacie
 
 def update_pharmacy_history(dry_run: bool, fetch=None) -> Changes:
@@ -1814,6 +1843,10 @@ def main() -> int:
     ir_p.add_argument("--year", type=int, required=True)
     ir_p.add_argument("--dry-run", action="store_true")
     ih_p = sub.add_parser("toscana-infancy-history", help="serie della ricettività potenziale per la prima infanzia")
+    imu_p = sub.add_parser("mef-imu-benchmark", help="confronto IMU seconda casa dai prospetti MEF (Toscana o Italia)")
+    imu_p.add_argument("--year", type=int, required=True)
+    imu_p.add_argument("--scope", choices=("toscana", "italia"), default="toscana")
+    imu_p.add_argument("--dry-run", action="store_true")
     ph_p = sub.add_parser("salute-pharmacies-history", help="serie delle farmacie ogni 1.000 residenti (Ministero della Salute)")
     ph_p.add_argument("--dry-run", action="store_true")
     ih_p.add_argument("--dry-run", action="store_true")
@@ -1851,6 +1884,8 @@ def main() -> int:
             update_irpef_benchmarks(args.year, args.dry_run).report("Confronto addizionale IRPEF:")
         elif args.updater == "toscana-infancy-history":
             update_infancy_history(args.dry_run).report("Serie prima infanzia:")
+        elif args.updater == "mef-imu-benchmark":
+            update_imu_benchmark(args.year, args.scope, args.dry_run).report("Confronto IMU:")
         elif args.updater == "salute-pharmacies-history":
             update_pharmacy_history(args.dry_run).report("Serie farmacie:")
         elif args.updater == "asia-micro-units-history":

@@ -100,8 +100,8 @@
   "imu": {
     "year": 2026,
     "source": "Dipartimento delle Finanze - MEF",
-    "category": "Altri fabbricati",
-    "standard": "Seconda abitazione A/2; base imponibile IMU standardizzata EUR 100.000",
+    "category": "Abitazione a disposizione se prevista dal prospetto, altrimenti Altri fabbricati",
+    "standard": "Seconda abitazione A/2 non locata né in comodato; base imponibile IMU standardizzata EUR 100.000",
     "coverage": "7/7",
     "publishedProspetti": "4/7",
     "rule": "Senza prospetto 2026 pubblicato entro il 28/10/2026 valgono le aliquote 2025 (art. 1, comma 767, legge 160/2019).",
@@ -112,7 +112,8 @@
         "basis": "aliquote 2025 prorogate",
         "act": "Nessun prospetto IMU 2026 pubblicato nel Portale del federalismo fiscale entro il 28 ottobre 2026: si applicano le aliquote vigenti nel 2025 (art. 1, comma 767, legge 160/2019).",
         "sourcePage": "https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_imu/risultato.htm?DOWNLOAD=Procedi&anno=2026&cc=B455&cm=O&lista=1&pagina=&pr=&r=2",
-        "priorYearSourcePage": "https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_imu/risultato.htm?DOWNLOAD=Procedi&anno=2025&cc=B455&cm=O&lista=1&pagina=&pr=&r=2"
+        "priorYearSourcePage": "https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_imu/risultato.htm?DOWNLOAD=Procedi&anno=2025&cc=B455&cm=O&lista=1&pagina=&pr=&r=2",
+        "line": "Altri fabbricati"
       },
       "Forte dei Marmi": {
         "ratePercent": 1.06,
@@ -120,7 +121,8 @@
         "basis": "prospetto 2026",
         "act": "Delibera n. 65 del 22/12/2025, prospetto pubblicato il 13/01/2026",
         "sourcePdf": "https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_imu/download_lib.php?key=0900f23080ada17e&nome=16668_DIMUNIC-16lu26d730d.pdf",
-        "sourcePage": "https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_imu/risultato.htm?DOWNLOAD=Procedi&anno=2026&cc=D730&cm=O&lista=1&pagina=&pr=&r=2"
+        "sourcePage": "https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_imu/risultato.htm?DOWNLOAD=Procedi&anno=2026&cc=D730&cm=O&lista=1&pagina=&pr=&r=2",
+        "line": "Altri fabbricati"
       },
       "Massarosa": {
         "ratePercent": 1.06,
@@ -128,15 +130,22 @@
         "basis": "aliquote 2025 prorogate",
         "act": "Nessun prospetto IMU 2026 pubblicato nel Portale del federalismo fiscale entro il 28 ottobre 2026: si applicano le aliquote vigenti nel 2025 (art. 1, comma 767, legge 160/2019).",
         "sourcePage": "https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_imu/risultato.htm?DOWNLOAD=Procedi&anno=2026&cc=F035&cm=O&lista=1&pagina=&pr=&r=2",
-        "priorYearSourcePage": "https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_imu/risultato.htm?DOWNLOAD=Procedi&anno=2025&cc=F035&cm=O&lista=1&pagina=&pr=&r=2"
+        "priorYearSourcePage": "https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_imu/risultato.htm?DOWNLOAD=Procedi&anno=2025&cc=F035&cm=O&lista=1&pagina=&pr=&r=2",
+        "line": "Altri fabbricati"
       },
       "Pietrasanta": {
-        "ratePercent": 1.06,
-        "annualTax": 1060.0,
+        "ratePercent": 1.14,
+        "annualTax": 1140.0,
         "basis": "prospetto 2026",
-        "act": "Delibera n. 15 del 21/07/2026 (autotutela), prospetto pubblicato il 19/08/2026; invariata rispetto alla delibera n. 59 del 09/12/2025",
+        "act": "Delibera n. 15 del 21/07/2026 (autotutela), prospetto pubblicato il 19/08/2026; «Abitazione a disposizione — abitazioni non locate e non concesse in comodato» 1,14% (già nella delibera n. 59 del 09/12/2025)",
         "sourcePdf": "https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_imu/download_lib.php?key=0900f23080c6e7dc&nome=19705_DIMUNIC-16lu26g628d.pdf",
-        "sourcePage": "https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_imu/risultato.htm?DOWNLOAD=Procedi&anno=2026&cc=G628&cm=O&lista=1&pagina=&pr=&r=2"
+        "sourcePage": "https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_imu/risultato.htm?DOWNLOAD=Procedi&anno=2026&cc=G628&cm=O&lista=1&pagina=&pr=&r=2",
+        "line": "Abitazione a disposizione",
+        "prior2025": {
+          "ratePercent": 1.14,
+          "annualTax": 1140.0,
+          "act": "Prospetto IMU 2025 ID 2926, pubblicato il 17/04/2025: «Abitazione a disposizione» 1,14%"
+        }
       },
       "Seravezza": {
         "ratePercent": 1.14,
@@ -144,7 +153,8 @@
         "basis": "prospetto 2026",
         "act": "Delibera n. 73 del 27/11/2025, prospetto pubblicato il 02/01/2026",
         "sourcePdf": "https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_imu/download_lib.php?key=0900f23080acf1c0&nome=13352_DIMUNIC-16lu26i622d.pdf",
-        "sourcePage": "https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_imu/risultato.htm?DOWNLOAD=Procedi&anno=2026&cc=I622&cm=O&lista=1&pagina=&pr=&r=2"
+        "sourcePage": "https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_imu/risultato.htm?DOWNLOAD=Procedi&anno=2026&cc=I622&cm=O&lista=1&pagina=&pr=&r=2",
+        "line": "Altri fabbricati"
       },
       "Stazzema": {
         "ratePercent": 1.06,
@@ -152,7 +162,8 @@
         "basis": "prospetto 2026",
         "act": "Delibera n. 58 del 23/12/2025, prospetto pubblicato il 19/06/2026",
         "sourcePdf": "https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_imu/download_lib.php?key=0900f23080bd1913&nome=15742_DIMUNIC-16lu26i942d.pdf",
-        "sourcePage": "https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_imu/risultato.htm?DOWNLOAD=Procedi&anno=2026&cc=I942&cm=O&lista=1&pagina=&pr=&r=2"
+        "sourcePage": "https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_imu/risultato.htm?DOWNLOAD=Procedi&anno=2026&cc=I942&cm=O&lista=1&pagina=&pr=&r=2",
+        "line": "Altri fabbricati"
       },
       "Viareggio": {
         "ratePercent": 1.14,
@@ -160,7 +171,8 @@
         "basis": "aliquote 2025 prorogate",
         "act": "Nessun prospetto IMU 2026 pubblicato nel Portale del federalismo fiscale entro il 28 ottobre 2026: si applicano le aliquote vigenti nel 2025 (art. 1, comma 767, legge 160/2019).",
         "sourcePage": "https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_imu/risultato.htm?DOWNLOAD=Procedi&anno=2026&cc=L833&cm=O&lista=1&pagina=&pr=&r=2",
-        "priorYearSourcePage": "https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_imu/risultato.htm?DOWNLOAD=Procedi&anno=2025&cc=L833&cm=O&lista=1&pagina=&pr=&r=2"
+        "priorYearSourcePage": "https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_imu/risultato.htm?DOWNLOAD=Procedi&anno=2025&cc=L833&cm=O&lista=1&pagina=&pr=&r=2",
+        "line": "Altri fabbricati"
       }
     }
   },

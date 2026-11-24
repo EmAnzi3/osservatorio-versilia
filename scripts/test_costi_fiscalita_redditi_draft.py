@@ -61,7 +61,10 @@ def main():
     assert imu_metric['meta']['year']=='2026' and NEW['imu']['year']==2026
     for town,v in NEW['imu']['towns'].items():
         assert close(im[town]['value'],v['annualTax']) and close(im[town]['ratePercent'],v['ratePercent'])
-        assert im[town]['series']=={'years':['2025','2026'],'values':[VAL['imu']['towns'][town]['annualTax'],v['annualTax']]}
+        # 2025: prospetto 2025 corretto se riportato (Pietrasanta, «abitazione a disposizione», con atto), altrimenti lo snapshot validato.
+        prior=v.get('prior2025')
+        assert prior is None or (prior['act'] and prior['annualTax']==prior['ratePercent']*1000)
+        assert im[town]['series']=={'years':['2025','2026'],'values':[(prior or VAL['imu']['towns'][town])['annualTax'],v['annualTax']]}
         # Senza prospetto 2026 si applica l'aliquota 2025 (art. 1, c. 767, L. 160/2019), mai un'altra.
         if v['basis']!='prospetto 2026': assert v['ratePercent']==VAL['imu']['towns'][town]['ratePercent'] and 'sourcePdf' not in v
         else: assert '16lu26' in v['sourcePdf']
