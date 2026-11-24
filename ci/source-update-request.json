@@ -31,7 +31,11 @@
   "mefImuBenchmark": [
     {
       "year": 2026,
-      "scope": "italia-1"
+      "scope": "italia-2"
+    },
+    {
+      "year": 2026,
+      "scope": "italia-3"
     }
   ]
 }
