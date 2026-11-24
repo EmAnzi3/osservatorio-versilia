@@ -607,6 +607,23 @@ def test_false_positives_of_22_november():
     assert decide("Bando Nidi gratis 2026-2027 per i servizi educativi rivolto ai Comuni", comuni, date(2026, 11, 22)).status == "qualified"
 
 
+def test_newsstand_call_with_towns_as_territorial_condition():
+    """Regione 23/11: contributi a edicole e distributori; i Comuni compaiono solo come condizione territoriale."""
+    text = (PAD + "Possono presentare domanda: A) Soggetti iscritti al Registro delle Imprese presso la Cciaa (risultanti impresa "
+            "attiva), oppure titolari di una partita Iva attiva, esercenti punti vendita con sede nei territori classificati come "
+            "“Toscana diffusa” ai sensi della legge regionale 11/2025 “ Valorizzazione della Toscana diffusa”, così individuati: "
+            "a1 edicole codice Ateco primario 47.62.10; a2 limitatamente ai Comuni privi di soggetti esercenti punti vendita "
+            "esclusivi di cui al punto a1): soggetti come sopra specificati, codice Ateco secondario 47.62.10 “Commercio al dettaglio”. "
+            "B) Edicole aventi sede su tutto il restante territorio regionale. C) Distributori, con un contributo per ogni Comune servito. "
+            "La domanda si presenta online sulla piattaforma di Sviluppo Toscana entro il 15 dicembre 2026.")
+    d = decide("Contributi per distribuzione e commercio al dettaglio di giornali e pubblicazioni periodiche", text, date(2026, 11, 23))
+    assert d.status == "rejected", d
+    # La stessa costruzione non nasconde i Comuni quando sono davvero i richiedenti.
+    ok = (PAD + "Soggetti ammessi: i Comuni della Toscana, con priorità ai Comuni privi di un asilo nido. "
+          "La domanda si presenta tramite PEC entro il 15 dicembre 2026.")
+    assert decide("Contributi ai Comuni per nuovi servizi educativi", ok, date(2026, 11, 23)).status == "qualified"
+
+
 def test_news_with_future_term_of_open_calls_qualifies():
     """Proroga riportata da una notizia (ANCI Piemonte, bandi ICSC): termine futuro e Comuni ammessi bastano."""
     text = (PAD + "Sono stati prorogati i termini fino al 5 dicembre 2026 dei bandi Sport Missione Comune e Cultura Missione "

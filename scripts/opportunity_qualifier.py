@@ -31,7 +31,7 @@ from urllib.parse import urlsplit
 
 from opportunity_publication_date import publication_date
 
-VERSION = "1.5"
+VERSION = "1.6"
 LABEL = "Requisiti da confermare"
 VERIFICATION_STATUS = "auto_qualified"
 MAX_CANDIDATES = 120
@@ -108,6 +108,8 @@ MUNICIPAL_AS_PLACE = re.compile(
     r"ubicat\w+\s+(?:nel|in)\s+(?:un\s+)?comune|nel\s+territorio\s+(?:del|di\s+un)\s+comune|"
     # Plurale locativo (issue: «edicole situate nei comuni rientranti…», «per ogni Comune servito»).
     r"\bnei\s+(?:[\w’']+\s+){0,2}comuni\b|\bogni\s+comune\s+servit\w+|\bper\s+i\s+comuni\s+(?:parzialmente\s+)?montani\b|"
+    # Condizione territoriale (edicole, 23/11: «a2 limitatamente ai Comuni privi di soggetti esercenti…»).
+    r"\b(?:ai|nei|dei)\s+comuni\s+(?:privi|sprovvist\w*|senza|carent\w*|che\s+non\s+(?:hanno|dispongono|abbiano))\b|"
     # «beni comuni», «spazi comuni»: aggettivo, non l'ente.
     r"\b(?:ben[ei]|spaz[io]|aree?|part[ei]|obiettiv[oi]|interess[ei])\s+comun[ei]\b)", re.I)
 SUBJECT_APPLIES = re.compile(
