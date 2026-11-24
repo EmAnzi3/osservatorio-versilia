@@ -11,10 +11,12 @@ RSA_FILE = 'data/source-snapshots/a3-toscana-rsa-accredited-benchmark-2025.json'
 RSA_LOCAL = 'data/source-snapshots/regione-toscana-rsa-accreditate-2025-v140.json'
 POPULATION = 'data/source-snapshots/istat-demography-lotto-a-2026-08.json'
 DEMO = 'data/source-snapshots/a3-istat-demography-benchmark-2026.json'
+PHARMACY_HISTORY = 'data/source-snapshots/salute-farmacie-serie.json'
+PHARMACY_YEARS = list(range(2019, 2026))
 PATHS = {PHARMACY: PHARMACY_FILE, RSA: RSA_FILE}
 UNITS = {PHARMACY: 'per1000', RSA: 'count'}
 URLS = {PHARMACY: 'https://www.dati.salute.gov.it/', RSA: 'https://servizi.toscana.it/RT/RSA/'}
-HASHES = {'data/source-snapshots/a3-health-pharmacies-benchmark-2025.json': (_pin('health_facilities#1'), _pin('health_facilities#2')), 'data/source-snapshots/a3-toscana-rsa-accredited-benchmark-2025.json': (_pin('health_facilities#3'), _pin('health_facilities#4')), 'data/source-snapshots/regione-toscana-rsa-accreditate-2025-v140.json': (_pin('health_facilities#5'), _pin('health_facilities#6')), 'data/source-snapshots/istat-demography-lotto-a-2026-08.json': (_pin('health_facilities#7'), _pin('health_facilities#8')), 'data/source-snapshots/a3-istat-demography-benchmark-2026.json': (_pin('health_facilities#9'), _pin('health_facilities#10'))}  # Filled from the reviewed, versioned snapshots; never generated at runtime.
+HASHES = {'data/source-snapshots/a3-health-pharmacies-benchmark-2025.json': (_pin('health_facilities#1'), _pin('health_facilities#2')), 'data/source-snapshots/a3-toscana-rsa-accredited-benchmark-2025.json': (_pin('health_facilities#3'), _pin('health_facilities#4')), 'data/source-snapshots/regione-toscana-rsa-accreditate-2025-v140.json': (_pin('health_facilities#5'), _pin('health_facilities#6')), 'data/source-snapshots/istat-demography-lotto-a-2026-08.json': (_pin('health_facilities#7'), _pin('health_facilities#8')), 'data/source-snapshots/a3-istat-demography-benchmark-2026.json': (_pin('health_facilities#9'), _pin('health_facilities#10')), 'data/source-snapshots/salute-farmacie-serie.json': (_pin('health_facilities#11'), _pin('health_facilities#12'))}  # Filled from the reviewed, versioned snapshots; never generated at runtime.
 NOTES = ['health_facilities_presence_not_access_capacity_quality_or_policy_priority',
          'health_facilities_zero_is_local_presence_not_absence_of_services',
          'health_facilities_no_automatic_relation_to_resident_health_outcomes']
@@ -93,6 +95,17 @@ def validated(engine, key):
             raise ValueError('health_facilities_rsa_reconciliation_changed')
         if metric['method'].get('formula') != 'Conteggio delle strutture accreditate presenti nel Comune.':
             raise ValueError('health_facilities_formula_changed')
+    expected_history = {}
+    if key == PHARMACY and any(r.get('series') is not None for r in rows):
+        series_snap, _ = frozen(engine, PHARMACY_HISTORY)
+        if series_snap.get('years') != PHARMACY_YEARS or {c: v[-1] for c, v in series_snap['counts'].items()} != counts:
+            raise ValueError('health_facilities_history_changed')
+        residents = {r['code']: dict(zip((int(y) for y in (r.get('series') or {}).get('years') or []), (r.get('series') or {}).get('values') or []))
+                     for r in engine._catalog['metrics']['population']['rows']}
+        for c in TOWNS:
+            if any(y + 1 not in residents[c] for y in PHARMACY_YEARS):
+                raise ValueError('health_facilities_history_changed')
+            expected_history[c] = dict(years=PHARMACY_YEARS, values=[round(n / residents[c][y + 1] * 1000, 2) for n, y in zip(series_snap['counts'][c], PHARMACY_YEARS)])
     for row in rows:
         code = row['code']
         if (row.get('town') != TOWNS[code] or row.get('slug') != '-'.join(TOWNS[code].lower().split())
@@ -100,7 +113,9 @@ def validated(engine, key):
             raise ValueError('health_facilities_municipal_identity_changed')
         equal(row.get('value'), values[code]); equal(row.get('benchmarkValue'), values[code])
         history = row.get('series')
-        if key == PHARMACY and history is not None or key == RSA and (history != dict(years=[2025],values=[values[code]]) or not finite(history['values'][0])):
+        # Farmacie: nel catalogo sorgente nessuna serie; nel catalogo costruito esattamente quella ricostruita dallo
+        # snapshot rivisto (sedi al 31/12, 2025 = conteggi pubblicati) sui residenti pubblicati al 1° gennaio dell'anno dopo.
+        if key == PHARMACY and history is not None and history != expected_history.get(code) or key == RSA and (history != dict(years=[2025],values=[values[code]]) or not finite(history['values'][0])):
             raise ValueError('health_facilities_history_changed')
         if row.get('normalized') is not None or row.get('ratioComponents') is not None:
             raise ValueError('health_facilities_unreviewed_components_changed')

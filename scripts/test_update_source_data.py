@@ -813,6 +813,58 @@ def irpef_benchmarks_cases() -> None:
     assert snap["benchmarks"]["30000"]["tuscany"]["value"] is not None
 
 
+def pharmacy_history_cases() -> None:
+    """Farmacie: sedi univoche valide al 31/12 dagli intervalli; 2025 = pubblicato; 2024 = file di fine 2024 se online."""
+    import pharmacy_history as ph
+
+    head = "cod_farmacia;descrizione;cod_comune;codice_tipologia;data_inizio_validita;data_fine_validita"
+    def csv_rows(extra=()):
+        lines = [head]
+        for i, c in enumerate(ph.TOWNS):
+            lines.append(f"{100 + i};A;{c};1;01/01/2005;-")
+            lines.append(f"{200 + i};B;{c};1;01/03/2013;-")
+            lines.append(f"{200 + i};B vecchio titolare;{c};1;01/01/2005;28/02/2013")  # stessa sede, una sola volta
+        lines.append(f"300;Nuova 2022;{ph.TOWNS[0]};2;01/06/2022;-")
+        lines.append(f"301;Chiusa 2020;{ph.TOWNS[6]};1;01/01/2005;30/06/2020")
+        lines.append("999;Altrove;047016;1;01/01/2005;-")
+        lines.extend(extra)
+        return "\n".join(lines).encode("utf-8")
+    page = b'<a href="/sites/default/files/opendata/FRM_FARMA_5_20261122.csv">CSV</a>'
+    fetch = lambda url: page if url == ph.DATASET else csv_rows()
+    published = {c: 2 for c in ph.TOWNS} | {ph.TOWNS[0]: 3}
+    snap = ph.build_snapshot(fetch, published, lambda url: None)
+    assert snap["counts"][ph.TOWNS[0]] == [2, 2, 2, 3, 3, 3, 3] and snap["counts"][ph.TOWNS[6]] == [3, 2, 2, 2, 2, 2, 2], snap["counts"]
+    assert snap["crossCheck"] is None and snap["sourceUrl"].endswith("FRM_FARMA_5_20261122.csv")
+    assert ph.build_snapshot(fetch, published, lambda url: csv_rows())["crossCheck"]["status"] == "PASS"
+    for bad_published, bad_check in (({**published, ph.TOWNS[3]: 5}, lambda url: None),
+                                     (published, lambda url: csv_rows([f"400;Solo nel 2024;{ph.TOWNS[2]};1;01/01/2024;-"]))):
+        try:
+            ph.build_snapshot(fetch, bad_published, bad_check)
+        except ph.PharmacyError:
+            pass
+        else:
+            raise AssertionError("2025 o 2024 non vincolati")
+    try:
+        ph.current_stamp(page + b' FRM_FARMA_5_20261121.csv')
+    except ph.PharmacyError:
+        pass
+    else:
+        raise AssertionError("file corrente ambiguo accettato")
+    pops = {"years": list(range(2019, 2027)), "values": [1000] * 8}
+    metrics = {ph.METRIC: {"meta": {"year": "2025"}, "method": {}, "rows": [
+                   {"code": c, "town": c, "value": round(published[c] / 1000 * 1000, 2)} for c in ph.TOWNS]},
+               "population": {"rows": [{"code": c, "series": pops} for c in ph.TOWNS]}}
+    ph.apply(metrics, snap, ph.SNAPSHOT)
+    assert metrics[ph.METRIC]["rows"][0]["series"] == {"years": list(ph.YEARS), "values": [2.0, 2.0, 2.0, 3.0, 3.0, 3.0, 3.0]}
+    metrics[ph.METRIC]["rows"][1]["value"] = 9.0
+    try:
+        ph.apply(metrics, snap, ph.SNAPSHOT)
+    except ph.PharmacyError:
+        pass
+    else:
+        raise AssertionError("ultimo anno della serie non vincolato al valore pubblicato")
+
+
 def infancy_history_cases() -> None:
     """Prima infanzia: posti / bambini 3-36 mesi per anno educativo; celle vuote fermano la serie; ultimo anno vincolato."""
     import infancy_history as ih
@@ -1432,6 +1484,7 @@ def main() -> None:
     siope_cash_benchmarks_cases()
     irpef_benchmarks_cases()
     infancy_history_cases()
+    pharmacy_history_cases()
     with tempfile.TemporaryDirectory() as tmp:
         istat_famiglie_cases(Path(tmp))
     openbdap_benchmarks_cases()

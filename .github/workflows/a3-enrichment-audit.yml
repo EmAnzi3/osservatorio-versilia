@@ -940,7 +940,6 @@ jobs:
               ('accreditedRsaCount', 'categorie_specifiche'),
               ('chronicTotal', 'sesso'),
               ('drinkingWaterQuality', 'serie_storica'),
-              ('pharmaciesPer1000', 'serie_storica'),
               ('floodExposure', 'serie_storica'),
               ('statisticalCoastlineLength', 'serie_storica'),
               ('protectedNaturalAreas', 'serie_storica'),
