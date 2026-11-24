@@ -7,8 +7,8 @@ prospetto dell'anno pubblicato entro il 28 ottobre (l'ultimo, se più d'uno); se
 quello dell'anno precedente (art. 1, comma 767, legge 160/2019). Prospetto illeggibile o ambiguo (righe «a
 disposizione» con aliquote diverse, Comune fuso con aliquote differenziate): il Comune resta fuori.
 
-Confronto: media degli importi su 100.000 € di base imponibile pesata per i residenti al 1° gennaio dell'anno dopo
-(Istat POSAS), pubblicato solo se i Comuni letti coprono almeno il 90% dei residenti dell'ambito.
+Confronto: media degli importi su 100.000 € di base imponibile pesata per i residenti al 1° gennaio dell'anno
+(Istat POSAS: l'IMU si paga nell'anno, i residenti al 1° gennaio successivo non sono ancora pubblicati), pubblicato solo se i Comuni letti coprono almeno il 90% dei residenti dell'ambito.
 """
 from __future__ import annotations
 
@@ -114,7 +114,7 @@ def town_rate(code: str, year: int, fetch: Callable[[str], bytes], pdf_text: Cal
 
 
 def build_snapshot(year: int, fetch: Callable[[str], bytes], pdf_text: Callable[[bytes], str], scope: str = TUSCANY) -> dict[str, Any]:
-    istat_raw, posas_raw = fetch(ib.ISTAT_URL), fetch(ib.POSAS_URL.format(year=year + 1))
+    istat_raw, posas_raw = fetch(ib.ISTAT_URL), fetch(ib.POSAS_URL.format(year=year))
     codes = ib.istat_codes(istat_raw)
     residents = ib.posas_totals(posas_raw)
     towns = {cc: istat for cc, (istat, region) in codes.items() if scope == "IT" or region == scope}
@@ -141,9 +141,9 @@ def build_snapshot(year: int, fetch: Callable[[str], bytes], pdf_text: Callable[
         "retrieved": dt.date.today().isoformat(),
         "rule": ("Aliquota «Abitazione a disposizione» se indicata per la A/2, altrimenti «Altri fabbricati»; prospetto dell'anno "
                  "pubblicato entro il 28/10, altrimenti quello dell'anno precedente. Media degli importi su 100.000 € pesata "
-                 "per i residenti al 1° gennaio dell'anno dopo."),
+                 "per i residenti al 1° gennaio dell'anno."),
         "sources": {"istat": {"url": ib.ISTAT_URL, "sha256": hashlib.sha256(istat_raw).hexdigest()},
-                    "posas": {"url": ib.POSAS_URL.format(year=year + 1), "sha256": hashlib.sha256(posas_raw).hexdigest()}},
+                    "posas": {"url": ib.POSAS_URL.format(year=year), "sha256": hashlib.sha256(posas_raw).hexdigest()}},
         "towns": rows,
         "benchmark": {"value": value if share >= MIN_SHARE else None, "municipalities": len(ok), "municipalitiesTotal": len(rows),
                       "populationShare": round(share, 4), "minShare": MIN_SHARE},

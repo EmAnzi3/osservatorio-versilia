@@ -44,7 +44,7 @@ def apply(data: dict) -> bool:
         "year": str(year), "tuscany": b["value"], "italy": None, "source": SOURCE,
         "url": "https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_imu/",
         "sourceSnapshot": imb.SNAPSHOT.format(scope="toscana", year=year),
-        "note": (f"Toscana: media degli importi comunali su 100.000 € pesata per i residenti al 1° gennaio {year + 1}, con la stessa "
+        "note": (f"Toscana: media degli importi comunali su 100.000 € pesata per i residenti al 1° gennaio {year}, con la stessa "
                  f"regola dei sette Comuni. Letti {count(b['municipalities'])} Comuni su {count(b['municipalitiesTotal'])} "
                  f"({share}% dei residenti); esclusi i prospetti ambigui. Italia in preparazione. "
                  "La media Versilia resta la media semplice dei sette Comuni."),

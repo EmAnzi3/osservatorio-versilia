@@ -857,6 +857,21 @@ def imu_benchmark_cases() -> None:
     r = imb.town_rate("G628", 2026, fetch_for([(3, "05-11-2026")], [(9, "20-02-2025")]), text)
     assert (r["ratePercent"], r["year"], r["carriedFrom"]) == (1.01, 2025, 2025), r
     assert imb.town_rate("G628", 2026, fetch_for([], []), text)["status"] == "missing"
+    asked = []
+
+    class Stop(Exception):
+        pass
+
+    def recording(url):
+        asked.append(url)
+        if len(asked) == 2:
+            raise Stop
+        return b""
+    try:
+        imb.build_snapshot(2026, recording, text)
+    except Stop:
+        pass
+    assert asked[1] == imb.ib.POSAS_URL.format(year=2026), "residenti al 1° gennaio dell'anno: quelli dell'anno dopo non sono pubblicati"
 
 
 def pharmacy_history_cases() -> None:

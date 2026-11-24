@@ -13,7 +13,7 @@
   - «Abitazione a disposizione» se la riga vale per la A/2 e non ha requisiti del soggetto passivo, condizioni ulteriori o inagibilità; altrimenti «Altri fabbricati».
   - Due righe «a disposizione» diverse o un Comune fuso con aliquote differenziate rendono il prospetto ambiguo: Comune escluso.
   - Vale l'ultimo prospetto dell'anno pubblicato entro il 28/10, altrimenti quello dell'anno precedente.
-- Aggiornatore `mef-imu-benchmark --year --scope` (richiesta `mefImuBenchmark`), snapshot `mef-imu-benchmark-toscana-2026.json`, materializzatore `materialize_imu_benchmark.py`: media pesata per i residenti POSAS, pubblicata solo con le sette aliquote lette identiche a quelle pubblicate e copertura ≥ 90%. Italia vuota fino allo snapshot nazionale.
+- Aggiornatore `mef-imu-benchmark --year --scope` (richiesta `mefImuBenchmark`), snapshot `mef-imu-benchmark-toscana-2026.json`, materializzatore `materialize_imu_benchmark.py`: media pesata per i residenti POSAS al 1° gennaio dello stesso anno (quelli dell'anno dopo non esistono ancora: la prima corsa CI aveva avuto 404 su POSAS_2027), pubblicata solo con le sette aliquote lette identiche a quelle pubblicate e copertura ≥ 90%. Italia vuota fino allo snapshot nazionale.
 - Prova locale sui 273 Comuni toscani: 272 letti; escluso Casciana Terme Lari (fuso con aliquote differenziate). 33 con «abitazione a disposizione» (es. Lastra a Signa 0,25%, Cecina 1,14%); esclusi dalla riga «a disposizione», perché riservata o condizionata, Arezzo, Fiesole, Calcinaia, Capoliveri, Greve, Firenzuola, Rosignano.
 
 ## Radar: contributi alle edicole, Comuni come condizione territoriale (24 novembre 2026)
