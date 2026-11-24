@@ -28,5 +28,10 @@
   "mefIrpefBenchmarks": [],
   "toscanaInfancyHistory": false,
   "salutePharmaciesHistory": false,
-  "mefImuBenchmark": []
+  "mefImuBenchmark": [
+    {
+      "year": 2026,
+      "scope": "italia-1"
+    }
+  ]
 }

@@ -873,6 +873,35 @@ def imu_benchmark_cases() -> None:
         pass
     assert asked[1] == imb.ib.POSAS_URL.format(year=2026), "residenti al 1° gennaio dell'anno: quelli dell'anno dopo non sono pubblicati"
 
+    # Italia in quattro gruppi di regioni: l'unione pretende gruppi completi, stesse fonti e Comuni disgiunti.
+    import copy
+    src = {"istat": {"url": "i", "sha256": "a"}, "posas": {"url": "p", "sha256": "b"}}
+    def part(name, towns):
+        rows = {k: {"status": "ok", "ratePercent": rate, "residents": res} for k, (rate, res) in towns.items()}
+        snap = imb._summary(2026, name, rows, copy.deepcopy(src))
+        snap["regions"] = sorted(imb.ITALY_GROUPS[name])
+        return snap
+    versilia = {k: (1.06, 1000) for k in imb.TOWNS}
+    parts = {"italia-1": part("italia-1", {"001001": (1.06, 3000)}), "italia-2": part("italia-2", {"015146": (1.14, 1000)}),
+             "italia-3": part("italia-3", versilia), "italia-4": part("italia-4", {"063049": (1.06, 2000), "063050": (0.96, 0)})}
+    assert "versilia" not in parts["italia-1"] and parts["italia-1"]["qualityGate"]["status"] == "PASS"
+    it = imb.combine(2026, parts)
+    assert it["scope"] == "italia" and it["benchmark"]["municipalitiesTotal"] == 11 and it["qualityGate"]["status"] == "PASS"
+    assert it["benchmark"]["value"] == round((1060 * 12000 + 1140 * 1000) / 13000, 2) and set(it["versilia"]) == set(imb.TOWNS)
+    for broken, why in ((lambda p: p.pop("italia-4"), "mancanti"),
+                        (lambda p: p["italia-2"]["sources"]["posas"].update(sha256="c"), "diversi"),
+                        (lambda p: p["italia-4"]["towns"].update({"001001": {"status": "ok", "ratePercent": 1.0, "residents": 1}}), "più gruppi"),
+                        (lambda p: p["italia-1"].update(regions=["01"]), "regioni")):
+        bad = copy.deepcopy(parts)
+        broken(bad)
+        try:
+            imb.combine(2026, bad)
+        except imb.ImuBenchmarkError as error:
+            assert why in str(error), error
+        else:
+            raise AssertionError(f"unione Italia accettata: {why}")
+    assert set(imb.SCOPES) == {"toscana", *imb.ITALY_GROUPS} and imb.WORKERS <= 8
+
 
 def pharmacy_history_cases() -> None:
     """Farmacie: sedi univoche valide al 31/12 dagli intervalli; 2025 = pubblicato; 2024 = file di fine 2024 se online."""

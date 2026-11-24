@@ -1010,7 +1010,17 @@ def update_imu_benchmark(year: int, scope: str, dry_run: bool, fetch=None) -> Ch
             return fetch(url)
         return mef.fetch(url) if url.startswith(mef.BASE) else probes.http_fetch(url)
     try:
-        snapshot = imb.build_snapshot(year, get, lambda raw: mef.pdf_text(raw)[0], scope=imb.TUSCANY if scope == "toscana" else "IT")
+        if scope == "italia":
+            # Nessuno scaricamento: unisce i quattro gruppi già acquisiti (stessi elenco Istat e POSAS).
+            parts = {}
+            for name in imb.ITALY_GROUPS:
+                path = ROOT / imb.SNAPSHOT.format(year=year, scope=name)
+                if not path.exists():
+                    raise imb.ImuBenchmarkError(f"gruppo {name} non ancora acquisito ({path.name})")
+                parts[name] = json.loads(path.read_text(encoding="utf-8"))
+            snapshot = imb.combine(year, parts)
+        else:
+            snapshot = imb.build_snapshot(year, get, lambda raw: mef.pdf_text(raw)[0], scope=scope)
     except (imb.ImuBenchmarkError, ib.IrpefBenchmarkError, RuntimeError) as error:
         raise UpdateError(f"Confronto IMU: {error}") from error
     if snapshot["qualityGate"]["status"] != "PASS":
@@ -1845,7 +1855,8 @@ def main() -> int:
     ih_p = sub.add_parser("toscana-infancy-history", help="serie della ricettività potenziale per la prima infanzia")
     imu_p = sub.add_parser("mef-imu-benchmark", help="confronto IMU seconda casa dai prospetti MEF (Toscana o Italia)")
     imu_p.add_argument("--year", type=int, required=True)
-    imu_p.add_argument("--scope", choices=("toscana", "italia"), default="toscana")
+    imu_p.add_argument("--scope", choices=("toscana", "italia-1", "italia-2", "italia-3", "italia-4", "italia"), default="toscana",
+                       help="toscana; italia-1…4 = gruppi di regioni (una corsa ciascuno); italia = unione dei quattro gruppi")
     imu_p.add_argument("--dry-run", action="store_true")
     ph_p = sub.add_parser("salute-pharmacies-history", help="serie delle farmacie ogni 1.000 residenti (Ministero della Salute)")
     ph_p.add_argument("--dry-run", action="store_true")

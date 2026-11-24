@@ -1,5 +1,12 @@
 # Consolidamento Osservatorio Versilia — handoff operativo
 
+## IMU seconda casa: confronto Italia in quattro gruppi di regioni (24 novembre 2026)
+
+- Toscana: 273 Comuni in circa 25 minuti di CI (≈5,6 s a Comune). Italia (≈7.900 Comuni) in sequenza ≈12 ore, oltre il limite di 90 minuti del job.
+- `imu_benchmarks.py`: prospetti letti in parallelo (`WORKERS = 8`, al massimo 8 richieste insieme al MEF) e quattro gruppi `ITALY_GROUPS` (`italia-1`…`italia-4`, circa 2.000 Comuni ciascuno), uno per corsa: richiesta `mefImuBenchmark` con `scope` del gruppo, snapshot `mef-imu-benchmark-italia-N-AAAA.json`.
+- `--scope italia` non scarica nulla: `combine` unisce i quattro gruppi e rifiuta gruppi mancanti, elenchi Istat/POSAS diversi (sha256), Comuni in più gruppi, regioni diverse da quelle attese o che non coprono le venti. Scrive `mef-imu-benchmark-italia-AAAA.json`.
+- Il materializzatore aggiunge l'Italia con le stesse condizioni della Toscana (qualityGate, anno, 7 aliquote identiche alle pubblicate, copertura ≥ 90%); senza snapshot valido resta «in preparazione».
+
 ## IMU seconda casa: definizione «abitazione a disposizione» e confronto Toscana (24 novembre 2026)
 
 - Decisioni di Ema:
