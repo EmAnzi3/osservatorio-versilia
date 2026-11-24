@@ -10,6 +10,7 @@ TARI, IMU, IRPEF = KEYS = ('tariStandardHousehold', 'municipalImuStandard', 'mun
 COSTS = 'data/source-snapshots/costi-fiscalita-validated-2026-08.json'
 COSTS_2026 = 'data/source-snapshots/costi-fiscalita-2026.json'
 RULES = 'data/source-snapshots/costi-fiscalita-redditi-draft-2026-08.json'
+IMU_BENCHMARK = 'data/source-snapshots/mef-imu-benchmark-toscana-2026.json'
 SCENARIOS = (20000, 30000, 50000)
 PATHS = {TARI:COSTS_2026, IMU:COSTS_2026, IRPEF:RULES}
 YEARS = {TARI:2026, IMU:2026, IRPEF:2025}
@@ -17,7 +18,7 @@ PRIOR = COSTS  # 2025 value kept as the first point of the TARI/IMU catalogue se
 URLS = {TARI:'https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_at/', IMU:'https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_imu/', IRPEF:'https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_addcomirpef/'}
 UNITS = {TARI:'currency2', IMU:'currency', IRPEF:'currency2'}
 HASHES = {'data/source-snapshots/costi-fiscalita-validated-2026-08.json': (_pin('municipal_tax#1'), _pin('municipal_tax#2')), 'data/source-snapshots/costi-fiscalita-redditi-draft-2026-08.json': (_pin('municipal_tax#3'), _pin('municipal_tax#4')), 'data/source-snapshots/costi-fiscalita-2026.json': (_pin('municipal_tax#5'), _pin('municipal_tax#6'))}
-FORMULAS = {'tariStandardHousehold': '100 m² × quota fissa + quota variabile per 3 componenti; TEFA 5%; + 7,60 € di componenti perequative ARERA 2026.', 'municipalImuStandard': '100.000 € × aliquota IMU 2026 della categoria «Altri fabbricati».', 'municipalIrpef': "Per ciascuno scenario: se il reddito imponibile non supera la soglia di esenzione, imposta = 0; altrimenti si applicano all'intero imponibile l'aliquota unica o gli scaglioni progressivi pubblicati dal MEF."}
+FORMULAS = {'tariStandardHousehold': '100 m² × quota fissa + quota variabile per 3 componenti; TEFA 5%; + 7,60 € di componenti perequative ARERA 2026.', 'municipalImuStandard': '100.000 € × aliquota IMU 2026 per un’abitazione «a disposizione» (non locata né in comodato) se il prospetto la prevede, altrimenti «Altri fabbricati».', 'municipalIrpef': "Per ciascuno scenario: se il reddito imponibile non supera la soglia di esenzione, imposta = 0; altrimenti si applicano all'intero imponibile l'aliquota unica o gli scaglioni progressivi pubblicati dal MEF."}
 NOTES = ['municipal_tax_standard_scenarios_not_personal_bill_or_revenue',
          'municipal_tax_arithmetic_mean_each_municipality_equal_weight',
          'municipal_tax_single_{year}_snapshot_not_current_tax_advice',
@@ -83,12 +84,13 @@ def context(metric, key, dim):
     if (dim not in dimensions(key) or meta.get('key') != key or meta.get('year') != str(YEARS[key])
             or meta.get('unit') != UNITS[key] or meta.get('polarity') != 'neutral'
             or metric.get('sourceUrl') != URLS[key] or metric.get('method',{}).get('formula') != FORMULAS[key]
-            or (meta.get('benchmark') is not None and not (key == IRPEF and meta['benchmark'].get('sourceSnapshot') == IRPEF_BENCHMARK))):
+            or (meta.get('benchmark') is not None and not (key == IRPEF and meta['benchmark'].get('sourceSnapshot') == IRPEF_BENCHMARK)
+                and not (key == IMU and meta['benchmark'].get('sourceSnapshot') == IMU_BENCHMARK))):
         raise ValueError('municipal_tax_definition_changed')
     if dim == 'effectiveRate:20000' and not all(isinstance(r.get('municipalIrpefScaleCompanion'),dict) for r in metric['rows']):
         raise ValueError('municipal_tax_effective_rate_companion_not_materialized')
     definition = ('resident domestic user, 3 people / 100 square metres, no personal concessions; TEFA 5% and ARERA 7.60 euro included' if key == TARI else
-                  'second home A/2, other buildings rate, identical IMU taxable base 100000 euro, not market price or cadastral rent' if key == IMU else
+                  'second home A/2 not let or lent, rate for homes kept available where set, otherwise other buildings rate; identical IMU taxable base 100000 euro, not market price or cadastral rent' if key == IMU else
                   'municipal IRPEF only, same theoretical taxable individual income; total aliases 20000 euro, state/regional IRPEF excluded')
     unit = 'percent' if dim in ('ratePercent','effectiveRate:20000') else UNITS[key]
     return dict(unit=unit,population='one identical theoretical tax scenario per municipality',definition=definition,
@@ -142,7 +144,10 @@ def validated(engine, key):
         history = row.get('series')
         if key == IRPEF: wanted = dict(years=[2025],values=[value])
         else:
-            before = prior['towns'][name]['annualCost' if key == TARI else 'annualTax']
+            # IMU 2025: prospetto 2025 corretto se lo snapshot 2026 lo riporta (Pietrasanta, «abitazione a disposizione»).
+            corrected = native.get('prior2025') if key == IMU else None
+            if corrected is not None: equal(corrected['annualTax'],money(Decimal(100000)*Decimal(str(corrected['ratePercent']))/100))
+            before = corrected['annualTax'] if corrected is not None else prior['towns'][name]['annualCost' if key == TARI else 'annualTax']
             wanted = dict(years=['2025','2026'] if key == IMU else [2025,2026],values=[before,value])
         if history != wanted or not all(finite(v) for v in history['values']):
             raise ValueError('municipal_tax_history_changed')
