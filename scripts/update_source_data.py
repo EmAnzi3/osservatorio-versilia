@@ -1004,7 +1004,11 @@ def update_imu_benchmark(year: int, scope: str, dry_run: bool, fetch=None) -> Ch
     import irpef_benchmarks as ib
     import probe_mef_fiscal as mef
 
-    get = fetch or mef.fetch
+    def get(url: str) -> bytes:
+        # Istat (elenco dei Comuni, POSAS) con le attese lunghe del confronto IRPEF; i prospetti con il fetch MEF.
+        if fetch:
+            return fetch(url)
+        return mef.fetch(url) if url.startswith(mef.BASE) else probes.http_fetch(url)
     try:
         snapshot = imb.build_snapshot(year, get, lambda raw: mef.pdf_text(raw)[0], scope=imb.TUSCANY if scope == "toscana" else "IT")
     except (imb.ImuBenchmarkError, ib.IrpefBenchmarkError, RuntimeError) as error:
