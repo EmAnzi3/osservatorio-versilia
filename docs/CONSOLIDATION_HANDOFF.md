@@ -1,5 +1,11 @@
 # Consolidamento Osservatorio Versilia — handoff operativo
 
+## Radar: contributi alle edicole, Comuni come condizione territoriale (24 novembre 2026)
+
+- Run del 23/11 sera: entrata «Contributi per distribuzione e commercio al dettaglio di giornali e pubblicazioni periodiche» (Regione, scadenza 15/12). Destinatari: edicole, punti vendita e distributori; i Comuni compaiono solo come luogo («a2 limitatamente ai Comuni privi di soggetti esercenti…», «ogni Comune servito»).
+- Causa: la voce sui destinatari è una sola frase (il taglio non spezza dopo una virgoletta, «…periodiche”. B)»), e «ai Comuni privi di» la rendeva comunale. `MUNICIPAL_AS_PLACE` ora comprende «ai/nei/dei Comuni privi di / sprovvisti / senza / carenti / che non hanno». Verificato sul testo reale della pagina: scartata. Versione delle regole 1.6.
+- Stabilità: il 24/11 la scheda sbagliata era pubblicata, il conteggio dei 14 giorni riparte.
+
 ## Farmacie: serie 2019–2025 ogni 1.000 residenti (23 novembre 2026)
 
 - Decisione di Ema: pubblicare la serie 2019–2025 (sonda in #654: il 31/12/2024 ricostruito dal file corrente coincide con il file di fine 2024, Comune per Comune; il 2025 con i valori pubblicati).
