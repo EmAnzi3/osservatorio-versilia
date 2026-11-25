@@ -873,6 +873,74 @@ def imu_benchmark_cases() -> None:
         pass
     assert asked[1] == imb.ib.POSAS_URL.format(year=2026), "residenti al 1° gennaio dell'anno: quelli dell'anno dopo non sono pubblicati"
 
+    # Italia in quattro gruppi di regioni: l'unione pretende gruppi completi, stesse fonti e Comuni disgiunti.
+    import copy
+    src = {"istat": {"url": "i", "sha256": "a"}, "posas": {"url": "p", "sha256": "b"}}
+    def part(name, towns):
+        rows = {k: {"status": "ok", "ratePercent": rate, "residents": res} for k, (rate, res) in towns.items()}
+        snap = imb._summary(2026, name, rows, copy.deepcopy(src))
+        snap["regions"] = sorted(imb.ITALY_GROUPS[name])
+        return snap
+    versilia = {k: (1.06, 1000) for k in imb.TOWNS}
+    parts = {"italia-1": part("italia-1", {"001001": (1.06, 3000), "022001": (0, 0)}), "italia-2": part("italia-2", {"015146": (1.14, 1000)}),
+             "italia-3": part("italia-3", versilia), "italia-4": part("italia-4", {"063049": (1.06, 2000), "063050": (0.96, 0)})}
+    parts["italia-1"]["towns"]["022001"] = {"status": "missing", "residents": 500}  # Trento: IMIS, non IMU
+    assert "versilia" not in parts["italia-1"] and parts["italia-1"]["qualityGate"]["status"] == "PASS"
+    it = imb.combine(2026, parts)
+    assert it["excluded"]["codes"] == ["022001"] and it["excluded"]["residents"] == 500 and "022001" not in it["towns"]
+    assert it["scope"] == "italia" and it["benchmark"]["municipalitiesTotal"] == 11 and it["qualityGate"]["status"] == "PASS"
+    assert it["benchmark"]["value"] == round((1060 * 12000 + 1140 * 1000) / 13000, 2) and set(it["versilia"]) == set(imb.TOWNS)
+    for broken, why in ((lambda p: p.pop("italia-4"), "mancanti"),
+                        (lambda p: p["italia-2"]["sources"]["posas"].update(sha256="c"), "diversi"),
+                        (lambda p: p["italia-4"]["towns"].update({"001001": {"status": "ok", "ratePercent": 1.0, "residents": 1}}), "più gruppi"),
+                        (lambda p: p["italia-1"].update(regions=["01"]), "regioni"),
+                        (lambda p: p["italia-1"]["towns"]["022001"].update(status="ok", ratePercent=0.79), "imposta propria")):
+        bad = copy.deepcopy(parts)
+        broken(bad)
+        try:
+            imb.combine(2026, bad)
+        except imb.ImuBenchmarkError as error:
+            assert why in str(error), error
+        else:
+            raise AssertionError(f"unione Italia accettata: {why}")
+    assert set(imb.SCOPES) == {"toscana", *imb.ITALY_GROUPS} and imb.WORKERS <= 8
+    # Un Comune che blocca un thread non ferma la corsa: allo scadere resta fuori con il motivo.
+    import threading as _th
+    gate = _th.Event()
+    def slow(code):
+        if code == "X2":
+            gate.wait(30)
+        return {"status": "ok", "ratePercent": 1.0}
+    log = []
+    got = imb.read_all(["X1", "X2", "X3"], slow, 1.5, log.append)
+    gate.set()
+    assert [g["status"] for g in got] == ["ok", "error", "ok"] and "tempo" in got[1]["reason"] and "non letti" in log[-1], (got, log)
+
+    # Ripresa: si tengono gli esiti definitivi della corsa precedente dello stesso gruppo, si rileggono solo gli errori;
+    # con anno, ambito o elenchi diversi non si riprende nulla.
+    src = {"istat": {"url": "u", "sha256": "a"}, "posas": {"url": "p", "sha256": "b"}}
+    prev = {"year": 2026, "scope": "italia-2", "sources": src, "towns": {
+        "015146": {"status": "ok", "ratePercent": 1.06}, "015002": {"status": "missing"},
+        "015003": {"status": "ambiguous"}, "015004": {"status": "error", "reason": "timed out"}}}
+    assert sorted(imb.resumable(prev, 2026, "italia-2", src)) == ["015002", "015003", "015146"]
+    assert imb.resumable(prev, 2026, "italia-3", src) == {} and imb.resumable(prev, 2025, "italia-2", src) == {}
+    assert imb.resumable(prev, 2026, "italia-2", {**src, "posas": {"url": "p", "sha256": "c"}}) == {}
+    assert imb.resumable(None, 2026, "italia-2", src) == {}
+
+    # Elenchi dallo snapshot precedente (lettura fuori dalla CI): nessuno scaricamento Istat/POSAS, stesse impronte.
+    full = {"year": 2026, "scope": "italia-2", "sources": src, "towns": {
+        k: {**v, "catastale": f"Z{i}", "residents": 100 + i} for i, (k, v) in enumerate(prev["towns"].items()) if v["status"] != "error"}}
+    def no_net(url):
+        raise AssertionError(f"scaricamento inatteso: {url}")
+    snap = imb.build_snapshot(2026, no_net, lambda raw: "", scope="italia-2", previous=full, reuse_lists=True)
+    assert snap["sources"] == src and len(snap["towns"]) == 3 and snap["towns"]["015146"]["residents"] == 100, snap
+    for bad in (None, {**full, "scope": "italia-3"}):
+        try:
+            imb.build_snapshot(2026, no_net, lambda raw: "", scope="italia-2", previous=bad, reuse_lists=True)
+            raise AssertionError("elenchi senza snapshot del gruppo accettati")
+        except imb.ImuBenchmarkError:
+            pass
+
 
 def pharmacy_history_cases() -> None:
     """Farmacie: sedi univoche valide al 31/12 dagli intervalli; 2025 = pubblicato; 2024 = file di fine 2024 se online."""
