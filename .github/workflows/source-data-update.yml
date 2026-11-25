@@ -150,6 +150,7 @@ jobs:
           commands += [["toscana-infancy-history"]] if request.get("toscanaInfancyHistory") else []
           commands += [["salute-pharmacies-history"]] if request.get("salutePharmaciesHistory") else []
           commands += [["mef-irpef-history"]] if request.get("mefIrpefHistory") else []
+          commands += [["mef-income-distribution-history"]] if request.get("mefIncomeDistributionHistory") else []
           commands += [["mef-imu-benchmark", "--year", str(int(r["year"])), "--scope", r.get("scope", "toscana")] + (["--deadline", str(float(r["deadline"]))] if r.get("deadline") is not None else []) for r in request.get("mefImuBenchmark", [])]
           commands += [["opencivitas-needs"] + (["--year", str(int(y))] if y else []) for y in request.get("opencivitasNeeds", [])]
           commands += [["sdmx-probe", "--name", str(p["name"])] + (["--find", str(p["find"])] if p.get("find") else ["--flow", str(p["flow"]), "--key", str(p.get("key", "all"))]) + (["--start", str(p["start"])] if p.get("start") else []) for p in request.get("sdmxProbe", [])]

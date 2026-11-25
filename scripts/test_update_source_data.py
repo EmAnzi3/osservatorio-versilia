@@ -1114,6 +1114,57 @@ def mim_students_history_cases() -> None:
         raise AssertionError("ultimo anno diverso dal pubblicato accettato")
 
 
+def income_distribution_history_cases() -> None:
+    """Fasce di reddito: otto classi MEF in quattro fasce; oscurate ammesse solo le estreme; ultimo anno = pubblicato."""
+    import io as _io
+    import zipfile as _zip
+    import income_distribution_history as idh
+
+    def archive(year: int) -> bytes:
+        zero = "minore di zero euro" if year == 2014 else "minore o uguale a zero euro"
+        bands = [zero, "da 0 a 10000 euro", "da 10000 a 15000 euro", "da 15000 a 26000 euro", "da 26000 a 55000 euro",
+                 "da 55000 a 75000 euro", "da 75000 a 120000 euro", "oltre 120000 euro"]
+        head = ["Anno di imposta", "Codice Istat Comune", "Denominazione Comune"] + [f"Reddito complessivo {b} - Frequenza" for b in bands]
+        lines = [";".join(head)]
+        for code, name in idh.TOWNS.items():
+            cells = ["10", "300", "200", "300", "150", "20", "15", "5"]
+            if code == "046030" and year == 2024:
+                cells[0] = cells[7] = ""  # estreme oscurate: ammesso
+            if code == "046013" and year == 2015:
+                cells[5] = ""  # classe intermedia oscurata: n.d.
+            lines.append(";".join([str(year), str(int(code)), name] + cells))
+        if year < 2013:
+            lines = ["Anno;Comune"]  # formato sconosciuto: la serie si ferma
+        buf = _io.BytesIO()
+        with _zip.ZipFile(buf, "w") as z:
+            z.writestr(f"redditi_{year}.csv", "\n".join(lines))
+        return buf.getvalue()
+
+    def fetch(url: str) -> bytes:
+        return archive(int(url.rsplit("_", 1)[1].split(".")[0]))
+
+    shares = [510 / 1000 * 100, 30.0, 15.0, 4.0]
+    staz = [500 / 985 * 100, 300 / 985 * 100, 150 / 985 * 100, 35 / 985 * 100]
+    published = {c: (staz if c == "046030" else shares) for c in idh.TOWNS}
+    snap = idh.build_snapshot(fetch, published, 2024)
+    assert snap["years"] == list(range(2013, 2025)) and snap["stoppedAt"].startswith("2012"), (snap["years"], snap["stoppedAt"])
+    assert snap["towns"]["046013"]["2015"]["shares"] is None and snap["series"]["046013"][0][2] is None
+    assert snap["towns"]["046030"]["2024"]["masked"] == ["le0", "over120k"]
+    metric = {idh.METRIC: {"meta": {"year": "2024"}, "method": {},
+                           "rows": [{"town": n, "code": c, "parts": [{"label": str(i), "value": v} for i, v in enumerate(published[c])]} for c, n in idh.TOWNS.items()]}}
+    idh.apply(metric, snap, idh.SNAPSHOT)
+    row = metric[idh.METRIC]["rows"][1]
+    assert row["series"] == row["componentSeries"]["part-0"] and row["componentSeries"]["part-0"]["values"][2] is None
+    assert "Forte dei Marmi 2015" in metric[idh.METRIC]["method"]["historyNote"]
+    bad = dict(published); bad["046005"] = [50.0, 30.0, 15.0, 5.0]
+    try:
+        idh.build_snapshot(fetch, bad, 2024)
+    except idh.IncomeDistributionError:
+        pass
+    else:
+        raise AssertionError("ultimo anno diverso dal pubblicato accettato")
+
+
 def irpef_history_cases() -> None:
     """Addizionale IRPEF: elenchi MEF annuali, varianti di scrittura uniformate, anni consecutivi, ultimo anno = pubblicato."""
     import irpef_history as ih
@@ -1659,6 +1710,7 @@ def main() -> None:
     aci_vehicles_history_cases()
     mef_taxpayers_history_cases()
     irpef_history_cases()
+    income_distribution_history_cases()
     mim_students_history_cases()
     asia_micro_units_history_cases()
     siope_cash_benchmarks_cases()
