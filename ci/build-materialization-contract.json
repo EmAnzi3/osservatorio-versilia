@@ -72,6 +72,7 @@
     "scripts/materialize_irpef_benchmarks.py",
     "scripts/materialize_pharmacy_history.py",
     "scripts/materialize_imu_benchmark.py",
+    "scripts/materialize_irpef_history.py",
     "scripts/apply_per_capita_reference_contract.py",
     "scripts/patch_fragilita_runtime.py",
     "scripts/materialize_territorio_v137.py",
