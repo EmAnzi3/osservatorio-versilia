@@ -1114,6 +1114,56 @@ def mim_students_history_cases() -> None:
         raise AssertionError("ultimo anno diverso dal pubblicato accettato")
 
 
+def irpef_history_cases() -> None:
+    """Addizionale IRPEF: elenchi MEF annuali, varianti di scrittura uniformate, anni consecutivi, ultimo anno = pubblicato."""
+    import irpef_history as ih
+
+    head = "CODICE_CATASTALE;COMUNE;PR;ALIQUOTA;FASCIA;ALIQUOTA_2;FASCIA_2;ALIQUOTA_3;FASCIA_3;FLAG_NUOVA;IMPORTO_ESENTE"
+    def listing(year: int) -> bytes:
+        lines = [head, "A001;ABANO TERME;PD;0,8;Aliquota unica;;;;;0;"]
+        for code, cat in ih.TOWNS.items():
+            name = ih.NAMES[code]
+            if year >= 2020:
+                lines.append(f"{cat};{name};LU;0;Esenzione per redditi imponibili fino a euro 10.000,00;0,8;Aliquota unica;;;0;10000")
+            elif year >= 2018:  # vecchia scrittura: stessa regola
+                lines.append(f"{cat};{name};LU;0,5;Applicabile a applicabile a scaglione sino ad euro 25.000,00;0,8;Applicabile a redditi superiori a 25,000,00 \x80;;;0;0")
+            elif code == "046024":  # disciplina ambigua: interrompe la serie
+                lines.append(f"{cat};{name};LU;0,5;Applicabile a redditi da lavoro dipendente;;;;;0;0")
+            else:
+                lines.append(f"{cat};{name};LU;0,6;Aliquota ordinaria;;;;;0;0")
+        return "\n".join(lines).encode("cp1252", "replace")
+
+    def fetch(url: str) -> bytes:
+        year = int(url.rsplit("=", 1)[1])
+        return listing(year)
+
+    published = {c: [160.0, 240.0, 400.0] for c in ih.TOWNS}
+    snap = ih.build_snapshot(fetch, published, 2025)
+    assert snap["years"] == list(range(2018, 2026)), snap["years"]
+    assert "2017 PIETRASANTA" in snap["stoppedAt"], snap["stoppedAt"]
+    assert snap["series"]["046018"]["20000"][:2] == [100.0, 100.0], "scaglioni 0,5% fino a 25.000 €"
+    assert snap["series"]["046018"]["50000"][0] == 325.0
+    assert snap["towns"]["046018"]["2018"]["wording"] and not snap["towns"]["046018"]["2025"]["wording"]
+    metric = {ih.METRIC: {"rows": [{"town": ih.NAMES[c], "code": c, "parts": [{"selectorLabel": ih.label(n), "value": v} for n, v in zip(ih.ib.SCENARIOS, published[c])]} for c in ih.TOWNS],
+                          "meta": {}, "method": {"caveat": "X."}}}
+    ih.apply(metric, snap, ih.SNAPSHOT)
+    row = metric[ih.METRIC]["rows"][0]
+    assert row["series"] == row["componentSeries"]["20.000 €"] and row["componentSeries"]["50.000 €"]["values"][-1] == 400.0
+    bad = dict(published); bad["046030"] = [160.0, 240.0, 401.0]
+    try:
+        ih.build_snapshot(fetch, bad, 2025)
+    except ih.IrpefHistoryError:
+        pass
+    else:
+        raise AssertionError("ultimo anno diverso dal pubblicato accettato")
+    try:
+        ih.build_snapshot(fetch, published, 2017)
+    except ih.IrpefHistoryError:
+        pass
+    else:
+        raise AssertionError("anno corrente non leggibile accettato")
+
+
 def mef_taxpayers_history_cases() -> None:
     """Contribuenti ogni 100 maggiorenni: MEF anno A su POSAS 18+ al 1° gennaio A+2, anni continui, ultimo anno vincolato al pubblicato."""
     import io as _io
@@ -1608,6 +1658,7 @@ def main() -> None:
         opencivitas_needs_cases(Path(tmp))
     aci_vehicles_history_cases()
     mef_taxpayers_history_cases()
+    irpef_history_cases()
     mim_students_history_cases()
     asia_micro_units_history_cases()
     siope_cash_benchmarks_cases()

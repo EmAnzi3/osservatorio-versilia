@@ -927,6 +927,39 @@ def update_irpef_benchmarks(year: int, dry_run: bool, fetch=None) -> Changes:
     return changes
 
 
+# ------------------------------------------------------------------ MEF: serie dell'addizionale comunale IRPEF
+
+def update_irpef_history(dry_run: bool, fetch=None) -> Changes:
+    """Serie degli importi dell'addizionale nei tre scenari dagli elenchi MEF annuali; ultimo anno = valori pubblicati."""
+    import os
+
+    import irpef_history as ih
+
+    def fetcher(url: str) -> bytes:
+        try:
+            return (fetch or probes.http_fetch)(url)
+        except probes.ProbeError as error:
+            if error.reason == "not_found":
+                raise ih.Unavailable(url) from error
+            raise
+
+    site = load(SITE)
+    metric = site["metrics"][ih.METRIC]
+    published = {r["code"]: [p["value"] for p in r["parts"]] for r in metric["rows"]}
+    try:
+        snapshot = ih.build_snapshot(fetcher, published, int(metric["meta"]["year"]))
+    except (ih.IrpefHistoryError, KeyError, ValueError, probes.ProbeError) as error:
+        raise UpdateError(f"Serie addizionale IRPEF: {error}") from error
+    changes = Changes()
+    for code, series in snapshot["series"].items():
+        changes.note(f"{ih.METRIC} {code} {snapshot['years'][0]}–{snapshot['years'][-1]}", None, series["20000"][0])
+    snapshot["acquisitionEvidence"] = {"script": "scripts/update_source_data.py mef-irpef-history",
+                                       "where": "runner GitHub Actions" if os.environ.get("GITHUB_ACTIONS") else "fuori dalla CI"}
+    if not dry_run:
+        save(ROOT / ih.SNAPSHOT, snapshot)
+    return changes
+
+
 # ------------------------------------------------------------------ Istat ASIA-UL: serie della quota di micro unità locali
 
 def update_asia_micro_units_history(dry_run: bool, fetch=None) -> Changes:
@@ -1868,6 +1901,8 @@ def main() -> int:
     imu_p.add_argument("--dry-run", action="store_true")
     imu_p.add_argument("--reuse-lists", action="store_true", help="elenchi Istat/POSAS dallo snapshot del gruppo (lettura fuori dalla CI)")
     imu_p.add_argument("--deadline", type=float, help="secondi per i prospetti (predefinito 65 minuti)")
+    irh_p = sub.add_parser("mef-irpef-history", help="serie dell'addizionale comunale IRPEF negli scenari di reddito (elenchi MEF)")
+    irh_p.add_argument("--dry-run", action="store_true")
     ph_p = sub.add_parser("salute-pharmacies-history", help="serie delle farmacie ogni 1.000 residenti (Ministero della Salute)")
     ph_p.add_argument("--dry-run", action="store_true")
     ih_p.add_argument("--dry-run", action="store_true")
@@ -1907,6 +1942,8 @@ def main() -> int:
             update_infancy_history(args.dry_run).report("Serie prima infanzia:")
         elif args.updater == "mef-imu-benchmark":
             update_imu_benchmark(args.year, args.scope, args.dry_run, reuse_lists=args.reuse_lists, deadline=args.deadline).report("Confronto IMU:")
+        elif args.updater == "mef-irpef-history":
+            update_irpef_history(args.dry_run).report("Serie addizionale IRPEF:")
         elif args.updater == "salute-pharmacies-history":
             update_pharmacy_history(args.dry_run).report("Serie farmacie:")
         elif args.updater == "asia-micro-units-history":

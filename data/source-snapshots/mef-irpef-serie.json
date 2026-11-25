@@ -1,0 +1,3147 @@
+{
+  "schemaVersion": 1,
+  "version": "mef-irpef-serie-2012-2025-v1",
+  "retrieved": "2026-11-25",
+  "publisher": "Dipartimento delle Finanze — MEF",
+  "sourceUrl": "https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_addcomirpef/download/tabella.htm",
+  "years": [
+    2012,
+    2013,
+    2014,
+    2015,
+    2016,
+    2017,
+    2018,
+    2019,
+    2020,
+    2021,
+    2022,
+    2023,
+    2024,
+    2025
+  ],
+  "scenarios": [
+    20000,
+    30000,
+    50000
+  ],
+  "rule": "Elenco generale MEF delle aliquote dell'anno A: importo con la stessa regola del valore pubblicato (sotto la soglia di esenzione zero, altrimenti aliquota unica o scaglioni sull'intero imponibile, al centesimo). Varianti di scrittura uniformate prima della lettura: (?i)\\baliquota ordinaria\\b; (?i)^applicabile a applicabile a\\b; (?i)\\bsino ad?\\b; (?i)\\b(?:superiori a|maggiore di)\\b; \\b(\\d{1,3}),(\\d{3}),(\\d{2})\\b; ; €. Solo anni consecutivi in cui tutti e sette i Comuni si leggono senza ambiguità.",
+  "stoppedAt": "2011: 2011 PIETRASANTA: scaglione non leggibile 'applicabile a classe di reddito da euro 14.000,00 a 20.000,00 (art. 5 , regolamento in materia di addizionale com.le irpef come modificato con delibera c.c. n. 75 del 29/12/2008)'",
+  "sources": {
+    "2025": {
+      "url": "https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_addcomirpef/download/download.php?anno=2025",
+      "sha256": "57daea5818a90fa58bca533a905b215528be79c4226fdf01bf66f9c82fe18b2f",
+      "bytes": 1225962
+    },
+    "2024": {
+      "url": "https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_addcomirpef/download/download.php?anno=2024",
+      "sha256": "2663004b9ae51d56de7db6b7e259fb63cbf3c9a0fdd7d935497b5ac79bdf9d73",
+      "bytes": 1242200
+    },
+    "2023": {
+      "url": "https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_addcomirpef/download/download.php?anno=2023",
+      "sha256": "8bd619686770c66558bb4aa393c29a1dd0525a6319f9091083716509e3508a96",
+      "bytes": 1239523
+    },
+    "2022": {
+      "url": "https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_addcomirpef/download/download.php?anno=2022",
+      "sha256": "ff59719e14337bf7ee2abf4c6629760ee9b59e18ea806ef971c356157fcd9531",
+      "bytes": 1238144
+    },
+    "2021": {
+      "url": "https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_addcomirpef/download/download.php?anno=2021",
+      "sha256": "94f3c577fa03748522bab1d723c4ac188858884e1f12d66e4a50afb2c489444c",
+      "bytes": 1328773
+    },
+    "2020": {
+      "url": "https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_addcomirpef/download/download.php?anno=2020",
+      "sha256": "608bb5784b97107f1d7b307263c47b582321d0389b9099c8607013380bfdf9bc",
+      "bytes": 1306332
+    },
+    "2019": {
+      "url": "https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_addcomirpef/download/download.php?anno=2019",
+      "sha256": "6a4c2dc8e25b29c5dc66e3d3bda7d754f6be9e0927d676212c3953f0a78a821d",
+      "bytes": 1315064
+    },
+    "2018": {
+      "url": "https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_addcomirpef/download/download.php?anno=2018",
+      "sha256": "54ee0b5d0f751b30ade56fc3946ce3e5d80fd2e8b7ca6e9abc4a06d928f182c0",
+      "bytes": 1286042
+    },
+    "2017": {
+      "url": "https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_addcomirpef/download/download.php?anno=2017",
+      "sha256": "1024c64439b5be502e820b3ba95add116bb9927130114d663f7c47cd633f5f62",
+      "bytes": 1244185
+    },
+    "2016": {
+      "url": "https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_addcomirpef/download/download.php?anno=2016",
+      "sha256": "34fd3c800b9e08c0a468f2ab1b8d3ef08e1ba4969c1e35fcc5b35d3893484b40",
+      "bytes": 1243041
+    },
+    "2015": {
+      "url": "https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_addcomirpef/download/download.php?anno=2015",
+      "sha256": "632b9452faa393a55059d4b0de2900c2542f83e9ab80a70d3d8e61801e5313cc",
+      "bytes": 1250952
+    },
+    "2014": {
+      "url": "https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_addcomirpef/download/download.php?anno=2014",
+      "sha256": "e665a1ddd6f0501b718cbfe59cfe00d40e325a920a34010c2417dcb2cb899d61",
+      "bytes": 1214447
+    },
+    "2013": {
+      "url": "https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_addcomirpef/download/download.php?anno=2013",
+      "sha256": "0aea5501968aeccca91d2b267b0624bd8898af51b634091da17028456b46d8d1",
+      "bytes": 1226518
+    },
+    "2012": {
+      "url": "https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_addcomirpef/download/download.php?anno=2012",
+      "sha256": "cfedb5506098e1797c006a8e1db253f6ed3e2777062bca024f65db23104850c2",
+      "bytes": 1203659
+    }
+  },
+  "towns": {
+    "046005": {
+      "cadastral": "B455",
+      "2012": {
+        "rule": {
+          "exemption": null,
+          "categoryExemption": 14000.0,
+          "scheme": "progressive",
+          "brackets": [
+            {
+              "upTo": 15000.0,
+              "ratePercent": 0.2
+            },
+            {
+              "upTo": 28000.0,
+              "ratePercent": 0.45
+            },
+            {
+              "upTo": 55000.0,
+              "ratePercent": 0.6
+            },
+            {
+              "upTo": 75000.0,
+              "ratePercent": 0.79
+            },
+            {
+              "upTo": null,
+              "ratePercent": 0.8
+            }
+          ]
+        },
+        "amounts": {
+          "20000": 52.5,
+          "30000": 100.5,
+          "50000": 220.5
+        },
+        "wording": [
+          "FASCIA: «Esenzione per redditi inferiori o uguali a 14.000,00 » → «Esenzione per redditi inferiori o uguali a 14.000,00»",
+          "FASCIA_2: «Applicabile a redditi fino a 15.000,00 » → «Applicabile a redditi fino a 15.000,00»",
+          "FASCIA_3: «Applicabile a redditi compresi tra 15.001,00  e 28.000,00 » → «Applicabile a redditi compresi tra 15.001,00 e 28.000,00»",
+          "FASCIA_4: «Applicabile a redditi compresi tra 28.001,00  e 55.000,00 » → «Applicabile a redditi compresi tra 28.001,00 e 55.000,00»",
+          "FASCIA_5: «Applicabile a redditi compresi tra 55.001,00  e 75.000,00 » → «Applicabile a redditi compresi tra 55.001,00 e 75.000,00»",
+          "FASCIA_6: «Applicabile a redditi superiori a 75.000,00 » → «Applicabile a redditi oltre 75.000,00»"
+        ]
+      },
+      "2013": {
+        "rule": {
+          "exemption": null,
+          "categoryExemption": 14000.0,
+          "scheme": "progressive",
+          "brackets": [
+            {
+              "upTo": 15000.0,
+              "ratePercent": 0.2
+            },
+            {
+              "upTo": 28000.0,
+              "ratePercent": 0.45
+            },
+            {
+              "upTo": 55000.0,
+              "ratePercent": 0.6
+            },
+            {
+              "upTo": 75000.0,
+              "ratePercent": 0.79
+            },
+            {
+              "upTo": null,
+              "ratePercent": 0.8
+            }
+          ]
+        },
+        "amounts": {
+          "20000": 52.5,
+          "30000": 100.5,
+          "50000": 220.5
+        },
+        "wording": [
+          "FASCIA: «Esenzione per redditi inferiori o uguali a 14.000,00 » → «Esenzione per redditi inferiori o uguali a 14.000,00»",
+          "FASCIA_2: «Applicabile a redditi fino a 15.000,00 » → «Applicabile a redditi fino a 15.000,00»",
+          "FASCIA_3: «Applicabile a redditi compresi tra 15.001,00  e 28.000,00 » → «Applicabile a redditi compresi tra 15.001,00 e 28.000,00»",
+          "FASCIA_4: «Applicabile a redditi compresi tra 28.001,00  e 55.000,00 » → «Applicabile a redditi compresi tra 28.001,00 e 55.000,00»",
+          "FASCIA_5: «Applicabile a redditi compresi tra 55.001,00  e 75.000,00 » → «Applicabile a redditi compresi tra 55.001,00 e 75.000,00»",
+          "FASCIA_6: «Applicabile a redditi superiori a 75.000,00 » → «Applicabile a redditi oltre 75.000,00»"
+        ]
+      },
+      "2014": {
+        "rule": {
+          "exemption": null,
+          "categoryExemption": 14000.0,
+          "scheme": "progressive",
+          "brackets": [
+            {
+              "upTo": 15000.0,
+              "ratePercent": 0.2
+            },
+            {
+              "upTo": 28000.0,
+              "ratePercent": 0.45
+            },
+            {
+              "upTo": 55000.0,
+              "ratePercent": 0.6
+            },
+            {
+              "upTo": 75000.0,
+              "ratePercent": 0.79
+            },
+            {
+              "upTo": null,
+              "ratePercent": 0.8
+            }
+          ]
+        },
+        "amounts": {
+          "20000": 52.5,
+          "30000": 100.5,
+          "50000": 220.5
+        },
+        "wording": []
+      },
+      "2015": {
+        "rule": {
+          "exemption": null,
+          "categoryExemption": 14000.0,
+          "scheme": "progressive",
+          "brackets": [
+            {
+              "upTo": 15000.0,
+              "ratePercent": 0.2
+            },
+            {
+              "upTo": 28000.0,
+              "ratePercent": 0.45
+            },
+            {
+              "upTo": 55000.0,
+              "ratePercent": 0.6
+            },
+            {
+              "upTo": 75000.0,
+              "ratePercent": 0.79
+            },
+            {
+              "upTo": null,
+              "ratePercent": 0.8
+            }
+          ]
+        },
+        "amounts": {
+          "20000": 52.5,
+          "30000": 100.5,
+          "50000": 220.5
+        },
+        "wording": []
+      },
+      "2016": {
+        "rule": {
+          "exemption": null,
+          "categoryExemption": 14000.0,
+          "scheme": "progressive",
+          "brackets": [
+            {
+              "upTo": 15000.0,
+              "ratePercent": 0.2
+            },
+            {
+              "upTo": 28000.0,
+              "ratePercent": 0.45
+            },
+            {
+              "upTo": 55000.0,
+              "ratePercent": 0.6
+            },
+            {
+              "upTo": 75000.0,
+              "ratePercent": 0.79
+            },
+            {
+              "upTo": null,
+              "ratePercent": 0.8
+            }
+          ]
+        },
+        "amounts": {
+          "20000": 52.5,
+          "30000": 100.5,
+          "50000": 220.5
+        },
+        "wording": []
+      },
+      "2017": {
+        "rule": {
+          "exemption": null,
+          "categoryExemption": 14000.0,
+          "scheme": "progressive",
+          "brackets": [
+            {
+              "upTo": 15000.0,
+              "ratePercent": 0.2
+            },
+            {
+              "upTo": 28000.0,
+              "ratePercent": 0.45
+            },
+            {
+              "upTo": 55000.0,
+              "ratePercent": 0.6
+            },
+            {
+              "upTo": 75000.0,
+              "ratePercent": 0.79
+            },
+            {
+              "upTo": null,
+              "ratePercent": 0.8
+            }
+          ]
+        },
+        "amounts": {
+          "20000": 52.5,
+          "30000": 100.5,
+          "50000": 220.5
+        },
+        "wording": []
+      },
+      "2018": {
+        "rule": {
+          "exemption": 14000.0,
+          "categoryExemption": null,
+          "scheme": "progressive",
+          "brackets": [
+            {
+              "upTo": 15000.0,
+              "ratePercent": 0.2
+            },
+            {
+              "upTo": 28000.0,
+              "ratePercent": 0.45
+            },
+            {
+              "upTo": 55000.0,
+              "ratePercent": 0.6
+            },
+            {
+              "upTo": 75000.0,
+              "ratePercent": 0.79
+            },
+            {
+              "upTo": null,
+              "ratePercent": 0.8
+            }
+          ]
+        },
+        "amounts": {
+          "20000": 52.5,
+          "30000": 100.5,
+          "50000": 220.5
+        },
+        "wording": []
+      },
+      "2019": {
+        "rule": {
+          "exemption": 14000.0,
+          "categoryExemption": null,
+          "scheme": "progressive",
+          "brackets": [
+            {
+              "upTo": 15000.0,
+              "ratePercent": 0.2
+            },
+            {
+              "upTo": 28000.0,
+              "ratePercent": 0.45
+            },
+            {
+              "upTo": 55000.0,
+              "ratePercent": 0.6
+            },
+            {
+              "upTo": 75000.0,
+              "ratePercent": 0.79
+            },
+            {
+              "upTo": null,
+              "ratePercent": 0.8
+            }
+          ]
+        },
+        "amounts": {
+          "20000": 52.5,
+          "30000": 100.5,
+          "50000": 220.5
+        },
+        "wording": []
+      },
+      "2020": {
+        "rule": {
+          "exemption": 14000.0,
+          "categoryExemption": null,
+          "scheme": "progressive",
+          "brackets": [
+            {
+              "upTo": 15000.0,
+              "ratePercent": 0.2
+            },
+            {
+              "upTo": 28000.0,
+              "ratePercent": 0.45
+            },
+            {
+              "upTo": 55000.0,
+              "ratePercent": 0.6
+            },
+            {
+              "upTo": 75000.0,
+              "ratePercent": 0.79
+            },
+            {
+              "upTo": null,
+              "ratePercent": 0.8
+            }
+          ]
+        },
+        "amounts": {
+          "20000": 52.5,
+          "30000": 100.5,
+          "50000": 220.5
+        },
+        "wording": []
+      },
+      "2021": {
+        "rule": {
+          "exemption": 14000.0,
+          "categoryExemption": null,
+          "scheme": "progressive",
+          "brackets": [
+            {
+              "upTo": 15000.0,
+              "ratePercent": 0.2
+            },
+            {
+              "upTo": 28000.0,
+              "ratePercent": 0.45
+            },
+            {
+              "upTo": 55000.0,
+              "ratePercent": 0.6
+            },
+            {
+              "upTo": 75000.0,
+              "ratePercent": 0.79
+            },
+            {
+              "upTo": null,
+              "ratePercent": 0.8
+            }
+          ]
+        },
+        "amounts": {
+          "20000": 52.5,
+          "30000": 100.5,
+          "50000": 220.5
+        },
+        "wording": []
+      },
+      "2022": {
+        "rule": {
+          "exemption": 15000.0,
+          "categoryExemption": null,
+          "scheme": "progressive",
+          "brackets": [
+            {
+              "upTo": 15000.0,
+              "ratePercent": 0.2
+            },
+            {
+              "upTo": 28000.0,
+              "ratePercent": 0.45
+            },
+            {
+              "upTo": 50000.0,
+              "ratePercent": 0.6
+            },
+            {
+              "upTo": null,
+              "ratePercent": 0.8
+            }
+          ]
+        },
+        "amounts": {
+          "20000": 52.5,
+          "30000": 100.5,
+          "50000": 220.5
+        },
+        "wording": []
+      },
+      "2023": {
+        "rule": {
+          "exemption": 15000.0,
+          "categoryExemption": null,
+          "scheme": "progressive",
+          "brackets": [
+            {
+              "upTo": 15000.0,
+              "ratePercent": 0.2
+            },
+            {
+              "upTo": 28000.0,
+              "ratePercent": 0.45
+            },
+            {
+              "upTo": 50000.0,
+              "ratePercent": 0.6
+            },
+            {
+              "upTo": null,
+              "ratePercent": 0.8
+            }
+          ]
+        },
+        "amounts": {
+          "20000": 52.5,
+          "30000": 100.5,
+          "50000": 220.5
+        },
+        "wording": []
+      },
+      "2024": {
+        "rule": {
+          "exemption": 15000.0,
+          "categoryExemption": null,
+          "scheme": "progressive",
+          "brackets": [
+            {
+              "upTo": 15000.0,
+              "ratePercent": 0.2
+            },
+            {
+              "upTo": 28000.0,
+              "ratePercent": 0.45
+            },
+            {
+              "upTo": 50000.0,
+              "ratePercent": 0.6
+            },
+            {
+              "upTo": null,
+              "ratePercent": 0.8
+            }
+          ]
+        },
+        "amounts": {
+          "20000": 52.5,
+          "30000": 100.5,
+          "50000": 220.5
+        },
+        "wording": []
+      },
+      "2025": {
+        "rule": {
+          "exemption": 15000.0,
+          "categoryExemption": null,
+          "scheme": "progressive",
+          "brackets": [
+            {
+              "upTo": 15000.0,
+              "ratePercent": 0.35
+            },
+            {
+              "upTo": 28000.0,
+              "ratePercent": 0.6
+            },
+            {
+              "upTo": 50000.0,
+              "ratePercent": 0.7
+            },
+            {
+              "upTo": null,
+              "ratePercent": 0.8
+            }
+          ]
+        },
+        "amounts": {
+          "20000": 82.5,
+          "30000": 144.5,
+          "50000": 284.5
+        },
+        "wording": []
+      }
+    },
+    "046013": {
+      "cadastral": "D730",
+      "2012": {
+        "rule": {
+          "exemption": null,
+          "categoryExemption": 14500.0,
+          "scheme": "flat",
+          "ratePercent": 0.8
+        },
+        "amounts": {
+          "20000": 160.0,
+          "30000": 240.0,
+          "50000": 400.0
+        },
+        "wording": [
+          "FASCIA_2: «Aliquota ordinaria» → «Aliquota unica»"
+        ]
+      },
+      "2013": {
+        "rule": {
+          "exemption": null,
+          "categoryExemption": 15000.0,
+          "scheme": "progressive",
+          "brackets": [
+            {
+              "upTo": 15000.0,
+              "ratePercent": 0.5
+            },
+            {
+              "upTo": 28000.0,
+              "ratePercent": 0.55
+            },
+            {
+              "upTo": 55000.0,
+              "ratePercent": 0.65
+            },
+            {
+              "upTo": 75000.0,
+              "ratePercent": 0.75
+            },
+            {
+              "upTo": null,
+              "ratePercent": 0.8
+            }
+          ]
+        },
+        "amounts": {
+          "20000": 102.5,
+          "30000": 159.5,
+          "50000": 289.5
+        },
+        "wording": []
+      },
+      "2014": {
+        "rule": {
+          "exemption": null,
+          "categoryExemption": 15000.0,
+          "scheme": "progressive",
+          "brackets": [
+            {
+              "upTo": 15000.0,
+              "ratePercent": 0.5
+            },
+            {
+              "upTo": 28000.0,
+              "ratePercent": 0.55
+            },
+            {
+              "upTo": 55000.0,
+              "ratePercent": 0.65
+            },
+            {
+              "upTo": 75000.0,
+              "ratePercent": 0.75
+            },
+            {
+              "upTo": null,
+              "ratePercent": 0.8
+            }
+          ]
+        },
+        "amounts": {
+          "20000": 102.5,
+          "30000": 159.5,
+          "50000": 289.5
+        },
+        "wording": []
+      },
+      "2015": {
+        "rule": {
+          "exemption": null,
+          "categoryExemption": 15000.0,
+          "scheme": "progressive",
+          "brackets": [
+            {
+              "upTo": 15000.0,
+              "ratePercent": 0.5
+            },
+            {
+              "upTo": 28000.0,
+              "ratePercent": 0.55
+            },
+            {
+              "upTo": 55000.0,
+              "ratePercent": 0.65
+            },
+            {
+              "upTo": 75000.0,
+              "ratePercent": 0.75
+            },
+            {
+              "upTo": null,
+              "ratePercent": 0.8
+            }
+          ]
+        },
+        "amounts": {
+          "20000": 102.5,
+          "30000": 159.5,
+          "50000": 289.5
+        },
+        "wording": []
+      },
+      "2016": {
+        "rule": {
+          "exemption": null,
+          "categoryExemption": 15000.0,
+          "scheme": "progressive",
+          "brackets": [
+            {
+              "upTo": 15000.0,
+              "ratePercent": 0.5
+            },
+            {
+              "upTo": 28000.0,
+              "ratePercent": 0.55
+            },
+            {
+              "upTo": 55000.0,
+              "ratePercent": 0.65
+            },
+            {
+              "upTo": 75000.0,
+              "ratePercent": 0.75
+            },
+            {
+              "upTo": null,
+              "ratePercent": 0.8
+            }
+          ]
+        },
+        "amounts": {
+          "20000": 102.5,
+          "30000": 159.5,
+          "50000": 289.5
+        },
+        "wording": []
+      },
+      "2017": {
+        "rule": {
+          "exemption": null,
+          "categoryExemption": 15000.0,
+          "scheme": "progressive",
+          "brackets": [
+            {
+              "upTo": 15000.0,
+              "ratePercent": 0.5
+            },
+            {
+              "upTo": 28000.0,
+              "ratePercent": 0.55
+            },
+            {
+              "upTo": 55000.0,
+              "ratePercent": 0.65
+            },
+            {
+              "upTo": 75000.0,
+              "ratePercent": 0.75
+            },
+            {
+              "upTo": null,
+              "ratePercent": 0.8
+            }
+          ]
+        },
+        "amounts": {
+          "20000": 102.5,
+          "30000": 159.5,
+          "50000": 289.5
+        },
+        "wording": []
+      },
+      "2018": {
+        "rule": {
+          "exemption": 15000.0,
+          "categoryExemption": null,
+          "scheme": "progressive",
+          "brackets": [
+            {
+              "upTo": 15000.0,
+              "ratePercent": 0.5
+            },
+            {
+              "upTo": 28000.0,
+              "ratePercent": 0.55
+            },
+            {
+              "upTo": 55000.0,
+              "ratePercent": 0.65
+            },
+            {
+              "upTo": 75000.0,
+              "ratePercent": 0.75
+            },
+            {
+              "upTo": null,
+              "ratePercent": 0.8
+            }
+          ]
+        },
+        "amounts": {
+          "20000": 102.5,
+          "30000": 159.5,
+          "50000": 289.5
+        },
+        "wording": []
+      },
+      "2019": {
+        "rule": {
+          "exemption": 15000.0,
+          "categoryExemption": null,
+          "scheme": "progressive",
+          "brackets": [
+            {
+              "upTo": 15000.0,
+              "ratePercent": 0.5
+            },
+            {
+              "upTo": 28000.0,
+              "ratePercent": 0.55
+            },
+            {
+              "upTo": 55000.0,
+              "ratePercent": 0.65
+            },
+            {
+              "upTo": 75000.0,
+              "ratePercent": 0.75
+            },
+            {
+              "upTo": null,
+              "ratePercent": 0.8
+            }
+          ]
+        },
+        "amounts": {
+          "20000": 102.5,
+          "30000": 159.5,
+          "50000": 289.5
+        },
+        "wording": []
+      },
+      "2020": {
+        "rule": {
+          "exemption": 15000.0,
+          "categoryExemption": null,
+          "scheme": "progressive",
+          "brackets": [
+            {
+              "upTo": 15000.0,
+              "ratePercent": 0.5
+            },
+            {
+              "upTo": 28000.0,
+              "ratePercent": 0.55
+            },
+            {
+              "upTo": 55000.0,
+              "ratePercent": 0.65
+            },
+            {
+              "upTo": 75000.0,
+              "ratePercent": 0.75
+            },
+            {
+              "upTo": null,
+              "ratePercent": 0.8
+            }
+          ]
+        },
+        "amounts": {
+          "20000": 102.5,
+          "30000": 159.5,
+          "50000": 289.5
+        },
+        "wording": []
+      },
+      "2021": {
+        "rule": {
+          "exemption": 15000.0,
+          "categoryExemption": null,
+          "scheme": "progressive",
+          "brackets": [
+            {
+              "upTo": 15000.0,
+              "ratePercent": 0.5
+            },
+            {
+              "upTo": 28000.0,
+              "ratePercent": 0.55
+            },
+            {
+              "upTo": 55000.0,
+              "ratePercent": 0.65
+            },
+            {
+              "upTo": 75000.0,
+              "ratePercent": 0.75
+            },
+            {
+              "upTo": null,
+              "ratePercent": 0.8
+            }
+          ]
+        },
+        "amounts": {
+          "20000": 102.5,
+          "30000": 159.5,
+          "50000": 289.5
+        },
+        "wording": []
+      },
+      "2022": {
+        "rule": {
+          "exemption": 15000.0,
+          "categoryExemption": null,
+          "scheme": "progressive",
+          "brackets": [
+            {
+              "upTo": 15000.0,
+              "ratePercent": 0.5
+            },
+            {
+              "upTo": 28000.0,
+              "ratePercent": 0.55
+            },
+            {
+              "upTo": 50000.0,
+              "ratePercent": 0.65
+            },
+            {
+              "upTo": null,
+              "ratePercent": 0.8
+            }
+          ]
+        },
+        "amounts": {
+          "20000": 102.5,
+          "30000": 159.5,
+          "50000": 289.5
+        },
+        "wording": []
+      },
+      "2023": {
+        "rule": {
+          "exemption": 15000.0,
+          "categoryExemption": null,
+          "scheme": "progressive",
+          "brackets": [
+            {
+              "upTo": 15000.0,
+              "ratePercent": 0.5
+            },
+            {
+              "upTo": 28000.0,
+              "ratePercent": 0.55
+            },
+            {
+              "upTo": 50000.0,
+              "ratePercent": 0.65
+            },
+            {
+              "upTo": null,
+              "ratePercent": 0.8
+            }
+          ]
+        },
+        "amounts": {
+          "20000": 102.5,
+          "30000": 159.5,
+          "50000": 289.5
+        },
+        "wording": []
+      },
+      "2024": {
+        "rule": {
+          "exemption": 20000.0,
+          "categoryExemption": null,
+          "scheme": "progressive",
+          "brackets": [
+            {
+              "upTo": 28000.0,
+              "ratePercent": 0.5
+            },
+            {
+              "upTo": 50000.0,
+              "ratePercent": 0.65
+            },
+            {
+              "upTo": null,
+              "ratePercent": 0.8
+            }
+          ]
+        },
+        "amounts": {
+          "20000": 0.0,
+          "30000": 153.0,
+          "50000": 283.0
+        },
+        "wording": []
+      },
+      "2025": {
+        "rule": {
+          "exemption": 20000.0,
+          "categoryExemption": null,
+          "scheme": "progressive",
+          "brackets": [
+            {
+              "upTo": 28000.0,
+              "ratePercent": 0.5
+            },
+            {
+              "upTo": 50000.0,
+              "ratePercent": 0.65
+            },
+            {
+              "upTo": null,
+              "ratePercent": 0.8
+            }
+          ]
+        },
+        "amounts": {
+          "20000": 0.0,
+          "30000": 153.0,
+          "50000": 283.0
+        },
+        "wording": []
+      }
+    },
+    "046018": {
+      "cadastral": "F035",
+      "2012": {
+        "rule": {
+          "exemption": null,
+          "categoryExemption": 14350.0,
+          "scheme": "progressive",
+          "brackets": [
+            {
+              "upTo": 15000.0,
+              "ratePercent": 0.5
+            },
+            {
+              "upTo": 28000.0,
+              "ratePercent": 0.77
+            },
+            {
+              "upTo": 55000.0,
+              "ratePercent": 0.78
+            },
+            {
+              "upTo": 75000.0,
+              "ratePercent": 0.79
+            },
+            {
+              "upTo": null,
+              "ratePercent": 0.8
+            }
+          ]
+        },
+        "amounts": {
+          "20000": 113.5,
+          "30000": 190.7,
+          "50000": 346.7
+        },
+        "wording": []
+      },
+      "2013": {
+        "rule": {
+          "exemption": null,
+          "categoryExemption": 15000.0,
+          "scheme": "progressive",
+          "brackets": [
+            {
+              "upTo": 15000.0,
+              "ratePercent": 0.76
+            },
+            {
+              "upTo": 28000.0,
+              "ratePercent": 0.77
+            },
+            {
+              "upTo": 55000.0,
+              "ratePercent": 0.78
+            },
+            {
+              "upTo": 75000.0,
+              "ratePercent": 0.79
+            },
+            {
+              "upTo": null,
+              "ratePercent": 0.8
+            }
+          ]
+        },
+        "amounts": {
+          "20000": 152.5,
+          "30000": 229.7,
+          "50000": 385.7
+        },
+        "wording": [
+          "FASCIA: «Esenzione per contribuenti con reddito complessivo inferiore o uguale a 15.000,00 » → «Esenzione per contribuenti con reddito complessivo inferiore o uguale a 15.000,00»",
+          "FASCIA_2: «Applicabile a contribuenti con reddito imponibile fino a 15.000,00 » → «Applicabile a contribuenti con reddito imponibile fino a 15.000,00»",
+          "FASCIA_3: «Applicabile a contribuenti con reddito imponibile da 15.001,00  a  28.000,00 » → «Applicabile a contribuenti con reddito imponibile da 15.001,00 a 28.000,00»",
+          "FASCIA_4: «Applicabile a contribuenti con reddito imponibile da 28.001,00  a  55.000,00 » → «Applicabile a contribuenti con reddito imponibile da 28.001,00 a 55.000,00»",
+          "FASCIA_5: «Applicabile a contribuenti con reddito imponibile da 55.001,00  a  75.000,00 » → «Applicabile a contribuenti con reddito imponibile da 55.001,00 a 75.000,00»",
+          "FASCIA_6: «Applicabile a contribuenti con reddito imponibile oltre 75.000,00 » → «Applicabile a contribuenti con reddito imponibile oltre 75.000,00»"
+        ]
+      },
+      "2014": {
+        "rule": {
+          "exemption": null,
+          "categoryExemption": 15000.0,
+          "scheme": "progressive",
+          "brackets": [
+            {
+              "upTo": 15000.0,
+              "ratePercent": 0.76
+            },
+            {
+              "upTo": 28000.0,
+              "ratePercent": 0.77
+            },
+            {
+              "upTo": 55000.0,
+              "ratePercent": 0.78
+            },
+            {
+              "upTo": 75000.0,
+              "ratePercent": 0.79
+            },
+            {
+              "upTo": null,
+              "ratePercent": 0.8
+            }
+          ]
+        },
+        "amounts": {
+          "20000": 152.5,
+          "30000": 229.7,
+          "50000": 385.7
+        },
+        "wording": []
+      },
+      "2015": {
+        "rule": {
+          "exemption": null,
+          "categoryExemption": 15000.0,
+          "scheme": "progressive",
+          "brackets": [
+            {
+              "upTo": 15000.0,
+              "ratePercent": 0.76
+            },
+            {
+              "upTo": 28000.0,
+              "ratePercent": 0.77
+            },
+            {
+              "upTo": 55000.0,
+              "ratePercent": 0.78
+            },
+            {
+              "upTo": 75000.0,
+              "ratePercent": 0.79
+            },
+            {
+              "upTo": null,
+              "ratePercent": 0.8
+            }
+          ]
+        },
+        "amounts": {
+          "20000": 152.5,
+          "30000": 229.7,
+          "50000": 385.7
+        },
+        "wording": []
+      },
+      "2016": {
+        "rule": {
+          "exemption": null,
+          "categoryExemption": 15000.0,
+          "scheme": "progressive",
+          "brackets": [
+            {
+              "upTo": 15000.0,
+              "ratePercent": 0.76
+            },
+            {
+              "upTo": 28000.0,
+              "ratePercent": 0.77
+            },
+            {
+              "upTo": 55000.0,
+              "ratePercent": 0.78
+            },
+            {
+              "upTo": 75000.0,
+              "ratePercent": 0.79
+            },
+            {
+              "upTo": null,
+              "ratePercent": 0.8
+            }
+          ]
+        },
+        "amounts": {
+          "20000": 152.5,
+          "30000": 229.7,
+          "50000": 385.7
+        },
+        "wording": []
+      },
+      "2017": {
+        "rule": {
+          "exemption": null,
+          "categoryExemption": 15000.0,
+          "scheme": "progressive",
+          "brackets": [
+            {
+              "upTo": 15000.0,
+              "ratePercent": 0.76
+            },
+            {
+              "upTo": 28000.0,
+              "ratePercent": 0.77
+            },
+            {
+              "upTo": 55000.0,
+              "ratePercent": 0.78
+            },
+            {
+              "upTo": 75000.0,
+              "ratePercent": 0.79
+            },
+            {
+              "upTo": null,
+              "ratePercent": 0.8
+            }
+          ]
+        },
+        "amounts": {
+          "20000": 152.5,
+          "30000": 229.7,
+          "50000": 385.7
+        },
+        "wording": []
+      },
+      "2018": {
+        "rule": {
+          "exemption": 15000.0,
+          "categoryExemption": null,
+          "scheme": "progressive",
+          "brackets": [
+            {
+              "upTo": 15000.0,
+              "ratePercent": 0.76
+            },
+            {
+              "upTo": 28000.0,
+              "ratePercent": 0.77
+            },
+            {
+              "upTo": 55000.0,
+              "ratePercent": 0.78
+            },
+            {
+              "upTo": 75000.0,
+              "ratePercent": 0.79
+            },
+            {
+              "upTo": null,
+              "ratePercent": 0.8
+            }
+          ]
+        },
+        "amounts": {
+          "20000": 152.5,
+          "30000": 229.7,
+          "50000": 385.7
+        },
+        "wording": []
+      },
+      "2019": {
+        "rule": {
+          "exemption": 15000.0,
+          "categoryExemption": null,
+          "scheme": "progressive",
+          "brackets": [
+            {
+              "upTo": 15000.0,
+              "ratePercent": 0.76
+            },
+            {
+              "upTo": 28000.0,
+              "ratePercent": 0.77
+            },
+            {
+              "upTo": 55000.0,
+              "ratePercent": 0.78
+            },
+            {
+              "upTo": 75000.0,
+              "ratePercent": 0.79
+            },
+            {
+              "upTo": null,
+              "ratePercent": 0.8
+            }
+          ]
+        },
+        "amounts": {
+          "20000": 152.5,
+          "30000": 229.7,
+          "50000": 385.7
+        },
+        "wording": []
+      },
+      "2020": {
+        "rule": {
+          "exemption": 10000.0,
+          "categoryExemption": null,
+          "scheme": "flat",
+          "ratePercent": 0.8
+        },
+        "amounts": {
+          "20000": 160.0,
+          "30000": 240.0,
+          "50000": 400.0
+        },
+        "wording": []
+      },
+      "2021": {
+        "rule": {
+          "exemption": 10000.0,
+          "categoryExemption": null,
+          "scheme": "flat",
+          "ratePercent": 0.8
+        },
+        "amounts": {
+          "20000": 160.0,
+          "30000": 240.0,
+          "50000": 400.0
+        },
+        "wording": []
+      },
+      "2022": {
+        "rule": {
+          "exemption": null,
+          "categoryExemption": null,
+          "scheme": "flat",
+          "ratePercent": 0.8
+        },
+        "amounts": {
+          "20000": 160.0,
+          "30000": 240.0,
+          "50000": 400.0
+        },
+        "wording": []
+      },
+      "2023": {
+        "rule": {
+          "exemption": 10000.0,
+          "categoryExemption": null,
+          "scheme": "flat",
+          "ratePercent": 0.8
+        },
+        "amounts": {
+          "20000": 160.0,
+          "30000": 240.0,
+          "50000": 400.0
+        },
+        "wording": []
+      },
+      "2024": {
+        "rule": {
+          "exemption": 10000.0,
+          "categoryExemption": null,
+          "scheme": "flat",
+          "ratePercent": 0.8
+        },
+        "amounts": {
+          "20000": 160.0,
+          "30000": 240.0,
+          "50000": 400.0
+        },
+        "wording": []
+      },
+      "2025": {
+        "rule": {
+          "exemption": 10000.0,
+          "categoryExemption": null,
+          "scheme": "flat",
+          "ratePercent": 0.8
+        },
+        "amounts": {
+          "20000": 160.0,
+          "30000": 240.0,
+          "50000": 400.0
+        },
+        "wording": []
+      }
+    },
+    "046024": {
+      "cadastral": "G628",
+      "2012": {
+        "rule": {
+          "exemption": null,
+          "categoryExemption": 14500.0,
+          "scheme": "progressive",
+          "brackets": [
+            {
+              "upTo": 15000.0,
+              "ratePercent": 0.5
+            },
+            {
+              "upTo": 28000.0,
+              "ratePercent": 0.77
+            },
+            {
+              "upTo": 55000.0,
+              "ratePercent": 0.78
+            },
+            {
+              "upTo": 75000.0,
+              "ratePercent": 0.79
+            },
+            {
+              "upTo": null,
+              "ratePercent": 0.8
+            }
+          ]
+        },
+        "amounts": {
+          "20000": 113.5,
+          "30000": 190.7,
+          "50000": 346.7
+        },
+        "wording": [
+          "FASCIA: «Esenzione per redditi fino a  14.500,00» → «Esenzione per redditi fino a 14.500,00»",
+          "FASCIA_6: «Applicabile a scaglioni di reddito maggiore di  euro 75.000,00» → «Applicabile a scaglioni di reddito oltre euro 75.000,00»"
+        ]
+      },
+      "2013": {
+        "rule": {
+          "exemption": null,
+          "categoryExemption": 14500.0,
+          "scheme": "flat",
+          "ratePercent": 0.8
+        },
+        "amounts": {
+          "20000": 160.0,
+          "30000": 240.0,
+          "50000": 400.0
+        },
+        "wording": [
+          "FASCIA_2: «Aliquota ordinaria» → «Aliquota unica»"
+        ]
+      },
+      "2014": {
+        "rule": {
+          "exemption": null,
+          "categoryExemption": 14500.0,
+          "scheme": "flat",
+          "ratePercent": 0.8
+        },
+        "amounts": {
+          "20000": 160.0,
+          "30000": 240.0,
+          "50000": 400.0
+        },
+        "wording": [
+          "FASCIA_2: «Aliquota ordinaria» → «Aliquota unica»"
+        ]
+      },
+      "2015": {
+        "rule": {
+          "exemption": null,
+          "categoryExemption": 14500.0,
+          "scheme": "flat",
+          "ratePercent": 0.8
+        },
+        "amounts": {
+          "20000": 160.0,
+          "30000": 240.0,
+          "50000": 400.0
+        },
+        "wording": [
+          "FASCIA_2: «Aliquota ordinaria» → «Aliquota unica»"
+        ]
+      },
+      "2016": {
+        "rule": {
+          "exemption": null,
+          "categoryExemption": 14500.0,
+          "scheme": "flat",
+          "ratePercent": 0.8
+        },
+        "amounts": {
+          "20000": 160.0,
+          "30000": 240.0,
+          "50000": 400.0
+        },
+        "wording": []
+      },
+      "2017": {
+        "rule": {
+          "exemption": null,
+          "categoryExemption": 14500.0,
+          "scheme": "flat",
+          "ratePercent": 0.8
+        },
+        "amounts": {
+          "20000": 160.0,
+          "30000": 240.0,
+          "50000": 400.0
+        },
+        "wording": []
+      },
+      "2018": {
+        "rule": {
+          "exemption": 14500.0,
+          "categoryExemption": null,
+          "scheme": "flat",
+          "ratePercent": 0.8
+        },
+        "amounts": {
+          "20000": 160.0,
+          "30000": 240.0,
+          "50000": 400.0
+        },
+        "wording": []
+      },
+      "2019": {
+        "rule": {
+          "exemption": 14500.0,
+          "categoryExemption": null,
+          "scheme": "flat",
+          "ratePercent": 0.8
+        },
+        "amounts": {
+          "20000": 160.0,
+          "30000": 240.0,
+          "50000": 400.0
+        },
+        "wording": []
+      },
+      "2020": {
+        "rule": {
+          "exemption": 14500.0,
+          "categoryExemption": null,
+          "scheme": "flat",
+          "ratePercent": 0.8
+        },
+        "amounts": {
+          "20000": 160.0,
+          "30000": 240.0,
+          "50000": 400.0
+        },
+        "wording": []
+      },
+      "2021": {
+        "rule": {
+          "exemption": 14500.0,
+          "categoryExemption": null,
+          "scheme": "flat",
+          "ratePercent": 0.8
+        },
+        "amounts": {
+          "20000": 160.0,
+          "30000": 240.0,
+          "50000": 400.0
+        },
+        "wording": []
+      },
+      "2022": {
+        "rule": {
+          "exemption": 14500.0,
+          "categoryExemption": null,
+          "scheme": "flat",
+          "ratePercent": 0.8
+        },
+        "amounts": {
+          "20000": 160.0,
+          "30000": 240.0,
+          "50000": 400.0
+        },
+        "wording": []
+      },
+      "2023": {
+        "rule": {
+          "exemption": 14500.0,
+          "categoryExemption": null,
+          "scheme": "flat",
+          "ratePercent": 0.75
+        },
+        "amounts": {
+          "20000": 150.0,
+          "30000": 225.0,
+          "50000": 375.0
+        },
+        "wording": []
+      },
+      "2024": {
+        "rule": {
+          "exemption": 14500.0,
+          "categoryExemption": null,
+          "scheme": "flat",
+          "ratePercent": 0.75
+        },
+        "amounts": {
+          "20000": 150.0,
+          "30000": 225.0,
+          "50000": 375.0
+        },
+        "wording": []
+      },
+      "2025": {
+        "rule": {
+          "exemption": 14500.0,
+          "categoryExemption": null,
+          "scheme": "flat",
+          "ratePercent": 0.75
+        },
+        "amounts": {
+          "20000": 150.0,
+          "30000": 225.0,
+          "50000": 375.0
+        },
+        "wording": []
+      }
+    },
+    "046028": {
+      "cadastral": "I622",
+      "2012": {
+        "rule": {
+          "exemption": null,
+          "categoryExemption": 14500.0,
+          "scheme": "progressive",
+          "brackets": [
+            {
+              "upTo": 15000.0,
+              "ratePercent": 0.65
+            },
+            {
+              "upTo": 28000.0,
+              "ratePercent": 0.76
+            },
+            {
+              "upTo": 55000.0,
+              "ratePercent": 0.77
+            },
+            {
+              "upTo": 75000.0,
+              "ratePercent": 0.79
+            },
+            {
+              "upTo": null,
+              "ratePercent": 0.8
+            }
+          ]
+        },
+        "amounts": {
+          "20000": 135.5,
+          "30000": 211.7,
+          "50000": 365.7
+        },
+        "wording": [
+          "FASCIA: «Esenzione per pensionati il cui reddito imponibile da pensione e' inferiore a  14.500,00. concorrono a determinare reddito complessivo i redditi da terreni non superiori a  185,92, il reddito da unità immobiliare adibita ad abitazione principale e relative pertinenze. non costituisce franchigia» → «Esenzione per pensionati il cui reddito imponibile da pensione e' inferiore a 14.500,00. concorrono a determinare reddito complessivo i redditi da terreni non oltre 185,92, il reddito da unità immobiliare adibita ad abitazione principale e relative pertinenze. non costituisce franchigia»",
+          "FASCIA_2: «Applicabile a scaglione di reddito sino ad euro 15.000,00 di imponibile» → «Applicabile a scaglione di reddito fino a euro 15.000,00 di imponibile»",
+          "FASCIA_6: «Applicabile a scaglioni di reddito oltre euro 75,000,00 di imponibile» → «Applicabile a scaglioni di reddito oltre euro 75.000,00 di imponibile»"
+        ]
+      },
+      "2013": {
+        "rule": {
+          "exemption": null,
+          "categoryExemption": 14500.0,
+          "scheme": "progressive",
+          "brackets": [
+            {
+              "upTo": 15000.0,
+              "ratePercent": 0.76
+            },
+            {
+              "upTo": 28000.0,
+              "ratePercent": 0.77
+            },
+            {
+              "upTo": 55000.0,
+              "ratePercent": 0.78
+            },
+            {
+              "upTo": 75000.0,
+              "ratePercent": 0.79
+            },
+            {
+              "upTo": null,
+              "ratePercent": 0.8
+            }
+          ]
+        },
+        "amounts": {
+          "20000": 152.5,
+          "30000": 229.7,
+          "50000": 385.7
+        },
+        "wording": [
+          "FASCIA: «Esenzione per pensionati il cui reddito imponibile da pensione e' inferiore a  14.500,00 concorrono a determinare reddito complessivo i redditi da terreni non superiori a  185,92, il reddito da unità immobiliare adibita ad abitazione principale e relative pertinenze non costituisce franchigia» → «Esenzione per pensionati il cui reddito imponibile da pensione e' inferiore a 14.500,00 concorrono a determinare reddito complessivo i redditi da terreni non oltre 185,92, il reddito da unità immobiliare adibita ad abitazione principale e relative pertinenze non costituisce franchigia»",
+          "FASCIA_2: «Applicabile a applicabile a scaglione di reddito sino ad euro 15.000,00 di imponibile» → «Applicabile a scaglione di reddito fino a euro 15.000,00 di imponibile»",
+          "FASCIA_3: «Applicabile a applicabile a scaglione di reddito tra euro 15.000,01 ed euro 28.000,00 di imponibile» → «Applicabile a scaglione di reddito tra euro 15.000,01 ed euro 28.000,00 di imponibile»",
+          "FASCIA_4: «Applicabile a applicabile a scaglione di reddito tra euro 28.000,01 ed euro 55.000,00 di imponibile» → «Applicabile a scaglione di reddito tra euro 28.000,01 ed euro 55.000,00 di imponibile»",
+          "FASCIA_5: «Applicabile a applicabile a scaglione di reddito tra euro 55.000,01 ed euro 75.000,00 di imponibile» → «Applicabile a scaglione di reddito tra euro 55.000,01 ed euro 75.000,00 di imponibile»",
+          "FASCIA_6: «Applicabile a applicabile a scaglioni di reddito oltre euro 75,000,00 di imponibile» → «Applicabile a scaglioni di reddito oltre euro 75.000,00 di imponibile»"
+        ]
+      },
+      "2014": {
+        "rule": {
+          "exemption": null,
+          "categoryExemption": 14500.0,
+          "scheme": "progressive",
+          "brackets": [
+            {
+              "upTo": 15000.0,
+              "ratePercent": 0.76
+            },
+            {
+              "upTo": 28000.0,
+              "ratePercent": 0.77
+            },
+            {
+              "upTo": 55000.0,
+              "ratePercent": 0.78
+            },
+            {
+              "upTo": 75000.0,
+              "ratePercent": 0.79
+            },
+            {
+              "upTo": null,
+              "ratePercent": 0.8
+            }
+          ]
+        },
+        "amounts": {
+          "20000": 152.5,
+          "30000": 229.7,
+          "50000": 385.7
+        },
+        "wording": [
+          "FASCIA: «Esenzione per pensionati il cui reddito imponibile da pensione e' inferiore a  14.500,00 concorrono a determinare reddito complessivo i redditi da terreni non superiori a  185,92, il reddito da unità immobiliare adibita ad abitazione principale e relative pertinenze non costituisce franchigia» → «Esenzione per pensionati il cui reddito imponibile da pensione e' inferiore a 14.500,00 concorrono a determinare reddito complessivo i redditi da terreni non oltre 185,92, il reddito da unità immobiliare adibita ad abitazione principale e relative pertinenze non costituisce franchigia»",
+          "FASCIA_2: «Applicabile a applicabile a scaglione di reddito sino ad euro 15.000,00 di imponibile» → «Applicabile a scaglione di reddito fino a euro 15.000,00 di imponibile»",
+          "FASCIA_3: «Applicabile a applicabile a scaglione di reddito tra euro 15.000,01 ed euro 28.000,00 di imponibile» → «Applicabile a scaglione di reddito tra euro 15.000,01 ed euro 28.000,00 di imponibile»",
+          "FASCIA_4: «Applicabile a applicabile a scaglione di reddito tra euro 28.000,01 ed euro 55.000,00 di imponibile» → «Applicabile a scaglione di reddito tra euro 28.000,01 ed euro 55.000,00 di imponibile»",
+          "FASCIA_5: «Applicabile a applicabile a scaglione di reddito tra euro 55.000,01 ed euro 75.000,00 di imponibile» → «Applicabile a scaglione di reddito tra euro 55.000,01 ed euro 75.000,00 di imponibile»",
+          "FASCIA_6: «Applicabile a applicabile a scaglioni di reddito oltre euro 75,000,00 di imponibile» → «Applicabile a scaglioni di reddito oltre euro 75.000,00 di imponibile»"
+        ]
+      },
+      "2015": {
+        "rule": {
+          "exemption": null,
+          "categoryExemption": 14500.0,
+          "scheme": "progressive",
+          "brackets": [
+            {
+              "upTo": 15000.0,
+              "ratePercent": 0.76
+            },
+            {
+              "upTo": 28000.0,
+              "ratePercent": 0.77
+            },
+            {
+              "upTo": 55000.0,
+              "ratePercent": 0.78
+            },
+            {
+              "upTo": 75000.0,
+              "ratePercent": 0.79
+            },
+            {
+              "upTo": null,
+              "ratePercent": 0.8
+            }
+          ]
+        },
+        "amounts": {
+          "20000": 152.5,
+          "30000": 229.7,
+          "50000": 385.7
+        },
+        "wording": [
+          "FASCIA: «Esenzione per pensionati il cui reddito imponibile da pensione e' inferiore a  14.500,00 concorrono a determinare reddito complessivo i redditi da terreni non superiori a  185,92, il reddito da unità immobiliare adibita ad abitazione principale e relative pertinenze non costituisce franchigia» → «Esenzione per pensionati il cui reddito imponibile da pensione e' inferiore a 14.500,00 concorrono a determinare reddito complessivo i redditi da terreni non oltre 185,92, il reddito da unità immobiliare adibita ad abitazione principale e relative pertinenze non costituisce franchigia»",
+          "FASCIA_2: «Applicabile a applicabile a scaglione di reddito sino ad euro 15.000,00 di imponibile» → «Applicabile a scaglione di reddito fino a euro 15.000,00 di imponibile»",
+          "FASCIA_3: «Applicabile a applicabile a scaglione di reddito tra euro 15.000,01 ed euro 28.000,00 di imponibile» → «Applicabile a scaglione di reddito tra euro 15.000,01 ed euro 28.000,00 di imponibile»",
+          "FASCIA_4: «Applicabile a applicabile a scaglione di reddito tra euro 28.000,01 ed euro 55.000,00 di imponibile» → «Applicabile a scaglione di reddito tra euro 28.000,01 ed euro 55.000,00 di imponibile»",
+          "FASCIA_5: «Applicabile a applicabile a scaglione di reddito tra euro 55.000,01 ed euro 75.000,00 di imponibile» → «Applicabile a scaglione di reddito tra euro 55.000,01 ed euro 75.000,00 di imponibile»",
+          "FASCIA_6: «Applicabile a applicabile a scaglioni di reddito oltre euro 75,000,00 di imponibile» → «Applicabile a scaglioni di reddito oltre euro 75.000,00 di imponibile»"
+        ]
+      },
+      "2016": {
+        "rule": {
+          "exemption": null,
+          "categoryExemption": 14500.0,
+          "scheme": "progressive",
+          "brackets": [
+            {
+              "upTo": 15000.0,
+              "ratePercent": 0.76
+            },
+            {
+              "upTo": 28000.0,
+              "ratePercent": 0.77
+            },
+            {
+              "upTo": 55000.0,
+              "ratePercent": 0.78
+            },
+            {
+              "upTo": 75000.0,
+              "ratePercent": 0.79
+            },
+            {
+              "upTo": null,
+              "ratePercent": 0.8
+            }
+          ]
+        },
+        "amounts": {
+          "20000": 152.5,
+          "30000": 229.7,
+          "50000": 385.7
+        },
+        "wording": [
+          "FASCIA: «Esenzione per pensionati il cui reddito imponibile da pensione e' inferiore a  14.500,00 concorrono a determinare reddito complessivo i redditi da terreni non superiori a  185,92, il reddito da unità immobiliare adibita ad abitazione principale e relative pertinenze non costituisce franchigia» → «Esenzione per pensionati il cui reddito imponibile da pensione e' inferiore a 14.500,00 concorrono a determinare reddito complessivo i redditi da terreni non oltre 185,92, il reddito da unità immobiliare adibita ad abitazione principale e relative pertinenze non costituisce franchigia»",
+          "FASCIA_2: «Applicabile a applicabile a scaglione di reddito sino ad euro 15.000,00 di imponibile» → «Applicabile a scaglione di reddito fino a euro 15.000,00 di imponibile»",
+          "FASCIA_3: «Applicabile a applicabile a scaglione di reddito tra euro 15.000,01 ed euro 28.000,00 di imponibile» → «Applicabile a scaglione di reddito tra euro 15.000,01 ed euro 28.000,00 di imponibile»",
+          "FASCIA_4: «Applicabile a applicabile a scaglione di reddito tra euro 28.000,01 ed euro 55.000,00 di imponibile» → «Applicabile a scaglione di reddito tra euro 28.000,01 ed euro 55.000,00 di imponibile»",
+          "FASCIA_5: «Applicabile a applicabile a scaglione di reddito tra euro 55.000,01 ed euro 75.000,00 di imponibile» → «Applicabile a scaglione di reddito tra euro 55.000,01 ed euro 75.000,00 di imponibile»",
+          "FASCIA_6: «Applicabile a applicabile a scaglioni di reddito oltre euro 75,000,00 di imponibile» → «Applicabile a scaglioni di reddito oltre euro 75.000,00 di imponibile»"
+        ]
+      },
+      "2017": {
+        "rule": {
+          "exemption": null,
+          "categoryExemption": 14500.0,
+          "scheme": "progressive",
+          "brackets": [
+            {
+              "upTo": 15000.0,
+              "ratePercent": 0.76
+            },
+            {
+              "upTo": 28000.0,
+              "ratePercent": 0.77
+            },
+            {
+              "upTo": 55000.0,
+              "ratePercent": 0.78
+            },
+            {
+              "upTo": 75000.0,
+              "ratePercent": 0.79
+            },
+            {
+              "upTo": null,
+              "ratePercent": 0.8
+            }
+          ]
+        },
+        "amounts": {
+          "20000": 152.5,
+          "30000": 229.7,
+          "50000": 385.7
+        },
+        "wording": [
+          "FASCIA: «Esenzione per pensionati il cui reddito imponibile da pensione e' inferiore a  14.500,00 concorrono a determinare reddito complessivo i redditi da terreni non superiori a  185,92, il reddito da unità immobiliare adibita ad abitazione principale e relative pertinenze non costituisce franchigia» → «Esenzione per pensionati il cui reddito imponibile da pensione e' inferiore a 14.500,00 concorrono a determinare reddito complessivo i redditi da terreni non oltre 185,92, il reddito da unità immobiliare adibita ad abitazione principale e relative pertinenze non costituisce franchigia»",
+          "FASCIA_2: «Applicabile a applicabile a scaglione di reddito sino ad euro 15.000,00 di imponibile» → «Applicabile a scaglione di reddito fino a euro 15.000,00 di imponibile»",
+          "FASCIA_3: «Applicabile a applicabile a scaglione di reddito tra euro 15.000,01 ed euro 28.000,00 di imponibile» → «Applicabile a scaglione di reddito tra euro 15.000,01 ed euro 28.000,00 di imponibile»",
+          "FASCIA_4: «Applicabile a applicabile a scaglione di reddito tra euro 28.000,01 ed euro 55.000,00 di imponibile» → «Applicabile a scaglione di reddito tra euro 28.000,01 ed euro 55.000,00 di imponibile»",
+          "FASCIA_5: «Applicabile a applicabile a scaglione di reddito tra euro 55.000,01 ed euro 75.000,00 di imponibile» → «Applicabile a scaglione di reddito tra euro 55.000,01 ed euro 75.000,00 di imponibile»",
+          "FASCIA_6: «Applicabile a applicabile a scaglioni di reddito oltre euro 75,000,00 di imponibile» → «Applicabile a scaglioni di reddito oltre euro 75.000,00 di imponibile»"
+        ]
+      },
+      "2018": {
+        "rule": {
+          "exemption": null,
+          "categoryExemption": 14500.0,
+          "scheme": "progressive",
+          "brackets": [
+            {
+              "upTo": 15000.0,
+              "ratePercent": 0.76
+            },
+            {
+              "upTo": 28000.0,
+              "ratePercent": 0.77
+            },
+            {
+              "upTo": 55000.0,
+              "ratePercent": 0.78
+            },
+            {
+              "upTo": 75000.0,
+              "ratePercent": 0.79
+            },
+            {
+              "upTo": null,
+              "ratePercent": 0.8
+            }
+          ]
+        },
+        "amounts": {
+          "20000": 152.5,
+          "30000": 229.7,
+          "50000": 385.7
+        },
+        "wording": [
+          "FASCIA: «Esenzione per pensionati il cui reddito imponibile da pensione e' inferiore a  14.500,00 concorrono a determinare reddito complessivo i redditi da terreni non superiori a  185,92, il reddito da unità immobiliare adibita ad abitazione principale e relative pertinenze non costituisce franchigia» → «Esenzione per pensionati il cui reddito imponibile da pensione e' inferiore a 14.500,00 concorrono a determinare reddito complessivo i redditi da terreni non oltre 185,92, il reddito da unità immobiliare adibita ad abitazione principale e relative pertinenze non costituisce franchigia»",
+          "FASCIA_2: «Applicabile a applicabile a scaglione di reddito sino ad euro 15.000,00 di imponibile» → «Applicabile a scaglione di reddito fino a euro 15.000,00 di imponibile»",
+          "FASCIA_3: «Applicabile a applicabile a scaglione di reddito tra euro 15.000,01 ed euro 28.000,00 di imponibile» → «Applicabile a scaglione di reddito tra euro 15.000,01 ed euro 28.000,00 di imponibile»",
+          "FASCIA_4: «Applicabile a applicabile a scaglione di reddito tra euro 28.000,01 ed euro 55.000,00 di imponibile» → «Applicabile a scaglione di reddito tra euro 28.000,01 ed euro 55.000,00 di imponibile»",
+          "FASCIA_5: «Applicabile a applicabile a scaglione di reddito tra euro 55.000,01 ed euro 75.000,00 di imponibile» → «Applicabile a scaglione di reddito tra euro 55.000,01 ed euro 75.000,00 di imponibile»",
+          "FASCIA_6: «Applicabile a applicabile a scaglioni di reddito oltre euro 75,000,00 di imponibile» → «Applicabile a scaglioni di reddito oltre euro 75.000,00 di imponibile»"
+        ]
+      },
+      "2019": {
+        "rule": {
+          "exemption": null,
+          "categoryExemption": 14500.0,
+          "scheme": "progressive",
+          "brackets": [
+            {
+              "upTo": 15000.0,
+              "ratePercent": 0.76
+            },
+            {
+              "upTo": 28000.0,
+              "ratePercent": 0.77
+            },
+            {
+              "upTo": 55000.0,
+              "ratePercent": 0.78
+            },
+            {
+              "upTo": 75000.0,
+              "ratePercent": 0.79
+            },
+            {
+              "upTo": null,
+              "ratePercent": 0.8
+            }
+          ]
+        },
+        "amounts": {
+          "20000": 152.5,
+          "30000": 229.7,
+          "50000": 385.7
+        },
+        "wording": [
+          "FASCIA: «Esenzione per pensionati il cui reddito imponibile da pensione e' inferiore a  14.500,00 concorrono a determinare reddito complessivo i redditi da terreni non superiori a  185,92, il reddito da unità immobiliare adibita ad abitazione principale e relative pertinenze non costituisce franchigia» → «Esenzione per pensionati il cui reddito imponibile da pensione e' inferiore a 14.500,00 concorrono a determinare reddito complessivo i redditi da terreni non oltre 185,92, il reddito da unità immobiliare adibita ad abitazione principale e relative pertinenze non costituisce franchigia»",
+          "FASCIA_2: «Applicabile a applicabile a scaglione di reddito sino ad euro 15.000,00 di imponibile» → «Applicabile a scaglione di reddito fino a euro 15.000,00 di imponibile»",
+          "FASCIA_3: «Applicabile a applicabile a scaglione di reddito tra euro 15.000,01 ed euro 28.000,00 di imponibile» → «Applicabile a scaglione di reddito tra euro 15.000,01 ed euro 28.000,00 di imponibile»",
+          "FASCIA_4: «Applicabile a applicabile a scaglione di reddito tra euro 28.000,01 ed euro 55.000,00 di imponibile» → «Applicabile a scaglione di reddito tra euro 28.000,01 ed euro 55.000,00 di imponibile»",
+          "FASCIA_5: «Applicabile a applicabile a scaglione di reddito tra euro 55.000,01 ed euro 75.000,00 di imponibile» → «Applicabile a scaglione di reddito tra euro 55.000,01 ed euro 75.000,00 di imponibile»",
+          "FASCIA_6: «Applicabile a applicabile a scaglioni di reddito oltre euro 75,000,00 di imponibile» → «Applicabile a scaglioni di reddito oltre euro 75.000,00 di imponibile»"
+        ]
+      },
+      "2020": {
+        "rule": {
+          "exemption": null,
+          "categoryExemption": 14500.0,
+          "scheme": "progressive",
+          "brackets": [
+            {
+              "upTo": 15000.0,
+              "ratePercent": 0.76
+            },
+            {
+              "upTo": 28000.0,
+              "ratePercent": 0.77
+            },
+            {
+              "upTo": 55000.0,
+              "ratePercent": 0.78
+            },
+            {
+              "upTo": 75000.0,
+              "ratePercent": 0.79
+            },
+            {
+              "upTo": null,
+              "ratePercent": 0.8
+            }
+          ]
+        },
+        "amounts": {
+          "20000": 152.5,
+          "30000": 229.7,
+          "50000": 385.7
+        },
+        "wording": [
+          "FASCIA: «Esenzione per pensionati il cui reddito imponibile da pensione e' inferiore a  14.500,00 concorrono a determinare reddito complessivo i redditi da terreni non superiori a  185,92, il reddito da unità immobiliare adibita ad abitazione principale e relative pertinenze non costituisce franchigia» → «Esenzione per pensionati il cui reddito imponibile da pensione e' inferiore a 14.500,00 concorrono a determinare reddito complessivo i redditi da terreni non oltre 185,92, il reddito da unità immobiliare adibita ad abitazione principale e relative pertinenze non costituisce franchigia»",
+          "FASCIA_2: «Applicabile a applicabile a scaglione di reddito sino ad euro 15.000,00 di imponibile» → «Applicabile a scaglione di reddito fino a euro 15.000,00 di imponibile»",
+          "FASCIA_3: «Applicabile a applicabile a scaglione di reddito tra euro 15.000,01 ed euro 28.000,00 di imponibile» → «Applicabile a scaglione di reddito tra euro 15.000,01 ed euro 28.000,00 di imponibile»",
+          "FASCIA_4: «Applicabile a applicabile a scaglione di reddito tra euro 28.000,01 ed euro 55.000,00 di imponibile» → «Applicabile a scaglione di reddito tra euro 28.000,01 ed euro 55.000,00 di imponibile»",
+          "FASCIA_5: «Applicabile a applicabile a scaglione di reddito tra euro 55.000,01 ed euro 75.000,00 di imponibile» → «Applicabile a scaglione di reddito tra euro 55.000,01 ed euro 75.000,00 di imponibile»",
+          "FASCIA_6: «Applicabile a applicabile a scaglioni di reddito oltre euro 75,000,00 di imponibile» → «Applicabile a scaglioni di reddito oltre euro 75.000,00 di imponibile»"
+        ]
+      },
+      "2021": {
+        "rule": {
+          "exemption": null,
+          "categoryExemption": 14500.0,
+          "scheme": "progressive",
+          "brackets": [
+            {
+              "upTo": 15000.0,
+              "ratePercent": 0.76
+            },
+            {
+              "upTo": 28000.0,
+              "ratePercent": 0.77
+            },
+            {
+              "upTo": 55000.0,
+              "ratePercent": 0.78
+            },
+            {
+              "upTo": 75000.0,
+              "ratePercent": 0.79
+            },
+            {
+              "upTo": null,
+              "ratePercent": 0.8
+            }
+          ]
+        },
+        "amounts": {
+          "20000": 152.5,
+          "30000": 229.7,
+          "50000": 385.7
+        },
+        "wording": []
+      },
+      "2022": {
+        "rule": {
+          "exemption": null,
+          "categoryExemption": 15000.0,
+          "scheme": "progressive",
+          "brackets": [
+            {
+              "upTo": 15000.0,
+              "ratePercent": 0.76
+            },
+            {
+              "upTo": 28000.0,
+              "ratePercent": 0.77
+            },
+            {
+              "upTo": 50000.0,
+              "ratePercent": 0.78
+            },
+            {
+              "upTo": null,
+              "ratePercent": 0.8
+            }
+          ]
+        },
+        "amounts": {
+          "20000": 152.5,
+          "30000": 229.7,
+          "50000": 385.7
+        },
+        "wording": []
+      },
+      "2023": {
+        "rule": {
+          "exemption": null,
+          "categoryExemption": null,
+          "scheme": "flat",
+          "ratePercent": 0.8
+        },
+        "amounts": {
+          "20000": 160.0,
+          "30000": 240.0,
+          "50000": 400.0
+        },
+        "wording": []
+      },
+      "2024": {
+        "rule": {
+          "exemption": null,
+          "categoryExemption": null,
+          "scheme": "flat",
+          "ratePercent": 0.8
+        },
+        "amounts": {
+          "20000": 160.0,
+          "30000": 240.0,
+          "50000": 400.0
+        },
+        "wording": []
+      },
+      "2025": {
+        "rule": {
+          "exemption": null,
+          "categoryExemption": null,
+          "scheme": "flat",
+          "ratePercent": 0.8
+        },
+        "amounts": {
+          "20000": 160.0,
+          "30000": 240.0,
+          "50000": 400.0
+        },
+        "wording": []
+      }
+    },
+    "046030": {
+      "cadastral": "I942",
+      "2012": {
+        "rule": {
+          "exemption": null,
+          "categoryExemption": 16000.0,
+          "scheme": "progressive",
+          "brackets": [
+            {
+              "upTo": 15000.0,
+              "ratePercent": 0.6
+            },
+            {
+              "upTo": 28000.0,
+              "ratePercent": 0.77
+            },
+            {
+              "upTo": 55000.0,
+              "ratePercent": 0.78
+            },
+            {
+              "upTo": 75000.0,
+              "ratePercent": 0.79
+            },
+            {
+              "upTo": null,
+              "ratePercent": 0.8
+            }
+          ]
+        },
+        "amounts": {
+          "20000": 128.5,
+          "30000": 205.7,
+          "50000": 361.7
+        },
+        "wording": [
+          "FASCIA: «Esenzione per reddito compl.vo imp.le inferiore/uguale a  16.000,00, formato almeno per l'80% da redditi di lavoro dipendente, pensione e/o redditi assimilati a quelli di lavoro dipendente (artt. 49 e 50  dpr n. 917/86). i redditi che superano tale soglia sono interamente assoggettati all'imposta» → «Esenzione per reddito compl.vo imp.le inferiore/uguale a 16.000,00, formato almeno per l'80% da redditi di lavoro dipendente, pensione e/o redditi assimilati a quelli di lavoro dipendente (artt. 49 e 50 dpr n. 917/86). i redditi che superano tale soglia sono interamente assoggettati all'imposta»"
+        ]
+      },
+      "2013": {
+        "rule": {
+          "exemption": null,
+          "categoryExemption": 16000.0,
+          "scheme": "progressive",
+          "brackets": [
+            {
+              "upTo": 15000.0,
+              "ratePercent": 0.65
+            },
+            {
+              "upTo": 28000.0,
+              "ratePercent": 0.77
+            },
+            {
+              "upTo": 55000.0,
+              "ratePercent": 0.78
+            },
+            {
+              "upTo": 75000.0,
+              "ratePercent": 0.79
+            },
+            {
+              "upTo": null,
+              "ratePercent": 0.8
+            }
+          ]
+        },
+        "amounts": {
+          "20000": 136.0,
+          "30000": 213.2,
+          "50000": 369.2
+        },
+        "wording": [
+          "FASCIA: «Esenzione per contribuenti con reddito complessivo annuo imponibile inferiore o uguale ad  16.000,00.i redditi devono essere formati almeno per l'80% da redditi da lavoro dipendente, redditi di pensione e/o redditi assimilati a quelli di lavoro dipendente ( artt.49 e 50 del t.u. - dpr.917/86» → «Esenzione per contribuenti con reddito complessivo annuo imponibile inferiore o uguale ad 16.000,00.i redditi devono essere formati almeno per l'80% da redditi da lavoro dipendente, redditi di pensione e/o redditi assimilati a quelli di lavoro dipendente ( artt.49 e 50 del t.u. - dpr.917/86»",
+          "FASCIA_2: «Applicabile a contribuenti con reddito imponibile fino a  15.000,00» → «Applicabile a contribuenti con reddito imponibile fino a 15.000,00»",
+          "FASCIA_3: «Applicabile a contribuenti con reddito imponibile da  15.001,00 ad  28.000,00» → «Applicabile a contribuenti con reddito imponibile da 15.001,00 ad 28.000,00»",
+          "FASCIA_4: «Applicabile a contribuenti con reddito imponibile da  28.001,00 ad  55.000,00» → «Applicabile a contribuenti con reddito imponibile da 28.001,00 ad 55.000,00»",
+          "FASCIA_5: «Applicabile a contribuenti con reddito imponibile da  55.001,00 ad  75.000,00» → «Applicabile a contribuenti con reddito imponibile da 55.001,00 ad 75.000,00»",
+          "FASCIA_6: «Applicabile a contribuenti con reddito imponibile oltre  75.000,00» → «Applicabile a contribuenti con reddito imponibile oltre 75.000,00»"
+        ]
+      },
+      "2014": {
+        "rule": {
+          "exemption": null,
+          "categoryExemption": 15000.0,
+          "scheme": "progressive",
+          "brackets": [
+            {
+              "upTo": 15000.0,
+              "ratePercent": 0.65
+            },
+            {
+              "upTo": 28000.0,
+              "ratePercent": 0.77
+            },
+            {
+              "upTo": 55000.0,
+              "ratePercent": 0.78
+            },
+            {
+              "upTo": 75000.0,
+              "ratePercent": 0.79
+            },
+            {
+              "upTo": null,
+              "ratePercent": 0.8
+            }
+          ]
+        },
+        "amounts": {
+          "20000": 136.0,
+          "30000": 213.2,
+          "50000": 369.2
+        },
+        "wording": [
+          "FASCIA: «Esenzione per contribuenti con reddito complessivo annuo imponibile inferiore o uguale a  15.000,00.i redditi devono essre formati almeno per l'80% da redditi di lavoro dipendente, redditi di pensione e/o redditi assimilati  a quelli di lavoro dipendente di cui agli artt.49 e 50 del t.u..delle imposte sui redditi di cui al dpr n. 917/86 e s.m.i.» → «Esenzione per contribuenti con reddito complessivo annuo imponibile inferiore o uguale a 15.000,00.i redditi devono essre formati almeno per l'80% da redditi di lavoro dipendente, redditi di pensione e/o redditi assimilati a quelli di lavoro dipendente di cui agli artt.49 e 50 del t.u..delle imposte sui redditi di cui al dpr n. 917/86 e s.m.i.»",
+          "FASCIA_2: «Applicabile a contribuenti con reddito imponibile fino a  15.000,00.» → «Applicabile a contribuenti con reddito imponibile fino a 15.000,00.»",
+          "FASCIA_3: «Applicabile a contribuenti con reddito imponibile da  15.001,00 ad  28.000,00.» → «Applicabile a contribuenti con reddito imponibile da 15.001,00 ad 28.000,00.»",
+          "FASCIA_4: «Applicabile a contribuenti con reddito imponibile da  28.001,00 ad  55.000,00.» → «Applicabile a contribuenti con reddito imponibile da 28.001,00 ad 55.000,00.»",
+          "FASCIA_5: «Applicabile a contribuenti con reddito imponibile da  55.001,00 ad  75.000,00.» → «Applicabile a contribuenti con reddito imponibile da 55.001,00 ad 75.000,00.»",
+          "FASCIA_6: «Applicabile a contribuenti con reddito imponibile oltre   75.000,00.» → «Applicabile a contribuenti con reddito imponibile oltre 75.000,00.»"
+        ]
+      },
+      "2015": {
+        "rule": {
+          "exemption": null,
+          "categoryExemption": 15000.0,
+          "scheme": "progressive",
+          "brackets": [
+            {
+              "upTo": 15000.0,
+              "ratePercent": 0.65
+            },
+            {
+              "upTo": 28000.0,
+              "ratePercent": 0.77
+            },
+            {
+              "upTo": 55000.0,
+              "ratePercent": 0.78
+            },
+            {
+              "upTo": 75000.0,
+              "ratePercent": 0.79
+            },
+            {
+              "upTo": null,
+              "ratePercent": 0.8
+            }
+          ]
+        },
+        "amounts": {
+          "20000": 136.0,
+          "30000": 213.2,
+          "50000": 369.2
+        },
+        "wording": [
+          "FASCIA: «Esenzione per contribuenti con reddito complessivo annuo imponibile inferiore o uguale a  15.000,00.i redditi devono essre formati almeno per l'80% da redditi di lavoro dipendente, redditi di pensione e/o redditi assimilati  a quelli di lavoro dipendente di cui agli artt.49 e 50 del t.u..delle imposte sui redditi di cui al dpr n. 917/86 e s.m.i.» → «Esenzione per contribuenti con reddito complessivo annuo imponibile inferiore o uguale a 15.000,00.i redditi devono essre formati almeno per l'80% da redditi di lavoro dipendente, redditi di pensione e/o redditi assimilati a quelli di lavoro dipendente di cui agli artt.49 e 50 del t.u..delle imposte sui redditi di cui al dpr n. 917/86 e s.m.i.»",
+          "FASCIA_2: «Applicabile a contribuenti con reddito imponibile fino a  15.000,00.» → «Applicabile a contribuenti con reddito imponibile fino a 15.000,00.»",
+          "FASCIA_3: «Applicabile a contribuenti con reddito imponibile da  15.001,00 ad  28.000,00.» → «Applicabile a contribuenti con reddito imponibile da 15.001,00 ad 28.000,00.»",
+          "FASCIA_4: «Applicabile a contribuenti con reddito imponibile da  28.001,00 ad  55.000,00.» → «Applicabile a contribuenti con reddito imponibile da 28.001,00 ad 55.000,00.»",
+          "FASCIA_5: «Applicabile a contribuenti con reddito imponibile da  55.001,00 ad  75.000,00.» → «Applicabile a contribuenti con reddito imponibile da 55.001,00 ad 75.000,00.»",
+          "FASCIA_6: «Applicabile a contribuenti con reddito imponibile oltre   75.000,00.» → «Applicabile a contribuenti con reddito imponibile oltre 75.000,00.»"
+        ]
+      },
+      "2016": {
+        "rule": {
+          "exemption": null,
+          "categoryExemption": 15000.0,
+          "scheme": "progressive",
+          "brackets": [
+            {
+              "upTo": 15000.0,
+              "ratePercent": 0.65
+            },
+            {
+              "upTo": 28000.0,
+              "ratePercent": 0.77
+            },
+            {
+              "upTo": 55000.0,
+              "ratePercent": 0.78
+            },
+            {
+              "upTo": 75000.0,
+              "ratePercent": 0.79
+            },
+            {
+              "upTo": null,
+              "ratePercent": 0.8
+            }
+          ]
+        },
+        "amounts": {
+          "20000": 136.0,
+          "30000": 213.2,
+          "50000": 369.2
+        },
+        "wording": [
+          "FASCIA: «Esenzione per contribuenti con reddito complessivo annuo imponibile inferiore o uguale a  15.000,00.i redditi devono essre formati almeno per l'80% da redditi di lavoro dipendente, redditi di pensione e/o redditi assimilati  a quelli di lavoro dipendente di cui agli artt.49 e 50 del t.u..delle imposte sui redditi di cui al dpr n. 917/86 e s.m.i.» → «Esenzione per contribuenti con reddito complessivo annuo imponibile inferiore o uguale a 15.000,00.i redditi devono essre formati almeno per l'80% da redditi di lavoro dipendente, redditi di pensione e/o redditi assimilati a quelli di lavoro dipendente di cui agli artt.49 e 50 del t.u..delle imposte sui redditi di cui al dpr n. 917/86 e s.m.i.»",
+          "FASCIA_2: «Applicabile a contribuenti con reddito imponibile fino a  15.000,00.» → «Applicabile a contribuenti con reddito imponibile fino a 15.000,00.»",
+          "FASCIA_3: «Applicabile a contribuenti con reddito imponibile da  15.001,00 ad  28.000,00.» → «Applicabile a contribuenti con reddito imponibile da 15.001,00 ad 28.000,00.»",
+          "FASCIA_4: «Applicabile a contribuenti con reddito imponibile da  28.001,00 ad  55.000,00.» → «Applicabile a contribuenti con reddito imponibile da 28.001,00 ad 55.000,00.»",
+          "FASCIA_5: «Applicabile a contribuenti con reddito imponibile da  55.001,00 ad  75.000,00.» → «Applicabile a contribuenti con reddito imponibile da 55.001,00 ad 75.000,00.»",
+          "FASCIA_6: «Applicabile a contribuenti con reddito imponibile oltre   75.000,00.» → «Applicabile a contribuenti con reddito imponibile oltre 75.000,00.»"
+        ]
+      },
+      "2017": {
+        "rule": {
+          "exemption": null,
+          "categoryExemption": 15000.0,
+          "scheme": "progressive",
+          "brackets": [
+            {
+              "upTo": 15000.0,
+              "ratePercent": 0.65
+            },
+            {
+              "upTo": 28000.0,
+              "ratePercent": 0.77
+            },
+            {
+              "upTo": 55000.0,
+              "ratePercent": 0.78
+            },
+            {
+              "upTo": 75000.0,
+              "ratePercent": 0.79
+            },
+            {
+              "upTo": null,
+              "ratePercent": 0.8
+            }
+          ]
+        },
+        "amounts": {
+          "20000": 136.0,
+          "30000": 213.2,
+          "50000": 369.2
+        },
+        "wording": [
+          "FASCIA: «Esenzione per contribuenti con reddito complessivo annuo imponibile inferiore o uguale a  15.000,00.i redditi devono essre formati almeno per l'80% da redditi di lavoro dipendente, redditi di pensione e/o redditi assimilati  a quelli di lavoro dipendente di cui agli artt.49 e 50 del t.u..delle imposte sui redditi di cui al dpr n. 917/86 e s.m.i.» → «Esenzione per contribuenti con reddito complessivo annuo imponibile inferiore o uguale a 15.000,00.i redditi devono essre formati almeno per l'80% da redditi di lavoro dipendente, redditi di pensione e/o redditi assimilati a quelli di lavoro dipendente di cui agli artt.49 e 50 del t.u..delle imposte sui redditi di cui al dpr n. 917/86 e s.m.i.»",
+          "FASCIA_2: «Applicabile a contribuenti con reddito imponibile fino a  15.000,00.» → «Applicabile a contribuenti con reddito imponibile fino a 15.000,00.»",
+          "FASCIA_3: «Applicabile a contribuenti con reddito imponibile da  15.001,00 ad  28.000,00.» → «Applicabile a contribuenti con reddito imponibile da 15.001,00 ad 28.000,00.»",
+          "FASCIA_4: «Applicabile a contribuenti con reddito imponibile da  28.001,00 ad  55.000,00.» → «Applicabile a contribuenti con reddito imponibile da 28.001,00 ad 55.000,00.»",
+          "FASCIA_5: «Applicabile a contribuenti con reddito imponibile da  55.001,00 ad  75.000,00.» → «Applicabile a contribuenti con reddito imponibile da 55.001,00 ad 75.000,00.»",
+          "FASCIA_6: «Applicabile a contribuenti con reddito imponibile oltre   75.000,00.» → «Applicabile a contribuenti con reddito imponibile oltre 75.000,00.»"
+        ]
+      },
+      "2018": {
+        "rule": {
+          "exemption": null,
+          "categoryExemption": 15000.0,
+          "scheme": "progressive",
+          "brackets": [
+            {
+              "upTo": 15000.0,
+              "ratePercent": 0.65
+            },
+            {
+              "upTo": 28000.0,
+              "ratePercent": 0.77
+            },
+            {
+              "upTo": 55000.0,
+              "ratePercent": 0.78
+            },
+            {
+              "upTo": 75000.0,
+              "ratePercent": 0.79
+            },
+            {
+              "upTo": null,
+              "ratePercent": 0.8
+            }
+          ]
+        },
+        "amounts": {
+          "20000": 136.0,
+          "30000": 213.2,
+          "50000": 369.2
+        },
+        "wording": [
+          "FASCIA: «Esenzione per contribuenti con reddito complessivo annuo imponibile inferiore o uguale a  15.000,00.i redditi devono essre formati almeno per l'80% da redditi di lavoro dipendente, redditi di pensione e/o redditi assimilati  a quelli di lavoro dipendente di cui agli artt.49 e 50 del t.u..delle imposte sui redditi di cui al dpr n. 917/86 e s.m.i.» → «Esenzione per contribuenti con reddito complessivo annuo imponibile inferiore o uguale a 15.000,00.i redditi devono essre formati almeno per l'80% da redditi di lavoro dipendente, redditi di pensione e/o redditi assimilati a quelli di lavoro dipendente di cui agli artt.49 e 50 del t.u..delle imposte sui redditi di cui al dpr n. 917/86 e s.m.i.»",
+          "FASCIA_2: «Applicabile a contribuenti con reddito imponibile fino a  15.000,00.» → «Applicabile a contribuenti con reddito imponibile fino a 15.000,00.»",
+          "FASCIA_3: «Applicabile a contribuenti con reddito imponibile da  15.001,00 ad  28.000,00.» → «Applicabile a contribuenti con reddito imponibile da 15.001,00 ad 28.000,00.»",
+          "FASCIA_4: «Applicabile a contribuenti con reddito imponibile da  28.001,00 ad  55.000,00.» → «Applicabile a contribuenti con reddito imponibile da 28.001,00 ad 55.000,00.»",
+          "FASCIA_5: «Applicabile a contribuenti con reddito imponibile da  55.001,00 ad  75.000,00.» → «Applicabile a contribuenti con reddito imponibile da 55.001,00 ad 75.000,00.»",
+          "FASCIA_6: «Applicabile a contribuenti con reddito imponibile oltre   75.000,00.» → «Applicabile a contribuenti con reddito imponibile oltre 75.000,00.»"
+        ]
+      },
+      "2019": {
+        "rule": {
+          "exemption": null,
+          "categoryExemption": 15000.0,
+          "scheme": "progressive",
+          "brackets": [
+            {
+              "upTo": 15000.0,
+              "ratePercent": 0.65
+            },
+            {
+              "upTo": 28000.0,
+              "ratePercent": 0.77
+            },
+            {
+              "upTo": 55000.0,
+              "ratePercent": 0.78
+            },
+            {
+              "upTo": 75000.0,
+              "ratePercent": 0.79
+            },
+            {
+              "upTo": null,
+              "ratePercent": 0.8
+            }
+          ]
+        },
+        "amounts": {
+          "20000": 136.0,
+          "30000": 213.2,
+          "50000": 369.2
+        },
+        "wording": [
+          "FASCIA: «Esenzione per contribuenti con reddito complessivo annuo imponibile inferiore o uguale a  15.000,00.i redditi devono essre formati almeno per l'80% da redditi di lavoro dipendente, redditi di pensione e/o redditi assimilati  a quelli di lavoro dipendente di cui agli artt.49 e 50 del t.u..delle imposte sui redditi di cui al dpr n. 917/86 e s.m.i.» → «Esenzione per contribuenti con reddito complessivo annuo imponibile inferiore o uguale a 15.000,00.i redditi devono essre formati almeno per l'80% da redditi di lavoro dipendente, redditi di pensione e/o redditi assimilati a quelli di lavoro dipendente di cui agli artt.49 e 50 del t.u..delle imposte sui redditi di cui al dpr n. 917/86 e s.m.i.»",
+          "FASCIA_2: «Applicabile a contribuenti con reddito imponibile fino a  15.000,00.» → «Applicabile a contribuenti con reddito imponibile fino a 15.000,00.»",
+          "FASCIA_3: «Applicabile a contribuenti con reddito imponibile da  15.001,00 ad  28.000,00.» → «Applicabile a contribuenti con reddito imponibile da 15.001,00 ad 28.000,00.»",
+          "FASCIA_4: «Applicabile a contribuenti con reddito imponibile da  28.001,00 ad  55.000,00.» → «Applicabile a contribuenti con reddito imponibile da 28.001,00 ad 55.000,00.»",
+          "FASCIA_5: «Applicabile a contribuenti con reddito imponibile da  55.001,00 ad  75.000,00.» → «Applicabile a contribuenti con reddito imponibile da 55.001,00 ad 75.000,00.»",
+          "FASCIA_6: «Applicabile a contribuenti con reddito imponibile oltre   75.000,00.» → «Applicabile a contribuenti con reddito imponibile oltre 75.000,00.»"
+        ]
+      },
+      "2020": {
+        "rule": {
+          "exemption": null,
+          "categoryExemption": 15000.0,
+          "scheme": "progressive",
+          "brackets": [
+            {
+              "upTo": 15000.0,
+              "ratePercent": 0.65
+            },
+            {
+              "upTo": 28000.0,
+              "ratePercent": 0.77
+            },
+            {
+              "upTo": 55000.0,
+              "ratePercent": 0.78
+            },
+            {
+              "upTo": 75000.0,
+              "ratePercent": 0.79
+            },
+            {
+              "upTo": null,
+              "ratePercent": 0.8
+            }
+          ]
+        },
+        "amounts": {
+          "20000": 136.0,
+          "30000": 213.2,
+          "50000": 369.2
+        },
+        "wording": [
+          "FASCIA: «Esenzione per contribuenti con reddito complessivo annuo imponibile inferiore o uguale a  15.000,00.i redditi devono essre formati almeno per l'80% da redditi di lavoro dipendente, redditi di pensione e/o redditi assimilati  a quelli di lavoro dipendente di cui agli artt.49 e 50 del t.u..delle imposte sui redditi di cui al dpr n. 917/86 e s.m.i.» → «Esenzione per contribuenti con reddito complessivo annuo imponibile inferiore o uguale a 15.000,00.i redditi devono essre formati almeno per l'80% da redditi di lavoro dipendente, redditi di pensione e/o redditi assimilati a quelli di lavoro dipendente di cui agli artt.49 e 50 del t.u..delle imposte sui redditi di cui al dpr n. 917/86 e s.m.i.»",
+          "FASCIA_2: «Applicabile a contribuenti con reddito imponibile fino a  15.000,00.» → «Applicabile a contribuenti con reddito imponibile fino a 15.000,00.»",
+          "FASCIA_3: «Applicabile a contribuenti con reddito imponibile da  15.001,00 ad  28.000,00.» → «Applicabile a contribuenti con reddito imponibile da 15.001,00 ad 28.000,00.»",
+          "FASCIA_4: «Applicabile a contribuenti con reddito imponibile da  28.001,00 ad  55.000,00.» → «Applicabile a contribuenti con reddito imponibile da 28.001,00 ad 55.000,00.»",
+          "FASCIA_5: «Applicabile a contribuenti con reddito imponibile da  55.001,00 ad  75.000,00.» → «Applicabile a contribuenti con reddito imponibile da 55.001,00 ad 75.000,00.»",
+          "FASCIA_6: «Applicabile a contribuenti con reddito imponibile oltre   75.000,00.» → «Applicabile a contribuenti con reddito imponibile oltre 75.000,00.»"
+        ]
+      },
+      "2021": {
+        "rule": {
+          "exemption": null,
+          "categoryExemption": null,
+          "scheme": "flat",
+          "ratePercent": 0.8
+        },
+        "amounts": {
+          "20000": 160.0,
+          "30000": 240.0,
+          "50000": 400.0
+        },
+        "wording": []
+      },
+      "2022": {
+        "rule": {
+          "exemption": null,
+          "categoryExemption": null,
+          "scheme": "flat",
+          "ratePercent": 0.8
+        },
+        "amounts": {
+          "20000": 160.0,
+          "30000": 240.0,
+          "50000": 400.0
+        },
+        "wording": []
+      },
+      "2023": {
+        "rule": {
+          "exemption": null,
+          "categoryExemption": null,
+          "scheme": "flat",
+          "ratePercent": 0.8
+        },
+        "amounts": {
+          "20000": 160.0,
+          "30000": 240.0,
+          "50000": 400.0
+        },
+        "wording": []
+      },
+      "2024": {
+        "rule": {
+          "exemption": null,
+          "categoryExemption": null,
+          "scheme": "flat",
+          "ratePercent": 0.8
+        },
+        "amounts": {
+          "20000": 160.0,
+          "30000": 240.0,
+          "50000": 400.0
+        },
+        "wording": []
+      },
+      "2025": {
+        "rule": {
+          "exemption": null,
+          "categoryExemption": null,
+          "scheme": "flat",
+          "ratePercent": 0.8
+        },
+        "amounts": {
+          "20000": 160.0,
+          "30000": 240.0,
+          "50000": 400.0
+        },
+        "wording": []
+      }
+    },
+    "046033": {
+      "cadastral": "L833",
+      "2012": {
+        "rule": {
+          "exemption": null,
+          "categoryExemption": 13000.0,
+          "scheme": "flat",
+          "ratePercent": 0.8
+        },
+        "amounts": {
+          "20000": 160.0,
+          "30000": 240.0,
+          "50000": 400.0
+        },
+        "wording": [
+          "FASCIA_2: «Aliquota ordinaria» → «Aliquota unica»"
+        ]
+      },
+      "2013": {
+        "rule": {
+          "exemption": null,
+          "categoryExemption": 13000.0,
+          "scheme": "flat",
+          "ratePercent": 0.8
+        },
+        "amounts": {
+          "20000": 160.0,
+          "30000": 240.0,
+          "50000": 400.0
+        },
+        "wording": [
+          "FASCIA_2: «Aliquota ordinaria» → «Aliquota unica»"
+        ]
+      },
+      "2014": {
+        "rule": {
+          "exemption": null,
+          "categoryExemption": 13000.0,
+          "scheme": "flat",
+          "ratePercent": 0.8
+        },
+        "amounts": {
+          "20000": 160.0,
+          "30000": 240.0,
+          "50000": 400.0
+        },
+        "wording": [
+          "FASCIA_2: «Aliquota Ordinaria» → «Aliquota unica»"
+        ]
+      },
+      "2015": {
+        "rule": {
+          "exemption": null,
+          "categoryExemption": 13000.0,
+          "scheme": "flat",
+          "ratePercent": 0.8
+        },
+        "amounts": {
+          "20000": 160.0,
+          "30000": 240.0,
+          "50000": 400.0
+        },
+        "wording": [
+          "FASCIA_2: «Aliquota Ordinaria» → «Aliquota unica»"
+        ]
+      },
+      "2016": {
+        "rule": {
+          "exemption": null,
+          "categoryExemption": 13000.0,
+          "scheme": "flat",
+          "ratePercent": 0.8
+        },
+        "amounts": {
+          "20000": 160.0,
+          "30000": 240.0,
+          "50000": 400.0
+        },
+        "wording": []
+      },
+      "2017": {
+        "rule": {
+          "exemption": null,
+          "categoryExemption": 13000.0,
+          "scheme": "flat",
+          "ratePercent": 0.8
+        },
+        "amounts": {
+          "20000": 160.0,
+          "30000": 240.0,
+          "50000": 400.0
+        },
+        "wording": []
+      },
+      "2018": {
+        "rule": {
+          "exemption": 13000.0,
+          "categoryExemption": null,
+          "scheme": "flat",
+          "ratePercent": 0.8
+        },
+        "amounts": {
+          "20000": 160.0,
+          "30000": 240.0,
+          "50000": 400.0
+        },
+        "wording": []
+      },
+      "2019": {
+        "rule": {
+          "exemption": 13000.0,
+          "categoryExemption": null,
+          "scheme": "flat",
+          "ratePercent": 0.8
+        },
+        "amounts": {
+          "20000": 160.0,
+          "30000": 240.0,
+          "50000": 400.0
+        },
+        "wording": []
+      },
+      "2020": {
+        "rule": {
+          "exemption": 13000.0,
+          "categoryExemption": null,
+          "scheme": "flat",
+          "ratePercent": 0.75
+        },
+        "amounts": {
+          "20000": 150.0,
+          "30000": 225.0,
+          "50000": 375.0
+        },
+        "wording": []
+      },
+      "2021": {
+        "rule": {
+          "exemption": 13000.0,
+          "categoryExemption": null,
+          "scheme": "flat",
+          "ratePercent": 0.75
+        },
+        "amounts": {
+          "20000": 150.0,
+          "30000": 225.0,
+          "50000": 375.0
+        },
+        "wording": []
+      },
+      "2022": {
+        "rule": {
+          "exemption": 13000.0,
+          "categoryExemption": null,
+          "scheme": "flat",
+          "ratePercent": 0.75
+        },
+        "amounts": {
+          "20000": 150.0,
+          "30000": 225.0,
+          "50000": 375.0
+        },
+        "wording": []
+      },
+      "2023": {
+        "rule": {
+          "exemption": 13000.0,
+          "categoryExemption": null,
+          "scheme": "flat",
+          "ratePercent": 0.75
+        },
+        "amounts": {
+          "20000": 150.0,
+          "30000": 225.0,
+          "50000": 375.0
+        },
+        "wording": []
+      },
+      "2024": {
+        "rule": {
+          "exemption": 13000.0,
+          "categoryExemption": null,
+          "scheme": "flat",
+          "ratePercent": 0.75
+        },
+        "amounts": {
+          "20000": 150.0,
+          "30000": 225.0,
+          "50000": 375.0
+        },
+        "wording": []
+      },
+      "2025": {
+        "rule": {
+          "exemption": 13000.0,
+          "categoryExemption": null,
+          "scheme": "flat",
+          "ratePercent": 0.75
+        },
+        "amounts": {
+          "20000": 150.0,
+          "30000": 225.0,
+          "50000": 375.0
+        },
+        "wording": []
+      }
+    }
+  },
+  "series": {
+    "046005": {
+      "20000": [
+        52.5,
+        52.5,
+        52.5,
+        52.5,
+        52.5,
+        52.5,
+        52.5,
+        52.5,
+        52.5,
+        52.5,
+        52.5,
+        52.5,
+        52.5,
+        82.5
+      ],
+      "30000": [
+        100.5,
+        100.5,
+        100.5,
+        100.5,
+        100.5,
+        100.5,
+        100.5,
+        100.5,
+        100.5,
+        100.5,
+        100.5,
+        100.5,
+        100.5,
+        144.5
+      ],
+      "50000": [
+        220.5,
+        220.5,
+        220.5,
+        220.5,
+        220.5,
+        220.5,
+        220.5,
+        220.5,
+        220.5,
+        220.5,
+        220.5,
+        220.5,
+        220.5,
+        284.5
+      ]
+    },
+    "046013": {
+      "20000": [
+        160.0,
+        102.5,
+        102.5,
+        102.5,
+        102.5,
+        102.5,
+        102.5,
+        102.5,
+        102.5,
+        102.5,
+        102.5,
+        102.5,
+        0.0,
+        0.0
+      ],
+      "30000": [
+        240.0,
+        159.5,
+        159.5,
+        159.5,
+        159.5,
+        159.5,
+        159.5,
+        159.5,
+        159.5,
+        159.5,
+        159.5,
+        159.5,
+        153.0,
+        153.0
+      ],
+      "50000": [
+        400.0,
+        289.5,
+        289.5,
+        289.5,
+        289.5,
+        289.5,
+        289.5,
+        289.5,
+        289.5,
+        289.5,
+        289.5,
+        289.5,
+        283.0,
+        283.0
+      ]
+    },
+    "046018": {
+      "20000": [
+        113.5,
+        152.5,
+        152.5,
+        152.5,
+        152.5,
+        152.5,
+        152.5,
+        152.5,
+        160.0,
+        160.0,
+        160.0,
+        160.0,
+        160.0,
+        160.0
+      ],
+      "30000": [
+        190.7,
+        229.7,
+        229.7,
+        229.7,
+        229.7,
+        229.7,
+        229.7,
+        229.7,
+        240.0,
+        240.0,
+        240.0,
+        240.0,
+        240.0,
+        240.0
+      ],
+      "50000": [
+        346.7,
+        385.7,
+        385.7,
+        385.7,
+        385.7,
+        385.7,
+        385.7,
+        385.7,
+        400.0,
+        400.0,
+        400.0,
+        400.0,
+        400.0,
+        400.0
+      ]
+    },
+    "046024": {
+      "20000": [
+        113.5,
+        160.0,
+        160.0,
+        160.0,
+        160.0,
+        160.0,
+        160.0,
+        160.0,
+        160.0,
+        160.0,
+        160.0,
+        150.0,
+        150.0,
+        150.0
+      ],
+      "30000": [
+        190.7,
+        240.0,
+        240.0,
+        240.0,
+        240.0,
+        240.0,
+        240.0,
+        240.0,
+        240.0,
+        240.0,
+        240.0,
+        225.0,
+        225.0,
+        225.0
+      ],
+      "50000": [
+        346.7,
+        400.0,
+        400.0,
+        400.0,
+        400.0,
+        400.0,
+        400.0,
+        400.0,
+        400.0,
+        400.0,
+        400.0,
+        375.0,
+        375.0,
+        375.0
+      ]
+    },
+    "046028": {
+      "20000": [
+        135.5,
+        152.5,
+        152.5,
+        152.5,
+        152.5,
+        152.5,
+        152.5,
+        152.5,
+        152.5,
+        152.5,
+        152.5,
+        160.0,
+        160.0,
+        160.0
+      ],
+      "30000": [
+        211.7,
+        229.7,
+        229.7,
+        229.7,
+        229.7,
+        229.7,
+        229.7,
+        229.7,
+        229.7,
+        229.7,
+        229.7,
+        240.0,
+        240.0,
+        240.0
+      ],
+      "50000": [
+        365.7,
+        385.7,
+        385.7,
+        385.7,
+        385.7,
+        385.7,
+        385.7,
+        385.7,
+        385.7,
+        385.7,
+        385.7,
+        400.0,
+        400.0,
+        400.0
+      ]
+    },
+    "046030": {
+      "20000": [
+        128.5,
+        136.0,
+        136.0,
+        136.0,
+        136.0,
+        136.0,
+        136.0,
+        136.0,
+        136.0,
+        160.0,
+        160.0,
+        160.0,
+        160.0,
+        160.0
+      ],
+      "30000": [
+        205.7,
+        213.2,
+        213.2,
+        213.2,
+        213.2,
+        213.2,
+        213.2,
+        213.2,
+        213.2,
+        240.0,
+        240.0,
+        240.0,
+        240.0,
+        240.0
+      ],
+      "50000": [
+        361.7,
+        369.2,
+        369.2,
+        369.2,
+        369.2,
+        369.2,
+        369.2,
+        369.2,
+        369.2,
+        400.0,
+        400.0,
+        400.0,
+        400.0,
+        400.0
+      ]
+    },
+    "046033": {
+      "20000": [
+        160.0,
+        160.0,
+        160.0,
+        160.0,
+        160.0,
+        160.0,
+        160.0,
+        160.0,
+        150.0,
+        150.0,
+        150.0,
+        150.0,
+        150.0,
+        150.0
+      ],
+      "30000": [
+        240.0,
+        240.0,
+        240.0,
+        240.0,
+        240.0,
+        240.0,
+        240.0,
+        240.0,
+        225.0,
+        225.0,
+        225.0,
+        225.0,
+        225.0,
+        225.0
+      ],
+      "50000": [
+        400.0,
+        400.0,
+        400.0,
+        400.0,
+        400.0,
+        400.0,
+        400.0,
+        400.0,
+        375.0,
+        375.0,
+        375.0,
+        375.0,
+        375.0,
+        375.0
+      ]
+    }
+  },
+  "qualityGate": {
+    "status": "PASS",
+    "note": "Anno 2025 identico ai valori pubblicati per i 7 Comuni nei tre scenari."
+  },
+  "acquisitionEvidence": {
+    "script": "scripts/update_source_data.py mef-irpef-history",
+    "where": "runner GitHub Actions"
+  }
+}
