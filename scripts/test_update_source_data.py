@@ -927,6 +927,20 @@ def imu_benchmark_cases() -> None:
     assert imb.resumable(prev, 2026, "italia-2", {**src, "posas": {"url": "p", "sha256": "c"}}) == {}
     assert imb.resumable(None, 2026, "italia-2", src) == {}
 
+    # Elenchi dallo snapshot precedente (lettura fuori dalla CI): nessuno scaricamento Istat/POSAS, stesse impronte.
+    full = {"year": 2026, "scope": "italia-2", "sources": src, "towns": {
+        k: {**v, "catastale": f"Z{i}", "residents": 100 + i} for i, (k, v) in enumerate(prev["towns"].items()) if v["status"] != "error"}}
+    def no_net(url):
+        raise AssertionError(f"scaricamento inatteso: {url}")
+    snap = imb.build_snapshot(2026, no_net, lambda raw: "", scope="italia-2", previous=full, reuse_lists=True)
+    assert snap["sources"] == src and len(snap["towns"]) == 3 and snap["towns"]["015146"]["residents"] == 100, snap
+    for bad in (None, {**full, "scope": "italia-3"}):
+        try:
+            imb.build_snapshot(2026, no_net, lambda raw: "", scope="italia-2", previous=bad, reuse_lists=True)
+            raise AssertionError("elenchi senza snapshot del gruppo accettati")
+        except imb.ImuBenchmarkError:
+            pass
+
 
 def pharmacy_history_cases() -> None:
     """Farmacie: sedi univoche valide al 31/12 dagli intervalli; 2025 = pubblicato; 2024 = file di fine 2024 se online."""

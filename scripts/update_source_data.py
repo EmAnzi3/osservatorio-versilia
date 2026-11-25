@@ -998,7 +998,8 @@ def update_infancy_history(dry_run: bool, fetch=None) -> Changes:
 
 # ------------------------------------------------------------------ MEF: confronto IMU seconda casa (Toscana)
 
-def update_imu_benchmark(year: int, scope: str, dry_run: bool, fetch=None) -> Changes:
+def update_imu_benchmark(year: int, scope: str, dry_run: bool, fetch=None, reuse_lists: bool = False,
+                         deadline: float | None = None) -> Changes:
     """Aliquota IMU di una seconda casa vuota dai prospetti MEF di ogni Comune dell'ambito; media pesata per i residenti."""
     import imu_benchmarks as imb
     import irpef_benchmarks as ib
@@ -1022,7 +1023,8 @@ def update_imu_benchmark(year: int, scope: str, dry_run: bool, fetch=None) -> Ch
         else:
             path = ROOT / imb.SNAPSHOT.format(year=year, scope=scope)
             previous = json.loads(path.read_text(encoding="utf-8")) if path.exists() else None
-            snapshot = imb.build_snapshot(year, get, lambda raw: mef.pdf_text(raw)[0], scope=scope, previous=previous)
+            snapshot = imb.build_snapshot(year, get, lambda raw: mef.pdf_text(raw)[0], scope=scope, previous=previous,
+                                           reuse_lists=reuse_lists, deadline=imb.DEADLINE if deadline is None else deadline)
     except (imb.ImuBenchmarkError, ib.IrpefBenchmarkError, RuntimeError) as error:
         raise UpdateError(f"Confronto IMU: {error}") from error
     if snapshot["qualityGate"]["status"] != "PASS":
@@ -1031,7 +1033,11 @@ def update_imu_benchmark(year: int, scope: str, dry_run: bool, fetch=None) -> Ch
     b = snapshot["benchmark"]
     changes.note(f"{imb.METRIC} {scope} {year}", None, b["value"])
     changes.note(f"{imb.METRIC} {scope} Comuni letti", None, f"{b['municipalities']}/{b['municipalitiesTotal']} ({b['populationShare']:.1%})")
-    snapshot["acquisitionEvidence"] = {"script": f"scripts/update_source_data.py mef-imu-benchmark --year {year} --scope {scope}"}
+    import os
+    snapshot["acquisitionEvidence"] = {"script": f"scripts/update_source_data.py mef-imu-benchmark --year {year} --scope {scope}",
+                                       "where": "runner GitHub Actions" if os.environ.get("GITHUB_ACTIONS") else
+                                       "fuori dalla CI: il MEF limita le richieste dai runner GitHub dopo circa 100 Comuni"
+                                       + ("; elenchi Istat/POSAS dallo snapshot scaricato in CI" if reuse_lists else "")}
     if not dry_run:
         save(ROOT / imb.SNAPSHOT.format(year=year, scope=scope), snapshot)
     return changes
@@ -1860,6 +1866,8 @@ def main() -> int:
     imu_p.add_argument("--scope", choices=("toscana", "italia-1", "italia-2", "italia-3", "italia-4", "italia"), default="toscana",
                        help="toscana; italia-1…4 = gruppi di regioni (una corsa ciascuno); italia = unione dei quattro gruppi")
     imu_p.add_argument("--dry-run", action="store_true")
+    imu_p.add_argument("--reuse-lists", action="store_true", help="elenchi Istat/POSAS dallo snapshot del gruppo (lettura fuori dalla CI)")
+    imu_p.add_argument("--deadline", type=float, help="secondi per i prospetti (predefinito 65 minuti)")
     ph_p = sub.add_parser("salute-pharmacies-history", help="serie delle farmacie ogni 1.000 residenti (Ministero della Salute)")
     ph_p.add_argument("--dry-run", action="store_true")
     ih_p.add_argument("--dry-run", action="store_true")
@@ -1898,7 +1906,7 @@ def main() -> int:
         elif args.updater == "toscana-infancy-history":
             update_infancy_history(args.dry_run).report("Serie prima infanzia:")
         elif args.updater == "mef-imu-benchmark":
-            update_imu_benchmark(args.year, args.scope, args.dry_run).report("Confronto IMU:")
+            update_imu_benchmark(args.year, args.scope, args.dry_run, reuse_lists=args.reuse_lists, deadline=args.deadline).report("Confronto IMU:")
         elif args.updater == "salute-pharmacies-history":
             update_pharmacy_history(args.dry_run).report("Serie farmacie:")
         elif args.updater == "asia-micro-units-history":

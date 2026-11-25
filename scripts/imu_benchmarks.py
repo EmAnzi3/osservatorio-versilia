@@ -203,14 +203,27 @@ def resumable(previous: dict[str, Any] | None, year: int, scope: str, sources: d
 
 
 def build_snapshot(year: int, fetch: Callable[[str], bytes], pdf_text: Callable[[bytes], str], scope: str = "toscana",
-                   deadline: float = DEADLINE, previous: dict[str, Any] | None = None) -> dict[str, Any]:
+                   deadline: float = DEADLINE, previous: dict[str, Any] | None = None,
+                   reuse_lists: bool = False) -> dict[str, Any]:
+    """`reuse_lists`: elenco dei Comuni, residenti e impronte Istat/POSAS presi dallo snapshot precedente dello stesso
+    gruppo (già scaricati in CI) invece che riscaricati; serve a leggere i prospetti fuori dalla CI, dove Istat non è
+    raggiungibile. Si rileggono solo i prospetti MEF."""
     if scope not in SCOPES:
         raise ImuBenchmarkError(f"ambito sconosciuto: {scope}")
     regions = set(SCOPES[scope])
-    istat_raw, posas_raw = fetch(ib.ISTAT_URL), fetch(ib.POSAS_URL.format(year=year))
-    codes = ib.istat_codes(istat_raw)
-    residents = ib.posas_totals(posas_raw)
-    towns = {cc: istat for cc, (istat, region) in codes.items() if region in regions}
+    if reuse_lists:
+        if not previous or previous.get("year") != year or previous.get("scope") != scope:
+            raise ImuBenchmarkError(f"nessuno snapshot precedente del gruppo {scope} {year} da cui riprendere gli elenchi")
+        towns = {v["catastale"]: k for k, v in previous["towns"].items()}
+        residents = {k: v.get("residents") for k, v in previous["towns"].items()}
+        sources = previous["sources"]
+    else:
+        istat_raw, posas_raw = fetch(ib.ISTAT_URL), fetch(ib.POSAS_URL.format(year=year))
+        codes = ib.istat_codes(istat_raw)
+        residents = ib.posas_totals(posas_raw)
+        towns = {cc: istat for cc, (istat, region) in codes.items() if region in regions}
+        sources = {"istat": {"url": ib.ISTAT_URL, "sha256": hashlib.sha256(istat_raw).hexdigest()},
+                   "posas": {"url": ib.POSAS_URL.format(year=year), "sha256": hashlib.sha256(posas_raw).hexdigest()}}
     if TUSCANY in regions:
         for istat, cc in TOWNS.items():
             if towns.get(cc) != istat:
@@ -222,8 +235,6 @@ def build_snapshot(year: int, fetch: Callable[[str], bytes], pdf_text: Callable[
         except Exception as error:  # noqa: BLE001 - un Comune illeggibile resta fuori, con il motivo
             return {"status": "error", "reason": f"{type(error).__name__}: {error}"[:300]}
 
-    sources = {"istat": {"url": ib.ISTAT_URL, "sha256": hashlib.sha256(istat_raw).hexdigest()},
-               "posas": {"url": ib.POSAS_URL.format(year=year), "sha256": hashlib.sha256(posas_raw).hexdigest()}}
     kept = resumable(previous, year, scope, sources)
     order = sorted(towns.items())
     todo = [cc for cc, istat in order if istat not in kept]

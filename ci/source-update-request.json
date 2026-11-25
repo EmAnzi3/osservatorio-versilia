@@ -31,8 +31,13 @@
   "mefImuBenchmark": [
     {
       "year": 2026,
-      "scope": "italia-2",
-      "pass": 2
+      "scope": "italia-3",
+      "deadline": 120
+    },
+    {
+      "year": 2026,
+      "scope": "italia-4",
+      "deadline": 120
     }
   ]
 }
