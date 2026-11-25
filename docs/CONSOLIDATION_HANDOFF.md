@@ -1,5 +1,13 @@
 # Consolidamento Osservatorio Versilia — handoff operativo
 
+## Storici e confronti rimasti indietro; addizionale IRPEF 2012–2025 (25 novembre 2026)
+
+- Verifica A3 sul sito pubblicato (228 indicatori): nessun dato acquisito fuori dal sito. Storici: 137 pubblicati, 59 disponibili alla fonte e non acquisiti, 26 senza anni passati alla fonte, 6 non applicabili. Confronti Toscana/Italia: 163 pubblicati (53 solo Toscana, quasi tutti ARS), 53 disponibili non acquisiti, 12 senza dato confrontabile. Ordine deciso con Ema: storico IRPEF e fasce di reddito, confronto TARI, storico edilizia scolastica, storico RSA e OMI; aggiornamenti di Chiedi dopo.
+- `scripts/irpef_history.py`: elenchi MEF annuali delle aliquote (`download.php?anno=A`, pubblicati dal 2007), stessa regola di `irpef_benchmarks.rule/amount`. Negli elenchi più vecchi si uniformano solo varianti di scrittura (`WORDING`: «aliquota ordinaria», «sino a», «superiori a»/«maggiore di», «applicabile a» ripetuto, migliaia con la virgola, simbolo €), registrate per Comune e anno in `wording`; l'anno corrente non ne deve avere. Solo anni consecutivi con 7/7 leggibili: 2012–2025 (nel 2011 Pietrasanta ha scaglioni riservati a una classe di reddito, `stoppedAt`).
+- Aggiornatore `mef-irpef-history` (richiesta `mefIrpefHistory`, corsa del bot sul runner), snapshot `mef-irpef-serie.json`, materializzatore `materialize_irpef_history.py` (dichiarato in `ci/build-materialization-contract.json`): `componentSeries` per scenario, `series` = 20.000 €.
+- Chiedi: l'adattatore dei tributi accetta nel catalogo costruito solo la serie uguale allo snapshot fissato (`municipal_tax#9/#10`), nel catalogo sorgente solo il 2025; le operazioni sul tempo restano bloccate (`municipal_tax_single_snapshot_no_history`) fino agli aggiornamenti di Chiedi.
+- Fasce di reddito: lo storico si ricava dagli stessi archivi MEF comunali, ma il tipo `distribution` non mostra serie per parte: serve una modifica del frontend con anteprima.
+
 ## IMU seconda casa: confronto Italia in quattro gruppi di regioni (24 novembre 2026)
 
 - Toscana: 273 Comuni in circa 25 minuti di CI (≈5,6 s a Comune). Italia (≈7.900 Comuni) in sequenza ≈12 ore, oltre il limite di 90 minuti del job.

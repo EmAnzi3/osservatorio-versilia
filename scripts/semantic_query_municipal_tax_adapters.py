@@ -11,13 +11,14 @@ COSTS = 'data/source-snapshots/costi-fiscalita-validated-2026-08.json'
 COSTS_2026 = 'data/source-snapshots/costi-fiscalita-2026.json'
 RULES = 'data/source-snapshots/costi-fiscalita-redditi-draft-2026-08.json'
 IMU_BENCHMARK = 'data/source-snapshots/mef-imu-benchmark-toscana-2026.json'
+IRPEF_HISTORY = 'data/source-snapshots/mef-irpef-serie.json'
 SCENARIOS = (20000, 30000, 50000)
 PATHS = {TARI:COSTS_2026, IMU:COSTS_2026, IRPEF:RULES}
 YEARS = {TARI:2026, IMU:2026, IRPEF:2025}
 PRIOR = COSTS  # 2025 value kept as the first point of the TARI/IMU catalogue series
 URLS = {TARI:'https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_at/', IMU:'https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_imu/', IRPEF:'https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_addcomirpef/'}
 UNITS = {TARI:'currency2', IMU:'currency', IRPEF:'currency2'}
-HASHES = {'data/source-snapshots/costi-fiscalita-validated-2026-08.json': (_pin('municipal_tax#1'), _pin('municipal_tax#2')), 'data/source-snapshots/costi-fiscalita-redditi-draft-2026-08.json': (_pin('municipal_tax#3'), _pin('municipal_tax#4')), 'data/source-snapshots/costi-fiscalita-2026.json': (_pin('municipal_tax#5'), _pin('municipal_tax#6'))}
+HASHES = {'data/source-snapshots/costi-fiscalita-validated-2026-08.json': (_pin('municipal_tax#1'), _pin('municipal_tax#2')), 'data/source-snapshots/costi-fiscalita-redditi-draft-2026-08.json': (_pin('municipal_tax#3'), _pin('municipal_tax#4')), 'data/source-snapshots/costi-fiscalita-2026.json': (_pin('municipal_tax#5'), _pin('municipal_tax#6')), 'data/source-snapshots/mef-irpef-serie.json': (_pin('municipal_tax#9'), _pin('municipal_tax#10'))}
 FORMULAS = {'tariStandardHousehold': '100 m² × quota fissa + quota variabile per 3 componenti; TEFA 5%; + 7,60 € di componenti perequative ARERA 2026.', 'municipalImuStandard': '100.000 € × aliquota IMU 2026 per un’abitazione «a disposizione» (non locata né in comodato) se il prospetto la prevede, altrimenti «Altri fabbricati».', 'municipalIrpef': "Per ciascuno scenario: se il reddito imponibile non supera la soglia di esenzione, imposta = 0; altrimenti si applicano all'intero imponibile l'aliquota unica o gli scaglioni progressivi pubblicati dal MEF."}
 NOTES = ['municipal_tax_standard_scenarios_not_personal_bill_or_revenue',
          'municipal_tax_arithmetic_mean_each_municipality_equal_weight',
@@ -98,6 +99,26 @@ def context(metric, key, dim):
                 nativeComponentsAvailable=False,adapter='municipal-tax/'+key+'/'+dim+'/v1')
 
 
+def irpef_series(engine, code, expected):
+    """Serie attesa per scenario: solo il 2025 nel catalogo sorgente; nel catalogo costruito esattamente quella
+    dello snapshot fissato degli elenchi MEF annuali (ultimo anno = valori pubblicati, stessi scenari)."""
+    single = {p['selectorLabel']:dict(years=[2025],values=[p['value']]) for p in expected}
+    rows = engine._catalog['metrics'][IRPEF]['rows']
+    if all(len(((r.get('componentSeries') or {}).get(expected[0]['selectorLabel']) or {}).get('years') or []) <= 1 for r in rows):
+        return single
+    snap, _ = frozen(engine, IRPEF_HISTORY)
+    years = snap.get('years') or []
+    if (snap.get('qualityGate',{}).get('status') != 'PASS' or snap.get('scenarios') != list(SCENARIOS) or not years
+            or years[-1] != YEARS[IRPEF] or years != list(range(years[0], years[-1]+1))):
+        raise ValueError('municipal_tax_history_changed')
+    out = {}
+    for n,p in zip(SCENARIOS,expected):
+        values = snap['series'][code][str(n)]
+        if len(values) != len(years) or not all(finite(v) for v in values): raise ValueError('municipal_tax_history_changed')
+        equal(values[-1],p['value']); out[p['selectorLabel']] = dict(years=list(years),values=list(values))
+    return out
+
+
 def validated(engine, key):
     metric = engine._catalog['metrics'][key]; context(metric,key,'total')
     snap, ref = frozen(engine,PATHS[key]); raw = snap['municipalIrpef' if key == IRPEF else 'tari' if key == TARI else 'imu']
@@ -131,7 +152,7 @@ def validated(engine, key):
             if native['code'] != code: raise ValueError('municipal_tax_identity_or_period_changed')
             amounts = [irpef_amount(native,n) for n in SCENARIOS]; value = amounts[0]
             expected = [dict(label=f'Reddito imponibile {n:,.0f} €'.replace(',','.'),selectorLabel=f'{n:,.0f} €'.replace(',','.'),value=a,unit='currency2') for n,a in zip(SCENARIOS,amounts)]
-            if any(not finite(p.get('value')) for p in row.get('parts',[])) or any(not finite(v) for s in (row.get('componentSeries') or {}).values() for v in s.get('values',[])) or row.get('parts') != expected or row.get('componentSeries') != {p['selectorLabel']:dict(years=[2025],values=[p['value']]) for p in expected}:
+            if any(not finite(p.get('value')) for p in row.get('parts',[])) or any(not finite(v) for s in (row.get('componentSeries') or {}).values() for v in s.get('values',[])) or row.get('parts') != expected or row.get('componentSeries') != irpef_series(engine,code,expected):
                 raise ValueError('municipal_tax_scenarios_changed')
             for i,(n,a) in enumerate(zip(SCENARIOS,amounts)):
                 equal(native['amounts'][str(n)],a); scenario_values[i].append(a)
@@ -142,7 +163,7 @@ def validated(engine, key):
                 for field,wanted in [('scenarioIncome',20000),('absolute',value),('normalized',value/20000*100)]: equal(companion.get(field),wanted)
         equal(row.get('value'),value); equal(row.get('benchmarkValue'),value);values.append(value)
         history = row.get('series')
-        if key == IRPEF: wanted = dict(years=[2025],values=[value])
+        if key == IRPEF: wanted = dict(irpef_series(engine,code,expected)[expected[0]['selectorLabel']])
         else:
             # IMU 2025: prospetto 2025 corretto se lo snapshot 2026 lo riporta (Pietrasanta, «abitazione a disposizione»).
             corrected = native.get('prior2025') if key == IMU else None
