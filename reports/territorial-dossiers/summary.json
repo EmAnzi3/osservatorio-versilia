@@ -1,7 +1,7 @@
 {
   "schemaVersion": 3,
   "status": "PASS",
-  "catalogSha256": "4cb3dae83ea20f52b30a5b47efddabdfe75ab9d5f01b8aaa987a1c33e74ac2fc",
+  "catalogSha256": "2c8484895f00ea759eb7b879fff1995027d0cbffadec535b69ea77725e6fa8e0",
   "engineSha256": "2519d6290cf0fb833369f249b766097dc732ce783a062a5b012ab51a8849ceb7",
   "programSha256": "c37e0defcade0ebdcb768631ba0f99d4413e5718b869e4c3ca7c66b196a2a109",
   "limits": [
@@ -17,7 +17,7 @@
   "expectedRefusals": 91,
   "unexpectedFailures": 0,
   "baselineQuestions": 20,
-  "evidenceSha256": "a0f4d5c4a1bd58a8a65a70c48354edcfd1d3e7050de65f3ef757fdb40708f333",
+  "evidenceSha256": "44dc29de43b5e1967b86301fa2df046e12a08a1668e847d9d993c2f8ed39151b",
   "evidenceHashFormat": "UTF-8, sorted JSON keys, indent 2, trailing LF; declared catalog locations addressed by matching SHA256; distinct source paths and all pointers preserved",
   "baselineQuestionsSha256": "a90db8e808a49542860fe74cc3db2c92a6372d6e3354b61f8644decfebcc92ca",
   "questionPlans": 51,
