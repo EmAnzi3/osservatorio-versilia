@@ -28,5 +28,6 @@
   "mefIrpefBenchmarks": [],
   "toscanaInfancyHistory": false,
   "salutePharmaciesHistory": false,
-  "mefImuBenchmark": []
+  "mefImuBenchmark": [],
+  "mefIrpefHistory": true
 }
