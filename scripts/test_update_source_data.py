@@ -1154,7 +1154,7 @@ def income_distribution_history_cases() -> None:
                            "rows": [{"town": n, "code": c, "parts": [{"label": str(i), "value": v} for i, v in enumerate(published[c])]} for c, n in idh.TOWNS.items()]}}
     idh.apply(metric, snap, idh.SNAPSHOT)
     row = metric[idh.METRIC]["rows"][1]
-    assert row["series"] == row["componentSeries"]["part-0"] and row["componentSeries"]["part-0"]["values"][2] is None
+    assert row["series"] == row["componentSeries"]["part-0"] and 2015 not in row["series"]["years"] and None not in row["series"]["values"]
     assert "Forte dei Marmi 2015" in metric[idh.METRIC]["method"]["historyNote"]
     bad = dict(published); bad["046005"] = [50.0, 30.0, 15.0, 5.0]
     try:

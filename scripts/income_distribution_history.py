@@ -145,7 +145,9 @@ def apply(metrics: dict[str, dict[str, Any]], snapshot: dict[str, Any], path: st
         for values, part in zip(series, row["parts"]):
             if not math.isclose(values[-1], part["value"], rel_tol=0, abs_tol=1e-9):
                 raise IncomeDistributionError(f"{row['town']} {part['label']}: serie {values[-1]} ≠ valore {part['value']}")
-        row["componentSeries"] = {f"part-{g}": {"years": list(years), "values": list(values)} for g, values in enumerate(series)}
+        # gli anni n.d. (classe intermedia oscurata) si omettono: le serie pubblicate non contengono valori nulli
+        row["componentSeries"] = {f"part-{g}": {"years": [y for y, v in zip(years, values) if v is not None],
+                                                "values": [v for v in values if v is not None]} for g, values in enumerate(series)}
         row["series"] = dict(row["componentSeries"]["part-0"])
     metric["meta"].setdefault("sourceMeta", {})["historySnapshot"] = path
     masked = sorted({f"{TOWNS[c]} {y}" for c, t in snapshot["towns"].items() for y, d in t.items() if d["shares"] is None})
