@@ -193,8 +193,17 @@ def read_all(codes: list[str], read: Callable[[str], dict[str, Any]], deadline: 
     return [dict(done[c]) if c in done else {"status": "error", "reason": "non letto entro il tempo della corsa"} for c in codes]
 
 
+def resumable(previous: dict[str, Any] | None, year: int, scope: str, sources: dict[str, Any]) -> dict[str, dict[str, Any]]:
+    """Comuni già letti in una corsa precedente dello stesso gruppo (stessi anno ed elenchi Istat e POSAS): si tengono
+    gli esiti definitivi (letto, prospetto assente, prospetto ambiguo) e si rileggono solo gli errori di lettura. Così un
+    gruppo rallentato dal sito del MEF si completa in più corse senza rileggere quanto già acquisito."""
+    if not previous or previous.get("year") != year or previous.get("scope") != scope or previous.get("sources") != sources:
+        return {}
+    return {k: v for k, v in previous.get("towns", {}).items() if v.get("status") != "error"}
+
+
 def build_snapshot(year: int, fetch: Callable[[str], bytes], pdf_text: Callable[[bytes], str], scope: str = "toscana",
-                   deadline: float = DEADLINE) -> dict[str, Any]:
+                   deadline: float = DEADLINE, previous: dict[str, Any] | None = None) -> dict[str, Any]:
     if scope not in SCOPES:
         raise ImuBenchmarkError(f"ambito sconosciuto: {scope}")
     regions = set(SCOPES[scope])
@@ -213,15 +222,19 @@ def build_snapshot(year: int, fetch: Callable[[str], bytes], pdf_text: Callable[
         except Exception as error:  # noqa: BLE001 - un Comune illeggibile resta fuori, con il motivo
             return {"status": "error", "reason": f"{type(error).__name__}: {error}"[:300]}
 
+    sources = {"istat": {"url": ib.ISTAT_URL, "sha256": hashlib.sha256(istat_raw).hexdigest()},
+               "posas": {"url": ib.POSAS_URL.format(year=year), "sha256": hashlib.sha256(posas_raw).hexdigest()}}
+    kept = resumable(previous, year, scope, sources)
     order = sorted(towns.items())
-    results = read_all([cc for cc, _ in order], read, deadline)
+    todo = [cc for cc, istat in order if istat not in kept]
+    print(f"  prospetti IMU: {len(order) - len(todo)} Comuni ripresi dalla corsa precedente, {len(todo)} da leggere")
+    results = dict(zip(todo, read_all(todo, read, deadline)))
     rows: dict[str, dict[str, Any]] = {}
-    for (cc, istat), r in zip(order, results):
+    for cc, istat in order:
+        r = dict(kept[istat]) if istat in kept else results[cc]
         r["catastale"] = cc
         r["residents"] = residents.get(istat)
         rows[istat] = r
-    sources = {"istat": {"url": ib.ISTAT_URL, "sha256": hashlib.sha256(istat_raw).hexdigest()},
-               "posas": {"url": ib.POSAS_URL.format(year=year), "sha256": hashlib.sha256(posas_raw).hexdigest()}}
     snap = _summary(year, scope, rows, sources)
     snap["regions"] = sorted(regions)
     if scope == "toscana":

@@ -1020,7 +1020,9 @@ def update_imu_benchmark(year: int, scope: str, dry_run: bool, fetch=None) -> Ch
                 parts[name] = json.loads(path.read_text(encoding="utf-8"))
             snapshot = imb.combine(year, parts)
         else:
-            snapshot = imb.build_snapshot(year, get, lambda raw: mef.pdf_text(raw)[0], scope=scope)
+            path = ROOT / imb.SNAPSHOT.format(year=year, scope=scope)
+            previous = json.loads(path.read_text(encoding="utf-8")) if path.exists() else None
+            snapshot = imb.build_snapshot(year, get, lambda raw: mef.pdf_text(raw)[0], scope=scope, previous=previous)
     except (imb.ImuBenchmarkError, ib.IrpefBenchmarkError, RuntimeError) as error:
         raise UpdateError(f"Confronto IMU: {error}") from error
     if snapshot["qualityGate"]["status"] != "PASS":

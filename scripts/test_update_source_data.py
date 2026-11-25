@@ -916,6 +916,17 @@ def imu_benchmark_cases() -> None:
     gate.set()
     assert [g["status"] for g in got] == ["ok", "error", "ok"] and "tempo" in got[1]["reason"] and "non letti" in log[-1], (got, log)
 
+    # Ripresa: si tengono gli esiti definitivi della corsa precedente dello stesso gruppo, si rileggono solo gli errori;
+    # con anno, ambito o elenchi diversi non si riprende nulla.
+    src = {"istat": {"url": "u", "sha256": "a"}, "posas": {"url": "p", "sha256": "b"}}
+    prev = {"year": 2026, "scope": "italia-2", "sources": src, "towns": {
+        "015146": {"status": "ok", "ratePercent": 1.06}, "015002": {"status": "missing"},
+        "015003": {"status": "ambiguous"}, "015004": {"status": "error", "reason": "timed out"}}}
+    assert sorted(imb.resumable(prev, 2026, "italia-2", src)) == ["015002", "015003", "015146"]
+    assert imb.resumable(prev, 2026, "italia-3", src) == {} and imb.resumable(prev, 2025, "italia-2", src) == {}
+    assert imb.resumable(prev, 2026, "italia-2", {**src, "posas": {"url": "p", "sha256": "c"}}) == {}
+    assert imb.resumable(None, 2026, "italia-2", src) == {}
+
 
 def pharmacy_history_cases() -> None:
     """Farmacie: sedi univoche valide al 31/12 dagli intervalli; 2025 = pubblicato; 2024 = file di fine 2024 se online."""
