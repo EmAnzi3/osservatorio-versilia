@@ -237,7 +237,8 @@ def build_snapshot(year: int, fetch: Callable[[str], bytes], pdf_text: Callable[
 
     kept = resumable(previous, year, scope, sources)
     order = sorted(towns.items())
-    todo = [cc for cc, istat in order if istat not in kept]
+    # Prima i Comuni della Versilia: una corsa breve (scadenza ridotta o sito lento) li legge comunque.
+    todo = sorted((cc for cc, istat in order if istat not in kept), key=lambda cc: cc not in TOWNS.values())
     print(f"  prospetti IMU: {len(order) - len(todo)} Comuni ripresi dalla corsa precedente, {len(todo)} da leggere")
     results = dict(zip(todo, read_all(todo, read, deadline)))
     rows: dict[str, dict[str, Any]] = {}
