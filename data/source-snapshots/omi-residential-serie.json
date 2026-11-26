@@ -13,9 +13,83 @@
     "Forte dei Marmi",
     "Stazzema"
   ],
+  "partial": {
+    "046018": [
+      {
+        "semester": "2026-S1",
+        "zones": {
+          "B1": {
+            "sale": 1625.0,
+            "rent": 6.0
+          },
+          "D1": {
+            "sale": 1525.0,
+            "rent": 5.5
+          },
+          "D2": {
+            "sale": 1750.0,
+            "rent": 6.2
+          },
+          "D3": {
+            "sale": 1725.0,
+            "rent": 5.95
+          },
+          "D4": {
+            "sale": 1450.0,
+            "rent": 5.45
+          },
+          "R1": {
+            "sale": 1350.0,
+            "rent": 3.6
+          },
+          "R2": {
+            "sale": 1350.0,
+            "rent": 3.6
+          }
+        },
+        "saleMean": 1539.2857142857142,
+        "rentMean": 5.185714285714285
+      },
+      {
+        "semester": "2025-S2",
+        "zones": {
+          "B1": {
+            "sale": 1575.0,
+            "rent": 6.0
+          },
+          "D1": {
+            "sale": 1500.0,
+            "rent": 5.45
+          },
+          "D2": {
+            "sale": 1775.0,
+            "rent": 6.2
+          },
+          "D3": {
+            "sale": 1700.0,
+            "rent": 5.95
+          },
+          "D4": {
+            "sale": 1500.0,
+            "rent": 5.45
+          },
+          "R1": {
+            "sale": 1350.0,
+            "rent": 3.6
+          },
+          "R2": {
+            "sale": 1350.0,
+            "rent": 3.6
+          }
+        },
+        "saleMean": 1535.7142857142858,
+        "rentMean": 5.178571428571429
+      }
+    ]
+  },
   "qualityGate": {
     "status": "INCOMPLETE",
-    "note": "Comuni da leggere: Massarosa, Viareggio, Camaiore, Pietrasanta, Seravezza, Forte dei Marmi, Stazzema"
+    "note": "Comuni da leggere: Massarosa (2 semestri già letti), Viareggio (0 semestri già letti), Camaiore (0 semestri già letti), Pietrasanta (0 semestri già letti), Seravezza (0 semestri già letti), Forte dei Marmi (0 semestri già letti), Stazzema (0 semestri già letti)"
   },
   "acquisitionEvidence": {
     "script": "scripts/update_source_data.py omi-history",
