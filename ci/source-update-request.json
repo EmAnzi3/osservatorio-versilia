@@ -30,5 +30,6 @@
   "salutePharmaciesHistory": false,
   "mefImuBenchmark": [],
   "mefIrpefHistory": false,
-  "mefIncomeDistributionHistory": false
+  "mefIncomeDistributionHistory": false,
+  "omiHistory": true
 }
