@@ -13,6 +13,7 @@ ferma. Il semestre pubblicato deve riprodurre esattamente i valori di zona del c
 from __future__ import annotations
 
 import math
+import time
 from datetime import date
 from typing import Any, Callable
 
@@ -81,19 +82,42 @@ def town_series(reader: Callable[[str], list[dict[str, Any]]], codes: Callable[[
     return points[::-1], stop
 
 
-def build_snapshot(session: Any, site: dict[str, Any]) -> dict[str, Any]:
+def build_snapshot(session: Any, site: dict[str, Any], previous: dict[str, Any] | None = None, deadline: float | None = None) -> dict[str, Any]:
+    """Legge i Comuni mancanti; quelli già completi in `previous` (stesso semestre pubblicato) si riprendono.
+
+    La consultazione rallenta dopo molte richieste: se un Comune non si legge o scade `deadline` (secondi),
+    lo snapshot resta INCOMPLETE con i Comuni letti, e la corsa successiva riparte dagli altri.
+    """
+    started = time.monotonic()
     metric = site["metrics"][METRIC]
     last = omi.label_semester(metric["meta"]["year"])
     available = sorted(omi.semesters(session), reverse=True)
     if last not in available:
         raise OmiHistoryError(f"semestre pubblicato {last} assente dalla consultazione")
     cadastral = omi.town_codes(session)
+    kept = previous["towns"] if previous and previous.get("lastSemester") == last else {}
     towns: dict[str, Any] = {}
+    pending: list[str] = []
     for row in metric["rows"]:
+        if row["code"] in kept:
+            towns[row["code"]] = kept[row["code"]]
+            continue
+        if pending or (deadline is not None and time.monotonic() - started > deadline):
+            pending.append(row["town"])
+            continue
         co = cadastral[row["town"]]
         published = {z["code"]: {"sale": z["sale"], "rent": z["rent"]} for z in row["zones"]}
-        points, stop = town_series(lambda s: read_town(session, s, co), lambda s: zone_codes(session, s, co), available, published, last)
+        try:
+            points, stop = town_series(lambda s: read_town(session, s, co), lambda s: zone_codes(session, s, co), available, published, last)
+        except omi.OmiError as error:
+            if "non raggiungibile" not in str(error):
+                raise
+            pending.append(row["town"])
+            continue
         towns[row["code"]] = {"town": row["town"], "semesters": [p["semester"] for p in points], "points": points, "stoppedAt": stop}
+    if pending:
+        return {"schemaVersion": 1, "metric": METRIC, "lastSemester": last, "retrieved": date.today().isoformat(), "towns": towns,
+                "pending": pending, "qualityGate": {"status": "INCOMPLETE", "note": "Comuni da leggere: " + ", ".join(pending)}}
     common = sorted(set.intersection(*(set(t["semesters"]) for t in towns.values())))
     return {
         "schemaVersion": 1, "version": f"omi-residential-serie-{last}-v1", "retrieved": date.today().isoformat(),

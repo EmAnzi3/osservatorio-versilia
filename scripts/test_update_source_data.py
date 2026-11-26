@@ -1201,6 +1201,29 @@ def omi_history_cases() -> None:
     row = metrics[oh.METRIC]["rows"][0]
     assert row["series"] == {"years": ["2025 S2", "2026 S1"], "values": [1300.0, 1312.5]} and row["componentSeries"]["rent"]["values"] == [5.0, 5.0]
     assert "Forte dei Marmi" in metrics[oh.METRIC]["method"]["historyNote"]
+    # Ripresa: un Comune non raggiungibile lascia lo snapshot INCOMPLETE; la corsa dopo riprende i Comuni letti.
+    saved = (oh.omi.semesters, oh.omi.town_codes, oh.read_town, oh.zone_codes)
+    calls = []
+    def flaky(session, sem, co):
+        calls.append(co)
+        if co == "D730" and session == "giù":
+            raise oh.omi.OmiError("consultazione OMI non raggiungibile (x): timed out")
+        return reader(sem)
+    try:
+        oh.omi.semesters = lambda session: list(sems)
+        oh.omi.town_codes = lambda session: {"Massarosa": "F035", "Forte dei Marmi": "D730"}
+        oh.read_town, oh.zone_codes = flaky, lambda session, sem, co: codes(sem)
+        site = {"metrics": {oh.METRIC: {"meta": {"year": "1° semestre 2026", "source": "OMI"}, "rows": [
+            {"town": "Massarosa", "code": "046018", "zones": [{"code": c, **v} for c, v in published.items()]},
+            {"town": "Forte dei Marmi", "code": "046013", "zones": [{"code": c, **v} for c, v in published.items()]}]}}}
+        first = oh.build_snapshot("giù", site)
+        assert first["qualityGate"]["status"] == "INCOMPLETE" and first["pending"] == ["Forte dei Marmi"] and "046018" in first["towns"]
+        calls.clear()
+        second = oh.build_snapshot("su", site, first)
+        assert second["qualityGate"]["status"] == "PASS" and set(calls) == {"D730"}, calls
+        assert second["commonSemesters"] == ["2025-S1", "2025-S2", "2026-S1"]
+    finally:
+        oh.omi.semesters, oh.omi.town_codes, oh.read_town, oh.zone_codes = saved
 
 
 def irpef_history_cases() -> None:

@@ -23,7 +23,11 @@ def main() -> None:
         return
     data = json.loads(DATA.read_text(encoding="utf-8"))
     snapshot = json.loads(path.read_text(encoding="utf-8"))
-    if snapshot.get("qualityGate", {}).get("status") != "PASS":
+    status = snapshot.get("qualityGate", {}).get("status")
+    if status == "INCOMPLETE":
+        print("Serie OMI: lettura ancora incompleta, nessuna serie")
+        return
+    if status != "PASS":
         raise RuntimeError("Serie OMI: snapshot senza controllo di qualità")
     import update_omi as omi
     if snapshot["lastSemester"] != omi.label_semester(data["metrics"][ih.METRIC]["meta"]["year"]):
