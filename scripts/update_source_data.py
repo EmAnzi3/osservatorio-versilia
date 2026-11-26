@@ -989,7 +989,8 @@ def update_omi_history(dry_run: bool, session: Any = None, deadline: float | Non
     for code, town in snapshot["towns"].items():
         changes.note(f"OMI {town['town']} semestri", None, f"{town['semesters'][0]}–{town['semesters'][-1]}")
     snapshot["acquisitionEvidence"] = {"script": "scripts/update_source_data.py omi-history",
-                                       "where": "runner GitHub Actions" if os.environ.get("GITHUB_ACTIONS") else "fuori dalla CI"}
+                                       "where": "runner GitHub Actions" if os.environ.get("GITHUB_ACTIONS") else
+                                       "fuori dalla CI: la consultazione OMI limita le richieste dai runner GitHub (2 semestri in 50 minuti)"}
     if not dry_run:
         save(ROOT / oh.SNAPSHOT, snapshot)
     return changes

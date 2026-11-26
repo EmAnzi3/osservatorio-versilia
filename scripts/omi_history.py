@@ -69,13 +69,18 @@ def town_series(reader: Callable[[str], list[dict[str, Any]]], codes: Callable[[
 
     `done`: semestri già letti in una corsa interrotta (dal più recente); si riparte dal successivo.
     """
-    want_all = sorted(published)
+    want_res = sorted(published)  # il catalogo pubblica solo le zone con la riga residenziale
+    want_all = None  # tutte le zone del semestre pubblicato, comprese quelle senza riga residenziale
     points: list[dict[str, Any]] = list(done or [])
+    if points:
+        want_all = points[0].get("allZones")
     read = {p["semester"] for p in points}
     stop = None
     for semester in [s for s in semesters if s <= last and s not in read]:
         try:
             found = sorted(codes(semester))
+            if semester == last:
+                want_all = found
             zones = reader(semester) if found == want_all else []
         except omi.OmiError as error:
             if "non raggiungibile" not in str(error):
@@ -85,15 +90,15 @@ def town_series(reader: Callable[[str], list[dict[str, Any]]], codes: Callable[[
             stop = f"{semester}: zone {found} diverse da {want_all}"
             break
         residential = {z["code"]: z for z in zones if z["residential"]}
-        if sorted(residential) != want_all:
-            stop = f"{semester}: zone residenziali {sorted(residential)} diverse da {want_all}"
+        if sorted(residential) != want_res:
+            stop = f"{semester}: zone residenziali {sorted(residential)} diverse da {want_res}"
             break
         if semester == last:
             for code, value in published.items():
                 for field in ("sale", "rent"):
                     if not math.isclose(residential[code][field], value[field], rel_tol=0, abs_tol=1e-9):
                         raise OmiHistoryError(f"{last} {code} {field}: fonte {residential[code][field]} ≠ pubblicato {value[field]}")
-        points.append({"semester": semester, "zones": {c: {"sale": z["sale"], "rent": z["rent"]} for c, z in sorted(residential.items())},
+        points.append({"semester": semester, **({"allZones": found} if semester == last else {}), "zones": {c: {"sale": z["sale"], "rent": z["rent"]} for c, z in sorted(residential.items())},
                        "saleMean": math.fsum(z["sale"] for z in residential.values()) / len(residential),
                        "rentMean": math.fsum(z["rent"] for z in residential.values()) / len(residential)})
     if not points or points[0]["semester"] != last:

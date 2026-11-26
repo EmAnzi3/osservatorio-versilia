@@ -31,6 +31,5 @@
   "mefImuBenchmark": [],
   "mefIrpefHistory": false,
   "mefIncomeDistributionHistory": false,
-  "omiHistory": true,
-  "pass": 3
+  "omiHistory": false
 }

@@ -1186,6 +1186,9 @@ def omi_history_cases() -> None:
         pass
     else:
         raise AssertionError("semestre pubblicato diverso accettato")
+    with_x = lambda sem: reader(sem) + [{"code": "X9", "residential": False}]  # noqa: E731  zona senza riga residenziale
+    points, _ = oh.town_series(with_x, lambda sem: sorted(codes(sem) + ["X9"]), sems, published, "2026-S1")
+    assert [p["semester"] for p in points] == ["2025-S1", "2025-S2", "2026-S1"] and points[-1]["allZones"] == ["B1", "R1", "X9"]
     no_res = lambda sem: [dict(z, residential=(z["code"] == "B1" or sem == "2026-S1")) for z in reader(sem)]  # noqa: E731
     points, stop = oh.town_series(no_res, codes, sems, published, "2026-S1")
     assert len(points) == 1 and "residenziali" in stop
