@@ -1205,8 +1205,8 @@ def omi_history_cases() -> None:
     saved = (oh.omi.semesters, oh.omi.town_codes, oh.read_town, oh.zone_codes)
     calls = []
     def flaky(session, sem, co):
-        calls.append(co)
-        if co == "D730" and session == "giù":
+        calls.append((co, sem))
+        if co == "D730" and session == "giù" and sem == "2025-S2":  # si interrompe a metà Comune
             raise oh.omi.OmiError("consultazione OMI non raggiungibile (x): timed out")
         return reader(sem)
     try:
@@ -1218,9 +1218,10 @@ def omi_history_cases() -> None:
             {"town": "Forte dei Marmi", "code": "046013", "zones": [{"code": c, **v} for c, v in published.items()]}]}}}
         first = oh.build_snapshot("giù", site)
         assert first["qualityGate"]["status"] == "INCOMPLETE" and first["pending"] == ["Forte dei Marmi"] and "046018" in first["towns"]
+        assert [p["semester"] for p in first["partial"]["046013"]] == ["2026-S1"], first["partial"]
         calls.clear()
         second = oh.build_snapshot("su", site, first)
-        assert second["qualityGate"]["status"] == "PASS" and set(calls) == {"D730"}, calls
+        assert second["qualityGate"]["status"] == "PASS" and calls == [("D730", "2025-S2"), ("D730", "2025-S1")], calls
         assert second["commonSemesters"] == ["2025-S1", "2025-S2", "2026-S1"]
     finally:
         oh.omi.semesters, oh.omi.town_codes, oh.read_town, oh.zone_codes = saved

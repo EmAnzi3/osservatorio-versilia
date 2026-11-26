@@ -27,6 +27,14 @@ class OmiHistoryError(RuntimeError):
     pass
 
 
+class Interrupted(Exception):
+    """Consultazione non raggiungibile a metà di un Comune: porta con sé i semestri già letti."""
+
+    def __init__(self, points: list[dict[str, Any]], why: str) -> None:
+        super().__init__(why)
+        self.points = points
+
+
 def read_town(session: Any, semester: str, co: str) -> list[dict[str, Any]]:
     """Zone di un Comune in un semestre, con la stessa lettura di `update_omi.read_semester`."""
     base = {"lingua": "IT", "pr": omi.PROVINCE, "co": co, "anno_semestre": omi.semester_code(semester)}
@@ -55,16 +63,27 @@ def zone_codes(session: Any, semester: str, co: str) -> list[str]:
 
 
 def town_series(reader: Callable[[str], list[dict[str, Any]]], codes: Callable[[str], list[str]], semesters: list[str],
-                published: dict[str, dict[str, float]], last: str) -> tuple[list[dict[str, Any]], str | None]:
-    """Semestri consecutivi (dal più recente) con le stesse zone pubblicate; `published`: zona → {sale, rent}."""
+                published: dict[str, dict[str, float]], last: str, done: list[dict[str, Any]] | None = None,
+                ) -> tuple[list[dict[str, Any]], str | None]:
+    """Semestri consecutivi (dal più recente) con le stesse zone pubblicate; `published`: zona → {sale, rent}.
+
+    `done`: semestri già letti in una corsa interrotta (dal più recente); si riparte dal successivo.
+    """
     want_all = sorted(published)
-    points: list[dict[str, Any]] = []
+    points: list[dict[str, Any]] = list(done or [])
+    read = {p["semester"] for p in points}
     stop = None
-    for semester in [s for s in semesters if s <= last]:
-        if sorted(codes(semester)) != want_all:
-            stop = f"{semester}: zone {sorted(codes(semester))} diverse da {want_all}"
+    for semester in [s for s in semesters if s <= last and s not in read]:
+        try:
+            found = sorted(codes(semester))
+            zones = reader(semester) if found == want_all else []
+        except omi.OmiError as error:
+            if "non raggiungibile" not in str(error):
+                raise
+            raise Interrupted(points, str(error)) from error
+        if found != want_all:
+            stop = f"{semester}: zone {found} diverse da {want_all}"
             break
-        zones = reader(semester)
         residential = {z["code"]: z for z in zones if z["residential"]}
         if sorted(residential) != want_all:
             stop = f"{semester}: zone residenziali {sorted(residential)} diverse da {want_all}"
@@ -97,6 +116,7 @@ def build_snapshot(session: Any, site: dict[str, Any], previous: dict[str, Any] 
     cadastral = omi.town_codes(session)
     kept = previous["towns"] if previous and previous.get("lastSemester") == last else {}
     towns: dict[str, Any] = {}
+    partial: dict[str, list[dict[str, Any]]] = {}
     pending: list[str] = []
     for row in metric["rows"]:
         if row["code"] in kept:
@@ -104,20 +124,28 @@ def build_snapshot(session: Any, site: dict[str, Any], previous: dict[str, Any] 
             continue
         if pending or (deadline is not None and time.monotonic() - started > deadline):
             pending.append(row["town"])
+            old = ((previous or {}).get("partial") or {}).get(row["code"]) if previous and previous.get("lastSemester") == last else None
+            if old:
+                partial[row["code"]] = old
             continue
         co = cadastral[row["town"]]
         published = {z["code"]: {"sale": z["sale"], "rent": z["rent"]} for z in row["zones"]}
+        done = (previous or {}).get("partial", {}).get(row["code"]) if kept is not None and previous and previous.get("lastSemester") == last else None
         try:
-            points, stop = town_series(lambda s: read_town(session, s, co), lambda s: zone_codes(session, s, co), available, published, last)
-        except omi.OmiError as error:
-            if "non raggiungibile" not in str(error):
-                raise
+            def timed_codes(s: str, co: str = co) -> list[str]:
+                if deadline is not None and time.monotonic() - started > deadline:
+                    raise omi.OmiError("consultazione OMI non raggiungibile: limite di tempo della corsa")
+                return zone_codes(session, s, co)
+            points, stop = town_series(lambda s: read_town(session, s, co), timed_codes, available, published, last, done)
+        except Interrupted as stopped:
+            partial[row["code"]] = stopped.points
             pending.append(row["town"])
             continue
         towns[row["code"]] = {"town": row["town"], "semesters": [p["semester"] for p in points], "points": points, "stoppedAt": stop}
     if pending:
         return {"schemaVersion": 1, "metric": METRIC, "lastSemester": last, "retrieved": date.today().isoformat(), "towns": towns,
-                "pending": pending, "qualityGate": {"status": "INCOMPLETE", "note": "Comuni da leggere: " + ", ".join(pending)}}
+                "pending": pending, "partial": partial, "qualityGate": {"status": "INCOMPLETE", "note": "Comuni da leggere: " + ", ".join(
+                    f"{t} ({len(partial.get(c, []))} semestri già letti)" for t, c in ((r["town"], r["code"]) for r in metric["rows"]) if t in pending)}}
     common = sorted(set.intersection(*(set(t["semesters"]) for t in towns.values())))
     return {
         "schemaVersion": 1, "version": f"omi-residential-serie-{last}-v1", "retrieved": date.today().isoformat(),
