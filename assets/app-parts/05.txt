@@ -89,7 +89,7 @@ incassi di cassa, valore delle opere monitorate e stato dei progetti PNRR censit
     if (!historicalRows.length) {
       return `<div class="indicator-history-empty"><strong>Serie storica non ancora disponibile</strong><p>La fonte utilizzata non consente, al momento, di pubblicare una sequenza comunale omogenea. Il sito mantiene quindi soltanto l’ultima annualità verificata.</p></div>`;
     }
-    const years = [...new Set(historicalRows.flatMap(row => seriesFor(row).years))].sort((a, b) => Number(a) - Number(b));
+    const years = [...new Set(historicalRows.flatMap(row => seriesFor(row).years))].sort((a, b) => (Number.isFinite(Number(a)) && Number.isFinite(Number(b)) ? Number(a) - Number(b) : String(a).localeCompare(String(b))));
     return `${metric.meta.key === 'income' ? `<p class="brain-drain-note">${html(metric.meta.longHistoryNote)}</p>` : ''}<div class="indicator-table-scroll"><table class="indicator-history-table"><thead><tr><th scope="col">Comune</th>${years.map(year => `<th scope="col">${html(year)}</th>`).join('')}</tr></thead><tbody>${historicalRows.sort((a, b) => a.town.localeCompare(b.town, 'it')).map(row => {
       const series = seriesFor(row);
       const values = new Map(series.years.map((year, index) => [String(year), series.values[index]]));
