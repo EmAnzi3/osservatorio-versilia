@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "metric": "omiResidential",
+  "lastSemester": "2026-S1",
+  "retrieved": "2026-11-26",
+  "towns": {},
+  "pending": [
+    "Massarosa",
+    "Viareggio",
+    "Camaiore",
+    "Pietrasanta",
+    "Seravezza",
+    "Forte dei Marmi",
+    "Stazzema"
+  ],
+  "qualityGate": {
+    "status": "INCOMPLETE",
+    "note": "Comuni da leggere: Massarosa, Viareggio, Camaiore, Pietrasanta, Seravezza, Forte dei Marmi, Stazzema"
+  },
+  "acquisitionEvidence": {
+    "script": "scripts/update_source_data.py omi-history",
+    "where": "runner GitHub Actions"
+  }
+}
