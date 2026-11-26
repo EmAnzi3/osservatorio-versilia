@@ -927,6 +927,43 @@ def update_irpef_benchmarks(year: int, dry_run: bool, fetch=None) -> Changes:
     return changes
 
 
+# ------------------------------------------------------------------ MEF: serie delle fasce di reddito
+
+def update_income_distribution_history(dry_run: bool, fetch=None) -> Changes:
+    """Serie delle quote di dichiaranti nelle quattro fasce dai file comunali MEF annuali; ultimo anno = quote pubblicate."""
+    import os
+
+    import income_distribution_history as idh
+    import taxpayers_history as tx
+
+    def fetcher(url: str) -> bytes:
+        try:
+            raw = (fetch or probes.http_fetch)(url)
+        except probes.ProbeError as error:
+            if error.reason == "not_found":
+                raise tx.Unavailable(url) from error
+            raise
+        if not raw.startswith(b"PK"):
+            raise tx.Unavailable(url)
+        return raw
+
+    site = load(SITE)
+    metric = site["metrics"][idh.METRIC]
+    published = {r["code"]: [p["value"] for p in r["parts"]] for r in metric["rows"]}
+    try:
+        snapshot = idh.build_snapshot(fetcher, published, int(metric["meta"]["year"]))
+    except (idh.IncomeDistributionError, tx.TaxpayersError, KeyError, ValueError, probes.ProbeError) as error:
+        raise UpdateError(f"Serie fasce di reddito: {error}") from error
+    changes = Changes()
+    for code, series in snapshot["series"].items():
+        changes.note(f"{idh.METRIC} {code} {snapshot['years'][0]}–{snapshot['years'][-1]}", None, series[0][0])
+    snapshot["acquisitionEvidence"] = {"script": "scripts/update_source_data.py mef-income-distribution-history",
+                                       "where": "runner GitHub Actions" if os.environ.get("GITHUB_ACTIONS") else "fuori dalla CI"}
+    if not dry_run:
+        save(ROOT / idh.SNAPSHOT, snapshot)
+    return changes
+
+
 # ------------------------------------------------------------------ MEF: serie dell'addizionale comunale IRPEF
 
 def update_irpef_history(dry_run: bool, fetch=None) -> Changes:
@@ -1901,6 +1938,8 @@ def main() -> int:
     imu_p.add_argument("--dry-run", action="store_true")
     imu_p.add_argument("--reuse-lists", action="store_true", help="elenchi Istat/POSAS dallo snapshot del gruppo (lettura fuori dalla CI)")
     imu_p.add_argument("--deadline", type=float, help="secondi per i prospetti (predefinito 65 minuti)")
+    idh_p = sub.add_parser("mef-income-distribution-history", help="serie delle quote di dichiaranti per fascia di reddito (file comunali MEF)")
+    idh_p.add_argument("--dry-run", action="store_true")
     irh_p = sub.add_parser("mef-irpef-history", help="serie dell'addizionale comunale IRPEF negli scenari di reddito (elenchi MEF)")
     irh_p.add_argument("--dry-run", action="store_true")
     ph_p = sub.add_parser("salute-pharmacies-history", help="serie delle farmacie ogni 1.000 residenti (Ministero della Salute)")
@@ -1942,6 +1981,8 @@ def main() -> int:
             update_infancy_history(args.dry_run).report("Serie prima infanzia:")
         elif args.updater == "mef-imu-benchmark":
             update_imu_benchmark(args.year, args.scope, args.dry_run, reuse_lists=args.reuse_lists, deadline=args.deadline).report("Confronto IMU:")
+        elif args.updater == "mef-income-distribution-history":
+            update_income_distribution_history(args.dry_run).report("Serie fasce di reddito:")
         elif args.updater == "mef-irpef-history":
             update_irpef_history(args.dry_run).report("Serie addizionale IRPEF:")
         elif args.updater == "salute-pharmacies-history":

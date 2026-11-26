@@ -1,5 +1,12 @@
 # Consolidamento Osservatorio Versilia — handoff operativo
 
+## Fasce di reddito: serie 2012–2024 (25 novembre 2026)
+
+- `scripts/income_distribution_history.py`: file comunali MEF «Redditi e principali variabili IRPEF» di ciascun anno (stessi archivi di `taxpayers_history`), otto classi di reddito complessivo sommate nelle quattro fasce pubblicate, denominatore = dichiaranti nelle classi valorizzate (stessa regola del 2024 pubblicato, che deve coincidere). Oscurate ammesse solo `le0` e `over120k`; con una classe intermedia oscurata il Comune resta n.d. per quell'anno (Forte dei Marmi 2023, Stazzema 2015 e 2023, elencati in `method.historyNote`). Intestazione 2014 «minore di zero euro» ammessa.
+- Aggiornatore `mef-income-distribution-history` (richiesta `mefIncomeDistributionHistory`, corsa del bot), snapshot `mef-fasce-reddito-serie.json`, materializzatore `materialize_income_distribution_history.py` (dichiarato nel contratto): `componentSeries` `part-0…3`, `series` = «fino a 15.000 €».
+- Frontend `assets/ux-history.js`: `historyChoiceFor` porta lo storico delle distribuzioni sulla fascia scelta (il reddito medio non ha serie: i file più vecchi non hanno il totale del reddito complessivo), nota `distributionHistoryNote`. Il grafico confronta solo anni con 7/7 valori, quindi 2015 e 2023 non compaiono.
+- Chiedi: l'operazione `series` su `incomeDistribution` resta bloccata (`mef_history_not_frozen`) fino agli aggiornamenti di Chiedi.
+
 ## Storici e confronti rimasti indietro; addizionale IRPEF 2012–2025 (25 novembre 2026)
 
 - Verifica A3 sul sito pubblicato (228 indicatori): nessun dato acquisito fuori dal sito. Storici: 137 pubblicati, 59 disponibili alla fonte e non acquisiti, 26 senza anni passati alla fonte, 6 non applicabili. Confronti Toscana/Italia: 163 pubblicati (53 solo Toscana, quasi tutti ARS), 53 disponibili non acquisiti, 12 senza dato confrontabile. Ordine deciso con Ema: storico IRPEF e fasce di reddito, confronto TARI, storico edilizia scolastica, storico RSA e OMI; aggiornamenti di Chiedi dopo.

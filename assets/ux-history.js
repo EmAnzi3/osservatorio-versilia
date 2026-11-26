@@ -317,7 +317,7 @@
 
     const normalized = Boolean(document.querySelector('[data-scale="normalized"].active'));
     const selectedChoice = hasComponentHistory(selected.metric) ? currentCompositeChoice() : null;
-    const historyChoice = selected.key === 'fuelPrices' ? currentCompositeChoice() : selectedChoice;
+    const historyChoice = selected.key === 'fuelPrices' ? currentCompositeChoice() : historyChoiceFor(selected.metric, selectedChoice);
     const historyView = historyMetric(historyChoice ? compositeChoiceMetric(selected.metric, historyChoice) : selected.metric);
     const series = normalized ? null : withOfficialVersiliaSeries(historyView, toolkit.comparableSeries(historyView));
     const historyAvailable = Boolean(series);
@@ -329,6 +329,8 @@
         ? selected.metric.historyPresentation?.note
         : historyAvailable && selected.metric?.meta?.key === 'income'
           ? selected.metric.meta.longHistoryNote
+          : historyAvailable && distributionHistoryNote(selected.metric, historyChoice)
+            ? distributionHistoryNote(selected.metric, historyChoice)
           : historyAvailable && selected.metric?.meta?.key === 'fuelPrices'
             ? 'Serie mensile MIMIT gennaio 2022–giugno 2026: media delle mediane comunali giornaliere self-service; Stazzema resta n.d. perché non risultano impianti attivi.'
             : historyAvailable
@@ -442,7 +444,7 @@
           : unit === 'currency' ? euro0.format(value)
             : unit === 'years' ? `${number1.format(value)} anni`
               : String(value);
-        return { ...row, value, formatted };
+        return { ...row, value, formatted, series:row.componentSeries?.summary || null };
       });
       return clone;
     }
@@ -452,7 +454,7 @@
     clone.meta.label = metric.aggregate?.parts?.[index]?.label || metric.rows?.[0]?.parts?.[index]?.label || metric.meta.label;
     clone.rows = metric.rows.map(row => {
       const value = Number(row.parts?.[index]?.value);
-      return { ...row, value, formatted: Number.isFinite(value) ? `${percent1.format(value)}%` : 'n.d.' };
+      return { ...row, value, formatted: Number.isFinite(value) ? `${percent1.format(value)}%` : 'n.d.', series:row.componentSeries?.[`part-${index}`] || null };
     });
     return clone;
   }
@@ -466,6 +468,20 @@
     const viewMetric = compositeChoiceMetric(metric, resolvedChoice);
     currentPane.innerHTML = townCurrentComparisonMarkup(data, { key:metric.meta.key }, selectedTown, viewMetric);
     currentPane.dataset.compositeChoice = resolvedChoice;
+  }
+
+  // Distribuzioni: il reddito medio non ha storico, le quote delle fasce sì; lo storico mostra la fascia scelta o la prima.
+  function historyChoiceFor(metric, choice) {
+    if (metric?.meta?.compositeType !== 'distribution' || !choice) return choice;
+    const has = key => metric.rows?.some(row => row.componentSeries?.[key]);
+    return has(choice) ? choice : has('part-0') ? 'part-0' : choice;
+  }
+
+  function distributionHistoryNote(metric, choice) {
+    if (metric?.meta?.compositeType !== 'distribution' || !String(choice || '').startsWith('part-')) return '';
+    const index = Number(String(choice).replace('part-', ''));
+    const label = metric.aggregate?.parts?.[index]?.label || metric.rows?.[0]?.parts?.[index]?.label;
+    return label ? `Andamento della quota di dichiaranti «${label}». ${metric.method?.historyNote || ''}`.trim() : '';
   }
 
   function hasComponentHistory(metric) {
@@ -550,7 +566,7 @@
     }
 
     const fixedDetail = panel.querySelector('.composite-fixed-detail')?.outerHTML || '';
-    const selectedChoice = hasComponentHistory(selected.metric) ? currentCompositeChoice() : null;
+    const selectedChoice = historyChoiceFor(selected.metric, hasComponentHistory(selected.metric) ? currentCompositeChoice() : null);
     const historyView = historyMetric(selectedChoice ? compositeChoiceMetric(selected.metric, selectedChoice) : selected.metric);
     const selectedRow = historyView.rows?.find(row => (row.slug || '') === selectedTown);
     const series = selectedRow?.notApplicable
@@ -564,6 +580,8 @@
       ? selected.metric.historyPresentation?.note
       : historyAvailable && selected.metric?.meta?.key === 'income'
         ? selected.metric.meta.longHistoryNote
+        : historyAvailable && distributionHistoryNote(selected.metric, selectedChoice)
+          ? distributionHistoryNote(selected.metric, selectedChoice)
         : selectedRow?.notApplicable
           ? 'Questo Comune non ha costa marina: lo storico non è applicabile e resta n.a.'
           : historyAvailable
