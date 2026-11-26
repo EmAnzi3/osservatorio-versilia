@@ -1165,6 +1165,71 @@ def income_distribution_history_cases() -> None:
         raise AssertionError("ultimo anno diverso dal pubblicato accettato")
 
 
+def omi_history_cases() -> None:
+    """OMI: per Comune solo semestri consecutivi con le stesse zone; semestre pubblicato = valori di zona."""
+    import omi_history as oh
+
+    published = {"B1": {"sale": 1625.0, "rent": 6.0}, "R1": {"sale": 1000.0, "rent": 4.0}}
+    sems = ["2026-S1", "2025-S2", "2025-S1", "2024-S2", "2024-S1"]
+    def codes(sem: str) -> list[str]:
+        return ["B1", "R1"] if sem >= "2025-S1" else ["B1", "B2", "R1"]  # zone ridisegnate nel 2025-S1
+    def reader(sem: str) -> list[dict]:
+        k = sems.index(sem)
+        return [{"code": "B1", "residential": True, "sale": 1625.0 - 25 * k, "rent": 6.0},
+                {"code": "R1", "residential": True, "sale": 1000.0, "rent": 4.0 - 0.1 * k}]
+    points, stop = oh.town_series(reader, codes, sems, published, "2026-S1")
+    assert [p["semester"] for p in points] == ["2025-S1", "2025-S2", "2026-S1"] and stop.startswith("2024-S2"), (points, stop)
+    assert points[0]["saleMean"] == (1575.0 + 1000.0) / 2
+    try:
+        oh.town_series(reader, codes, sems, {**published, "R1": {"sale": 1001.0, "rent": 4.0}}, "2026-S1")
+    except oh.OmiHistoryError:
+        pass
+    else:
+        raise AssertionError("semestre pubblicato diverso accettato")
+    with_x = lambda sem: reader(sem) + [{"code": "X9", "residential": False}]  # noqa: E731  zona senza riga residenziale
+    points, _ = oh.town_series(with_x, lambda sem: sorted(codes(sem) + ["X9"]), sems, published, "2026-S1")
+    assert [p["semester"] for p in points] == ["2025-S1", "2025-S2", "2026-S1"] and points[-1]["allZones"] == ["B1", "R1", "X9"]
+    no_res = lambda sem: [dict(z, residential=(z["code"] == "B1" or sem == "2026-S1")) for z in reader(sem)]  # noqa: E731
+    points, stop = oh.town_series(no_res, codes, sems, published, "2026-S1")
+    assert len(points) == 1 and "residenziali" in stop
+    snap = {"lastSemester": "2026-S1", "commonSemesters": ["2025-S2", "2026-S1"],
+            "towns": {"046018": {"town": "Massarosa", "semesters": ["2025-S2", "2026-S1"], "points": [
+                {"semester": "2025-S2", "saleMean": 1300.0, "rentMean": 5.0}, {"semester": "2026-S1", "saleMean": 1312.5, "rentMean": 5.0}]},
+                      "046013": {"town": "Forte dei Marmi", "semesters": ["2025-S1", "2025-S2", "2026-S1"], "points": [
+                {"semester": s, "saleMean": 9000.0, "rentMean": 20.0} for s in ("2025-S1", "2025-S2", "2026-S1")]}}}
+    metrics = {oh.METRIC: {"meta": {"year": "1° semestre 2026"}, "method": {}, "rows": [
+        {"town": "Massarosa", "code": "046018", "saleMean": 1312.5, "rentMean": 5.0},
+        {"town": "Forte dei Marmi", "code": "046013", "saleMean": 9000.0, "rentMean": 20.0}]}}
+    oh.apply(metrics, snap, oh.SNAPSHOT)
+    row = metrics[oh.METRIC]["rows"][0]
+    assert row["series"] == {"years": ["2025 S2", "2026 S1"], "values": [1300.0, 1312.5]} and row["componentSeries"]["rent"]["values"] == [5.0, 5.0]
+    assert "Forte dei Marmi" in metrics[oh.METRIC]["method"]["historyNote"]
+    # Ripresa: un Comune non raggiungibile lascia lo snapshot INCOMPLETE; la corsa dopo riprende i Comuni letti.
+    saved = (oh.omi.semesters, oh.omi.town_codes, oh.read_town, oh.zone_codes)
+    calls = []
+    def flaky(session, sem, co):
+        calls.append((co, sem))
+        if co == "D730" and session == "giù" and sem == "2025-S2":  # si interrompe a metà Comune
+            raise oh.omi.OmiError("consultazione OMI non raggiungibile (x): timed out")
+        return reader(sem)
+    try:
+        oh.omi.semesters = lambda session: list(sems)
+        oh.omi.town_codes = lambda session: {"Massarosa": "F035", "Forte dei Marmi": "D730"}
+        oh.read_town, oh.zone_codes = flaky, lambda session, sem, co: codes(sem)
+        site = {"metrics": {oh.METRIC: {"meta": {"year": "1° semestre 2026", "source": "OMI"}, "rows": [
+            {"town": "Massarosa", "code": "046018", "zones": [{"code": c, **v} for c, v in published.items()]},
+            {"town": "Forte dei Marmi", "code": "046013", "zones": [{"code": c, **v} for c, v in published.items()]}]}}}
+        first = oh.build_snapshot("giù", site)
+        assert first["qualityGate"]["status"] == "INCOMPLETE" and first["pending"] == ["Forte dei Marmi"] and "046018" in first["towns"]
+        assert [p["semester"] for p in first["partial"]["046013"]] == ["2026-S1"], first["partial"]
+        calls.clear()
+        second = oh.build_snapshot("su", site, first)
+        assert second["qualityGate"]["status"] == "PASS" and calls == [("D730", "2025-S2"), ("D730", "2025-S1")], calls
+        assert second["commonSemesters"] == ["2025-S1", "2025-S2", "2026-S1"]
+    finally:
+        oh.omi.semesters, oh.omi.town_codes, oh.read_town, oh.zone_codes = saved
+
+
 def irpef_history_cases() -> None:
     """Addizionale IRPEF: elenchi MEF annuali, varianti di scrittura uniformate, anni consecutivi, ultimo anno = pubblicato."""
     import irpef_history as ih
@@ -1710,6 +1775,7 @@ def main() -> None:
     aci_vehicles_history_cases()
     mef_taxpayers_history_cases()
     irpef_history_cases()
+    omi_history_cases()
     income_distribution_history_cases()
     mim_students_history_cases()
     asia_micro_units_history_cases()

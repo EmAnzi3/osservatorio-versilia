@@ -62,8 +62,19 @@ def regressions(path):
     for mutation in mutations:
         g = QueryEngine(path,layer='effective'); assert g.query(query())['status'] == 'computed'
         mutation(g._catalog['metrics']['omiResidential'])
+        built = any(r.get('componentSeries') for r in g._catalog['metrics']['omiResidential']['rows'])
+        series_only = mutation is mutations[-1] and built  # nel catalogo costruito la serie è verificata contro lo snapshot fissato
         for dim in a.dimensions('omiResidential'):
-            rejected(g, query(dim), 'omi_public_definition_or_values_changed')
+            rejected(g, query(dim), 'omi_history_changed' if series_only else 'omi_public_definition_or_values_changed')
+    # Serie del catalogo costruito: deve essere esattamente quella dello snapshot fissato.
+    g = QueryEngine(path,layer='effective')
+    if any(r.get('componentSeries') for r in g._catalog['metrics']['omiResidential']['rows']):
+        for change in [lambda r:r['componentSeries']['rent']['values'].__setitem__(0, 99.0),
+                       lambda r:r['componentSeries']['sale']['years'].__setitem__(0, '2000 S1'),
+                       lambda r:r.pop('componentSeries')]:
+            g = QueryEngine(path,layer='effective'); change(g._catalog['metrics']['omiResidential']['rows'][5])
+            r = g.query(query()); assert r['status'] != 'computed', r
+        rejected(QueryEngine(path,layer='effective'), query('total','series'), 'omi_single_semester_no_comparable_history_frozen')
     g = QueryEngine(path,layer='effective');g._catalog['towns'][0]['name']='Unknown'
     rejected(g,query(), 'omi_municipal_identity_changed')
     # Equal-town means differ from equal-zone means: neither is a transaction mean.

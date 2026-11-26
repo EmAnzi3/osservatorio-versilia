@@ -261,6 +261,24 @@ for dimension, evidence in (
     _add_metric("thirdSector", dimension, NOT_APPLICABLE, evidence)
 
 
+# MIM — Anagrafe dell'Edilizia Scolastica (verifica del 26/11/2026, PR #666 chiusa).
+# I file 2020/21–2024/25 esistono con lo stesso tracciato, ma dal 2021/22 al 2024/25
+# riportano gli stessi edifici e le stesse risposte nei 7 Comuni per tutti e cinque i
+# dataset; l'unica variazione 2020/21→2021/22 deriva dalla compilazione dei campi.
+# Una serie pubblicata suggerirebbe cambiamenti inesistenti: storico non disponibile.
+MIM_BUILDINGS_REF = "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/leaf/?datasetId=DS0171EDICONSICUREZZASTA2021"
+for metric_id in (
+    "schoolBuildingSafetyDocs",
+    "schoolBuildingAccessibility",
+    "schoolBuildingFacilities",
+    "schoolBuildingAge",
+    "schoolBuildingTransport",
+):
+    _add_metric(metric_id, "serie_storica", UNAVAILABLE,
+                "Il MIM pubblica l'anagrafe dell'edilizia per gli anni scolastici dal 2020/21, ma dal 2021/22 al 2024/25 i file riportano "
+                "gli stessi edifici e le stesse risposte nei sette Comuni; la sola differenza con il 2020/21 dipende dalla compilazione dei campi. "
+                "Non esiste quindi una serie che descriva cambiamenti reali.", MIM_BUILDINGS_REF)
+
 def main() -> None:
     ns["main"]()
 

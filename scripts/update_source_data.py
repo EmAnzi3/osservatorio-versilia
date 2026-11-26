@@ -964,6 +964,38 @@ def update_income_distribution_history(dry_run: bool, fetch=None) -> Changes:
     return changes
 
 
+# ------------------------------------------------------------------ OMI: serie semestrale delle quotazioni
+
+def update_omi_history(dry_run: bool, session: Any = None, deadline: float | None = None) -> Changes:
+    """Serie semestrale delle medie OMI per Comune, solo con le stesse zone del semestre pubblicato.
+
+    Riprende i Comuni già letti da uno snapshot INCOMPLETE dello stesso semestre (la consultazione
+    rallenta dopo molte richieste): basta rilanciare la richiesta finché lo snapshot è PASS.
+    """
+    import os
+
+    import omi_history as oh
+    import update_omi as omi
+
+    path = ROOT / oh.SNAPSHOT
+    previous = load(path) if path.exists() else None
+    try:
+        snapshot = oh.build_snapshot(session or omi.Session(), load(SITE), previous, deadline)
+    except (oh.OmiHistoryError, omi.OmiError, KeyError, ValueError) as error:
+        raise UpdateError(f"Serie OMI: {error}") from error
+    changes = Changes()
+    if snapshot["qualityGate"]["status"] != "PASS":
+        print(f"Serie OMI incompleta: {snapshot['qualityGate']['note']}; rilanciare la richiesta omiHistory per continuare")
+    for code, town in snapshot["towns"].items():
+        changes.note(f"OMI {town['town']} semestri", None, f"{town['semesters'][0]}–{town['semesters'][-1]}")
+    snapshot["acquisitionEvidence"] = {"script": "scripts/update_source_data.py omi-history",
+                                       "where": "runner GitHub Actions" if os.environ.get("GITHUB_ACTIONS") else
+                                       "fuori dalla CI: la consultazione OMI limita le richieste dai runner GitHub (2 semestri in 50 minuti)"}
+    if not dry_run:
+        save(ROOT / oh.SNAPSHOT, snapshot)
+    return changes
+
+
 # ------------------------------------------------------------------ MEF: serie dell'addizionale comunale IRPEF
 
 def update_irpef_history(dry_run: bool, fetch=None) -> Changes:
@@ -1940,6 +1972,9 @@ def main() -> int:
     imu_p.add_argument("--deadline", type=float, help="secondi per i prospetti (predefinito 65 minuti)")
     idh_p = sub.add_parser("mef-income-distribution-history", help="serie delle quote di dichiaranti per fascia di reddito (file comunali MEF)")
     idh_p.add_argument("--dry-run", action="store_true")
+    omh_p = sub.add_parser("omi-history", help="serie semestrale delle quotazioni OMI con le stesse zone del semestre pubblicato")
+    omh_p.add_argument("--dry-run", action="store_true")
+    omh_p.add_argument("--deadline", type=float, default=3000.0, help="secondi oltre i quali i Comuni restanti passano alla corsa successiva")
     irh_p = sub.add_parser("mef-irpef-history", help="serie dell'addizionale comunale IRPEF negli scenari di reddito (elenchi MEF)")
     irh_p.add_argument("--dry-run", action="store_true")
     ph_p = sub.add_parser("salute-pharmacies-history", help="serie delle farmacie ogni 1.000 residenti (Ministero della Salute)")
@@ -1983,6 +2018,8 @@ def main() -> int:
             update_imu_benchmark(args.year, args.scope, args.dry_run, reuse_lists=args.reuse_lists, deadline=args.deadline).report("Confronto IMU:")
         elif args.updater == "mef-income-distribution-history":
             update_income_distribution_history(args.dry_run).report("Serie fasce di reddito:")
+        elif args.updater == "omi-history":
+            update_omi_history(args.dry_run, deadline=args.deadline).report("Serie OMI:")
         elif args.updater == "mef-irpef-history":
             update_irpef_history(args.dry_run).report("Serie addizionale IRPEF:")
         elif args.updater == "salute-pharmacies-history":

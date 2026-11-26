@@ -1,5 +1,6 @@
 """Reviewed published OMI municipal reference means; no transaction-price claim."""
 from a6_pins import Pin as _pin
+import copy
 import math
 from semantic_query_library_adapters import TOWNS, fingerprint
 from semantic_operations import finite
@@ -7,6 +8,8 @@ from semantic_operations import finite
 KEYS = ('omiResidential',)
 PERIOD = '2026-S1'
 PUBLIC_HASH = _pin('omi#1')
+HISTORY = 'data/source-snapshots/omi-residential-serie.json'
+HISTORY_HASHES = (_pin('omi#2'), _pin('omi#3'))
 NOTES = ['omi_reference_quotations_not_transaction_prices_or_registered_rents',
          'omi_municipal_mean_is_unweighted_mean_of_displayed_zones_not_official_municipal_omi_mean',
          'omi_versilia_mean_of_seven_municipal_means_not_transaction_or_dwelling_weighted',
@@ -36,9 +39,38 @@ def selection_guard(key, dim, op):
     if op == 'correlation': raise ValueError('omi_pair_not_jointly_reviewed')
 
 
+def without_history(metric):
+    """Il catalogo costruito aggiunge la serie semestrale (verificata in `history_checked`); il resto resta quello fissato."""
+    if not any(r.get('componentSeries') for r in metric['rows']): return metric
+    out = copy.deepcopy(metric)
+    for row in out['rows']:
+        row.pop('componentSeries', None); row['series'] = None
+    out['method'].pop('historyNote', None)
+    meta = out['meta'].get('sourceMeta')
+    if isinstance(meta, dict):
+        meta.pop('historySnapshot', None)
+        if not meta: out['meta'].pop('sourceMeta')
+    return out
+
+
+def history_checked(engine, metric):
+    """La serie del catalogo costruito deve essere esattamente quella dello snapshot fissato (le operazioni sul tempo restano bloccate)."""
+    if not any(r.get('componentSeries') for r in metric['rows']): return
+    snap, ref = engine.file(HISTORY)
+    if ref.get('path') != HISTORY or (ref.get('sha256'), fingerprint(snap)) != HISTORY_HASHES: raise ValueError('omi_history_changed')
+    if snap.get('qualityGate', {}).get('status') != 'PASS' or snap.get('lastSemester') != PERIOD: raise ValueError('omi_history_changed')
+    for row in metric['rows']:
+        points = snap['towns'][row['code']]['points']
+        years = [p['semester'].replace('-S', ' S') for p in points]
+        want = {'sale': dict(years=years, values=[p['saleMean'] for p in points]), 'rent': dict(years=years, values=[p['rentMean'] for p in points])}
+        if row.get('componentSeries') != want or row.get('series') != want['sale']: raise ValueError('omi_history_changed')
+        if not (math.isclose(points[-1]['saleMean'], row['saleMean'], rel_tol=0, abs_tol=1e-10)
+                and math.isclose(points[-1]['rentMean'], row['rentMean'], rel_tol=0, abs_tol=1e-10)): raise ValueError('omi_history_changed')
+
+
 def context(metric, key, dim):
     if key not in KEYS or dim not in dimensions(key): raise ValueError('omi_dimension_not_reviewed')
-    if fingerprint(metric) != PUBLIC_HASH: raise ValueError('omi_public_definition_or_values_changed')
+    if fingerprint(without_history(metric)) != PUBLIC_HASH: raise ValueError('omi_public_definition_or_values_changed')
     rent = dim == 'rentMean'
     return dict(unit='eurm2month' if rent else 'eurm2',
                 population='displayed residential OMI zones; civil dwellings, normal state, public reference selection',
@@ -50,6 +82,7 @@ def context(metric, key, dim):
 
 
 def validated(engine, metric):
+    history_checked(engine, metric)
     towns = engine._catalog['towns']
     if len(towns) != 7 or {t['code']:t['name'] for t in towns} != TOWNS:
         raise ValueError('omi_municipal_identity_changed')

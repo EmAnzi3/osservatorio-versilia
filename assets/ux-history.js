@@ -430,7 +430,7 @@
       clone.rows = metric.rows.map(row => {
         const value = Number(rent ? row.rentMean : row.saleMean);
         const formatted = !Number.isFinite(value) ? 'n.d.' : rent ? `${number1.format(value)} €/m²/mese` : `${whole0.format(value)} €/m²`;
-        return { ...row, value, formatted };
+        return { ...row, value, formatted, series:row.componentSeries?.[rent ? 'rent' : 'sale'] || null };
       });
       return clone;
     }

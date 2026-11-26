@@ -1,5 +1,13 @@
 # Consolidamento Osservatorio Versilia — handoff operativo
 
+## OMI semestrale, edilizia scolastica ferma, TARI senza confronto (26 novembre 2026)
+
+- `scripts/omi_history.py`: per Comune solo semestri consecutivi in cui l'elenco completo delle zone è uguale a quello del semestre pubblicato e le zone con la riga «Abitazioni civili» NORMALE sono quelle pubblicate (il catalogo pubblica solo queste: Viareggio ha anche R3 senza riga residenziale). Esito: Forte dei Marmi 2006-S1→2026-S1 (41 semestri), Massarosa e Seravezza 2014-S1→ (25; zone diverse nel 2013-S2), Camaiore, Pietrasanta, Stazzema, Viareggio 2024-S2→ (4; zone ridisegnate). Semestri comuni 2024-S2–2026-S1.
+- La consultazione OMI limita i runner GitHub (2 semestri in 50 minuti): con l'ok di Ema (26/11) la serie è letta fuori dalla CI (`acquisitionEvidence.where`). Ripresa: snapshot `INCOMPLETE` con `partial` (semestri già letti per Comune, `allZones` sul semestre pubblicato) e `--deadline`; il materializzatore ignora uno snapshot incompleto.
+- Frontend: lo storico OMI segue vendita/affitto (`componentSeries.sale/rent`).
+- Edilizia scolastica: PR #666 chiusa senza fondere; anagrafe MIM identica 2021/22–2024/25 nei 7 Comuni e nei 5 dataset, variazione 2020/21 dovuta alla compilazione. `serie_storica` SOURCE_UNAVAILABLE in `apply_enrichment_evidence_audit15.py`. Il codice resta sul ramo `feat/storico-edilizia-scolastica`.
+- TARI: nessuna stima ufficiale Toscana/Italia della famiglia tipo con copertura ≥90% (Cittadinanzattiva solo capoluoghi); `materialize_tari_note.py` aggiunge in build il rimando al costo del servizio ISPRA (`wasteServiceCost`). RSA: elenchi regionali 2022–2024 non trovati agli indirizzi attesi, storico rinviato.
+
 ## Fasce di reddito: serie 2012–2024 (25 novembre 2026)
 
 - `scripts/income_distribution_history.py`: file comunali MEF «Redditi e principali variabili IRPEF» di ciascun anno (stessi archivi di `taxpayers_history`), otto classi di reddito complessivo sommate nelle quattro fasce pubblicate, denominatore = dichiaranti nelle classi valorizzate (stessa regola del 2024 pubblicato, che deve coincidere). Oscurate ammesse solo `le0` e `over120k`; con una classe intermedia oscurata il Comune resta n.d. per quell'anno (Forte dei Marmi 2023, Stazzema 2015 e 2023, elencati in `method.historyNote`). Intestazione 2014 «minore di zero euro» ammessa.
