@@ -1123,7 +1123,7 @@ def mim_buildings_history_cases() -> None:
     def counts(year: str, i: int) -> dict:
         si = "SI" if (i + len(year)) % 2 else "NO"
         period = "tra il 1950 e il 1970" if year != "2021/22" else "anni sessanta"  # 2021/22: valore fuori tracciato
-        return {"agibilita": si, "cpi": "NON DEFINITO", "sciaAntincendio": "NO", "rinnovoAntincendio": "NO", "accessibilita": "SI",
+        return {"agibilita": "IN PARTE" if i == 0 else si, "cpi": "NON DEFINITO", "sciaAntincendio": "NO", "rinnovoAntincendio": "NO", "accessibilita": "SI",
                 "mensa": si, "palestra": "SI", "periodoCostruzione": period, "scuolabus": "SI", "tplUrbano": "NO", "tplInterurbano": si}
     cols = {local: col for _, fields, _ in mh.DATASETS.values() for local, col in fields.items()}
 

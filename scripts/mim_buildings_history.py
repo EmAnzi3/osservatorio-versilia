@@ -47,6 +47,7 @@ DATASETS = {  # indicatore → (prefisso file MIM, campi locali → colonna, fun
 }
 UNKNOWN = {"NON DEFINITO", "", "-", "_"}
 ALLOWED = {"SI", "NO"} | UNKNOWN
+EXTRA = {"agibilita": {"IN PARTE"}}  # agibilità parziale: valore del tracciato, non conta come piena (status_part)
 
 
 class MimHistoryError(RuntimeError):
@@ -134,7 +135,7 @@ def town_counts(rows: list[dict[str, str]], schools: dict[str, str], fields: dic
             if len(values) != 1:
                 raise MimHistoryError(f"{what}: edificio {bid} con valori discordanti per {local} {sorted(values)}")
             value = next(iter(values))
-            allowed = set(ms.PERIOD_ORDER) | {"NON DEFINITO"} if local == "periodoCostruzione" else ALLOWED
+            allowed = set(ms.PERIOD_ORDER) | {"NON DEFINITO"} if local == "periodoCostruzione" else ALLOWED | EXTRA.get(local, set())
             if value not in allowed:
                 raise MimHistoryError(f"{what}: valore fuori tracciato {local}={value!r}")
             entry[local][value] += 1
