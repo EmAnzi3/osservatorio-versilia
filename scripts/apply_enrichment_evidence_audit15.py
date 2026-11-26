@@ -37,6 +37,17 @@ def _add_metric(metric_id: str, dimension: str, state: str, evidence: str, refer
     dimensions[dimension] = _annotation(state, evidence, reference)
 
 
+def _revise_metric(metric_id: str, dimension: str, state: str, evidence: str, reference: str) -> None:
+    """Rivede una voce «disponibile» dopo la verifica alla fonte: ammessa solo da AVAILABLE a uno stato
+    di chiusura, con nuova evidenza e riferimento; l'evidenza precedente resta registrata."""
+    current = METRIC_EVIDENCE.get(metric_id, {}).get(dimension)
+    if current is None or current.get("state") != AVAILABLE or state not in (UNAVAILABLE, NOT_APPLICABLE) or not reference:
+        raise RuntimeError(f"A3.2 audit-15: revisione non ammessa: {metric_id}/{dimension} ({(current or {}).get('state')} → {state})")
+    revised = _annotation(state, evidence, reference)
+    revised["previousEvidence"] = current.get("evidence", "")
+    METRIC_EVIDENCE[metric_id][dimension] = revised
+
+
 # MIMIT — prezzi carburanti.
 # Il Ministero pubblica il dataset quotidiano e un archivio storico trimestrale
 # dei prezzi dalle estrazioni 2015 in avanti; l'anagrafica degli impianti contiene
@@ -285,7 +296,8 @@ for metric_id in (
 # La serie 2002–2024 non è omogenea con il valore pubblicato 2025.
 ISTAT_CAPACITY_REF = "https://www.istat.it/fascicoloSidi/2012/Circolare_Capacit%C3%A0%20degli%20esercizi%20ricettivi_2025.pdf"
 for metric_id in ("tourismBeds", "tourismBedsPer1000", "tourismStructuresPer1000"):
-    _add_metric(metric_id, "serie_storica", UNAVAILABLE,
+    # tourismBeds ha già un'evidenza di metrica «disponibile» (si rivede); le densità sono classificate dal profilo (override nuovo)
+    (_revise_metric if "serie_storica" in METRIC_EVIDENCE.get(metric_id, {}) else _add_metric)(metric_id, "serie_storica", UNAVAILABLE,
                 "Dal 2025 Istat include nella diffusione regolare gli «altri alloggi privati» (categoria C.2): posti letto ed esercizi "
                 "comunali cambiano di perimetro (Massarosa: 868 posti letto nel 2024, 2.734 nel 2025). Gli anni 2002–2024 non sono "
                 "confrontabili con il valore pubblicato e la serie omogenea parte dal 2025.", ISTAT_CAPACITY_REF)
