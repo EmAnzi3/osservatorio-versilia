@@ -55149,7 +55149,7 @@
       "method": {
         "type": "Elaborazione Osservatorio su tariffe ufficiali 2026",
         "formula": "100 m² × quota fissa + quota variabile per 3 componenti; TEFA 5%; + 7,60 € di componenti perequative ARERA 2026.",
-        "caveat": "Nessuna riduzione personale. Tariffe dalle delibere comunali TARI 2026 depositate nel Portale del federalismo fiscale; Stazzema usa l’importo ufficiale pubblicato per 3 componenti / 100 m² come base. Non esiste una stima ufficiale della TARI di una famiglia tipo per Toscana e Italia che copra almeno il 90% dei residenti: per il confronto con Toscana e Italia vedi il costo totale del servizio rifiuti per abitante (ISPRA), che misura il costo del servizio e non la bolletta.",
+        "caveat": "Nessuna riduzione personale. Tariffe dalle delibere comunali TARI 2026 depositate nel Portale del federalismo fiscale; Stazzema usa l’importo ufficiale pubblicato per 3 componenti / 100 m² come base.",
         "coverage": "7/7"
       }
     },

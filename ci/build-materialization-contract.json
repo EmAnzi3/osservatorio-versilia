@@ -74,6 +74,7 @@
     "scripts/materialize_imu_benchmark.py",
     "scripts/materialize_irpef_history.py",
     "scripts/materialize_omi_history.py",
+    "scripts/materialize_tari_note.py",
     "scripts/materialize_income_distribution_history.py",
     "scripts/apply_per_capita_reference_contract.py",
     "scripts/patch_fragilita_runtime.py",
