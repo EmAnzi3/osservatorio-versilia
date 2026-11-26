@@ -127,8 +127,7 @@
     });
     if (rows.some(row => row.map.size < 2)) return null;
     let years = [...rows[0].map.keys()].filter(year => rows.every(row => row.map.has(year)));
-    // anni numerici in ordine numerico; etichette come «2024 S2» o «2020/21» in ordine alfabetico, che per questi formati è cronologico
-    years = years.sort((a, b) => (Number.isFinite(Number(a)) && Number.isFinite(Number(b)) ? Number(a) - Number(b) : String(a).localeCompare(String(b))));
+    years = years.sort((a, b) => Number(a) - Number(b));
     if (years.length < 2) return null;
     return {
       years,
