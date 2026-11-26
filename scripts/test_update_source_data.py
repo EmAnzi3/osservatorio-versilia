@@ -1114,6 +1114,62 @@ def mim_students_history_cases() -> None:
         raise AssertionError("ultimo anno diverso dal pubblicato accettato")
 
 
+def mim_buildings_history_cases() -> None:
+    """Edilizia scolastica: file MIM per anno, anagrafe dello stesso anno, anni anomali esclusi, 2024/25 = pubblicato."""
+    import materialize_scuola_mim as ms
+    import mim_buildings_history as mh
+
+    towns = ["Camaiore", "Forte dei Marmi", "Massarosa", "Pietrasanta", "Seravezza", "Stazzema", "Viareggio"]
+    def counts(year: str, i: int) -> dict:
+        si = "SI" if (i + len(year)) % 2 else "NO"
+        period = "tra il 1950 e il 1970" if year != "2021/22" else "anni sessanta"  # 2021/22: valore fuori tracciato
+        return {"agibilita": si, "cpi": "NON DEFINITO", "sciaAntincendio": "NO", "rinnovoAntincendio": "NO", "accessibilita": "SI",
+                "mensa": si, "palestra": "SI", "periodoCostruzione": period, "scuolabus": "SI", "tplUrbano": "NO", "tplInterurbano": si}
+    cols = {local: col for _, fields, _ in mh.DATASETS.values() for local, col in fields.items()}
+
+    def fetch(url: str) -> bytes:
+        name = url.rsplit("/", 1)[1]
+        year = next((y for y, f in mh.REGISTRY.items() if f == name), None)
+        if year:
+            lines = ["CODICESCUOLA;DESCRIZIONECOMUNE"] + [f"LUEE{i:06d};{t.upper()}" for i, t in enumerate(towns)] + ["FIEE000001;FIRENZE"]
+            if year == "2020/21":
+                lines = lines[:-2]  # Viareggio manca dall'anagrafe 2020/21: si usa quella più vicina
+            return "\n".join(lines).encode()
+        year = next(y for y, st in mh.STAMPS.items() if name.endswith(st + ".csv"))
+        prefix, fields, _ = next(v for v in mh.DATASETS.values() if name.startswith(v[0]))
+        if prefix == "EDICONSICUREZZASTA2021" and year == "2022/23":
+            raise mh.Unavailable(url)
+        head = ["CODICESCUOLA", "CODICEEDIFICIO"] + list(fields.values())
+        lines = [";".join(head)]
+        for i, _ in enumerate(towns):
+            c = counts(year, i)
+            lines.append(";".join([f"LUEE{i:06d}", f"E{i}"] + [c[k] for k in fields]))
+        lines.append(";".join(["FIEE000001", "F1"] + ["SI"] * len(fields)))
+        return "\n".join(lines).encode()
+
+    published = {"towns": {t: {"buildings": 1, **{k: {v: 1} for k, v in counts("2024/25", i).items()}} for i, t in enumerate(towns)}}
+    snap = mh.build_snapshot(fetch, published)
+    assert snap["years"][ms.SAFETY_KEY] == ["2020/21", "2021/22", "2023/24", "2024/25"], snap["years"][ms.SAFETY_KEY]
+    assert snap["years"][ms.AGE_KEY] == ["2020/21", "2022/23", "2023/24", "2024/25"], snap["skipped"][ms.AGE_KEY]
+    assert snap["towns"][ms.FACILITIES_KEY]["2020/21"]["Viareggio"]["buildings"] == 1
+    metrics = {}
+    for key, (_, _, parts_of) in mh.DATASETS.items():
+        metrics[key] = {"meta": {"year": "2024/25"}, "method": {},
+                        "rows": [{"town": t, "parts": parts_of(published["towns"][t])} for t in towns]}
+    mh.apply(metrics, snap, mh.SNAPSHOT)
+    row = metrics[ms.FACILITIES_KEY]["rows"][2]
+    assert row["series"] == row["componentSeries"]["Mensa"] and len(row["series"]["years"]) == 5
+    assert "2022/23" in metrics[ms.SAFETY_KEY]["method"]["historyNote"]
+    bad = {"towns": dict(published["towns"])}
+    bad["towns"]["Stazzema"] = {**bad["towns"]["Stazzema"], "palestra": {"NO": 1}}
+    try:
+        mh.build_snapshot(fetch, bad)
+    except mh.MimHistoryError:
+        pass
+    else:
+        raise AssertionError("2024/25 diverso dal pubblicato accettato")
+
+
 def irpef_history_cases() -> None:
     """Addizionale IRPEF: elenchi MEF annuali, varianti di scrittura uniformate, anni consecutivi, ultimo anno = pubblicato."""
     import irpef_history as ih
@@ -1659,6 +1715,7 @@ def main() -> None:
     aci_vehicles_history_cases()
     mef_taxpayers_history_cases()
     irpef_history_cases()
+    mim_buildings_history_cases()
     mim_students_history_cases()
     asia_micro_units_history_cases()
     siope_cash_benchmarks_cases()

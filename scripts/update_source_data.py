@@ -927,6 +927,36 @@ def update_irpef_benchmarks(year: int, dry_run: bool, fetch=None) -> Changes:
     return changes
 
 
+# ------------------------------------------------------------------ MIM: serie dell'edilizia scolastica
+
+def update_mim_buildings_history(dry_run: bool, fetch=None) -> Changes:
+    """Serie dei cinque indicatori dell'edilizia scolastica dai file MIM annuali; 2024/25 = conteggi pubblicati."""
+    import os
+
+    import mim_buildings_history as mh
+
+    def fetcher(url: str) -> bytes:
+        try:
+            return (fetch or probes.http_fetch)(url)
+        except probes.ProbeError as error:
+            if error.reason == "not_found":
+                raise mh.Unavailable(url) from error
+            raise
+
+    try:
+        snapshot = mh.build_snapshot(fetcher, load(ROOT / mh.PUBLISHED))
+    except (mh.MimHistoryError, KeyError, ValueError, probes.ProbeError) as error:
+        raise UpdateError(f"Serie edilizia scolastica: {error}") from error
+    changes = Changes()
+    for key, years in snapshot["years"].items():
+        changes.note(f"{key} anni scolastici", None, ", ".join(years))
+    snapshot["acquisitionEvidence"] = {"script": "scripts/update_source_data.py mim-buildings-history",
+                                       "where": "runner GitHub Actions" if os.environ.get("GITHUB_ACTIONS") else "fuori dalla CI"}
+    if not dry_run:
+        save(ROOT / mh.SNAPSHOT, snapshot)
+    return changes
+
+
 # ------------------------------------------------------------------ MEF: serie dell'addizionale comunale IRPEF
 
 def update_irpef_history(dry_run: bool, fetch=None) -> Changes:
@@ -1901,6 +1931,8 @@ def main() -> int:
     imu_p.add_argument("--dry-run", action="store_true")
     imu_p.add_argument("--reuse-lists", action="store_true", help="elenchi Istat/POSAS dallo snapshot del gruppo (lettura fuori dalla CI)")
     imu_p.add_argument("--deadline", type=float, help="secondi per i prospetti (predefinito 65 minuti)")
+    mbh_p = sub.add_parser("mim-buildings-history", help="serie degli indicatori dell'edilizia scolastica (file MIM annuali)")
+    mbh_p.add_argument("--dry-run", action="store_true")
     irh_p = sub.add_parser("mef-irpef-history", help="serie dell'addizionale comunale IRPEF negli scenari di reddito (elenchi MEF)")
     irh_p.add_argument("--dry-run", action="store_true")
     ph_p = sub.add_parser("salute-pharmacies-history", help="serie delle farmacie ogni 1.000 residenti (Ministero della Salute)")
@@ -1942,6 +1974,8 @@ def main() -> int:
             update_infancy_history(args.dry_run).report("Serie prima infanzia:")
         elif args.updater == "mef-imu-benchmark":
             update_imu_benchmark(args.year, args.scope, args.dry_run, reuse_lists=args.reuse_lists, deadline=args.deadline).report("Confronto IMU:")
+        elif args.updater == "mim-buildings-history":
+            update_mim_buildings_history(args.dry_run).report("Serie edilizia scolastica:")
         elif args.updater == "mef-irpef-history":
             update_irpef_history(args.dry_run).report("Serie addizionale IRPEF:")
         elif args.updater == "salute-pharmacies-history":
