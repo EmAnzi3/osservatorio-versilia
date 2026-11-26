@@ -996,6 +996,48 @@ def update_omi_history(dry_run: bool, session: Any = None, deadline: float | Non
     return changes
 
 
+# ------------------------------------------------------------------ ISPRA e Regione Toscana: serie annuali (chiusura storici)
+
+def _where() -> str:
+    import os
+    return "runner GitHub Actions" if os.environ.get("GITHUB_ACTIONS") else "fuori dalla CI"
+
+
+def update_waste_cost_history(dry_run: bool, fetch=None) -> Changes:
+    """Serie del costo del servizio rifiuti per abitante (ISPRA CTOTab), solo righe comunali; ultimo anno = pubblicato."""
+    import waste_cost_history as wh
+
+    def get(url: str) -> str:
+        return (fetch or probes.http_fetch)(url).decode("utf-8", errors="replace")
+
+    metric = load(SITE)["metrics"][wh.METRIC]
+    try:
+        snapshot = wh.build_snapshot(get, {r["town"]: r["value"] for r in metric["rows"]}, int(metric["meta"]["year"]))
+    except (wh.WasteHistoryError, KeyError, ValueError, probes.ProbeError) as error:
+        raise UpdateError(f"Serie costo rifiuti: {error}") from error
+    snapshot["acquisitionEvidence"] = {"script": "scripts/update_source_data.py ispra-waste-cost-history", "where": _where()}
+    changes = Changes()
+    changes.note(f"{wh.METRIC} anni", None, f"{snapshot['years'][0]}–{snapshot['years'][-1]}")
+    if not dry_run:
+        save(ROOT / wh.SNAPSHOT, snapshot)
+    return changes
+
+
+def update_seasonality_history(dry_run: bool, fetch=None) -> Changes:
+    """Serie della concentrazione turistica nei tre mesi principali dai file regionali mensili."""
+    import seasonality_history as sh
+    try:
+        snapshot = sh.build_snapshot(fetch or probes.http_fetch, load(SITE))
+    except (sh.SeasonalityError, RuntimeError, KeyError, ValueError, probes.ProbeError) as error:
+        raise UpdateError(f"Serie stagionalità: {error}") from error
+    snapshot["acquisitionEvidence"] = {"script": "scripts/update_source_data.py tourism-seasonality-history", "where": _where()}
+    changes = Changes()
+    changes.note(f"{sh.METRIC} anni", None, f"{snapshot['years'][0]}–{snapshot['years'][-1]}")
+    if not dry_run:
+        save(ROOT / sh.SNAPSHOT, snapshot)
+    return changes
+
+
 # ------------------------------------------------------------------ MEF: serie dell'addizionale comunale IRPEF
 
 def update_irpef_history(dry_run: bool, fetch=None) -> Changes:
@@ -1975,6 +2017,9 @@ def main() -> int:
     omh_p = sub.add_parser("omi-history", help="serie semestrale delle quotazioni OMI con le stesse zone del semestre pubblicato")
     omh_p.add_argument("--dry-run", action="store_true")
     omh_p.add_argument("--deadline", type=float, default=3000.0, help="secondi oltre i quali i Comuni restanti passano alla corsa successiva")
+    for name, text in (("ispra-waste-cost-history", "serie del costo del servizio rifiuti (ISPRA)"),
+                       ("tourism-seasonality-history", "serie della stagionalità turistica (Regione Toscana)")):
+        sub.add_parser(name, help=text).add_argument("--dry-run", action="store_true")
     irh_p = sub.add_parser("mef-irpef-history", help="serie dell'addizionale comunale IRPEF negli scenari di reddito (elenchi MEF)")
     irh_p.add_argument("--dry-run", action="store_true")
     ph_p = sub.add_parser("salute-pharmacies-history", help="serie delle farmacie ogni 1.000 residenti (Ministero della Salute)")
@@ -2020,6 +2065,10 @@ def main() -> int:
             update_income_distribution_history(args.dry_run).report("Serie fasce di reddito:")
         elif args.updater == "omi-history":
             update_omi_history(args.dry_run, deadline=args.deadline).report("Serie OMI:")
+        elif args.updater == "ispra-waste-cost-history":
+            update_waste_cost_history(args.dry_run).report("Serie costo rifiuti:")
+        elif args.updater == "tourism-seasonality-history":
+            update_seasonality_history(args.dry_run).report("Serie stagionalità:")
         elif args.updater == "mef-irpef-history":
             update_irpef_history(args.dry_run).report("Serie addizionale IRPEF:")
         elif args.updater == "salute-pharmacies-history":

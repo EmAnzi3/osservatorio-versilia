@@ -279,6 +279,17 @@ for metric_id in (
                 "gli stessi edifici e le stesse risposte nei sette Comuni; la sola differenza con il 2020/21 dipende dalla compilazione dei campi. "
                 "Non esiste quindi una serie che descriva cambiamenti reali.", MIM_BUILDINGS_REF)
 
+# Istat — Capacità degli esercizi ricettivi (verifica del 27/11/2026). Dal 2025 la rilevazione
+# diffonde regolarmente anche gli «altri alloggi privati» (circolare Istat 2025, categoria C.2):
+# a Massarosa i posti letto passano da 868 (2024) a 2.734 (2025), gli esercizi da 52 a 364.
+# La serie 2002–2024 non è omogenea con il valore pubblicato 2025.
+ISTAT_CAPACITY_REF = "https://www.istat.it/fascicoloSidi/2012/Circolare_Capacit%C3%A0%20degli%20esercizi%20ricettivi_2025.pdf"
+for metric_id in ("tourismBeds", "tourismBedsPer1000", "tourismStructuresPer1000"):
+    _add_metric(metric_id, "serie_storica", UNAVAILABLE,
+                "Dal 2025 Istat include nella diffusione regolare gli «altri alloggi privati» (categoria C.2): posti letto ed esercizi "
+                "comunali cambiano di perimetro (Massarosa: 868 posti letto nel 2024, 2.734 nel 2025). Gli anni 2002–2024 non sono "
+                "confrontabili con il valore pubblicato e la serie omogenea parte dal 2025.", ISTAT_CAPACITY_REF)
+
 def main() -> None:
     ns["main"]()
 
