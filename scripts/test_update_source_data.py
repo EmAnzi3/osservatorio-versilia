@@ -1230,6 +1230,39 @@ def omi_history_cases() -> None:
         oh.omi.semesters, oh.omi.town_codes, oh.read_town, oh.zone_codes = saved
 
 
+def lotto1_history_cases() -> None:
+    """Costo rifiuti ISPRA (solo righe comunali, anni consecutivi) e stagionalità regionale (mesi = presenze)."""
+    import waste_cost_history as wh
+    import seasonality_history as sh
+
+    towns = ["Camaiore", "Forte dei Marmi", "Massarosa", "Pietrasanta", "Seravezza", "Stazzema", "Viareggio"]
+    def page(year: int, p: int) -> str:
+        if p > 1:
+            return "<table></table>"
+        rows = []
+        for i, t in enumerate(towns):
+            n = 2 if (t == "Stazzema" and year < 2020) else 1  # gestione aggregata prima del 2020: la serie si ferma
+            rows.append(f"<tr><td>{t}</td><td>LU</td><td>{n}</td><td>1.000</td>" + "<td>1</td>" * 10 + f"<td>{200 + i + year - 2020},50</td></tr>")
+        return "<table>" + "".join(rows) + "</table>"
+    def fetch(url: str) -> str:
+        year = int(url.split("aa=")[1].split("&")[0]); p = int(url.split("&p=")[1].split("&")[0])
+        return page(year, p)
+    pub = {t: 200 + i + 4 + 0.5 for i, t in enumerate(towns)}
+    snap = wh.build_snapshot(fetch, pub, 2024)
+    assert snap["years"] == [2020, 2021, 2022, 2023, 2024] and "Stazzema" in snap["stoppedAt"], snap["stoppedAt"]
+    metric = {wh.METRIC: {"meta": {"year": "2024"}, "method": {}, "rows": [{"town": t, "value": v} for t, v in pub.items()]}}
+    wh.apply(metric, snap, wh.SNAPSHOT)
+    assert metric[wh.METRIC]["rows"][0]["series"]["values"][0] == 200.5
+    try:
+        wh.build_snapshot(fetch, {**pub, "Viareggio": 1.0}, 2024)
+    except wh.WasteHistoryError:
+        pass
+    else:
+        raise AssertionError("anno pubblicato diverso accettato")
+    months = [10.0] * 9 + [100.0, 200.0, 300.0]
+    assert abs(sh.share(months) - 600 / 690 * 100) < 1e-9
+
+
 def irpef_history_cases() -> None:
     """Addizionale IRPEF: elenchi MEF annuali, varianti di scrittura uniformate, anni consecutivi, ultimo anno = pubblicato."""
     import irpef_history as ih
@@ -1775,6 +1808,7 @@ def main() -> None:
     aci_vehicles_history_cases()
     mef_taxpayers_history_cases()
     irpef_history_cases()
+    lotto1_history_cases()
     omi_history_cases()
     income_distribution_history_cases()
     mim_students_history_cases()

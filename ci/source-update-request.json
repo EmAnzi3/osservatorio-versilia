@@ -31,5 +31,7 @@
   "mefImuBenchmark": [],
   "mefIrpefHistory": false,
   "mefIncomeDistributionHistory": false,
-  "omiHistory": false
+  "omiHistory": false,
+  "ispraWasteCostHistory": false,
+  "tourismSeasonalityHistory": false
 }

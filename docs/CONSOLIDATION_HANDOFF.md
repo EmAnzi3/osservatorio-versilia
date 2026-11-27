@@ -1,5 +1,13 @@
 # Consolidamento Osservatorio Versilia — handoff operativo
 
+## Chiusura definitiva di storici e confronti: lotto 1 (27 novembre 2026)
+
+- Obiettivo deciso da Ema (27/11): nessuna coppia storico/confronto resta «disponibile non acquisita»; ogni voce è pubblicata con la regola del valore corrente o classificata con evidenza verificata alla fonte. Dopo la #668: 51 storici e 53 confronti aperti, divisi in sei lotti per fonte.
+- `wasteServiceCost`: serie 2020–2024 ISPRA CTOTab (`waste_cost_history.py`, solo righe «N. di comuni» = 1; nel 2019 Camaiore non ha riga comunale).
+- `tourismSeasonality`: serie 2024–2025 (`seasonality_history.py`, unici anni con la tavola comunale mensile scaricabile).
+- Capacità ricettiva Istat: storico SOURCE_UNAVAILABLE (dal 2025 inclusi gli «altri alloggi privati»), con `_revise_metric` in audit-15.
+- Trovato per il lotto 2: il risultato disponibile 2025 di Camaiore pubblicato (−2,93 mln, archivio OpenBDAP di agosto) differisce dall'archivio attuale (−3,66 mln, novembre); il controllo mensile sorveglia solo la pagina del portale OpenBDAP, non gli archivi dei rendiconti.
+
 ## OMI semestrale, edilizia scolastica ferma, TARI senza confronto (26 novembre 2026)
 
 - `scripts/omi_history.py`: per Comune solo semestri consecutivi in cui l'elenco completo delle zone è uguale a quello del semestre pubblicato e le zone con la riga «Abitazioni civili» NORMALE sono quelle pubblicate (il catalogo pubblica solo queste: Viareggio ha anche R3 senza riga residenziale). Esito: Forte dei Marmi 2006-S1→2026-S1 (41 semestri), Massarosa e Seravezza 2014-S1→ (25; zone diverse nel 2013-S2), Camaiore, Pietrasanta, Stazzema, Viareggio 2024-S2→ (4; zone ridisegnate). Semestri comuni 2024-S2–2026-S1.

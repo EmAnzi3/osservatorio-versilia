@@ -53,7 +53,13 @@ def regressions(path):
     for mutation in mutations:
         g=QueryEngine(path,layer='effective');assert g.query(query())['status']=='computed'
         mutation(g._catalog['metrics']['tourismSeasonality'])
-        rejected(g,query(),'seasonality_public_definition_or_values_changed')
+        # una serie inventata è verificata contro lo snapshot fissato della serie 2024–2025
+        rejected(g,query(),'seasonality_history_changed' if mutation is mutations[11] else 'seasonality_public_definition_or_values_changed')
+    g=QueryEngine(path,layer='effective')
+    if any(r.get('series') for r in g._catalog['metrics']['tourismSeasonality']['rows']):
+        for change in [lambda r:r['series']['values'].__setitem__(0,1.0),lambda r:r['series']['years'].__setitem__(0,2000),lambda r:r.update(series=None)]:
+            g=QueryEngine(path,layer='effective');change(g._catalog['metrics']['tourismSeasonality']['rows'][3])
+            assert g.query(query())['status']!='computed'
     for mutate in [lambda snap:snap['benchmarks']['tourismSeasonality'].update(tuscany=1),
                    lambda snap:snap['sources'].update(monthly='https://example.com')]:
         g=QueryEngine(path,layer='effective');assert g.query(dict(query('benchmark_gap',towns=['046018']),benchmark='tuscany'))['status']=='computed'
