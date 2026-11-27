@@ -504,6 +504,8 @@
   ],
   "indicatorArchives": {
     "01": "https://openbdap.rgs.mef.gov.it/Datasets_FET/Rendiconto/2025/2025_Rendiconto%20-%20Piano%20degli%20indicatori_PIEMONTE.zip",
+    "03": "https://openbdap.rgs.mef.gov.it/Datasets_FET/Rendiconto/2025/2025_Rendiconto%20-%20Piano%20degli%20indicatori_LOMBARDIA.zip",
+    "05": "https://openbdap.rgs.mef.gov.it/Datasets_FET/Rendiconto/2025/2025_Rendiconto%20-%20Piano%20degli%20indicatori_VENETO.zip",
     "06": "https://openbdap.rgs.mef.gov.it/Datasets_FET/Rendiconto/2025/2025_Rendiconto%20-%20Piano%20degli%20indicatori_FRIULI-VENEZIA%20GIULIA.zip",
     "07": "https://openbdap.rgs.mef.gov.it/Datasets_FET/Rendiconto/2025/2025_Rendiconto%20-%20Piano%20degli%20indicatori_LIGURIA.zip",
     "08": "https://openbdap.rgs.mef.gov.it/Datasets_FET/Rendiconto/2025/2025_Rendiconto%20-%20Piano%20degli%20indicatori_EMILIA-ROMAGNA.zip",
@@ -520,9 +522,91 @@
     "19": "https://openbdap.rgs.mef.gov.it/Datasets_FET/Rendiconto/2025/2025_Rendiconto%20-%20Piano%20degli%20indicatori_SICILIA.zip",
     "20": "https://openbdap.rgs.mef.gov.it/Datasets_FET/Rendiconto/2025/2025_Rendiconto%20-%20Piano%20degli%20indicatori_SARDEGNA.zip"
   },
-  "missingIndicatorArchives": {
-    "03": "018094: indicatore 1.1 duplicato incoerente",
-    "05": "024129: indicatore 1.1 duplicato incoerente"
+  "missingIndicatorArchives": {},
+  "indicatorAlternateColumn": {
+    "01": [
+      "001219",
+      "096004"
+    ],
+    "03": [
+      "012070",
+      "012083",
+      "012096",
+      "015093",
+      "015157",
+      "015192",
+      "015209",
+      "015220",
+      "016003",
+      "017021",
+      "018177",
+      "020022",
+      "020045",
+      "020054",
+      "098031",
+      "108001",
+      "108033"
+    ],
+    "05": [
+      "023089",
+      "025006",
+      "028032",
+      "029033"
+    ],
+    "08": [
+      "033021",
+      "034025",
+      "035012",
+      "035024",
+      "035036",
+      "036018",
+      "036030",
+      "036032",
+      "036041",
+      "037008",
+      "037021",
+      "037054",
+      "038005",
+      "038018",
+      "040046"
+    ],
+    "09": [
+      "045010",
+      "046008",
+      "046009",
+      "048010",
+      "048024",
+      "048035",
+      "048041",
+      "049003",
+      "049006",
+      "049010",
+      "050026",
+      "050029",
+      "052012",
+      "052022",
+      "052028",
+      "053011"
+    ],
+    "12": [
+      "058032",
+      "059010"
+    ],
+    "20": [
+      "113017",
+      "113020",
+      "115045",
+      "119004",
+      "119020"
+    ]
+  },
+  "indicatorAmbiguousCodes": {
+    "03": [
+      "018094"
+    ],
+    "05": [
+      "024129"
+    ]
   },
   "towns": {
     "046018": {
@@ -1625,22 +1709,24 @@
     },
     "rigidExpenditureShare": {
       "tuscany": {
-        "municipalities": 256,
+        "municipalities": 272,
         "municipalitiesTotal": 273,
-        "populationCovered": 3204990,
+        "populationCovered": 3652987,
         "populationTotal": 3657716,
-        "populationShare": 0.8762271319041719,
-        "value": null,
-        "reason": "copertura 87.6% sotto la soglia del 90%"
+        "populationShare": 0.9987071166815575,
+        "value": 30.0043730933936,
+        "numerator": 1519085111.220065,
+        "denominator": 5062879022.64
       },
       "italy": {
-        "municipalities": 4847,
+        "municipalities": 6930,
         "municipalitiesTotal": 7897,
-        "populationCovered": 38260388,
+        "populationCovered": 53918413,
         "populationTotal": 58943464,
-        "populationShare": 0.6491031473820406,
-        "value": null,
-        "reason": "copertura 64.9% sotto la soglia del 90%"
+        "populationShare": 0.9147479523768742,
+        "value": 35.96444131867927,
+        "numerator": 24762300592.231873,
+        "denominator": 68852176439.54
       }
     }
   },
