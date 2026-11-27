@@ -1239,7 +1239,8 @@ def openbdap_refresh_cases() -> None:
     site = json.loads((ROOT / "data" / "site-data.json").read_text(encoding="utf-8"))
     fresh = {2025: copy.deepcopy({t: v["years"]["2025"] for t, v in snap["raw"].items()})}
     assert orf.differences(snap, fresh) == []
-    fresh[2025]["Camaiore"]["available_administration_result_code_0502"] = -3656681.9
+    new = fresh[2025]["Camaiore"]["available_administration_result_code_0502"] - 723087.21  # indipendente dallo snapshot corrente
+    fresh[2025]["Camaiore"]["available_administration_result_code_0502"] = new
     fresh[2025]["Camaiore"]["population_at_1_january"] = 1  # la popolazione non viene dall'archivio: ignorata
     diffs = orf.differences(snap, fresh)
     assert [(d["town"], d["field"]) for d in diffs] == [("Camaiore", "available_administration_result_code_0502")], diffs
@@ -1248,7 +1249,9 @@ def openbdap_refresh_cases() -> None:
     metric = site["metrics"]["availableAdministrationResultPerResident"]
     row = next(r for r in metric["rows"] if r["town"] == "Camaiore")
     pop = snap["raw"]["Camaiore"]["years"]["2025"]["population_at_1_january"]
-    assert abs(row["value"] - (-3656681.9 / pop)) < 1e-9 and row["series"]["values"][-1] == row["value"] and row["formatted"] == "-115\u00a0€"
+    import update_bilanci_v160 as pub
+    assert pub.format_currency(-114.87439997486806) == "-115\u00a0€"
+    assert abs(row["value"] - (new / pop)) < 1e-9 and row["series"]["values"][-1] == row["value"] and row["formatted"] == pub.format_currency(new / pop)
     total = sum(snap["raw"][t]["years"]["2025"]["available_administration_result_code_0502"] for t in snap["raw"])
     pops = sum(snap["raw"][t]["years"]["2025"]["population_at_1_january"] for t in snap["raw"])
     assert abs(metric["aggregate"]["value"] - total / pops) < 1e-9 and snap["refreshLog"][-1]["differences"] == diffs
