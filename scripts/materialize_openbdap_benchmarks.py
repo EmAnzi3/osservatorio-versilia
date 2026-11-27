@@ -88,7 +88,9 @@ def apply(data: dict) -> int:
             metric["meta"]["benchmark"]["note"] = (
                 "Media degli indicatori ufficiali 1.1 ponderata sulle entrate correnti (numeratore ricostruito come indicatore × "
                 "accertamenti dei primi tre titoli). Per i Comuni che usano il Fondo anticipazione DL 35/2013, compreso nel "
-                "denominatore ufficiale ma non pubblicato a parte, il peso è approssimato. " + note(entries))
+                "denominatore ufficiale ma non pubblicato a parte, il peso è approssimato. Dove un Comune ha compilato solo la colonna "
+                "«al netto della Missione 13» dello stesso indicatore si usa quella (dove sono compilate entrambe coincidono); i codici "
+                "di Comuni fusi che hanno trasmesso separatamente sono esclusi. " + note(entries))
         if key == ob.DEBT:
             metric["meta"]["benchmark"]["part"] = "Debito finanziario pro capite"
             metric["meta"]["benchmark"]["note"] = ("Confronto riferito al debito finanziario pro capite (debiti da finanziamento D1 dello Stato "

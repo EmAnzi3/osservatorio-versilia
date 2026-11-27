@@ -1315,14 +1315,20 @@ def openbdap_debt_cases() -> None:
     # Spese rigide: indicatore 1.1 per Comune; non valorizzato = non coperto; numeratore = indicatore × entrate correnti.
     import io as _io
     import zipfile as _zip
-    head = "Codice Tipologia Soggetto;Codice Provincia;Codice Comune;Codice Tipologia Indicatore Sintetico 2)a;Codice Indicatore Sintetico 2)a;Indicatore Tutte Le Missioni"
-    lines = [head, "ELCOMU;046;018;01;01;20.66", "ELCOMU;046;018;01;02;99", "ELCOMU;046;030;1;1;", "ELPROV;046;000;01;01;5"]
+    head = ("Codice Tipologia Soggetto;Codice Provincia;Codice Comune;Codice Tipologia Indicatore Sintetico 2)a;Codice Indicatore Sintetico 2)a;"
+            "Indicatore Tutte Le Missioni;Indicatore Tutte Le Spese al Netto Missione 13")
+    lines = [head, "ELCOMU;046;018;01;01;20.66;0", "ELCOMU;046;018;01;02;99;", "ELCOMU;046;030;1;1;;", "ELPROV;046;000;01;01;5;",
+             "ELCOMU;050;026;01;01;;22",  # solo la colonna al netto della Missione 13: si usa
+             "ELCOMU;050;027;01;01;;0",  # zero segnaposto: non coperto
+             "ELCOMU;018;094;01;01;31.8;", "ELCOMU;018;094;01;01;22.5;",  # Comuni fusi con valori diversi: esclusi
+             "ELCOMU;046;033;01;01;25;", "ELCOMU;046;033;01;01;25;"]  # duplicato coerente: tenuto
     buf = _io.BytesIO()
     with _zip.ZipFile(buf, "w") as z:
         z.writestr("2025_Rendiconto PDI Sintetici Allegato 2-a_TOSCANA.csv", "\n".join(lines))
         z.writestr("Rendiconto PDI Sintetici Allegato 2-a.pdf", "%PDF")
     rigid = ob.rigid_index(buf.getvalue(), "TOSCANA")
-    assert rigid == {"046018": 20.66}, rigid
+    assert rigid == {"046018": 20.66, "050026": 22.0, "046033": 25.0}, rigid
+    assert rigid.fallback == {"050026"} and rigid.ambiguous == {"018094"}
     tables = {"entrate": {("046018", k): [{"Accertamenti": v}] for k, v in (("01", "100"), ("02", "50"), ("03", "50"))}, "rigide": rigid}
     n, d = ob.components({**tables, "spese": {}, "missioni": {}, "risultato": {}}, "046018", ob.RIGID)
     assert d == 200 and abs(n / d * 100 - 20.66) < 1e-12 and ob.is_ratio(ob.RIGID) and ob.RIGID not in ob.RATIOS

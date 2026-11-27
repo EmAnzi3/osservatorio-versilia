@@ -82,8 +82,22 @@ def indicators_url(year: int, region: str) -> str:
     return BASE + urllib.parse.quote(INDICATORS.format(year=year, region=region), safe="/:_-.'")
 
 
-def rigid_index(raw: bytes, region: str) -> dict[str, float]:
-    """Comune → indicatore 1.1 «Tutte le missioni» (percentuale) dal Piano degli indicatori regionale."""
+class RigidIndex(dict):
+    """Comune → indicatore 1.1, con i Comuni letti dalla colonna alternativa e i codici esclusi perché ambigui."""
+
+    def __init__(self, data: dict, fallback: set[str], ambiguous: set[str]):
+        super().__init__(data)
+        self.fallback, self.ambiguous = fallback, ambiguous
+
+
+def rigid_index(raw: bytes, region: str) -> RigidIndex:
+    """Comune → indicatore 1.1 (percentuale) dal Piano degli indicatori regionale.
+
+    Colonna «Tutte le missioni»; se è vuota, la colonna «Tutte le spese al netto Missione 13» dello stesso
+    indicatore ufficiale (alcuni Comuni compilano solo quella; dove il Comune le compila entrambe con un valore
+    diverso da zero coincidono, uno zero nella colonna alternativa è un segnaposto e non vale). Due enti con lo
+    stesso codice e valori diversi (Comuni fusi che hanno trasmesso separatamente) escludono quel codice: mai
+    sceglierne uno; anche gli schemi di bilancio lo escludono."""
     squash = lambda t: "".join(ch for ch in t.lower() if ch.isalnum())
     with zipfile.ZipFile(io.BytesIO(raw)) as z:
         hits = [n for n in z.namelist() if squash(n.rsplit("/", 1)[-1]).endswith(squash(f"{INDICATOR_MEMBER}_{region}.csv"))]
@@ -91,6 +105,8 @@ def rigid_index(raw: bytes, region: str) -> dict[str, float]:
             raise BenchmarkError(f"{INDICATOR_MEMBER}: atteso 1 CSV, trovati {hits}")
         rows = list(csv.DictReader(io.StringIO(decode(z.read(hits[0]))), delimiter=";"))
     out: dict[str, float] = {}
+    fallback: set[str] = set()
+    ambiguous: set[str] = set()
     for row in rows:
         row = {k.strip(): v for k, v in row.items() if k and k.strip()}
         if not is_municipality(row) or not (c := code(row)):
@@ -100,12 +116,19 @@ def rigid_index(raw: bytes, region: str) -> dict[str, float]:
         if (kind, ind) != ("01", "01"):
             continue
         value = num(row.get("Indicatore Tutte Le Missioni"))
+        alt = num(row.get("Indicatore Tutte Le Spese al Netto Missione 13"))
+        if value is None and alt is not None and alt > 0:
+            value = alt
+            fallback.add(c)
         if value is None:
             continue  # indicatore non valorizzato: Comune non coperto, mai zero
         if c in out and out[c] != value:
-            raise BenchmarkError(f"{c}: indicatore 1.1 duplicato incoerente")
+            ambiguous.add(c)
         out[c] = value
-    return out
+    for c in ambiguous:
+        out.pop(c, None)
+        fallback.discard(c)
+    return RigidIndex(out, fallback, ambiguous)
 
 
 class BenchmarkError(RuntimeError):
@@ -315,6 +338,8 @@ def build_snapshot(year: int, fetcher: Callable[[str], bytes], published: dict[s
     missing_regions = {}
     indicator_archives: dict[str, str] = {}
     missing_indicators: dict[str, str] = {}
+    indicator_fallback: dict[str, list[str]] = {}
+    indicator_ambiguous: dict[str, list[str]] = {}
     for reg, names in REGIONS.items():
         raw, tried = None, []
         for name in names:
@@ -341,6 +366,10 @@ def build_snapshot(year: int, fetcher: Callable[[str], bytes], published: dict[s
         try:
             tables["rigide"] = rigid_index(fetcher(indicators_url(year, name)), name)
             indicator_archives[reg] = indicators_url(year, name)
+            if tables["rigide"].fallback:
+                indicator_fallback[reg] = sorted(tables["rigide"].fallback)
+            if tables["rigide"].ambiguous:
+                indicator_ambiguous[reg] = sorted(tables["rigide"].ambiguous)
         except (urllib.error.HTTPError, BenchmarkError, zipfile.BadZipFile) as error:
             missing_indicators[reg] = str(error)[:500]
         mission_towns = {c for c, _ in tables["missioni"]}
@@ -411,6 +440,7 @@ def build_snapshot(year: int, fetcher: Callable[[str], bytes], published: dict[s
                        "date": f"{year}-01-01"},
         "regions": regions, "missingRegions": missing_regions, "unknownCodes": unknown,
         "indicatorArchives": indicator_archives, "missingIndicatorArchives": missing_indicators,
+        "indicatorAlternateColumn": indicator_fallback, "indicatorAmbiguousCodes": indicator_ambiguous,
         "towns": {c: {m: list(per_metric[m][c]) for m in ALL_METRICS if c in per_metric[m]} | {"population": population[c]} for c in towns},
         "benchmarks": benchmarks,
         "blocked": blocked,
