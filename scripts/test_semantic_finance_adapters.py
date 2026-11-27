@@ -36,7 +36,9 @@ def regressions(path):
   r=e.query(dict(request('benchmark_gap','currentRevenueAccruedPerResident',towns=['046018']),benchmark='tuscany'));assert r['status']=='computed',r['reasons']
   assert math.isclose(r['observations'][1]['value'],5062879022.64/3652987,abs_tol=1e-9) and r['observations'][1]['evidence'][0]['coverage']['municipalities']==272
   rejected(e,dict(request('benchmark_gap','tourismDevelopmentMissionExpenditurePerResident',towns=['046018']),benchmark='italy'),'finance_benchmark_scope_below_coverage_threshold')
-  rejected(e,dict(request('benchmark_gap','availableAdministrationResultPerResident',towns=['046018']),benchmark='tuscany'),'finance_benchmark')
+  # Avanzo disponibile: confronto sbloccato dopo il rendiconto ritrasmesso di Camaiore 2025 (#670); somma 0502 / residenti, 272 Comuni.
+  r=e.query(dict(request('benchmark_gap','availableAdministrationResultPerResident',towns=['046018']),benchmark='tuscany'));assert r['status']=='computed',r['reasons']
+  assert math.isclose(r['observations'][1]['value'],112.35212398784886,abs_tol=1e-6) and r['observations'][1]['evidence'][0]['coverage']['municipalities']==272
   g=QueryEngine(path,layer='effective')
   snap,_=g.file(g._catalog['metrics']['ownRevenueShare']['meta']['benchmark']['sourceSnapshot']);snap['benchmarks']['ownRevenueShare']['tuscany']['numerator']*=1.01
   rejected(g,dict(request('benchmark_gap','ownRevenueShare',towns=['046018']),benchmark='tuscany'),'finance_catalog_source_mismatch')
