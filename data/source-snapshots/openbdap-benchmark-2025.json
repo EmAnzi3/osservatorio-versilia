@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "version": "openbdap-benchmark-2025-v1",
-  "retrieved": "2026-11-20",
+  "retrieved": "2026-11-27",
   "publisher": "Ragioneria Generale dello Stato — OpenBDAP (rendiconti) · Istat (bilancio demografico P2)",
   "sourceUrl": "https://openbdap.rgs.mef.gov.it/it/FET/Analizza",
   "year": 2025,
@@ -584,6 +584,10 @@
         160510.0,
         null
       ],
+      "financialDebtProfile": [
+        10150552.2,
+        null
+      ],
       "population": 21806
     },
     "046033": {
@@ -665,6 +669,10 @@
       ],
       "tourismDevelopmentMissionExpenditurePerResident": [
         2402100.72,
+        null
+      ],
+      "financialDebtProfile": [
+        30321202.25,
         null
       ],
       "population": 60618
@@ -750,6 +758,10 @@
         6812044.64,
         null
       ],
+      "financialDebtProfile": [
+        52266367.41,
+        null
+      ],
       "population": 31832
     },
     "046024": {
@@ -831,6 +843,10 @@
       ],
       "tourismDevelopmentMissionExpenditurePerResident": [
         1583486.0799999998,
+        null
+      ],
+      "financialDebtProfile": [
+        10687878.41,
         null
       ],
       "population": 22743
@@ -916,6 +932,10 @@
         153928.16999999998,
         null
       ],
+      "financialDebtProfile": [
+        3645263.3,
+        null
+      ],
       "population": 12381
     },
     "046013": {
@@ -999,6 +1019,10 @@
         932792.06,
         null
       ],
+      "financialDebtProfile": [
+        0.0,
+        null
+      ],
       "population": 6666
     },
     "046030": {
@@ -1080,6 +1104,10 @@
       ],
       "tourismDevelopmentMissionExpenditurePerResident": [
         89916.78,
+        null
+      ],
+      "financialDebtProfile": [
+        5442019.97,
         null
       ],
       "population": 2892
@@ -1220,12 +1248,24 @@
     },
     "availableAdministrationResultPerResident": {
       "tuscany": {
-        "value": null,
-        "reason": "riconciliazione 7/7 non superata: Camaiore: fonte -114.87439997486806 ≠ pubblicato -92.1586670645891"
+        "municipalities": 272,
+        "municipalitiesTotal": 273,
+        "populationCovered": 3652987,
+        "populationTotal": 3657716,
+        "populationShare": 0.9987071166815575,
+        "value": 112.35212398784886,
+        "numerator": 410420848.35,
+        "denominator": 3652987
       },
       "italy": {
-        "value": null,
-        "reason": "riconciliazione 7/7 non superata: Camaiore: fonte -114.87439997486806 ≠ pubblicato -92.1586670645891"
+        "municipalities": 6938,
+        "municipalitiesTotal": 7897,
+        "populationCovered": 53931895,
+        "populationTotal": 58943464,
+        "populationShare": 0.9149766800268135,
+        "value": 8.23995838251187,
+        "numerator": 444396570.2900001,
+        "denominator": 53931895
       }
     },
     "fcdePerResident": {
@@ -1510,16 +1550,34 @@
         "value": null,
         "reason": "copertura 88.4% sotto la soglia del 90%"
       }
+    },
+    "financialDebtProfile": {
+      "tuscany": {
+        "municipalities": 272,
+        "municipalitiesTotal": 273,
+        "populationCovered": 3652987,
+        "populationTotal": 3657716,
+        "populationShare": 0.9987071166815575,
+        "value": 593.6065402148981,
+        "numerator": 2168436974.52,
+        "denominator": 3652987
+      },
+      "italy": {
+        "municipalities": 6938,
+        "municipalitiesTotal": 7897,
+        "populationCovered": 53931895,
+        "populationTotal": 58943464,
+        "populationShare": 0.9149766800268135,
+        "value": 663.4591771179188,
+        "numerator": 35781610677.11,
+        "denominator": 53931895
+      }
     }
   },
-  "blocked": {
-    "availableAdministrationResultPerResident": [
-      "Camaiore: fonte -114.87439997486806 ≠ pubblicato -92.1586670645891"
-    ]
-  },
+  "blocked": {},
   "qualityGate": {
     "status": "PASS",
-    "publicReconciliation": "19 indicatori × 7/7; 1 esclusi dal confronto"
+    "publicReconciliation": "21 indicatori × 7/7; 0 esclusi dal confronto"
   },
   "acquisitionEvidence": {
     "script": "scripts/update_source_data.py openbdap-benchmarks --year 2025"
