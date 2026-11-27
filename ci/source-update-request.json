@@ -20,9 +20,7 @@
   "opencivitasNeeds": [],
   "aciVehiclesHistory": false,
   "istatFamiglie": false,
-  "openbdapBenchmarks": [
-    2025
-  ],
+  "openbdapBenchmarks": [],
   "mefTaxpayersHistory": false,
   "mimStudentsHistory": false,
   "asiaMicroUnitsHistory": false,
@@ -38,6 +36,6 @@
   "ispraWasteCostHistory": false,
   "tourismSeasonalityHistory": false,
   "mefIncomeDistributionBenchmark": false,
-  "siopeFiscalRecoveryHistory": true,
+  "siopeFiscalRecoveryHistory": false,
   "pass": "lotto2-spese-rigide-2"
 }
