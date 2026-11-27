@@ -1049,6 +1049,25 @@ def update_waste_cost_history(dry_run: bool, fetch=None) -> Changes:
     return changes
 
 
+def update_fiscal_recovery_history(dry_run: bool, fetch=None) -> Changes:
+    """Serie degli incassi SIOPE da verifica e controllo per residente; ultimo anno = pubblicato."""
+    import fiscal_recovery_history as fh
+
+    metric = load(SITE)["metrics"][fh.METRIC]
+    try:
+        snapshot = fh.build_snapshot(fetch or probes.http_fetch, {r["code"]: r["value"] for r in metric["rows"]}, int(metric["meta"]["year"]))
+    except (fh.RecoveryHistoryError, KeyError, ValueError, probes.ProbeError) as error:
+        raise UpdateError(f"Serie recupero fiscale: {error}") from error
+    snapshot["acquisitionEvidence"] = {"script": "scripts/update_source_data.py siope-fiscal-recovery-history", "where": _where()}
+    changes = Changes()
+    changes.note(f"{fh.METRIC} anni", None, f"{snapshot['years'][0]}–{snapshot['years'][-1]}")
+    if snapshot["stoppedAt"]:
+        print("Serie recupero fiscale ferma a: " + snapshot["stoppedAt"][:200])
+    if not dry_run:
+        save(ROOT / fh.SNAPSHOT, snapshot)
+    return changes
+
+
 def update_seasonality_history(dry_run: bool, fetch=None) -> Changes:
     """Serie della concentrazione turistica nei tre mesi principali dai file regionali mensili."""
     import seasonality_history as sh
@@ -1338,7 +1357,7 @@ def update_openbdap_benchmarks(year: int, dry_run: bool, oc_fetch=None) -> Chang
     # Sei indicatori nascono in build dallo snapshot bilanci-v139: i valori pubblici vengono da lì.
     v139 = load(ROOT / "data/source-snapshots/bilanci-v139.json")["series"]
     code_of = {r["town"]: r["code"] for r in site["metrics"]["population"]["rows"]}
-    for key in ob.METRICS:
+    for key in ob.ALL_METRICS:
         if key not in site["metrics"]:
             published[key] = {code_of[t]: dict(zip(p["years"], p["values"]))[year] for t, p in v139[key]["towns"].items()}
             continue
@@ -2072,7 +2091,8 @@ def main() -> int:
     omh_p.add_argument("--deadline", type=float, default=3000.0, help="secondi oltre i quali i Comuni restanti passano alla corsa successiva")
     sub.add_parser("openbdap-refresh", help="rendiconti OpenBDAP già pubblicati: applica le ritrasmissioni dei sette Comuni").add_argument("--dry-run", action="store_true")
     for name, text in (("ispra-waste-cost-history", "serie del costo del servizio rifiuti (ISPRA)"),
-                       ("tourism-seasonality-history", "serie della stagionalità turistica (Regione Toscana)")):
+                       ("tourism-seasonality-history", "serie della stagionalità turistica (Regione Toscana)"),
+                       ("siope-fiscal-recovery-history", "serie degli incassi da verifica e controllo (SIOPE)")):
         sub.add_parser(name, help=text).add_argument("--dry-run", action="store_true")
     sub.add_parser("mef-income-distribution-benchmark", help="confronto Toscana/Italia delle fasce di reddito (file comunale MEF)").add_argument("--dry-run", action="store_true")
     irh_p = sub.add_parser("mef-irpef-history", help="serie dell'addizionale comunale IRPEF negli scenari di reddito (elenchi MEF)")
@@ -2126,6 +2146,8 @@ def main() -> int:
             update_waste_cost_history(args.dry_run).report("Serie costo rifiuti:")
         elif args.updater == "tourism-seasonality-history":
             update_seasonality_history(args.dry_run).report("Serie stagionalità:")
+        elif args.updater == "siope-fiscal-recovery-history":
+            update_fiscal_recovery_history(args.dry_run).report("Serie recupero fiscale:")
         elif args.updater == "mef-income-distribution-benchmark":
             update_income_distribution_benchmark(args.dry_run).report("Confronto fasce di reddito:")
         elif args.updater == "mef-irpef-history":

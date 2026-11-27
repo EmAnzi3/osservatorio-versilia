@@ -1299,6 +1299,51 @@ def openbdap_refresh_cases() -> None:
     assert abs(metric["aggregate"]["value"] - total / pops) < 1e-9 and snap["refreshLog"][-1]["differences"] == diffs
 
 
+def openbdap_debt_cases() -> None:
+    """Debito D1: somma delle voci D.1 dei Comuni con Stato patrimoniale trasmesso; nessuna voce = zero; voce vuota = zero."""
+    import openbdap_benchmarks as ob
+
+    def row(prov: str, com: str, l2: str, l3: str, value: str) -> dict[str, str]:
+        return {"Codice Tipologia Soggetto": "ELCOMU", "Codice Provincia": prov, "Codice Comune": com,
+                "Codice II Livello": l2, "Codice III Livello": l3, "Consistenza Anno Corrente": value}
+    rows = [row("046", "018", "04", "01", "1772818.9"), row("046", "018", "04", "01", "5623811.46"), row("046", "018", "04", "01", ""),
+            row("046", "018", "04", "02", "999"), row("046", "018", "70", "00", "1"),
+            row("046", "030", "70", "00", "1"),  # nessun debito da finanziamento
+            row("046", "033", "04", "01", "5")]  # totale del passivo assente: Comune non coperto
+    assert ob.debt_index(rows) == {"046018": 1772818.9 + 5623811.46, "046030": 0.0}
+    assert ob.DEBT in ob.ALL_METRICS and ob.DEBT not in ob.METRICS
+
+
+def fiscal_recovery_history_cases() -> None:
+    """Recupero fiscale SIOPE: codici «a seguito di attività di verifica e controllo», dicembre, popolazione del file."""
+    import fiscal_recovery_history as fh
+
+    head = ('"Codice istat provincia";"Codice istat comune";"Descrizione Tipo Ente BDAP";"Anno/Mese calendario";'
+            '"Codice Gestionale Enti Locali";"Descrizione CG";"Popolazione ISTAT";"Importo cumulato"')
+    def csv_year(year: int) -> bytes:
+        lines = [head]
+        for i, c in enumerate(fh.TOWNS):
+            for month, amount in ((f"{year}/11", 1.0), (f"{year}/12", 100.0 + i + year - 2024)):
+                lines.append(f'"{c[:3]}";"{c[3:]}";"COMUNI";"{month}";"E1010106002";"Imposte municipale propria riscosse a seguito di attività di verifica e controllo";"1000";"{amount}"')
+                lines.append(f'"{c[:3]}";"{c[3:]}";"COMUNI";"{month}";"E1010106001";"Imposta municipale propria riscossa a seguito dell\'attività ordinaria";"1000";"999"')
+        return "\n".join(lines).encode("cp1252")
+    def fetch(url: str) -> bytes:
+        year = int(url.rsplit("_", 1)[1].split(".")[0])
+        return b'{"error": {"message": "Cannot convert data to csv"}}' if year < 2024 else csv_year(year)
+    published = {c: (101.0 + i) / 1000 for i, c in enumerate(fh.TOWNS)}
+    snap = fh.build_snapshot(fetch, published, 2025)
+    assert snap["years"] == [2024, 2025] and "2023" in snap["stoppedAt"], snap["stoppedAt"]
+    metric = {fh.METRIC: {"meta": {"year": "2025"}, "method": {}, "rows": [{"town": n, "code": c, "value": published[c]} for c, n in fh.TOWNS.items()]}}
+    fh.apply(metric, snap, fh.SNAPSHOT)
+    assert metric[fh.METRIC]["rows"][0]["series"]["values"] == [0.1, 0.101]
+    try:
+        fh.build_snapshot(fetch, {**published, "046033": 1.0}, 2025)
+    except fh.RecoveryHistoryError:
+        pass
+    else:
+        raise AssertionError("anno pubblicato diverso accettato")
+
+
 def lotto1_history_cases() -> None:
     """Costo rifiuti ISPRA (solo righe comunali, anni consecutivi) e stagionalità regionale (mesi = presenze)."""
     import waste_cost_history as wh
@@ -1879,6 +1924,8 @@ def main() -> None:
     irpef_history_cases()
     openbdap_refresh_cases()
     lotto1_history_cases()
+    fiscal_recovery_history_cases()
+    openbdap_debt_cases()
     omi_history_cases()
     income_distribution_history_cases()
     income_distribution_benchmark_cases()

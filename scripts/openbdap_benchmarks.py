@@ -58,6 +58,12 @@ RESULTS = {"availableAdministrationResultPerResident": "0502", "fcdePerResident"
 RATIOS = {"ownRevenueShare", "currentCollectionCapacity", "currentPaymentCapacity"}
 METRICS = ("currentRevenueAccruedPerResident", "currentExpenditureCommittedPerResident", "capitalExpenditureCommittedPerResident",
            *sorted(RATIOS), *sorted(RESULTS), *sorted(MISSIONS))
+# Indicatori a più letture: confronto sulla lettura principale (debito finanziario D1 per residente, Stato
+# patrimoniale passivo). Il membro patrimoniale è facoltativo: se manca in un archivio regionale, quei Comuni
+# restano non coperti per questo indicatore e gli altri indicatori della regione non ne risentono.
+DEBT = "financialDebtProfile"
+OPTIONAL_MEMBERS = {"patrimonio": "Rendiconto SDB Stato Patrimoniale Passivo"}
+ALL_METRICS = (*METRICS, DEBT)
 
 
 class BenchmarkError(RuntimeError):
@@ -121,7 +127,32 @@ def read_members(raw: bytes, region: str) -> dict[str, list[dict[str, str]]]:
                 raise BenchmarkError(f"{prefix}: atteso 1 CSV, trovati {hits} fra {[n for n in names if n.lower().endswith('.csv')][:60]}")
             reader = csv.DictReader(io.StringIO(decode(z.read(hits[0]))), delimiter=";")
             out[key] = [{k.strip(): v for k, v in row.items() if k and k.strip()} for row in reader]
+        for key, prefix in OPTIONAL_MEMBERS.items():
+            hits = [n for n in names if squash(n.rsplit("/", 1)[-1]).endswith(squash(f"{prefix}_{region}.csv"))]
+            if len(hits) == 1:
+                reader = csv.DictReader(io.StringIO(decode(z.read(hits[0]))), delimiter=";")
+                out[key] = [{k.strip(): v for k, v in row.items() if k and k.strip()} for row in reader]
     return out
+
+
+def debt_index(rows: list[dict[str, str]]) -> dict[str, float]:
+    """Comune → debiti da finanziamento D1 al 31/12 (somma delle voci D.1.*) per i Comuni che hanno trasmesso lo
+    Stato patrimoniale passivo (riga del totale del passivo presente); nessuna voce D1 = nessun debito (zero)."""
+    filed: set[str] = set()
+    d1: dict[str, float] = defaultdict(float)
+    for row in rows:
+        if not is_municipality(row) or not (c := code(row)):
+            continue
+        level2, level3 = str(row.get("Codice II Livello") or "").strip(), str(row.get("Codice III Livello") or "").strip()
+        if level2 == "70":
+            filed.add(c)
+        elif level2 == "04" and level3 == "01":
+            cell = str(row.get("Consistenza Anno Corrente") or "").strip()
+            value = 0.0 if cell == "" else num(cell)  # voce senza consistenza: nessun importo
+            if value is None:
+                raise ValueError(f"{c}: D1 non numerico {cell!r}")
+            d1[c] += value
+    return {c: d1.get(c, 0.0) for c in filed}
 
 
 def code(row: dict[str, str]) -> str:
@@ -185,6 +216,11 @@ def components(tables: dict[str, dict], c: str, metric: str) -> tuple[float, flo
         if c not in towns:
             raise ValueError("riepilogo missioni assente")
         return sum(exact(m, c, k, "Impegni") if (c, k) in m else 0.0 for k in MISSIONS[metric]), None
+    if metric == DEBT:
+        debt = tables.get("patrimonio")
+        if debt is None or c not in debt:
+            raise ValueError("stato patrimoniale passivo assente")
+        return debt[c], None
     raise KeyError(metric)
 
 
@@ -226,7 +262,7 @@ def build_snapshot(year: int, fetcher: Callable[[str], bytes], published: dict[s
     p2_raw = fetcher(P2_URL.format(year=year))
     population = p2_population(p2_raw)
     regions: dict[str, Any] = {}
-    per_metric: dict[str, dict[str, dict[str, tuple[float, float | None]]]] = {m: {} for m in METRICS}
+    per_metric: dict[str, dict[str, dict[str, tuple[float, float | None]]]] = {m: {} for m in ALL_METRICS}
     reporting: dict[str, set[str]] = {}
     missing_regions = {}
     for reg, names in REGIONS.items():
@@ -250,6 +286,8 @@ def build_snapshot(year: int, fetcher: Callable[[str], bytes], published: dict[s
             continue
         tables = {"entrate": index(members["entrate"], "Codice Titolo"), "spese": index(members["spese"], "Codice Titolo"),
                   "missioni": index(members["missioni"], "Codice Missione"), "risultato": index(members["risultato"], "Cod Voce Ris Amm Rend")}
+        if "patrimonio" in members:
+            tables["patrimonio"] = debt_index(members["patrimonio"])
         mission_towns = {c for c, _ in tables["missioni"]}
         tables["missioni"] = MissionIndex(tables["missioni"], mission_towns)
         codes = sorted({code(r) for r in members["entrate"] if is_municipality(r) and code(r)})
@@ -257,7 +295,7 @@ def build_snapshot(year: int, fetcher: Callable[[str], bytes], published: dict[s
         print(f"OpenBDAP {reg}: {len(codes)} Comuni", flush=True)
         regions[reg] = {"archive": url, "sha256": hashlib.sha256(raw).hexdigest(), "bytes": len(raw), "municipalities": len(codes)}
         for c in codes:
-            for metric in METRICS:
+            for metric in ALL_METRICS:
                 try:
                     per_metric[metric][c] = components(tables, c, metric)
                 except ValueError:
@@ -286,7 +324,7 @@ def build_snapshot(year: int, fetcher: Callable[[str], bytes], published: dict[s
     tuscany_codes = {c for c in population if c.startswith(("045", "046", "047", "048", "049", "050", "051", "052", "053", "100"))}
     scopes = {"tuscany": tuscany_codes, "italy": set(population)}
     benchmarks: dict[str, Any] = {}
-    for metric in METRICS:
+    for metric in ALL_METRICS:
         out = {}
         if metric in blocked:
             benchmarks[metric] = {scope: {"value": None, "reason": "riconciliazione 7/7 non superata: " + "; ".join(blocked[metric])}
@@ -317,7 +355,7 @@ def build_snapshot(year: int, fetcher: Callable[[str], bytes], published: dict[s
         "population": {"url": P2_URL.format(year=year), "sha256": hashlib.sha256(p2_raw).hexdigest(), "municipalities": len(population),
                        "date": f"{year}-01-01"},
         "regions": regions, "missingRegions": missing_regions, "unknownCodes": unknown,
-        "towns": {c: {m: list(per_metric[m][c]) for m in METRICS if c in per_metric[m]} | {"population": population[c]} for c in towns},
+        "towns": {c: {m: list(per_metric[m][c]) for m in ALL_METRICS if c in per_metric[m]} | {"population": population[c]} for c in towns},
         "benchmarks": benchmarks,
         "blocked": blocked,
         "qualityGate": {"status": "PASS", "publicReconciliation": f"{len(published) - len(blocked)} indicatori × 7/7; {len(blocked)} esclusi dal confronto"},

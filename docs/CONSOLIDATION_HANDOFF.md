@@ -3,6 +3,9 @@
 ## Chiusura definitiva di storici e confronti: lotto 2 (27 novembre 2026)
 
 - `incomeDistribution`: confronto Toscana/Italia 2024 (`income_distribution_benchmark.py`, materializzato in build da `materialize_closure_benchmarks.py`). Stesso file comunale MEF e stessa regola dei valori comunali; entrano i Comuni con al più le classi estreme oscurate, copertura dichiarata sui contribuenti (Toscana 244/273, 99,1%; Italia 5.638/7.897, 96,3%), soglia 90%. Quota «Fino a 15.000 €»: Versilia 35,7%, Toscana 30,7%, Italia 33,8%. I sette Comuni ricalcolati devono coincidere con le quote pubblicate. Aggiornatore `mef-income-distribution-benchmark` (flag `mefIncomeDistributionBenchmark`).
+- `fiscalRecoveryActivity`: serie 2024–2025 (`fiscal_recovery_history.py`, file SIOPE regionale di entrata, dicembre cumulato, codici «riscossa/o/e a seguito di attività di verifica e controllo», popolazione del file; 2025 identico ai 7 valori pubblicati). Il portale non serve oggi il CSV 2023 («Cannot convert data to csv») né il 2019: la serie si ferma e si allunga da sola quando il file torna. Aggiornatore `siope-fiscal-recovery-history`, materializzato da `materialize_annual_histories.py`.
+- `financialDebtProfile`: confronto Toscana/Italia sulla lettura principale (debiti da finanziamento D1 dello Stato patrimoniale passivo / popolazione P2), aggiunto a `openbdap_benchmarks.py` come `DEBT` (membro patrimoniale facoltativo per archivio; Comune coperto se ha trasmesso il passivo, nessuna voce D1 = zero). Toscana locale 272/273; 7/7 identici ai pubblicati.
+- `availableAdministrationResultPerResident`: confronto sbloccato rieseguendo `openbdap-benchmarks --year 2025` dopo #670 (prima bloccato da Camaiore 2025).
 
 ## Rendiconti OpenBDAP ritrasmessi (27 novembre 2026)
 

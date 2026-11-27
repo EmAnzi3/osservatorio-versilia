@@ -153,6 +153,7 @@ jobs:
           commands += [["openbdap-refresh"]] if request.get("openbdapRefresh") else []
           commands += [["ispra-waste-cost-history"]] if request.get("ispraWasteCostHistory") else []
           commands += [["tourism-seasonality-history"]] if request.get("tourismSeasonalityHistory") else []
+          commands += [["siope-fiscal-recovery-history"]] if request.get("siopeFiscalRecoveryHistory") else []
           commands += [["mef-income-distribution-benchmark"]] if request.get("mefIncomeDistributionBenchmark") else []
           commands += [["omi-history"]] if request.get("omiHistory") else []
           commands += [["mef-income-distribution-history"]] if request.get("mefIncomeDistributionHistory") else []

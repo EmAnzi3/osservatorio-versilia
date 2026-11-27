@@ -56,7 +56,7 @@ def apply(data: dict) -> int:
         raise RuntimeError("Confronto bilanci: snapshot senza controllo di qualità")
     year = str(snap["year"])
     updated = 0
-    for key in ob.METRICS:
+    for key in ob.ALL_METRICS:
         metric = data["metrics"].get(key)
         if metric is None:
             raise RuntimeError(f"Confronto bilanci: indicatore assente {key}")
@@ -77,6 +77,10 @@ def apply(data: dict) -> int:
             "year": year, "tuscany": entries["tuscany"].get("value"), "italy": entries["italy"].get("value"),
             "source": SOURCE, "url": ob.PORTAL, "sourceSnapshot": path, "note": note(entries),
         }
+        if key == ob.DEBT:
+            metric["meta"]["benchmark"]["part"] = "Debito finanziario pro capite"
+            metric["meta"]["benchmark"]["note"] = ("Confronto riferito al debito finanziario pro capite (debiti da finanziamento D1 dello Stato "
+                                                   "patrimoniale). " + note(entries))
         updated += 1
     return updated
 
