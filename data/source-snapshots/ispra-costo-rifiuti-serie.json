@@ -1,0 +1,180 @@
+{
+  "schemaVersion": 1,
+  "version": "ispra-costo-rifiuti-serie-2020-2024-v1",
+  "retrieved": "2026-11-27",
+  "publisher": "ISPRA — Catasto Rifiuti, costi comunali pro capite",
+  "urlTemplate": "https://www.catasto-rifiuti.isprambiente.it/index.php?aa={year}&p={page}&pg=costicomuneproc&reg1=Toscana&regid=09&regid2=09",
+  "years": [
+    2020,
+    2021,
+    2022,
+    2023,
+    2024
+  ],
+  "stoppedAt": "2019: Comuni senza riga comunale (o in gestione aggregata) ['Camaiore']",
+  "rule": "CTOTab €/abitante dalla tabella regionale toscana, solo righe con «N. di comuni» = 1; anni consecutivi con 7/7 righe comunali.",
+  "towns": {
+    "Camaiore": {
+      "2020": {
+        "population": 31.521,
+        "ctot": 299.13
+      },
+      "2021": {
+        "population": 31.615,
+        "ctot": 311.7
+      },
+      "2022": {
+        "population": 31.842,
+        "ctot": 303.87
+      },
+      "2023": {
+        "population": 31.86,
+        "ctot": 315.18
+      },
+      "2024": {
+        "population": 31.755,
+        "ctot": 343.24
+      }
+    },
+    "Forte dei Marmi": {
+      "2020": {
+        "population": 7.044,
+        "ctot": 830.73
+      },
+      "2021": {
+        "population": 7.162,
+        "ctot": 857.21
+      },
+      "2022": {
+        "population": 6.861,
+        "ctot": 844.01
+      },
+      "2023": {
+        "population": 6.753,
+        "ctot": 884.21
+      },
+      "2024": {
+        "population": 6.665,
+        "ctot": 998.69
+      }
+    },
+    "Massarosa": {
+      "2020": {
+        "population": 21.511,
+        "ctot": 255.69
+      },
+      "2021": {
+        "population": 21.807,
+        "ctot": 250.84
+      },
+      "2022": {
+        "population": 21.732,
+        "ctot": 236.19
+      },
+      "2023": {
+        "population": 21.857,
+        "ctot": 265.3
+      },
+      "2024": {
+        "population": 21.835,
+        "ctot": 275.56
+      }
+    },
+    "Pietrasanta": {
+      "2020": {
+        "population": 22.892,
+        "ctot": 339.83
+      },
+      "2021": {
+        "population": 23.013,
+        "ctot": 346.1
+      },
+      "2022": {
+        "population": 22.87,
+        "ctot": 332.45
+      },
+      "2023": {
+        "population": 22.835,
+        "ctot": 364.63
+      },
+      "2024": {
+        "population": 22.731,
+        "ctot": 360.36
+      }
+    },
+    "Seravezza": {
+      "2020": {
+        "population": 12.658,
+        "ctot": 265.38
+      },
+      "2021": {
+        "population": 12.367,
+        "ctot": 290.21
+      },
+      "2022": {
+        "population": 12.364,
+        "ctot": 277.52
+      },
+      "2023": {
+        "population": 12.453,
+        "ctot": 300.08
+      },
+      "2024": {
+        "population": 12.352,
+        "ctot": 295.5
+      }
+    },
+    "Stazzema": {
+      "2020": {
+        "population": 2.867,
+        "ctot": 241.52
+      },
+      "2021": {
+        "population": 2.876,
+        "ctot": 276.39
+      },
+      "2022": {
+        "population": 2.856,
+        "ctot": 300.48
+      },
+      "2023": {
+        "population": 2.868,
+        "ctot": 282.26
+      },
+      "2024": {
+        "population": 2.86,
+        "ctot": 317.81
+      }
+    },
+    "Viareggio": {
+      "2020": {
+        "population": 60.144,
+        "ctot": 321.15
+      },
+      "2021": {
+        "population": 60.936,
+        "ctot": 318.74
+      },
+      "2022": {
+        "population": 60.579,
+        "ctot": 323.36
+      },
+      "2023": {
+        "population": 60.793,
+        "ctot": 323.29
+      },
+      "2024": {
+        "population": 60.697,
+        "ctot": 348.2
+      }
+    }
+  },
+  "qualityGate": {
+    "status": "PASS",
+    "note": "Anno 2024 identico ai valori pubblicati per i 7 Comuni."
+  },
+  "acquisitionEvidence": {
+    "script": "scripts/update_source_data.py ispra-waste-cost-history",
+    "where": "runner GitHub Actions"
+  }
+}

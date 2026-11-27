@@ -680,8 +680,6 @@ jobs:
               ('publicWorks', 'numeratore_denominatore'): 'structured:companion:canonical_field_ratio_formula:',
           }
           available_missing_expected = {
-              # Capacità 2025: perimetro Istat ampliato, nessuna serie confrontabile.
-              ('tourismBeds', 'serie_storica'),
               ('evPoints', 'numeratore_denominatore'),
               ('pharmaciesPer1000', 'assoluto_normalizzato'),
               ('pharmaciesPer1000', 'numeratore_denominatore'),
@@ -945,6 +943,10 @@ jobs:
               ('protectedNaturalAreas', 'serie_storica'),
               ('roadNetworkProfile', 'serie_storica'),
               ('remediationProceedings', 'serie_storica'),
+              # Capacità 2025: perimetro Istat ampliato (altri alloggi privati), nessuna serie confrontabile.
+              ('tourismBeds', 'serie_storica'),
+              ('tourismBedsPer1000', 'serie_storica'),
+              ('tourismStructuresPer1000', 'serie_storica'),
           }
           final_not_applicable_expected = {
               ('incomeVsInflation', 'assoluto_normalizzato'),
