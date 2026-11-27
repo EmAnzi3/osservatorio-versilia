@@ -64,6 +64,6 @@
   },
   "acquisitionEvidence": {
     "script": "scripts/update_source_data.py mef-income-distribution-benchmark",
-    "where": "fuori dalla CI"
+    "where": "runner GitHub Actions"
   }
 }
