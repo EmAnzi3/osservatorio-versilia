@@ -34,5 +34,6 @@
   "omiHistory": false,
   "openbdapRefresh": false,
   "ispraWasteCostHistory": false,
-  "tourismSeasonalityHistory": false
+  "tourismSeasonalityHistory": false,
+  "mefIncomeDistributionBenchmark": true
 }

@@ -1,5 +1,9 @@
 # Consolidamento Osservatorio Versilia — handoff operativo
 
+## Chiusura definitiva di storici e confronti: lotto 2 (27 novembre 2026)
+
+- `incomeDistribution`: confronto Toscana/Italia 2024 (`income_distribution_benchmark.py`, materializzato in build da `materialize_closure_benchmarks.py`). Stesso file comunale MEF e stessa regola dei valori comunali; entrano i Comuni con al più le classi estreme oscurate, copertura dichiarata sui contribuenti (Toscana 244/273, 99,1%; Italia 5.638/7.897, 96,3%), soglia 90%. Quota «Fino a 15.000 €»: Versilia 35,7%, Toscana 30,7%, Italia 33,8%. I sette Comuni ricalcolati devono coincidere con le quote pubblicate. Aggiornatore `mef-income-distribution-benchmark` (flag `mefIncomeDistributionBenchmark`).
+
 ## Rendiconti OpenBDAP ritrasmessi (27 novembre 2026)
 
 - Il controllo mensile verificava solo la pagina del portale OpenBDAP: un Comune che ritrasmette il rendiconto cambia l'archivio regionale, non la pagina. `scripts/openbdap_refresh.py` riscarica gli archivi toscani «Schemi di bilancio» e «Piano degli indicatori» 2019–2025, ricalcola i campi di `bilanci-v1.6.0.json` con `build_bilanci_snapshot.build_year` e applica le differenze a snapshot (`refreshLog` con vecchio/nuovo valore e impronta degli archivi) e catalogo (valore, serie, aggregato Versilia) con le formule di `update_bilanci_v160`. Passo `openbdap-refresh` nel giro mensile dopo `agcom-ftth`.

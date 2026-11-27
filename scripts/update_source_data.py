@@ -1064,6 +1064,33 @@ def update_seasonality_history(dry_run: bool, fetch=None) -> Changes:
     return changes
 
 
+# ------------------------------------------------------------------ MEF: confronto delle fasce di reddito
+
+def update_income_distribution_benchmark(dry_run: bool, fetch=None) -> Changes:
+    """Confronto Toscana/Italia delle quote per fascia dal file comunale MEF dell'anno pubblicato."""
+    import os
+
+    import income_distribution_benchmark as db
+    import taxpayers_history as tx
+
+    metric = load(SITE)["metrics"][db.METRIC]
+    year = int(metric["meta"]["year"])
+    url = tx.MEF_URL.format(year=year)
+    try:
+        raw = (fetch or probes.http_fetch)(url)
+        snapshot = db.build_snapshot(raw, url, year, {r["code"]: [p["value"] for p in r["parts"]] for r in metric["rows"]})
+    except (db.DistributionBenchmarkError, tx.TaxpayersError, KeyError, ValueError, probes.ProbeError) as error:
+        raise UpdateError(f"Confronto fasce di reddito: {error}") from error
+    snapshot["acquisitionEvidence"] = {"script": "scripts/update_source_data.py mef-income-distribution-benchmark",
+                                       "where": "runner GitHub Actions" if os.environ.get("GITHUB_ACTIONS") else "fuori dalla CI"}
+    changes = Changes()
+    for scope, entry in snapshot["benchmarks"].items():
+        changes.note(f"{db.METRIC} {scope} {year}", None, entry["shares"][0] if entry["shares"] else None)
+    if not dry_run:
+        save(ROOT / db.SNAPSHOT.format(year=year), snapshot)
+    return changes
+
+
 # ------------------------------------------------------------------ MEF: serie dell'addizionale comunale IRPEF
 
 def update_irpef_history(dry_run: bool, fetch=None) -> Changes:
@@ -2047,6 +2074,7 @@ def main() -> int:
     for name, text in (("ispra-waste-cost-history", "serie del costo del servizio rifiuti (ISPRA)"),
                        ("tourism-seasonality-history", "serie della stagionalità turistica (Regione Toscana)")):
         sub.add_parser(name, help=text).add_argument("--dry-run", action="store_true")
+    sub.add_parser("mef-income-distribution-benchmark", help="confronto Toscana/Italia delle fasce di reddito (file comunale MEF)").add_argument("--dry-run", action="store_true")
     irh_p = sub.add_parser("mef-irpef-history", help="serie dell'addizionale comunale IRPEF negli scenari di reddito (elenchi MEF)")
     irh_p.add_argument("--dry-run", action="store_true")
     ph_p = sub.add_parser("salute-pharmacies-history", help="serie delle farmacie ogni 1.000 residenti (Ministero della Salute)")
@@ -2098,6 +2126,8 @@ def main() -> int:
             update_waste_cost_history(args.dry_run).report("Serie costo rifiuti:")
         elif args.updater == "tourism-seasonality-history":
             update_seasonality_history(args.dry_run).report("Serie stagionalità:")
+        elif args.updater == "mef-income-distribution-benchmark":
+            update_income_distribution_benchmark(args.dry_run).report("Confronto fasce di reddito:")
         elif args.updater == "mef-irpef-history":
             update_irpef_history(args.dry_run).report("Serie addizionale IRPEF:")
         elif args.updater == "salute-pharmacies-history":

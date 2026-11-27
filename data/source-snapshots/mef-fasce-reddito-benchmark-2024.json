@@ -1,0 +1,69 @@
+{
+  "schemaVersion": 1,
+  "version": "mef-fasce-reddito-benchmark-2024-v1",
+  "retrieved": "2026-11-27",
+  "publisher": "Dipartimento delle Finanze — MEF",
+  "year": 2024,
+  "source": {
+    "url": "https://www1.finanze.gov.it/finanze/analisi_stat/public/v_4_0_0/contenuti/Redditi_e_principali_variabili_IRPEF_su_base_comunale_CSV_2024.zip",
+    "member": "Redditi_e_principali_variabili_IRPEF_su_base_comunale_CSV_2024.csv",
+    "sha256": "75cecc95d72b76cda545666154e95ab414df1983f8a0eeef72915862ef4e8cb7"
+  },
+  "rule": "Somma delle frequenze delle otto classi sui Comuni del territorio con al più le classi estreme oscurate, nelle quattro fasce pubblicate; copertura = quota dei contribuenti del territorio in quei Comuni; pubblicato con almeno il 90%.",
+  "benchmarks": {
+    "tuscany": {
+      "municipalities": 244,
+      "municipalitiesTotal": 273,
+      "taxpayersCovered": 2800443,
+      "taxpayersTotal": 2825605,
+      "coverageShare": 0.9910950044326791,
+      "shares": [
+        30.6970162999587,
+        30.11038416545993,
+        32.98733681452531,
+        6.2052627200560675
+      ],
+      "classCounts": {
+        "le0": 79,
+        "0to10k": 547078,
+        "10to15k": 286787,
+        "15to26k": 818007,
+        "26to55k": 896165,
+        "55to75k": 83526,
+        "75to120k": 63443,
+        "over120k": 21609
+      }
+    },
+    "italy": {
+      "municipalities": 5638,
+      "municipalitiesTotal": 7897,
+      "taxpayersCovered": 41267752,
+      "taxpayersTotal": 42837963,
+      "coverageShare": 0.9633453392730182,
+      "shares": [
+        33.83152593972722,
+        27.479668226654212,
+        32.37979154759819,
+        6.309014286020381
+      ],
+      "classCounts": {
+        "le0": 1148,
+        "0to10k": 9176139,
+        "10to15k": 4370034,
+        "15to26k": 11003816,
+        "26to55k": 12965996,
+        "55to75k": 1225152,
+        "75to120k": 929565,
+        "over120k": 371632
+      }
+    }
+  },
+  "qualityGate": {
+    "status": "PASS",
+    "note": "Quote 2024 dei 7 Comuni ricalcolate identiche alle pubblicate."
+  },
+  "acquisitionEvidence": {
+    "script": "scripts/update_source_data.py mef-income-distribution-benchmark",
+    "where": "fuori dalla CI"
+  }
+}

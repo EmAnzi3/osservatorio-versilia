@@ -72,6 +72,7 @@ IRPEF_HISTORY_MATERIALIZER = ROOT / "scripts" / "materialize_irpef_history.py"
 OMI_HISTORY_MATERIALIZER = ROOT / "scripts" / "materialize_omi_history.py"
 TARI_NOTE_MATERIALIZER = ROOT / "scripts" / "materialize_tari_note.py"
 ANNUAL_HISTORIES_MATERIALIZER = ROOT / "scripts" / "materialize_annual_histories.py"
+CLOSURE_BENCHMARKS_MATERIALIZER = ROOT / "scripts" / "materialize_closure_benchmarks.py"
 INCOME_DISTRIBUTION_HISTORY_MATERIALIZER = ROOT / "scripts" / "materialize_income_distribution_history.py"
 
 _ORIGINAL_RUN_PATH = runpy.run_path
@@ -147,6 +148,7 @@ def _run_path_with_fragilita_r3_fix(path_name, *args, **kwargs):
         _ORIGINAL_RUN_PATH(str(OMI_HISTORY_MATERIALIZER), run_name="__main__")
         _ORIGINAL_RUN_PATH(str(TARI_NOTE_MATERIALIZER), run_name="__main__")
         _ORIGINAL_RUN_PATH(str(ANNUAL_HISTORIES_MATERIALIZER), run_name="__main__")
+        _ORIGINAL_RUN_PATH(str(CLOSURE_BENCHMARKS_MATERIALIZER), run_name="__main__")
         _ORIGINAL_RUN_PATH(str(INCOME_DISTRIBUTION_HISTORY_MATERIALIZER), run_name="__main__")
         return result
     if path != FRAGILITA_RUNTIME_PATCH:

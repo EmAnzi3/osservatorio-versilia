@@ -1114,6 +1114,48 @@ def mim_students_history_cases() -> None:
         raise AssertionError("ultimo anno diverso dal pubblicato accettato")
 
 
+def income_distribution_benchmark_cases() -> None:
+    """Confronto fasce di reddito: Comuni con classe intermedia oscurata esclusi, copertura dichiarata, soglia 90%."""
+    import io as _io
+    import zipfile as _zip
+    import income_distribution_benchmark as db
+    import income_distribution_history as idh
+
+    bands = ["minore o uguale a zero euro", "da 0 a 10000 euro", "da 10000 a 15000 euro", "da 15000 a 26000 euro", "da 26000 a 55000 euro",
+             "da 55000 a 75000 euro", "da 75000 a 120000 euro", "oltre 120000 euro"]
+    head = ["Anno di imposta", "Codice Istat Comune", "Denominazione Comune", "Numero contribuenti"] + [f"Reddito complessivo {b} - Frequenza" for b in bands]
+
+    def archive(extra: list[list[str]]) -> bytes:
+        lines = [";".join(head)]
+        for code, name in idh.TOWNS.items():
+            lines.append(";".join(["2024", str(int(code)), name, "1000", "10", "300", "200", "300", "150", "20", "15", "5"]))
+        lines += [";".join(r) for r in extra]
+        buf = _io.BytesIO()
+        with _zip.ZipFile(buf, "w") as z:
+            z.writestr("redditi_2024.csv", "\n".join(lines))
+        return buf.getvalue()
+
+    published = {code: [51.0, 30.0, 15.0, 4.0] for code in idh.TOWNS}
+    other = ["2024", "48017", "Firenze", "5000", "0", "1000", "1000", "1000", "1500", "500", "", "0"]  # classe intermedia oscurata: escluso
+    rome = ["2024", "58091", "Roma", "100", "", "50", "0", "0", "50", "0", "0", ""]  # solo estreme oscurate: incluso
+    snap = db.build_snapshot(archive([other, rome]), "u", 2024, published)
+    t, i = snap["benchmarks"]["tuscany"], snap["benchmarks"]["italy"]
+    assert t["municipalities"] == 7 and t["municipalitiesTotal"] == 8 and t["shares"] is None and "90%" in t["reason"], t
+    assert i["municipalities"] == 8 and abs(i["coverageShare"] - 7100 / 12100) < 1e-12 and i["shares"] is None
+    snap = db.build_snapshot(archive([rome]), "u", 2024, published)
+    assert snap["benchmarks"]["tuscany"]["shares"] == [51.0, 30.0, 15.0, 4.0]
+    assert abs(snap["benchmarks"]["italy"]["shares"][0] - (3570 + 50) / 7100 * 100) < 1e-9
+    try:
+        db.build_snapshot(archive([]), "u", 2024, {**published, "046033": [50.0, 30.0, 16.0, 4.0]})
+    except db.DistributionBenchmarkError:
+        pass
+    else:
+        raise AssertionError("quota comunale diversa dal pubblicato accettata")
+    metric = {"meta": {"year": "2024"}, "rows": [{"parts": [{"label": "Fino a 15.000 €"}]}]}
+    db.apply(metric, snap, "p")
+    assert metric["meta"]["benchmark"]["tuscany"] == 51.0 and metric["meta"]["benchmark"]["part"] == "Fino a 15.000 €"
+
+
 def income_distribution_history_cases() -> None:
     """Fasce di reddito: otto classi MEF in quattro fasce; oscurate ammesse solo le estreme; ultimo anno = pubblicato."""
     import io as _io
@@ -1839,6 +1881,7 @@ def main() -> None:
     lotto1_history_cases()
     omi_history_cases()
     income_distribution_history_cases()
+    income_distribution_benchmark_cases()
     mim_students_history_cases()
     asia_micro_units_history_cases()
     siope_cash_benchmarks_cases()
