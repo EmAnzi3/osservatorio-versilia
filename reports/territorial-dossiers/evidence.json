@@ -248611,7 +248611,7 @@
                 },
                 "path": "data/source-snapshots/openbdap-benchmark-2025.json",
                 "recordPointer": "/benchmarks/currentCollectionCapacity/tuscany",
-                "sha256": "221da9d5797020a0d16112fd390e28bfc484953b354ce8074a2a51cfbb604b90"
+                "sha256": "c51bceb19e3d2d3743cdcc422cc3951288006938484ecc18920cf2c9a2653c01"
               },
               {
                 "kind": "catalog_snapshot",
@@ -248644,7 +248644,7 @@
                 },
                 "path": "data/source-snapshots/openbdap-benchmark-2025.json",
                 "recordPointer": "/benchmarks/currentCollectionCapacity/tuscany",
-                "sha256": "221da9d5797020a0d16112fd390e28bfc484953b354ce8074a2a51cfbb604b90"
+                "sha256": "c51bceb19e3d2d3743cdcc422cc3951288006938484ecc18920cf2c9a2653c01"
               },
               {
                 "kind": "catalog_snapshot",
@@ -248681,7 +248681,7 @@
               },
               "path": "data/source-snapshots/openbdap-benchmark-2025.json",
               "recordPointer": "/benchmarks/currentCollectionCapacity/tuscany",
-              "sha256": "221da9d5797020a0d16112fd390e28bfc484953b354ce8074a2a51cfbb604b90"
+              "sha256": "c51bceb19e3d2d3743cdcc422cc3951288006938484ecc18920cf2c9a2653c01"
             },
             "definition": "current_revenue_competence_receipts_titles_1_2_3 / current_revenue_accruals_titles_1_2_3 * 100",
             "period": "2025",
