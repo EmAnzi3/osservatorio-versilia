@@ -15,7 +15,8 @@ commands = m.plan(site, ars)
 year = int(site["metrics"][m.MOBILITY_KEY]["meta"]["year"])
 assert [c for c in commands if c[0] == "ars-legacy"] == [["ars-legacy", "--metric", k] for k in sorted(ars["indicators"])]
 n = len(m.NEXT_YEAR)
-assert commands[-(n + 5):-(n + 2)] == [["istat-mobility", "--year", str(year)], ["istat-mobility", "--year", str(year + 1)], ["agcom-ftth"]]
+assert commands[-(n + 6):-(n + 3)] == [["istat-mobility", "--year", str(year)], ["istat-mobility", "--year", str(year + 1)], ["agcom-ftth"]]
+assert commands[-(n + 3)] == ["openbdap-refresh"]
 assert commands[-(n + 2):-2] == [[n, "--year", str(int(site["metrics"][k]["meta"]["year"]) + 1)] for n, k in m.NEXT_YEAR]
 assert commands[-2][:2] == ["omi-residential", "--semester"]
 assert commands[-1] == ["gaia-water", "--period", m.next_semester(site["metrics"]["drinkingWaterQuality"]["meta"]["year"])]

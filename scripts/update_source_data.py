@@ -996,6 +996,32 @@ def update_omi_history(dry_run: bool, session: Any = None, deadline: float | Non
     return changes
 
 
+# ------------------------------------------------------------------ OpenBDAP: rendiconti già pubblicati
+
+def update_openbdap_refresh(dry_run: bool, fetch=None) -> Changes:
+    """Riscarica gli archivi toscani dei rendiconti 2019–2025 e applica le ritrasmissioni dei sette Comuni."""
+    import openbdap_refresh as orf
+
+    def get(url: str) -> bytes:
+        return (fetch or probes.http_fetch)(url)
+
+    site = load(SITE)
+    snapshot = load(ROOT / orf.SNAPSHOT)
+    try:
+        diffs, metrics, _ = orf.run(get, snapshot, site)
+    except (orf.RefreshError, RuntimeError, KeyError, ValueError, probes.ProbeError) as error:
+        raise UpdateError(f"Rendiconti OpenBDAP: {error}") from error
+    changes = Changes()
+    for d in diffs:
+        changes.note(f"{d['town']} {d['year']} {d['field']}", d["old"], d["new"])
+    if diffs:
+        print("Indicatori ricalcolati: " + ", ".join(metrics))
+    if diffs and not dry_run:
+        save(ROOT / orf.SNAPSHOT, snapshot)
+        save(SITE, site)
+    return changes
+
+
 # ------------------------------------------------------------------ MEF: serie dell'addizionale comunale IRPEF
 
 def update_irpef_history(dry_run: bool, fetch=None) -> Changes:
@@ -1975,6 +2001,7 @@ def main() -> int:
     omh_p = sub.add_parser("omi-history", help="serie semestrale delle quotazioni OMI con le stesse zone del semestre pubblicato")
     omh_p.add_argument("--dry-run", action="store_true")
     omh_p.add_argument("--deadline", type=float, default=3000.0, help="secondi oltre i quali i Comuni restanti passano alla corsa successiva")
+    sub.add_parser("openbdap-refresh", help="rendiconti OpenBDAP già pubblicati: applica le ritrasmissioni dei sette Comuni").add_argument("--dry-run", action="store_true")
     irh_p = sub.add_parser("mef-irpef-history", help="serie dell'addizionale comunale IRPEF negli scenari di reddito (elenchi MEF)")
     irh_p.add_argument("--dry-run", action="store_true")
     ph_p = sub.add_parser("salute-pharmacies-history", help="serie delle farmacie ogni 1.000 residenti (Ministero della Salute)")
@@ -2020,6 +2047,8 @@ def main() -> int:
             update_income_distribution_history(args.dry_run).report("Serie fasce di reddito:")
         elif args.updater == "omi-history":
             update_omi_history(args.dry_run, deadline=args.deadline).report("Serie OMI:")
+        elif args.updater == "openbdap-refresh":
+            update_openbdap_refresh(args.dry_run).report("Rendiconti OpenBDAP:")
         elif args.updater == "mef-irpef-history":
             update_irpef_history(args.dry_run).report("Serie addizionale IRPEF:")
         elif args.updater == "salute-pharmacies-history":
