@@ -1,5 +1,10 @@
 # Consolidamento Osservatorio Versilia — handoff operativo
 
+## Rendiconti OpenBDAP ritrasmessi (27 novembre 2026)
+
+- Il controllo mensile verificava solo la pagina del portale OpenBDAP: un Comune che ritrasmette il rendiconto cambia l'archivio regionale, non la pagina. `scripts/openbdap_refresh.py` riscarica gli archivi toscani «Schemi di bilancio» e «Piano degli indicatori» 2019–2025, ricalcola i campi di `bilanci-v1.6.0.json` con `build_bilanci_snapshot.build_year` e applica le differenze a snapshot (`refreshLog` con vecchio/nuovo valore e impronta degli archivi) e catalogo (valore, serie, aggregato Versilia) con le formule di `update_bilanci_v160`. Passo `openbdap-refresh` nel giro mensile dopo `agcom-ftth`.
+- Prima corsa (bot, 27/11): tre campi cambiati — Camaiore 2025 avanzo disponibile 0502 (−2.933.594,69 → −3.656.681,90), Seravezza 2024 avanzo 0502 (1.860.329,57 → 1.747.002,33) e impegni titolo 1 (13.072.762,62 → 13.072.722,14). Indicatori toccati: `availableAdministrationResultPerResident` (Camaiore 2025 −92 → −115 €/ab., Versilia 108,26 → 103,71), `currentExpenditureCommittedPerResident` e `currentPaymentCapacity` (solo serie 2024 di Seravezza, sotto l'arrotondamento). Ripinnata solo `road#3` (impronta dell'intero catalogo); dossier rigenerati (solo impronte); flag riportato a false.
+
 ## OMI semestrale, edilizia scolastica ferma, TARI senza confronto (26 novembre 2026)
 
 - `scripts/omi_history.py`: per Comune solo semestri consecutivi in cui l'elenco completo delle zone è uguale a quello del semestre pubblicato e le zone con la riga «Abitazioni civili» NORMALE sono quelle pubblicate (il catalogo pubblica solo queste: Viareggio ha anche R3 senza riga residenziale). Esito: Forte dei Marmi 2006-S1→2026-S1 (41 semestri), Massarosa e Seravezza 2014-S1→ (25; zone diverse nel 2013-S2), Camaiore, Pietrasanta, Stazzema, Viareggio 2024-S2→ (4; zone ridisegnate). Semestri comuni 2024-S2–2026-S1.
