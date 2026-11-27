@@ -63,7 +63,49 @@ METRICS = ("currentRevenueAccruedPerResident", "currentExpenditureCommittedPerRe
 # restano non coperti per questo indicatore e gli altri indicatori della regione non ne risentono.
 DEBT = "financialDebtProfile"
 OPTIONAL_MEMBERS = {"patrimonio": "Rendiconto SDB Stato Patrimoniale Passivo"}
-ALL_METRICS = (*METRICS, DEBT)
+# Incidenza delle spese rigide: indicatore ufficiale 1.1 del Piano degli indicatori, pubblicato Comune per
+# Comune senza le sue componenti. Si ricostruisce il numeratore come indicatore × accertamenti dei primi tre
+# titoli (il suo denominatore ufficiale) e si aggrega come rapporto: è la media degli indicatori ponderata sulle
+# entrate correnti. Il denominatore ufficiale comprende anche l'eventuale utilizzo del Fondo anticipazione
+# DL 35/2013, non pubblicato a parte: per i Comuni che lo usano l'approssimazione è dichiarata.
+RIGID = "rigidExpenditureShare"
+INDICATORS = "/Datasets_FET/Rendiconto/{year}/{year}_Rendiconto - Piano degli indicatori_{region}.zip"
+INDICATOR_MEMBER = "Rendiconto PDI Sintetici Allegato 2-a"
+ALL_METRICS = (*METRICS, DEBT, RIGID)
+
+
+def is_ratio(metric: str) -> bool:
+    return metric in RATIOS or metric == RIGID
+
+
+def indicators_url(year: int, region: str) -> str:
+    return BASE + urllib.parse.quote(INDICATORS.format(year=year, region=region), safe="/:_-.'")
+
+
+def rigid_index(raw: bytes, region: str) -> dict[str, float]:
+    """Comune → indicatore 1.1 «Tutte le missioni» (percentuale) dal Piano degli indicatori regionale."""
+    squash = lambda t: "".join(ch for ch in t.lower() if ch.isalnum())
+    with zipfile.ZipFile(io.BytesIO(raw)) as z:
+        hits = [n for n in z.namelist() if squash(n.rsplit("/", 1)[-1]).endswith(squash(f"{INDICATOR_MEMBER}_{region}.csv"))]
+        if len(hits) != 1:
+            raise BenchmarkError(f"{INDICATOR_MEMBER}: atteso 1 CSV, trovati {hits}")
+        rows = list(csv.DictReader(io.StringIO(decode(z.read(hits[0]))), delimiter=";"))
+    out: dict[str, float] = {}
+    for row in rows:
+        row = {k.strip(): v for k, v in row.items() if k and k.strip()}
+        if not is_municipality(row) or not (c := code(row)):
+            continue
+        kind = str(row.get("Codice Tipologia Indicatore Sintetico 2)a") or "").strip().zfill(2)
+        ind = str(row.get("Codice Indicatore Sintetico 2)a") or "").strip().zfill(2)
+        if (kind, ind) != ("01", "01"):
+            continue
+        value = num(row.get("Indicatore Tutte Le Missioni"))
+        if value is None:
+            continue  # indicatore non valorizzato: Comune non coperto, mai zero
+        if c in out and out[c] != value:
+            raise BenchmarkError(f"{c}: indicatore 1.1 duplicato incoerente")
+        out[c] = value
+    return out
 
 
 class BenchmarkError(RuntimeError):
@@ -216,6 +258,12 @@ def components(tables: dict[str, dict], c: str, metric: str) -> tuple[float, flo
         if c not in towns:
             raise ValueError("riepilogo missioni assente")
         return sum(exact(m, c, k, "Impegni") if (c, k) in m else 0.0 for k in MISSIONS[metric]), None
+    if metric == RIGID:
+        rigid = tables.get("rigide")
+        if rigid is None or c not in rigid:
+            raise ValueError("indicatore 1.1 assente")
+        den = acc()
+        return rigid[c] / 100 * den, den
     if metric == DEBT:
         debt = tables.get("patrimonio")
         if debt is None or c not in debt:
@@ -251,8 +299,8 @@ def p2_population(raw: bytes) -> dict[str, int]:
 
 def aggregate(values: dict[str, tuple[float, float | None]], population: dict[str, int], metric: str) -> tuple[float, float, float]:
     num_total = sum(v[0] for v in values.values())
-    den_total = sum(v[1] for v in values.values()) if metric in RATIOS else sum(population[c] for c in values)
-    value = num_total / den_total * 100 if metric in RATIOS else num_total / den_total
+    den_total = sum(v[1] for v in values.values()) if is_ratio(metric) else sum(population[c] for c in values)
+    value = num_total / den_total * 100 if is_ratio(metric) else num_total / den_total
     return value, num_total, den_total
 
 
@@ -265,6 +313,8 @@ def build_snapshot(year: int, fetcher: Callable[[str], bytes], published: dict[s
     per_metric: dict[str, dict[str, dict[str, tuple[float, float | None]]]] = {m: {} for m in ALL_METRICS}
     reporting: dict[str, set[str]] = {}
     missing_regions = {}
+    indicator_archives: dict[str, str] = {}
+    missing_indicators: dict[str, str] = {}
     for reg, names in REGIONS.items():
         raw, tried = None, []
         for name in names:
@@ -288,6 +338,11 @@ def build_snapshot(year: int, fetcher: Callable[[str], bytes], published: dict[s
                   "missioni": index(members["missioni"], "Codice Missione"), "risultato": index(members["risultato"], "Cod Voce Ris Amm Rend")}
         if "patrimonio" in members:
             tables["patrimonio"] = debt_index(members["patrimonio"])
+        try:
+            tables["rigide"] = rigid_index(fetcher(indicators_url(year, name)), name)
+            indicator_archives[reg] = indicators_url(year, name)
+        except (urllib.error.HTTPError, BenchmarkError, zipfile.BadZipFile) as error:
+            missing_indicators[reg] = str(error)[:500]
         mission_towns = {c for c, _ in tables["missioni"]}
         tables["missioni"] = MissionIndex(tables["missioni"], mission_towns)
         codes = sorted({code(r) for r in members["entrate"] if is_municipality(r) and code(r)})
@@ -315,7 +370,7 @@ def build_snapshot(year: int, fetcher: Callable[[str], bytes], published: dict[s
                 blocked.setdefault(metric, []).append(f"{towns[c]}: righe assenti")
                 continue
             n, d = per_metric[metric][c]
-            live = n / d * 100 if metric in RATIOS else n / population[c]
+            live = n / d * 100 if is_ratio(metric) else n / population[c]
             if not math.isclose(live, value, rel_tol=0, abs_tol=1e-6):
                 blocked.setdefault(metric, []).append(f"{towns[c]}: fonte {live} ≠ pubblicato {value}")
     if len(blocked) > len(published) // 2:
@@ -355,6 +410,7 @@ def build_snapshot(year: int, fetcher: Callable[[str], bytes], published: dict[s
         "population": {"url": P2_URL.format(year=year), "sha256": hashlib.sha256(p2_raw).hexdigest(), "municipalities": len(population),
                        "date": f"{year}-01-01"},
         "regions": regions, "missingRegions": missing_regions, "unknownCodes": unknown,
+        "indicatorArchives": indicator_archives, "missingIndicatorArchives": missing_indicators,
         "towns": {c: {m: list(per_metric[m][c]) for m in ALL_METRICS if c in per_metric[m]} | {"population": population[c]} for c in towns},
         "benchmarks": benchmarks,
         "blocked": blocked,

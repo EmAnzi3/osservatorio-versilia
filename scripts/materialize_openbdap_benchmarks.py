@@ -70,13 +70,25 @@ def apply(data: dict) -> int:
         for row in metric["rows"]:
             town = snap["towns"][row["code"]]
             n, d = town[key]
-            live = n / d * 100 if key in ob.RATIOS else n / town["population"]
+            live = n / d * 100 if ob.is_ratio(key) else n / town["population"]
             if row.get("value") is None or not math.isclose(live, row["value"], rel_tol=0, abs_tol=1e-6):
                 raise RuntimeError(f"Confronto bilanci: {key} {row['town']} {live} ≠ {row.get('value')}")
         metric["meta"]["benchmark"] = {
             "year": year, "tuscany": entries["tuscany"].get("value"), "italy": entries["italy"].get("value"),
             "source": SOURCE, "url": ob.PORTAL, "sourceSnapshot": path, "note": note(entries),
         }
+        if key == ob.RIGID:
+            towns = [snap["towns"][row["code"]][key] for row in metric["rows"]]
+            versilia = sum(n for n, _ in towns) / sum(d for _, d in towns) * 100
+            metric["aggregate"] = {
+                "value": versilia, "label": "Versilia · media ponderata sulle entrate correnti",
+                "note": ("Indicatori ufficiali 1.1 dei sette Comuni ponderati sui rispettivi accertamenti dei primi tre titoli "
+                         "(denominatore ufficiale dell'indicatore): stessa regola di Toscana e Italia."),
+            }
+            metric["meta"]["benchmark"]["note"] = (
+                "Media degli indicatori ufficiali 1.1 ponderata sulle entrate correnti (numeratore ricostruito come indicatore × "
+                "accertamenti dei primi tre titoli). Per i Comuni che usano il Fondo anticipazione DL 35/2013, compreso nel "
+                "denominatore ufficiale ma non pubblicato a parte, il peso è approssimato. " + note(entries))
         if key == ob.DEBT:
             metric["meta"]["benchmark"]["part"] = "Debito finanziario pro capite"
             metric["meta"]["benchmark"]["note"] = ("Confronto riferito al debito finanziario pro capite (debiti da finanziamento D1 dello Stato "

@@ -1366,7 +1366,8 @@ def update_openbdap_benchmarks(year: int, dry_run: bool, oc_fetch=None) -> Chang
             raise UpdateError(f"Confronto bilanci: {key} pubblicato per il {metric['meta'].get('year')}, non per il {year}")
         published[key] = {}
         for row in metric["rows"]:
-            series = dict(zip(row["series"]["years"], row["series"]["values"]))
+            # indicatori senza serie (spese rigide: solo l'anno pubblicato) → valore corrente
+            series = dict(zip(row["series"]["years"], row["series"]["values"])) if row.get("series") else {year: row["value"]}
             published[key][row["code"]] = series[year]
             towns[row["code"]] = row["town"]
     try:

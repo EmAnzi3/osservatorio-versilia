@@ -15,12 +15,14 @@ import hashlib
 import io
 import math
 import re
+import time
 from datetime import date
 from typing import Any, Callable
 
 SNAPSHOT = "data/source-snapshots/siope-recupero-fiscale-serie.json"
 METRIC = "fiscalRecoveryActivity"
 FIRST = 2019
+ATTEMPTS, PAUSE = 3, 30.0
 URL = "https://bdap-opendata.rgs.mef.gov.it/SpodCkanApi/api/1/rest/dataset/spd_rnd_ent_sio_reg09_01_{year}.csv"
 TOWNS = {"046005": "Camaiore", "046013": "Forte dei Marmi", "046018": "Massarosa", "046024": "Pietrasanta",
          "046028": "Seravezza", "046030": "Stazzema", "046033": "Viareggio"}
@@ -78,12 +80,20 @@ def build_snapshot(fetch: Callable[[str], bytes], published: dict[str, float], l
     stop = None
     for year in range(last, FIRST - 1, -1):
         url = URL.format(year=year)
-        try:
-            raw = fetch(url)
-            years[year] = read_year(raw, year)
-        except Unavailable as error:
+        error = None
+        for attempt in range(ATTEMPTS):  # il portale a volte risponde con un errore di conversione e poi serve il file
+            try:
+                raw = fetch(url)
+                years[year] = read_year(raw, year)
+                error = None
+                break
+            except Unavailable as failed:
+                error = failed
+                if attempt + 1 < ATTEMPTS:
+                    time.sleep(PAUSE)
+        if error is not None:
             if year == last:
-                raise
+                raise error
             stop = str(error)
             break
         sources[str(year)] = {"url": url, "sha256": hashlib.sha256(raw).hexdigest(), "bytes": len(raw)}

@@ -1312,6 +1312,20 @@ def openbdap_debt_cases() -> None:
             row("046", "033", "04", "01", "5")]  # totale del passivo assente: Comune non coperto
     assert ob.debt_index(rows) == {"046018": 1772818.9 + 5623811.46, "046030": 0.0}
     assert ob.DEBT in ob.ALL_METRICS and ob.DEBT not in ob.METRICS
+    # Spese rigide: indicatore 1.1 per Comune; non valorizzato = non coperto; numeratore = indicatore × entrate correnti.
+    import io as _io
+    import zipfile as _zip
+    head = "Codice Tipologia Soggetto;Codice Provincia;Codice Comune;Codice Tipologia Indicatore Sintetico 2)a;Codice Indicatore Sintetico 2)a;Indicatore Tutte Le Missioni"
+    lines = [head, "ELCOMU;046;018;01;01;20.66", "ELCOMU;046;018;01;02;99", "ELCOMU;046;030;1;1;", "ELPROV;046;000;01;01;5"]
+    buf = _io.BytesIO()
+    with _zip.ZipFile(buf, "w") as z:
+        z.writestr("2025_Rendiconto PDI Sintetici Allegato 2-a_TOSCANA.csv", "\n".join(lines))
+        z.writestr("Rendiconto PDI Sintetici Allegato 2-a.pdf", "%PDF")
+    rigid = ob.rigid_index(buf.getvalue(), "TOSCANA")
+    assert rigid == {"046018": 20.66}, rigid
+    tables = {"entrate": {("046018", k): [{"Accertamenti": v}] for k, v in (("01", "100"), ("02", "50"), ("03", "50"))}, "rigide": rigid}
+    n, d = ob.components({**tables, "spese": {}, "missioni": {}, "risultato": {}}, "046018", ob.RIGID)
+    assert d == 200 and abs(n / d * 100 - 20.66) < 1e-12 and ob.is_ratio(ob.RIGID) and ob.RIGID not in ob.RATIOS
 
 
 def fiscal_recovery_history_cases() -> None:
@@ -1331,7 +1345,15 @@ def fiscal_recovery_history_cases() -> None:
         year = int(url.rsplit("_", 1)[1].split(".")[0])
         return b'{"error": {"message": "Cannot convert data to csv"}}' if year < 2024 else csv_year(year)
     published = {c: (101.0 + i) / 1000 for i, c in enumerate(fh.TOWNS)}
-    snap = fh.build_snapshot(fetch, published, 2025)
+    fh.PAUSE = 0.0
+    calls: list[str] = []
+    def flaky(url: str) -> bytes:  # primo tentativo 2025 con errore di conversione, poi il file
+        calls.append(url)
+        if "2025" in url and calls.count(url) == 1:
+            return b'{"error": {"message": "Cannot convert data to csv"}}'
+        return fetch(url)
+    snap = fh.build_snapshot(flaky, published, 2025)
+    assert calls.count(fh.URL.format(year=2023)) == fh.ATTEMPTS
     assert snap["years"] == [2024, 2025] and "2023" in snap["stoppedAt"], snap["stoppedAt"]
     metric = {fh.METRIC: {"meta": {"year": "2025"}, "method": {}, "rows": [{"town": n, "code": c, "value": published[c]} for c, n in fh.TOWNS.items()]}}
     fh.apply(metric, snap, fh.SNAPSHOT)
