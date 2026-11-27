@@ -151,12 +151,15 @@ incassi di cassa, valore delle opere monitorate e stato dei progetti PNRR censit
         if(aggregateHost) aggregateHost.innerHTML=financialProfileIndicatorAsideMarkup(metric,choice);
         if(historyHost) historyHost.innerHTML=financialProfileHistoryTable(metric,choice);
         if(methodHost) methodHost.innerHTML=financialProfileMethodDisclosure(metric,choice);
+        const benchmarkHost=document.querySelector('.indicator-benchmark');
+        if(benchmarkHost) benchmarkHost.innerHTML=financialProfileBenchmarkMarkup(metric,choice);
         if(titleHost) titleHost.textContent=`${selected.code} · ${selected.label}`;
         if(descriptionHost) descriptionHost.textContent=`${selected.description} I Comuni sono ordinati per valore per facilitare il confronto: nessuna graduatoria e nessun giudizio di merito.`;
         if(heroTitleHost) heroTitleHost.textContent=`${selected.code} · ${selected.label}`;
         if(heroDescriptionHost) heroDescriptionHost.textContent=selected.description;
         if(breadcrumbHost) breadcrumbHost.textContent=`${selected.code} · ${selected.label}`;
       };
+      { const host=document.querySelector('.indicator-benchmark'); if(host) host.innerHTML=financialProfileBenchmarkMarkup(metric,initialFinancialChoice); }
       currentSection?.addEventListener('change',event=>{
         const select=event.target.closest('select[data-composite-component]');
         if(select&&currentSection.contains(select)) applyFinancialChoice(select.value);
