@@ -1,5 +1,10 @@
 # Consolidamento Osservatorio Versilia — handoff operativo
 
+## Rendiconti OpenBDAP ritrasmessi (27 novembre 2026)
+
+- Il controllo mensile verificava solo la pagina del portale OpenBDAP: un Comune che ritrasmette il rendiconto cambia l'archivio regionale, non la pagina. `scripts/openbdap_refresh.py` riscarica gli archivi toscani «Schemi di bilancio» e «Piano degli indicatori» 2019–2025, ricalcola i campi di `bilanci-v1.6.0.json` con `build_bilanci_snapshot.build_year` e applica le differenze a snapshot (`refreshLog` con vecchio/nuovo valore e impronta degli archivi) e catalogo (valore, serie, aggregato Versilia) con le formule di `update_bilanci_v160`. Passo `openbdap-refresh` nel giro mensile dopo `agcom-ftth`.
+- Prima corsa (bot, 27/11): tre campi cambiati — Camaiore 2025 avanzo disponibile 0502 (−2.933.594,69 → −3.656.681,90), Seravezza 2024 avanzo 0502 (1.860.329,57 → 1.747.002,33) e impegni titolo 1 (13.072.762,62 → 13.072.722,14). Indicatori toccati: `availableAdministrationResultPerResident` (Camaiore 2025 −92 → −115 €/ab., Versilia 108,26 → 103,71), `currentExpenditureCommittedPerResident` e `currentPaymentCapacity` (solo serie 2024 di Seravezza, sotto l'arrotondamento). Ripinnata solo `road#3` (impronta dell'intero catalogo); dossier rigenerati (solo impronte); flag riportato a false.
+
 ## Chiusura definitiva di storici e confronti: lotto 1 (27 novembre 2026)
 
 - Obiettivo deciso da Ema (27/11): nessuna coppia storico/confronto resta «disponibile non acquisita»; ogni voce è pubblicata con la regola del valore corrente o classificata con evidenza verificata alla fonte. Dopo la #668: 51 storici e 53 confronti aperti, divisi in sei lotti per fonte.

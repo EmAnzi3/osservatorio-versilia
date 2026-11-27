@@ -996,6 +996,32 @@ def update_omi_history(dry_run: bool, session: Any = None, deadline: float | Non
     return changes
 
 
+# ------------------------------------------------------------------ OpenBDAP: rendiconti già pubblicati
+
+def update_openbdap_refresh(dry_run: bool, fetch=None) -> Changes:
+    """Riscarica gli archivi toscani dei rendiconti 2019–2025 e applica le ritrasmissioni dei sette Comuni."""
+    import openbdap_refresh as orf
+
+    def get(url: str) -> bytes:
+        return (fetch or probes.http_fetch)(url)
+
+    site = load(SITE)
+    snapshot = load(ROOT / orf.SNAPSHOT)
+    try:
+        diffs, metrics, _ = orf.run(get, snapshot, site)
+    except (orf.RefreshError, RuntimeError, KeyError, ValueError, probes.ProbeError) as error:
+        raise UpdateError(f"Rendiconti OpenBDAP: {error}") from error
+    changes = Changes()
+    for d in diffs:
+        changes.note(f"{d['town']} {d['year']} {d['field']}", d["old"], d["new"])
+    if diffs:
+        print("Indicatori ricalcolati: " + ", ".join(metrics))
+    if diffs and not dry_run:
+        save(ROOT / orf.SNAPSHOT, snapshot)
+        save(SITE, site)
+    return changes
+
+
 # ------------------------------------------------------------------ ISPRA e Regione Toscana: serie annuali (chiusura storici)
 
 def _where() -> str:
@@ -2017,6 +2043,7 @@ def main() -> int:
     omh_p = sub.add_parser("omi-history", help="serie semestrale delle quotazioni OMI con le stesse zone del semestre pubblicato")
     omh_p.add_argument("--dry-run", action="store_true")
     omh_p.add_argument("--deadline", type=float, default=3000.0, help="secondi oltre i quali i Comuni restanti passano alla corsa successiva")
+    sub.add_parser("openbdap-refresh", help="rendiconti OpenBDAP già pubblicati: applica le ritrasmissioni dei sette Comuni").add_argument("--dry-run", action="store_true")
     for name, text in (("ispra-waste-cost-history", "serie del costo del servizio rifiuti (ISPRA)"),
                        ("tourism-seasonality-history", "serie della stagionalità turistica (Regione Toscana)")):
         sub.add_parser(name, help=text).add_argument("--dry-run", action="store_true")
@@ -2065,6 +2092,8 @@ def main() -> int:
             update_income_distribution_history(args.dry_run).report("Serie fasce di reddito:")
         elif args.updater == "omi-history":
             update_omi_history(args.dry_run, deadline=args.deadline).report("Serie OMI:")
+        elif args.updater == "openbdap-refresh":
+            update_openbdap_refresh(args.dry_run).report("Rendiconti OpenBDAP:")
         elif args.updater == "ispra-waste-cost-history":
             update_waste_cost_history(args.dry_run).report("Serie costo rifiuti:")
         elif args.updater == "tourism-seasonality-history":

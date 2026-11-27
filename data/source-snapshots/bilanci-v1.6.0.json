@@ -646,7 +646,7 @@
           "current_expenditure_commitments_title_1": 40164617.99,
           "current_expenditure_competence_payments_title_1": 33683287.51,
           "capital_expenditure_commitments_title_2": 24057122.01,
-          "available_administration_result_code_0502": -2933594.69,
+          "available_administration_result_code_0502": -3656681.9,
           "rigid_expenditure_share_official_code_01_01": 35.18,
           "mission_commitments": {
             "04": 5464597.36,
@@ -928,10 +928,10 @@
           "current_revenue_accruals_titles_1_2_3": 14120692.12,
           "own_revenue_accruals_titles_1_3": 12306869.44,
           "current_revenue_competence_receipts_titles_1_2_3": 10538644.54,
-          "current_expenditure_commitments_title_1": 13072762.62,
+          "current_expenditure_commitments_title_1": 13072722.14,
           "current_expenditure_competence_payments_title_1": 10490084.76,
           "capital_expenditure_commitments_title_2": 2130430.92,
-          "available_administration_result_code_0502": 1860329.57,
+          "available_administration_result_code_0502": 1747002.33,
           "rigid_expenditure_share_official_code_01_01": 21.05,
           "mission_commitments": {
             "04": 995503.05,
@@ -1511,7 +1511,7 @@
           "2021": 944.2214335775725,
           "2022": 1020.5132730487903,
           "2023": 1023.1282049213393,
-          "2024": 1051.2877056694813,
+          "2024": 1051.2844503417773,
           "2025": 1064.0306291898878
         },
         "Forte dei Marmi": {
@@ -1819,7 +1819,7 @@
           "2021": 78.66309268630286,
           "2022": 76.75709762429233,
           "2023": 82.03174082513286,
-          "2024": 80.24382500414438,
+          "2024": 80.24407348108754,
           "2025": 80.30326561463733
         },
         "Forte dei Marmi": {
@@ -1879,7 +1879,7 @@
           "2022": -169.1991049935577,
           "2023": -147.08100990161057,
           "2024": -115.78864423801154,
-          "2025": -92.1586670645891
+          "2025": -114.87439997486806
         },
         "Pietrasanta": {
           "2019": 182.58871841546397,
@@ -1896,7 +1896,7 @@
           "2021": 114.56660481044919,
           "2022": 130.26937143316454,
           "2023": 209.69008955223882,
-          "2024": 149.60430800160836,
+          "2024": 140.49073823884197,
           "2025": 141.4727768354737
         },
         "Forte dei Marmi": {
@@ -2495,5 +2495,110 @@
         "Stazzema": 22.96
       }
     }
-  }
+  },
+  "refreshLog": [
+    {
+      "date": "2026-11-27",
+      "differences": [
+        {
+          "year": 2024,
+          "town": "Seravezza",
+          "field": "current_expenditure_commitments_title_1",
+          "old": 13072762.62,
+          "new": 13072722.14
+        },
+        {
+          "year": 2024,
+          "town": "Seravezza",
+          "field": "available_administration_result_code_0502",
+          "old": 1860329.57,
+          "new": 1747002.33
+        },
+        {
+          "year": 2025,
+          "town": "Camaiore",
+          "field": "available_administration_result_code_0502",
+          "old": -2933594.69,
+          "new": -3656681.9
+        }
+      ],
+      "metrics": [
+        "availableAdministrationResultPerResident",
+        "currentExpenditureCommittedPerResident",
+        "currentPaymentCapacity"
+      ],
+      "sources": {
+        "2019-schemi": {
+          "url": "https://openbdap.rgs.mef.gov.it/Datasets_FET/Rendiconto/2019/2019_Rendiconto%20-%20Schemi%20di%20bilancio_TOSCANA.zip",
+          "sha256": "9dd8caed9905479168bd9fcceca8d29bf71cc70f7d39dca367bf33abda8cfe51",
+          "bytes": 18257504
+        },
+        "2019-indicatori": {
+          "url": "https://openbdap.rgs.mef.gov.it/Datasets_FET/Rendiconto/2019/2019_Rendiconto%20-%20Piano%20degli%20indicatori_TOSCANA.zip",
+          "sha256": "139eb1eed86c7695c2b02829bb2faaee339f10eb2f8f9f7c23b1090c1128a482",
+          "bytes": 3208773
+        },
+        "2020-schemi": {
+          "url": "https://openbdap.rgs.mef.gov.it/Datasets_FET/Rendiconto/2020/2020_Rendiconto%20-%20Schemi%20di%20bilancio_TOSCANA.zip",
+          "sha256": "3d4dcc7cf3d1166adf1c599e12c1cc88051c8b2bbedf0076e3169c2672389416",
+          "bytes": 14898277
+        },
+        "2020-indicatori": {
+          "url": "https://openbdap.rgs.mef.gov.it/Datasets_FET/Rendiconto/2020/2020_Rendiconto%20-%20Piano%20degli%20indicatori_TOSCANA.zip",
+          "sha256": "a60561cbdf5fd0d059b39616bbb0be591674d3638b0b65e8fe1842a2a962cbb5",
+          "bytes": 3234611
+        },
+        "2021-schemi": {
+          "url": "https://openbdap.rgs.mef.gov.it/Datasets_FET/Rendiconto/2021/2021_Rendiconto%20-%20Schemi%20di%20bilancio_TOSCANA.zip",
+          "sha256": "a0beef8782640a3260c4a49e60b47687862954382960138ec6a4bd1332440d58",
+          "bytes": 15660260
+        },
+        "2021-indicatori": {
+          "url": "https://openbdap.rgs.mef.gov.it/Datasets_FET/Rendiconto/2021/2021_Rendiconto%20-%20Piano%20degli%20indicatori_TOSCANA.zip",
+          "sha256": "4878ce746c3af7f2ab05921ab9edcc822dd323eac864f132e8986dea0273b9b9",
+          "bytes": 3225891
+        },
+        "2022-schemi": {
+          "url": "https://openbdap.rgs.mef.gov.it/Datasets_FET/Rendiconto/2022/2022_Rendiconto%20-%20Schemi%20di%20bilancio_TOSCANA.zip",
+          "sha256": "fc056389558663d0b7e9c8d6e5ce9f8cdd78a1d0a619bddc8d8b95221de73745",
+          "bytes": 14789684
+        },
+        "2022-indicatori": {
+          "url": "https://openbdap.rgs.mef.gov.it/Datasets_FET/Rendiconto/2022/2022_Rendiconto%20-%20Piano%20degli%20indicatori_TOSCANA.zip",
+          "sha256": "3fd98c17916e8fac0c256f739ba09cbf8634652784519014ce228aea8b314ef9",
+          "bytes": 2806122
+        },
+        "2023-schemi": {
+          "url": "https://openbdap.rgs.mef.gov.it/Datasets_FET/Rendiconto/2023/2023_Rendiconto%20-%20Schemi%20di%20bilancio_TOSCANA.zip",
+          "sha256": "f9dd1ed36725152a20a93b6b382ae8adec52162725471918e23df8bf3560e00a",
+          "bytes": 15207435
+        },
+        "2023-indicatori": {
+          "url": "https://openbdap.rgs.mef.gov.it/Datasets_FET/Rendiconto/2023/2023_Rendiconto%20-%20Piano%20degli%20indicatori_TOSCANA.zip",
+          "sha256": "42b002e067144a8821b616df67de28bfd0ba10a43b69bcd7727b7404cd28fadf",
+          "bytes": 2817942
+        },
+        "2024-schemi": {
+          "url": "https://openbdap.rgs.mef.gov.it/Datasets_FET/Rendiconto/2024/2024_Rendiconto%20-%20Schemi%20di%20bilancio_TOSCANA.zip",
+          "sha256": "7d690a5b77e370b11e6a99ef2cc3882bfdda68c70dc2e6ca2d110ed936737d26",
+          "bytes": 15334619
+        },
+        "2024-indicatori": {
+          "url": "https://openbdap.rgs.mef.gov.it/Datasets_FET/Rendiconto/2024/2024_Rendiconto%20-%20Piano%20degli%20indicatori_TOSCANA.zip",
+          "sha256": "59df5cbffff9a429e9fdbe8a79563c95e1c66e362961bd2a9c14828b92aeab5c",
+          "bytes": 3092793
+        },
+        "2025-schemi": {
+          "url": "https://openbdap.rgs.mef.gov.it/Datasets_FET/Rendiconto/2025/2025_Rendiconto%20-%20Schemi%20di%20bilancio_TOSCANA.zip",
+          "sha256": "cc4bed76379f5d311d814670bc86972eac6351b296a2d6e64ed8ce9904dd5ec7",
+          "bytes": 15991487
+        },
+        "2025-indicatori": {
+          "url": "https://openbdap.rgs.mef.gov.it/Datasets_FET/Rendiconto/2025/2025_Rendiconto%20-%20Piano%20degli%20indicatori_TOSCANA.zip",
+          "sha256": "6087f0d0bf82661209ec7076d0d60af6bbf582047bda1d8047ee240246ab497b",
+          "bytes": 3049473
+        }
+      }
+    }
+  ]
 }

@@ -41,6 +41,7 @@ def plan(site: dict, ars: dict) -> list[list[str]]:
     year = int(site["metrics"][MOBILITY_KEY]["meta"]["year"])
     commands += [["istat-mobility", "--year", str(year)], ["istat-mobility", "--year", str(year + 1)]]
     commands.append(["agcom-ftth"])
+    commands.append(["openbdap-refresh"])  # rendiconti ritrasmessi: l'archivio cambia senza cambiare la pagina del portale
     commands += [[name, "--year", str(int(site["metrics"][key]["meta"]["year"]) + 1)]
                  for name, key in NEXT_YEAR]
     commands.append(["omi-residential", "--semester", next_semester(site["metrics"]["omiResidential"]["meta"]["year"])])

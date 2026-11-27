@@ -150,6 +150,7 @@ jobs:
           commands += [["toscana-infancy-history"]] if request.get("toscanaInfancyHistory") else []
           commands += [["salute-pharmacies-history"]] if request.get("salutePharmaciesHistory") else []
           commands += [["mef-irpef-history"]] if request.get("mefIrpefHistory") else []
+          commands += [["openbdap-refresh"]] if request.get("openbdapRefresh") else []
           commands += [["ispra-waste-cost-history"]] if request.get("ispraWasteCostHistory") else []
           commands += [["tourism-seasonality-history"]] if request.get("tourismSeasonalityHistory") else []
           commands += [["omi-history"]] if request.get("omiHistory") else []

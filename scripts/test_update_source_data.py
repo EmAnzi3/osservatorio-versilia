@@ -1230,6 +1230,33 @@ def omi_history_cases() -> None:
         oh.omi.semesters, oh.omi.town_codes, oh.read_town, oh.zone_codes = saved
 
 
+def openbdap_refresh_cases() -> None:
+    """Rendiconti ritrasmessi: differenze campo per campo, snapshot e catalogo aggiornati con le formule pubblicate."""
+    import copy
+    import openbdap_refresh as orf
+
+    snap = json.loads((ROOT / orf.SNAPSHOT).read_text(encoding="utf-8"))
+    site = json.loads((ROOT / "data" / "site-data.json").read_text(encoding="utf-8"))
+    fresh = {2025: copy.deepcopy({t: v["years"]["2025"] for t, v in snap["raw"].items()})}
+    assert orf.differences(snap, fresh) == []
+    new = fresh[2025]["Camaiore"]["available_administration_result_code_0502"] - 723087.21  # indipendente dallo snapshot corrente
+    fresh[2025]["Camaiore"]["available_administration_result_code_0502"] = new
+    fresh[2025]["Camaiore"]["population_at_1_january"] = 1  # la popolazione non viene dall'archivio: ignorata
+    diffs = orf.differences(snap, fresh)
+    assert [(d["town"], d["field"]) for d in diffs] == [("Camaiore", "available_administration_result_code_0502")], diffs
+    changed = orf.apply(snap, site, diffs, {"x": {}})
+    assert changed == ["availableAdministrationResultPerResident"]
+    metric = site["metrics"]["availableAdministrationResultPerResident"]
+    row = next(r for r in metric["rows"] if r["town"] == "Camaiore")
+    pop = snap["raw"]["Camaiore"]["years"]["2025"]["population_at_1_january"]
+    import update_bilanci_v160 as pub
+    assert pub.format_currency(-114.87439997486806) == "-115\u00a0€"
+    assert abs(row["value"] - (new / pop)) < 1e-9 and row["series"]["values"][-1] == row["value"] and row["formatted"] == pub.format_currency(new / pop)
+    total = sum(snap["raw"][t]["years"]["2025"]["available_administration_result_code_0502"] for t in snap["raw"])
+    pops = sum(snap["raw"][t]["years"]["2025"]["population_at_1_january"] for t in snap["raw"])
+    assert abs(metric["aggregate"]["value"] - total / pops) < 1e-9 and snap["refreshLog"][-1]["differences"] == diffs
+
+
 def lotto1_history_cases() -> None:
     """Costo rifiuti ISPRA (solo righe comunali, anni consecutivi) e stagionalità regionale (mesi = presenze)."""
     import waste_cost_history as wh
@@ -1808,6 +1835,7 @@ def main() -> None:
     aci_vehicles_history_cases()
     mef_taxpayers_history_cases()
     irpef_history_cases()
+    openbdap_refresh_cases()
     lotto1_history_cases()
     omi_history_cases()
     income_distribution_history_cases()
