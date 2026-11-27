@@ -55,6 +55,9 @@ def available_periods(engine, key, dimension, row):
     years = list(map(str, series.get('years', [])))
     if not years or len(years) != len(set(years)) or len(years) != len(series.get('values', [])):
         raise ValueError('environment_series_identity_changed')
+    if key == 'wasteServiceCost':
+        # La serie 2020–2024 è pubblicata nel sito ma non ancora rivista per Chiedi: resta congelato il solo anno corrente.
+        return [y for y in years if y == str(engine._catalog['metrics'][key]['meta']['year'])]
     return sorted(years, key=int)
 
 
