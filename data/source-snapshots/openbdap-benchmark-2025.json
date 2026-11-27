@@ -502,6 +502,28 @@
     "119023",
     "119024"
   ],
+  "indicatorArchives": {
+    "01": "https://openbdap.rgs.mef.gov.it/Datasets_FET/Rendiconto/2025/2025_Rendiconto%20-%20Piano%20degli%20indicatori_PIEMONTE.zip",
+    "06": "https://openbdap.rgs.mef.gov.it/Datasets_FET/Rendiconto/2025/2025_Rendiconto%20-%20Piano%20degli%20indicatori_FRIULI-VENEZIA%20GIULIA.zip",
+    "07": "https://openbdap.rgs.mef.gov.it/Datasets_FET/Rendiconto/2025/2025_Rendiconto%20-%20Piano%20degli%20indicatori_LIGURIA.zip",
+    "08": "https://openbdap.rgs.mef.gov.it/Datasets_FET/Rendiconto/2025/2025_Rendiconto%20-%20Piano%20degli%20indicatori_EMILIA-ROMAGNA.zip",
+    "09": "https://openbdap.rgs.mef.gov.it/Datasets_FET/Rendiconto/2025/2025_Rendiconto%20-%20Piano%20degli%20indicatori_TOSCANA.zip",
+    "10": "https://openbdap.rgs.mef.gov.it/Datasets_FET/Rendiconto/2025/2025_Rendiconto%20-%20Piano%20degli%20indicatori_UMBRIA.zip",
+    "11": "https://openbdap.rgs.mef.gov.it/Datasets_FET/Rendiconto/2025/2025_Rendiconto%20-%20Piano%20degli%20indicatori_MARCHE.zip",
+    "12": "https://openbdap.rgs.mef.gov.it/Datasets_FET/Rendiconto/2025/2025_Rendiconto%20-%20Piano%20degli%20indicatori_LAZIO.zip",
+    "13": "https://openbdap.rgs.mef.gov.it/Datasets_FET/Rendiconto/2025/2025_Rendiconto%20-%20Piano%20degli%20indicatori_ABRUZZO.zip",
+    "14": "https://openbdap.rgs.mef.gov.it/Datasets_FET/Rendiconto/2025/2025_Rendiconto%20-%20Piano%20degli%20indicatori_MOLISE.zip",
+    "15": "https://openbdap.rgs.mef.gov.it/Datasets_FET/Rendiconto/2025/2025_Rendiconto%20-%20Piano%20degli%20indicatori_CAMPANIA.zip",
+    "16": "https://openbdap.rgs.mef.gov.it/Datasets_FET/Rendiconto/2025/2025_Rendiconto%20-%20Piano%20degli%20indicatori_PUGLIA.zip",
+    "17": "https://openbdap.rgs.mef.gov.it/Datasets_FET/Rendiconto/2025/2025_Rendiconto%20-%20Piano%20degli%20indicatori_BASILICATA.zip",
+    "18": "https://openbdap.rgs.mef.gov.it/Datasets_FET/Rendiconto/2025/2025_Rendiconto%20-%20Piano%20degli%20indicatori_CALABRIA.zip",
+    "19": "https://openbdap.rgs.mef.gov.it/Datasets_FET/Rendiconto/2025/2025_Rendiconto%20-%20Piano%20degli%20indicatori_SICILIA.zip",
+    "20": "https://openbdap.rgs.mef.gov.it/Datasets_FET/Rendiconto/2025/2025_Rendiconto%20-%20Piano%20degli%20indicatori_SARDEGNA.zip"
+  },
+  "missingIndicatorArchives": {
+    "03": "018094: indicatore 1.1 duplicato incoerente",
+    "05": "024129: indicatore 1.1 duplicato incoerente"
+  },
   "towns": {
     "046018": {
       "currentRevenueAccruedPerResident": [
@@ -587,6 +609,10 @@
       "financialDebtProfile": [
         10150552.2,
         null
+      ],
+      "rigidExpenditureShare": [
+        6518392.106624001,
+        31550784.64
       ],
       "population": 21806
     },
@@ -675,6 +701,10 @@
         30321202.25,
         null
       ],
+      "rigidExpenditureShare": [
+        24245430.262992002,
+        99041790.29
+      ],
       "population": 60618
     },
     "046005": {
@@ -761,6 +791,10 @@
       "financialDebtProfile": [
         52266367.41,
         null
+      ],
+      "rigidExpenditureShare": [
+        15328320.77237,
+        43571122.15
       ],
       "population": 31832
     },
@@ -849,6 +883,10 @@
         10687878.41,
         null
       ],
+      "rigidExpenditureShare": [
+        8977035.663747,
+        42808944.51
+      ],
       "population": 22743
     },
     "046028": {
@@ -935,6 +973,10 @@
       "financialDebtProfile": [
         3645263.3,
         null
+      ],
+      "rigidExpenditureShare": [
+        3434020.6446,
+        15094596.24
       ],
       "population": 12381
     },
@@ -1023,6 +1065,10 @@
         0.0,
         null
       ],
+      "rigidExpenditureShare": [
+        6971502.5505180005,
+        32008735.31
+      ],
       "population": 6666
     },
     "046030": {
@@ -1109,6 +1155,10 @@
       "financialDebtProfile": [
         5442019.97,
         null
+      ],
+      "rigidExpenditureShare": [
+        1093635.1923,
+        4346721.75
       ],
       "population": 2892
     }
@@ -1572,12 +1622,32 @@
         "numerator": 35781610677.11,
         "denominator": 53931895
       }
+    },
+    "rigidExpenditureShare": {
+      "tuscany": {
+        "municipalities": 256,
+        "municipalitiesTotal": 273,
+        "populationCovered": 3204990,
+        "populationTotal": 3657716,
+        "populationShare": 0.8762271319041719,
+        "value": null,
+        "reason": "copertura 87.6% sotto la soglia del 90%"
+      },
+      "italy": {
+        "municipalities": 4847,
+        "municipalitiesTotal": 7897,
+        "populationCovered": 38260388,
+        "populationTotal": 58943464,
+        "populationShare": 0.6491031473820406,
+        "value": null,
+        "reason": "copertura 64.9% sotto la soglia del 90%"
+      }
     }
   },
   "blocked": {},
   "qualityGate": {
     "status": "PASS",
-    "publicReconciliation": "21 indicatori × 7/7; 0 esclusi dal confronto"
+    "publicReconciliation": "22 indicatori × 7/7; 0 esclusi dal confronto"
   },
   "acquisitionEvidence": {
     "script": "scripts/update_source_data.py openbdap-benchmarks --year 2025"
