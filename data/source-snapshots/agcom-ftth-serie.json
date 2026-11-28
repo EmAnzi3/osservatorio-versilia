@@ -4,30 +4,26 @@
   "retrieved": "2026-11-28",
   "publisher": "AGCOM — Broadband Map, reportistica comunale",
   "catalogue": "https://geo.agcom.it/reportistica/report.js",
-  "rule": "Edizioni trimestrali consecutive fino a quella pubblicata, CSV comunale letto con la regola corrente e stessi Comuni con il dato dell'edizione pubblicata; edizione pubblicata identica ai valori del catalogo.",
-  "stoppedAt": "2025-09-30: CSV non leggibile (CSV AGCOM: schema/delimitatore inatteso (';':15, ',':1, '\\t':1, '|':1); prefix='Regione;Provincia;Comune;pro_com;\"Celle 20m x 20m\\nraggiunte\";Punti dichiarati;\")",
+  "rule": "Edizioni trimestrali consecutive fino a quella pubblicata, CSV comunale letto con la regola corrente, stessa base delle famiglie residenti AGCOM e stessi Comuni con il dato dell'edizione pubblicata; edizione pubblicata identica ai valori del catalogo.",
+  "stoppedAt": "2025-12-31: famiglie residenti AGCOM diverse dall'edizione pubblicata (['Camaiore', 'Forte dei Marmi', 'Massarosa', 'Pietrasanta', 'Seravezza', 'Stazzema', 'Viareggio'])",
   "seriesStoppedAt": {},
   "dates": {
     "ftthCoverageDesi": [
-      "2025-12-31",
       "2026-03-31",
       "2026-07-06",
       "2026-10-05"
     ],
     "ftthCoverage20m": [
-      "2025-12-31",
       "2026-03-31",
       "2026-07-06",
       "2026-10-05"
     ],
     "ftthReachedHouseholds": [
-      "2025-12-31",
       "2026-03-31",
       "2026-07-06",
       "2026-10-05"
     ],
     "ftthUnreachedHouseholds": [
-      "2025-12-31",
       "2026-03-31",
       "2026-07-06",
       "2026-10-05"
@@ -45,10 +41,6 @@
     "2026-03-31": {
       "url": "https://geo.agcom.it/arcgis/sharing/rest/content/items/a56ede78c5da41eaad36cba969ad1d20/data",
       "sha256": "fb3d2d7c8c0015d7a26f4369683ae787d727cdc28ac5b4068e40643bb5f0a337"
-    },
-    "2025-12-31": {
-      "url": "https://geo.agcom.it/arcgis/sharing/rest/content/items/6c0b48a9a06c44059656b987d85acb63/data",
-      "sha256": "cfed75e8791a3b871b1579d7a2d4357462e264e70cc2e38f9db38f9f39fb9f30"
     }
   },
   "towns": {
@@ -70,12 +62,6 @@
         "ftthCoverage20m": 79.7,
         "ftthReachedHouseholds": 11952.0,
         "ftthUnreachedHouseholds": 1167.0
-      },
-      "2025-12-31": {
-        "ftthCoverageDesi": 85.0,
-        "ftthCoverage20m": 65.0,
-        "ftthReachedHouseholds": 12316.0,
-        "ftthUnreachedHouseholds": 2092.0
       }
     },
     "Forte dei Marmi": {
@@ -92,12 +78,6 @@
         "ftthUnreachedHouseholds": null
       },
       "2026-03-31": {
-        "ftthCoverageDesi": 0.0,
-        "ftthCoverage20m": 0.0,
-        "ftthReachedHouseholds": null,
-        "ftthUnreachedHouseholds": null
-      },
-      "2025-12-31": {
         "ftthCoverageDesi": 0.0,
         "ftthCoverage20m": 0.0,
         "ftthReachedHouseholds": null,
@@ -122,12 +102,6 @@
         "ftthCoverage20m": 29.7,
         "ftthReachedHouseholds": 3286.0,
         "ftthUnreachedHouseholds": 5696.0
-      },
-      "2025-12-31": {
-        "ftthCoverageDesi": 57.0,
-        "ftthCoverage20m": 21.0,
-        "ftthReachedHouseholds": 9.0,
-        "ftthUnreachedHouseholds": 6.0
       }
     },
     "Pietrasanta": {
@@ -148,12 +122,6 @@
         "ftthCoverage20m": 38.6,
         "ftthReachedHouseholds": 5009.0,
         "ftthUnreachedHouseholds": 4344.0
-      },
-      "2025-12-31": {
-        "ftthCoverageDesi": 41.0,
-        "ftthCoverage20m": 30.0,
-        "ftthReachedHouseholds": 4672.0,
-        "ftthUnreachedHouseholds": 6615.0
       }
     },
     "Seravezza": {
@@ -174,12 +142,6 @@
         "ftthCoverage20m": 0.0,
         "ftthReachedHouseholds": 22.0,
         "ftthUnreachedHouseholds": 5046.0
-      },
-      "2025-12-31": {
-        "ftthCoverageDesi": 0.0,
-        "ftthCoverage20m": 0.0,
-        "ftthReachedHouseholds": 20.0,
-        "ftthUnreachedHouseholds": 5856.0
       }
     },
     "Stazzema": {
@@ -200,12 +162,6 @@
         "ftthCoverage20m": 76.6,
         "ftthReachedHouseholds": 1009.0,
         "ftthUnreachedHouseholds": 139.0
-      },
-      "2025-12-31": {
-        "ftthCoverageDesi": 82.0,
-        "ftthCoverage20m": 73.0,
-        "ftthReachedHouseholds": 1014.0,
-        "ftthUnreachedHouseholds": 221.0
       }
     },
     "Viareggio": {
@@ -226,17 +182,10 @@
         "ftthCoverage20m": 85.8,
         "ftthReachedHouseholds": 23705.0,
         "ftthUnreachedHouseholds": 1334.0
-      },
-      "2025-12-31": {
-        "ftthCoverageDesi": 95.0,
-        "ftthCoverage20m": 84.0,
-        "ftthReachedHouseholds": 24543.0,
-        "ftthUnreachedHouseholds": 1194.0
       }
     }
   },
   "years": [
-    "2025-12-31",
     "2026-03-31",
     "2026-07-06",
     "2026-10-05"
