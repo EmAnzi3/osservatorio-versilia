@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "version": "openbdap-benchmark-2025-v1",
-  "retrieved": "2026-11-20",
+  "retrieved": "2026-11-27",
   "publisher": "Ragioneria Generale dello Stato — OpenBDAP (rendiconti) · Istat (bilancio demografico P2)",
   "sourceUrl": "https://openbdap.rgs.mef.gov.it/it/FET/Analizza",
   "year": 2025,
@@ -502,6 +502,112 @@
     "119023",
     "119024"
   ],
+  "indicatorArchives": {
+    "01": "https://openbdap.rgs.mef.gov.it/Datasets_FET/Rendiconto/2025/2025_Rendiconto%20-%20Piano%20degli%20indicatori_PIEMONTE.zip",
+    "03": "https://openbdap.rgs.mef.gov.it/Datasets_FET/Rendiconto/2025/2025_Rendiconto%20-%20Piano%20degli%20indicatori_LOMBARDIA.zip",
+    "05": "https://openbdap.rgs.mef.gov.it/Datasets_FET/Rendiconto/2025/2025_Rendiconto%20-%20Piano%20degli%20indicatori_VENETO.zip",
+    "06": "https://openbdap.rgs.mef.gov.it/Datasets_FET/Rendiconto/2025/2025_Rendiconto%20-%20Piano%20degli%20indicatori_FRIULI-VENEZIA%20GIULIA.zip",
+    "07": "https://openbdap.rgs.mef.gov.it/Datasets_FET/Rendiconto/2025/2025_Rendiconto%20-%20Piano%20degli%20indicatori_LIGURIA.zip",
+    "08": "https://openbdap.rgs.mef.gov.it/Datasets_FET/Rendiconto/2025/2025_Rendiconto%20-%20Piano%20degli%20indicatori_EMILIA-ROMAGNA.zip",
+    "09": "https://openbdap.rgs.mef.gov.it/Datasets_FET/Rendiconto/2025/2025_Rendiconto%20-%20Piano%20degli%20indicatori_TOSCANA.zip",
+    "10": "https://openbdap.rgs.mef.gov.it/Datasets_FET/Rendiconto/2025/2025_Rendiconto%20-%20Piano%20degli%20indicatori_UMBRIA.zip",
+    "11": "https://openbdap.rgs.mef.gov.it/Datasets_FET/Rendiconto/2025/2025_Rendiconto%20-%20Piano%20degli%20indicatori_MARCHE.zip",
+    "12": "https://openbdap.rgs.mef.gov.it/Datasets_FET/Rendiconto/2025/2025_Rendiconto%20-%20Piano%20degli%20indicatori_LAZIO.zip",
+    "13": "https://openbdap.rgs.mef.gov.it/Datasets_FET/Rendiconto/2025/2025_Rendiconto%20-%20Piano%20degli%20indicatori_ABRUZZO.zip",
+    "14": "https://openbdap.rgs.mef.gov.it/Datasets_FET/Rendiconto/2025/2025_Rendiconto%20-%20Piano%20degli%20indicatori_MOLISE.zip",
+    "15": "https://openbdap.rgs.mef.gov.it/Datasets_FET/Rendiconto/2025/2025_Rendiconto%20-%20Piano%20degli%20indicatori_CAMPANIA.zip",
+    "16": "https://openbdap.rgs.mef.gov.it/Datasets_FET/Rendiconto/2025/2025_Rendiconto%20-%20Piano%20degli%20indicatori_PUGLIA.zip",
+    "17": "https://openbdap.rgs.mef.gov.it/Datasets_FET/Rendiconto/2025/2025_Rendiconto%20-%20Piano%20degli%20indicatori_BASILICATA.zip",
+    "18": "https://openbdap.rgs.mef.gov.it/Datasets_FET/Rendiconto/2025/2025_Rendiconto%20-%20Piano%20degli%20indicatori_CALABRIA.zip",
+    "19": "https://openbdap.rgs.mef.gov.it/Datasets_FET/Rendiconto/2025/2025_Rendiconto%20-%20Piano%20degli%20indicatori_SICILIA.zip",
+    "20": "https://openbdap.rgs.mef.gov.it/Datasets_FET/Rendiconto/2025/2025_Rendiconto%20-%20Piano%20degli%20indicatori_SARDEGNA.zip"
+  },
+  "missingIndicatorArchives": {},
+  "indicatorAlternateColumn": {
+    "01": [
+      "001219",
+      "096004"
+    ],
+    "03": [
+      "012070",
+      "012083",
+      "012096",
+      "015093",
+      "015157",
+      "015192",
+      "015209",
+      "015220",
+      "016003",
+      "017021",
+      "018177",
+      "020022",
+      "020045",
+      "020054",
+      "098031",
+      "108001",
+      "108033"
+    ],
+    "05": [
+      "023089",
+      "025006",
+      "028032",
+      "029033"
+    ],
+    "08": [
+      "033021",
+      "034025",
+      "035012",
+      "035024",
+      "035036",
+      "036018",
+      "036030",
+      "036032",
+      "036041",
+      "037008",
+      "037021",
+      "037054",
+      "038005",
+      "038018",
+      "040046"
+    ],
+    "09": [
+      "045010",
+      "046008",
+      "046009",
+      "048010",
+      "048024",
+      "048035",
+      "048041",
+      "049003",
+      "049006",
+      "049010",
+      "050026",
+      "050029",
+      "052012",
+      "052022",
+      "052028",
+      "053011"
+    ],
+    "12": [
+      "058032",
+      "059010"
+    ],
+    "20": [
+      "113017",
+      "113020",
+      "115045",
+      "119004",
+      "119020"
+    ]
+  },
+  "indicatorAmbiguousCodes": {
+    "03": [
+      "018094"
+    ],
+    "05": [
+      "024129"
+    ]
+  },
   "towns": {
     "046018": {
       "currentRevenueAccruedPerResident": [
@@ -583,6 +689,14 @@
       "tourismDevelopmentMissionExpenditurePerResident": [
         160510.0,
         null
+      ],
+      "financialDebtProfile": [
+        10150552.2,
+        null
+      ],
+      "rigidExpenditureShare": [
+        6518392.106624001,
+        31550784.64
       ],
       "population": 21806
     },
@@ -667,6 +781,14 @@
         2402100.72,
         null
       ],
+      "financialDebtProfile": [
+        30321202.25,
+        null
+      ],
+      "rigidExpenditureShare": [
+        24245430.262992002,
+        99041790.29
+      ],
       "population": 60618
     },
     "046005": {
@@ -749,6 +871,14 @@
       "tourismDevelopmentMissionExpenditurePerResident": [
         6812044.64,
         null
+      ],
+      "financialDebtProfile": [
+        52266367.41,
+        null
+      ],
+      "rigidExpenditureShare": [
+        15328320.77237,
+        43571122.15
       ],
       "population": 31832
     },
@@ -833,6 +963,14 @@
         1583486.0799999998,
         null
       ],
+      "financialDebtProfile": [
+        10687878.41,
+        null
+      ],
+      "rigidExpenditureShare": [
+        8977035.663747,
+        42808944.51
+      ],
       "population": 22743
     },
     "046028": {
@@ -915,6 +1053,14 @@
       "tourismDevelopmentMissionExpenditurePerResident": [
         153928.16999999998,
         null
+      ],
+      "financialDebtProfile": [
+        3645263.3,
+        null
+      ],
+      "rigidExpenditureShare": [
+        3434020.6446,
+        15094596.24
       ],
       "population": 12381
     },
@@ -999,6 +1145,14 @@
         932792.06,
         null
       ],
+      "financialDebtProfile": [
+        0.0,
+        null
+      ],
+      "rigidExpenditureShare": [
+        6971502.5505180005,
+        32008735.31
+      ],
       "population": 6666
     },
     "046030": {
@@ -1081,6 +1235,14 @@
       "tourismDevelopmentMissionExpenditurePerResident": [
         89916.78,
         null
+      ],
+      "financialDebtProfile": [
+        5442019.97,
+        null
+      ],
+      "rigidExpenditureShare": [
+        1093635.1923,
+        4346721.75
       ],
       "population": 2892
     }
@@ -1220,12 +1382,24 @@
     },
     "availableAdministrationResultPerResident": {
       "tuscany": {
-        "value": null,
-        "reason": "riconciliazione 7/7 non superata: Camaiore: fonte -114.87439997486806 ≠ pubblicato -92.1586670645891"
+        "municipalities": 272,
+        "municipalitiesTotal": 273,
+        "populationCovered": 3652987,
+        "populationTotal": 3657716,
+        "populationShare": 0.9987071166815575,
+        "value": 112.35212398784886,
+        "numerator": 410420848.35,
+        "denominator": 3652987
       },
       "italy": {
-        "value": null,
-        "reason": "riconciliazione 7/7 non superata: Camaiore: fonte -114.87439997486806 ≠ pubblicato -92.1586670645891"
+        "municipalities": 6938,
+        "municipalitiesTotal": 7897,
+        "populationCovered": 53931895,
+        "populationTotal": 58943464,
+        "populationShare": 0.9149766800268135,
+        "value": 8.23995838251187,
+        "numerator": 444396570.2900001,
+        "denominator": 53931895
       }
     },
     "fcdePerResident": {
@@ -1510,16 +1684,56 @@
         "value": null,
         "reason": "copertura 88.4% sotto la soglia del 90%"
       }
+    },
+    "financialDebtProfile": {
+      "tuscany": {
+        "municipalities": 272,
+        "municipalitiesTotal": 273,
+        "populationCovered": 3652987,
+        "populationTotal": 3657716,
+        "populationShare": 0.9987071166815575,
+        "value": 593.6065402148981,
+        "numerator": 2168436974.52,
+        "denominator": 3652987
+      },
+      "italy": {
+        "municipalities": 6938,
+        "municipalitiesTotal": 7897,
+        "populationCovered": 53931895,
+        "populationTotal": 58943464,
+        "populationShare": 0.9149766800268135,
+        "value": 663.4591771179188,
+        "numerator": 35781610677.11,
+        "denominator": 53931895
+      }
+    },
+    "rigidExpenditureShare": {
+      "tuscany": {
+        "municipalities": 272,
+        "municipalitiesTotal": 273,
+        "populationCovered": 3652987,
+        "populationTotal": 3657716,
+        "populationShare": 0.9987071166815575,
+        "value": 30.0043730933936,
+        "numerator": 1519085111.220065,
+        "denominator": 5062879022.64
+      },
+      "italy": {
+        "municipalities": 6930,
+        "municipalitiesTotal": 7897,
+        "populationCovered": 53918413,
+        "populationTotal": 58943464,
+        "populationShare": 0.9147479523768742,
+        "value": 35.96444131867927,
+        "numerator": 24762300592.231873,
+        "denominator": 68852176439.54
+      }
     }
   },
-  "blocked": {
-    "availableAdministrationResultPerResident": [
-      "Camaiore: fonte -114.87439997486806 ≠ pubblicato -92.1586670645891"
-    ]
-  },
+  "blocked": {},
   "qualityGate": {
     "status": "PASS",
-    "publicReconciliation": "19 indicatori × 7/7; 1 esclusi dal confronto"
+    "publicReconciliation": "22 indicatori × 7/7; 0 esclusi dal confronto"
   },
   "acquisitionEvidence": {
     "script": "scripts/update_source_data.py openbdap-benchmarks --year 2025"

@@ -34,5 +34,8 @@
   "omiHistory": false,
   "openbdapRefresh": false,
   "ispraWasteCostHistory": false,
-  "tourismSeasonalityHistory": false
+  "tourismSeasonalityHistory": false,
+  "mefIncomeDistributionBenchmark": false,
+  "siopeFiscalRecoveryHistory": false,
+  "pass": "lotto2-spese-rigide-2"
 }

@@ -1114,6 +1114,48 @@ def mim_students_history_cases() -> None:
         raise AssertionError("ultimo anno diverso dal pubblicato accettato")
 
 
+def income_distribution_benchmark_cases() -> None:
+    """Confronto fasce di reddito: Comuni con classe intermedia oscurata esclusi, copertura dichiarata, soglia 90%."""
+    import io as _io
+    import zipfile as _zip
+    import income_distribution_benchmark as db
+    import income_distribution_history as idh
+
+    bands = ["minore o uguale a zero euro", "da 0 a 10000 euro", "da 10000 a 15000 euro", "da 15000 a 26000 euro", "da 26000 a 55000 euro",
+             "da 55000 a 75000 euro", "da 75000 a 120000 euro", "oltre 120000 euro"]
+    head = ["Anno di imposta", "Codice Istat Comune", "Denominazione Comune", "Numero contribuenti"] + [f"Reddito complessivo {b} - Frequenza" for b in bands]
+
+    def archive(extra: list[list[str]]) -> bytes:
+        lines = [";".join(head)]
+        for code, name in idh.TOWNS.items():
+            lines.append(";".join(["2024", str(int(code)), name, "1000", "10", "300", "200", "300", "150", "20", "15", "5"]))
+        lines += [";".join(r) for r in extra]
+        buf = _io.BytesIO()
+        with _zip.ZipFile(buf, "w") as z:
+            z.writestr("redditi_2024.csv", "\n".join(lines))
+        return buf.getvalue()
+
+    published = {code: [51.0, 30.0, 15.0, 4.0] for code in idh.TOWNS}
+    other = ["2024", "48017", "Firenze", "5000", "0", "1000", "1000", "1000", "1500", "500", "", "0"]  # classe intermedia oscurata: escluso
+    rome = ["2024", "58091", "Roma", "100", "", "50", "0", "0", "50", "0", "0", ""]  # solo estreme oscurate: incluso
+    snap = db.build_snapshot(archive([other, rome]), "u", 2024, published)
+    t, i = snap["benchmarks"]["tuscany"], snap["benchmarks"]["italy"]
+    assert t["municipalities"] == 7 and t["municipalitiesTotal"] == 8 and t["shares"] is None and "90%" in t["reason"], t
+    assert i["municipalities"] == 8 and abs(i["coverageShare"] - 7100 / 12100) < 1e-12 and i["shares"] is None
+    snap = db.build_snapshot(archive([rome]), "u", 2024, published)
+    assert snap["benchmarks"]["tuscany"]["shares"] == [51.0, 30.0, 15.0, 4.0]
+    assert abs(snap["benchmarks"]["italy"]["shares"][0] - (3570 + 50) / 7100 * 100) < 1e-9
+    try:
+        db.build_snapshot(archive([]), "u", 2024, {**published, "046033": [50.0, 30.0, 16.0, 4.0]})
+    except db.DistributionBenchmarkError:
+        pass
+    else:
+        raise AssertionError("quota comunale diversa dal pubblicato accettata")
+    metric = {"meta": {"year": "2024"}, "rows": [{"parts": [{"label": "Fino a 15.000 €"}]}]}
+    db.apply(metric, snap, "p")
+    assert metric["meta"]["benchmark"]["tuscany"] == 51.0 and metric["meta"]["benchmark"]["part"] == "Fino a 15.000 €"
+
+
 def income_distribution_history_cases() -> None:
     """Fasce di reddito: otto classi MEF in quattro fasce; oscurate ammesse solo le estreme; ultimo anno = pubblicato."""
     import io as _io
@@ -1255,6 +1297,79 @@ def openbdap_refresh_cases() -> None:
     total = sum(snap["raw"][t]["years"]["2025"]["available_administration_result_code_0502"] for t in snap["raw"])
     pops = sum(snap["raw"][t]["years"]["2025"]["population_at_1_january"] for t in snap["raw"])
     assert abs(metric["aggregate"]["value"] - total / pops) < 1e-9 and snap["refreshLog"][-1]["differences"] == diffs
+
+
+def openbdap_debt_cases() -> None:
+    """Debito D1: somma delle voci D.1 dei Comuni con Stato patrimoniale trasmesso; nessuna voce = zero; voce vuota = zero."""
+    import openbdap_benchmarks as ob
+
+    def row(prov: str, com: str, l2: str, l3: str, value: str) -> dict[str, str]:
+        return {"Codice Tipologia Soggetto": "ELCOMU", "Codice Provincia": prov, "Codice Comune": com,
+                "Codice II Livello": l2, "Codice III Livello": l3, "Consistenza Anno Corrente": value}
+    rows = [row("046", "018", "04", "01", "1772818.9"), row("046", "018", "04", "01", "5623811.46"), row("046", "018", "04", "01", ""),
+            row("046", "018", "04", "02", "999"), row("046", "018", "70", "00", "1"),
+            row("046", "030", "70", "00", "1"),  # nessun debito da finanziamento
+            row("046", "033", "04", "01", "5")]  # totale del passivo assente: Comune non coperto
+    assert ob.debt_index(rows) == {"046018": 1772818.9 + 5623811.46, "046030": 0.0}
+    assert ob.DEBT in ob.ALL_METRICS and ob.DEBT not in ob.METRICS
+    # Spese rigide: indicatore 1.1 per Comune; non valorizzato = non coperto; numeratore = indicatore × entrate correnti.
+    import io as _io
+    import zipfile as _zip
+    head = ("Codice Tipologia Soggetto;Codice Provincia;Codice Comune;Codice Tipologia Indicatore Sintetico 2)a;Codice Indicatore Sintetico 2)a;"
+            "Indicatore Tutte Le Missioni;Indicatore Tutte Le Spese al Netto Missione 13")
+    lines = [head, "ELCOMU;046;018;01;01;20.66;0", "ELCOMU;046;018;01;02;99;", "ELCOMU;046;030;1;1;;", "ELPROV;046;000;01;01;5;",
+             "ELCOMU;050;026;01;01;;22",  # solo la colonna al netto della Missione 13: si usa
+             "ELCOMU;050;027;01;01;;0",  # zero segnaposto: non coperto
+             "ELCOMU;018;094;01;01;31.8;", "ELCOMU;018;094;01;01;22.5;",  # Comuni fusi con valori diversi: esclusi
+             "ELCOMU;046;033;01;01;25;", "ELCOMU;046;033;01;01;25;"]  # duplicato coerente: tenuto
+    buf = _io.BytesIO()
+    with _zip.ZipFile(buf, "w") as z:
+        z.writestr("2025_Rendiconto PDI Sintetici Allegato 2-a_TOSCANA.csv", "\n".join(lines))
+        z.writestr("Rendiconto PDI Sintetici Allegato 2-a.pdf", "%PDF")
+    rigid = ob.rigid_index(buf.getvalue(), "TOSCANA")
+    assert rigid == {"046018": 20.66, "050026": 22.0, "046033": 25.0}, rigid
+    assert rigid.fallback == {"050026"} and rigid.ambiguous == {"018094"}
+    tables = {"entrate": {("046018", k): [{"Accertamenti": v}] for k, v in (("01", "100"), ("02", "50"), ("03", "50"))}, "rigide": rigid}
+    n, d = ob.components({**tables, "spese": {}, "missioni": {}, "risultato": {}}, "046018", ob.RIGID)
+    assert d == 200 and abs(n / d * 100 - 20.66) < 1e-12 and ob.is_ratio(ob.RIGID) and ob.RIGID not in ob.RATIOS
+
+
+def fiscal_recovery_history_cases() -> None:
+    """Recupero fiscale SIOPE: codici «a seguito di attività di verifica e controllo», dicembre, popolazione del file."""
+    import fiscal_recovery_history as fh
+
+    head = ('"Codice istat provincia";"Codice istat comune";"Descrizione Tipo Ente BDAP";"Anno/Mese calendario";'
+            '"Codice Gestionale Enti Locali";"Descrizione CG";"Popolazione ISTAT";"Importo cumulato"')
+    def csv_year(year: int) -> bytes:
+        lines = [head]
+        for i, c in enumerate(fh.TOWNS):
+            for month, amount in ((f"{year}/11", 1.0), (f"{year}/12", 100.0 + i + year - 2024)):
+                lines.append(f'"{c[:3]}";"{c[3:]}";"COMUNI";"{month}";"E1010106002";"Imposte municipale propria riscosse a seguito di attività di verifica e controllo";"1000";"{amount}"')
+                lines.append(f'"{c[:3]}";"{c[3:]}";"COMUNI";"{month}";"E1010106001";"Imposta municipale propria riscossa a seguito dell\'attività ordinaria";"1000";"999"')
+        return "\n".join(lines).encode("cp1252")
+    def fetch(url: str) -> bytes:
+        year = int(url.rsplit("_", 1)[1].split(".")[0])
+        return b'{"error": {"message": "Cannot convert data to csv"}}' if year < 2024 else csv_year(year)
+    published = {c: (101.0 + i) / 1000 for i, c in enumerate(fh.TOWNS)}
+    fh.PAUSE = 0.0
+    calls: list[str] = []
+    def flaky(url: str) -> bytes:  # primo tentativo 2025 con errore di conversione, poi il file
+        calls.append(url)
+        if "2025" in url and calls.count(url) == 1:
+            return b'{"error": {"message": "Cannot convert data to csv"}}'
+        return fetch(url)
+    snap = fh.build_snapshot(flaky, published, 2025)
+    assert calls.count(fh.URL.format(year=2023)) == fh.ATTEMPTS
+    assert snap["years"] == [2024, 2025] and "2023" in snap["stoppedAt"], snap["stoppedAt"]
+    metric = {fh.METRIC: {"meta": {"year": "2025"}, "method": {}, "rows": [{"town": n, "code": c, "value": published[c]} for c, n in fh.TOWNS.items()]}}
+    fh.apply(metric, snap, fh.SNAPSHOT)
+    assert metric[fh.METRIC]["rows"][0]["series"]["values"] == [0.1, 0.101]
+    try:
+        fh.build_snapshot(fetch, {**published, "046033": 1.0}, 2025)
+    except fh.RecoveryHistoryError:
+        pass
+    else:
+        raise AssertionError("anno pubblicato diverso accettato")
 
 
 def lotto1_history_cases() -> None:
@@ -1837,8 +1952,11 @@ def main() -> None:
     irpef_history_cases()
     openbdap_refresh_cases()
     lotto1_history_cases()
+    fiscal_recovery_history_cases()
+    openbdap_debt_cases()
     omi_history_cases()
     income_distribution_history_cases()
+    income_distribution_benchmark_cases()
     mim_students_history_cases()
     asia_micro_units_history_cases()
     siope_cash_benchmarks_cases()

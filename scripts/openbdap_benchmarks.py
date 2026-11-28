@@ -58,6 +58,77 @@ RESULTS = {"availableAdministrationResultPerResident": "0502", "fcdePerResident"
 RATIOS = {"ownRevenueShare", "currentCollectionCapacity", "currentPaymentCapacity"}
 METRICS = ("currentRevenueAccruedPerResident", "currentExpenditureCommittedPerResident", "capitalExpenditureCommittedPerResident",
            *sorted(RATIOS), *sorted(RESULTS), *sorted(MISSIONS))
+# Indicatori a più letture: confronto sulla lettura principale (debito finanziario D1 per residente, Stato
+# patrimoniale passivo). Il membro patrimoniale è facoltativo: se manca in un archivio regionale, quei Comuni
+# restano non coperti per questo indicatore e gli altri indicatori della regione non ne risentono.
+DEBT = "financialDebtProfile"
+OPTIONAL_MEMBERS = {"patrimonio": "Rendiconto SDB Stato Patrimoniale Passivo"}
+# Incidenza delle spese rigide: indicatore ufficiale 1.1 del Piano degli indicatori, pubblicato Comune per
+# Comune senza le sue componenti. Si ricostruisce il numeratore come indicatore × accertamenti dei primi tre
+# titoli (il suo denominatore ufficiale) e si aggrega come rapporto: è la media degli indicatori ponderata sulle
+# entrate correnti. Il denominatore ufficiale comprende anche l'eventuale utilizzo del Fondo anticipazione
+# DL 35/2013, non pubblicato a parte: per i Comuni che lo usano l'approssimazione è dichiarata.
+RIGID = "rigidExpenditureShare"
+INDICATORS = "/Datasets_FET/Rendiconto/{year}/{year}_Rendiconto - Piano degli indicatori_{region}.zip"
+INDICATOR_MEMBER = "Rendiconto PDI Sintetici Allegato 2-a"
+ALL_METRICS = (*METRICS, DEBT, RIGID)
+
+
+def is_ratio(metric: str) -> bool:
+    return metric in RATIOS or metric == RIGID
+
+
+def indicators_url(year: int, region: str) -> str:
+    return BASE + urllib.parse.quote(INDICATORS.format(year=year, region=region), safe="/:_-.'")
+
+
+class RigidIndex(dict):
+    """Comune → indicatore 1.1, con i Comuni letti dalla colonna alternativa e i codici esclusi perché ambigui."""
+
+    def __init__(self, data: dict, fallback: set[str], ambiguous: set[str]):
+        super().__init__(data)
+        self.fallback, self.ambiguous = fallback, ambiguous
+
+
+def rigid_index(raw: bytes, region: str) -> RigidIndex:
+    """Comune → indicatore 1.1 (percentuale) dal Piano degli indicatori regionale.
+
+    Colonna «Tutte le missioni»; se è vuota, la colonna «Tutte le spese al netto Missione 13» dello stesso
+    indicatore ufficiale (alcuni Comuni compilano solo quella; dove il Comune le compila entrambe con un valore
+    diverso da zero coincidono, uno zero nella colonna alternativa è un segnaposto e non vale). Due enti con lo
+    stesso codice e valori diversi (Comuni fusi che hanno trasmesso separatamente) escludono quel codice: mai
+    sceglierne uno; anche gli schemi di bilancio lo escludono."""
+    squash = lambda t: "".join(ch for ch in t.lower() if ch.isalnum())
+    with zipfile.ZipFile(io.BytesIO(raw)) as z:
+        hits = [n for n in z.namelist() if squash(n.rsplit("/", 1)[-1]).endswith(squash(f"{INDICATOR_MEMBER}_{region}.csv"))]
+        if len(hits) != 1:
+            raise BenchmarkError(f"{INDICATOR_MEMBER}: atteso 1 CSV, trovati {hits}")
+        rows = list(csv.DictReader(io.StringIO(decode(z.read(hits[0]))), delimiter=";"))
+    out: dict[str, float] = {}
+    fallback: set[str] = set()
+    ambiguous: set[str] = set()
+    for row in rows:
+        row = {k.strip(): v for k, v in row.items() if k and k.strip()}
+        if not is_municipality(row) or not (c := code(row)):
+            continue
+        kind = str(row.get("Codice Tipologia Indicatore Sintetico 2)a") or "").strip().zfill(2)
+        ind = str(row.get("Codice Indicatore Sintetico 2)a") or "").strip().zfill(2)
+        if (kind, ind) != ("01", "01"):
+            continue
+        value = num(row.get("Indicatore Tutte Le Missioni"))
+        alt = num(row.get("Indicatore Tutte Le Spese al Netto Missione 13"))
+        if value is None and alt is not None and alt > 0:
+            value = alt
+            fallback.add(c)
+        if value is None:
+            continue  # indicatore non valorizzato: Comune non coperto, mai zero
+        if c in out and out[c] != value:
+            ambiguous.add(c)
+        out[c] = value
+    for c in ambiguous:
+        out.pop(c, None)
+        fallback.discard(c)
+    return RigidIndex(out, fallback, ambiguous)
 
 
 class BenchmarkError(RuntimeError):
@@ -121,7 +192,32 @@ def read_members(raw: bytes, region: str) -> dict[str, list[dict[str, str]]]:
                 raise BenchmarkError(f"{prefix}: atteso 1 CSV, trovati {hits} fra {[n for n in names if n.lower().endswith('.csv')][:60]}")
             reader = csv.DictReader(io.StringIO(decode(z.read(hits[0]))), delimiter=";")
             out[key] = [{k.strip(): v for k, v in row.items() if k and k.strip()} for row in reader]
+        for key, prefix in OPTIONAL_MEMBERS.items():
+            hits = [n for n in names if squash(n.rsplit("/", 1)[-1]).endswith(squash(f"{prefix}_{region}.csv"))]
+            if len(hits) == 1:
+                reader = csv.DictReader(io.StringIO(decode(z.read(hits[0]))), delimiter=";")
+                out[key] = [{k.strip(): v for k, v in row.items() if k and k.strip()} for row in reader]
     return out
+
+
+def debt_index(rows: list[dict[str, str]]) -> dict[str, float]:
+    """Comune → debiti da finanziamento D1 al 31/12 (somma delle voci D.1.*) per i Comuni che hanno trasmesso lo
+    Stato patrimoniale passivo (riga del totale del passivo presente); nessuna voce D1 = nessun debito (zero)."""
+    filed: set[str] = set()
+    d1: dict[str, float] = defaultdict(float)
+    for row in rows:
+        if not is_municipality(row) or not (c := code(row)):
+            continue
+        level2, level3 = str(row.get("Codice II Livello") or "").strip(), str(row.get("Codice III Livello") or "").strip()
+        if level2 == "70":
+            filed.add(c)
+        elif level2 == "04" and level3 == "01":
+            cell = str(row.get("Consistenza Anno Corrente") or "").strip()
+            value = 0.0 if cell == "" else num(cell)  # voce senza consistenza: nessun importo
+            if value is None:
+                raise ValueError(f"{c}: D1 non numerico {cell!r}")
+            d1[c] += value
+    return {c: d1.get(c, 0.0) for c in filed}
 
 
 def code(row: dict[str, str]) -> str:
@@ -185,6 +281,17 @@ def components(tables: dict[str, dict], c: str, metric: str) -> tuple[float, flo
         if c not in towns:
             raise ValueError("riepilogo missioni assente")
         return sum(exact(m, c, k, "Impegni") if (c, k) in m else 0.0 for k in MISSIONS[metric]), None
+    if metric == RIGID:
+        rigid = tables.get("rigide")
+        if rigid is None or c not in rigid:
+            raise ValueError("indicatore 1.1 assente")
+        den = acc()
+        return rigid[c] / 100 * den, den
+    if metric == DEBT:
+        debt = tables.get("patrimonio")
+        if debt is None or c not in debt:
+            raise ValueError("stato patrimoniale passivo assente")
+        return debt[c], None
     raise KeyError(metric)
 
 
@@ -215,8 +322,8 @@ def p2_population(raw: bytes) -> dict[str, int]:
 
 def aggregate(values: dict[str, tuple[float, float | None]], population: dict[str, int], metric: str) -> tuple[float, float, float]:
     num_total = sum(v[0] for v in values.values())
-    den_total = sum(v[1] for v in values.values()) if metric in RATIOS else sum(population[c] for c in values)
-    value = num_total / den_total * 100 if metric in RATIOS else num_total / den_total
+    den_total = sum(v[1] for v in values.values()) if is_ratio(metric) else sum(population[c] for c in values)
+    value = num_total / den_total * 100 if is_ratio(metric) else num_total / den_total
     return value, num_total, den_total
 
 
@@ -226,9 +333,13 @@ def build_snapshot(year: int, fetcher: Callable[[str], bytes], published: dict[s
     p2_raw = fetcher(P2_URL.format(year=year))
     population = p2_population(p2_raw)
     regions: dict[str, Any] = {}
-    per_metric: dict[str, dict[str, dict[str, tuple[float, float | None]]]] = {m: {} for m in METRICS}
+    per_metric: dict[str, dict[str, dict[str, tuple[float, float | None]]]] = {m: {} for m in ALL_METRICS}
     reporting: dict[str, set[str]] = {}
     missing_regions = {}
+    indicator_archives: dict[str, str] = {}
+    missing_indicators: dict[str, str] = {}
+    indicator_fallback: dict[str, list[str]] = {}
+    indicator_ambiguous: dict[str, list[str]] = {}
     for reg, names in REGIONS.items():
         raw, tried = None, []
         for name in names:
@@ -250,6 +361,17 @@ def build_snapshot(year: int, fetcher: Callable[[str], bytes], published: dict[s
             continue
         tables = {"entrate": index(members["entrate"], "Codice Titolo"), "spese": index(members["spese"], "Codice Titolo"),
                   "missioni": index(members["missioni"], "Codice Missione"), "risultato": index(members["risultato"], "Cod Voce Ris Amm Rend")}
+        if "patrimonio" in members:
+            tables["patrimonio"] = debt_index(members["patrimonio"])
+        try:
+            tables["rigide"] = rigid_index(fetcher(indicators_url(year, name)), name)
+            indicator_archives[reg] = indicators_url(year, name)
+            if tables["rigide"].fallback:
+                indicator_fallback[reg] = sorted(tables["rigide"].fallback)
+            if tables["rigide"].ambiguous:
+                indicator_ambiguous[reg] = sorted(tables["rigide"].ambiguous)
+        except (urllib.error.HTTPError, BenchmarkError, zipfile.BadZipFile) as error:
+            missing_indicators[reg] = str(error)[:500]
         mission_towns = {c for c, _ in tables["missioni"]}
         tables["missioni"] = MissionIndex(tables["missioni"], mission_towns)
         codes = sorted({code(r) for r in members["entrate"] if is_municipality(r) and code(r)})
@@ -257,7 +379,7 @@ def build_snapshot(year: int, fetcher: Callable[[str], bytes], published: dict[s
         print(f"OpenBDAP {reg}: {len(codes)} Comuni", flush=True)
         regions[reg] = {"archive": url, "sha256": hashlib.sha256(raw).hexdigest(), "bytes": len(raw), "municipalities": len(codes)}
         for c in codes:
-            for metric in METRICS:
+            for metric in ALL_METRICS:
                 try:
                     per_metric[metric][c] = components(tables, c, metric)
                 except ValueError:
@@ -277,7 +399,7 @@ def build_snapshot(year: int, fetcher: Callable[[str], bytes], published: dict[s
                 blocked.setdefault(metric, []).append(f"{towns[c]}: righe assenti")
                 continue
             n, d = per_metric[metric][c]
-            live = n / d * 100 if metric in RATIOS else n / population[c]
+            live = n / d * 100 if is_ratio(metric) else n / population[c]
             if not math.isclose(live, value, rel_tol=0, abs_tol=1e-6):
                 blocked.setdefault(metric, []).append(f"{towns[c]}: fonte {live} ≠ pubblicato {value}")
     if len(blocked) > len(published) // 2:
@@ -286,7 +408,7 @@ def build_snapshot(year: int, fetcher: Callable[[str], bytes], published: dict[s
     tuscany_codes = {c for c in population if c.startswith(("045", "046", "047", "048", "049", "050", "051", "052", "053", "100"))}
     scopes = {"tuscany": tuscany_codes, "italy": set(population)}
     benchmarks: dict[str, Any] = {}
-    for metric in METRICS:
+    for metric in ALL_METRICS:
         out = {}
         if metric in blocked:
             benchmarks[metric] = {scope: {"value": None, "reason": "riconciliazione 7/7 non superata: " + "; ".join(blocked[metric])}
@@ -317,7 +439,9 @@ def build_snapshot(year: int, fetcher: Callable[[str], bytes], published: dict[s
         "population": {"url": P2_URL.format(year=year), "sha256": hashlib.sha256(p2_raw).hexdigest(), "municipalities": len(population),
                        "date": f"{year}-01-01"},
         "regions": regions, "missingRegions": missing_regions, "unknownCodes": unknown,
-        "towns": {c: {m: list(per_metric[m][c]) for m in METRICS if c in per_metric[m]} | {"population": population[c]} for c in towns},
+        "indicatorArchives": indicator_archives, "missingIndicatorArchives": missing_indicators,
+        "indicatorAlternateColumn": indicator_fallback, "indicatorAmbiguousCodes": indicator_ambiguous,
+        "towns": {c: {m: list(per_metric[m][c]) for m in ALL_METRICS if c in per_metric[m]} | {"population": population[c]} for c in towns},
         "benchmarks": benchmarks,
         "blocked": blocked,
         "qualityGate": {"status": "PASS", "publicReconciliation": f"{len(published) - len(blocked)} indicatori × 7/7; {len(blocked)} esclusi dal confronto"},
