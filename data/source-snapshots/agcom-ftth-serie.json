@@ -1,0 +1,252 @@
+{
+  "schemaVersion": 1,
+  "version": "agcom-ftth-serie-2026-10-05-v1",
+  "retrieved": "2026-11-28",
+  "publisher": "AGCOM — Broadband Map, reportistica comunale",
+  "catalogue": "https://geo.agcom.it/reportistica/report.js",
+  "rule": "Edizioni trimestrali consecutive fino a quella pubblicata, CSV comunale letto con la regola corrente e stessi Comuni con il dato dell'edizione pubblicata; edizione pubblicata identica ai valori del catalogo.",
+  "stoppedAt": "2025-09-30: CSV non leggibile (CSV AGCOM: schema/delimitatore inatteso (';':15, ',':1, '\\t':1, '|':1); prefix='Regione;Provincia;Comune;pro_com;\"Celle 20m x 20m\\nraggiunte\";Punti dichiarati;\")",
+  "seriesStoppedAt": {},
+  "dates": {
+    "ftthCoverageDesi": [
+      "2025-12-31",
+      "2026-03-31",
+      "2026-07-06",
+      "2026-10-05"
+    ],
+    "ftthCoverage20m": [
+      "2025-12-31",
+      "2026-03-31",
+      "2026-07-06",
+      "2026-10-05"
+    ],
+    "ftthReachedHouseholds": [
+      "2025-12-31",
+      "2026-03-31",
+      "2026-07-06",
+      "2026-10-05"
+    ],
+    "ftthUnreachedHouseholds": [
+      "2025-12-31",
+      "2026-03-31",
+      "2026-07-06",
+      "2026-10-05"
+    ]
+  },
+  "sources": {
+    "2026-10-05": {
+      "url": "https://geo.agcom.it/arcgis/sharing/rest/content/items/e78bb4e1d6c64123a241d522d845daab/data",
+      "sha256": "bb23081d4a8de2db4798a9bba9c5fc27845a153e91f948c48ebf07af9dd5ed6e"
+    },
+    "2026-07-06": {
+      "url": "https://geo.agcom.it/arcgis/sharing/rest/content/items/25830559c5784c1eb5eb1cf748889f4c/data",
+      "sha256": "01513490098d804ee16bfbcc7937951f2cc1f08cc0c0a2cf17bed9bf6c51aa5c"
+    },
+    "2026-03-31": {
+      "url": "https://geo.agcom.it/arcgis/sharing/rest/content/items/a56ede78c5da41eaad36cba969ad1d20/data",
+      "sha256": "fb3d2d7c8c0015d7a26f4369683ae787d727cdc28ac5b4068e40643bb5f0a337"
+    },
+    "2025-12-31": {
+      "url": "https://geo.agcom.it/arcgis/sharing/rest/content/items/6c0b48a9a06c44059656b987d85acb63/data",
+      "sha256": "cfed75e8791a3b871b1579d7a2d4357462e264e70cc2e38f9db38f9f39fb9f30"
+    }
+  },
+  "towns": {
+    "Camaiore": {
+      "2026-10-05": {
+        "ftthCoverageDesi": 91.2,
+        "ftthCoverage20m": 80.6,
+        "ftthReachedHouseholds": 11970.0,
+        "ftthUnreachedHouseholds": 1149.0
+      },
+      "2026-07-06": {
+        "ftthCoverageDesi": 91.3,
+        "ftthCoverage20m": 80.1,
+        "ftthReachedHouseholds": 11978.0,
+        "ftthUnreachedHouseholds": 1141.0
+      },
+      "2026-03-31": {
+        "ftthCoverageDesi": 91.1,
+        "ftthCoverage20m": 79.7,
+        "ftthReachedHouseholds": 11952.0,
+        "ftthUnreachedHouseholds": 1167.0
+      },
+      "2025-12-31": {
+        "ftthCoverageDesi": 85.0,
+        "ftthCoverage20m": 65.0,
+        "ftthReachedHouseholds": 12316.0,
+        "ftthUnreachedHouseholds": 2092.0
+      }
+    },
+    "Forte dei Marmi": {
+      "2026-10-05": {
+        "ftthCoverageDesi": 0.0,
+        "ftthCoverage20m": 0.0,
+        "ftthReachedHouseholds": null,
+        "ftthUnreachedHouseholds": null
+      },
+      "2026-07-06": {
+        "ftthCoverageDesi": 0.0,
+        "ftthCoverage20m": 0.0,
+        "ftthReachedHouseholds": null,
+        "ftthUnreachedHouseholds": null
+      },
+      "2026-03-31": {
+        "ftthCoverageDesi": 0.0,
+        "ftthCoverage20m": 0.0,
+        "ftthReachedHouseholds": null,
+        "ftthUnreachedHouseholds": null
+      },
+      "2025-12-31": {
+        "ftthCoverageDesi": 0.0,
+        "ftthCoverage20m": 0.0,
+        "ftthReachedHouseholds": null,
+        "ftthUnreachedHouseholds": null
+      }
+    },
+    "Massarosa": {
+      "2026-10-05": {
+        "ftthCoverageDesi": 46.3,
+        "ftthCoverage20m": 33.8,
+        "ftthReachedHouseholds": 4156.0,
+        "ftthUnreachedHouseholds": 4826.0
+      },
+      "2026-07-06": {
+        "ftthCoverageDesi": 47.0,
+        "ftthCoverage20m": 34.3,
+        "ftthReachedHouseholds": 4219.0,
+        "ftthUnreachedHouseholds": 4763.0
+      },
+      "2026-03-31": {
+        "ftthCoverageDesi": 36.6,
+        "ftthCoverage20m": 29.7,
+        "ftthReachedHouseholds": 3286.0,
+        "ftthUnreachedHouseholds": 5696.0
+      },
+      "2025-12-31": {
+        "ftthCoverageDesi": 57.0,
+        "ftthCoverage20m": 21.0,
+        "ftthReachedHouseholds": 9.0,
+        "ftthUnreachedHouseholds": 6.0
+      }
+    },
+    "Pietrasanta": {
+      "2026-10-05": {
+        "ftthCoverageDesi": 58.4,
+        "ftthCoverage20m": 42.0,
+        "ftthReachedHouseholds": 5466.0,
+        "ftthUnreachedHouseholds": 3887.0
+      },
+      "2026-07-06": {
+        "ftthCoverageDesi": 59.3,
+        "ftthCoverage20m": 44.2,
+        "ftthReachedHouseholds": 5546.0,
+        "ftthUnreachedHouseholds": 3807.0
+      },
+      "2026-03-31": {
+        "ftthCoverageDesi": 53.6,
+        "ftthCoverage20m": 38.6,
+        "ftthReachedHouseholds": 5009.0,
+        "ftthUnreachedHouseholds": 4344.0
+      },
+      "2025-12-31": {
+        "ftthCoverageDesi": 41.0,
+        "ftthCoverage20m": 30.0,
+        "ftthReachedHouseholds": 4672.0,
+        "ftthUnreachedHouseholds": 6615.0
+      }
+    },
+    "Seravezza": {
+      "2026-10-05": {
+        "ftthCoverageDesi": 0.6,
+        "ftthCoverage20m": 0.0,
+        "ftthReachedHouseholds": 31.0,
+        "ftthUnreachedHouseholds": 5037.0
+      },
+      "2026-07-06": {
+        "ftthCoverageDesi": 0.7,
+        "ftthCoverage20m": 0.1,
+        "ftthReachedHouseholds": 35.0,
+        "ftthUnreachedHouseholds": 5033.0
+      },
+      "2026-03-31": {
+        "ftthCoverageDesi": 0.4,
+        "ftthCoverage20m": 0.0,
+        "ftthReachedHouseholds": 22.0,
+        "ftthUnreachedHouseholds": 5046.0
+      },
+      "2025-12-31": {
+        "ftthCoverageDesi": 0.0,
+        "ftthCoverage20m": 0.0,
+        "ftthReachedHouseholds": 20.0,
+        "ftthUnreachedHouseholds": 5856.0
+      }
+    },
+    "Stazzema": {
+      "2026-10-05": {
+        "ftthCoverageDesi": 87.9,
+        "ftthCoverage20m": 77.4,
+        "ftthReachedHouseholds": 1009.0,
+        "ftthUnreachedHouseholds": 139.0
+      },
+      "2026-07-06": {
+        "ftthCoverageDesi": 87.9,
+        "ftthCoverage20m": 77.4,
+        "ftthReachedHouseholds": 1009.0,
+        "ftthUnreachedHouseholds": 139.0
+      },
+      "2026-03-31": {
+        "ftthCoverageDesi": 87.9,
+        "ftthCoverage20m": 76.6,
+        "ftthReachedHouseholds": 1009.0,
+        "ftthUnreachedHouseholds": 139.0
+      },
+      "2025-12-31": {
+        "ftthCoverageDesi": 82.0,
+        "ftthCoverage20m": 73.0,
+        "ftthReachedHouseholds": 1014.0,
+        "ftthUnreachedHouseholds": 221.0
+      }
+    },
+    "Viareggio": {
+      "2026-10-05": {
+        "ftthCoverageDesi": 94.8,
+        "ftthCoverage20m": 86.2,
+        "ftthReachedHouseholds": 23736.0,
+        "ftthUnreachedHouseholds": 1303.0
+      },
+      "2026-07-06": {
+        "ftthCoverageDesi": 94.8,
+        "ftthCoverage20m": 86.0,
+        "ftthReachedHouseholds": 23734.0,
+        "ftthUnreachedHouseholds": 1305.0
+      },
+      "2026-03-31": {
+        "ftthCoverageDesi": 94.7,
+        "ftthCoverage20m": 85.8,
+        "ftthReachedHouseholds": 23705.0,
+        "ftthUnreachedHouseholds": 1334.0
+      },
+      "2025-12-31": {
+        "ftthCoverageDesi": 95.0,
+        "ftthCoverage20m": 84.0,
+        "ftthReachedHouseholds": 24543.0,
+        "ftthUnreachedHouseholds": 1194.0
+      }
+    }
+  },
+  "years": [
+    "2025-12-31",
+    "2026-03-31",
+    "2026-07-06",
+    "2026-10-05"
+  ],
+  "qualityGate": {
+    "status": "PASS",
+    "note": "Edizione 2026-10-05 identica ai valori pubblicati dei quattro indicatori."
+  },
+  "acquisitionEvidence": {
+    "script": "scripts/update_source_data.py agcom-ftth-history",
+    "where": "runner GitHub Actions"
+  }
+}

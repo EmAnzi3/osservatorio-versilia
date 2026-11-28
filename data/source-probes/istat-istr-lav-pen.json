@@ -1,0 +1,19 @@
+{
+ "schemaVersion": 1,
+ "createdAt": "2026-11-28T09:06:12Z",
+ "note": "Sonda SDMX: struttura e righe della Versilia; non è un dato pubblicato.",
+ "flow": "DCSS_BULK_ISTR_LAV_PEN_2",
+ "key": "all",
+ "structureUrl": "https://esploradati.istat.it/SDMXWS/rest/dataflow/IT1/DCSS_BULK_ISTR_LAV_PEN_2?references=all",
+ "dimensions": [
+  {
+   "id": "DimId",
+   "position": "1",
+   "codelist": null
+  }
+ ],
+ "dataErrors": [
+  "https://esploradati.istat.it/SDMXWS/rest/data/DCSS_BULK_ISTR_LAV_PEN_2/all: tentativo 1: HTTPError: HTTP Error 404: Not Found | tentativo 2: HTTPError: HTTP Error 404: Not Found | tentativo 3: HTTPError: HTTP Error 404: Not Found",
+  "https://sdmx.istat.it/SDMXWS/rest/data/DCSS_BULK_ISTR_LAV_PEN_2/all: tentativo 1: HTTPError: HTTP Error 302: The HTTP server returned a redirect error that would lead to an infinite loop.\nThe last 30x error message was:\nFound | tentativo 2: HTTPError: HTTP Error 302: The HTTP server returned a redirect error that would lead to an infinite loop.\nThe last 30x error message was:\nFound | tentativo 3: HTTPError: HTTP Error 302: The HTTP server returned a redirect error that would lead to an infinite loop.\nThe last 30x error message was:\nFound"
+ ]
+}
