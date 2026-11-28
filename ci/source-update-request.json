@@ -8,19 +8,21 @@
   "mefFiscalProbe": [],
   "sourceProbe": [
     {
-      "name": "pun-main-js-arcgis",
-      "url": "https://www.piattaformaunicanazionale.it/static/js/main.fdb71f83.js",
-      "match": "https?://[A-Za-z0-9.-]*arcgis[A-Za-z0-9./_?=&{}-]*|https?://[A-Za-z0-9.-]*piattaformaunicanazionale[A-Za-z0-9./_?=&{}-]*|[A-Za-z0-9_]*(?:FeatureServer|MapServer)[A-Za-z0-9/_-]*"
+      "name": "pun-dashboard-d2e173e1210b4ad89f5ea0d2b8d1b00e",
+      "url": "https://gse-sta.maps.arcgis.com/sharing/rest/content/items/d2e173e1210b4ad89f5ea0d2b8d1b00e/data?f=json"
     },
     {
-      "name": "pun-import-arcgis",
-      "url": "https://www.piattaformaunicanazionale.it/import-arcgis.js",
-      "match": "https?://[^\"' )]+"
+      "name": "pun-dashboard-44ac0a740b184666a1f2ff9efe15e1b7",
+      "url": "https://gse-sta.maps.arcgis.com/sharing/rest/content/items/44ac0a740b184666a1f2ff9efe15e1b7/data?f=json"
     },
     {
-      "name": "istat-istr-lav-pen-struttura",
-      "url": "https://esploradati.istat.it/SDMXWS/rest/dataflow/IT1/DCSS_BULK_ISTR_LAV_PEN_2?references=all",
-      "follow": "zip|DWL|csv|xlsx"
+      "name": "pun-dashboard-08b5d3e711684ec4b6f52b3c71d338b9",
+      "url": "https://gse-sta.maps.arcgis.com/sharing/rest/content/items/08b5d3e711684ec4b6f52b3c71d338b9/data?f=json"
+    },
+    {
+      "name": "istat-istr-lav-pen-zip",
+      "url": "https://esploradati.istat.it/databrowser/DWL/PERMPOP/MUN/DCSS_ISTR_LAV_PEN_2%20-%20Istruzione%2C%20lavoro%20e%20spostamenti%20per%20studio%20o%20lavoro%20-%20intero%20ds.csv.zip",
+      "match": "046018|046033|ITI1|IT[;,]|Toscana|Italia"
     }
   ],
   "ispraSoil": [],
@@ -54,6 +56,6 @@
   "mefIncomeDistributionBenchmark": false,
   "siopeFiscalRecoveryHistory": false,
   "rgsStaffHistory": false,
-  "agcomFtthHistory": true,
-  "pass": "lotto4-sonde-3"
+  "agcomFtthHistory": false,
+  "pass": "lotto4-sonde-4"
 }
