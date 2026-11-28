@@ -37,6 +37,6 @@
   "tourismSeasonalityHistory": false,
   "mefIncomeDistributionBenchmark": false,
   "siopeFiscalRecoveryHistory": false,
-  "rgsStaffHistory": false,
-  "pass": "lotto2-spese-rigide-2"
+  "rgsStaffHistory": true,
+  "pass": "lotto3-personale-1"
 }
