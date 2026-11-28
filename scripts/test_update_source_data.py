@@ -1405,6 +1405,85 @@ def lotto1_history_cases() -> None:
     assert abs(sh.share(months) - 600 / 690 * 100) < 1e-9
 
 
+def rgs_staff_history_cases() -> None:
+    """Personale RGS: intestazioni con tabulazioni, zero dichiarato senza causali, serie consecutive, confronto con copertura."""
+    import json as _json
+    import rgs_staff_history as rh
+
+    towns = list(rh.TOWNS)
+    bdap = {c: f"9{i}0000000000000000" for i, c in enumerate(towns)} | {"045001": "8100000000000000000", "001001": "8200000000000000000"}
+    inst = {c: str(1000 + i) for i, c in enumerate(bdap)}
+    t_head = ('"Anno Rilevazione";"Descrizione Tipo Istituzione";"Codice Istituzione";"Codice Ente BDAP";"Descrizione Ente";'
+              + ";".join(f'"{f}"' for f in rh.STAFF_FIELDS + rh.HIRE_FIELDS + rh.CESS_FIELDS) + ";")
+    a_head = '"Anno Rilevazione";"Descrizione Tipo Istituzione";"Codice Istituzione";"Codice Ente BDAP";"Descrizione Ente";"Descrizione Fascia Eta";"Numero Dipendenti Donne";"Numero Dipendenti Uomini"'
+    f_head = '"Anno Rilevazione";"Descrizione Tipo Istituzione";"Codice Istituzi\t\tone";"Codice Ente BDAP";"Descrizione Ente";"Descrizione Causale";"Donne";"Uomini";'
+    def files(year: int) -> dict[str, str]:
+        t, a, h, c = [t_head], [a_head], [f_head], [f_head]
+        for code, ident in bdap.items():
+            pre = f'"{year}";"COMUNI";"{inst[code]}";"{ident}";"COMUNE {code}"'
+            hires = 0 if code == "046030" else 2  # Stazzema: nessun assunto, nessuna riga per causale
+            t.append(pre + f";10;10;0;0;0;0;{hires};0;1;0;")
+            old = 4 if (code == "046005" and year == 2022) else 5  # Camaiore 2022: totale per età ≠ personale
+            a += [pre + ';"Fino a 19 anni";2;2', pre + ';"Da 40 A 44 anni";3;3', pre + f';"Da 55 a 59 anni";{old};5']
+            if hires:
+                h += [pre + ';"CONCORSO";1;0', pre + ';"PASSAGGI DA ALTRE AMMINISTRAZIONI";0;1']
+            c.append(pre + ';"COLLOCAMENTO A RIPOSO";1;0')
+        return {"turnover": t, "age": a, "hires": h, "cessations": c}
+    def fetch(url: str) -> bytes:
+        if "Anagrafe" in url:
+            rows = ['"Id_Ente";"Codice_ISTAT_Comune"'] + [f'"{i}";"{c}"' for c, i in bdap.items()]
+            return "\n".join(rows).encode()
+        if "formazione" in url:
+            year = int(url.split("anno=")[1].split("&")[0])
+            if year < 2023:
+                return _json.dumps({"anno": str(year), "ripartizione": []}).encode()
+            fl = {"media_donne": "2", "totale": "10", "uomini": "4", "media_totale": "1.5", "media_uomini": "1", "donne": "6"}
+            return _json.dumps({"anno": str(year), "ripartizione": [{"TOTALE": [fl]}, {"FUNZIONI LOCALI": [fl]}]}).encode()
+        year = int(url.rsplit("/", 1)[1][:4])
+        if year < 2022:
+            raise rh.Unavailable(url)
+        key = next(k for k, n in rh.FILES.items() if n in url)
+        return "\n".join(files(year)[key]).encode()
+    population = {c: 1000 for c in bdap} | {"045002": 10}
+    orig, orig_min = rh.frozen_population, rh.ANAGRAFE_MIN
+    rh.frozen_population, rh.ANAGRAFE_MIN = (lambda root=None: (population, {bdap["045001"]: "045001"}, "P2")), 1
+    try:
+        def row(code: str) -> dict:
+            return {"town": rh.TOWNS[code], "code": code}
+        metrics = {
+            rh.AGE: {"meta": {"year": "2024"}, "method": {}, "rows": [row(c) | {"staffAt31Dec": 20.0, "parts": [
+                {"selectorLabel": "55+", "count": 10, "value": 50.0, "label": "55 anni e oltre"}, {"selectorLabel": "40–54", "count": 6, "value": 30.0},
+                {"selectorLabel": "<40", "count": 4, "value": 20.0}]} for c in towns]},
+            rh.TURNOVER: {"meta": {"year": "2024"}, "method": {}, "rows": [row(c) | {"netHires": 0.0 if c == "046030" else 1.0, "netCessations": 1.0,
+                          "value": -5.0 if c == "046030" else 0.0} for c in towns]},
+            rh.TRAINING: {"meta": {"year": "2024"}, "method": {}, "aggregate": {"parts": [{"value": v} for v in (1.5, 10, 1, 2)]},
+                          "rows": [row(c) | {"parts": [{"selectorLabel": k, "value": v, "label": k} for k, v in zip(rh.TRAINING_PARTS, (1.5, 10, 1, 2))]} for c in towns]},
+            rh.PER1000: {"meta": {"year": "2024"}, "method": {}, "rows": [row(c) | {"staffAt31Dec": 20.0, "residentPopulation": 1000, "value": 20.0} for c in towns]},
+            "population": {"rows": [{"town": rh.TOWNS[c], "series": {"years": [2022, 2023, 2024], "values": [1000, 1000, 1000]}} for c in towns]},
+        }
+        hist, bench = rh.build_snapshots(fetch, metrics)
+        wrong = _json.loads(_json.dumps(metrics))
+        wrong[rh.AGE]["rows"][0]["parts"][0]["count"] = 11
+        try:
+            rh.build_snapshots(fetch, wrong)
+        except rh.StaffHistoryError as error:
+            assert "fasce" in str(error), error
+        else:
+            raise AssertionError("fasce diverse dalle pubblicate accettate")
+    finally:
+        rh.frozen_population, rh.ANAGRAFE_MIN = orig, orig_min
+    assert hist["staff"]["years"] == [2022, 2023, 2024], hist["staff"]
+    assert hist["age"]["years"] == [2023, 2024] and "Camaiore" in hist["age"]["stoppedAt"], hist["age"]
+    assert hist["turnover"]["years"] == [2022, 2023, 2024] and hist["training"]["years"] == [2023, 2024], (hist["turnover"]["years"], hist["training"])
+    t = bench["benchmarks"]["tuscany"]
+    assert t["age"]["municipalities"] == 8 and abs(t["age"]["coverageShare"] - 8000 / 8010) < 1e-12 and t["age"]["shares"] == [50.0, 30.0, 20.0], t["age"]
+    rh.apply(metrics, hist, rh.SNAPSHOT)
+    assert metrics[rh.AGE]["rows"][1]["componentSeries"]["<40"]["values"] == [20.0, 20.0]
+    assert metrics[rh.PER1000]["rows"][0]["series"]["values"] == [20.0, 20.0, 20.0]
+    rh.apply_benchmark(rh.TURNOVER, metrics[rh.TURNOVER], bench, "x")
+    assert metrics[rh.TURNOVER]["meta"]["benchmark"]["italy"] is not None
+
+
 def irpef_history_cases() -> None:
     """Addizionale IRPEF: elenchi MEF annuali, varianti di scrittura uniformate, anni consecutivi, ultimo anno = pubblicato."""
     import irpef_history as ih
@@ -1952,6 +2031,7 @@ def main() -> None:
     irpef_history_cases()
     openbdap_refresh_cases()
     lotto1_history_cases()
+    rgs_staff_history_cases()
     fiscal_recovery_history_cases()
     openbdap_debt_cases()
     omi_history_cases()

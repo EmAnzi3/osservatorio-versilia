@@ -13,7 +13,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 DATA = ROOT / "data" / "site-data.json"
-MODULES = ("waste_cost_history", "seasonality_history", "fiscal_recovery_history")
+MODULES = ("waste_cost_history", "seasonality_history", "fiscal_recovery_history", "rgs_staff_history")
 
 
 def main() -> None:
