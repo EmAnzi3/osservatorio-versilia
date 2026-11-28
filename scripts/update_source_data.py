@@ -1110,6 +1110,42 @@ def update_income_distribution_benchmark(dry_run: bool, fetch=None) -> Changes:
     return changes
 
 
+# ------------------------------------------------------------------ RGS: personale comunale (serie e confronto)
+
+def update_rgs_staff_history(dry_run: bool, fetch=None) -> Changes:
+    """Serie del personale comunale (età, turnover, formazione, dipendenti) e confronto Toscana/Italia dell'anno pubblicato."""
+    import rgs_staff_history as rh
+
+    def fetcher(url: str) -> bytes:
+        try:
+            return (fetch or probes.http_fetch)(url)
+        except probes.ProbeError as error:
+            if error.reason == "not_found":
+                raise rh.Unavailable(url) from error
+            raise
+
+    try:
+        history, benchmark = rh.build_snapshots(fetcher, load(SITE)["metrics"])
+    except (rh.StaffHistoryError, KeyError, ValueError, probes.ProbeError) as error:
+        raise UpdateError(f"Personale comunale: {error}") from error
+    evidence = {"script": "scripts/update_source_data.py rgs-staff-history", "where": _where()}
+    history["acquisitionEvidence"] = benchmark["acquisitionEvidence"] = evidence
+    changes = Changes()
+    for key in ("staff", "age", "turnover", "training"):
+        years = history[key]["years"]
+        changes.note(f"personale {key} anni", None, f"{years[0]}–{years[-1]}" if years else "nessuno")
+        if history[key]["stoppedAt"]:
+            print(f"Serie personale {key} ferma a: " + str(history[key]["stoppedAt"])[:200])
+    for scope, entry in benchmark["benchmarks"].items():
+        changes.note(f"personale {scope} età 55+", None, entry["age"]["shares"][0] if entry["age"]["shares"] else None)
+        changes.note(f"personale {scope} turnover", None, entry["turnover"]["rate"])
+        changes.note(f"personale {scope} formazione", None, entry["training"]["meanTotalRgs"])
+    if not dry_run:
+        save(ROOT / rh.SNAPSHOT, history)
+        save(ROOT / rh.BENCHMARK.format(year=benchmark["year"]), benchmark)
+    return changes
+
+
 # ------------------------------------------------------------------ MEF: serie dell'addizionale comunale IRPEF
 
 def update_irpef_history(dry_run: bool, fetch=None) -> Changes:
@@ -2096,6 +2132,7 @@ def main() -> int:
                        ("siope-fiscal-recovery-history", "serie degli incassi da verifica e controllo (SIOPE)")):
         sub.add_parser(name, help=text).add_argument("--dry-run", action="store_true")
     sub.add_parser("mef-income-distribution-benchmark", help="confronto Toscana/Italia delle fasce di reddito (file comunale MEF)").add_argument("--dry-run", action="store_true")
+    sub.add_parser("rgs-staff-history", help="serie e confronto Toscana/Italia del personale comunale (RGS Conto annuale)").add_argument("--dry-run", action="store_true")
     irh_p = sub.add_parser("mef-irpef-history", help="serie dell'addizionale comunale IRPEF negli scenari di reddito (elenchi MEF)")
     irh_p.add_argument("--dry-run", action="store_true")
     ph_p = sub.add_parser("salute-pharmacies-history", help="serie delle farmacie ogni 1.000 residenti (Ministero della Salute)")
@@ -2151,6 +2188,8 @@ def main() -> int:
             update_fiscal_recovery_history(args.dry_run).report("Serie recupero fiscale:")
         elif args.updater == "mef-income-distribution-benchmark":
             update_income_distribution_benchmark(args.dry_run).report("Confronto fasce di reddito:")
+        elif args.updater == "rgs-staff-history":
+            update_rgs_staff_history(args.dry_run).report("Personale comunale:")
         elif args.updater == "mef-irpef-history":
             update_irpef_history(args.dry_run).report("Serie addizionale IRPEF:")
         elif args.updater == "salute-pharmacies-history":
