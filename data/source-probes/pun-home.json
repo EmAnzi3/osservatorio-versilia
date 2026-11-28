@@ -1,0 +1,21 @@
+{
+ "schemaVersion": 1,
+ "createdAt": "2026-11-28T08:04:18Z",
+ "note": "Sonda: struttura della fonte consultata; non è un dato pubblicato.",
+ "follow": "territor|statist|api|json",
+ "result": {
+  "url": "https://www.piattaformaunicanazionale.it/idr",
+  "contentType": "text/html",
+  "bytes": 1371,
+  "sha256": "befe68a416929ad200ae33f009deeaa933cf75078df1717768888ef6e36d0be0",
+  "forms": [],
+  "scripts": [
+   "https://www.piattaformaunicanazionale.it/import-arcgis.js",
+   "https://www.piattaformaunicanazionale.it/static/js/main.fdb71f83.js"
+  ],
+  "inlineScript": "\n",
+  "links": [],
+  "text": "PUN: Piattaforma Unica Nazionale ricarica veicoli Elettrici You need to enable JavaScript to run this app.",
+  "followed": []
+ }
+}

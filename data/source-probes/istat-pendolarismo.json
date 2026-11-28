@@ -1,0 +1,151 @@
+{
+ "schemaVersion": 1,
+ "createdAt": "2026-11-28T08:01:19Z",
+ "note": "Sonda SDMX: flussi Istat che corrispondono alla ricerca; non è un dato pubblicato.",
+ "pattern": "pendol|spostament|luogo di lavoro|mobilit",
+ "results": {
+  "https://esploradati.istat.it/SDMXWS/rest": [
+   {
+    "id": "392_586",
+    "agency": "IT1",
+    "version": "1.0",
+    "name": "Dottorati - mobilità territoriale"
+   },
+   {
+    "id": "392_586_DF_DCCV_TRANSIZ_DOTT_MOBILITA_1",
+    "agency": "IT1",
+    "version": "1.0",
+    "name": "Periodi di formazione all'estero, area disciplinare"
+   },
+   {
+    "id": "392_586_DF_DCCV_TRANSIZ_DOTT_MOBILITA_2",
+    "agency": "IT1",
+    "version": "1.0",
+    "name": "Periodi di formazione all'estero, occupazione, sesso"
+   },
+   {
+    "id": "392_586_DF_DCCV_TRANSIZ_DOTT_MOBILITA_3",
+    "agency": "IT1",
+    "version": "1.0",
+    "name": "Intenzione di lasciare l'Italia"
+   },
+   {
+    "id": "392_586_DF_DCCV_TRANSIZ_DOTT_MOBILITA_4",
+    "agency": "IT1",
+    "version": "1.0",
+    "name": "Residenti all'estero, occupazione, sesso"
+   },
+   {
+    "id": "392_586_DF_DCCV_TRANSIZ_DOTT_MOBILITA_5",
+    "agency": "IT1",
+    "version": "1.0",
+    "name": "Residenti all'estero, area disciplinare"
+   },
+   {
+    "id": "392_708_DF_DCCV_TRANSIZ_DOTT_SODDIS_3",
+    "agency": "IT1",
+    "version": "1.0",
+    "name": "Luogo di lavoro desiderato e preferenza per lavoro di ricerca"
+   },
+   {
+    "id": "609_1_DF_DCCV_URBANENV_11",
+    "agency": "IT1",
+    "version": "1.0",
+    "name": "Mobilità urbana - mobilità sostenibile"
+   },
+   {
+    "id": "609_1_DF_DCCV_URBANENV_12",
+    "agency": "IT1",
+    "version": "1.0",
+    "name": "Mobilità urbana - parco veicolare"
+   },
+   {
+    "id": "609_1_DF_DCCV_URBANENV_13",
+    "agency": "IT1",
+    "version": "1.0",
+    "name": "Mobilità urbana - trasporto pubblico locale"
+   },
+   {
+    "id": "613_936_DF_DCCV_DIPL_RIC_3",
+    "agency": "IT1",
+    "version": "1.0",
+    "name": "Occupazione, orario e luogo di lavoro desiderati"
+   },
+   {
+    "id": "82_87_DF_DCCV_AVQ_FAMIGLIE_104",
+    "agency": "IT1",
+    "version": "1.0",
+    "name": "Mobilità e condizioni delle strade"
+   },
+   {
+    "id": "83_63_DF_DCCV_AVQ_PERSONE_166",
+    "agency": "IT1",
+    "version": "1.0",
+    "name": "Spostamenti abituali per andare a scuola"
+   },
+   {
+    "id": "83_63_DF_DCCV_AVQ_PERSONE_167",
+    "agency": "IT1",
+    "version": "1.0",
+    "name": "Spostamenti verso scuola - regioni e tipo di comune"
+   },
+   {
+    "id": "83_63_DF_DCCV_AVQ_PERSONE_168",
+    "agency": "IT1",
+    "version": "1.0",
+    "name": "Spostamenti per andare a lavoro - Età"
+   },
+   {
+    "id": "83_63_DF_DCCV_AVQ_PERSONE_169",
+    "agency": "IT1",
+    "version": "1.0",
+    "name": "Spostamenti per andare a lavoro - condizione nella professione"
+   },
+   {
+    "id": "83_63_DF_DCCV_AVQ_PERSONE_170",
+    "agency": "IT1",
+    "version": "1.0",
+    "name": "Spostamenti per andare a lavoro - regioni e tipo di comune"
+   },
+   {
+    "id": "DCSS_BULK_ISTR_LAV_PEN_2",
+    "agency": "IT1",
+    "version": "1.0",
+    "name": "Istruzione, lavoro, spostamenti pendolari e cittadinanza"
+   },
+   {
+    "id": "DF_BULK_CPO2011_DICA_PEND",
+    "agency": "IT1",
+    "version": "1.0",
+    "name": "Spostamenti per studio o lavoro"
+   },
+   {
+    "id": "DF_BULK_PEND_LAV_2021_1",
+    "agency": "IT1",
+    "version": "1.0",
+    "name": "Matrice di pendolarismo per lavoro"
+   },
+   {
+    "id": "DF_BULK_PEND_LAV_2021_2",
+    "agency": "IT1",
+    "version": "1.0",
+    "name": "Matrice di pendolarismo per lavoro - leggimi"
+   },
+   {
+    "id": "DF_BULK_PEND_STU_2021_1",
+    "agency": "IT1",
+    "version": "1.0",
+    "name": "Matrice di pendolarismo per studio"
+   },
+   {
+    "id": "DF_BULK_PEND_STU_2021_2",
+    "agency": "IT1",
+    "version": "1.0",
+    "name": "Matrice di pendolarismo per studio - leggimi"
+   }
+  ],
+  "https://sdmx.istat.it/SDMXWS/rest": {
+   "error": "tentativo 1: HTTPError: HTTP Error 302: The HTTP server returned a redirect error that would lead to an infinite loop.\nThe last 30x error message was:\nFound | tentativo 2: HTTPError: HTTP Error 302: The HTTP server returned a redirect error that would lead to an infinite loop.\nThe last 30x error message was:\nFound | tentativo 3: HTTPError: HTTP Error 302: The HTTP server returned a redirect error that would lead to an infinite loop.\nThe last 30x error message was:\nFound"
+  }
+ }
+}
