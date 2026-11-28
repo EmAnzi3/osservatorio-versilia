@@ -1,0 +1,148 @@
+{
+  "schemaVersion": 1,
+  "version": "rgs-personale-benchmark-2024-v1",
+  "retrieved": "2026-11-28",
+  "year": 2024,
+  "publisher": "Ragioneria Generale dello Stato — Conto Annuale",
+  "sources": {
+    "turnover": {
+      "url": "https://bdap-opendata.rgs.mef.gov.it/export/csv/2024---Dipendenti-Pubblici---Occupazione-e-Turnover---Dati-analitici-per-Ente.csv",
+      "sha256": "a4491d878cc59ed55c50400fcf782d7ea9228c0f00ad0366d6edb7de824a5c89",
+      "bytes": 11013269
+    },
+    "age": {
+      "url": "https://bdap-opendata.rgs.mef.gov.it/export/csv/2024---Dipendenti-Pubblici---Anzianita---Dati-analitici-per-Ente.csv",
+      "sha256": "bd1bfed95f3fef055c66568625d7fdca37f84e6244cd73114293a1f3e8d76db1",
+      "bytes": 50412548
+    },
+    "hires": {
+      "url": "https://bdap-opendata.rgs.mef.gov.it/export/csv/2024---Dipendenti-Pubblici---Assunzioni---Dati-Analitici-per-Causale-Assunzione.csv",
+      "sha256": "235dcaa53c7c813a2fee487059ee52449e5531d0b1d32ca9acf970681529a4cd",
+      "bytes": 6962529
+    },
+    "cessations": {
+      "url": "https://bdap-opendata.rgs.mef.gov.it/export/csv/2024---Dipendenti-Pubblici---Cessazioni---Dati-analitici-per-Causale-Cessazione.csv",
+      "sha256": "d186447b20089ef09d6335e45f98c8667f191b8619173b517b329bd6cee1015c",
+      "bytes": 11016523
+    }
+  },
+  "anagrafe": {
+    "url": "https://bdap-opendata.rgs.mef.gov.it/export/csv/Anagrafe-Enti---Ente.csv",
+    "sha256": "d1c68cf115461b7f47db2705b0b81e048f40f7ce349b5f89eff29008ea0af954"
+  },
+  "population": {
+    "url": "https://demo.istat.it/data/p2/P2_2024_it_Comuni.zip",
+    "note": "residenti al 1° gennaio, P2 Istat congelato in data/source-snapshots/a3-rgs-staff-benchmark-2024.json"
+  },
+  "trainingApi": "https://contoannuale.rgs.mef.gov.it/o/sico-rest-APIs/sicoAPI/formazione?anno={year}&tipoIstituzioneFilters=C{filter}",
+  "trainingPage": "https://contoannuale.rgs.mef.gov.it/web/sicosito/assenze-e-turnover/formazione-acc",
+  "rule": "Somma sui Comuni del territorio con dati validi (stesse regole dei valori comunali); copertura = quota dei residenti nei Comuni coperti (ente presente con dati riconciliati o zero dipendenti); pubblicato con almeno il 90%. Formazione: riga FUNZIONI LOCALI dell'API RGS sulla selezione dei Comuni toscani con personale e sulla selezione nazionale.",
+  "benchmarks": {
+    "tuscany": {
+      "age": {
+        "municipalities": 270,
+        "municipalitiesTotal": 273,
+        "residentsCovered": 3655752,
+        "residentsTotal": 3660530,
+        "coverageShare": 0.9986947245344253,
+        "staff": 23244.0,
+        "counts": [
+          9342.0,
+          9972.0,
+          3930.0
+        ],
+        "shares": [
+          40.19101703665462,
+          42.90139390810532,
+          16.907589055240063
+        ]
+      },
+      "turnover": {
+        "municipalities": 271,
+        "municipalitiesTotal": 273,
+        "residentsCovered": 3657664,
+        "residentsTotal": 3660530,
+        "coverageShare": 0.9992170532682426,
+        "staff": 23255.0,
+        "netTurnoverHeadcount": 292.0,
+        "rate": 1.2556439475381638
+      },
+      "training": {
+        "totalDays": 49019.0,
+        "menDays": 19857.0,
+        "womenDays": 29162.0,
+        "meanMen": 2.083193453629878,
+        "meanWomen": 2.1739973162367674,
+        "meanTotalRgs": 2.128595384933323,
+        "otherComparti": [
+          "ISTRUZIONE E RICERCA"
+        ],
+        "allCompartiDays": 49173.0,
+        "institutions": 271,
+        "coverageShare": 0.9992170532682426
+      }
+    },
+    "italy": {
+      "age": {
+        "municipalities": 7318,
+        "municipalitiesTotal": 7896,
+        "residentsCovered": 57039699,
+        "residentsTotal": 58971230,
+        "coverageShare": 0.9672462148067795,
+        "staff": 314693.0,
+        "counts": [
+          142737.0,
+          122899.0,
+          49057.0
+        ],
+        "shares": [
+          45.35753893477135,
+          39.05361733498998,
+          15.588843730238677
+        ]
+      },
+      "turnover": {
+        "municipalities": 7341,
+        "municipalitiesTotal": 7896,
+        "residentsCovered": 57119758,
+        "residentsTotal": 58971230,
+        "coverageShare": 0.9686038090099189,
+        "staff": 315019.0,
+        "netTurnoverHeadcount": 2902.0,
+        "rate": 0.9212142759643068
+      },
+      "training": {
+        "totalDays": 574309.0,
+        "menDays": 219861.0,
+        "womenDays": 354448.0,
+        "meanMen": 1.5925494002433795,
+        "meanWomen": 1.8876208227932365,
+        "meanTotalRgs": 1.740085111518308,
+        "otherComparti": [
+          "ISTRUZIONE E RICERCA"
+        ],
+        "allCompartiDays": 574753.0,
+        "institutions": null,
+        "coverageShare": 0.9686038090099189
+      }
+    }
+  },
+  "versiliaTrainingCheck": {
+    "totalDays": 1278.0,
+    "menDays": 435.0,
+    "womenDays": 843.0,
+    "meanMen": 0.9775280898876404,
+    "meanWomen": 1.3618739903069468,
+    "meanTotalRgs": 1.1697010400972936,
+    "otherComparti": [],
+    "allCompartiDays": 1278.0
+  },
+  "qualityGate": {
+    "status": "PASS",
+    "note": "Valori 2024 dei 7 Comuni e aggregato Versilia della formazione identici ai pubblicati."
+  },
+  "acquisitionEvidence": {
+    "script": "scripts/update_source_data.py rgs-staff-history",
+    "where": "runner GitHub Actions"
+  }
+}

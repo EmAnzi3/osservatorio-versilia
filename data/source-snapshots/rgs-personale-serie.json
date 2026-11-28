@@ -1,0 +1,1525 @@
+{
+  "schemaVersion": 1,
+  "version": "rgs-personale-serie-2010-2024-v1",
+  "retrieved": "2026-11-28",
+  "publisher": "Ragioneria Generale dello Stato — Conto Annuale (OpenBDAP e API formazione)",
+  "years": [
+    2010,
+    2011,
+    2012,
+    2013,
+    2014,
+    2015,
+    2016,
+    2017,
+    2018,
+    2019,
+    2020,
+    2021,
+    2022,
+    2023,
+    2024
+  ],
+  "rule": "Comuni identificati dal Codice Ente BDAP dell'anno pubblicato; per ogni grandezza anni consecutivi fino all'anno pubblicato con 7/7 Comuni validi; anno pubblicato identico ai valori del catalogo.",
+  "institutions": {
+    "Camaiore": {
+      "bdap": "911242929047773602",
+      "institution": "1348"
+    },
+    "Forte dei Marmi": {
+      "bdap": "542642930475186901",
+      "institution": "3135"
+    },
+    "Massarosa": {
+      "bdap": "811142930519659602",
+      "institution": "4177"
+    },
+    "Pietrasanta": {
+      "bdap": "804642930476514001",
+      "institution": "5461"
+    },
+    "Seravezza": {
+      "bdap": "493042930526748301",
+      "institution": "7010"
+    },
+    "Stazzema": {
+      "bdap": "747442930467088501",
+      "institution": "7266"
+    },
+    "Viareggio": {
+      "bdap": "346542930526196101",
+      "institution": "7967"
+    }
+  },
+  "sources": {
+    "2010": {
+      "turnover": {
+        "url": "https://bdap-opendata.rgs.mef.gov.it/export/csv/2010---Dipendenti-Pubblici---Occupazione-e-Turnover---Dati-analitici-per-Ente.csv",
+        "sha256": "0e5395ce0eb414b83caaf585b35a9526e1dd455640c702ca3bf2ab55e7195c3b",
+        "bytes": 8519329
+      },
+      "age": {
+        "url": "https://bdap-opendata.rgs.mef.gov.it/export/csv/2010---Dipendenti-Pubblici---Anzianita---Dati-analitici-per-Ente.csv",
+        "sha256": "0f3cfd22abe9edf93dfce0162b656915907ccaa8a5b65e080236fd620f720707",
+        "bytes": 70515977
+      },
+      "hires": {
+        "url": "https://bdap-opendata.rgs.mef.gov.it/export/csv/2010---Dipendenti-Pubblici---Assunzioni---Dati-Analitici-per-Causale-Assunzione.csv",
+        "sha256": "5ecf4e960ef7e54fa6a16e174228b93955c203a31407a0a4cbcc8452ddaeed86",
+        "bytes": 4936149
+      },
+      "cessations": {
+        "url": "https://bdap-opendata.rgs.mef.gov.it/export/csv/2010---Dipendenti-Pubblici---Cessazioni---Dati-analitici-per-Causale-Cessazione.csv",
+        "sha256": "b14560fabd2744acde857ea80602c983fe473924b4809d884a3afee2cd99549f",
+        "bytes": 10127568
+      }
+    },
+    "2011": {
+      "turnover": {
+        "url": "https://bdap-opendata.rgs.mef.gov.it/export/csv/2011---Dipendenti-Pubblici---Occupazione-e-Turnover---Dati-analitici-per-Ente.csv",
+        "sha256": "ec73eed25de1acba80a7e5e2740f890d52bacefc2c6a888e76b69fa517e2d841",
+        "bytes": 8516056
+      },
+      "age": {
+        "url": "https://bdap-opendata.rgs.mef.gov.it/export/csv/2011---Dipendenti-Pubblici---Anzianita---Dati-analitici-per-Ente.csv",
+        "sha256": "ac095bbfb363a99350f836f95c121a34e686999c32d1b50aabc97767d67fdc16",
+        "bytes": 69939577
+      },
+      "hires": {
+        "url": "https://bdap-opendata.rgs.mef.gov.it/export/csv/2011---Dipendenti-Pubblici---Assunzioni---Dati-Analitici-per-Causale-Assunzione.csv",
+        "sha256": "631a908f79e548544a026046fb995c23794402d50159a6295b0aaeecd30560da",
+        "bytes": 3621484
+      },
+      "cessations": {
+        "url": "https://bdap-opendata.rgs.mef.gov.it/export/csv/2011---Dipendenti-Pubblici---Cessazioni---Dati-analitici-per-Causale-Cessazione.csv",
+        "sha256": "21e6b01eb08e3087a2d505ae4944af088e5e17ce5f1ea113ebfd5e99180d81f6",
+        "bytes": 8584263
+      }
+    },
+    "2012": {
+      "turnover": {
+        "url": "https://bdap-opendata.rgs.mef.gov.it/export/csv/2012---Dipendenti-Pubblici---Occupazione-e-Turnover---Dati-analitici-per-Ente.csv",
+        "sha256": "9898a936bc3fd0508bc9104315fc9307add5ca2cfee7b3fb84947f8d725a3a65",
+        "bytes": 8449115
+      },
+      "age": {
+        "url": "https://bdap-opendata.rgs.mef.gov.it/export/csv/2012---Dipendenti-Pubblici---Anzianita---Dati-analitici-per-Ente.csv",
+        "sha256": "5c7283cf99c09a5db37e55ddd069d890049082fc6992205879a1b8437c203d9d",
+        "bytes": 68871402
+      },
+      "hires": {
+        "url": "https://bdap-opendata.rgs.mef.gov.it/export/csv/2012---Dipendenti-Pubblici---Assunzioni---Dati-Analitici-per-Causale-Assunzione.csv",
+        "sha256": "acb6ca847a393645880c55c4f8c0f18704ff098a176d6153943f1b0a119ab47a",
+        "bytes": 3372230
+      },
+      "cessations": {
+        "url": "https://bdap-opendata.rgs.mef.gov.it/export/csv/2012---Dipendenti-Pubblici---Cessazioni---Dati-analitici-per-Causale-Cessazione.csv",
+        "sha256": "a3489a3d9599e3b4d14c6e358bedf09a94480f943f68fb04223199cabea03414",
+        "bytes": 8611844
+      }
+    },
+    "2013": {
+      "turnover": {
+        "url": "https://bdap-opendata.rgs.mef.gov.it/export/csv/2013---Dipendenti-Pubblici---Occupazione-e-Turnover---Dati-analitici-per-Ente.csv",
+        "sha256": "3305f2ea6da3cdedc6a5bfb3cbf528a3536a29eb7398996af95dcf88a6bd041c",
+        "bytes": 8341536
+      },
+      "age": {
+        "url": "https://bdap-opendata.rgs.mef.gov.it/export/csv/2013---Dipendenti-Pubblici---Anzianita---Dati-analitici-per-Ente.csv",
+        "sha256": "cc800580da91789653e359e808c6e38c5f72245400434a81c7a41ed701516785",
+        "bytes": 68175982
+      },
+      "hires": {
+        "url": "https://bdap-opendata.rgs.mef.gov.it/export/csv/2013---Dipendenti-Pubblici---Assunzioni---Dati-Analitici-per-Causale-Assunzione.csv",
+        "sha256": "e4310f9843589b74bb12b0f3ec3bec7b3b20f5fd6342edf8a696cb68f1d10db0",
+        "bytes": 2742274
+      },
+      "cessations": {
+        "url": "https://bdap-opendata.rgs.mef.gov.it/export/csv/2013---Dipendenti-Pubblici---Cessazioni---Dati-analitici-per-Causale-Cessazione.csv",
+        "sha256": "1204c2ac58587aad19b5856c2cade28c4a71728bed882f93d7df99fca9136975",
+        "bytes": 6186604
+      }
+    },
+    "2014": {
+      "turnover": {
+        "url": "https://bdap-opendata.rgs.mef.gov.it/export/csv/2014---Dipendenti-Pubblici---Occupazione-e-Turnover---Dati-analitici-per-Ente.csv",
+        "sha256": "5aeca2a6fb0af9e797803a71d441397740a96d174c7f7d3fec46c2e18967161a",
+        "bytes": 8399154
+      },
+      "age": {
+        "url": "https://bdap-opendata.rgs.mef.gov.it/export/csv/2014---Dipendenti-Pubblici---Anzianita---Dati-analitici-per-Ente.csv",
+        "sha256": "7a07d59c14db5dfbf29268a70d359bdbd7b9ced8eb52a00fbfb0623e33f619ff",
+        "bytes": 67100652
+      },
+      "hires": {
+        "url": "https://bdap-opendata.rgs.mef.gov.it/export/csv/2014---Dipendenti-Pubblici---Assunzioni---Dati-Analitici-per-Causale-Assunzione.csv",
+        "sha256": "6ad6a228be24010c6bbf857fc942034b4a01603544c046dd1b8a437907c67757",
+        "bytes": 3119114
+      },
+      "cessations": {
+        "url": "https://bdap-opendata.rgs.mef.gov.it/export/csv/2014---Dipendenti-Pubblici---Cessazioni---Dati-analitici-per-Causale-Cessazione.csv",
+        "sha256": "eb8d5fd0e803f54d3cd15bc0e793b4e0f016e98e7c7ed27675284a633deba832",
+        "bytes": 7688586
+      }
+    },
+    "2015": {
+      "turnover": {
+        "url": "https://bdap-opendata.rgs.mef.gov.it/export/csv/2015---Dipendenti-Pubblici---Occupazione-e-Turnover---Dati-analitici-per-Ente.csv",
+        "sha256": "ab708c9edbe48b912cb8f7d4a1461de69f0c5f65db1d3b8473bc51dcad1a1980",
+        "bytes": 8256935
+      },
+      "age": {
+        "url": "https://bdap-opendata.rgs.mef.gov.it/export/csv/2015---Dipendenti-Pubblici---Anzianita---Dati-analitici-per-Ente.csv",
+        "sha256": "85bde32c2c22a204e97aeff8ef7ac69afbc9394421acf0f485459445bdfdaba8",
+        "bytes": 65380520
+      },
+      "hires": {
+        "url": "https://bdap-opendata.rgs.mef.gov.it/export/csv/2015---Dipendenti-Pubblici---Assunzioni---Dati-Analitici-per-Causale-Assunzione.csv",
+        "sha256": "61696869ddb176618c25c94af6a7c1c904c094508802418e9b6313d5f37a6510",
+        "bytes": 3036652
+      },
+      "cessations": {
+        "url": "https://bdap-opendata.rgs.mef.gov.it/export/csv/2015---Dipendenti-Pubblici---Cessazioni---Dati-analitici-per-Causale-Cessazione.csv",
+        "sha256": "7652b739db6d3cdf7619eba3ddfc18b189661ba07990cd3c6aab62827b4bd361",
+        "bytes": 8978849
+      }
+    },
+    "2016": {
+      "turnover": {
+        "url": "https://bdap-opendata.rgs.mef.gov.it/export/csv/2016---Dipendenti-Pubblici---Occupazione-e-Turnover---Dati-analitici-per-Ente.csv",
+        "sha256": "49c745129be3f1056d3a04557cb4856a3827ec191ef4882780cb79088579bd55",
+        "bytes": 8352526
+      },
+      "age": {
+        "url": "https://bdap-opendata.rgs.mef.gov.it/export/csv/2016---Dipendenti-Pubblici---Anzianita---Dati-analitici-per-Ente.csv",
+        "sha256": "aeb4982bd7d8d98346885fd96be23a109c255a7ac2209ae5286bcc214b9c7e29",
+        "bytes": 63583707
+      },
+      "hires": {
+        "url": "https://bdap-opendata.rgs.mef.gov.it/export/csv/2016---Dipendenti-Pubblici---Assunzioni---Dati-Analitici-per-Causale-Assunzione.csv",
+        "sha256": "784d7c4cacf4c65a7467059e8620e3780034e67d78f3aa187b2d684d11ceb6d6",
+        "bytes": 3948403
+      },
+      "cessations": {
+        "url": "https://bdap-opendata.rgs.mef.gov.it/export/csv/2016---Dipendenti-Pubblici---Cessazioni---Dati-analitici-per-Causale-Cessazione.csv",
+        "sha256": "0a056cc63a1d87061bfe906a6d285becc7ad342a6dc0005925521c4edb223e26",
+        "bytes": 9527654
+      }
+    },
+    "2017": {
+      "turnover": {
+        "url": "https://bdap-opendata.rgs.mef.gov.it/export/csv/2017---Dipendenti-Pubblici---Occupazione-e-Turnover---Dati-analitici-per-Ente.csv",
+        "sha256": "e7159ea1ba7396f3de1aa00940bbebe4691178d7d2c2b54227bff7bf1831c3bf",
+        "bytes": 8110917
+      },
+      "age": {
+        "url": "https://bdap-opendata.rgs.mef.gov.it/export/csv/2017---Dipendenti-Pubblici---Anzianita---Dati-analitici-per-Ente.csv",
+        "sha256": "736cacaf4d0a233a0f0a0a60584f4a9b479657c1a99a6e8fa4e951f86b16c03e",
+        "bytes": 62153281
+      },
+      "hires": {
+        "url": "https://bdap-opendata.rgs.mef.gov.it/export/csv/2017---Dipendenti-Pubblici---Assunzioni---Dati-Analitici-per-Causale-Assunzione.csv",
+        "sha256": "0ae96d56e5dcc728bcf7c7ecfdbe691fe4a7509e4ae32cd6407ae0e6a20a5e96",
+        "bytes": 4464185
+      },
+      "cessations": {
+        "url": "https://bdap-opendata.rgs.mef.gov.it/export/csv/2017---Dipendenti-Pubblici---Cessazioni---Dati-analitici-per-Causale-Cessazione.csv",
+        "sha256": "5ee75d8965e6dec27154915c321785df6b43bdf74b729c00576f62e9e58089fb",
+        "bytes": 9739278
+      }
+    },
+    "2018": {
+      "turnover": {
+        "url": "https://bdap-opendata.rgs.mef.gov.it/export/csv/2018---Dipendenti-Pubblici---Occupazione-e-Turnover---Dati-analitici-per-Ente.csv",
+        "sha256": "c9ed3e4ab6d1192f062bf87a8d51156fa1b5cec4097d86f37f99621143355bd7",
+        "bytes": 8038545
+      },
+      "age": {
+        "url": "https://bdap-opendata.rgs.mef.gov.it/export/csv/2018---Dipendenti-Pubblici---Anzianita---Dati-analitici-per-Ente.csv",
+        "sha256": "7745593d39a6308f21e6f4c31ab92ca0fcf71ab0c4b6dab75f33b696e173d489",
+        "bytes": 60123549
+      },
+      "hires": {
+        "url": "https://bdap-opendata.rgs.mef.gov.it/export/csv/2018---Dipendenti-Pubblici---Assunzioni---Dati-Analitici-per-Causale-Assunzione.csv",
+        "sha256": "01d2622b8fe54e01bc633e31c1ebafd7a6e3b49ffe943a9a571cab39edf66ec1",
+        "bytes": 5040457
+      },
+      "cessations": {
+        "url": "https://bdap-opendata.rgs.mef.gov.it/export/csv/2018---Dipendenti-Pubblici---Cessazioni---Dati-analitici-per-Causale-Cessazione.csv",
+        "sha256": "2651cb72d15ceb47cccdd3bced6a1a080277d8cefe73076685ee5aac1c6488aa",
+        "bytes": 10903277
+      }
+    },
+    "2019": {
+      "turnover": {
+        "url": "https://bdap-opendata.rgs.mef.gov.it/export/csv/2019---Dipendenti-Pubblici---Occupazione-e-Turnover---Dati-analitici-per-Ente.csv",
+        "sha256": "06a6a92b47f93f7c27424d35042f02b44f4c3a6d5d0235c7d4d9729bcae14419",
+        "bytes": 8317852
+      },
+      "age": {
+        "url": "https://bdap-opendata.rgs.mef.gov.it/export/csv/2019---Dipendenti-Pubblici---Anzianita---Dati-analitici-per-Ente.csv",
+        "sha256": "03de6028e81c787cb2ce6689a490a699c1a88573748043bee934e0585de56fbb",
+        "bytes": 60888248
+      },
+      "hires": {
+        "url": "https://bdap-opendata.rgs.mef.gov.it/export/csv/2019---Dipendenti-Pubblici---Assunzioni---Dati-Analitici-per-Causale-Assunzione.csv",
+        "sha256": "6ba083b14141410d7a0598258a938bf22c12089090b84fe7e0db4a050c9bce53",
+        "bytes": 5500054
+      },
+      "cessations": {
+        "url": "https://bdap-opendata.rgs.mef.gov.it/export/csv/2019---Dipendenti-Pubblici---Cessazioni---Dati-analitici-per-Causale-Cessazione.csv",
+        "sha256": "df87698b74042f5fac75a1cd0c13e26589f5a53cb9a8dc08c79facf36f37bff6",
+        "bytes": 11631039
+      }
+    },
+    "2020": {
+      "turnover": {
+        "url": "https://bdap-opendata.rgs.mef.gov.it/export/csv/2020---Dipendenti-Pubblici---Occupazione-e-Turnover---Dati-analitici-per-Ente.csv",
+        "sha256": "7b6455b859600300bec0cf9cc67ab2367fdc53b1baded7b66ac57a448b083180",
+        "bytes": 8216948
+      },
+      "age": {
+        "url": "https://bdap-opendata.rgs.mef.gov.it/export/csv/2020---Dipendenti-Pubblici---Anzianita---Dati-analitici-per-Ente.csv",
+        "sha256": "60345284c259cdbf62f6b698df789b0e0aa774f61f7135342c5829358e52c1f2",
+        "bytes": 60570053
+      },
+      "hires": {
+        "url": "https://bdap-opendata.rgs.mef.gov.it/export/csv/2020---Dipendenti-Pubblici---Assunzioni---Dati-Analitici-per-Causale-Assunzione.csv",
+        "sha256": "e2448678846ef68c15353c9e8dde37b993d2ee5d3b10b1a23f128a03a8727138",
+        "bytes": 5433817
+      },
+      "cessations": {
+        "url": "https://bdap-opendata.rgs.mef.gov.it/export/csv/2020---Dipendenti-Pubblici---Cessazioni---Dati-analitici-per-Causale-Cessazione.csv",
+        "sha256": "d9eacd75af16ac05568b38db2f8c86136f148de08fa4aa2251d793d7cf28df1a",
+        "bytes": 12202373
+      }
+    },
+    "2021": {
+      "turnover": {
+        "url": "https://bdap-opendata.rgs.mef.gov.it/export/csv/2021---Dipendenti-Pubblici---Occupazione-e-Turnover---Dati-analitici-per-Ente.csv",
+        "sha256": "65efef3ea8e55ec8fb1bd137990bdfe4fbcc8d729a923ecc6f350214bdd3fc86",
+        "bytes": 10123711
+      },
+      "age": {
+        "url": "https://bdap-opendata.rgs.mef.gov.it/export/csv/2021---Dipendenti-Pubblici---Anzianita---Dati-analitici-per-Ente.csv",
+        "sha256": "b3e37dfe629df734320d509eac84df0cbda2ec1ed999a86e45461f93834e1ad9",
+        "bytes": 64560147
+      },
+      "hires": {
+        "url": "https://bdap-opendata.rgs.mef.gov.it/export/csv/2021---Dipendenti-Pubblici---Assunzioni---Dati-Analitici-per-Causale-Assunzione.csv",
+        "sha256": "5328980c50df1bea2d7fee6f0c98a81cf636c924a1eeacc0ee50d182c8b3aaa2",
+        "bytes": 6399720
+      },
+      "cessations": {
+        "url": "https://bdap-opendata.rgs.mef.gov.it/export/csv/2021---Dipendenti-Pubblici---Cessazioni---Dati-analitici-per-Causale-Cessazione.csv",
+        "sha256": "1ed0f449bbe6eab283e989525fd539a8e81a4d2a1f44bcd586531b6e5a170ca0",
+        "bytes": 13148673
+      }
+    },
+    "2022": {
+      "turnover": {
+        "url": "https://bdap-opendata.rgs.mef.gov.it/export/csv/2022---Dipendenti-Pubblici---Occupazione-e-Turnover---Dati-analitici-per-Ente.csv",
+        "sha256": "c9b48834fcda86bb0402bf938342c41c3042ea0a32306f7201edc1a8bfd6eca7",
+        "bytes": 10069473
+      },
+      "age": {
+        "url": "https://bdap-opendata.rgs.mef.gov.it/export/csv/2022---Dipendenti-Pubblici---Anzianita---Dati-analitici-per-Ente.csv",
+        "sha256": "225b1fde034f3efea028ac704666765bc13ae7ccaf1c3af2df0e2f5bc8675b99",
+        "bytes": 65685826
+      },
+      "hires": {
+        "url": "https://bdap-opendata.rgs.mef.gov.it/export/csv/2022---Dipendenti-Pubblici---Assunzioni---Dati-Analitici-per-Causale-Assunzione.csv",
+        "sha256": "6b5f96d253c09a12d3e28b88bea150e1d64a0cacbe9b1933e9425bfa1f3b7f9e",
+        "bytes": 7024851
+      },
+      "cessations": {
+        "url": "https://bdap-opendata.rgs.mef.gov.it/export/csv/2022---Dipendenti-Pubblici---Cessazioni---Dati-analitici-per-Causale-Cessazione.csv",
+        "sha256": "a98eeb8533408ae04abdb0d1aebe34d00657547fa06cb1f563c66fdbfc2c3233",
+        "bytes": 13293260
+      }
+    },
+    "2023": {
+      "turnover": {
+        "url": "https://bdap-opendata.rgs.mef.gov.it/export/csv/2023---Dipendenti-Pubblici---Occupazione-e-Turnover---Dati-analitici-per-Ente.csv",
+        "sha256": "090ff26347da7570a60c0ea97acc7744e9f67bab7ca1c0dfef8653818106385f",
+        "bytes": 10974738
+      },
+      "age": {
+        "url": "https://bdap-opendata.rgs.mef.gov.it/export/csv/2023---Dipendenti-Pubblici---Anzianita---Dati-analitici-per-Ente.csv",
+        "sha256": "f309947219c6228ea062679f1db73e30b2e5820fcb0a9d3db7aaaea017d08ffc",
+        "bytes": 51143559
+      },
+      "hires": {
+        "url": "https://bdap-opendata.rgs.mef.gov.it/export/csv/2023---Dipendenti-Pubblici---Assunzioni---Dati-Analitici-per-Causale-Assunzione.csv",
+        "sha256": "499e686a36ac353014e0fa3ad8557474baaaf0736f0e525f0c357a83c12a0230",
+        "bytes": 6822737
+      },
+      "cessations": {
+        "url": "https://bdap-opendata.rgs.mef.gov.it/export/csv/2023---Dipendenti-Pubblici---Cessazioni---Dati-analitici-per-Causale-Cessazione.csv",
+        "sha256": "a691c53eff864c144991a42cc9e8ad5c6e23eadb9341af4eae000ac2966afdfe",
+        "bytes": 10911911
+      }
+    },
+    "2024": {
+      "turnover": {
+        "url": "https://bdap-opendata.rgs.mef.gov.it/export/csv/2024---Dipendenti-Pubblici---Occupazione-e-Turnover---Dati-analitici-per-Ente.csv",
+        "sha256": "a4491d878cc59ed55c50400fcf782d7ea9228c0f00ad0366d6edb7de824a5c89",
+        "bytes": 11013269
+      },
+      "age": {
+        "url": "https://bdap-opendata.rgs.mef.gov.it/export/csv/2024---Dipendenti-Pubblici---Anzianita---Dati-analitici-per-Ente.csv",
+        "sha256": "bd1bfed95f3fef055c66568625d7fdca37f84e6244cd73114293a1f3e8d76db1",
+        "bytes": 50412548
+      },
+      "hires": {
+        "url": "https://bdap-opendata.rgs.mef.gov.it/export/csv/2024---Dipendenti-Pubblici---Assunzioni---Dati-Analitici-per-Causale-Assunzione.csv",
+        "sha256": "235dcaa53c7c813a2fee487059ee52449e5531d0b1d32ca9acf970681529a4cd",
+        "bytes": 6962529
+      },
+      "cessations": {
+        "url": "https://bdap-opendata.rgs.mef.gov.it/export/csv/2024---Dipendenti-Pubblici---Cessazioni---Dati-analitici-per-Causale-Cessazione.csv",
+        "sha256": "d186447b20089ef09d6335e45f98c8667f191b8619173b517b329bd6cee1015c",
+        "bytes": 11016523
+      }
+    }
+  },
+  "staff": {
+    "years": [
+      2010,
+      2011,
+      2012,
+      2013,
+      2014,
+      2015,
+      2016,
+      2017,
+      2018,
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024
+    ],
+    "stoppedAt": null,
+    "towns": {
+      "Camaiore": {
+        "2010": 218.0,
+        "2011": 209.0,
+        "2012": 207.0,
+        "2013": 209.0,
+        "2014": 207.0,
+        "2015": 202.0,
+        "2016": 200.0,
+        "2017": 202.0,
+        "2018": 197.0,
+        "2019": 192.0,
+        "2020": 192.0,
+        "2021": 195.0,
+        "2022": 196.0,
+        "2023": 195.0,
+        "2024": 188.0
+      },
+      "Forte dei Marmi": {
+        "2010": 151.0,
+        "2011": 145.0,
+        "2012": 144.0,
+        "2013": 143.0,
+        "2014": 140.0,
+        "2015": 140.0,
+        "2016": 139.0,
+        "2017": 141.0,
+        "2018": 136.0,
+        "2019": 132.0,
+        "2020": 129.0,
+        "2021": 131.0,
+        "2022": 132.0,
+        "2023": 134.0,
+        "2024": 138.0
+      },
+      "Massarosa": {
+        "2010": 115.0,
+        "2011": 122.0,
+        "2012": 119.0,
+        "2013": 120.0,
+        "2014": 121.0,
+        "2015": 119.0,
+        "2016": 118.0,
+        "2017": 111.0,
+        "2018": 103.0,
+        "2019": 92.0,
+        "2020": 81.0,
+        "2021": 76.0,
+        "2022": 77.0,
+        "2023": 83.0,
+        "2024": 87.0
+      },
+      "Pietrasanta": {
+        "2010": 219.0,
+        "2011": 211.0,
+        "2012": 198.0,
+        "2013": 194.0,
+        "2014": 186.0,
+        "2015": 180.0,
+        "2016": 175.0,
+        "2017": 168.0,
+        "2018": 168.0,
+        "2019": 161.0,
+        "2020": 160.0,
+        "2021": 159.0,
+        "2022": 169.0,
+        "2023": 169.0,
+        "2024": 168.0
+      },
+      "Seravezza": {
+        "2010": 74.0,
+        "2011": 71.0,
+        "2012": 68.0,
+        "2013": 70.0,
+        "2014": 70.0,
+        "2015": 69.0,
+        "2016": 69.0,
+        "2017": 71.0,
+        "2018": 68.0,
+        "2019": 62.0,
+        "2020": 70.0,
+        "2021": 65.0,
+        "2022": 64.0,
+        "2023": 65.0,
+        "2024": 63.0
+      },
+      "Stazzema": {
+        "2010": 19.0,
+        "2011": 18.0,
+        "2012": 17.0,
+        "2013": 15.0,
+        "2014": 15.0,
+        "2015": 16.0,
+        "2016": 17.0,
+        "2017": 14.0,
+        "2018": 14.0,
+        "2019": 14.0,
+        "2020": 16.0,
+        "2021": 15.0,
+        "2022": 15.0,
+        "2023": 14.0,
+        "2024": 13.0
+      },
+      "Viareggio": {
+        "2010": 570.0,
+        "2011": 536.0,
+        "2012": 514.0,
+        "2013": 511.0,
+        "2014": 477.0,
+        "2015": 446.0,
+        "2016": 405.0,
+        "2017": 398.0,
+        "2018": 383.0,
+        "2019": 347.0,
+        "2020": 379.0,
+        "2021": 371.0,
+        "2022": 395.0,
+        "2023": 397.0,
+        "2024": 412.0
+      }
+    }
+  },
+  "age": {
+    "years": [
+      2018,
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024
+    ],
+    "stoppedAt": "2017: non valido per ['Forte dei Marmi']",
+    "groups": [
+      "55+",
+      "40–54",
+      "<40"
+    ],
+    "towns": {
+      "Camaiore": {
+        "2018": [
+          81.0,
+          100.0,
+          16.0
+        ],
+        "2019": [
+          74.0,
+          94.0,
+          24.0
+        ],
+        "2020": [
+          69.0,
+          99.0,
+          24.0
+        ],
+        "2021": [
+          66.0,
+          108.0,
+          21.0
+        ],
+        "2022": [
+          63.0,
+          109.0,
+          24.0
+        ],
+        "2023": [
+          77.0,
+          97.0,
+          21.0
+        ],
+        "2024": [
+          76.0,
+          87.0,
+          25.0
+        ]
+      },
+      "Forte dei Marmi": {
+        "2018": [
+          43.0,
+          69.0,
+          24.0
+        ],
+        "2019": [
+          61.0,
+          55.0,
+          16.0
+        ],
+        "2020": [
+          63.0,
+          49.0,
+          17.0
+        ],
+        "2021": [
+          64.0,
+          50.0,
+          17.0
+        ],
+        "2022": [
+          59.0,
+          54.0,
+          19.0
+        ],
+        "2023": [
+          59.0,
+          48.0,
+          27.0
+        ],
+        "2024": [
+          66.0,
+          49.0,
+          23.0
+        ]
+      },
+      "Massarosa": {
+        "2018": [
+          59.0,
+          43.0,
+          1.0
+        ],
+        "2019": [
+          48.0,
+          40.0,
+          4.0
+        ],
+        "2020": [
+          44.0,
+          35.0,
+          2.0
+        ],
+        "2021": [
+          40.0,
+          33.0,
+          3.0
+        ],
+        "2022": [
+          40.0,
+          32.0,
+          5.0
+        ],
+        "2023": [
+          40.0,
+          35.0,
+          8.0
+        ],
+        "2024": [
+          39.0,
+          38.0,
+          10.0
+        ]
+      },
+      "Pietrasanta": {
+        "2018": [
+          75.0,
+          82.0,
+          11.0
+        ],
+        "2019": [
+          77.0,
+          76.0,
+          8.0
+        ],
+        "2020": [
+          65.0,
+          85.0,
+          10.0
+        ],
+        "2021": [
+          66.0,
+          75.0,
+          18.0
+        ],
+        "2022": [
+          62.0,
+          74.0,
+          33.0
+        ],
+        "2023": [
+          66.0,
+          73.0,
+          30.0
+        ],
+        "2024": [
+          65.0,
+          77.0,
+          26.0
+        ]
+      },
+      "Seravezza": {
+        "2018": [
+          29.0,
+          31.0,
+          8.0
+        ],
+        "2019": [
+          25.0,
+          31.0,
+          6.0
+        ],
+        "2020": [
+          27.0,
+          30.0,
+          13.0
+        ],
+        "2021": [
+          25.0,
+          28.0,
+          12.0
+        ],
+        "2022": [
+          24.0,
+          29.0,
+          11.0
+        ],
+        "2023": [
+          27.0,
+          26.0,
+          12.0
+        ],
+        "2024": [
+          23.0,
+          30.0,
+          10.0
+        ]
+      },
+      "Stazzema": {
+        "2018": [
+          7.0,
+          4.0,
+          3.0
+        ],
+        "2019": [
+          6.0,
+          6.0,
+          2.0
+        ],
+        "2020": [
+          4.0,
+          8.0,
+          4.0
+        ],
+        "2021": [
+          6.0,
+          6.0,
+          3.0
+        ],
+        "2022": [
+          5.0,
+          7.0,
+          3.0
+        ],
+        "2023": [
+          4.0,
+          7.0,
+          3.0
+        ],
+        "2024": [
+          4.0,
+          7.0,
+          2.0
+        ]
+      },
+      "Viareggio": {
+        "2018": [
+          84.0,
+          292.0,
+          7.0
+        ],
+        "2019": [
+          72.0,
+          268.0,
+          7.0
+        ],
+        "2020": [
+          34.0,
+          304.0,
+          41.0
+        ],
+        "2021": [
+          162.0,
+          168.0,
+          41.0
+        ],
+        "2022": [
+          167.0,
+          178.0,
+          50.0
+        ],
+        "2023": [
+          158.0,
+          190.0,
+          49.0
+        ],
+        "2024": [
+          150.0,
+          197.0,
+          65.0
+        ]
+      }
+    }
+  },
+  "turnover": {
+    "years": [
+      2010,
+      2011,
+      2012,
+      2013,
+      2014,
+      2015,
+      2016,
+      2017,
+      2018,
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024
+    ],
+    "stoppedAt": null,
+    "towns": {
+      "Camaiore": {
+        "2010": {
+          "staff": 218.0,
+          "netHires": 14.0,
+          "netCessations": 11.0
+        },
+        "2011": {
+          "staff": 209.0,
+          "netHires": 1.0,
+          "netCessations": 11.0
+        },
+        "2012": {
+          "staff": 207.0,
+          "netHires": 8.0,
+          "netCessations": 8.0
+        },
+        "2013": {
+          "staff": 209.0,
+          "netHires": 3.0,
+          "netCessations": 2.0
+        },
+        "2014": {
+          "staff": 207.0,
+          "netHires": 6.0,
+          "netCessations": 10.0
+        },
+        "2015": {
+          "staff": 202.0,
+          "netHires": 3.0,
+          "netCessations": 8.0
+        },
+        "2016": {
+          "staff": 200.0,
+          "netHires": 1.0,
+          "netCessations": 3.0
+        },
+        "2017": {
+          "staff": 202.0,
+          "netHires": 12.0,
+          "netCessations": 13.0
+        },
+        "2018": {
+          "staff": 197.0,
+          "netHires": 6.0,
+          "netCessations": 11.0
+        },
+        "2019": {
+          "staff": 192.0,
+          "netHires": 12.0,
+          "netCessations": 20.0
+        },
+        "2020": {
+          "staff": 192.0,
+          "netHires": 14.0,
+          "netCessations": 14.0
+        },
+        "2021": {
+          "staff": 195.0,
+          "netHires": 17.0,
+          "netCessations": 12.0
+        },
+        "2022": {
+          "staff": 196.0,
+          "netHires": 12.0,
+          "netCessations": 16.0
+        },
+        "2023": {
+          "staff": 195.0,
+          "netHires": 5.0,
+          "netCessations": 8.0
+        },
+        "2024": {
+          "staff": 188.0,
+          "netHires": 9.0,
+          "netCessations": 11.0
+        }
+      },
+      "Forte dei Marmi": {
+        "2010": {
+          "staff": 151.0,
+          "netHires": 19.0,
+          "netCessations": 5.0
+        },
+        "2011": {
+          "staff": 145.0,
+          "netHires": 1.0,
+          "netCessations": 7.0
+        },
+        "2012": {
+          "staff": 144.0,
+          "netHires": 2.0,
+          "netCessations": 2.0
+        },
+        "2013": {
+          "staff": 143.0,
+          "netHires": 2.0,
+          "netCessations": 3.0
+        },
+        "2014": {
+          "staff": 140.0,
+          "netHires": 1.0,
+          "netCessations": 2.0
+        },
+        "2015": {
+          "staff": 140.0,
+          "netHires": 1.0,
+          "netCessations": 3.0
+        },
+        "2016": {
+          "staff": 139.0,
+          "netHires": 0.0,
+          "netCessations": 1.0
+        },
+        "2017": {
+          "staff": 141.0,
+          "netHires": 2.0,
+          "netCessations": 1.0
+        },
+        "2018": {
+          "staff": 136.0,
+          "netHires": 3.0,
+          "netCessations": 7.0
+        },
+        "2019": {
+          "staff": 132.0,
+          "netHires": 2.0,
+          "netCessations": 2.0
+        },
+        "2020": {
+          "staff": 129.0,
+          "netHires": 9.0,
+          "netCessations": 9.0
+        },
+        "2021": {
+          "staff": 131.0,
+          "netHires": 4.0,
+          "netCessations": 5.0
+        },
+        "2022": {
+          "staff": 132.0,
+          "netHires": 14.0,
+          "netCessations": 8.0
+        },
+        "2023": {
+          "staff": 134.0,
+          "netHires": 11.0,
+          "netCessations": 4.0
+        },
+        "2024": {
+          "staff": 138.0,
+          "netHires": 5.0,
+          "netCessations": 9.0
+        }
+      },
+      "Massarosa": {
+        "2010": {
+          "staff": 115.0,
+          "netHires": 1.0,
+          "netCessations": 3.0
+        },
+        "2011": {
+          "staff": 122.0,
+          "netHires": 7.0,
+          "netCessations": 8.0
+        },
+        "2012": {
+          "staff": 119.0,
+          "netHires": 0.0,
+          "netCessations": 7.0
+        },
+        "2013": {
+          "staff": 120.0,
+          "netHires": 1.0,
+          "netCessations": 2.0
+        },
+        "2014": {
+          "staff": 121.0,
+          "netHires": 5.0,
+          "netCessations": 6.0
+        },
+        "2015": {
+          "staff": 119.0,
+          "netHires": 0.0,
+          "netCessations": 2.0
+        },
+        "2016": {
+          "staff": 118.0,
+          "netHires": 1.0,
+          "netCessations": 2.0
+        },
+        "2017": {
+          "staff": 111.0,
+          "netHires": 0.0,
+          "netCessations": 5.0
+        },
+        "2018": {
+          "staff": 103.0,
+          "netHires": 1.0,
+          "netCessations": 4.0
+        },
+        "2019": {
+          "staff": 92.0,
+          "netHires": 6.0,
+          "netCessations": 16.0
+        },
+        "2020": {
+          "staff": 81.0,
+          "netHires": 0.0,
+          "netCessations": 9.0
+        },
+        "2021": {
+          "staff": 76.0,
+          "netHires": 7.0,
+          "netCessations": 13.0
+        },
+        "2022": {
+          "staff": 77.0,
+          "netHires": 2.0,
+          "netCessations": 4.0
+        },
+        "2023": {
+          "staff": 83.0,
+          "netHires": 9.0,
+          "netCessations": 2.0
+        },
+        "2024": {
+          "staff": 87.0,
+          "netHires": 2.0,
+          "netCessations": 3.0
+        }
+      },
+      "Pietrasanta": {
+        "2010": {
+          "staff": 219.0,
+          "netHires": 25.0,
+          "netCessations": 14.0
+        },
+        "2011": {
+          "staff": 211.0,
+          "netHires": 1.0,
+          "netCessations": 9.0
+        },
+        "2012": {
+          "staff": 198.0,
+          "netHires": 0.0,
+          "netCessations": 10.0
+        },
+        "2013": {
+          "staff": 194.0,
+          "netHires": 2.0,
+          "netCessations": 6.0
+        },
+        "2014": {
+          "staff": 186.0,
+          "netHires": 0.0,
+          "netCessations": 7.0
+        },
+        "2015": {
+          "staff": 180.0,
+          "netHires": 3.0,
+          "netCessations": 8.0
+        },
+        "2016": {
+          "staff": 175.0,
+          "netHires": 1.0,
+          "netCessations": 6.0
+        },
+        "2017": {
+          "staff": 168.0,
+          "netHires": 0.0,
+          "netCessations": 9.0
+        },
+        "2018": {
+          "staff": 168.0,
+          "netHires": 5.0,
+          "netCessations": 7.0
+        },
+        "2019": {
+          "staff": 161.0,
+          "netHires": 0.0,
+          "netCessations": 13.0
+        },
+        "2020": {
+          "staff": 160.0,
+          "netHires": 11.0,
+          "netCessations": 19.0
+        },
+        "2021": {
+          "staff": 159.0,
+          "netHires": 9.0,
+          "netCessations": 10.0
+        },
+        "2022": {
+          "staff": 169.0,
+          "netHires": 23.0,
+          "netCessations": 18.0
+        },
+        "2023": {
+          "staff": 169.0,
+          "netHires": 16.0,
+          "netCessations": 16.0
+        },
+        "2024": {
+          "staff": 168.0,
+          "netHires": 13.0,
+          "netCessations": 12.0
+        }
+      },
+      "Seravezza": {
+        "2010": {
+          "staff": 74.0,
+          "netHires": 2.0,
+          "netCessations": 7.0
+        },
+        "2011": {
+          "staff": 71.0,
+          "netHires": 0.0,
+          "netCessations": 2.0
+        },
+        "2012": {
+          "staff": 68.0,
+          "netHires": 0.0,
+          "netCessations": 3.0
+        },
+        "2013": {
+          "staff": 70.0,
+          "netHires": 0.0,
+          "netCessations": 1.0
+        },
+        "2014": {
+          "staff": 70.0,
+          "netHires": 1.0,
+          "netCessations": 0.0
+        },
+        "2015": {
+          "staff": 69.0,
+          "netHires": 0.0,
+          "netCessations": 2.0
+        },
+        "2016": {
+          "staff": 69.0,
+          "netHires": 0.0,
+          "netCessations": 0.0
+        },
+        "2017": {
+          "staff": 71.0,
+          "netHires": 2.0,
+          "netCessations": 0.0
+        },
+        "2018": {
+          "staff": 68.0,
+          "netHires": 2.0,
+          "netCessations": 6.0
+        },
+        "2019": {
+          "staff": 62.0,
+          "netHires": 0.0,
+          "netCessations": 7.0
+        },
+        "2020": {
+          "staff": 70.0,
+          "netHires": 14.0,
+          "netCessations": 7.0
+        },
+        "2021": {
+          "staff": 65.0,
+          "netHires": 5.0,
+          "netCessations": 10.0
+        },
+        "2022": {
+          "staff": 64.0,
+          "netHires": 5.0,
+          "netCessations": 2.0
+        },
+        "2023": {
+          "staff": 65.0,
+          "netHires": 2.0,
+          "netCessations": 3.0
+        },
+        "2024": {
+          "staff": 63.0,
+          "netHires": 4.0,
+          "netCessations": 4.0
+        }
+      },
+      "Stazzema": {
+        "2010": {
+          "staff": 19.0,
+          "netHires": 1.0,
+          "netCessations": 0.0
+        },
+        "2011": {
+          "staff": 18.0,
+          "netHires": 0.0,
+          "netCessations": 1.0
+        },
+        "2012": {
+          "staff": 17.0,
+          "netHires": 2.0,
+          "netCessations": 2.0
+        },
+        "2013": {
+          "staff": 15.0,
+          "netHires": 0.0,
+          "netCessations": 2.0
+        },
+        "2014": {
+          "staff": 15.0,
+          "netHires": 2.0,
+          "netCessations": 3.0
+        },
+        "2015": {
+          "staff": 16.0,
+          "netHires": 1.0,
+          "netCessations": 0.0
+        },
+        "2016": {
+          "staff": 17.0,
+          "netHires": 2.0,
+          "netCessations": 1.0
+        },
+        "2017": {
+          "staff": 14.0,
+          "netHires": 1.0,
+          "netCessations": 2.0
+        },
+        "2018": {
+          "staff": 14.0,
+          "netHires": 3.0,
+          "netCessations": 3.0
+        },
+        "2019": {
+          "staff": 14.0,
+          "netHires": 1.0,
+          "netCessations": 1.0
+        },
+        "2020": {
+          "staff": 16.0,
+          "netHires": 4.0,
+          "netCessations": 2.0
+        },
+        "2021": {
+          "staff": 15.0,
+          "netHires": 1.0,
+          "netCessations": 3.0
+        },
+        "2022": {
+          "staff": 15.0,
+          "netHires": 1.0,
+          "netCessations": 2.0
+        },
+        "2023": {
+          "staff": 14.0,
+          "netHires": 2.0,
+          "netCessations": 3.0
+        },
+        "2024": {
+          "staff": 13.0,
+          "netHires": 1.0,
+          "netCessations": 2.0
+        }
+      },
+      "Viareggio": {
+        "2010": {
+          "staff": 570.0,
+          "netHires": 26.0,
+          "netCessations": 21.0
+        },
+        "2011": {
+          "staff": 536.0,
+          "netHires": 0.0,
+          "netCessations": 32.0
+        },
+        "2012": {
+          "staff": 514.0,
+          "netHires": 8.0,
+          "netCessations": 32.0
+        },
+        "2013": {
+          "staff": 511.0,
+          "netHires": 8.0,
+          "netCessations": 9.0
+        },
+        "2014": {
+          "staff": 477.0,
+          "netHires": 1.0,
+          "netCessations": 34.0
+        },
+        "2015": {
+          "staff": 446.0,
+          "netHires": 1.0,
+          "netCessations": 33.0
+        },
+        "2016": {
+          "staff": 405.0,
+          "netHires": 0.0,
+          "netCessations": 38.0
+        },
+        "2017": {
+          "staff": 398.0,
+          "netHires": 4.0,
+          "netCessations": 4.0
+        },
+        "2018": {
+          "staff": 383.0,
+          "netHires": 3.0,
+          "netCessations": 18.0
+        },
+        "2019": {
+          "staff": 347.0,
+          "netHires": 2.0,
+          "netCessations": 36.0
+        },
+        "2020": {
+          "staff": 379.0,
+          "netHires": 63.0,
+          "netCessations": 39.0
+        },
+        "2021": {
+          "staff": 371.0,
+          "netHires": 48.0,
+          "netCessations": 58.0
+        },
+        "2022": {
+          "staff": 395.0,
+          "netHires": 54.0,
+          "netCessations": 34.0
+        },
+        "2023": {
+          "staff": 397.0,
+          "netHires": 14.0,
+          "netCessations": 16.0
+        },
+        "2024": {
+          "staff": 412.0,
+          "netHires": 41.0,
+          "netCessations": 22.0
+        }
+      }
+    }
+  },
+  "training": {
+    "years": [
+      2022,
+      2023,
+      2024
+    ],
+    "stoppedAt": "2021: nessun dato per ['Forte dei Marmi']",
+    "api": "https://contoannuale.rgs.mef.gov.it/o/sico-rest-APIs/sicoAPI/formazione?anno={year}&tipoIstituzioneFilters=C&istituzioneFilters={codes}",
+    "towns": {
+      "Camaiore": {
+        "2022": {
+          "meanTotalRgs": 1.796946316018257,
+          "totalDays": 355.0,
+          "meanMen": 1.4069767441860466,
+          "meanWomen": 2.1869158878504673
+        },
+        "2023": {
+          "meanTotalRgs": 3.1752525252525254,
+          "totalDays": 613.0,
+          "meanMen": 1.7444444444444445,
+          "meanWomen": 4.606060606060606
+        },
+        "2024": {
+          "meanTotalRgs": 2.3018207282913163,
+          "totalDays": 443.0,
+          "meanMen": 1.4761904761904763,
+          "meanWomen": 3.127450980392157
+        }
+      },
+      "Forte dei Marmi": {
+        "2022": {
+          "meanTotalRgs": 0.8415345149253731,
+          "totalDays": 110.0,
+          "meanMen": 0.7611940298507462,
+          "meanWomen": 0.921875
+        },
+        "2023": {
+          "meanTotalRgs": 0.8445535296867694,
+          "totalDays": 110.0,
+          "meanMen": 0.9354838709677419,
+          "meanWomen": 0.7536231884057971
+        },
+        "2024": {
+          "meanTotalRgs": 0.9295499021526419,
+          "totalDays": 130.0,
+          "meanMen": 0.5714285714285714,
+          "meanWomen": 1.2876712328767124
+        }
+      },
+      "Massarosa": {
+        "2022": {
+          "meanTotalRgs": 2.4375,
+          "totalDays": 198.0,
+          "meanMen": 1.875,
+          "meanWomen": 3.0
+        },
+        "2023": {
+          "meanTotalRgs": 2.8770604395604398,
+          "totalDays": 238.0,
+          "meanMen": 2.8076923076923075,
+          "meanWomen": 2.9464285714285716
+        },
+        "2024": {
+          "meanTotalRgs": 3.0958862673926193,
+          "totalDays": 267.0,
+          "meanMen": 3.0689655172413794,
+          "meanWomen": 3.1228070175438596
+        }
+      },
+      "Pietrasanta": {
+        "2022": {
+          "meanTotalRgs": 0.6038405797101449,
+          "totalDays": 101.0,
+          "meanMen": 0.6376811594202898,
+          "meanWomen": 0.57
+        },
+        "2023": {
+          "meanTotalRgs": 0.657986111111111,
+          "totalDays": 105.0,
+          "meanMen": 0.8888888888888888,
+          "meanWomen": 0.4270833333333333
+        },
+        "2024": {
+          "meanTotalRgs": 1.2195652173913043,
+          "totalDays": 204.0,
+          "meanMen": 1.2,
+          "meanWomen": 1.2391304347826086
+        }
+      },
+      "Seravezza": {
+        "2022": {
+          "meanTotalRgs": 1.2142857142857144,
+          "totalDays": 79.0,
+          "meanMen": 1.2285714285714286,
+          "meanWomen": 1.2
+        },
+        "2023": {
+          "meanTotalRgs": 2.4270833333333335,
+          "totalDays": 157.0,
+          "meanMen": 1.6666666666666667,
+          "meanWomen": 3.1875
+        },
+        "2024": {
+          "meanTotalRgs": 2.4310344827586206,
+          "totalDays": 159.0,
+          "meanMen": 1.8620689655172413,
+          "meanWomen": 3.0
+        }
+      },
+      "Stazzema": {
+        "2022": {
+          "meanTotalRgs": 0.6071428571428572,
+          "totalDays": 10.0,
+          "meanMen": 0.5,
+          "meanWomen": 0.7142857142857143
+        },
+        "2023": {
+          "meanTotalRgs": 0.2361111111111111,
+          "totalDays": 4.0,
+          "meanMen": 0.2222222222222222,
+          "meanWomen": 0.25
+        },
+        "2024": {
+          "meanTotalRgs": 0.7916666666666667,
+          "totalDays": 11.0,
+          "meanMen": 0.75,
+          "meanWomen": 0.8333333333333334
+        }
+      },
+      "Viareggio": {
+        "2022": {
+          "meanTotalRgs": 0.12609289617486338,
+          "totalDays": 49.0,
+          "meanMen": 0.13333333333333333,
+          "meanWomen": 0.11885245901639344
+        },
+        "2023": {
+          "meanTotalRgs": 0.1784295175023652,
+          "totalDays": 70.0,
+          "meanMen": 0.18543046357615894,
+          "meanWomen": 0.17142857142857143
+        },
+        "2024": {
+          "meanTotalRgs": 0.16976779176488288,
+          "totalDays": 64.0,
+          "meanMen": 0.22929936305732485,
+          "meanWomen": 0.11023622047244094
+        }
+      }
+    }
+  },
+  "qualityGate": {
+    "status": "PASS",
+    "note": "Anno 2024 identico ai valori pubblicati per i 7 Comuni (personale, fasce, flussi netti, formazione)."
+  },
+  "acquisitionEvidence": {
+    "script": "scripts/update_source_data.py rgs-staff-history",
+    "where": "runner GitHub Actions"
+  }
+}
