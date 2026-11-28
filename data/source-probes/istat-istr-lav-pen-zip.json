@@ -1,0 +1,14 @@
+{
+ "schemaVersion": 1,
+ "createdAt": "2026-11-28T13:00:33Z",
+ "note": "Sonda: struttura della fonte consultata; non è un dato pubblicato.",
+ "follow": null,
+ "result": {
+  "url": "https://esploradati.istat.it/databrowser/DWL/PERMPOP/MUN/DCSS_ISTR_LAV_PEN_2%20-%20Istruzione%2C%20lavoro%20e%20spostamenti%20per%20studio%20o%20lavoro%20-%20intero%20ds.csv.zip",
+  "contentType": "application/x-zip-compressed",
+  "bytesTotal": 189148593,
+  "tooLarge": true,
+  "headHex": "504b03041400080008004a83915b0000000000000000000000005a000000444353535f495354525f4c41565f50454e5f32202d2049737472757a696f6e652c20",
+  "headText": null
+ }
+}

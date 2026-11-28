@@ -1,0 +1,17 @@
+{
+ "schemaVersion": 1,
+ "createdAt": "2026-11-28T13:00:32Z",
+ "note": "Sonda: struttura della fonte consultata; non è un dato pubblicato.",
+ "follow": null,
+ "result": {
+  "url": "https://gse-sta.maps.arcgis.com/sharing/rest/content/items/44ac0a740b184666a1f2ff9efe15e1b7/data?f=json",
+  "contentType": "application/json;charset=utf-8",
+  "bytes": 151,
+  "sha256": "9c0f313cfa3d399abb1dedb14f7d50ed9bc32c4bcdc87cd616e5de988e787542",
+  "forms": [],
+  "scripts": [],
+  "inlineScript": "",
+  "links": [],
+  "text": "{\"error\":{\"code\":403,\"messageCode\":\"GWM_0003\",\"message\":\"You do not have permissions to access this resource or perform this operation.\",\"details\":[]}}"
+ }
+}
