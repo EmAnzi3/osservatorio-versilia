@@ -8,9 +8,9 @@
   "mefFiscalProbe": [],
   "sourceProbe": [
     {
-      "name": "istat-istr-lav-pen-zip",
+      "name": "istat-istr-lav-pen-scan",
       "url": "https://esploradati.istat.it/databrowser/DWL/PERMPOP/MUN/DCSS_ISTR_LAV_PEN_2%20-%20Istruzione%2C%20lavoro%20e%20spostamenti%20per%20studio%20o%20lavoro%20-%20intero%20ds.csv.zip",
-      "match": "046018|046033|ITI1|IT[;,]|Toscana|Italia"
+      "match": "^\"046018\"\\|.*\\|\"T\"\\|[^|]*\\|\"Y_GE15\"\\|.*\\|\"2021\"\\|"
     }
   ],
   "ispraSoil": [],
@@ -45,5 +45,6 @@
   "siopeFiscalRecoveryHistory": false,
   "rgsStaffHistory": false,
   "agcomFtthHistory": false,
-  "pass": "lotto4-sonde-6"
+  "punEvPoints": true,
+  "pass": "lotto4-colonnine-1"
 }

@@ -1134,6 +1134,35 @@ def update_ftth_history(dry_run: bool, fetch=None) -> Changes:
     return changes
 
 
+# ------------------------------------------------------------------ PUN: punti di ricarica (livelli ArcGIS pubblici)
+
+def update_pun_ev_points(dry_run: bool, fetch=None) -> Changes:
+    """Punti di ricarica per Comune dalla PUN, con confronto Toscana/Italia; residenti al 1° gennaio 2026."""
+    import pun_ev_points as pun
+
+    site = load(SITE)
+    pop = {r["code"]: dict(zip(map(str, r["series"]["years"]), r["series"]["values"]))["2026"] for r in site["metrics"]["population"]["rows"]}
+    demo26 = load(ROOT / pun.POPULATION)["components"]
+    try:
+        snapshot = pun.build_snapshot(fetch or probes.http_fetch, pop, demo26["tuscany"]["ageDistribution"]["population"],
+                                      demo26["italy"]["ageDistribution"]["population"])
+    except (pun.PunError, KeyError, ValueError, probes.ProbeError) as error:
+        raise UpdateError(f"Punti di ricarica PUN: {error}") from error
+    snapshot["acquisitionEvidence"] = {"script": "scripts/update_source_data.py pun-ev-points", "where": _where()}
+    path = pun.SNAPSHOT.format(date=snapshot["referenceDate"])
+    metric = site["metrics"][pun.METRIC]
+    changes = Changes()
+    for row in metric["rows"]:
+        changes.note(f"{pun.METRIC} {row['town']}", row["value"], snapshot["towns"][row["code"]]["per1000"])
+    for scope, entry in snapshot["benchmarks"].items():
+        changes.note(f"{pun.METRIC} {scope}", None, entry["per1000"])
+    pun.apply(metric, snapshot, path)
+    if not dry_run:
+        save(ROOT / path, snapshot)
+        save(SITE, site)
+    return changes
+
+
 # ------------------------------------------------------------------ RGS: personale comunale (serie e confronto)
 
 def update_rgs_staff_history(dry_run: bool, fetch=None) -> Changes:
@@ -2158,6 +2187,7 @@ def main() -> int:
     sub.add_parser("mef-income-distribution-benchmark", help="confronto Toscana/Italia delle fasce di reddito (file comunale MEF)").add_argument("--dry-run", action="store_true")
     sub.add_parser("rgs-staff-history", help="serie e confronto Toscana/Italia del personale comunale (RGS Conto annuale)").add_argument("--dry-run", action="store_true")
     sub.add_parser("agcom-ftth-history", help="serie trimestrale dei quattro indicatori FTTH (edizioni della Broadband Map AGCOM)").add_argument("--dry-run", action="store_true")
+    sub.add_parser("pun-ev-points", help="punti di ricarica per Comune e confronto Toscana/Italia (livelli pubblici PUN)").add_argument("--dry-run", action="store_true")
     irh_p = sub.add_parser("mef-irpef-history", help="serie dell'addizionale comunale IRPEF negli scenari di reddito (elenchi MEF)")
     irh_p.add_argument("--dry-run", action="store_true")
     ph_p = sub.add_parser("salute-pharmacies-history", help="serie delle farmacie ogni 1.000 residenti (Ministero della Salute)")
@@ -2217,6 +2247,8 @@ def main() -> int:
             update_rgs_staff_history(args.dry_run).report("Personale comunale:")
         elif args.updater == "agcom-ftth-history":
             update_ftth_history(args.dry_run).report("Serie FTTH:")
+        elif args.updater == "pun-ev-points":
+            update_pun_ev_points(args.dry_run).report("Punti di ricarica PUN:")
         elif args.updater == "mef-irpef-history":
             update_irpef_history(args.dry_run).report("Serie addizionale IRPEF:")
         elif args.updater == "salute-pharmacies-history":

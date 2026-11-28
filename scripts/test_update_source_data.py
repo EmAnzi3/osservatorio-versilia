@@ -1554,6 +1554,42 @@ def fuel_benchmark_cases() -> None:
             raise AssertionError("confronto carburanti incoerente accettato")
 
 
+def pun_ev_points_cases() -> None:
+    """PUN: pagine ArcGIS, totali coerenti Comuni = Regioni = storico, Toscana 273/273, Comuni della Versilia univoci."""
+    import json as _json
+    from urllib.parse import parse_qs, urlsplit
+    import pun_ev_points as pun
+
+    regions = ["Toscana"] + [f"R{k}" for k in range(19)]
+    comuni = [{"FID": i + 1, "COMUNE": t, "DEN_PROV": "Lucca", "DEN_REG": "Toscana", "Conteggio": 2} for i, t in enumerate(pun.TOWNS.values())]
+    comuni += [{"FID": 100 + k, "COMUNE": f"T{k}", "DEN_PROV": "X", "DEN_REG": "Toscana", "Conteggio": 1} for k in range(266)]
+    comuni += [{"FID": 1000 + k, "COMUNE": f"C{k}", "DEN_PROV": "Y", "DEN_REG": regions[1 + k % 19], "Conteggio": 1} for k in range(7600)]
+    tus = sum(c["Conteggio"] for c in comuni if c["DEN_REG"] == "Toscana")
+    regioni = [{"FID": i, "DEN_REG": r, "Conteggio": tus if r == "Toscana" else sum(c["Conteggio"] for c in comuni if c["DEN_REG"] == r)} for i, r in enumerate(regions)]
+    storico = [{"FID": 1, "Storico": 1719792000000, "Punti_di_ricarica": 1}, {"FID": 2, "Storico": 1759276800000, "Punti_di_ricarica": len(comuni) + 7}]
+    layers = {"Comuni_Italiani": comuni, "Regioni_Italiane": regioni, "Installazioni_storico": storico}
+    def fetch(url: str) -> bytes:
+        layer = url.split("/services/")[1].split("/")[0]
+        q = parse_qs(urlsplit(url).query)
+        start, count = int(q["resultOffset"][0]), int(q["resultRecordCount"][0])
+        rows = layers[layer][start:start + count]
+        return _json.dumps({"features": [{"attributes": r} for r in rows], "exceededTransferLimit": start + count < len(layers[layer])}).encode()
+    pop = {c: 1000 for c in pun.TOWNS}
+    snap = pun.build_snapshot(fetch, pop, 3_000_000, 60_000_000)
+    assert snap["referenceDate"] == "2025-10-01" and snap["towns"]["046018"]["per1000"] == 2.0, snap["towns"]["046018"]
+    assert snap["benchmarks"]["tuscany"]["points"] == 280 and snap["benchmarks"]["italy"]["points"] == len(comuni) + 7
+    metric = {"meta": {"year": "2026"}, "method": {}, "aggregate": {}, "rows": [{"town": t, "code": c} for c, t in pun.TOWNS.items()]}
+    pun.apply(metric, snap, "x")
+    assert metric["meta"]["year"] == "1 ottobre 2025" and metric["rows"][0]["count"] == 2 and metric["aggregate"]["value"] == 2.0
+    storico[-1]["Punti_di_ricarica"] += 1
+    try:
+        pun.build_snapshot(fetch, pop, 3_000_000, 60_000_000)
+    except pun.PunError:
+        pass
+    else:
+        raise AssertionError("totali PUN incoerenti accettati")
+
+
 def irpef_history_cases() -> None:
     """Addizionale IRPEF: elenchi MEF annuali, varianti di scrittura uniformate, anni consecutivi, ultimo anno = pubblicato."""
     import irpef_history as ih
@@ -1847,6 +1883,11 @@ def source_probe_cases(tmp: Path) -> None:
         with _zf.ZipFile(zbuf, "w", _zf.ZIP_DEFLATED) as z:
             z.writestr("dati.csv", "ITTER107;Territorio;Value\n046018;Massarosa;1\n" * 50)
         assert probe.zip_head(zbuf.getvalue()[:300])["text"].startswith("ITTER107;Territorio;Value"), probe.zip_head(zbuf.getvalue()[:300])
+        import contextlib as _cl
+        scan = probe.scan_large_zip("https://a.it/f.zip", r"^046018", opener_get=lambda u: _cl.closing(_io.BytesIO(zbuf.getvalue())))
+        member = scan["dati.csv"]
+        assert member["header"] == ["ITTER107", "Territorio", "Value"] and member["rows"] == 99 and len(member["hits"]) == 50, member
+        assert member["distinct"]["ITTER107"] == {"046018": 50, "ITTER107": 49}, member["distinct"]
     finally:
         probe.fetch = orig_fetch
     probe.fetch = lambda url, data=None: (b'x="/api/v1/stats";y="https://a.it/api/v1/stats";z="/api/v1/stats"', "application/javascript")
@@ -2123,6 +2164,7 @@ def main() -> None:
     rgs_staff_history_cases()
     ftth_history_cases()
     fuel_benchmark_cases()
+    pun_ev_points_cases()
     fiscal_recovery_history_cases()
     openbdap_debt_cases()
     omi_history_cases()

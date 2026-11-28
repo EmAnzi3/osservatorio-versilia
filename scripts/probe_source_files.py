@@ -76,6 +76,53 @@ def zip_head(head: bytes, limit: int = 6000) -> dict[str, Any]:
     return {"member": name, "method": method, "compressedSize": csize, "text": text}
 
 
+LARGE_LIMIT = 2_000_000_000
+
+
+def scan_large_zip(url: str, match: str, opener_get=None) -> dict[str, Any]:
+    """Archivio ZIP oltre il limite della sonda: lo scarica su disco a blocchi e scorre i CSV riga per riga.
+    Restituisce, per colonna, i valori distinti (se al più 80) e le righe che corrispondono a `match` (al più 400)."""
+    import csv as _csv
+    import tempfile
+    pattern = re.compile(match)
+    out: dict[str, Any] = {}
+    with tempfile.TemporaryFile() as tmp:
+        get = opener_get or (lambda u: OPENER.open(urllib.request.Request(u, headers=UA), timeout=600))
+        with get(url) as r:
+            total = 0
+            while chunk := r.read(1 << 20):
+                total += len(chunk)
+                if total > LARGE_LIMIT:
+                    return {"error": f"oltre {LARGE_LIMIT} byte"}
+                tmp.write(chunk)
+        tmp.seek(0)
+        with zipfile.ZipFile(tmp) as z:
+            for name in z.namelist():
+                if not name.lower().endswith((".csv", ".txt")):
+                    continue
+                with z.open(name) as fh:
+                    lines = (raw.decode("utf-8-sig", errors="replace") for raw in fh)
+                    first = next(lines)
+                    sep = "|" if first.count("|") > first.count(";") else ";"
+                    header = next(_csv.reader([first], delimiter=sep))
+                    distinct: list[dict[str, int]] = [dict() for _ in header]
+                    hits, rows = [], 0
+                    for line in lines:
+                        rows += 1
+                        values = next(_csv.reader([line], delimiter=sep), [])
+                        for i, v in enumerate(values[:len(header)]):
+                            d = distinct[i]
+                            if d is not None:
+                                d[v] = d.get(v, 0) + 1
+                                if len(d) > 80:
+                                    distinct[i] = None  # troppi valori: colonna non enumerata
+                        if len(hits) < 400 and pattern.search(line):
+                            hits.append(values)
+                    out[name] = {"header": header, "rows": rows, "hits": hits,
+                                 "distinct": {h: d for h, d in zip(header, distinct) if d is not None}}
+    return out
+
+
 def fetch(url: str, tries: int = 3, data: bytes | None = None) -> tuple[bytes, str]:
     error: Exception | None = None
     opener = OPENER
@@ -182,6 +229,8 @@ def analyse(url: str, follow: str | None, depth: int = 0, post: str | None = Non
                     headText=big.head[:4000].decode("utf-8", errors="replace") if not big.head.startswith(b"PK") else None)
         if big.head.startswith(b"PK\x03\x04"):
             item["zipHead"] = zip_head(big.head)
+            if match:
+                item["zipScan"] = scan_large_zip(url, match)
         return item
     except RuntimeError as exc:
         item["error"] = str(exc)
