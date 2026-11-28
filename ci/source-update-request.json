@@ -6,7 +6,28 @@
   "agcomFtth": false,
   "istatTourism": [],
   "mefFiscalProbe": [],
-  "sourceProbe": [],
+  "sourceProbe": [
+    {
+      "name": "agcom-report-catalogo",
+      "url": "https://geo.agcom.it/reportistica/report.js",
+      "match": "Consistenze"
+    },
+    {
+      "name": "pun-territory",
+      "url": "https://www.piattaformaunicanazionale.it/territory-idr",
+      "follow": "territor|statist|api|json"
+    },
+    {
+      "name": "pun-home",
+      "url": "https://www.piattaformaunicanazionale.it/idr",
+      "follow": "territor|statist|api|json"
+    },
+    {
+      "name": "mimit-carburanti",
+      "url": "https://www.mimit.gov.it/it/open-data/elenco-dataset/carburanti-prezzi-praticati-e-anagrafica-degli-impianti",
+      "follow": "csv"
+    }
+  ],
   "ispraSoil": [],
   "aciVehicles": [],
   "omiResidential": [],
@@ -14,7 +35,12 @@
   "mimSchools": [],
   "gaiaWater": [],
   "erpArrears": [],
-  "sdmxProbe": [],
+  "sdmxProbe": [
+    {
+      "name": "istat-pendolarismo",
+      "find": "pendol|spostament|luogo di lavoro|mobilit"
+    }
+  ],
   "bdiBranchesProbe": false,
   "bdiBranches": [],
   "opencivitasNeeds": [],
@@ -38,5 +64,5 @@
   "mefIncomeDistributionBenchmark": false,
   "siopeFiscalRecoveryHistory": false,
   "rgsStaffHistory": false,
-  "pass": "lotto3-personale-1"
+  "pass": "lotto4-sonde-1"
 }
