@@ -8,9 +8,19 @@
   "mefFiscalProbe": [],
   "sourceProbe": [
     {
-      "name": "pun-main-js",
+      "name": "pun-main-js-arcgis",
       "url": "https://www.piattaformaunicanazionale.it/static/js/main.fdb71f83.js",
-      "match": "(?:https?://[A-Za-z0-9./_-]+)?/(?:api|rest|service|services|stat|statistic|territor)[A-Za-z0-9./_?=&{}-]*"
+      "match": "https?://[A-Za-z0-9.-]*arcgis[A-Za-z0-9./_?=&{}-]*|https?://[A-Za-z0-9.-]*piattaformaunicanazionale[A-Za-z0-9./_?=&{}-]*|[A-Za-z0-9_]*(?:FeatureServer|MapServer)[A-Za-z0-9/_-]*"
+    },
+    {
+      "name": "pun-import-arcgis",
+      "url": "https://www.piattaformaunicanazionale.it/import-arcgis.js",
+      "match": "https?://[^\"' )]+"
+    },
+    {
+      "name": "istat-istr-lav-pen-struttura",
+      "url": "https://esploradati.istat.it/SDMXWS/rest/dataflow/IT1/DCSS_BULK_ISTR_LAV_PEN_2?references=all",
+      "follow": "zip|DWL|csv|xlsx"
     }
   ],
   "ispraSoil": [],
@@ -20,13 +30,7 @@
   "mimSchools": [],
   "gaiaWater": [],
   "erpArrears": [],
-  "sdmxProbe": [
-    {
-      "name": "istat-istr-lav-pen",
-      "flow": "DCSS_BULK_ISTR_LAV_PEN_2",
-      "key": "all"
-    }
-  ],
+  "sdmxProbe": [],
   "bdiBranchesProbe": false,
   "bdiBranches": [],
   "opencivitasNeeds": [],
@@ -51,5 +55,5 @@
   "siopeFiscalRecoveryHistory": false,
   "rgsStaffHistory": false,
   "agcomFtthHistory": true,
-  "pass": "lotto4-sonde-2"
+  "pass": "lotto4-sonde-3"
 }

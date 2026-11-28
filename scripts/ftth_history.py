@@ -5,8 +5,10 @@ Stessa regola dei valori pubblicati (`update_source_data.py agcom-ftth`): per og
 rilevate al …» del catalogo `report.js` si legge il CSV comunale con `audit_agcom_primary.parse_csv`;
 coperture DESI ed entro 20 m sono le percentuali AGCOM, le famiglie raggiunte sono `famiglie_ftth` e le
 non raggiunte `famiglie_residenti − famiglie_ftth`. Si risale dall'edizione pubblicata finché il CSV è
-leggibile e i Comuni con il dato sono gli stessi dell'edizione pubblicata (per le coperture 7/7; per i
-conteggi Forte dei Marmi resta n.d. come nel valore pubblicato). L'edizione pubblicata deve coincidere
+leggibile, la base delle famiglie residenti AGCOM è quella dell'edizione pubblicata (un cambio di base,
+come tra dicembre 2025 e marzo 2026, rende le edizioni non confrontabili) e i Comuni con il dato sono gli
+stessi dell'edizione pubblicata (per le coperture 7/7; per i conteggi Forte dei Marmi resta n.d. come nel
+valore pubblicato). L'edizione pubblicata deve coincidere
 con i valori del catalogo.
 """
 from __future__ import annotations
@@ -76,6 +78,13 @@ def build_snapshot(fetch: Callable[[str], bytes], parse: Callable[[bytes], dict]
         if missing:
             stop = f"{when.isoformat()}: Comuni assenti {missing}"
             break
+        base = {c: rows[c].get("famiglie_residenti") for c in TOWNS}
+        if when == published:
+            base_published = base
+        elif base != base_published:
+            changed = sorted(TOWNS[c] for c in TOWNS if base[c] != base_published[c])
+            stop = f"{when.isoformat()}: famiglie residenti AGCOM diverse dall'edizione pubblicata ({changed})"
+            break
         taken[when.isoformat()] = {c: values(rows[c]) for c in TOWNS}
         sources[when.isoformat()] = {"url": url, "sha256": hashlib.sha256(body).hexdigest()}
     first = published.isoformat()
@@ -97,7 +106,8 @@ def build_snapshot(fetch: Callable[[str], bytes], parse: Callable[[bytes], dict]
     return {
         "schemaVersion": 1, "version": f"agcom-ftth-serie-{first}-v1", "retrieved": date.today().isoformat(),
         "publisher": "AGCOM — Broadband Map, reportistica comunale", "catalogue": REPORT_SCRIPT_URL,
-        "rule": ("Edizioni trimestrali consecutive fino a quella pubblicata, CSV comunale letto con la regola corrente e stessi "
+        "rule": ("Edizioni trimestrali consecutive fino a quella pubblicata, CSV comunale letto con la regola corrente, stessa base "
+                 "delle famiglie residenti AGCOM e stessi "
                  "Comuni con il dato dell'edizione pubblicata; edizione pubblicata identica ai valori del catalogo."),
         "stoppedAt": stop, "seriesStoppedAt": series.pop("stoppedAt", {}), "dates": series, "sources": sources,
         "towns": {TOWNS[c]: {when: taken[when][c] for when in taken} for c in TOWNS},

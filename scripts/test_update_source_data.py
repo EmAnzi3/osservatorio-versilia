@@ -1499,7 +1499,7 @@ def ftth_history_cases() -> None:
           "c+='<h2>Consistenze rilevate al 31/12/2025</h2> Dati Comunali <a href=\"u/2025q4.csv\"><u>CSV</u></a>';")
     assert [d for _, d in fh.editions(js)] == [_date(2026, 10, 5), _date(2026, 6, 30), _date(2026, 3, 31), _date(2025, 12, 31)]
     def rec(code: str, q: int) -> dict:
-        return {"copertura_ftth_desi_pct": 50.0 + q, "copertura_ftth_20m_pct": 40.0 + q, "famiglie_residenti": 1000,
+        return {"copertura_ftth_desi_pct": 50.0 + q, "copertura_ftth_20m_pct": 40.0 + q, "famiglie_residenti": 1000 if q > 1 else 1200,
                 "famiglie_ftth": None if code == "046013" else 500 + q}
     def parse(body: bytes) -> dict:
         q = int(body.decode())
@@ -1511,10 +1511,10 @@ def ftth_history_cases() -> None:
     metrics = {k: {"meta": {}, "method": {}, "rows": [{"town": t, "code": c, "value": v} for c, t in fh.TOWNS.items()
                for v in [fh.values(rec(c, 3))[k]]]} for k in (*fh.PCT, *fh.COUNTS)}
     snap = fh.build_snapshot(fetch, parse, metrics, _date(2026, 10, 5))
-    assert snap["dates"]["ftthCoverageDesi"] == ["2026-03-31", "2026-06-30", "2026-10-05"] and "2025-12-31" in snap["stoppedAt"], snap
+    assert snap["dates"]["ftthCoverageDesi"] == ["2026-06-30", "2026-10-05"] and "2026-03-31" in snap["stoppedAt"] and "famiglie" in snap["stoppedAt"], snap
     fh.apply(metrics, snap, fh.SNAPSHOT)
     rows = {r["town"]: r for r in metrics["ftthReachedHouseholds"]["rows"]}
-    assert rows["Massarosa"]["series"]["values"] == [501.0, 502.0, 503.0] and "series" not in rows["Forte dei Marmi"]
+    assert rows["Massarosa"]["series"]["values"] == [502.0, 503.0] and "series" not in rows["Forte dei Marmi"]
     metrics["ftthCoverage20m"]["rows"][0]["value"] = 1.0
     try:
         fh.build_snapshot(fetch, parse, metrics, _date(2026, 10, 5))
