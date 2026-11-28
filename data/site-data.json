@@ -55894,7 +55894,7 @@
         "shortLabel": "Prezzi carburanti",
         "description": "Mediana comunale dei prezzi self-service negli impianti attivi MIMIT. Stazzema è n.d. perché non risultano impianti attivi.",
         "unit": "eurliter",
-        "year": "2026-11-12",
+        "year": "2026-11-27",
         "source": "MIMIT — Osservaprezzi carburanti",
         "polarity": "neutral",
         "compositeType": "securityMeasures",
@@ -55912,7 +55912,7 @@
           "town": "Massarosa",
           "code": "046018",
           "slug": "massarosa",
-          "value": 1.949,
+          "value": 1.92,
           "formatted": "",
           "series": {
             "years": [
@@ -55921,7 +55921,8 @@
               "2026-08-28",
               "2026-10-03",
               "2026-10-10",
-              "2026-11-12"
+              "2026-11-12",
+              "2026-11-27"
             ],
             "values": [
               1.987,
@@ -55929,22 +55930,23 @@
               2.018,
               2.097,
               2.077,
-              1.949
+              1.949,
+              1.92
             ]
           },
           "normalized": null,
-          "benchmarkValue": 1.949,
+          "benchmarkValue": 1.92,
           "parts": [
             {
               "label": "Benzina self",
               "selectorLabel": "Benzina self",
-              "value": 1.949,
+              "value": 1.92,
               "unit": "eurliter"
             },
             {
               "label": "Gasolio self",
               "selectorLabel": "Gasolio self",
-              "value": 2.199,
+              "value": 2.188,
               "unit": "eurliter"
             }
           ],
@@ -55957,7 +55959,8 @@
                 "2026-08-28",
                 "2026-10-03",
                 "2026-10-10",
-                "2026-11-12"
+                "2026-11-12",
+                "2026-11-27"
               ],
               "values": [
                 1.987,
@@ -55965,7 +55968,8 @@
                 2.018,
                 2.097,
                 2.077,
-                1.949
+                1.949,
+                1.92
               ]
             },
             "Gasolio self": {
@@ -55975,7 +55979,8 @@
                 "2026-08-28",
                 "2026-10-03",
                 "2026-10-10",
-                "2026-11-12"
+                "2026-11-12",
+                "2026-11-27"
               ],
               "values": [
                 2.088,
@@ -55983,7 +55988,8 @@
                 2.147,
                 2.299,
                 2.277,
-                2.199
+                2.199,
+                2.188
               ]
             }
           }
@@ -55992,7 +55998,7 @@
           "town": "Viareggio",
           "code": "046033",
           "slug": "viareggio",
-          "value": 1.96,
+          "value": 1.919,
           "formatted": "",
           "series": {
             "years": [
@@ -56001,7 +56007,8 @@
               "2026-08-28",
               "2026-10-03",
               "2026-10-10",
-              "2026-11-12"
+              "2026-11-12",
+              "2026-11-27"
             ],
             "values": [
               1.994,
@@ -56009,22 +56016,23 @@
               2.019,
               1.994,
               1.994,
-              1.96
+              1.96,
+              1.919
             ]
           },
           "normalized": null,
-          "benchmarkValue": 1.96,
+          "benchmarkValue": 1.919,
           "parts": [
             {
               "label": "Benzina self",
               "selectorLabel": "Benzina self",
-              "value": 1.96,
+              "value": 1.919,
               "unit": "eurliter"
             },
             {
               "label": "Gasolio self",
               "selectorLabel": "Gasolio self",
-              "value": 2.199,
+              "value": 2.194,
               "unit": "eurliter"
             }
           ],
@@ -56037,7 +56045,8 @@
                 "2026-08-28",
                 "2026-10-03",
                 "2026-10-10",
-                "2026-11-12"
+                "2026-11-12",
+                "2026-11-27"
               ],
               "values": [
                 1.994,
@@ -56045,7 +56054,8 @@
                 2.019,
                 1.994,
                 1.994,
-                1.96
+                1.96,
+                1.919
               ]
             },
             "Gasolio self": {
@@ -56055,7 +56065,8 @@
                 "2026-08-28",
                 "2026-10-03",
                 "2026-10-10",
-                "2026-11-12"
+                "2026-11-12",
+                "2026-11-27"
               ],
               "values": [
                 2.099,
@@ -56063,7 +56074,8 @@
                 2.141,
                 2.194,
                 2.254,
-                2.199
+                2.199,
+                2.194
               ]
             }
           }
@@ -56072,7 +56084,7 @@
           "town": "Camaiore",
           "code": "046005",
           "slug": "camaiore",
-          "value": 1.949,
+          "value": 1.938,
           "formatted": "",
           "series": {
             "years": [
@@ -56081,7 +56093,8 @@
               "2026-08-28",
               "2026-10-03",
               "2026-10-10",
-              "2026-11-12"
+              "2026-11-12",
+              "2026-11-27"
             ],
             "values": [
               1.999,
@@ -56089,16 +56102,17 @@
               2.029,
               2.079,
               2.03,
-              1.949
+              1.949,
+              1.938
             ]
           },
           "normalized": null,
-          "benchmarkValue": 1.949,
+          "benchmarkValue": 1.938,
           "parts": [
             {
               "label": "Benzina self",
               "selectorLabel": "Benzina self",
-              "value": 1.949,
+              "value": 1.938,
               "unit": "eurliter"
             },
             {
@@ -56117,7 +56131,8 @@
                 "2026-08-28",
                 "2026-10-03",
                 "2026-10-10",
-                "2026-11-12"
+                "2026-11-12",
+                "2026-11-27"
               ],
               "values": [
                 1.999,
@@ -56125,7 +56140,8 @@
                 2.029,
                 2.079,
                 2.03,
-                1.949
+                1.949,
+                1.938
               ]
             },
             "Gasolio self": {
@@ -56135,7 +56151,8 @@
                 "2026-08-28",
                 "2026-10-03",
                 "2026-10-10",
-                "2026-11-12"
+                "2026-11-12",
+                "2026-11-27"
               ],
               "values": [
                 2.089,
@@ -56143,6 +56160,7 @@
                 2.139,
                 2.299,
                 2.289,
+                2.199,
                 2.199
               ]
             }
@@ -56152,7 +56170,7 @@
           "town": "Pietrasanta",
           "code": "046024",
           "slug": "pietrasanta",
-          "value": 1.949,
+          "value": 1.92,
           "formatted": "",
           "series": {
             "years": [
@@ -56161,7 +56179,8 @@
               "2026-08-28",
               "2026-10-03",
               "2026-10-10",
-              "2026-11-12"
+              "2026-11-12",
+              "2026-11-27"
             ],
             "values": [
               1.999,
@@ -56169,22 +56188,23 @@
               2.019,
               1.999,
               2.01,
-              1.949
+              1.949,
+              1.92
             ]
           },
           "normalized": null,
-          "benchmarkValue": 1.949,
+          "benchmarkValue": 1.92,
           "parts": [
             {
               "label": "Benzina self",
               "selectorLabel": "Benzina self",
-              "value": 1.949,
+              "value": 1.92,
               "unit": "eurliter"
             },
             {
               "label": "Gasolio self",
               "selectorLabel": "Gasolio self",
-              "value": 2.199,
+              "value": 2.189,
               "unit": "eurliter"
             }
           ],
@@ -56197,7 +56217,8 @@
                 "2026-08-28",
                 "2026-10-03",
                 "2026-10-10",
-                "2026-11-12"
+                "2026-11-12",
+                "2026-11-27"
               ],
               "values": [
                 1.999,
@@ -56205,7 +56226,8 @@
                 2.019,
                 1.999,
                 2.01,
-                1.949
+                1.949,
+                1.92
               ]
             },
             "Gasolio self": {
@@ -56215,7 +56237,8 @@
                 "2026-08-28",
                 "2026-10-03",
                 "2026-10-10",
-                "2026-11-12"
+                "2026-11-12",
+                "2026-11-27"
               ],
               "values": [
                 2.099,
@@ -56223,7 +56246,8 @@
                 2.149,
                 2.199,
                 2.23,
-                2.199
+                2.199,
+                2.189
               ]
             }
           }
@@ -56232,7 +56256,7 @@
           "town": "Seravezza",
           "code": "046028",
           "slug": "seravezza",
-          "value": 1.999,
+          "value": 1.947,
           "formatted": "",
           "series": {
             "years": [
@@ -56241,7 +56265,8 @@
               "2026-08-28",
               "2026-10-03",
               "2026-10-10",
-              "2026-11-12"
+              "2026-11-12",
+              "2026-11-27"
             ],
             "values": [
               1.994,
@@ -56249,22 +56274,23 @@
               1.999,
               2.03,
               2.03,
-              1.999
+              1.999,
+              1.947
             ]
           },
           "normalized": null,
-          "benchmarkValue": 1.999,
+          "benchmarkValue": 1.947,
           "parts": [
             {
               "label": "Benzina self",
               "selectorLabel": "Benzina self",
-              "value": 1.999,
+              "value": 1.947,
               "unit": "eurliter"
             },
             {
               "label": "Gasolio self",
               "selectorLabel": "Gasolio self",
-              "value": 2.212,
+              "value": 2.197,
               "unit": "eurliter"
             }
           ],
@@ -56277,7 +56303,8 @@
                 "2026-08-28",
                 "2026-10-03",
                 "2026-10-10",
-                "2026-11-12"
+                "2026-11-12",
+                "2026-11-27"
               ],
               "values": [
                 1.994,
@@ -56285,7 +56312,8 @@
                 1.999,
                 2.03,
                 2.03,
-                1.999
+                1.999,
+                1.947
               ]
             },
             "Gasolio self": {
@@ -56295,7 +56323,8 @@
                 "2026-08-28",
                 "2026-10-03",
                 "2026-10-10",
-                "2026-11-12"
+                "2026-11-12",
+                "2026-11-27"
               ],
               "values": [
                 2.079,
@@ -56303,7 +56332,8 @@
                 2.144,
                 2.23,
                 2.291,
-                2.212
+                2.212,
+                2.197
               ]
             }
           }
@@ -56312,7 +56342,7 @@
           "town": "Forte dei Marmi",
           "code": "046013",
           "slug": "forte-dei-marmi",
-          "value": 1.96,
+          "value": 1.909,
           "formatted": "",
           "series": {
             "years": [
@@ -56321,7 +56351,8 @@
               "2026-08-28",
               "2026-10-03",
               "2026-10-10",
-              "2026-11-12"
+              "2026-11-12",
+              "2026-11-27"
             ],
             "values": [
               1.979,
@@ -56329,16 +56360,17 @@
               1.999,
               2.03,
               2.011,
-              1.96
+              1.96,
+              1.909
             ]
           },
           "normalized": null,
-          "benchmarkValue": 1.96,
+          "benchmarkValue": 1.909,
           "parts": [
             {
               "label": "Benzina self",
               "selectorLabel": "Benzina self",
-              "value": 1.96,
+              "value": 1.909,
               "unit": "eurliter"
             },
             {
@@ -56357,7 +56389,8 @@
                 "2026-08-28",
                 "2026-10-03",
                 "2026-10-10",
-                "2026-11-12"
+                "2026-11-12",
+                "2026-11-27"
               ],
               "values": [
                 1.979,
@@ -56365,7 +56398,8 @@
                 1.999,
                 2.03,
                 2.011,
-                1.96
+                1.96,
+                1.909
               ]
             },
             "Gasolio self": {
@@ -56375,7 +56409,8 @@
                 "2026-08-28",
                 "2026-10-03",
                 "2026-10-10",
-                "2026-11-12"
+                "2026-11-12",
+                "2026-11-27"
               ],
               "values": [
                 2.089,
@@ -56383,6 +56418,7 @@
                 2.129,
                 2.215,
                 2.242,
+                2.194,
                 2.194
               ]
             }
@@ -56401,9 +56437,11 @@
               "2026-08-28",
               "2026-10-03",
               "2026-10-10",
-              "2026-11-12"
+              "2026-11-12",
+              "2026-11-27"
             ],
             "values": [
+              null,
               null,
               null,
               null,
@@ -56437,9 +56475,11 @@
                 "2026-08-28",
                 "2026-10-03",
                 "2026-10-10",
-                "2026-11-12"
+                "2026-11-12",
+                "2026-11-27"
               ],
               "values": [
+                null,
                 null,
                 null,
                 null,
@@ -56455,9 +56495,11 @@
                 "2026-08-28",
                 "2026-10-03",
                 "2026-10-10",
-                "2026-11-12"
+                "2026-11-12",
+                "2026-11-27"
               ],
               "values": [
+                null,
                 null,
                 null,
                 null,
@@ -56470,20 +56512,20 @@
         }
       ],
       "aggregate": {
-        "value": 1.961,
+        "value": 1.9255000000000002,
         "label": "Media delle mediane comunali disponibili",
         "note": "Media semplice dei sei Comuni con impianti attivi; Stazzema resta n.d.",
         "parts": [
           {
             "label": "Benzina self",
             "selectorLabel": "Benzina self",
-            "value": 1.961,
+            "value": 1.9255000000000002,
             "unit": "eurliter"
           },
           {
             "label": "Gasolio self",
             "selectorLabel": "Gasolio self",
-            "value": 2.2003333333333335,
+            "value": 2.1935,
             "unit": "eurliter"
           }
         ]
@@ -56492,7 +56534,7 @@
       "method": {
         "type": "Elaborazione Osservatorio su open data MIMIT",
         "formula": "Mediana dei prezzi self-service degli impianti attivi per Comune e carburante.",
-        "caveat": "Ultima fotografia: 12 novembre 2026. Serie validata dal 14 agosto 2026; Stazzema non ha impianti attivi nel dataset.",
+        "caveat": "Ultima fotografia: 27 novembre 2026. Serie validata dal 14 agosto 2026; Stazzema non ha impianti attivi nel dataset.",
         "coverage": "6/7"
       }
     },

@@ -312,6 +312,15 @@ for metric_id in ("ftthReachedHouseholds", "ftthUnreachedHouseholds"):
                 "non riporta le famiglie raggiunte da FTTH per Forte dei Marmi in nessuna edizione; una serie comunale completa dei "
                 "conteggi non esiste alla fonte. Le coperture percentuali DESI ed entro 20 m hanno la serie.", AGCOM_REPORT_REF)
 
+# Confronto Toscana/Italia dei conteggi di famiglie raggiunte/non raggiunte (decisione di Ema, 28/11/2026): un numero
+# assoluto di famiglie dipende solo dalla dimensione del territorio; la lettura confrontabile è la copertura percentuale,
+# già confrontata con Toscana e Italia in `ftthCoverageDesi` e `ftthCoverage20m`.
+for metric_id in ("ftthReachedHouseholds", "ftthUnreachedHouseholds"):
+    (_revise_metric if "benchmark_toscana_italia" in METRIC_EVIDENCE.get(metric_id, {}) else _add_metric)(metric_id, "benchmark_toscana_italia", NOT_APPLICABLE,
+                "Il valore è un conteggio assoluto di famiglie: un confronto con il totale toscano o italiano misurerebbe solo la diversa "
+                "dimensione dei territori. La lettura confrontabile è la quota di famiglie raggiunte, pubblicata con il confronto "
+                "Toscana/Italia negli indicatori di copertura FTTH DESI ed entro 20 m.", AGCOM_REPORT_REF)
+
 def main() -> None:
     ns["main"]()
 

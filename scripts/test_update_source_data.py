@@ -1525,6 +1525,35 @@ def ftth_history_cases() -> None:
         raise AssertionError("edizione diversa dal pubblicato accettata")
 
 
+def fuel_benchmark_cases() -> None:
+    """Carburanti: mediana degli impianti del territorio, primo prezzo per impianto, estrazioni coerenti, Comuni = pubblicati."""
+    import fuel_benchmark as fb
+
+    anag = ["Estrazione del 2026-11-27", "idImpianto|Gestore|Bandiera|Tipo Impianto|Nome Impianto|Indirizzo|Comune|Provincia|Latitudine|Longitudine"]
+    prices = ["Estrazione del 2026-11-27", "idImpianto|descCarburante|prezzo|isSelf|dtComu"]
+    n = 0
+    for prov, town, count, base in (("LU", "MASSAROSA", 3, 1.90), ("FI", "FIRENZE", 1500, 1.95), ("RM", "ROMA", 15000, 2.00)):
+        for k in range(count):
+            n += 1
+            anag.append(f"{n}|G|B|Stradale|N|I|{town}|{prov}|0|0")
+            prices += [f"{n}|Benzina|{base + (k % 3) * 0.001:.3f}|1|x", f"{n}|Benzina|9.999|1|x", f"{n}|Gasolio|{base + 0.2:.3f}|1|x", f"{n}|Benzina|1.5|0|x"]
+    pub = {"Massarosa": {"benzina": 1.901, "gasolio": 2.1}}
+    snap = fb.build_snapshot("\n".join(anag).encode(), "\n".join(prices).encode(), pub, "2026-11-27")
+    t, i = snap["benchmarks"]["tuscany"], snap["benchmarks"]["italy"]
+    assert t["benzina"]["stations"] == 1503 and abs(t["benzina"]["median"] - 1.951) < 1e-9, t
+    assert i["benzina"]["stations"] == 16503, i
+    metric = {"meta": {"year": "2026-11-27"}, "rows": [{"parts": [{"label": "Benzina self"}, {"label": "Gasolio self"}]}]}
+    fb.apply(metric, snap, "x")
+    assert metric["meta"]["benchmark"]["part"] == "Benzina self" and metric["meta"]["benchmark"]["italy"] == i["benzina"]["median"]
+    for bad_pub, bad_year in (({"Massarosa": {"benzina": 1.95, "gasolio": 2.1}}, "2026-11-27"), (pub, "2026-11-12")):
+        try:
+            fb.build_snapshot("\n".join(anag).encode(), "\n".join(prices).encode(), bad_pub, bad_year)
+        except fb.FuelBenchmarkError:
+            pass
+        else:
+            raise AssertionError("confronto carburanti incoerente accettato")
+
+
 def irpef_history_cases() -> None:
     """Addizionale IRPEF: elenchi MEF annuali, varianti di scrittura uniformate, anni consecutivi, ultimo anno = pubblicato."""
     import irpef_history as ih
@@ -2093,6 +2122,7 @@ def main() -> None:
     lotto1_history_cases()
     rgs_staff_history_cases()
     ftth_history_cases()
+    fuel_benchmark_cases()
     fiscal_recovery_history_cases()
     openbdap_debt_cases()
     omi_history_cases()
