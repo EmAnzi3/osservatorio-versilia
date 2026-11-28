@@ -46,9 +46,16 @@ def selection_guard(key,dim,op):
     if op=='correlation':raise ValueError('energy_pair_not_jointly_reviewed')
 
 
+def public_definition(metric):
+    """Indicatore pubblicato senza il confronto Toscana/Italia, che si aggiunge in build da uno snapshot proprio
+    (`fuel_benchmark.py`): l'impronta resta la stessa sul catalogo sorgente e su quello pubblicato."""
+    meta={k:v for k,v in metric['meta'].items() if k!='benchmark'}
+    return dict(metric,meta=meta)
+
+
 def context(metric,key,dim):
     if dim not in dimensions(key):raise ValueError('energy_dimension_not_reviewed')
-    if fingerprint(metric)!=PUBLIC_HASHES[key]:raise ValueError('energy_public_definition_or_values_changed')
+    if fingerprint(public_definition(metric))!=PUBLIC_HASHES[key]:raise ValueError('energy_public_definition_or_values_changed')
     if key=='evPoints':return dict(unit='per1000',population='published public active charging-point density; point/connector identity not certified from native rows',
         definition='published rounded density per 1000 residents; components not frozen',method='public catalog replay only; exact source and denominator dates unresolved',
         frequency='snapshot_year_only',periodBasis='public year 2026; exact observation and population-reference dates not frozen',
