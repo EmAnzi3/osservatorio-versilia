@@ -1110,6 +1110,30 @@ def update_income_distribution_benchmark(dry_run: bool, fetch=None) -> Changes:
     return changes
 
 
+# ------------------------------------------------------------------ AGCOM: serie FTTH (edizioni trimestrali)
+
+def update_ftth_history(dry_run: bool, fetch=None) -> Changes:
+    """Serie dei quattro indicatori FTTH dalle edizioni della Broadband Map; l'ultima = edizione pubblicata."""
+    import agcom_sources
+    import audit_agcom_primary as ag
+    import ftth_history as fh
+
+    published = ag.base.agcom_period(load(ROOT / agcom_sources.NATIVE)["agcomAudit"]["dataPeriod"])
+    try:
+        snapshot = fh.build_snapshot(fetch or probes.http_fetch, ag.parse_csv, load(SITE)["metrics"], published)
+    except (fh.FtthHistoryError, KeyError, ValueError, probes.ProbeError) as error:
+        raise UpdateError(f"Serie FTTH: {error}") from error
+    snapshot["acquisitionEvidence"] = {"script": "scripts/update_source_data.py agcom-ftth-history", "where": _where()}
+    changes = Changes()
+    for key, dates in snapshot["dates"].items():
+        changes.note(f"{key} edizioni", None, f"{dates[0]} – {dates[-1]} ({len(dates)})" if dates else "nessuna")
+    if snapshot["stoppedAt"]:
+        print("Serie FTTH ferma a: " + snapshot["stoppedAt"][:200])
+    if not dry_run:
+        save(ROOT / fh.SNAPSHOT, snapshot)
+    return changes
+
+
 # ------------------------------------------------------------------ RGS: personale comunale (serie e confronto)
 
 def update_rgs_staff_history(dry_run: bool, fetch=None) -> Changes:
@@ -2133,6 +2157,7 @@ def main() -> int:
         sub.add_parser(name, help=text).add_argument("--dry-run", action="store_true")
     sub.add_parser("mef-income-distribution-benchmark", help="confronto Toscana/Italia delle fasce di reddito (file comunale MEF)").add_argument("--dry-run", action="store_true")
     sub.add_parser("rgs-staff-history", help="serie e confronto Toscana/Italia del personale comunale (RGS Conto annuale)").add_argument("--dry-run", action="store_true")
+    sub.add_parser("agcom-ftth-history", help="serie trimestrale dei quattro indicatori FTTH (edizioni della Broadband Map AGCOM)").add_argument("--dry-run", action="store_true")
     irh_p = sub.add_parser("mef-irpef-history", help="serie dell'addizionale comunale IRPEF negli scenari di reddito (elenchi MEF)")
     irh_p.add_argument("--dry-run", action="store_true")
     ph_p = sub.add_parser("salute-pharmacies-history", help="serie delle farmacie ogni 1.000 residenti (Ministero della Salute)")
@@ -2190,6 +2215,8 @@ def main() -> int:
             update_income_distribution_benchmark(args.dry_run).report("Confronto fasce di reddito:")
         elif args.updater == "rgs-staff-history":
             update_rgs_staff_history(args.dry_run).report("Personale comunale:")
+        elif args.updater == "agcom-ftth-history":
+            update_ftth_history(args.dry_run).report("Serie FTTH:")
         elif args.updater == "mef-irpef-history":
             update_irpef_history(args.dry_run).report("Serie addizionale IRPEF:")
         elif args.updater == "salute-pharmacies-history":

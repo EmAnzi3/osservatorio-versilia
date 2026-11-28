@@ -8,24 +8,9 @@
   "mefFiscalProbe": [],
   "sourceProbe": [
     {
-      "name": "agcom-report-catalogo",
-      "url": "https://geo.agcom.it/reportistica/report.js",
-      "match": "Consistenze"
-    },
-    {
-      "name": "pun-territory",
-      "url": "https://www.piattaformaunicanazionale.it/territory-idr",
-      "follow": "territor|statist|api|json"
-    },
-    {
-      "name": "pun-home",
-      "url": "https://www.piattaformaunicanazionale.it/idr",
-      "follow": "territor|statist|api|json"
-    },
-    {
-      "name": "mimit-carburanti",
-      "url": "https://www.mimit.gov.it/it/open-data/elenco-dataset/carburanti-prezzi-praticati-e-anagrafica-degli-impianti",
-      "follow": "csv"
+      "name": "pun-main-js",
+      "url": "https://www.piattaformaunicanazionale.it/static/js/main.fdb71f83.js",
+      "match": "(?:https?://[A-Za-z0-9./_-]+)?/(?:api|rest|service|services|stat|statistic|territor)[A-Za-z0-9./_?=&{}-]*"
     }
   ],
   "ispraSoil": [],
@@ -37,8 +22,9 @@
   "erpArrears": [],
   "sdmxProbe": [
     {
-      "name": "istat-pendolarismo",
-      "find": "pendol|spostament|luogo di lavoro|mobilit"
+      "name": "istat-istr-lav-pen",
+      "flow": "DCSS_BULK_ISTR_LAV_PEN_2",
+      "key": "all"
     }
   ],
   "bdiBranchesProbe": false,
@@ -64,5 +50,6 @@
   "mefIncomeDistributionBenchmark": false,
   "siopeFiscalRecoveryHistory": false,
   "rgsStaffHistory": false,
-  "pass": "lotto4-sonde-1"
+  "agcomFtthHistory": true,
+  "pass": "lotto4-sonde-2"
 }

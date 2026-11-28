@@ -1488,6 +1488,42 @@ def rgs_staff_history_cases() -> None:
     assert metrics[rh.TURNOVER]["meta"]["benchmark"]["italy"] is not None
 
 
+def ftth_history_cases() -> None:
+    """FTTH: date a una o due cifre, edizione pubblicata = catalogo, serie ferma al primo CSV non leggibile."""
+    from datetime import date as _date
+    import ftth_history as fh
+
+    js = ("var c=''; c+='<h2>Consistenze rilevate al 05/10/2026 (rev.)</h2> Dati Comunali <a href=\"u/2026q3.csv\"><u>CSV</u></a>';"
+          "c+='<h2>Consistenze rilevate al 30/6/2026</h2> Dati Comunali <a href=\"u/2026q2.csv\"><u>CSV</u></a>';"
+          "c+='<h2>Consistenze rilevate al 31/3/2026</h2> Dati Comunali <a href=\"u/2026q1.csv\"><u>CSV</u></a>';"
+          "c+='<h2>Consistenze rilevate al 31/12/2025</h2> Dati Comunali <a href=\"u/2025q4.csv\"><u>CSV</u></a>';")
+    assert [d for _, d in fh.editions(js)] == [_date(2026, 10, 5), _date(2026, 6, 30), _date(2026, 3, 31), _date(2025, 12, 31)]
+    def rec(code: str, q: int) -> dict:
+        return {"copertura_ftth_desi_pct": 50.0 + q, "copertura_ftth_20m_pct": 40.0 + q, "famiglie_residenti": 1000,
+                "famiglie_ftth": None if code == "046013" else 500 + q}
+    def parse(body: bytes) -> dict:
+        q = int(body.decode())
+        if q == 0:
+            raise ValueError("colonna 20 m assente")
+        return {c: rec(c, q) for c in fh.TOWNS}
+    def fetch(url: str) -> bytes:
+        return js.encode() if url.endswith("report.js") else {"u/2026q3.csv": b"3", "u/2026q2.csv": b"2", "u/2026q1.csv": b"1", "u/2025q4.csv": b"0"}[url]
+    metrics = {k: {"meta": {}, "method": {}, "rows": [{"town": t, "code": c, "value": v} for c, t in fh.TOWNS.items()
+               for v in [fh.values(rec(c, 3))[k]]]} for k in (*fh.PCT, *fh.COUNTS)}
+    snap = fh.build_snapshot(fetch, parse, metrics, _date(2026, 10, 5))
+    assert snap["dates"]["ftthCoverageDesi"] == ["2026-03-31", "2026-06-30", "2026-10-05"] and "2025-12-31" in snap["stoppedAt"], snap
+    fh.apply(metrics, snap, fh.SNAPSHOT)
+    rows = {r["town"]: r for r in metrics["ftthReachedHouseholds"]["rows"]}
+    assert rows["Massarosa"]["series"]["values"] == [501.0, 502.0, 503.0] and "series" not in rows["Forte dei Marmi"]
+    metrics["ftthCoverage20m"]["rows"][0]["value"] = 1.0
+    try:
+        fh.build_snapshot(fetch, parse, metrics, _date(2026, 10, 5))
+    except fh.FtthHistoryError:
+        pass
+    else:
+        raise AssertionError("edizione diversa dal pubblicato accettata")
+
+
 def irpef_history_cases() -> None:
     """Addizionale IRPEF: elenchi MEF annuali, varianti di scrittura uniformate, anni consecutivi, ultimo anno = pubblicato."""
     import irpef_history as ih
@@ -1769,6 +1805,12 @@ def source_probe_cases(tmp: Path) -> None:
     table = probe.csv_table("COD;Comune;Val\n001001;Agliè;1\n46033;VIAREGGIO;2\n".encode())
     assert table["separator"] == ";" and table["rows"] == 3 and table["hits"] == [[3, ["46033", "VIAREGGIO", "2"]]]
     assert probe.csv_table("U;V\nLU033X;1\nPE007Y;2\n".encode(), r"^LU0(05|13|18|24|28|30|33)")["hits"] == [[2, ["LU033X", "1"]]]
+    orig_fetch = probe.fetch
+    probe.fetch = lambda url, data=None: (b'x="/api/v1/stats";y="https://a.it/api/v1/stats";z="/api/v1/stats"', "application/javascript")
+    try:
+        assert probe.analyse("https://a.it/static/main.js", None, match=r"(?:https?://[^\"]+)?/api/[^\"]+")["matches"] == ["/api/v1/stats", "https://a.it/api/v1/stats"]
+    finally:
+        probe.fetch = orig_fetch
 
 
 def sdmx_probe_cases() -> None:
@@ -2036,6 +2078,7 @@ def main() -> None:
     openbdap_refresh_cases()
     lotto1_history_cases()
     rgs_staff_history_cases()
+    ftth_history_cases()
     fiscal_recovery_history_cases()
     openbdap_debt_cases()
     omi_history_cases()

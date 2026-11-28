@@ -156,6 +156,16 @@ def analyse(url: str, follow: str | None, depth: int = 0, post: str | None = Non
                 item["memberCsv"] = {n: csv_table(z.read(n), match) for n in z.namelist() if n.lower().endswith((".csv", ".txt"))}
         elif "csv" in ctype.lower() or re.search(r"\.csv(?:[/?#]|$)", url, re.I):
             item["csv"] = csv_table(data, match)
+        elif match and ("javascript" in ctype.lower() or re.search(r"\.m?js(?:[?#]|$)", url, re.I)):
+            # Script applicativo (pagine che si costruiscono in JavaScript): occorrenze dell'espressione, senza ripetizioni.
+            text = data.decode("utf-8", errors="replace")
+            seen: list[str] = []
+            for m in re.finditer(match, text):
+                if m.group(0) not in seen:
+                    seen.append(m.group(0))
+                if len(seen) >= 300:
+                    break
+            item["matches"] = seen
         else:
             page = data.decode("utf-8", errors="replace")
             ls = links(page, url)
