@@ -49,13 +49,95 @@ def _legacy_opener() -> urllib.request.OpenerDirector:
                                        urllib.request.HTTPSHandler(context=context))
 
 
+MAX_BYTES = 150_000_000
+PEEK_BYTES = 65536
+
+
+class TooLarge(Exception):
+    def __init__(self, size: int, head: bytes, ctype: str):
+        super().__init__(f"{size} byte")
+        self.size, self.head, self.ctype = size, head, ctype
+
+
+def zip_head(head: bytes, limit: int = 6000) -> dict[str, Any]:
+    """Primo membro di un archivio ZIP letto dall'inizio del file: nome e primo testo decompresso (intestazioni CSV)."""
+    import struct
+    import zlib
+    if len(head) < 30:
+        return {"error": "intestazione ZIP incompleta"}
+    method, csize = struct.unpack("<H", head[8:10])[0], struct.unpack("<I", head[18:22])[0]
+    nlen, xlen = struct.unpack("<HH", head[26:30])
+    name = head[30:30 + nlen].decode("utf-8", errors="replace")
+    body = head[30 + nlen + xlen:]
+    try:
+        text = (zlib.decompressobj(-15).decompress(body) if method == 8 else body)[:limit].decode("utf-8-sig", errors="replace")
+    except zlib.error as exc:
+        text = f"decompressione non riuscita: {exc}"
+    return {"member": name, "method": method, "compressedSize": csize, "text": text}
+
+
+LARGE_LIMIT = 2_000_000_000
+
+
+def scan_large_zip(url: str, match: str, opener_get=None) -> dict[str, Any]:
+    """Archivio ZIP oltre il limite della sonda: lo scarica su disco a blocchi e scorre i CSV riga per riga.
+    Restituisce, per colonna, i valori distinti (se al più 80) e le righe che corrispondono a `match` (al più 400)."""
+    import csv as _csv
+    import tempfile
+    pattern = re.compile(match)
+    out: dict[str, Any] = {}
+    with tempfile.TemporaryFile() as tmp:
+        get = opener_get or (lambda u: OPENER.open(urllib.request.Request(u, headers=UA), timeout=600))
+        with get(url) as r:
+            total = 0
+            while chunk := r.read(1 << 20):
+                total += len(chunk)
+                if total > LARGE_LIMIT:
+                    return {"error": f"oltre {LARGE_LIMIT} byte"}
+                tmp.write(chunk)
+        tmp.seek(0)
+        with zipfile.ZipFile(tmp) as z:
+            for name in z.namelist():
+                if not name.lower().endswith((".csv", ".txt")):
+                    continue
+                with z.open(name) as fh:
+                    lines = (raw.decode("utf-8-sig", errors="replace") for raw in fh)
+                    first = next(lines)
+                    sep = "|" if first.count("|") > first.count(";") else ";"
+                    header = next(_csv.reader([first], delimiter=sep))
+                    distinct: list[dict[str, int]] = [dict() for _ in header]
+                    hits, rows = [], 0
+                    for line in lines:
+                        rows += 1
+                        values = next(_csv.reader([line], delimiter=sep), [])
+                        for i, v in enumerate(values[:len(header)]):
+                            d = distinct[i]
+                            if d is not None:
+                                d[v] = d.get(v, 0) + 1
+                                if len(d) > 80:
+                                    distinct[i] = None  # troppi valori: colonna non enumerata
+                        if len(hits) < 400 and pattern.search(line):
+                            hits.append(values)
+                    out[name] = {"header": header, "rows": rows, "hits": hits,
+                                 "distinct": {h: d for h, d in zip(header, distinct) if d is not None}}
+    return out
+
+
 def fetch(url: str, tries: int = 3, data: bytes | None = None) -> tuple[bytes, str]:
     error: Exception | None = None
     opener = OPENER
     for attempt in range(tries):
         try:
             with opener.open(urllib.request.Request(url, data=data, headers=UA), timeout=180) as r:
-                return r.read(), r.headers.get("Content-Type", "")
+                size = int(r.headers.get("Content-Length") or 0)
+                if size > MAX_BYTES:  # file troppo grande per la sonda: se ne registra solo la dimensione
+                    raise TooLarge(size, r.read(PEEK_BYTES), r.headers.get("Content-Type", ""))
+                body = r.read(MAX_BYTES + 1)  # anche senza Content-Length la sonda non legge oltre il limite
+                if len(body) > MAX_BYTES:
+                    raise TooLarge(len(body), body[:PEEK_BYTES], r.headers.get("Content-Type", ""))
+                return body, r.headers.get("Content-Type", "")
+        except TooLarge:
+            raise
         except Exception as exc:  # noqa: BLE001 - la sonda registra ogni errore
             error = exc
             if "HANDSHAKE_FAILURE" in str(exc) and opener is OPENER:
@@ -142,6 +224,14 @@ def analyse(url: str, follow: str | None, depth: int = 0, post: str | None = Non
     item: dict[str, Any] = {"url": url, **({"post": post} if post is not None else {})}
     try:
         data, ctype = fetch(url, data=post.encode() if post is not None else None)
+    except TooLarge as big:
+        item.update(contentType=big.ctype, bytesTotal=big.size, tooLarge=True, headHex=big.head[:64].hex(),
+                    headText=big.head[:4000].decode("utf-8", errors="replace") if not big.head.startswith(b"PK") else None)
+        if big.head.startswith(b"PK\x03\x04"):
+            item["zipHead"] = zip_head(big.head)
+            if match:
+                item["zipScan"] = scan_large_zip(url, match)
+        return item
     except RuntimeError as exc:
         item["error"] = str(exc)
         return item
@@ -156,6 +246,16 @@ def analyse(url: str, follow: str | None, depth: int = 0, post: str | None = Non
                 item["memberCsv"] = {n: csv_table(z.read(n), match) for n in z.namelist() if n.lower().endswith((".csv", ".txt"))}
         elif "csv" in ctype.lower() or re.search(r"\.csv(?:[/?#]|$)", url, re.I):
             item["csv"] = csv_table(data, match)
+        elif match and ("javascript" in ctype.lower() or re.search(r"\.m?js(?:[?#]|$)", url, re.I)):
+            # Script applicativo (pagine che si costruiscono in JavaScript): occorrenze dell'espressione, senza ripetizioni.
+            text = data.decode("utf-8", errors="replace")
+            seen: list[str] = []
+            for m in re.finditer(match, text):
+                if m.group(0) not in seen:
+                    seen.append(m.group(0))
+                if len(seen) >= 300:
+                    break
+            item["matches"] = seen
         else:
             page = data.decode("utf-8", errors="replace")
             ls = links(page, url)

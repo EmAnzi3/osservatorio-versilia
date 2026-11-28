@@ -1,0 +1,28 @@
+{
+ "schemaVersion": 1,
+ "createdAt": "2026-11-28T10:33:40Z",
+ "note": "Sonda: struttura della fonte consultata; non è un dato pubblicato.",
+ "follow": null,
+ "result": {
+  "url": "https://www.piattaformaunicanazionale.it/static/js/main.fdb71f83.js",
+  "contentType": "application/javascript",
+  "bytes": 13559470,
+  "sha256": "f9f45b6300cbbd000743c354c6a3aac248bf2fe92acde5f91c2725e5544ebd59",
+  "matches": [
+   "https://services2.arcgis.com/pROHh69WvVijk4nR/arcgis/rest/services/scuole_OSM_latest/FeatureServer/0",
+   "https://services2.arcgis.com/pROHh69WvVijk4nR/arcgis/rest/services/musei_points/FeatureServer/0",
+   "https://services2.arcgis.com/pROHh69WvVijk4nR/arcgis/rest/services/Ospedali/FeatureServer/0",
+   "https://services2.arcgis.com/pROHh69WvVijk4nR/arcgis/rest/services/Stazioni_principali_latest/FeatureServer/0",
+   "https://services2.arcgis.com/pROHh69WvVijk4nR/arcgis/rest/services/Principali_aeroporti/FeatureServer/0",
+   "https://services2.arcgis.com/pROHh69WvVijk4nR/arcgis/rest/services/Biblioteche_latest/FeatureServer/0",
+   "https://www.piattaformaunicanazionale.it/",
+   "https://experience.arcgis.com/experience/e7da86e5c6fd409d9491e2af38f96ebb",
+   "https://experience.arcgis.com/experience/c0550f6ae7224875b1af319d0f764bb1/",
+   "https://experience.arcgis.com/experience/95b83f3cfb214232a31b9cc858a678e4/",
+   "https://gse-sta.maps.arcgis.com/apps/dashboards/d2e173e1210b4ad89f5ea0d2b8d1b00e",
+   "https://gse-sta.maps.arcgis.com/apps/dashboards/44ac0a740b184666a1f2ff9efe15e1b7",
+   "https://gse-sta.maps.arcgis.com/apps/dashboards/08b5d3e711684ec4b6f52b3c71d338b9",
+   "https://js.arcgis.com/"
+  ]
+ }
+}

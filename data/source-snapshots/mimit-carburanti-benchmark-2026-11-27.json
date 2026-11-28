@@ -1,0 +1,50 @@
+{
+  "schemaVersion": 1,
+  "version": "mimit-carburanti-benchmark-2026-11-27-v1",
+  "retrieved": "2026-11-28",
+  "year": "2026-11-27",
+  "publisher": "MIMIT — Osservaprezzi carburanti",
+  "sources": {
+    "anagrafica": {
+      "url": "https://www.mimit.gov.it/images/exportCSV/anagrafica_impianti_attivi.csv",
+      "sha256": "2ffd123bd4304c7388d3f6634d016647d3ac7986680e89e43da6eba75e5e5b32",
+      "bytes": 3580737
+    },
+    "prezzi": {
+      "url": "https://www.mimit.gov.it/images/exportCSV/prezzo_alle_8.csv",
+      "sha256": "b7b0961948662f36bebd53580261f256ec3ff87336651b9a2b54915117f8422b",
+      "bytes": 3946962
+    }
+  },
+  "rule": "Mediana dei prezzi self-service degli impianti attivi del territorio (Toscana: province AR, FI, GR, LI, LU, MS, PI, PO, PT, SI; Italia: tutti), stessi filtri e stessa estrazione dei valori comunali.",
+  "benchmarks": {
+    "tuscany": {
+      "benzina": {
+        "median": 1.92,
+        "stations": 1423
+      },
+      "gasolio": {
+        "median": 2.199,
+        "stations": 1427
+      }
+    },
+    "italy": {
+      "benzina": {
+        "median": 1.92,
+        "stations": 20304
+      },
+      "gasolio": {
+        "median": 2.197,
+        "stations": 20287
+      }
+    }
+  },
+  "qualityGate": {
+    "status": "PASS",
+    "note": "Mediane 2026-11-27 dei sette Comuni ricalcolate identiche alle pubblicate."
+  },
+  "acquisitionEvidence": {
+    "script": "scripts/fuel_benchmark.py (file MIMIT scaricati da Ema dal browser)",
+    "where": "fuori dalla CI: il sito MIMIT non risponde ai runner GitHub"
+  }
+}

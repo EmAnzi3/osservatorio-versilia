@@ -1,0 +1,16 @@
+{
+ "schemaVersion": 1,
+ "createdAt": "2026-11-28T10:33:43Z",
+ "note": "Sonda: struttura della fonte consultata; non è un dato pubblicato.",
+ "follow": null,
+ "result": {
+  "url": "https://www.piattaformaunicanazionale.it/import-arcgis.js",
+  "contentType": "application/javascript",
+  "bytes": 3212,
+  "sha256": "ad40c92353cbe3ab8c41f53502b79bf14ac7f621797cd054d8e4c5331d69cf5d",
+  "matches": [
+   "https://js.arcgis.com/${ARCGIS_VERSION}/@arcgis/core`;\n\nconst",
+   "https://js.arcgis.com/${ARCGIS_VERSION}/esri/themes/light/main.css`;\ndocument.head.appendChild(link"
+  ]
+ }
+}

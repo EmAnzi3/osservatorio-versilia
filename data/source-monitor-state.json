@@ -8607,41 +8607,41 @@
       "periodVerifiedAt": ""
     },
     "fuelPrices": {
-      "publishedPeriod": "2026-11-12",
+      "publishedPeriod": "2026-11-27",
       "checkedAt": "2026-11-05T13:17:29+00:00",
-      "observedLatestPeriod": "2026-11-12",
+      "observedLatestPeriod": "2026-11-27",
       "status": "current",
-      "periodVerifiedAt": "2026-11-13T23:00:00+00:00",
+      "periodVerifiedAt": "2026-11-28T14:30:00+00:00",
       "verificationEvidence": {
         "provider": "Ministero delle Imprese e del Made in Italy",
         "url": "https://www.mimit.gov.it/images/exportCSV/prezzo_alle_8.csv",
-        "referenceDate": "2026-11-12",
+        "referenceDate": "2026-11-27",
         "coverage": "6/7",
         "valuesMatchPublished": true,
         "towns": {
           "Camaiore": {
-            "benzina": 1.949,
+            "benzina": 1.938,
             "gasolio": 2.199,
             "stations": 11
           },
           "Forte dei Marmi": {
-            "benzina": 1.96,
+            "benzina": 1.909,
             "gasolio": 2.194,
             "stations": 4
           },
           "Massarosa": {
-            "benzina": 1.949,
-            "gasolio": 2.199,
+            "benzina": 1.92,
+            "gasolio": 2.188,
             "stations": 7
           },
           "Pietrasanta": {
-            "benzina": 1.949,
-            "gasolio": 2.199,
+            "benzina": 1.92,
+            "gasolio": 2.189,
             "stations": 15
           },
           "Seravezza": {
-            "benzina": 1.999,
-            "gasolio": 2.212,
+            "benzina": 1.947,
+            "gasolio": 2.197,
             "stations": 6
           },
           "Stazzema": {
@@ -8650,8 +8650,8 @@
             "stations": 0
           },
           "Viareggio": {
-            "benzina": 1.96,
-            "gasolio": 2.199,
+            "benzina": 1.919,
+            "gasolio": 2.194,
             "stations": 20
           }
         },

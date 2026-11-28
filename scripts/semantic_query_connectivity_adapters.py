@@ -28,7 +28,8 @@ MISSING_COUNTS = sorted(t['code'] for t in json.loads((agcom_sources.ROOT / NATI
 COUNT_COVERAGE = f'{7 - len(MISSING_COUNTS)}/7'
 FIELDS = {DESI: 'copertura_ftth_desi_pct', NEAR: 'copertura_ftth_20m_pct', REACHED: 'famiglie_ftth'}
 FORMULAS = {DESI: 'Copertura FTTH DESI comunale pubblicata da AGCOM; media Versilia ponderata per famiglie residenti AGCOM', NEAR: 'Copertura FTTH entro 20 metri comunale pubblicata da AGCOM; media Versilia ponderata per famiglie residenti AGCOM', REACHED: 'Famiglie FTTH pubblicate da AGCOM nella reportistica comunale Broadband Map.', UNREACHED: 'famiglie residenti AGCOM − famiglie raggiunte da FTTH DESI'}
-HASHES = {NATIVE: (_pin('connectivity#1'), _pin('connectivity#2')), BENCHMARK: (_pin('connectivity#3'), _pin('connectivity#4'))}
+HASHES = {NATIVE: (_pin('connectivity#1'), _pin('connectivity#2')), BENCHMARK: (_pin('connectivity#3'), _pin('connectivity#4')),
+          'data/source-snapshots/agcom-ftth-serie.json': (_pin('connectivity#5'), _pin('connectivity#6'))}
 NOTES = ['connectivity_declared_network_not_subscriptions_speed_or_civic_activation', 'connectivity_no_automatic_causal_or_policy_priority_claim']
 
 
@@ -86,6 +87,25 @@ def value(key, record):
     return None if record['famiglie_ftth'] is None else record['famiglie_residenti'] - record['famiglie_ftth']
 
 
+HISTORY = 'data/source-snapshots/agcom-ftth-serie.json'
+
+
+def history_row_matches(engine, key, row):
+    """Serie trimestrale materializzata dalle edizioni AGCOM (`ftth_history.py`): ammessa solo se coincide con lo
+    snapshot congelato e termina all'edizione pubblicata. Le operazioni storiche restano chiuse in Chiedi."""
+    metric = engine._catalog['metrics'][key]
+    if metric['meta'].get('sourceMeta', {}).get('historySnapshot') != HISTORY:
+        return False
+    snap, _ = frozen(engine, HISTORY)
+    dates = snap.get('dates', {}).get(key) or []
+    series = row['series']
+    if snap.get('qualityGate', {}).get('status') != 'PASS' or not dates or dates[-1] != REFERENCE or series.get('years') != dates:
+        return False
+    expected = [snap['towns'][row['town']][d][key] for d in dates]
+    return len(series.get('values') or []) == len(expected) and all(
+        a is not None and b is not None and math.isclose(a, b, rel_tol=0, abs_tol=1e-9) for a, b in zip(series['values'], expected))
+
+
 def validated(engine, key):
     metric = engine._catalog['metrics'][key]; context(metric, key, 'total')
     snap, ref = frozen(engine, NATIVE)
@@ -101,7 +121,8 @@ def validated(engine, key):
         if (row.get('town') != TOWNS[code] or row.get('slug') != '-'.join(TOWNS[code].lower().split())
                 or town['town'] != TOWNS[code] or record['comune'] != TOWNS[code]
                 or snap['agcomAudit'].get('dataPeriod') != PERIOD or row.get('notApplicable') or row.get('dataUnavailable')
-                or any(row.get(k) is not None for k in ('series', 'normalized', 'ratioComponents'))):
+                or any(row.get(k) is not None for k in ('normalized', 'ratioComponents'))
+                or (row.get('series') is not None and not history_row_matches(engine, key, row))):
             raise ValueError('connectivity_row_definition_changed')
         expected = value(key, record)
         equal(row.get('value'), expected); equal(row.get('benchmarkValue'), expected)

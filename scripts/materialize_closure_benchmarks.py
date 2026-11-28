@@ -14,7 +14,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 DATA = ROOT / "data" / "site-data.json"
-MODULES = ("income_distribution_benchmark", "rgs_staff_history")
+MODULES = ("income_distribution_benchmark", "rgs_staff_history", "fuel_benchmark")
 
 
 def main() -> None:

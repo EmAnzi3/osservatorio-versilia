@@ -1,0 +1,70 @@
+{
+ "schemaVersion": 1,
+ "createdAt": "2026-11-28T08:04:16Z",
+ "note": "Sonda: struttura della fonte consultata; non è un dato pubblicato.",
+ "follow": null,
+ "result": {
+  "url": "https://geo.agcom.it/reportistica/report.js",
+  "contentType": "application/javascript",
+  "bytes": 18919,
+  "sha256": "aad13bf8700ff9ba77b7ca437587a680e7128762a12030403295f4246d4a06ce",
+  "forms": [],
+  "scripts": [],
+  "inlineScript": "",
+  "links": [
+   {
+    "url": "https://geo.agcom.it/reportistica/desi/Survey_Italy_IT_DESI_2026_Data_2025_v2_pub.xlsx",
+    "text": "XLSX"
+   },
+   {
+    "url": "https://geo.agcom.it/reportistica/doc/RapportoAggiornamentoBBmap_3Q26vs4Q25_r261010a.pdf",
+    "text": "PDF"
+   },
+   {
+    "url": "https://geo.agcom.it/reportistica/doc/RapportoAggiornamentoBBmap_2Q26vs4Q25_r260714a.pdf",
+    "text": "PDF"
+   },
+   {
+    "url": "https://geo.agcom.it/reportistica/doc/RapportoAggiornamentoBBmap_1Q26vs4Q25_r260529c.pdf",
+    "text": "PDF"
+   },
+   {
+    "url": "https://geo.agcom.it/reportistica/doc/RapportoAggiornamentoBBmap_4Q25vs4Q24_r260119.pdf",
+    "text": "PDF"
+   },
+   {
+    "url": "https://geo.agcom.it/reportistica/doc/RapportoAggiornamentoBBmap_3Q25vs4Q24_r251014.pdf",
+    "text": "PDF"
+   },
+   {
+    "url": "https://geo.agcom.it/reportistica/doc/RapportoAggiornamentoBBmap_2Q25vs4Q24_r250716.pdf",
+    "text": "PDF"
+   },
+   {
+    "url": "https://geo.agcom.it/reportistica/doc/RapportoAggiornamentoBBmap_1Q25vs4Q24_r250507.pdf",
+    "text": "PDF"
+   },
+   {
+    "url": "https://geo.agcom.it/reportistica/doc/RapportoAggiornamentoBBmap_4Q24vs4Q23_r250213.pdf",
+    "text": "PDF"
+   },
+   {
+    "url": "https://geo.agcom.it/reportistica/doc/RapportoAggiornamentoBBmap_3Q24vs4Q23_r6_3r241113.pdf",
+    "text": "PDF"
+   },
+   {
+    "url": "https://geo.agcom.it/reportistica/doc/RapportoAggiornamentoBBmap_2Q24vs4Q23_r6_2b.pdf",
+    "text": "PDF"
+   },
+   {
+    "url": "https://geo.agcom.it/reportistica/doc/RapportoAggiornamentoBBmap_1Q24vs4Q23_r5.pdf",
+    "text": "PDF"
+   },
+   {
+    "url": "https://geo.agcom.it/reportistica/significato_campi_v1.pdf",
+    "text": "Significato dei campi"
+   }
+  ],
+  "text": "function initReport() { var content = ' Indicatori Connettività (DESI 2026) (rev. del 05/02/2026) '; content += ' '; content += ' KPI DESI 2026 - Dati 31/12/2025 XLSX '; content += ' '; content += ' '; content += ' Consistenze rilevate al 05/10/2026 (rev. del 12/10/2026) '; content += ' '; content += ' Rapporto di aggiornamento PDF '; content += ' '; content += ' Dati Regionali CSV '; content += ' XLS '; content += ' '; content += ' Dati Provinciali CSV '; content += ' XLS '; content += ' '; content += ' Dati Comunali CSV '; content += ' XLS '; content += ' '; content += ' '; content += ' Consistenze rilevate al 06/07/2026 (rev. del 14/07/2026) '; content += ' '; content += ' Rapporto di aggiornamento PDF '; content += ' '; content += ' Dati Regionali CSV '; content += ' XLS '; content += ' '; content += ' Dati Provinciali CSV '; content += ' XLS '; content += ' '; content += ' Dati Comunali CSV '; content += ' XLS '; content += ' '; content += ' '; content += ' Consistenze rilevate al 31/03/2026 (rev. del 04/06/2026) '; content += ' '; content += ' Rapporto di aggiornamento PDF '; content += ' '; content += ' Dati Regionali CSV '; content += ' XLS '; content += ' '; content += ' Dati Provinciali CSV '; content += ' XLS '; content += ' '; content += ' Dati Comunali CSV '; content += ' XLS '; content += ' '; content += ' '; content += ' Consistenze rilevate al 31/12/2025 (rev. del 19/01/2026) '; content += ' '; content += ' Rapporto di aggiornamento PDF '; content += ' '; content += ' Dati Regionali CSV '; content += ' XLS '; content += ' '; content += ' Dati Provinciali CSV '; content += ' XLS '; content += ' '; content += ' Dati Comunali CSV '; content += ' XLS '; content += ' '; content += ' '; content += ' Consistenze rilevate al 30/09/2025 (rev. del 14/10/2025) '; content += ' '; content += ' Rapporto di aggiornamento PDF '; content += ' '; content += ' Dati Regionali CSV '; content += ' XLS '; content += ' '; content += ' Dati Provinciali CSV '; content += ' XLS '; content += ' '; content += ' Dati Comunali CSV '; content += ' XLS '; content += ' '; content += ' '; content += ' Consistenze rilevate al 30/6/2025 (rev. del 11/7/2025) '; content += ' '; content += ' Rapporto di aggiornamento PDF '; content += ' '; content += ' Dati Regionali CSV '; content += ' XLS '; content += ' '; content += ' Dati Provinciali CSV '; content += ' XLS '; content += ' '; content += ' Dati Comunali CSV '; content += ' XLS '; content += ' '; content += ' '; content += ' Consistenze rilevate al 31/3/2025 (rev. del 7/5/2025) '; content += ' '; content += ' Rapporto di aggiornamento PDF '; content += ' '; content += ' Dati Regionali CSV '; content += ' XLS '; content += ' '; content += ' Dati Provinciali CSV '; content += ' XLS '; content += ' '; content += ' Dati Comunali CSV '; content += ' XLS '; content += ' '; content += ' '; content += ' Consistenze rilevate al 31/12/2024 (rev. del 18/2/2025) '; content += ' '; content += ' Rapporto di aggiornamento PDF '; content += ' '; content += ' Dati Regionali CSV '; content += ' XLS '; content += ' '; content += ' Dati Provinciali CSV '; content += ' XLS '; content += ' '; content += ' Dati Comunali CSV '; content += ' XLS '; content += ' '; content += ' '; content += ' Consistenze rilevate al 30/9/2024 (rev. del 13/11/2024) '; content += ' '; content += ' Dati Regionali CSV '; content += ' XLS '; content += ' '; content += ' Dati Provinciali CSV '; content += ' XLS '; content += ' '; content += ' Dati Comunali CSV '; content += ' XLS '; content += ' '; content += ' Rapporto di aggiornamento PDF '; content += ' '; content += ' '; content += ' Consistenze rilevate al 30/6/2024 '; content += ' '; content += ' Dati Regionali CSV '; content += ' XLS '; content += ' '; content += ' Dati Provinciali CSV '; content += ' XLS '; content += ' '; content += ' Dati Comunali CSV '; content += ' XLS '; content += ' '; content += ' Rapporto di aggiornamento PDF '; content += ' '; content += ' '; content += ' Consistenze rilevate al 31/3/2024 '; content += ' '; content += ' Dati Regionali CSV '; content += ' XLS '; content += ' '; content += ' Dati Provinciali CSV '; content += ' XLS '; content += ' '; content += ' Dati Comunali CSV '; content += ' XLS '; content += ' '; content += ' Rapporto di aggiornamento PDF '; content += ' '; content += ' '; content += ' Consistenze rilevate al 31/12/2023 '; content += ' '; content += ' Dati Regionali CSV '; content += ' XLS '; content += ' '; content += ' Dati Provinciali CSV '; content += ' XLS '; content += ' '; content += ' Dati Comunali CSV '; content += ' XLS '; content += ' '; content += ' '; content += ' Consistenze rilevate al 30/09/2023 '; content += ' '; content += ' Dati Regionali CSV '; content += ' XLS '; content += ' '; content += ' Dati Provinciali CSV '; content += ' XLS '; content += ' '; content += ' Dati Comunali CSV '; content += ' XLS '; content += ' '; content += ' '; content += ' Consistenze rilevate al 30/06/2023 '; content += ' '; content += ' Dati Regionali CSV '; content += ' XLS '; content += ' '; content += ' Dati Provinciali CSV '; content += ' XLS '; content += ' '; content += ' Dati Comunali CSV '; content += ' XLS '; content += ' '; content += ' '; content += ' Consistenze rilevate al 31/12/2022 '; content += ' '; content += ' Dati Regionali CSV '; content += ' XLS '; content += ' '; content += ' Dati Provinciali CSV '; content += ' XLS '; content += ' '; content += ' Dati Comunali CSV '; content += ' XLS '; content += ' '; content += ' '; content += ' Note esplicative '; content += ' ' content += ' Significato dei campi '; content += ' '; content += ' '; document.getElementById('content').innerHTML = content; }"
+ }
+}

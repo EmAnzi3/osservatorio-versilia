@@ -156,6 +156,8 @@ jobs:
           commands += [["siope-fiscal-recovery-history"]] if request.get("siopeFiscalRecoveryHistory") else []
           commands += [["mef-income-distribution-benchmark"]] if request.get("mefIncomeDistributionBenchmark") else []
           commands += [["rgs-staff-history"]] if request.get("rgsStaffHistory") else []
+          commands += [["agcom-ftth-history"]] if request.get("agcomFtthHistory") else []
+          commands += [["pun-ev-points"]] if request.get("punEvPoints") else []
           commands += [["omi-history"]] if request.get("omiHistory") else []
           commands += [["mef-income-distribution-history"]] if request.get("mefIncomeDistributionHistory") else []
           commands += [["mef-imu-benchmark", "--year", str(int(r["year"])), "--scope", r.get("scope", "toscana")] + (["--deadline", str(float(r["deadline"]))] if r.get("deadline") is not None else []) for r in request.get("mefImuBenchmark", [])]

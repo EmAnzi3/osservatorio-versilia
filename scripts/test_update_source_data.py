@@ -1488,6 +1488,108 @@ def rgs_staff_history_cases() -> None:
     assert metrics[rh.TURNOVER]["meta"]["benchmark"]["italy"] is not None
 
 
+def ftth_history_cases() -> None:
+    """FTTH: date a una o due cifre, edizione pubblicata = catalogo, serie ferma al primo CSV non leggibile."""
+    from datetime import date as _date
+    import ftth_history as fh
+
+    js = ("var c=''; c+='<h2>Consistenze rilevate al 05/10/2026 (rev.)</h2> Dati Comunali <a href=\"u/2026q3.csv\"><u>CSV</u></a>';"
+          "c+='<h2>Consistenze rilevate al 30/6/2026</h2> Dati Comunali <a href=\"u/2026q2.csv\"><u>CSV</u></a>';"
+          "c+='<h2>Consistenze rilevate al 31/3/2026</h2> Dati Comunali <a href=\"u/2026q1.csv\"><u>CSV</u></a>';"
+          "c+='<h2>Consistenze rilevate al 31/12/2025</h2> Dati Comunali <a href=\"u/2025q4.csv\"><u>CSV</u></a>';")
+    assert [d for _, d in fh.editions(js)] == [_date(2026, 10, 5), _date(2026, 6, 30), _date(2026, 3, 31), _date(2025, 12, 31)]
+    def rec(code: str, q: int) -> dict:
+        return {"copertura_ftth_desi_pct": 50.0 + q, "copertura_ftth_20m_pct": 40.0 + q, "famiglie_residenti": 1000 if q > 1 else 1200,
+                "famiglie_ftth": None if code == "046013" else 500 + q}
+    def parse(body: bytes) -> dict:
+        q = int(body.decode())
+        if q == 0:
+            raise ValueError("colonna 20 m assente")
+        return {c: rec(c, q) for c in fh.TOWNS}
+    def fetch(url: str) -> bytes:
+        return js.encode() if url.endswith("report.js") else {"u/2026q3.csv": b"3", "u/2026q2.csv": b"2", "u/2026q1.csv": b"1", "u/2025q4.csv": b"0"}[url]
+    metrics = {k: {"meta": {}, "method": {}, "rows": [{"town": t, "code": c, "value": v} for c, t in fh.TOWNS.items()
+               for v in [fh.values(rec(c, 3))[k]]]} for k in (*fh.PCT, *fh.COUNTS)}
+    snap = fh.build_snapshot(fetch, parse, metrics, _date(2026, 10, 5))
+    assert snap["dates"]["ftthCoverageDesi"] == ["2026-06-30", "2026-10-05"] and "2026-03-31" in snap["stoppedAt"] and "famiglie" in snap["stoppedAt"], snap
+    fh.apply(metrics, snap, fh.SNAPSHOT)
+    rows = {r["town"]: r for r in metrics["ftthCoverageDesi"]["rows"]}
+    assert rows["Massarosa"]["series"]["values"] == [52.0, 53.0] and "series" not in metrics["ftthReachedHouseholds"]["rows"][0]
+    assert snap["towns"]["Massarosa"]["2026-06-30"]["ftthReachedHouseholds"] == 502.0
+    metrics["ftthCoverage20m"]["rows"][0]["value"] = 1.0
+    try:
+        fh.build_snapshot(fetch, parse, metrics, _date(2026, 10, 5))
+    except fh.FtthHistoryError:
+        pass
+    else:
+        raise AssertionError("edizione diversa dal pubblicato accettata")
+
+
+def fuel_benchmark_cases() -> None:
+    """Carburanti: mediana degli impianti del territorio, primo prezzo per impianto, estrazioni coerenti, Comuni = pubblicati."""
+    import fuel_benchmark as fb
+
+    anag = ["Estrazione del 2026-11-27", "idImpianto|Gestore|Bandiera|Tipo Impianto|Nome Impianto|Indirizzo|Comune|Provincia|Latitudine|Longitudine"]
+    prices = ["Estrazione del 2026-11-27", "idImpianto|descCarburante|prezzo|isSelf|dtComu"]
+    n = 0
+    for prov, town, count, base in (("LU", "MASSAROSA", 3, 1.90), ("FI", "FIRENZE", 1500, 1.95), ("RM", "ROMA", 15000, 2.00)):
+        for k in range(count):
+            n += 1
+            anag.append(f"{n}|G|B|Stradale|N|I|{town}|{prov}|0|0")
+            prices += [f"{n}|Benzina|{base + (k % 3) * 0.001:.3f}|1|x", f"{n}|Benzina|9.999|1|x", f"{n}|Gasolio|{base + 0.2:.3f}|1|x", f"{n}|Benzina|1.5|0|x"]
+    pub = {"Massarosa": {"benzina": 1.901, "gasolio": 2.1}}
+    snap = fb.build_snapshot("\n".join(anag).encode(), "\n".join(prices).encode(), pub, "2026-11-27")
+    t, i = snap["benchmarks"]["tuscany"], snap["benchmarks"]["italy"]
+    assert t["benzina"]["stations"] == 1503 and abs(t["benzina"]["median"] - 1.951) < 1e-9, t
+    assert i["benzina"]["stations"] == 16503, i
+    metric = {"meta": {"year": "2026-11-27"}, "rows": [{"parts": [{"label": "Benzina self"}, {"label": "Gasolio self"}]}]}
+    fb.apply(metric, snap, "x")
+    assert metric["meta"]["benchmark"]["part"] == "Benzina self" and metric["meta"]["benchmark"]["italy"] == i["benzina"]["median"]
+    for bad_pub, bad_year in (({"Massarosa": {"benzina": 1.95, "gasolio": 2.1}}, "2026-11-27"), (pub, "2026-11-12")):
+        try:
+            fb.build_snapshot("\n".join(anag).encode(), "\n".join(prices).encode(), bad_pub, bad_year)
+        except fb.FuelBenchmarkError:
+            pass
+        else:
+            raise AssertionError("confronto carburanti incoerente accettato")
+
+
+def pun_ev_points_cases() -> None:
+    """PUN: pagine ArcGIS, totali coerenti Comuni = Regioni = storico, Toscana 273/273, Comuni della Versilia univoci."""
+    import json as _json
+    from urllib.parse import parse_qs, urlsplit
+    import pun_ev_points as pun
+
+    regions = ["Toscana"] + [f"R{k}" for k in range(19)]
+    comuni = [{"FID": i + 1, "COMUNE": t, "DEN_PROV": "Lucca", "DEN_REG": "Toscana", "Conteggio": 2} for i, t in enumerate(pun.TOWNS.values())]
+    comuni += [{"FID": 100 + k, "COMUNE": f"T{k}", "DEN_PROV": "X", "DEN_REG": "Toscana", "Conteggio": 1} for k in range(266)]
+    comuni += [{"FID": 1000 + k, "COMUNE": f"C{k}", "DEN_PROV": "Y", "DEN_REG": regions[1 + k % 19], "Conteggio": 1} for k in range(7600)]
+    tus = sum(c["Conteggio"] for c in comuni if c["DEN_REG"] == "Toscana")
+    regioni = [{"FID": i, "DEN_REG": r, "Conteggio": tus if r == "Toscana" else sum(c["Conteggio"] for c in comuni if c["DEN_REG"] == r)} for i, r in enumerate(regions)]
+    storico = [{"FID": 1, "Storico": 1719792000000, "Punti_di_ricarica": 1}, {"FID": 2, "Storico": 1759276800000, "Punti_di_ricarica": len(comuni) + 7}]
+    layers = {"Comuni_Italiani": comuni, "Regioni_Italiane": regioni, "Installazioni_storico": storico}
+    def fetch(url: str) -> bytes:
+        layer = url.split("/services/")[1].split("/")[0]
+        q = parse_qs(urlsplit(url).query)
+        start, count = int(q["resultOffset"][0]), int(q["resultRecordCount"][0])
+        rows = layers[layer][start:start + count]
+        return _json.dumps({"features": [{"attributes": r} for r in rows], "exceededTransferLimit": start + count < len(layers[layer])}).encode()
+    pop = {c: 1000 for c in pun.TOWNS}
+    snap = pun.build_snapshot(fetch, pop, 3_000_000, 60_000_000)
+    assert snap["referenceDate"] == "2025-10-01" and snap["towns"]["046018"]["per1000"] == 2.0, snap["towns"]["046018"]
+    assert snap["benchmarks"]["tuscany"]["points"] == 280 and snap["benchmarks"]["italy"]["points"] == len(comuni) + 7
+    metric = {"meta": {"year": "2026"}, "method": {}, "aggregate": {}, "rows": [{"town": t, "code": c} for c, t in pun.TOWNS.items()]}
+    pun.apply(metric, snap, "x")
+    assert metric["meta"]["year"] == "1 ottobre 2025" and metric["rows"][0]["count"] == 2 and metric["aggregate"]["value"] == 2.0
+    storico[-1]["Punti_di_ricarica"] += 1
+    try:
+        pun.build_snapshot(fetch, pop, 3_000_000, 60_000_000)
+    except pun.PunError:
+        pass
+    else:
+        raise AssertionError("totali PUN incoerenti accettati")
+
+
 def irpef_history_cases() -> None:
     """Addizionale IRPEF: elenchi MEF annuali, varianti di scrittura uniformate, anni consecutivi, ultimo anno = pubblicato."""
     import irpef_history as ih
@@ -1769,6 +1871,30 @@ def source_probe_cases(tmp: Path) -> None:
     table = probe.csv_table("COD;Comune;Val\n001001;Agliè;1\n46033;VIAREGGIO;2\n".encode())
     assert table["separator"] == ";" and table["rows"] == 3 and table["hits"] == [[3, ["46033", "VIAREGGIO", "2"]]]
     assert probe.csv_table("U;V\nLU033X;1\nPE007Y;2\n".encode(), r"^LU0(05|13|18|24|28|30|33)")["hits"] == [[2, ["LU033X", "1"]]]
+    orig_fetch = probe.fetch
+    def big(url, data=None):
+        raise probe.TooLarge(10**9, b"PK\x03\x04xx", "application/zip")
+    probe.fetch = big
+    try:
+        out = probe.analyse("https://a.it/f.zip", None)
+        assert out["tooLarge"] and out["bytesTotal"] == 10**9 and out["headText"] is None, out
+        import zipfile as _zf
+        zbuf = _io.BytesIO()
+        with _zf.ZipFile(zbuf, "w", _zf.ZIP_DEFLATED) as z:
+            z.writestr("dati.csv", "ITTER107;Territorio;Value\n046018;Massarosa;1\n" * 50)
+        assert probe.zip_head(zbuf.getvalue()[:300])["text"].startswith("ITTER107;Territorio;Value"), probe.zip_head(zbuf.getvalue()[:300])
+        import contextlib as _cl
+        scan = probe.scan_large_zip("https://a.it/f.zip", r"^046018", opener_get=lambda u: _cl.closing(_io.BytesIO(zbuf.getvalue())))
+        member = scan["dati.csv"]
+        assert member["header"] == ["ITTER107", "Territorio", "Value"] and member["rows"] == 99 and len(member["hits"]) == 50, member
+        assert member["distinct"]["ITTER107"] == {"046018": 50, "ITTER107": 49}, member["distinct"]
+    finally:
+        probe.fetch = orig_fetch
+    probe.fetch = lambda url, data=None: (b'x="/api/v1/stats";y="https://a.it/api/v1/stats";z="/api/v1/stats"', "application/javascript")
+    try:
+        assert probe.analyse("https://a.it/static/main.js", None, match=r"(?:https?://[^\"]+)?/api/[^\"]+")["matches"] == ["/api/v1/stats", "https://a.it/api/v1/stats"]
+    finally:
+        probe.fetch = orig_fetch
 
 
 def sdmx_probe_cases() -> None:
@@ -2036,6 +2162,9 @@ def main() -> None:
     openbdap_refresh_cases()
     lotto1_history_cases()
     rgs_staff_history_cases()
+    ftth_history_cases()
+    fuel_benchmark_cases()
+    pun_ev_points_cases()
     fiscal_recovery_history_cases()
     openbdap_debt_cases()
     omi_history_cases()
