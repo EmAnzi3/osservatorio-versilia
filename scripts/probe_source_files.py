@@ -59,6 +59,23 @@ class TooLarge(Exception):
         self.size, self.head, self.ctype = size, head, ctype
 
 
+def zip_head(head: bytes, limit: int = 6000) -> dict[str, Any]:
+    """Primo membro di un archivio ZIP letto dall'inizio del file: nome e primo testo decompresso (intestazioni CSV)."""
+    import struct
+    import zlib
+    if len(head) < 30:
+        return {"error": "intestazione ZIP incompleta"}
+    method, csize = struct.unpack("<H", head[8:10])[0], struct.unpack("<I", head[18:22])[0]
+    nlen, xlen = struct.unpack("<HH", head[26:30])
+    name = head[30:30 + nlen].decode("utf-8", errors="replace")
+    body = head[30 + nlen + xlen:]
+    try:
+        text = (zlib.decompressobj(-15).decompress(body) if method == 8 else body)[:limit].decode("utf-8-sig", errors="replace")
+    except zlib.error as exc:
+        text = f"decompressione non riuscita: {exc}"
+    return {"member": name, "method": method, "compressedSize": csize, "text": text}
+
+
 def fetch(url: str, tries: int = 3, data: bytes | None = None) -> tuple[bytes, str]:
     error: Exception | None = None
     opener = OPENER
@@ -163,6 +180,8 @@ def analyse(url: str, follow: str | None, depth: int = 0, post: str | None = Non
     except TooLarge as big:
         item.update(contentType=big.ctype, bytesTotal=big.size, tooLarge=True, headHex=big.head[:64].hex(),
                     headText=big.head[:4000].decode("utf-8", errors="replace") if not big.head.startswith(b"PK") else None)
+        if big.head.startswith(b"PK\x03\x04"):
+            item["zipHead"] = zip_head(big.head)
         return item
     except RuntimeError as exc:
         item["error"] = str(exc)

@@ -1813,6 +1813,11 @@ def source_probe_cases(tmp: Path) -> None:
     try:
         out = probe.analyse("https://a.it/f.zip", None)
         assert out["tooLarge"] and out["bytesTotal"] == 10**9 and out["headText"] is None, out
+        import zipfile as _zf
+        zbuf = _io.BytesIO()
+        with _zf.ZipFile(zbuf, "w", _zf.ZIP_DEFLATED) as z:
+            z.writestr("dati.csv", "ITTER107;Territorio;Value\n046018;Massarosa;1\n" * 50)
+        assert probe.zip_head(zbuf.getvalue()[:300])["text"].startswith("ITTER107;Territorio;Value"), probe.zip_head(zbuf.getvalue()[:300])
     finally:
         probe.fetch = orig_fetch
     probe.fetch = lambda url, data=None: (b'x="/api/v1/stats";y="https://a.it/api/v1/stats";z="/api/v1/stats"', "application/javascript")
