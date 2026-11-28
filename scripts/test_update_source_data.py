@@ -1807,6 +1807,14 @@ def source_probe_cases(tmp: Path) -> None:
     assert table["separator"] == ";" and table["rows"] == 3 and table["hits"] == [[3, ["46033", "VIAREGGIO", "2"]]]
     assert probe.csv_table("U;V\nLU033X;1\nPE007Y;2\n".encode(), r"^LU0(05|13|18|24|28|30|33)")["hits"] == [[2, ["LU033X", "1"]]]
     orig_fetch = probe.fetch
+    def big(url, data=None):
+        raise probe.TooLarge(10**9, b"PK\x03\x04xx", "application/zip")
+    probe.fetch = big
+    try:
+        out = probe.analyse("https://a.it/f.zip", None)
+        assert out["tooLarge"] and out["bytesTotal"] == 10**9 and out["headText"] is None, out
+    finally:
+        probe.fetch = orig_fetch
     probe.fetch = lambda url, data=None: (b'x="/api/v1/stats";y="https://a.it/api/v1/stats";z="/api/v1/stats"', "application/javascript")
     try:
         assert probe.analyse("https://a.it/static/main.js", None, match=r"(?:https?://[^\"]+)?/api/[^\"]+")["matches"] == ["/api/v1/stats", "https://a.it/api/v1/stats"]

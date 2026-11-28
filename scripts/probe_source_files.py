@@ -49,13 +49,31 @@ def _legacy_opener() -> urllib.request.OpenerDirector:
                                        urllib.request.HTTPSHandler(context=context))
 
 
+MAX_BYTES = 150_000_000
+PEEK_BYTES = 65536
+
+
+class TooLarge(Exception):
+    def __init__(self, size: int, head: bytes, ctype: str):
+        super().__init__(f"{size} byte")
+        self.size, self.head, self.ctype = size, head, ctype
+
+
 def fetch(url: str, tries: int = 3, data: bytes | None = None) -> tuple[bytes, str]:
     error: Exception | None = None
     opener = OPENER
     for attempt in range(tries):
         try:
             with opener.open(urllib.request.Request(url, data=data, headers=UA), timeout=180) as r:
-                return r.read(), r.headers.get("Content-Type", "")
+                size = int(r.headers.get("Content-Length") or 0)
+                if size > MAX_BYTES:  # file troppo grande per la sonda: se ne registra solo la dimensione
+                    raise TooLarge(size, r.read(PEEK_BYTES), r.headers.get("Content-Type", ""))
+                body = r.read(MAX_BYTES + 1)  # anche senza Content-Length la sonda non legge oltre il limite
+                if len(body) > MAX_BYTES:
+                    raise TooLarge(len(body), body[:PEEK_BYTES], r.headers.get("Content-Type", ""))
+                return body, r.headers.get("Content-Type", "")
+        except TooLarge:
+            raise
         except Exception as exc:  # noqa: BLE001 - la sonda registra ogni errore
             error = exc
             if "HANDSHAKE_FAILURE" in str(exc) and opener is OPENER:
@@ -142,6 +160,10 @@ def analyse(url: str, follow: str | None, depth: int = 0, post: str | None = Non
     item: dict[str, Any] = {"url": url, **({"post": post} if post is not None else {})}
     try:
         data, ctype = fetch(url, data=post.encode() if post is not None else None)
+    except TooLarge as big:
+        item.update(contentType=big.ctype, bytesTotal=big.size, tooLarge=True, headHex=big.head[:64].hex(),
+                    headText=big.head[:4000].decode("utf-8", errors="replace") if not big.head.startswith(b"PK") else None)
+        return item
     except RuntimeError as exc:
         item["error"] = str(exc)
         return item
