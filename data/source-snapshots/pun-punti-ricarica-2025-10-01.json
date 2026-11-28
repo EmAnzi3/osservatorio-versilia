@@ -1,0 +1,107 @@
+{
+  "schemaVersion": 1,
+  "version": "pun-punti-ricarica-2025-10-01-v1",
+  "retrieved": "2026-11-28",
+  "publisher": "GSE / MASE — Piattaforma Unica Nazionale",
+  "page": "https://www.piattaformaunicanazionale.it/territory-idr",
+  "referenceDate": "2025-10-01",
+  "layers": {
+    "Comuni_Italiani": "https://services-eu1.arcgis.com/iIOeNeT2w8BczYEP/arcgis/rest/services/Comuni_Italiani/FeatureServer/0",
+    "Regioni_Italiane": "https://services-eu1.arcgis.com/iIOeNeT2w8BczYEP/arcgis/rest/services/Regioni_Italiane/FeatureServer/0",
+    "Installazioni_storico": "https://services-eu1.arcgis.com/iIOeNeT2w8BczYEP/arcgis/rest/services/Installazioni_storico/FeatureServer/0"
+  },
+  "recordsSha256": "41ed84a1caff819c552410bdaaad52c33661ddaa18b73e9544973871318fbd76",
+  "nationalHistory": [
+    {
+      "date": "2024-07-01",
+      "points": 47455
+    },
+    {
+      "date": "2024-11-01",
+      "points": 51522
+    },
+    {
+      "date": "2025-01-01",
+      "points": 54098
+    },
+    {
+      "date": "2025-04-01",
+      "points": 55015
+    },
+    {
+      "date": "2025-07-01",
+      "points": 58466
+    },
+    {
+      "date": "2025-10-01",
+      "points": 63108
+    }
+  ],
+  "towns": {
+    "046005": {
+      "town": "Camaiore",
+      "points": 23,
+      "population": 31763,
+      "per1000": 0.724112961622013
+    },
+    "046013": {
+      "town": "Forte dei Marmi",
+      "points": 27,
+      "population": 6550,
+      "per1000": 4.122137404580153
+    },
+    "046018": {
+      "town": "Massarosa",
+      "points": 9,
+      "population": 21782,
+      "per1000": 0.4131851987879901
+    },
+    "046024": {
+      "town": "Pietrasanta",
+      "points": 26,
+      "population": 22678,
+      "per1000": 1.1464855807390422
+    },
+    "046028": {
+      "town": "Seravezza",
+      "points": 5,
+      "population": 12284,
+      "per1000": 0.40703353956366
+    },
+    "046030": {
+      "town": "Stazzema",
+      "points": 6,
+      "population": 2783,
+      "per1000": 2.1559468199784404
+    },
+    "046033": {
+      "town": "Viareggio",
+      "points": 55,
+      "population": 60680,
+      "per1000": 0.9063941990771259
+    }
+  },
+  "benchmarks": {
+    "tuscany": {
+      "points": 3782,
+      "population": 3659222,
+      "per1000": 1.0335530339509327,
+      "municipalities": 273
+    },
+    "italy": {
+      "points": 63108,
+      "population": 58942828,
+      "per1000": 1.0706646107987896,
+      "municipalities": 7896
+    }
+  },
+  "rule": "Punti di ricarica per Comune del livello PUN `Comuni_Italiani`, ultima data dello storico nazionale (totali coerenti tra Comuni, Regioni e storico); residenti al 1° gennaio 2026 come denominatore per Comuni, Toscana e Italia.",
+  "qualityGate": {
+    "status": "PASS",
+    "note": "Totale nazionale 63108 = somma Regioni = storico al 2025-10-01; Toscana 273/273."
+  },
+  "acquisitionEvidence": {
+    "script": "scripts/update_source_data.py pun-ev-points",
+    "where": "runner GitHub Actions"
+  }
+}

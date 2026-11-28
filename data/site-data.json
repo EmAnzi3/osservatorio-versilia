@@ -23390,93 +23390,112 @@
         "shortLabel": "Ricarica elettrica",
         "description": "Punti di ricarica pubblici attivi rapportati alla popolazione residente.",
         "unit": "per1000",
-        "year": "2026",
+        "year": "1 ottobre 2025",
         "source": "GSE / MASE — Piattaforma Unica Nazionale",
-        "polarity": "neutral"
+        "polarity": "neutral",
+        "sourceMeta": {
+          "snapshot": "data/source-snapshots/pun-punti-ricarica-2025-10-01.json"
+        },
+        "benchmark": {
+          "year": "1 ottobre 2025",
+          "tuscany": 1.0335530339509327,
+          "italy": 1.0706646107987896,
+          "sourceSnapshot": "data/source-snapshots/pun-punti-ricarica-2025-10-01.json",
+          "source": "GSE / MASE — Piattaforma Unica Nazionale, punti di ricarica per Comune e Regione",
+          "url": "https://www.piattaformaunicanazionale.it/territory-idr",
+          "note": "Stesso livello e stessa data dei valori comunali: Toscana 3.782 punti (273/273 Comuni) e Italia 63.108, rapportati ai residenti al 1° gennaio 2026 (3.659.222 e 58.942.828)."
+        }
       },
-      "sourceUrl": "https://www.piattaformaunicanazionale.it/idr",
+      "sourceUrl": "https://www.piattaformaunicanazionale.it/territory-idr",
       "rows": [
         {
           "town": "Massarosa",
           "code": "046018",
           "slug": "massarosa",
-          "value": 0.46,
-          "formatted": "0,46 ogni 1.000",
+          "value": 0.4131851987879901,
+          "formatted": "0,41 ogni 1.000",
           "series": null,
           "normalized": null,
-          "benchmarkValue": 0.46
+          "benchmarkValue": 0.4131851987879901,
+          "count": 9
         },
         {
           "town": "Viareggio",
           "code": "046033",
           "slug": "viareggio",
-          "value": 0.79,
-          "formatted": "0,79 ogni 1.000",
+          "value": 0.9063941990771259,
+          "formatted": "0,91 ogni 1.000",
           "series": null,
           "normalized": null,
-          "benchmarkValue": 0.79
+          "benchmarkValue": 0.9063941990771259,
+          "count": 55
         },
         {
           "town": "Camaiore",
           "code": "046005",
           "slug": "camaiore",
-          "value": 0.54,
-          "formatted": "0,54 ogni 1.000",
+          "value": 0.724112961622013,
+          "formatted": "0,72 ogni 1.000",
           "series": null,
           "normalized": null,
-          "benchmarkValue": 0.54
+          "benchmarkValue": 0.724112961622013,
+          "count": 23
         },
         {
           "town": "Pietrasanta",
           "code": "046024",
           "slug": "pietrasanta",
-          "value": 1.32,
-          "formatted": "1,32 ogni 1.000",
+          "value": 1.1464855807390422,
+          "formatted": "1,15 ogni 1.000",
           "series": null,
           "normalized": null,
-          "benchmarkValue": 1.32
+          "benchmarkValue": 1.1464855807390422,
+          "count": 26
         },
         {
           "town": "Seravezza",
           "code": "046028",
           "slug": "seravezza",
-          "value": 0.24,
-          "formatted": "0,24 ogni 1.000",
+          "value": 0.40703353956366,
+          "formatted": "0,41 ogni 1.000",
           "series": null,
           "normalized": null,
-          "benchmarkValue": 0.24
+          "benchmarkValue": 0.40703353956366,
+          "count": 5
         },
         {
           "town": "Forte dei Marmi",
           "code": "046013",
           "slug": "forte-dei-marmi",
-          "value": 5.95,
-          "formatted": "5,95 ogni 1.000",
+          "value": 4.122137404580153,
+          "formatted": "4,12 ogni 1.000",
           "series": null,
           "normalized": null,
-          "benchmarkValue": 5.95
+          "benchmarkValue": 4.122137404580153,
+          "count": 27
         },
         {
           "town": "Stazzema",
           "code": "046030",
           "slug": "stazzema",
-          "value": 0.72,
-          "formatted": "0,72 ogni 1.000",
+          "value": 2.1559468199784404,
+          "formatted": "2,16 ogni 1.000",
           "series": null,
           "normalized": null,
-          "benchmarkValue": 0.72
+          "benchmarkValue": 2.1559468199784404,
+          "count": 6
         }
       ],
       "aggregate": {
-        "value": 0.9399444865001262,
+        "value": 0.9525611910169064,
         "label": "Densità Versilia",
-        "note": "Punti di ricarica attivi complessivi ogni 1.000 residenti."
+        "note": "151 punti di ricarica dei sette Comuni ogni 1.000 residenti complessivi; non è la media dei sette rapporti."
       },
       "normalizedAggregate": null,
       "method": {
         "type": "Elaborazione Osservatorio",
-        "formula": "punti di ricarica attivi / popolazione residente × 1.000",
-        "caveat": "I dati di pendolarismo si riferiscono al Censimento 2021 e non descrivono tutti gli spostamenti quotidiani.",
+        "formula": "punti di ricarica pubblici del Comune (PUN) / residenti al 1° gennaio 2026 × 1.000",
+        "caveat": "Conteggio della Piattaforma Unica Nazionale al 1 ottobre 2025 (livello pubblico per Comune). Lo storico PUN è solo nazionale: una serie comunale non esiste alla fonte. Un punto di ricarica è una singola presa utilizzabile.",
         "coverage": "7/7"
       }
     },
