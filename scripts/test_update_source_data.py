@@ -1513,8 +1513,9 @@ def ftth_history_cases() -> None:
     snap = fh.build_snapshot(fetch, parse, metrics, _date(2026, 10, 5))
     assert snap["dates"]["ftthCoverageDesi"] == ["2026-06-30", "2026-10-05"] and "2026-03-31" in snap["stoppedAt"] and "famiglie" in snap["stoppedAt"], snap
     fh.apply(metrics, snap, fh.SNAPSHOT)
-    rows = {r["town"]: r for r in metrics["ftthReachedHouseholds"]["rows"]}
-    assert rows["Massarosa"]["series"]["values"] == [502.0, 503.0] and "series" not in rows["Forte dei Marmi"]
+    rows = {r["town"]: r for r in metrics["ftthCoverageDesi"]["rows"]}
+    assert rows["Massarosa"]["series"]["values"] == [52.0, 53.0] and "series" not in metrics["ftthReachedHouseholds"]["rows"][0]
+    assert snap["towns"]["Massarosa"]["2026-06-30"]["ftthReachedHouseholds"] == 502.0
     metrics["ftthCoverage20m"]["rows"][0]["value"] = 1.0
     try:
         fh.build_snapshot(fetch, parse, metrics, _date(2026, 10, 5))

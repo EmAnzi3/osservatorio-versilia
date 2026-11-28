@@ -302,6 +302,16 @@ for metric_id in ("tourismBeds", "tourismBedsPer1000", "tourismStructuresPer1000
                 "comunali cambiano di perimetro (Massarosa: 868 posti letto nel 2024, 2.734 nel 2025). Gli anni 2002–2024 non sono "
                 "confrontabili con il valore pubblicato e la serie omogenea parte dal 2025.", ISTAT_CAPACITY_REF)
 
+# AGCOM — famiglie raggiunte e non raggiunte da FTTH (verifica del 28/11/2026, lotto 4). Le edizioni trimestrali
+# confrontabili (stessa base di famiglie residenti, marzo–ottobre 2026) non riportano mai `famiglie_ftth` per
+# Forte dei Marmi: una serie comunale 7/7 dei conteggi non esiste alla fonte. Le coperture percentuali hanno la serie.
+AGCOM_REPORT_REF = "https://geo.agcom.it/reportistica/report.js"
+for metric_id in ("ftthReachedHouseholds", "ftthUnreachedHouseholds"):
+    (_revise_metric if "serie_storica" in METRIC_EVIDENCE.get(metric_id, {}) else _add_metric)(metric_id, "serie_storica", UNAVAILABLE,
+                "Nelle edizioni trimestrali AGCOM confrontabili (stessa base di famiglie residenti, da marzo 2026) il CSV comunale "
+                "non riporta le famiglie raggiunte da FTTH per Forte dei Marmi in nessuna edizione; una serie comunale completa dei "
+                "conteggi non esiste alla fonte. Le coperture percentuali DESI ed entro 20 m hanno la serie.", AGCOM_REPORT_REF)
+
 def main() -> None:
     ns["main"]()
 

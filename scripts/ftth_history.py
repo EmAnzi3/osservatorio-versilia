@@ -117,7 +117,9 @@ def build_snapshot(fetch: Callable[[str], bytes], parse: Callable[[bytes], dict]
 
 
 def apply(metrics: dict[str, Any], snapshot: dict[str, Any], path: str) -> None:
-    for key in (*PCT, *COUNTS):
+    """Solo le due coperture: per i conteggi AGCOM non diffonde le famiglie raggiunte di Forte dei Marmi in nessuna
+    edizione, quindi non esiste una serie comunale completa (classificazione in `apply_enrichment_evidence_audit15.py`)."""
+    for key in PCT:
         dates = snapshot["dates"][key]
         if len(dates) < 2:
             continue
