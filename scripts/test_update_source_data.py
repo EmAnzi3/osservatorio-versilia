@@ -1424,7 +1424,7 @@ def rgs_staff_history_cases() -> None:
             hires = 0 if code == "046030" else 2  # Stazzema: nessun assunto, nessuna riga per causale
             t.append(pre + f";10;10;0;0;0;0;{hires};0;1;0;")
             old = 4 if (code == "046005" and year == 2022) else 5  # Camaiore 2022: totale per età ≠ personale
-            a += [pre + ';"Fino a 19 anni";2;2', pre + ';"Da 40 A 44 anni";3;3', pre + f';"Da 55 a 59 anni";{old};5']
+            a += [pre + ';"Da 35 a 39 anni";2;2', pre + ';"Da 50 A 54 anni";3;3', pre + f';"Da 55 a 59 anni";{old};5']
             if hires:
                 h += [pre + ';"CONCORSO";1;0', pre + ';"PASSAGGI DA ALTRE AMMINISTRAZIONI";0;1']
             c.append(pre + ';"COLLOCAMENTO A RIPOSO";1;0')
@@ -1473,6 +1473,10 @@ def rgs_staff_history_cases() -> None:
     finally:
         rh.frozen_population, rh.ANAGRAFE_MIN = orig, orig_min
     assert hist["staff"]["years"] == [2022, 2023, 2024], hist["staff"]
+    e = lambda b55, b50, b35, hires=0, cess=0: {"bands": {"55": b55, "50": b50, "35": b35, "20": 1}, "grossHires": hires, "grossCessations": cess}
+    assert rh.cohort_consistent(e(10, 5, 5), e(12, 4, 5, cess=1))
+    assert not rh.cohort_consistent(e(10, 5, 5), e(5, 10, 5, cess=2)), "55+ cala più dei cessati"
+    assert not rh.cohort_consistent(e(10, 2, 5), e(20, 2, 5, hires=1)), "55+ cresce più della fascia 50–54 e degli assunti"
     assert hist["age"]["years"] == [2023, 2024] and "Camaiore" in hist["age"]["stoppedAt"], hist["age"]
     assert hist["turnover"]["years"] == [2022, 2023, 2024] and hist["training"]["years"] == [2023, 2024], (hist["turnover"]["years"], hist["training"])
     t = bench["benchmarks"]["tuscany"]

@@ -157,7 +157,7 @@ def read_year(fetch: Callable[[str], bytes], year: int, keep: set[str] | None) -
             return None
         e = entities.setdefault(code, {"institution": row.get("Codice Istituzione", "").strip(), "name": row.get("Descrizione Ente", "").strip(),
                                        "staff": 0.0, "grossHires": 0.0, "grossCessations": 0.0, "turnoverRows": 0,
-                                       "age": [0.0, 0.0, 0.0], "ageRows": 0, "hires": [0.0, 0.0, 0], "cessations": [0.0, 0.0, 0]})
+                                       "age": [0.0, 0.0, 0.0], "bands": {}, "ageRows": 0, "hires": [0.0, 0.0, 0], "cessations": [0.0, 0.0, 0]})
         if e["institution"] != row.get("Codice Istituzione", "").strip():
             raise StaffHistoryError(f"{year} {code}: Codice Istituzione incoerente")
         return e
@@ -178,7 +178,10 @@ def read_year(fetch: Callable[[str], bytes], year: int, keep: set[str] | None) -
         e = entity(row)
         if e is None:
             continue
-        e["age"][age_group(row.get("Descrizione Fascia Eta", ""))] += number(row.get("Numero Dipendenti Donne")) + number(row.get("Numero Dipendenti Uomini"))
+        label, count = row.get("Descrizione Fascia Eta", ""), number(row.get("Numero Dipendenti Donne")) + number(row.get("Numero Dipendenti Uomini"))
+        e["age"][age_group(label)] += count
+        lo = str(age_bounds(label)[0])
+        e["bands"][lo] = e["bands"].get(lo, 0.0) + count
         e["ageRows"] += 1
     for key in ("hires", "cessations"):
         for row in _rows(raws[key], f"{year} {key}"):
@@ -197,6 +200,21 @@ def read_year(fetch: Callable[[str], bytes], year: int, keep: set[str] | None) -
 
 def age_valid(e: dict[str, Any]) -> bool:
     return e["staff"] > 0 and e["ageRows"] > 0 and math.isclose(sum(e["age"]), e["staff"], rel_tol=0, abs_tol=1e-6)
+
+
+def cohort_consistent(before: dict[str, Any], after: dict[str, Any]) -> bool:
+    """Coerenza delle fasce tra due anni consecutivi (condizioni necessarie, nessuna stima): chi ha almeno 55 (40)
+    anni resta nella fascia finché è in servizio, quindi la fascia cala al più dei cessati dell'anno; cresce al più
+    dei dipendenti della fascia quinquennale precedente (50–54, 35–39) più gli assunti dell'anno."""
+    def above(e: dict[str, Any], lo: int) -> float:
+        return sum(v for k, v in e["bands"].items() if int(k) >= lo)
+    # Una fascia assente nel file vale zero: il totale per età è già riconciliato con il personale (age_valid).
+    for lo, prev in ((55, "50"), (40, "35")):
+        if above(after, lo) < above(before, lo) - after["grossCessations"] - 1e-6:
+            return False
+        if above(after, lo) > above(before, lo) + before["bands"].get(prev, 0.0) + after["grossHires"] + 1e-6:
+            return False
+    return True
 
 
 def flows_valid(e: dict[str, Any]) -> bool:
@@ -360,17 +378,18 @@ def build_snapshots(fetch: Callable[[str], bytes], metrics: dict[str, Any], root
                 stop[k] = stop[k] or f"{year}: {error}"
             break
         per_year[year] = data
-    def consecutive(check: Callable[[dict], bool], key: str) -> list[int]:
+    def consecutive(check: Callable[[dict], bool], key: str, link: Callable[[dict, dict], bool] | None = None) -> list[int]:
         years = []
         for year in sorted(per_year, reverse=True):
-            bad = [TOWNS[c] for c, i in town_ids.items() if i not in per_year[year]["entities"] or not check(per_year[year]["entities"][i])]
+            bad = [TOWNS[c] for c, i in town_ids.items() if i not in per_year[year]["entities"] or not check(per_year[year]["entities"][i])
+                   or (link and years and not link(per_year[year]["entities"][i], per_year[years[-1]]["entities"][i]))]
             if bad:
                 stop[key] = f"{year}: non valido per {bad}"
                 break
             years.append(year)
         return sorted(years)
     staff_years = consecutive(lambda e: e["staff"] > 0, "staff")
-    age_years = consecutive(age_valid, "age")
+    age_years = consecutive(age_valid, "age", cohort_consistent)
     turnover_years = consecutive(flows_valid, "turnover")
     institutions = {c: ents[i]["institution"] for c, i in town_ids.items()}
     for year, data in per_year.items():
@@ -483,7 +502,9 @@ def apply(metrics: dict[str, Any], snapshot: dict[str, Any], path: str) -> None:
                                       for i, p in enumerate(row["parts"])}
             row["series"] = row["componentSeries"][row["parts"][0]["selectorLabel"]]
         m["method"]["historyNote"] = (f"Serie {age['years'][0]}–{age['years'][-1]} dai file RGS «Anzianità» per Ente di ciascun anno, "
-                                      "stesse macrofasce; anni in cui per tutti e sette i Comuni il totale per età coincide con il personale al 31 dicembre.")
+                                      "stesse macrofasce; anni in cui per tutti e sette i Comuni il totale per età coincide con il personale al 31 dicembre "
+                                      "e le fasce sono coerenti con l'anno precedente (55+ e 40+ calano al più dei cessati e crescono al più della "
+                                      "fascia quinquennale precedente più gli assunti).")
     # Turnover netto.
     m = metrics[TURNOVER]
     if len(turnover["years"]) > 1:
